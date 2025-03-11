@@ -48,7 +48,7 @@ const Footer = () => {
                 United Kingdom
               </li>
               <li className="pt-2">
-                <a href="mailto:contact@aries76.com" className="text-gray-300 hover:text-white transition-colors">contact@aries76.com</a>
+                <a href="mailto:quinley.martini@aries76.com" className="text-gray-300 hover:text-white transition-colors">quinley.martini@aries76.com</a>
               </li>
             </ul>
           </div>
