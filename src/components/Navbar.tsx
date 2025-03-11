@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
@@ -37,7 +38,7 @@ const Navbar = () => {
           <img 
             src="/lovable-uploads/3fb70498-7bc0-4d2c-aa59-d7605f5f5319.png" 
             alt="Aries76 Logo" 
-            className="h-40 md:h-44" 
+            className="h-48 md:h-52" 
           />
         </motion.a>
         
