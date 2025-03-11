@@ -1,4 +1,3 @@
-
 import { motion } from 'framer-motion';
 
 const Hero = () => {
@@ -34,18 +33,6 @@ const Hero = () => {
 
       <div className="container mx-auto px-6 relative z-10">
         <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <img 
-              src="/lovable-uploads/3fb70498-7bc0-4d2c-aa59-d7605f5f5319.png" 
-              alt="Aries76 Logo" 
-              className="w-64 md:w-80 mb-8" 
-            />
-          </motion.div>
-          
           <motion.h1 
             className="text-4xl md:text-6xl lg:text-7xl font-display font-bold text-aries-navy mb-6 tracking-tight"
             initial={{ opacity: 0, y: 20 }}

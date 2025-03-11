@@ -38,7 +38,7 @@ const Navbar = () => {
           <img 
             src="/lovable-uploads/3fb70498-7bc0-4d2c-aa59-d7605f5f5319.png" 
             alt="Aries76 Logo" 
-            className="h-10 md:h-12" 
+            className="h-16 md:h-20" 
           />
         </motion.a>
         
