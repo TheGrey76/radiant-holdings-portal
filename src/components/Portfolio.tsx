@@ -91,9 +91,9 @@ const Portfolio = () => {
             delay={0.7}
           />
           <PortfolioItem 
-            title="VoxAI"
-            description="Building natural language processing tools that transform how humans interact with technology."
-            icon="🗣️"
+            title="FinanceAI Solutions"
+            description="Sviluppo di soluzioni AI avanzate per analisi finanziaria, gestione del rischio e trading automatizzato."
+            icon="💹"
             delay={0.8}
           />
         </div>
