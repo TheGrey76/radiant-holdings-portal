@@ -8,11 +8,6 @@ const Footer = () => {
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           <div className="col-span-1 md:col-span-2">
-            <img 
-              src="/lovable-uploads/3fb70498-7bc0-4d2c-aa59-d7605f5f5319.png" 
-              alt="Aries76 Logo" 
-              className="h-12 mb-6 brightness-150 contrast-150" 
-            />
             <p className="text-gray-300 mb-6 max-w-md">
               Aries76 identifies, invests in, and scales transformative AI technologies that solve complex challenges and create enduring value across industries.
             </p>
