@@ -1,9 +1,9 @@
-
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
+import { Briefcase, BrainCircuit, Database, Stethoscope, Sprout, LineChart } from 'lucide-react';
 
-const PortfolioItem = ({ title, description, icon, delay }: { title: string; description: string; icon: string; delay: number }) => {
+const PortfolioItem = ({ title, description, icon: Icon, delay }: { title: string; description: string; icon: any; delay: number }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px 0px" });
   
@@ -17,7 +17,7 @@ const PortfolioItem = ({ title, description, icon, delay }: { title: string; des
       whileHover={{ y: -5 }}
     >
       <div className="w-12 h-12 bg-aries-gray rounded-lg flex items-center justify-center mb-4">
-        <span className="text-2xl text-aries-navy">{icon}</span>
+        <Icon className="w-6 h-6 text-aries-navy" />
       </div>
       <h3 className="text-xl font-semibold text-aries-navy mb-2">{title}</h3>
       <p className="text-gray-600">{description}</p>
@@ -63,37 +63,37 @@ const Portfolio = () => {
           <PortfolioItem 
             title="NeuralLogic Systems"
             description="Pioneering machine learning algorithms that enhance decision-making processes across financial services."
-            icon="💡"
+            icon={BrainCircuit}
             delay={0.3}
           />
           <PortfolioItem 
             title="QuantumVision AI"
             description="Developing next-generation computer vision technology for autonomous systems and smart infrastructure."
-            icon="🔍"
+            icon={Briefcase}
             delay={0.4}
           />
           <PortfolioItem 
             title="SynthLabs"
             description="Creating synthetic data solutions that accelerate AI development while maintaining privacy and compliance."
-            icon="🧪"
+            icon={Database}
             delay={0.5}
           />
           <PortfolioItem 
             title="CogniHealth"
             description="Using AI to revolutionize healthcare diagnostics and personalized treatment plans."
-            icon="⚕️"
+            icon={Stethoscope}
             delay={0.6}
           />
           <PortfolioItem 
             title="AgroIntelligence"
             description="Optimizing agricultural processes through predictive analytics and IoT integration."
-            icon="🌱"
+            icon={Sprout}
             delay={0.7}
           />
           <PortfolioItem 
             title="FinanceAI Solutions"
             description="Development of advanced AI solutions for financial analysis, risk management, and automated trading."
-            icon="💹"
+            icon={LineChart}
             delay={0.8}
           />
         </div>
