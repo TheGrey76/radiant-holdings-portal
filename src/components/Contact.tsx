@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
@@ -74,9 +73,9 @@ const Contact = () => {
                 <div>
                   <h3 className="text-xl font-semibold text-aries-navy mb-2">Office</h3>
                   <p className="text-gray-600">
-                    123 Innovation Drive<br />
-                    San Francisco, CA 94103<br />
-                    United States
+                    27, Old Gloucester Street<br />
+                    London, WC1N 3AX<br />
+                    United Kingdom
                   </p>
                 </div>
                 

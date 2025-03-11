@@ -1,4 +1,3 @@
-
 import { motion } from 'framer-motion';
 
 const Footer = () => {
@@ -61,13 +60,13 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-4">Contact</h3>
             <ul className="space-y-3 text-gray-300">
               <li>
-                123 Innovation Drive
+                27, Old Gloucester Street
               </li>
               <li>
-                San Francisco, CA 94103
+                London, WC1N 3AX
               </li>
               <li>
-                United States
+                United Kingdom
               </li>
               <li className="pt-2">
                 <a href="mailto:contact@aries76.com" className="text-gray-300 hover:text-white transition-colors">contact@aries76.com</a>
