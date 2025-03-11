@@ -92,7 +92,7 @@ const Portfolio = () => {
           />
           <PortfolioItem 
             title="FinanceAI Solutions"
-            description="Sviluppo di soluzioni AI avanzate per analisi finanziaria, gestione del rischio e trading automatizzato."
+            description="Development of advanced AI solutions for financial analysis, risk management, and automated trading."
             icon="💹"
             delay={0.8}
           />
