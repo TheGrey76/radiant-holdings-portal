@@ -91,44 +91,31 @@ const About = () => {
         </div>
         
         <motion.div 
-          className="bg-white rounded-xl shadow-smooth p-8 md:p-12"
+          className="bg-white rounded-xl shadow-smooth p-8 md:p-12 max-w-4xl mx-auto"
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.5, delay: 0.6 }}
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-            <div>
-              <h3 className="text-2xl font-semibold text-aries-navy mb-4">Our Approach</h3>
-              <p className="text-gray-600 mb-6">
+          <div className="text-center">
+            <h3 className="text-2xl font-semibold text-aries-navy mb-6">Our Approach</h3>
+            <div className="space-y-4">
+              <p className="text-gray-600">
                 We take a hands-on approach to investing, providing not just capital, but strategic guidance, technical expertise, and access to our global network of industry partners.
               </p>
-              <p className="text-gray-600 mb-6">
+              <p className="text-gray-600">
                 Through our unique blend of operational experience and deep understanding of AI, we help promising companies navigate challenges and accelerate growth.
               </p>
-              <motion.a 
-                href="#contact" 
-                className="inline-flex items-center text-aries-navy font-medium hover:text-aries-blue transition-colors"
-                whileHover={{ x: 5 }}
-              >
-                Connect with our team
-                <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                </svg>
-              </motion.a>
-            </div>
-            <div className="relative">
-              <div className="aspect-video bg-aries-navy/5 rounded-lg overflow-hidden">
-                <img 
-                  src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80" 
-                  alt="Team collaboration" 
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="absolute -bottom-4 -right-4 bg-white p-3 rounded-lg shadow-smooth">
-                <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 bg-aries-orange rounded-full"></div>
-                  <span className="text-sm font-medium text-aries-navy">AI-Powered Future</span>
-                </div>
+              <div className="mt-8">
+                <motion.a 
+                  href="#contact" 
+                  className="inline-flex items-center text-aries-navy font-medium hover:text-aries-blue transition-colors"
+                  whileHover={{ x: 5 }}
+                >
+                  Connect with our team
+                  <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                  </svg>
+                </motion.a>
               </div>
             </div>
           </div>
