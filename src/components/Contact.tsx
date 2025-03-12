@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
@@ -50,7 +49,7 @@ const Contact = () => {
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            Connect With Aries76
+            Connect With Aries76 Ltd
           </motion.h2>
           <motion.p 
             className="section-subtitle"
