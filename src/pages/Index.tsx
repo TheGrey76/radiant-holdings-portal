@@ -7,7 +7,6 @@ import About from '@/components/About';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Toaster } from '@/components/ui/toaster';
 
 const Index = () => {
   useEffect(() => {
@@ -51,7 +50,6 @@ const Index = () => {
         <About />
         <Contact />
         <Footer />
-        <Toaster />
       </motion.div>
     </AnimatePresence>
   );
