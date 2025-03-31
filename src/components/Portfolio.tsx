@@ -2,7 +2,7 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { Briefcase, BrainCircuit, Database, Stethoscope, Sprout, LineChart, Coins, TrendingUp } from 'lucide-react';
+import { Briefcase, BrainCircuit, Database, Stethoscope, Sprout, LineChart, Coins, TrendingUp, Globe } from 'lucide-react';
 
 const PortfolioItem = ({ title, description, icon: Icon, delay }: { title: string; description: string; icon: any; delay: number }) => {
   const ref = useRef(null);
@@ -108,6 +108,12 @@ const Portfolio = () => {
             description="Early-stage investment in this fintech innovator providing credit and banking services with a focus on financial health."
             icon={TrendingUp}
             delay={1.0}
+          />
+          <PortfolioItem 
+            title="AiresData.net"
+            description="A pioneering data analytics platform leveraging AI to transform raw data into actionable business intelligence."
+            icon={Globe}
+            delay={1.1}
           />
         </div>
       </div>
