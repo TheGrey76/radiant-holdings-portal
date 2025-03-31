@@ -1,4 +1,3 @@
-
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
@@ -62,58 +61,40 @@ const Portfolio = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <PortfolioItem 
-            title="NeuralLogic Systems"
-            description="Pioneering machine learning algorithms that enhance decision-making processes across financial services."
-            icon={BrainCircuit}
-            delay={0.3}
-          />
-          <PortfolioItem 
-            title="QuantumVision AI"
-            description="Developing next-generation computer vision technology for autonomous systems and smart infrastructure."
-            icon={Briefcase}
-            delay={0.4}
-          />
-          <PortfolioItem 
-            title="SynthLabs"
-            description="Creating synthetic data solutions that accelerate AI development while maintaining privacy and compliance."
-            icon={Database}
-            delay={0.5}
-          />
-          <PortfolioItem 
             title="CogniHealth"
             description="Using AI to revolutionize healthcare diagnostics and personalized treatment plans."
             icon={Stethoscope}
-            delay={0.6}
+            delay={0.3}
           />
           <PortfolioItem 
             title="AgroIntelligence"
             description="Optimizing agricultural processes through predictive analytics and IoT integration."
             icon={Sprout}
-            delay={0.7}
+            delay={0.4}
           />
           <PortfolioItem 
             title="FinanceAI Solutions"
             description="Development of advanced AI solutions for financial analysis, risk management, and automated trading."
             icon={LineChart}
-            delay={0.8}
+            delay={0.5}
           />
           <PortfolioItem 
             title="Kraken"
             description="Strategic investment in one of the world's largest cryptocurrency exchanges, offering secure digital asset trading solutions."
             icon={Coins}
-            delay={0.9}
+            delay={0.6}
           />
           <PortfolioItem 
             title="Upgrade Inc (Pre-IPO)"
             description="Early-stage investment in this fintech innovator providing credit and banking services with a focus on financial health."
             icon={TrendingUp}
-            delay={1.0}
+            delay={0.7}
           />
           <PortfolioItem 
             title="AiresData.net"
             description="A pioneering data analytics platform leveraging AI to transform raw data into actionable business intelligence."
             icon={Globe}
-            delay={1.1}
+            delay={0.8}
           />
         </div>
       </div>
