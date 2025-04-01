@@ -1,7 +1,8 @@
+
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { Briefcase, BrainCircuit, Database, Stethoscope, Sprout, LineChart, Coins, TrendingUp, Globe } from 'lucide-react';
+import { Briefcase, BrainCircuit, Database, Stethoscope, LineChart, Coins, TrendingUp, Globe, Bitcoin } from 'lucide-react';
 
 const PortfolioItem = ({ title, description, icon: Icon, delay }: { title: string; description: string; icon: any; delay: number }) => {
   const ref = useRef(null);
@@ -67,9 +68,9 @@ const Portfolio = () => {
             delay={0.3}
           />
           <PortfolioItem 
-            title="AgroIntelligence"
-            description="Optimizing agricultural processes through predictive analytics and IoT integration."
-            icon={Sprout}
+            title="Bitcoin"
+            description="Strategic investment in the world's first and largest cryptocurrency, providing a decentralized store of value."
+            icon={Bitcoin}
             delay={0.4}
           />
           <PortfolioItem 
@@ -79,7 +80,7 @@ const Portfolio = () => {
             delay={0.5}
           />
           <PortfolioItem 
-            title="Kraken"
+            title="Kraken (Pre-IPO)"
             description="Strategic investment in one of the world's largest cryptocurrency exchanges, offering secure digital asset trading solutions."
             icon={Coins}
             delay={0.6}
