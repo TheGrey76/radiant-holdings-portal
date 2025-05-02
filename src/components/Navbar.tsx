@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -29,23 +30,25 @@ const Navbar = () => {
       transition={{ duration: 0.5, ease: 'easeOut' }}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <motion.a 
-          href="#" 
+        <motion.div 
           className="flex items-center space-x-2"
           whileHover={{ scale: 1.02 }}
           transition={{ type: 'spring', stiffness: 400, damping: 10 }}
         >
-          <img 
-            src="/lovable-uploads/3fb70498-7bc0-4d2c-aa59-d7605f5f5319.png" 
-            alt="Aries76 Logo" 
-            className="h-48 md:h-52" 
-          />
-        </motion.a>
+          <Link to="/">
+            <img 
+              src="/lovable-uploads/3fb70498-7bc0-4d2c-aa59-d7605f5f5319.png" 
+              alt="Aries76 Logo" 
+              className="h-48 md:h-52" 
+            />
+          </Link>
+        </motion.div>
         
         <nav className="hidden md:flex items-center space-x-8">
-          <a href="#portfolio" className="nav-link">Portfolio</a>
-          <a href="#about" className="nav-link">About</a>
-          <a href="#contact" className="nav-link">Contact</a>
+          <Link to="/#portfolio" className="nav-link">Portfolio</Link>
+          <Link to="/#about" className="nav-link">About</Link>
+          <Link to="/#contact" className="nav-link">Contact</Link>
+          <Link to="/network" className="nav-link">Network</Link>
           
           <motion.button 
             className="px-5 py-2 bg-aries-navy text-white rounded-md font-medium transition-all hover:bg-aries-blue"
