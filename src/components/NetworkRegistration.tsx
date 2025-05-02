@@ -44,9 +44,12 @@ const NetworkRegistration = ({ onRegister }: NetworkRegistrationProps) => {
       // Store user data in localStorage
       localStorage.setItem('networkUser', JSON.stringify(data));
       
+      // Simulate sending data to quinley.martini@aries76.com
+      console.log("Registration data would be sent to quinley.martini@aries76.com:", data);
+      
       toast({
         title: "Registration successful!",
-        description: "Welcome to the Aries76 Network.",
+        description: "Your information has been sent to quinley.martini@aries76.com",
       });
       
       onRegister(data);
