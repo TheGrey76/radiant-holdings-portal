@@ -18,25 +18,25 @@ import { User, Building, Upload, Briefcase } from 'lucide-react';
 
 // Define schemas for the different profile types
 const investorSchema = z.object({
-  name: z.string().min(2, { message: "Il nome deve avere almeno 2 caratteri" }),
-  email: z.string().email({ message: "Email non valida" }),
-  company: z.string().min(2, { message: "Nome azienda richiesto" }),
-  sector: z.string().min(2, { message: "Settore richiesto" }),
-  location: z.string().min(2, { message: "Località richiesta" }),
-  investmentRange: z.string().min(2, { message: "Range d'investimento richiesto" }),
+  name: z.string().min(2, { message: "Name must be at least 2 characters" }),
+  email: z.string().email({ message: "Invalid email address" }),
+  company: z.string().min(2, { message: "Company name is required" }),
+  sector: z.string().min(2, { message: "Sector is required" }),
+  location: z.string().min(2, { message: "Location is required" }),
+  investmentRange: z.string().min(2, { message: "Investment range is required" }),
   bio: z.string().optional(),
   linkedin: z.string().optional(),
 });
 
 const startupSchema = z.object({
-  name: z.string().min(2, { message: "Il nome deve avere almeno 2 caratteri" }),
-  email: z.string().email({ message: "Email non valida" }),
-  companyName: z.string().min(2, { message: "Nome startup richiesto" }),
-  sector: z.string().min(2, { message: "Settore richiesto" }),
-  stage: z.string().min(2, { message: "Fase di sviluppo richiesta" }),
-  location: z.string().min(2, { message: "Località richiesta" }),
-  seeking: z.string().min(2, { message: "Investimento cercato richiesto" }),
-  description: z.string().min(10, { message: "Descrizione richiesta (min. 10 caratteri)" }),
+  name: z.string().min(2, { message: "Name must be at least 2 characters" }),
+  email: z.string().email({ message: "Invalid email address" }),
+  companyName: z.string().min(2, { message: "Startup name is required" }),
+  sector: z.string().min(2, { message: "Sector is required" }),
+  stage: z.string().min(2, { message: "Development stage is required" }),
+  location: z.string().min(2, { message: "Location is required" }),
+  seeking: z.string().min(2, { message: "Investment sought is required" }),
+  description: z.string().min(10, { message: "Description is required (min. 10 characters)" }),
   website: z.string().optional(),
 });
 
@@ -166,8 +166,8 @@ const UserProfile = () => {
       setUser(updatedUser);
       
       toast({
-        title: "Profilo aggiornato",
-        description: "Il tuo profilo investitore è stato salvato con successo.",
+        title: "Profile Updated",
+        description: "Your investor profile has been successfully saved.",
       });
       
       // Navigate back to network page after successful profile update
@@ -175,8 +175,8 @@ const UserProfile = () => {
     } catch (error) {
       console.error("Error saving profile:", error);
       toast({
-        title: "Errore",
-        description: "C'è stato un problema nel salvare il tuo profilo.",
+        title: "Error",
+        description: "There was a problem saving your profile.",
         variant: "destructive",
       });
     } finally {
@@ -203,8 +203,8 @@ const UserProfile = () => {
       setUser(updatedUser);
       
       toast({
-        title: "Profilo aggiornato",
-        description: "Il tuo profilo startup è stato salvato con successo.",
+        title: "Profile Updated",
+        description: "Your startup profile has been successfully saved.",
       });
       
       // Navigate back to network page after successful profile update
@@ -212,8 +212,8 @@ const UserProfile = () => {
     } catch (error) {
       console.error("Error saving profile:", error);
       toast({
-        title: "Errore",
-        description: "C'è stato un problema nel salvare il tuo profilo.",
+        title: "Error",
+        description: "There was a problem saving your profile.",
         variant: "destructive",
       });
     } finally {
@@ -228,8 +228,8 @@ const UserProfile = () => {
 
     if (file.size > 5 * 1024 * 1024) {
       toast({
-        title: "File troppo grande",
-        description: "L'immagine deve essere inferiore a 5MB.",
+        title: "File too large",
+        description: "Image must be less than 5MB.",
         variant: "destructive",
       });
       return;
@@ -247,36 +247,36 @@ const UserProfile = () => {
   if (!user) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <p>Caricamento...</p>
+        <p>Loading...</p>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-6 py-10 mt-24">
+    <div className="container mx-auto px-4 py-8 mt-16 mb-16">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <Card className="w-full max-w-4xl mx-auto">
-          <CardHeader>
-            <CardTitle className="text-2xl font-bold text-aries-navy">Il Tuo Profilo</CardTitle>
-            <CardDescription>
-              Completa il tuo profilo per connetterti con altri membri del network
+        <Card className="w-full max-w-4xl mx-auto shadow-lg border-2 border-indigo-100">
+          <CardHeader className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-t-lg">
+            <CardTitle className="text-2xl font-bold text-indigo-800">Your Profile</CardTitle>
+            <CardDescription className="text-gray-600">
+              Complete your profile to connect with other network members
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-6">
             <div className="flex flex-col md:flex-row gap-8 mb-8 items-center md:items-start">
               <div className="relative">
                 <Avatar className="w-32 h-32 border-4 border-white shadow-md">
                   <AvatarImage src={avatarSrc} alt={user.name} />
-                  <AvatarFallback className="text-3xl">
+                  <AvatarFallback className="text-3xl bg-indigo-200 text-indigo-700">
                     {user.name.charAt(0)}
                   </AvatarFallback>
                 </Avatar>
                 <label htmlFor="avatar-upload" className="absolute bottom-0 right-0 bg-white rounded-full p-2 shadow-md cursor-pointer hover:bg-gray-100 transition-colors">
-                  <Upload size={18} className="text-aries-navy" />
+                  <Upload size={18} className="text-indigo-700" />
                   <input
                     id="avatar-upload"
                     type="file"
@@ -288,12 +288,12 @@ const UserProfile = () => {
               </div>
               
               <div className="text-center md:text-left">
-                <h2 className="text-xl font-semibold">{user.name}</h2>
+                <h2 className="text-xl font-semibold text-gray-800">{user.name}</h2>
                 <p className="text-gray-600">{user.email}</p>
-                <Alert className="mt-3 bg-aries-gray/20">
-                  <AlertTitle className="text-sm">Seleziona il tipo di account</AlertTitle>
-                  <AlertDescription className="text-xs">
-                    Seleziona se sei un investitore o una startup per personalizzare il tuo profilo
+                <Alert className="mt-3 bg-indigo-50 border border-indigo-200">
+                  <AlertTitle className="text-sm font-medium text-indigo-700">Select account type</AlertTitle>
+                  <AlertDescription className="text-xs text-indigo-600">
+                    Choose whether you're an investor or a startup to customize your profile
                   </AlertDescription>
                 </Alert>
               </div>
@@ -304,12 +304,12 @@ const UserProfile = () => {
               className="w-full" 
               onValueChange={handleAccountTypeChange}
             >
-              <TabsList className="grid grid-cols-2 mb-8">
-                <TabsTrigger value="investor" className="flex items-center gap-2">
+              <TabsList className="grid grid-cols-2 mb-8 bg-indigo-50">
+                <TabsTrigger value="investor" className="data-[state=active]:bg-indigo-100 data-[state=active]:text-indigo-800 flex items-center gap-2">
                   <User className="h-4 w-4" />
-                  <span>Investitore</span>
+                  <span>Investor</span>
                 </TabsTrigger>
-                <TabsTrigger value="startup" className="flex items-center gap-2">
+                <TabsTrigger value="startup" className="data-[state=active]:bg-indigo-100 data-[state=active]:text-indigo-800 flex items-center gap-2">
                   <Briefcase className="h-4 w-4" />
                   <span>Startup</span>
                 </TabsTrigger>
@@ -317,16 +317,16 @@ const UserProfile = () => {
               
               <TabsContent value="investor">
                 <Form {...investorForm}>
-                  <form onSubmit={investorForm.handleSubmit(handleInvestorSubmit)} className="space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <form onSubmit={investorForm.handleSubmit(handleInvestorSubmit)} className="space-y-5">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                       <FormField
                         control={investorForm.control}
                         name="name"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Nome Completo</FormLabel>
+                            <FormLabel className="text-gray-700">Full Name</FormLabel>
                             <FormControl>
-                              <Input {...field} readOnly />
+                              <Input {...field} readOnly className="bg-gray-50" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -338,9 +338,9 @@ const UserProfile = () => {
                         name="email"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Email</FormLabel>
+                            <FormLabel className="text-gray-700">Email</FormLabel>
                             <FormControl>
-                              <Input {...field} type="email" readOnly />
+                              <Input {...field} type="email" readOnly className="bg-gray-50" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -348,15 +348,15 @@ const UserProfile = () => {
                       />
                     </div>
                     
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                       <FormField
                         control={investorForm.control}
                         name="company"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Società/Fondo</FormLabel>
+                            <FormLabel className="text-gray-700">Company/Fund</FormLabel>
                             <FormControl>
-                              <Input {...field} placeholder="Nome della tua società" />
+                              <Input {...field} placeholder="Your company name" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -368,9 +368,9 @@ const UserProfile = () => {
                         name="sector"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Settore d'interesse</FormLabel>
+                            <FormLabel className="text-gray-700">Sectors of Interest</FormLabel>
                             <FormControl>
-                              <Input {...field} placeholder="es. AI & Machine Learning, Fintech" />
+                              <Input {...field} placeholder="e.g., AI & Machine Learning, Fintech" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -378,15 +378,15 @@ const UserProfile = () => {
                       />
                     </div>
                     
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                       <FormField
                         control={investorForm.control}
                         name="location"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Località</FormLabel>
+                            <FormLabel className="text-gray-700">Location</FormLabel>
                             <FormControl>
-                              <Input {...field} placeholder="es. Milano, Italia" />
+                              <Input {...field} placeholder="e.g., London, UK" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -398,9 +398,9 @@ const UserProfile = () => {
                         name="investmentRange"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Range d'investimento</FormLabel>
+                            <FormLabel className="text-gray-700">Investment Range</FormLabel>
                             <FormControl>
-                              <Input {...field} placeholder="es. €500K - €2M" />
+                              <Input {...field} placeholder="e.g., $500K - $2M" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -413,12 +413,12 @@ const UserProfile = () => {
                       name="bio"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Bio / Informazioni</FormLabel>
+                          <FormLabel className="text-gray-700">Bio / Information</FormLabel>
                           <FormControl>
                             <Textarea
                               {...field}
-                              placeholder="Breve descrizione della tua esperienza come investitore"
-                              className="min-h-[150px]"
+                              placeholder="Brief description of your experience as an investor"
+                              className="min-h-[150px] resize-none"
                             />
                           </FormControl>
                           <FormMessage />
@@ -431,39 +431,41 @@ const UserProfile = () => {
                       name="linkedin"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>LinkedIn (opzionale)</FormLabel>
+                          <FormLabel className="text-gray-700">LinkedIn (optional)</FormLabel>
                           <FormControl>
-                            <Input {...field} placeholder="URL del profilo LinkedIn" />
+                            <Input {...field} placeholder="LinkedIn profile URL" />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
                     
-                    <Button 
-                      type="submit" 
-                      className="w-full" 
-                      size="lg" 
-                      disabled={isLoading}
-                    >
-                      {isLoading ? "Salvataggio..." : "Salva Profilo"}
-                    </Button>
+                    <div className="pt-4">
+                      <Button 
+                        type="submit" 
+                        className="w-full bg-indigo-600 hover:bg-indigo-700" 
+                        size="lg" 
+                        disabled={isLoading}
+                      >
+                        {isLoading ? "Saving..." : "Save Profile"}
+                      </Button>
+                    </div>
                   </form>
                 </Form>
               </TabsContent>
               
               <TabsContent value="startup">
                 <Form {...startupForm}>
-                  <form onSubmit={startupForm.handleSubmit(handleStartupSubmit)} className="space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <form onSubmit={startupForm.handleSubmit(handleStartupSubmit)} className="space-y-5">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                       <FormField
                         control={startupForm.control}
                         name="name"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Nome completo</FormLabel>
+                            <FormLabel className="text-gray-700">Full Name</FormLabel>
                             <FormControl>
-                              <Input {...field} readOnly />
+                              <Input {...field} readOnly className="bg-gray-50" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -475,9 +477,9 @@ const UserProfile = () => {
                         name="email"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Email</FormLabel>
+                            <FormLabel className="text-gray-700">Email</FormLabel>
                             <FormControl>
-                              <Input {...field} type="email" readOnly />
+                              <Input {...field} type="email" readOnly className="bg-gray-50" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -485,15 +487,15 @@ const UserProfile = () => {
                       />
                     </div>
                     
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                       <FormField
                         control={startupForm.control}
                         name="companyName"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Nome Startup</FormLabel>
+                            <FormLabel className="text-gray-700">Startup Name</FormLabel>
                             <FormControl>
-                              <Input {...field} placeholder="Nome della startup" />
+                              <Input {...field} placeholder="Name of your startup" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -505,9 +507,9 @@ const UserProfile = () => {
                         name="sector"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Settore</FormLabel>
+                            <FormLabel className="text-gray-700">Sector</FormLabel>
                             <FormControl>
-                              <Input {...field} placeholder="es. AI & Data Analytics" />
+                              <Input {...field} placeholder="e.g., AI & Data Analytics" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -515,15 +517,15 @@ const UserProfile = () => {
                       />
                     </div>
                     
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                       <FormField
                         control={startupForm.control}
                         name="stage"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Fase</FormLabel>
+                            <FormLabel className="text-gray-700">Stage</FormLabel>
                             <FormControl>
-                              <Input {...field} placeholder="es. Seed, Series A" />
+                              <Input {...field} placeholder="e.g., Seed, Series A" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -535,9 +537,9 @@ const UserProfile = () => {
                         name="location"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Località</FormLabel>
+                            <FormLabel className="text-gray-700">Location</FormLabel>
                             <FormControl>
-                              <Input {...field} placeholder="es. Roma, Italia" />
+                              <Input {...field} placeholder="e.g., Berlin, Germany" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -550,9 +552,9 @@ const UserProfile = () => {
                       name="seeking"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Investimento Cercato</FormLabel>
+                          <FormLabel className="text-gray-700">Investment Sought</FormLabel>
                           <FormControl>
-                            <Input {...field} placeholder="es. €750K" />
+                            <Input {...field} placeholder="e.g., $750K" />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -564,12 +566,12 @@ const UserProfile = () => {
                       name="description"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Descrizione</FormLabel>
+                          <FormLabel className="text-gray-700">Description</FormLabel>
                           <FormControl>
                             <Textarea
                               {...field}
-                              placeholder="Descrizione del prodotto o servizio della startup"
-                              className="min-h-[150px]"
+                              placeholder="Description of your startup's product or service"
+                              className="min-h-[150px] resize-none"
                             />
                           </FormControl>
                           <FormMessage />
@@ -582,31 +584,33 @@ const UserProfile = () => {
                       name="website"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Sito web (opzionale)</FormLabel>
+                          <FormLabel className="text-gray-700">Website (optional)</FormLabel>
                           <FormControl>
-                            <Input {...field} placeholder="URL del sito web" />
+                            <Input {...field} placeholder="Website URL" />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
                     
-                    <Button 
-                      type="submit" 
-                      className="w-full" 
-                      size="lg" 
-                      disabled={isLoading}
-                    >
-                      {isLoading ? "Salvataggio..." : "Salva Profilo"}
-                    </Button>
+                    <div className="pt-4">
+                      <Button 
+                        type="submit" 
+                        className="w-full bg-indigo-600 hover:bg-indigo-700" 
+                        size="lg" 
+                        disabled={isLoading}
+                      >
+                        {isLoading ? "Saving..." : "Save Profile"}
+                      </Button>
+                    </div>
                   </form>
                 </Form>
               </TabsContent>
             </Tabs>
           </CardContent>
-          <CardFooter className="flex justify-between">
-            <Button variant="outline" onClick={() => navigate('/network')}>
-              Torna al Network
+          <CardFooter className="flex justify-between bg-gradient-to-r from-indigo-50 to-purple-50 rounded-b-lg">
+            <Button variant="outline" onClick={() => navigate('/network')} className="border-indigo-200 text-indigo-700 hover:bg-indigo-100">
+              Back to Network
             </Button>
           </CardFooter>
         </Card>

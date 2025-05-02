@@ -6,11 +6,13 @@ import UserProfile from '@/components/UserProfile';
 
 const Profile = () => {
   return (
-    <>
+    <div className="min-h-screen flex flex-col">
       <Navbar />
-      <UserProfile />
+      <main className="flex-grow">
+        <UserProfile />
+      </main>
       <Footer />
-    </>
+    </div>
   );
 };
 
