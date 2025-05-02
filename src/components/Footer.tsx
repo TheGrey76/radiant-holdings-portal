@@ -9,35 +9,35 @@ const Footer = () => {
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           <div className="col-span-1 md:col-span-2">
-            <p className="text-gray-300 mb-6 max-w-md">
+            <p className="text-gray-300 mb-6 max-w-md font-display">
               Aries76 identifies, invests in, and scales transformative AI technologies that solve complex challenges and create enduring value across industries.
             </p>
           </div>
           
           <div>
-            <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
+            <h3 className="text-lg font-semibold mb-4 font-display">Quick Links</h3>
             <ul className="space-y-3">
               <li>
-                <a href="#portfolio" className="text-gray-300 hover:text-white transition-colors">Portfolio</a>
+                <a href="#portfolio" className="text-gray-300 hover:text-white transition-colors font-display">Portfolio</a>
               </li>
               <li>
-                <a href="#about" className="text-gray-300 hover:text-white transition-colors">About</a>
+                <a href="#about" className="text-gray-300 hover:text-white transition-colors font-display">About</a>
               </li>
               <li>
-                <a href="#contact" className="text-gray-300 hover:text-white transition-colors">Contact</a>
+                <a href="#contact" className="text-gray-300 hover:text-white transition-colors font-display">Contact</a>
               </li>
               <li>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors">Careers</a>
+                <a href="#" className="text-gray-300 hover:text-white transition-colors font-display">Careers</a>
               </li>
               <li>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors">News</a>
+                <a href="#" className="text-gray-300 hover:text-white transition-colors font-display">News</a>
               </li>
             </ul>
           </div>
           
           <div>
-            <h3 className="text-lg font-semibold mb-4">Contact</h3>
-            <ul className="space-y-3 text-gray-300">
+            <h3 className="text-lg font-semibold mb-4 font-display">Contact</h3>
+            <ul className="space-y-3 text-gray-300 font-display">
               <li>
                 27, Old Gloucester Street
               </li>
@@ -55,10 +55,10 @@ const Footer = () => {
         </div>
         
         <div className="border-t border-white/10 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-gray-400 text-sm mb-4 md:mb-0">
+          <p className="text-gray-400 text-sm mb-4 md:mb-0 font-display">
             © {currentYear} Aries76. All rights reserved.
           </p>
-          <div className="flex space-x-6">
+          <div className="flex space-x-6 font-display">
             <a href="#" className="text-gray-400 text-sm hover:text-white transition-colors">Privacy Policy</a>
             <a href="#" className="text-gray-400 text-sm hover:text-white transition-colors">Terms of Service</a>
             <a href="#" className="text-gray-400 text-sm hover:text-white transition-colors">Sitemap</a>
