@@ -11,10 +11,21 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { useToast } from "@/hooks/use-toast";
 import { createClient } from '@supabase/supabase-js';
 
-// Initialize Supabase client
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// Initialize Supabase client with fallback for missing env variables
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+let supabase = null;
+
+// Only create the Supabase client if both URL and key are available
+try {
+  if (supabaseUrl && supabaseAnonKey) {
+    supabase = createClient(supabaseUrl, supabaseAnonKey);
+  } else {
+    console.warn('Supabase credentials not found. Running in local storage mode only.');
+  }
+} catch (error) {
+  console.error('Failed to initialize Supabase client:', error);
+}
 
 // Define the form schema with Zod
 const formSchema = z.object({
@@ -44,38 +55,53 @@ const NetworkRegistration = ({ onRegister }: NetworkRegistrationProps) => {
     setIsSubmitting(true);
     
     try {
-      // Store data in Supabase
-      const { error } = await supabase
-        .from('network_registrations')
-        .insert([
-          { 
-            name: data.name, 
-            email: data.email,
-            recipient_email: 'quinley.martini@aries76.com' 
-          }
-        ]);
-      
-      if (error) {
-        throw new Error('Failed to store registration data');
-      }
-      
-      // Trigger Edge Function to send email (assume it's already created)
-      const { error: emailError } = await supabase.functions.invoke('send-registration-email', {
-        body: {
-          name: data.name,
-          email: data.email,
-          to: 'quinley.martini@aries76.com',
-          subject: 'New Network Registration'
-        }
-      });
-      
-      if (emailError) {
-        console.error("Email sending error:", emailError);
-        // Don't throw here, we still want to continue even if email fails
-      }
-      
-      // Store user data in localStorage as fallback
+      // Always store user data in localStorage (will work even if Supabase is unavailable)
       localStorage.setItem('networkUser', JSON.stringify(data));
+      
+      // If Supabase is available, use it
+      if (supabase) {
+        try {
+          // Store data in Supabase
+          const { error } = await supabase
+            .from('network_registrations')
+            .insert([
+              { 
+                name: data.name, 
+                email: data.email,
+                recipient_email: 'quinley.martini@aries76.com' 
+              }
+            ]);
+          
+          if (error) {
+            console.error("Supabase insert error:", error);
+          } else {
+            // If insert was successful, try to invoke the function
+            try {
+              // Trigger Edge Function to send email
+              const { error: emailError } = await supabase.functions.invoke('send-registration-email', {
+                body: {
+                  name: data.name,
+                  email: data.email,
+                  to: 'quinley.martini@aries76.com',
+                  subject: 'New Network Registration'
+                }
+              });
+              
+              if (emailError) {
+                console.error("Email sending error:", emailError);
+              }
+            } catch (functionError) {
+              console.error("Error calling edge function:", functionError);
+            }
+          }
+        } catch (supabaseError) {
+          console.error("Supabase error:", supabaseError);
+          // Continue with local functionality
+        }
+      } else {
+        console.log("Running in localStorage mode. Registration data:", data);
+        console.log("Would send email to quinley.martini@aries76.com");
+      }
       
       toast({
         title: "Registration successful!",
