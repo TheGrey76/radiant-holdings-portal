@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { User } from 'lucide-react';
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -49,6 +50,10 @@ const Navbar = () => {
           <Link to="/#about" className="nav-link">About</Link>
           <Link to="/#contact" className="nav-link">Contact</Link>
           <Link to="/network" className="nav-link">Network</Link>
+          <Link to="/profile" className="nav-link flex items-center gap-2">
+            <User size={18} />
+            <span>Profile</span>
+          </Link>
           
           <motion.button 
             className="px-5 py-2 bg-aries-navy text-white rounded-md font-medium transition-all hover:bg-aries-blue"
