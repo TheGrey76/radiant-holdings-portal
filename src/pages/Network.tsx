@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -92,6 +93,9 @@ const startups = [
 interface NetworkUser {
   name: string;
   email: string;
+  type?: 'investor' | 'startup';
+  profileComplete?: boolean;
+  profileData?: any;
 }
 
 const NetworkDirectory = () => {
@@ -101,20 +105,26 @@ const NetworkDirectory = () => {
   const [user, setUser] = useState<NetworkUser | null>(null);
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px 0px" });
+  const navigate = useNavigate();
   
   // Check if the user is already registered on component mount
   useEffect(() => {
     const storedUser = localStorage.getItem('networkUser');
     if (storedUser) {
       try {
-        const parsedUser = JSON.parse(storedUser);
+        const parsedUser = JSON.parse(storedUser) as NetworkUser;
         setUser(parsedUser);
         setIsRegistered(true);
+        
+        // If the user hasn't completed their profile, redirect them to the profile page
+        if (!parsedUser.profileComplete) {
+          navigate('/profile');
+        }
       } catch (error) {
         console.error("Error parsing user data:", error);
       }
     }
-  }, []);
+  }, [navigate]);
   
   // Sectors for filtering
   const sectors = ["All", "AI & Machine Learning", "Fintech", "SaaS", "CleanTech", "Health Tech"];
@@ -134,8 +144,18 @@ const NetworkDirectory = () => {
   );
   
   const handleRegistration = (data: NetworkUser) => {
-    setUser(data);
+    const updatedUser = {
+      ...data,
+      profileComplete: false
+    };
+    setUser(updatedUser);
     setIsRegistered(true);
+    localStorage.setItem('networkUser', JSON.stringify(updatedUser));
+    navigate('/profile');
+  };
+  
+  const handleUserProfileClick = () => {
+    navigate('/profile');
   };
   
   return (
@@ -175,7 +195,23 @@ const NetworkDirectory = () => {
           ) : (
             <>
               <div className="mb-8 flex flex-col md:flex-row gap-4 items-center justify-between">
-                <div className="relative w-full md:w-1/2">
+                <div className="w-full md:w-auto flex items-center">
+                  <Avatar className="h-10 w-10 mr-3 cursor-pointer" onClick={handleUserProfileClick}>
+                    <AvatarImage src={user?.profileData?.avatar} alt={user?.name} />
+                    <AvatarFallback>{user?.name.charAt(0)}</AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <div className="text-sm font-medium">{user?.name}</div>
+                    <Button 
+                      variant="link" 
+                      className="p-0 h-auto text-xs text-gray-500"
+                      onClick={handleUserProfileClick}
+                    >
+                      Visualizza profilo
+                    </Button>
+                  </div>
+                </div>
+                <div className="relative w-full md:w-1/3">
                   <Input
                     placeholder="Search by name, company or keyword..."
                     value={searchTerm}
