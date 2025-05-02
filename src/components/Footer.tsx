@@ -7,7 +7,7 @@ const Footer = () => {
   return (
     <footer className="bg-aries-navy text-white py-16">
       <div className="container mx-auto px-6 max-w-5xl">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           <div className="col-span-1 md:col-span-2">
             <p className="text-gray-300 mb-6 max-w-md">
               Aries76 identifies, invests in, and scales transformative AI technologies that solve complex challenges and create enduring value across industries.
@@ -15,8 +15,8 @@ const Footer = () => {
           </div>
           
           <div>
-            <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
-            <ul className="space-y-3">
+            <h3 className="text-lg font-semibold mb-3">Quick Links</h3>
+            <ul className="space-y-2">
               <li>
                 <a href="#portfolio" className="text-gray-300 hover:text-white transition-colors">Portfolio</a>
               </li>
@@ -36,8 +36,8 @@ const Footer = () => {
           </div>
           
           <div>
-            <h3 className="text-lg font-semibold mb-4">Contact</h3>
-            <ul className="space-y-3 text-gray-300">
+            <h3 className="text-lg font-semibold mb-3">Contact</h3>
+            <ul className="space-y-2 text-gray-300">
               <li>
                 27, Old Gloucester Street
               </li>
