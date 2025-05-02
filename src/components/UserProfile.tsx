@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -261,9 +260,9 @@ const UserProfile = () => {
       >
         <Card className="w-full max-w-4xl mx-auto shadow-lg border-2 border-indigo-100">
           <CardHeader className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-t-lg">
-            <CardTitle className="text-2xl font-bold text-indigo-800">Your Profile</CardTitle>
+            <CardTitle className="text-2xl font-bold text-indigo-800">Account Management</CardTitle>
             <CardDescription className="text-gray-600">
-              Complete your profile to connect with other network members
+              Complete your information to enhance your networking experience
             </CardDescription>
           </CardHeader>
           <CardContent className="p-6">

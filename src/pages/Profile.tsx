@@ -8,7 +8,7 @@ const Profile = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-grow pt-24 md:pt-28">
+      <main className="flex-grow pt-32 md:pt-36">
         <UserProfile />
       </main>
       <Footer />
