@@ -9,6 +9,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
+import { createClient } from '@supabase/supabase-js';
+
+// Initialize Supabase client
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // Define the form schema with Zod
 const formSchema = z.object({
@@ -38,14 +44,38 @@ const NetworkRegistration = ({ onRegister }: NetworkRegistrationProps) => {
     setIsSubmitting(true);
     
     try {
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Store data in Supabase
+      const { error } = await supabase
+        .from('network_registrations')
+        .insert([
+          { 
+            name: data.name, 
+            email: data.email,
+            recipient_email: 'quinley.martini@aries76.com' 
+          }
+        ]);
       
-      // Store user data in localStorage
+      if (error) {
+        throw new Error('Failed to store registration data');
+      }
+      
+      // Trigger Edge Function to send email (assume it's already created)
+      const { error: emailError } = await supabase.functions.invoke('send-registration-email', {
+        body: {
+          name: data.name,
+          email: data.email,
+          to: 'quinley.martini@aries76.com',
+          subject: 'New Network Registration'
+        }
+      });
+      
+      if (emailError) {
+        console.error("Email sending error:", emailError);
+        // Don't throw here, we still want to continue even if email fails
+      }
+      
+      // Store user data in localStorage as fallback
       localStorage.setItem('networkUser', JSON.stringify(data));
-      
-      // Simulate sending data to quinley.martini@aries76.com
-      console.log("Registration data would be sent to quinley.martini@aries76.com:", data);
       
       toast({
         title: "Registration successful!",
@@ -54,6 +84,7 @@ const NetworkRegistration = ({ onRegister }: NetworkRegistrationProps) => {
       
       onRegister(data);
     } catch (error) {
+      console.error("Registration error:", error);
       toast({
         title: "Registration failed",
         description: "Please try again later.",
