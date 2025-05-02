@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
@@ -115,7 +114,7 @@ const NetworkDirectory = () => {
   return (
     <>
       <Navbar />
-      <div className="pt-24 pb-20">
+      <div className="pt-36 pb-20">
         <div className="container mx-auto px-6">
           <div className="text-center mb-12" ref={sectionRef}>
             <motion.span 
