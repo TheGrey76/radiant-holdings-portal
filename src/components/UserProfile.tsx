@@ -13,7 +13,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useToast } from "@/hooks/use-toast";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
-import { User, Building, Upload, Briefcase } from 'lucide-react';
+import { User, Building, Upload, Briefcase, LogOut } from 'lucide-react';
 
 // Define schemas for the different profile types
 const investorSchema = z.object({
@@ -50,7 +50,11 @@ interface NetworkUser {
   profileData?: any;
 }
 
-const UserProfile = () => {
+interface UserProfileProps {
+  handleLogout?: () => void;
+}
+
+const UserProfile: React.FC<UserProfileProps> = ({ handleLogout }) => {
   const [user, setUser] = useState<NetworkUser | null>(null);
   const [accountType, setAccountType] = useState<'investor' | 'startup'>('investor');
   const [isLoading, setIsLoading] = useState(false);
@@ -611,6 +615,16 @@ const UserProfile = () => {
             <Button variant="outline" onClick={() => navigate('/network')} className="border-indigo-200 text-indigo-700 hover:bg-indigo-100">
               Back to Network
             </Button>
+            {handleLogout && (
+              <Button 
+                variant="outline" 
+                onClick={handleLogout}
+                className="flex items-center gap-2 border-red-300 text-red-600 hover:bg-red-50"
+              >
+                <LogOut size={18} />
+                Log Out
+              </Button>
+            )}
           </CardFooter>
         </Card>
       </motion.div>
