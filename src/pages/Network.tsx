@@ -93,7 +93,6 @@ const startups = [
 interface NetworkUser {
   name: string;
   email: string;
-  type?: 'investor' | 'startup';
   profileComplete?: boolean;
   profileData?: any;
 }
@@ -207,7 +206,7 @@ const NetworkDirectory = () => {
                       className="p-0 h-auto text-xs text-gray-500"
                       onClick={handleUserProfileClick}
                     >
-                      Visualizza profilo
+                      View profile
                     </Button>
                   </div>
                 </div>
@@ -406,19 +405,16 @@ const NetworkDirectory = () => {
                   animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                   transition={{ duration: 0.5, delay: 0.4 }}
                 >
-                  Submit your profile to be featured in our directory and connect with potential investors or exciting startups.
+                  Submit your profile to be featured in our directory and connect with potential startups.
                 </motion.p>
                 <motion.div
-                  className="flex flex-col sm:flex-row gap-4 justify-center"
+                  className="flex justify-center"
                   initial={{ opacity: 0, y: 20 }}
                   animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                   transition={{ duration: 0.5, delay: 0.5 }}
                 >
                   <Button size="lg" className="px-8">
                     Register as Investor
-                  </Button>
-                  <Button size="lg" variant="outline" className="px-8">
-                    Submit Your Startup
                   </Button>
                 </motion.div>
               </div>
