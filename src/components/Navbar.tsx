@@ -1,12 +1,14 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { User, Menu, X } from 'lucide-react';
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
   
   useEffect(() => {
     const handleScroll = () => {
@@ -26,6 +28,47 @@ const Navbar = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
 
+  // Handle navigation for anchor links and regular routes
+  const handleNavigation = (path: string) => {
+    setMobileMenuOpen(false);
+    
+    if (path.includes('#')) {
+      const [route, anchor] = path.split('#');
+      
+      // If we're already on the correct route, just scroll to the anchor
+      if (location.pathname === '/' + (route || '')) {
+        const element = document.getElementById(anchor);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      } else {
+        // Navigate to the route first, then scroll to anchor after page loads
+        navigate(route ? `/${route}` : '/');
+        setTimeout(() => {
+          const element = document.getElementById(anchor);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }, 100);
+      }
+    } else {
+      // For non-anchor links, just navigate
+      navigate(path);
+    }
+  };
+
+  const handleGetInTouch = () => {
+    if (location.pathname === '/') {
+      const element = document.getElementById('contact');
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    } else {
+      navigate('/#contact');
+    }
+    setMobileMenuOpen(false);
+  };
+
   return (
     <motion.header
       className={`fixed top-0 left-0 right-0 z-50 px-6 md:px-10 transition-all duration-300 ${
@@ -41,7 +84,7 @@ const Navbar = () => {
           whileHover={{ scale: 1.02 }}
           transition={{ type: 'spring', stiffness: 400, damping: 10 }}
         >
-          <Link to="/">
+          <Link to="/" onClick={() => handleNavigation('/')}>
             <img 
               src="/lovable-uploads/3fb70498-7bc0-4d2c-aa59-d7605f5f5319.png" 
               alt="Aries76 Logo" 
@@ -51,19 +94,20 @@ const Navbar = () => {
         </motion.div>
         
         <nav className={`hidden md:flex items-center space-x-8`}>
-          <Link to="/#portfolio" className="nav-link">Portfolio</Link>
-          <Link to="/#about" className="nav-link">About</Link>
-          <Link to="/#contact" className="nav-link">Contact</Link>
-          <Link to="/network" className="nav-link">Network</Link>
-          <Link to="/profile" className="nav-link flex items-center gap-2">
+          <button onClick={() => handleNavigation('/#portfolio')} className="nav-link">Portfolio</button>
+          <button onClick={() => handleNavigation('/#about')} className="nav-link">About</button>
+          <button onClick={() => handleNavigation('/#contact')} className="nav-link">Contact</button>
+          <button onClick={() => handleNavigation('/network')} className="nav-link">Network</button>
+          <button onClick={() => handleNavigation('/profile')} className="nav-link flex items-center gap-2">
             <User size={18} />
             <span>Profile</span>
-          </Link>
+          </button>
           
           <motion.button 
             className="px-5 py-2 bg-aries-navy text-white rounded-md font-medium transition-all hover:bg-aries-blue"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.98 }}
+            onClick={handleGetInTouch}
           >
             Get in Touch
           </motion.button>
@@ -92,43 +136,39 @@ const Navbar = () => {
           exit={{ opacity: 0, height: 0 }}
         >
           <div className="flex flex-col space-y-4 px-6">
-            <Link 
-              to="/#portfolio" 
-              className="py-2 text-aries-navy hover:text-aries-blue"
-              onClick={() => setMobileMenuOpen(false)}
+            <button 
+              onClick={() => handleNavigation('/#portfolio')} 
+              className="py-2 text-aries-navy hover:text-aries-blue text-left"
             >
               Portfolio
-            </Link>
-            <Link 
-              to="/#about" 
-              className="py-2 text-aries-navy hover:text-aries-blue"
-              onClick={() => setMobileMenuOpen(false)}
+            </button>
+            <button 
+              onClick={() => handleNavigation('/#about')}
+              className="py-2 text-aries-navy hover:text-aries-blue text-left"
             >
               About
-            </Link>
-            <Link 
-              to="/#contact" 
-              className="py-2 text-aries-navy hover:text-aries-blue"
-              onClick={() => setMobileMenuOpen(false)}
+            </button>
+            <button 
+              onClick={() => handleNavigation('/#contact')}
+              className="py-2 text-aries-navy hover:text-aries-blue text-left"
             >
               Contact
-            </Link>
-            <Link 
-              to="/network" 
-              className="py-2 text-aries-navy hover:text-aries-blue"
-              onClick={() => setMobileMenuOpen(false)}
+            </button>
+            <button 
+              onClick={() => handleNavigation('/network')}
+              className="py-2 text-aries-navy hover:text-aries-blue text-left"
             >
               Network
-            </Link>
-            <Link 
-              to="/profile" 
-              className="py-2 flex items-center gap-2 text-aries-navy hover:text-aries-blue"
-              onClick={() => setMobileMenuOpen(false)}
+            </button>
+            <button 
+              onClick={() => handleNavigation('/profile')}
+              className="py-2 flex items-center gap-2 text-aries-navy hover:text-aries-blue text-left"
             >
               <User size={18} />
               <span>Profile</span>
-            </Link>
+            </button>
             <button 
+              onClick={handleGetInTouch}
               className="mt-2 py-2 w-full bg-aries-navy text-white rounded-md font-medium"
             >
               Get in Touch
