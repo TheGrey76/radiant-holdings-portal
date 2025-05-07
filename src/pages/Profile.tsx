@@ -22,7 +22,17 @@ const Profile = () => {
       <Navbar />
       <main className="flex-grow pt-28 md:pt-32">
         <div className="container mx-auto px-4">
-          <UserProfile handleLogout={handleLogout} />
+          <div className="flex justify-end mb-6">
+            <Button 
+              variant="outline" 
+              onClick={handleLogout}
+              className="flex items-center gap-2 border-red-300 text-red-600 hover:bg-red-50"
+            >
+              <LogOut size={18} />
+              Log Out
+            </Button>
+          </div>
+          <UserProfile />
         </div>
       </main>
       <Footer />
