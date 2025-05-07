@@ -1,3 +1,4 @@
+
 import { motion } from 'framer-motion';
 
 const Hero = () => {
@@ -40,7 +41,7 @@ const Hero = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <span className="text-transparent bg-clip-text bg-gradient-blue-orange">
-              AI Amplified
+              Strategic Capital Advisory meets AI-driven Execution
             </span>
           </motion.h1>
           
@@ -50,7 +51,7 @@ const Hero = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            A future-forward holding company investing in and developing cutting-edge artificial intelligence technologies that transform industries and enhance human potential.
+            Aries76 helps GPs, founders and advisors scale fundraising globally through bespoke solutions and intelligent automation.
           </motion.p>
           
           <motion.div 
@@ -60,20 +61,12 @@ const Hero = () => {
             transition={{ duration: 0.6, delay: 0.6 }}
           >
             <motion.a 
-              href="#portfolio" 
+              href="mailto:quinley.martini@aries76.com" 
               className="px-8 py-3 bg-aries-navy text-white rounded-md font-medium text-lg transition-all hover:bg-aries-blue"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.98 }}
             >
-              Our Portfolio
-            </motion.a>
-            <motion.a 
-              href="#contact" 
-              className="px-8 py-3 bg-transparent border border-aries-navy text-aries-navy rounded-md font-medium text-lg transition-all hover:bg-aries-navy/5"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              Connect With Us
+              Contact Quinley Martini
             </motion.a>
           </motion.div>
         </div>

@@ -2,8 +2,9 @@
 import { useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
-import Portfolio from '@/components/Portfolio';
 import About from '@/components/About';
+import Services from '@/components/Services';
+import ClientTypes from '@/components/ClientTypes';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -46,8 +47,9 @@ const Index = () => {
       >
         <Navbar />
         <Hero />
-        <Portfolio />
         <About />
+        <Services />
+        <ClientTypes />
         <Contact />
         <Footer />
       </motion.div>

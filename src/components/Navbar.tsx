@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -27,7 +28,7 @@ const Navbar = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
 
-  // Simplified navigation function that uses direct DOM manipulation
+  // Improved navigation function with smooth scrolling
   const handleNavigation = (path: string) => {
     // Always close mobile menu when navigating
     setMobileMenuOpen(false);
@@ -74,38 +75,9 @@ const Navbar = () => {
     }
   };
 
-  // Dedicated function for the "Get in Touch" button
-  const handleGetInTouch = () => {
-    // Always close mobile menu
-    setMobileMenuOpen(false);
-    
-    console.log("Get in Touch clicked, current path:", location.pathname);
-    
-    // If we're already on the home page, just scroll to the contact section
-    if (location.pathname === '/') {
-      console.log("Already on home page, scrolling to contact section");
-      const contactSection = document.getElementById('contact');
-      if (contactSection) {
-        contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      } else {
-        console.error("Contact section element not found");
-      }
-    } else {
-      // Otherwise navigate to home page first, then scroll to contact
-      console.log("Not on home page, navigating there first");
-      navigate('/');
-      
-      // Wait for navigation to complete before scrolling
-      setTimeout(() => {
-        console.log("Navigation complete, attempting to scroll to contact section");
-        const contactSection = document.getElementById('contact');
-        if (contactSection) {
-          contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        } else {
-          console.error("Contact section element not found after navigation");
-        }
-      }, 800); // Longer timeout to ensure the page has fully loaded
-    }
+  // Direct email function for contact button
+  const handleContact = () => {
+    window.location.href = "mailto:quinley.martini@aries76.com";
   };
 
   return (
@@ -138,10 +110,10 @@ const Navbar = () => {
         
         <nav className={`hidden md:flex items-center space-x-8`}>
           <button 
-            onClick={() => handleNavigation('/#portfolio')} 
+            onClick={() => handleNavigation('/#services')} 
             className="nav-link font-medium text-aries-navy hover:text-aries-blue transition-colors"
           >
-            Portfolio
+            Services
           </button>
           <button 
             onClick={() => handleNavigation('/#about')} 
@@ -150,32 +122,25 @@ const Navbar = () => {
             About
           </button>
           <button 
+            onClick={() => handleNavigation('/#clients')} 
+            className="nav-link font-medium text-aries-navy hover:text-aries-blue transition-colors"
+          >
+            Clients
+          </button>
+          <button 
             onClick={() => handleNavigation('/#contact')} 
             className="nav-link font-medium text-aries-navy hover:text-aries-blue transition-colors"
           >
             Contact
-          </button>
-          <button 
-            onClick={() => handleNavigation('/network')} 
-            className="nav-link font-medium text-aries-navy hover:text-aries-blue transition-colors"
-          >
-            Network
-          </button>
-          <button 
-            onClick={() => handleNavigation('/profile')} 
-            className="nav-link font-medium text-aries-navy hover:text-aries-blue transition-colors flex items-center gap-2"
-          >
-            <User size={18} />
-            <span>Profile</span>
           </button>
           
           <motion.button 
             className="px-5 py-2 bg-aries-navy text-white rounded-md font-medium transition-all hover:bg-aries-blue"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.98 }}
-            onClick={handleGetInTouch}
+            onClick={handleContact}
           >
-            Get in Touch
+            Contact Quinley Martini
           </motion.button>
         </nav>
         
@@ -203,10 +168,10 @@ const Navbar = () => {
         >
           <div className="flex flex-col space-y-4 px-6">
             <button 
-              onClick={() => handleNavigation('/#portfolio')} 
+              onClick={() => handleNavigation('/#services')} 
               className="py-2 text-aries-navy hover:text-aries-blue text-left"
             >
-              Portfolio
+              Services
             </button>
             <button 
               onClick={() => handleNavigation('/#about')}
@@ -215,29 +180,22 @@ const Navbar = () => {
               About
             </button>
             <button 
+              onClick={() => handleNavigation('/#clients')}
+              className="py-2 text-aries-navy hover:text-aries-blue text-left"
+            >
+              Clients
+            </button>
+            <button 
               onClick={() => handleNavigation('/#contact')}
               className="py-2 text-aries-navy hover:text-aries-blue text-left"
             >
               Contact
             </button>
             <button 
-              onClick={() => handleNavigation('/network')}
-              className="py-2 text-aries-navy hover:text-aries-blue text-left"
-            >
-              Network
-            </button>
-            <button 
-              onClick={() => handleNavigation('/profile')}
-              className="py-2 flex items-center gap-2 text-aries-navy hover:text-aries-blue text-left"
-            >
-              <User size={18} />
-              <span>Profile</span>
-            </button>
-            <button 
-              onClick={handleGetInTouch}
+              onClick={handleContact}
               className="mt-2 py-2 w-full bg-aries-navy text-white rounded-md font-medium"
             >
-              Get in Touch
+              Contact Quinley Martini
             </button>
           </div>
         </motion.div>
