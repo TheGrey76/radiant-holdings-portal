@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { User } from 'lucide-react';
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -45,32 +44,16 @@ const Navbar = () => {
           </Link>
         </motion.div>
         
-        <nav className="hidden md:flex items-center space-x-8">
-          <Link to="/#portfolio" className="nav-link">Portfolio</Link>
-          <Link to="/#about" className="nav-link">About</Link>
-          <Link to="/#contact" className="nav-link">Contact</Link>
-          <Link to="/network" className="nav-link">Network</Link>
-          <Link to="/profile" className="nav-link flex items-center gap-2">
-            <User size={18} />
-            <span>Profile</span>
-          </Link>
-          
-          <motion.button 
+        <div className="flex items-center">
+          <motion.a 
+            href="#contact"
             className="px-5 py-2 bg-aries-navy text-white rounded-md font-medium transition-all hover:bg-aries-blue"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.98 }}
           >
             Get in Touch
-          </motion.button>
-        </nav>
-        
-        <button className="block md:hidden text-aries-navy">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="3" y1="12" x2="21" y2="12"></line>
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <line x1="3" y1="18" x2="21" y2="18"></line>
-          </svg>
-        </button>
+          </motion.a>
+        </div>
       </div>
     </motion.header>
   );
