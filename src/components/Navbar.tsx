@@ -42,14 +42,16 @@ const Navbar = () => {
           element.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
       } else {
-        // Navigate to the route first, then scroll to anchor after page loads
+        // Navigate to the route first
         navigate(route ? `/${route}` : '/');
+        
+        // Set timeout to allow the page to load before scrolling
         setTimeout(() => {
           const element = document.getElementById(anchor);
           if (element) {
             element.scrollIntoView({ behavior: 'smooth', block: 'start' });
           }
-        }, 100);
+        }, 300); // Increased timeout to ensure page loads
       }
     } else {
       // For non-anchor links, just navigate
@@ -64,7 +66,14 @@ const Navbar = () => {
         element.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     } else {
-      navigate('/#contact');
+      // Fix: Use the correct format for navigation
+      navigate('/');
+      setTimeout(() => {
+        const element = document.getElementById('contact');
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 300);
     }
     setMobileMenuOpen(false);
   };
@@ -84,13 +93,13 @@ const Navbar = () => {
           whileHover={{ scale: 1.02 }}
           transition={{ type: 'spring', stiffness: 400, damping: 10 }}
         >
-          <Link to="/" onClick={() => handleNavigation('/')}>
+          <button onClick={() => handleNavigation('/')} className="focus:outline-none">
             <img 
               src="/lovable-uploads/3fb70498-7bc0-4d2c-aa59-d7605f5f5319.png" 
               alt="Aries76 Logo" 
               className="h-48 md:h-52" 
             />
-          </Link>
+          </button>
         </motion.div>
         
         <nav className={`hidden md:flex items-center space-x-8`}>
