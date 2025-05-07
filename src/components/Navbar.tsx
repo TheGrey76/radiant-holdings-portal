@@ -2,10 +2,11 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { User } from 'lucide-react';
+import { User, Menu, X } from 'lucide-react';
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   useEffect(() => {
     const handleScroll = () => {
@@ -20,6 +21,10 @@ const Navbar = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, [scrolled]);
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
 
   return (
     <motion.header
@@ -45,7 +50,7 @@ const Navbar = () => {
           </Link>
         </motion.div>
         
-        <nav className="hidden md:flex items-center space-x-8">
+        <nav className={`hidden md:flex items-center space-x-8`}>
           <Link to="/#portfolio" className="nav-link">Portfolio</Link>
           <Link to="/#about" className="nav-link">About</Link>
           <Link to="/#contact" className="nav-link">Contact</Link>
@@ -64,14 +69,73 @@ const Navbar = () => {
           </motion.button>
         </nav>
         
-        <button className="block md:hidden text-aries-navy">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="3" y1="12" x2="21" y2="12"></line>
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <line x1="3" y1="18" x2="21" y2="18"></line>
-          </svg>
+        {/* Mobile menu button */}
+        <button 
+          className="block md:hidden text-aries-navy"
+          onClick={toggleMobileMenu}
+          aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+        >
+          {mobileMenuOpen ? (
+            <X size={24} />
+          ) : (
+            <Menu size={24} />
+          )}
         </button>
       </div>
+
+      {/* Mobile menu dropdown */}
+      {mobileMenuOpen && (
+        <motion.div
+          className="md:hidden bg-white absolute top-full left-0 right-0 shadow-lg py-4"
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: "auto" }}
+          exit={{ opacity: 0, height: 0 }}
+        >
+          <div className="flex flex-col space-y-4 px-6">
+            <Link 
+              to="/#portfolio" 
+              className="py-2 text-aries-navy hover:text-aries-blue"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Portfolio
+            </Link>
+            <Link 
+              to="/#about" 
+              className="py-2 text-aries-navy hover:text-aries-blue"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              About
+            </Link>
+            <Link 
+              to="/#contact" 
+              className="py-2 text-aries-navy hover:text-aries-blue"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Contact
+            </Link>
+            <Link 
+              to="/network" 
+              className="py-2 text-aries-navy hover:text-aries-blue"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Network
+            </Link>
+            <Link 
+              to="/profile" 
+              className="py-2 flex items-center gap-2 text-aries-navy hover:text-aries-blue"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <User size={18} />
+              <span>Profile</span>
+            </Link>
+            <button 
+              className="mt-2 py-2 w-full bg-aries-navy text-white rounded-md font-medium"
+            >
+              Get in Touch
+            </button>
+          </div>
+        </motion.div>
+      )}
     </motion.header>
   );
 };
