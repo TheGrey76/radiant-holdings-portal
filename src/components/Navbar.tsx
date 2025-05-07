@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -28,75 +27,84 @@ const Navbar = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
 
-  // Enhanced navigation function
+  // Simplified navigation function that uses direct DOM manipulation
   const handleNavigation = (path: string) => {
-    setMobileMenuOpen(false); // Always close mobile menu
+    // Always close mobile menu when navigating
+    setMobileMenuOpen(false);
     
     console.log("Navigation requested to:", path);
     
     if (path.includes('#')) {
+      // Extract the route and anchor parts
       const [route, anchor] = path.split('#');
       
-      // If we're already on the correct route, just scroll to the anchor
-      if (location.pathname === '/' + (route || '')) {
-        console.log("Already on correct route, scrolling to:", anchor);
-        const element = document.getElementById(anchor);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        } else {
-          console.log("Element not found:", anchor);
-        }
-      } else {
-        // Navigate to the route first
-        console.log("Navigating to route:", route ? `/${route}` : '/');
-        navigate(route ? `/${route}` : '/');
+      // Determine if we need to navigate to a new page first
+      const targetRoute = route ? `/${route}` : '/';
+      const needsRouteChange = location.pathname !== targetRoute;
+      
+      // If we need to change route, do that first
+      if (needsRouteChange) {
+        console.log(`Changing route from ${location.pathname} to ${targetRoute}`);
+        navigate(targetRoute);
         
-        // Set timeout to allow the page to load before scrolling
+        // After navigation, scroll to the anchor
         setTimeout(() => {
-          console.log("Attempting to scroll to element after page load:", anchor);
-          const element = document.getElementById(anchor);
-          if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          console.log(`Trying to scroll to #${anchor} after navigation`);
+          const targetElement = document.getElementById(anchor);
+          if (targetElement) {
+            targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
           } else {
-            console.log("Element not found after navigation:", anchor);
+            console.error(`Element with id '${anchor}' not found after navigation`);
           }
-        }, 500); // Increased timeout to ensure page loads
+        }, 800); // Longer timeout to ensure the page has fully loaded
+      } else {
+        // We're already on the correct route, just scroll to the anchor
+        console.log(`Already on correct route, scrolling to #${anchor}`);
+        const targetElement = document.getElementById(anchor);
+        if (targetElement) {
+          targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else {
+          console.error(`Element with id '${anchor}' not found`);
+        }
       }
     } else {
-      // For non-anchor links, just navigate
-      console.log("Regular navigation to:", path);
+      // For regular routes without anchors
+      console.log(`Navigating to route: ${path}`);
       navigate(path);
     }
   };
 
+  // Dedicated function for the "Get in Touch" button
   const handleGetInTouch = () => {
-    setMobileMenuOpen(false); // Always close mobile menu
+    // Always close mobile menu
+    setMobileMenuOpen(false);
     
-    console.log("Get in Touch requested, current path:", location.pathname);
+    console.log("Get in Touch clicked, current path:", location.pathname);
     
+    // If we're already on the home page, just scroll to the contact section
     if (location.pathname === '/') {
       console.log("Already on home page, scrolling to contact section");
-      const element = document.getElementById('contact');
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const contactSection = document.getElementById('contact');
+      if (contactSection) {
+        contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } else {
-        console.log("Contact element not found");
+        console.error("Contact section element not found");
       }
     } else {
-      // Navigate to the home page and then to the contact section
-      console.log("Navigating to home page first");
+      // Otherwise navigate to home page first, then scroll to contact
+      console.log("Not on home page, navigating there first");
       navigate('/');
       
-      // Set timeout to allow the page to load before scrolling
+      // Wait for navigation to complete before scrolling
       setTimeout(() => {
-        console.log("Attempting to scroll to contact after navigation");
-        const element = document.getElementById('contact');
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        console.log("Navigation complete, attempting to scroll to contact section");
+        const contactSection = document.getElementById('contact');
+        if (contactSection) {
+          contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
         } else {
-          console.log("Contact element not found after navigation");
+          console.error("Contact section element not found after navigation");
         }
-      }, 500); // Increased timeout to ensure page fully loads
+      }, 800); // Longer timeout to ensure the page has fully loaded
     }
   };
 
@@ -129,11 +137,34 @@ const Navbar = () => {
         </motion.div>
         
         <nav className={`hidden md:flex items-center space-x-8`}>
-          <button onClick={() => handleNavigation('/#portfolio')} className="nav-link">Portfolio</button>
-          <button onClick={() => handleNavigation('/#about')} className="nav-link">About</button>
-          <button onClick={() => handleNavigation('/#contact')} className="nav-link">Contact</button>
-          <button onClick={() => handleNavigation('/network')} className="nav-link">Network</button>
-          <button onClick={() => handleNavigation('/profile')} className="nav-link flex items-center gap-2">
+          <button 
+            onClick={() => handleNavigation('/#portfolio')} 
+            className="nav-link font-medium text-aries-navy hover:text-aries-blue transition-colors"
+          >
+            Portfolio
+          </button>
+          <button 
+            onClick={() => handleNavigation('/#about')} 
+            className="nav-link font-medium text-aries-navy hover:text-aries-blue transition-colors"
+          >
+            About
+          </button>
+          <button 
+            onClick={() => handleNavigation('/#contact')} 
+            className="nav-link font-medium text-aries-navy hover:text-aries-blue transition-colors"
+          >
+            Contact
+          </button>
+          <button 
+            onClick={() => handleNavigation('/network')} 
+            className="nav-link font-medium text-aries-navy hover:text-aries-blue transition-colors"
+          >
+            Network
+          </button>
+          <button 
+            onClick={() => handleNavigation('/profile')} 
+            className="nav-link font-medium text-aries-navy hover:text-aries-blue transition-colors flex items-center gap-2"
+          >
             <User size={18} />
             <span>Profile</span>
           </button>
