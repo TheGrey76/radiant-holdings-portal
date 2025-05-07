@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { User, Menu, X } from 'lucide-react';
 
 const Navbar = () => {
@@ -28,54 +28,76 @@ const Navbar = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
 
-  // Handle navigation for anchor links and regular routes
+  // Enhanced navigation function
   const handleNavigation = (path: string) => {
-    setMobileMenuOpen(false);
+    setMobileMenuOpen(false); // Always close mobile menu
+    
+    console.log("Navigation requested to:", path);
     
     if (path.includes('#')) {
       const [route, anchor] = path.split('#');
       
       // If we're already on the correct route, just scroll to the anchor
       if (location.pathname === '/' + (route || '')) {
+        console.log("Already on correct route, scrolling to:", anchor);
         const element = document.getElementById(anchor);
         if (element) {
           element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else {
+          console.log("Element not found:", anchor);
         }
       } else {
         // Navigate to the route first
+        console.log("Navigating to route:", route ? `/${route}` : '/');
         navigate(route ? `/${route}` : '/');
         
         // Set timeout to allow the page to load before scrolling
         setTimeout(() => {
+          console.log("Attempting to scroll to element after page load:", anchor);
           const element = document.getElementById(anchor);
           if (element) {
             element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          } else {
+            console.log("Element not found after navigation:", anchor);
           }
-        }, 300); // Increased timeout to ensure page loads
+        }, 500); // Increased timeout to ensure page loads
       }
     } else {
       // For non-anchor links, just navigate
+      console.log("Regular navigation to:", path);
       navigate(path);
     }
   };
 
   const handleGetInTouch = () => {
+    setMobileMenuOpen(false); // Always close mobile menu
+    
+    console.log("Get in Touch requested, current path:", location.pathname);
+    
     if (location.pathname === '/') {
+      console.log("Already on home page, scrolling to contact section");
       const element = document.getElementById('contact');
       if (element) {
         element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        console.log("Contact element not found");
       }
     } else {
-      // Fix: Use the correct format for navigation
+      // Navigate to the home page and then to the contact section
+      console.log("Navigating to home page first");
       navigate('/');
+      
+      // Set timeout to allow the page to load before scrolling
       setTimeout(() => {
+        console.log("Attempting to scroll to contact after navigation");
         const element = document.getElementById('contact');
         if (element) {
           element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else {
+          console.log("Contact element not found after navigation");
         }
-      }, 300);
+      }, 500); // Increased timeout to ensure page fully loads
     }
-    setMobileMenuOpen(false);
   };
 
   return (
@@ -93,7 +115,11 @@ const Navbar = () => {
           whileHover={{ scale: 1.02 }}
           transition={{ type: 'spring', stiffness: 400, damping: 10 }}
         >
-          <button onClick={() => handleNavigation('/')} className="focus:outline-none">
+          <button 
+            onClick={() => handleNavigation('/')} 
+            className="focus:outline-none"
+            aria-label="Go to homepage"
+          >
             <img 
               src="/lovable-uploads/3fb70498-7bc0-4d2c-aa59-d7605f5f5319.png" 
               alt="Aries76 Logo" 
