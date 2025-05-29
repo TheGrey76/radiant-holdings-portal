@@ -112,8 +112,8 @@ The acceleration comes as traditional banking faces mounting pressure from both 
                           return `<tr>${cells.map(cell => `<td class="border px-3 py-2">${cell}</td>`).join('')}</tr>`;
                         })
                         .replace(/(<tr>.*<\/tr>)/s, '<table class="w-full border-collapse border border-gray-300 mt-4 mb-4">$1</table>')
-                    }} 
-                  />
+                    }} />
+                  </div>
                 </div>
               </CardContent>
             </Card>
