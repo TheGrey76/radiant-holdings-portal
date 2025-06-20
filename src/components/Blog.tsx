@@ -1,11 +1,12 @@
 
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Calendar, ArrowRight } from 'lucide-react';
+import type { BlogPost } from '@/pages/BlogAdmin';
 
-const BlogPost = ({ title, excerpt, date, readTime, delay, slug }: { 
+const BlogPostCard = ({ title, excerpt, date, readTime, delay, slug }: { 
   title: string; 
   excerpt: string; 
   date: string; 
@@ -54,30 +55,52 @@ const BlogPost = ({ title, excerpt, date, readTime, delay, slug }: {
 const Blog = () => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px 0px" });
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   
-  const blogPosts = [
+  // Default sample posts
+  const defaultPosts = [
     {
+      id: '1',
       title: "The Future of AI in Financial Services",
       excerpt: "Exploring how artificial intelligence is revolutionizing the financial sector, from automated trading to personalized banking experiences and risk assessment.",
       date: "Dec 15, 2024",
       readTime: "5 min",
-      slug: "future-ai-financial-services"
+      slug: "future-ai-financial-services",
+      content: "",
+      author: "Aries76 Research Team"
     },
     {
+      id: '2',
       title: "Bitcoin's Role in Modern Portfolio Diversification",
       excerpt: "An analysis of cryptocurrency's evolution from speculative asset to legitimate store of value and its implications for institutional investors.",
       date: "Dec 10, 2024",
       readTime: "7 min",
-      slug: "bitcoin-portfolio-diversification"
+      slug: "bitcoin-portfolio-diversification",
+      content: "",
+      author: "Aries76 Research Team"
     },
     {
+      id: '3',
       title: "Pre-IPO Investment Strategies in Tech",
       excerpt: "Understanding the opportunities and risks in pre-public company investments, with insights from our experience with Kraken and Upgrade Inc.",
       date: "Dec 5, 2024",
       readTime: "6 min",
-      slug: "pre-ipo-investment-strategies"
+      slug: "pre-ipo-investment-strategies",
+      content: "",
+      author: "Aries76 Research Team"
     }
   ];
+
+  useEffect(() => {
+    // Load posts from localStorage, fallback to default posts
+    const savedPosts = localStorage.getItem('blogPosts');
+    if (savedPosts) {
+      const parsedPosts = JSON.parse(savedPosts);
+      setBlogPosts(parsedPosts.length > 0 ? parsedPosts : defaultPosts);
+    } else {
+      setBlogPosts(defaultPosts);
+    }
+  }, []);
   
   return (
     <section id="blog" className="py-20 md:py-32 bg-white">
@@ -110,9 +133,9 @@ const Blog = () => {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {blogPosts.map((post, index) => (
-            <BlogPost 
-              key={index}
+          {blogPosts.slice(0, 3).map((post, index) => (
+            <BlogPostCard 
+              key={post.id}
               title={post.title}
               excerpt={post.excerpt}
               date={post.date}

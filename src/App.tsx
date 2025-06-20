@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Network from "./pages/Network";
 import Profile from "./pages/Profile";
 import BlogPost from "./pages/BlogPost";
+import BlogAdmin from "./pages/BlogAdmin";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
