@@ -2,14 +2,16 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { Calendar, ArrowRight } from 'lucide-react';
 
-const BlogPost = ({ title, excerpt, date, readTime, delay }: { 
+const BlogPost = ({ title, excerpt, date, readTime, delay, slug }: { 
   title: string; 
   excerpt: string; 
   date: string; 
   readTime: string; 
-  delay: number 
+  delay: number;
+  slug: string;
 }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px 0px" });
@@ -38,10 +40,13 @@ const BlogPost = ({ title, excerpt, date, readTime, delay }: {
         {excerpt}
       </p>
       
-      <div className="flex items-center text-aries-navy font-medium group-hover:text-aries-blue transition-colors">
+      <Link 
+        to={`/blog/${slug}`}
+        className="flex items-center text-aries-navy font-medium group-hover:text-aries-blue transition-colors"
+      >
         <span>Read more</span>
         <ArrowRight className="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" />
-      </div>
+      </Link>
     </motion.article>
   );
 };
@@ -55,19 +60,22 @@ const Blog = () => {
       title: "The Future of AI in Financial Services",
       excerpt: "Exploring how artificial intelligence is revolutionizing the financial sector, from automated trading to personalized banking experiences and risk assessment.",
       date: "Dec 15, 2024",
-      readTime: "5 min"
+      readTime: "5 min",
+      slug: "future-ai-financial-services"
     },
     {
       title: "Bitcoin's Role in Modern Portfolio Diversification",
       excerpt: "An analysis of cryptocurrency's evolution from speculative asset to legitimate store of value and its implications for institutional investors.",
       date: "Dec 10, 2024",
-      readTime: "7 min"
+      readTime: "7 min",
+      slug: "bitcoin-portfolio-diversification"
     },
     {
       title: "Pre-IPO Investment Strategies in Tech",
       excerpt: "Understanding the opportunities and risks in pre-public company investments, with insights from our experience with Kraken and Upgrade Inc.",
       date: "Dec 5, 2024",
-      readTime: "6 min"
+      readTime: "6 min",
+      slug: "pre-ipo-investment-strategies"
     }
   ];
   
@@ -109,6 +117,7 @@ const Blog = () => {
               excerpt={post.excerpt}
               date={post.date}
               readTime={post.readTime}
+              slug={post.slug}
               delay={0.3 + (index * 0.1)}
             />
           ))}

@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Lexend:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
@@ -156,5 +157,22 @@
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
+  }
+
+  /* Blog post content styling */
+  .prose h2 {
+    @apply text-2xl font-display font-semibold text-aries-navy mt-8 mb-4;
+  }
+
+  .prose h3 {
+    @apply text-xl font-display font-semibold text-aries-navy mt-6 mb-3;
+  }
+
+  .prose p {
+    @apply mb-4 text-gray-700 leading-relaxed;
+  }
+
+  .prose p:first-child {
+    @apply text-xl text-gray-600 font-medium;
   }
 }
