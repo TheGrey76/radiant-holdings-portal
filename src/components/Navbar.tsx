@@ -7,9 +7,6 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   
-  // Check if we're on a blog post page
-  const isBlogPost = location.pathname.startsWith('/blog/');
-  
   useEffect(() => {
     const handleScroll = () => {
       const isScrolled = window.scrollY > 20;
@@ -34,21 +31,19 @@ const Navbar = () => {
       transition={{ duration: 0.5, ease: 'easeOut' }}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
-        {!isBlogPost && (
-          <motion.div 
-            className="flex items-center space-x-2"
-            whileHover={{ scale: 1.02 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-          >
-            <Link to="/">
-              <img 
-                src="/lovable-uploads/3fb70498-7bc0-4d2c-aa59-d7605f5f5319.png" 
-                alt="Aries76 Logo" 
-                className="h-48 md:h-52" 
-              />
-            </Link>
-          </motion.div>
-        )}
+        <motion.div 
+          className="flex items-center space-x-2"
+          whileHover={{ scale: 1.02 }}
+          transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+        >
+          <Link to="/">
+            <img 
+              src="/lovable-uploads/3fb70498-7bc0-4d2c-aa59-d7605f5f5319.png" 
+              alt="Aries76 Logo" 
+              className="h-48 md:h-52" 
+            />
+          </Link>
+        </motion.div>
         
         <div className="flex items-center">
           <motion.a 
