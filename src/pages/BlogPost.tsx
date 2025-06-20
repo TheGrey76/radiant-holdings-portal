@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
@@ -7,11 +6,23 @@ import { Link, useParams } from 'react-router-dom';
 import { Calendar, User, ArrowLeft, ArrowRight } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import type { BlogPost as BlogPostType } from '@/pages/BlogAdmin';
+
+// Local type definition for BlogPost
+type BlogPost = {
+  id: string;
+  title: string;
+  excerpt: string;
+  date: string;
+  author: string;
+  readTime: string;
+  slug: string;
+  featuredImage?: string;
+  content: string;
+};
 
 const BlogPost = () => {
   const { slug } = useParams();
-  const [post, setPost] = useState<BlogPostType | null>(null);
+  const [post, setPost] = useState<BlogPost | null>(null);
   const [loading, setLoading] = useState(true);
   const contentRef = useRef(null);
   const isContentInView = useInView(contentRef, { once: true, margin: "-100px 0px" });
@@ -23,7 +34,7 @@ const BlogPost = () => {
     // Load post from localStorage
     const savedPosts = localStorage.getItem('blogPosts');
     if (savedPosts) {
-      const posts: BlogPostType[] = JSON.parse(savedPosts);
+      const posts: BlogPost[] = JSON.parse(savedPosts);
       const foundPost = posts.find(p => p.slug === slug);
       if (foundPost) {
         setPost(foundPost);
