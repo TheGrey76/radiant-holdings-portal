@@ -137,6 +137,18 @@ export default {
 				'circuit-flow': {
 					'0%': { 'stroke-dashoffset': '1000' },
 					'100%': { 'stroke-dashoffset': '0' }
+				},
+				'london-float-1': {
+					'0%, 100%': { transform: 'translateX(-100px) translateY(0px)' },
+					'50%': { transform: 'translateX(100px) translateY(-50px)' }
+				},
+				'london-float-2': {
+					'0%, 100%': { transform: 'translateX(100px) translateY(-30px)' },
+					'50%': { transform: 'translateX(-80px) translateY(20px)' }
+				},
+				'london-float-3': {
+					'0%, 100%': { transform: 'translateX(50px) translateY(-20px)' },
+					'50%': { transform: 'translateX(-100px) translateY(-80px)' }
 				}
 			},
 			animation: {
@@ -151,7 +163,10 @@ export default {
 				'pulse-slow': 'pulse 3s infinite',
 				'float': 'float 3s ease-in-out infinite',
 				'draw-line': 'draw-line 1.5s ease-in-out forwards',
-				'circuit-flow': 'circuit-flow 3s linear infinite'
+				'circuit-flow': 'circuit-flow 3s linear infinite',
+				'london-float-1': 'london-float-1 20s ease-in-out infinite',
+				'london-float-2': 'london-float-2 25s ease-in-out infinite',
+				'london-float-3': 'london-float-3 30s ease-in-out infinite'
 			},
 			backgroundImage: {
 				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

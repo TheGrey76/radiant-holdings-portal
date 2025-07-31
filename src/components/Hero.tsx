@@ -1,10 +1,59 @@
 import { motion } from 'framer-motion';
+import londonSkyline from '@/assets/london-skyline-1.jpg';
+import londonBridge from '@/assets/london-bridge-2.jpg';
+import londonBigBen from '@/assets/london-big-ben-3.jpg';
 
 const Hero = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center pt-24 overflow-hidden">
-      {/* Background circuit pattern */}
-      <div className="absolute inset-0 z-0 opacity-5">
+      {/* London Background Images */}
+      <div className="absolute inset-0 z-0">
+        {/* Background overlay for better text readability */}
+        <div className="absolute inset-0 bg-white/60 z-10"></div>
+        
+        {/* Animated London images */}
+        <motion.div 
+          className="absolute -top-20 -left-20 w-80 h-60 rounded-2xl overflow-hidden opacity-30 animate-london-float-1"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 0.3, scale: 1 }}
+          transition={{ duration: 2, delay: 0.5 }}
+        >
+          <img 
+            src={londonSkyline} 
+            alt="London Skyline" 
+            className="w-full h-full object-cover"
+          />
+        </motion.div>
+        
+        <motion.div 
+          className="absolute top-40 -right-32 w-96 h-72 rounded-2xl overflow-hidden opacity-25 animate-london-float-2"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 0.25, scale: 1 }}
+          transition={{ duration: 2, delay: 1 }}
+        >
+          <img 
+            src={londonBridge} 
+            alt="London Bridge" 
+            className="w-full h-full object-cover"
+          />
+        </motion.div>
+        
+        <motion.div 
+          className="absolute bottom-20 -left-40 w-72 h-48 rounded-2xl overflow-hidden opacity-20 animate-london-float-3"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 0.2, scale: 1 }}
+          transition={{ duration: 2, delay: 1.5 }}
+        >
+          <img 
+            src={londonBigBen} 
+            alt="Big Ben London" 
+            className="w-full h-full object-cover"
+          />
+        </motion.div>
+      </div>
+
+      {/* Background circuit pattern (reduced opacity) */}
+      <div className="absolute inset-0 z-5 opacity-3">
         <svg width="100%" height="100%" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
           <g fill="none" stroke="#252b70" strokeWidth="2">
             <path className="circuit-line" d="M100,100 L300,100 L300,300 L500,300 L500,500 L700,500" />
@@ -31,7 +80,7 @@ const Hero = () => {
         </svg>
       </div>
 
-      <div className="container mx-auto px-6 relative z-10">
+      <div className="container mx-auto px-6 relative z-20">
         <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
           <motion.h1 
             className="text-4xl md:text-6xl lg:text-7xl font-display font-bold text-aries-navy mb-6 tracking-tight"
