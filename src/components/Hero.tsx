@@ -60,22 +60,6 @@ const Hero = () => {
             <path className="circuit-line" d="M200,200 L400,200 L400,400 L600,400 L600,600" />
             <path className="circuit-line" d="M100,300 L200,300 L200,500 L400,500 L400,700" />
             <path className="circuit-line" d="M300,100 L300,200 L500,200 L500,400 L700,400 L700,600" />
-            <circle cx="100" cy="100" r="5" fill="#252b70" />
-            <circle cx="300" cy="100" r="5" fill="#252b70" />
-            <circle cx="300" cy="300" r="5" fill="#252b70" />
-            <circle cx="500" cy="300" r="5" fill="#252b70" />
-            <circle cx="500" cy="500" r="5" fill="#252b70" />
-            <circle cx="700" cy="500" r="5" fill="#252b70" />
-            <circle cx="200" cy="200" r="5" fill="#252b70" />
-            <circle cx="400" cy="200" r="5" fill="#252b70" />
-            <circle cx="400" cy="400" r="5" fill="#252b70" />
-            <circle cx="600" cy="400" r="5" fill="#252b70" />
-            <circle cx="600" cy="600" r="5" fill="#252b70" />
-            <circle cx="100" cy="300" r="5" fill="#252b70" />
-            <circle cx="200" cy="300" r="5" fill="#252b70" />
-            <circle cx="200" cy="500" r="5" fill="#252b70" />
-            <circle cx="400" cy="500" r="5" fill="#252b70" />
-            <circle cx="400" cy="700" r="5" fill="#252b70" />
           </g>
         </svg>
       </div>
