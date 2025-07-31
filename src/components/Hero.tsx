@@ -9,14 +9,14 @@ const Hero = () => {
       {/* London Background Images */}
       <div className="absolute inset-0 z-0">
         {/* Background overlay for better text readability */}
-        <div className="absolute inset-0 bg-white/60 z-10"></div>
+        <div className="absolute inset-0 bg-white/80 z-10"></div>
         
         {/* Animated London images */}
         <motion.div 
-          className="absolute -top-20 -left-20 w-80 h-60 rounded-2xl overflow-hidden opacity-30 animate-london-float-1"
+          className="absolute -top-20 -left-20 w-60 h-40 rounded-2xl overflow-hidden opacity-10 animate-london-float-1"
           initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 0.3, scale: 1 }}
-          transition={{ duration: 2, delay: 0.5 }}
+          animate={{ opacity: 0.1, scale: 1 }}
+          transition={{ duration: 4, delay: 0.5 }}
         >
           <img 
             src={londonSkyline} 
@@ -26,10 +26,10 @@ const Hero = () => {
         </motion.div>
         
         <motion.div 
-          className="absolute top-40 -right-32 w-96 h-72 rounded-2xl overflow-hidden opacity-25 animate-london-float-2"
+          className="absolute top-40 -right-32 w-72 h-54 rounded-2xl overflow-hidden opacity-8 animate-london-float-2"
           initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 0.25, scale: 1 }}
-          transition={{ duration: 2, delay: 1 }}
+          animate={{ opacity: 0.08, scale: 1 }}
+          transition={{ duration: 4, delay: 1 }}
         >
           <img 
             src={londonBridge} 
@@ -39,10 +39,10 @@ const Hero = () => {
         </motion.div>
         
         <motion.div 
-          className="absolute bottom-20 -left-40 w-72 h-48 rounded-2xl overflow-hidden opacity-20 animate-london-float-3"
+          className="absolute bottom-20 -left-40 w-56 h-36 rounded-2xl overflow-hidden opacity-6 animate-london-float-3"
           initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 0.2, scale: 1 }}
-          transition={{ duration: 2, delay: 1.5 }}
+          animate={{ opacity: 0.06, scale: 1 }}
+          transition={{ duration: 4, delay: 1.5 }}
         >
           <img 
             src={londonBigBen} 
