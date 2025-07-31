@@ -122,7 +122,7 @@ const Hero = () => {
         <p className="text-sm text-gray-500 mb-2">Scroll to explore</p>
         <div className="w-5 h-10 border-2 border-gray-300 rounded-full flex justify-center">
           <motion.div 
-            className="w-1.5 h-1.5 bg-aries-orange rounded-full mt-2"
+            className="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2"
             animate={{ 
               y: [0, 15, 0],
             }}
