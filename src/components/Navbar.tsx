@@ -38,7 +38,7 @@ const Navbar = () => {
         >
           <Link to="/">
             <img 
-              src="/lovable-uploads/3fb70498-7bc0-4d2c-aa59-d7605f5f5319.png" 
+              src="/lovable-uploads/ba0e4dd6-4e22-4db9-9da2-6b3359300d31.png" 
               alt="Aries76 Logo" 
               className="h-48 md:h-52" 
             />
