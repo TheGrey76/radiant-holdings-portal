@@ -84,7 +84,7 @@ const Portfolio = () => {
             description={
               <>
                 Strategic investment in one of the world's largest cryptocurrency exchanges, offering secure digital asset trading solutions.{' '}
-                <span className="text-aries-orange font-semibold">Exited July 2025</span>
+                <span className="text-aries-orange font-semibold">Exit July 2025</span>
               </>
             }
             icon={Coins}
