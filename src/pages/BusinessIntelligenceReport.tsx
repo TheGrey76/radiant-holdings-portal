@@ -23,11 +23,16 @@ const BusinessIntelligenceReport = () => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    console.log('🚀 FORM SUBMITTED - SIMPLE VERSION');
-    console.log('Form data:', { companyName: formData.companyName, email: formData.email });
+    // TEST IMMEDIATO
+    alert(`🚀 FORM CHIAMATO! Nome: ${formData.companyName}, Email: ${formData.email}`);
+    console.log('🚀 FORM SUBMITTED');
+    console.log('Form data:', formData);
+    
+    // Se non funziona nemmeno questo alert, il problema è nel React form
     
     try {
-      // SOLUZIONE SEMPLICE: salviamo direttamente nel database Supabase
+      console.log('Saving to database...');
+      
       const { data, error } = await supabase
         .from('brochure_downloads')
         .insert({
@@ -37,26 +42,37 @@ const BusinessIntelligenceReport = () => {
           request_type: 'business_intelligence'
         });
 
-      console.log('Database insert result:', { data, error });
+      console.log('Database result:', { data, error });
 
       if (error) {
+        console.error('Database error:', error);
         throw error;
       }
 
-      console.log('✅ SUCCESS - Data saved to database!');
+      // INVIO EMAIL SEMPLICE
+      console.log('Sending email...');
+      const { data: emailData, error: emailError } = await supabase.functions.invoke('send-business-request', {
+        body: {
+          companyName: formData.companyName,
+          email: formData.email
+        }
+      });
+      
+      console.log('Email result:', { emailData, emailError });
       
       setIsModalOpen(false);
       setFormData({ companyName: '', email: '' });
+      
       toast({
-        title: "✅ Request Submitted Successfully",
-        description: "Your request has been saved! We'll contact you within 24 hours.",
+        title: "✅ SUCCESS!",
+        description: "Request saved and email sent to quinley.martini@aries76.com",
       });
       
     } catch (error) {
-      console.error('❌ ERROR saving to database:', error);
+      console.error('❌ ERROR:', error);
       toast({
         title: "❌ Error",
-        description: "There was an error submitting your request. Please try again.",
+        description: `Error: ${error}`,
         variant: "destructive"
       });
     } finally {
