@@ -59,7 +59,7 @@ const BusinessIntelligenceReport = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+    <div className="min-h-screen bg-white">
       {/* Navigation */}
       <div className="container mx-auto px-6 py-6">
         <Link to="/" className="inline-flex items-center text-aries-navy hover:text-aries-blue transition-colors">
@@ -79,7 +79,7 @@ const BusinessIntelligenceReport = () => {
             <img 
               src="/lovable-uploads/ba0e4dd6-4e22-4db9-9da2-6b3359300d31.png" 
               alt="Aries76 Logo" 
-              className="h-20 md:h-24" 
+              className="h-12" 
             />
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-aries-navy mb-6">
@@ -101,8 +101,8 @@ const BusinessIntelligenceReport = () => {
           >
             <Card className="h-fit">
               <CardContent className="p-8">
-                <div className="flex items-center mb-6">
-                  <Download className="w-5 h-5 text-aries-blue mr-3" />
+                  <div className="flex items-center mb-6">
+                  <Download className="w-5 h-5 text-aries-orange mr-3" />
                   <h2 className="text-2xl font-bold text-aries-navy">What You'll Get</h2>
                 </div>
                 <div className="space-y-4">
@@ -129,8 +129,8 @@ const BusinessIntelligenceReport = () => {
                       transition={{ duration: 0.6, delay: 0.1 * index }}
                       className="flex items-start"
                     >
-                      <div className="p-3 bg-aries-blue/10 rounded-lg mr-4 flex-shrink-0">
-                        <feature.icon className="w-6 h-6 text-aries-blue" />
+                      <div className="p-3 bg-aries-orange/10 rounded-lg mr-4 flex-shrink-0">
+                        <feature.icon className="w-6 h-6 text-aries-orange" />
                       </div>
                       <div>
                         <h3 className="font-semibold text-aries-navy mb-2">{feature.title}</h3>
@@ -155,12 +155,12 @@ const BusinessIntelligenceReport = () => {
                 <h3 className="text-xl font-bold text-aries-navy mb-4">Get Your Analysis</h3>
                 <p className="text-slate-600 mb-6">Consultation and analysis delivered within 5-7 business days</p>
                 
-                <div className="text-3xl font-bold text-aries-blue mb-2">Price on Request</div>
+                <div className="text-3xl font-bold text-aries-orange mb-2">Price on Request</div>
                 <div className="text-slate-500 mb-8">Custom quote based on requirements</div>
                 
-                <div className="bg-aries-blue/10 p-6 rounded-lg border border-aries-blue/20 mb-6">
+                <div className="bg-aries-orange/10 p-6 rounded-lg border border-aries-orange/20 mb-6">
                   <div className="flex items-center justify-center mb-4">
-                    <Mail className="w-6 h-6 text-aries-blue mr-3" />
+                    <Mail className="w-6 h-6 text-aries-orange mr-3" />
                     <h4 className="text-lg font-semibold text-aries-navy">Contact Directly</h4>
                   </div>
                   <p className="text-aries-navy font-medium text-lg mb-2">
