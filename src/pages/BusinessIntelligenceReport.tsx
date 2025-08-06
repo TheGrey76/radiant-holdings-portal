@@ -108,7 +108,13 @@ const BusinessIntelligenceReport = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <div className="text-sm text-aries-blue font-medium mb-4">ARIES76 Edition</div>
+          <div className="flex justify-center mb-6">
+            <img 
+              src="/lovable-uploads/ba0e4dd6-4e22-4db9-9da2-6b3359300d31.png" 
+              alt="Aries76 Logo" 
+              className="h-20 md:h-24" 
+            />
+          </div>
           <h1 className="text-4xl md:text-5xl font-bold text-aries-navy mb-6">
             Business Intelligence Analysis
           </h1>
