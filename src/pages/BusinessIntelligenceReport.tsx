@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 const BusinessIntelligenceReport = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -18,20 +19,38 @@ const BusinessIntelligenceReport = () => {
   });
   const { toast } = useToast();
 
-  const handleSubmitOrder = (e: React.FormEvent) => {
+  const handleSubmitOrder = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate order processing
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      const { error } = await supabase.functions.invoke('send-business-request', {
+        body: {
+          companyName: formData.companyName,
+          email: formData.email
+        }
+      });
+
+      if (error) {
+        throw error;
+      }
+
       setIsModalOpen(false);
       setFormData({ companyName: '', email: '' });
       toast({
-        title: "Request Submitted",
+        title: "Request Submitted Successfully",
         description: "We'll contact you within 24 hours with a custom quote and wire transfer instructions.",
       });
-    }, 2000);
+    } catch (error) {
+      console.error('Error submitting request:', error);
+      toast({
+        title: "Error",
+        description: "There was an error submitting your request. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleInputChange = (field: string, value: string) => {

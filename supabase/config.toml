@@ -1,1 +1,4 @@
 project_id = "dvwmyljnssspwfpwocof"
+
+[functions.send-business-request]
+verify_jwt = false
