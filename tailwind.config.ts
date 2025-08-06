@@ -64,9 +64,9 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				aries: {
-					navy: '#252b70',
-					blue: '#0052b3',
-					orange: '#ff6c1f',
+					navy: 'hsl(var(--aries-navy))',
+					blue: 'hsl(var(--aries-blue))',
+					orange: 'hsl(var(--aries-orange))',
 					light: '#f8f9fa',
 					dark: '#0a0e29',
 					gray: '#f1f3f5'

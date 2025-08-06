@@ -37,6 +37,11 @@
 
     --radius: 0.5rem;
 
+    /* Aries brand colors */
+    --aries-navy: 222 55% 35%;
+    --aries-blue: 210 100% 35%;
+    --aries-orange: 22 100% 56%;
+
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
