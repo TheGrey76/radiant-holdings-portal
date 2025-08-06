@@ -23,49 +23,40 @@ const BusinessIntelligenceReport = () => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    console.log('🚀 FORM SUBMITTED - START');
+    console.log('🚀 FORM SUBMITTED - SIMPLE VERSION');
     console.log('Form data:', { companyName: formData.companyName, email: formData.email });
     
-    // Test immediato
-    alert('Form submitted! Check console logs');
-    
     try {
-      console.log('🔄 Calling Edge Function...');
-      
-      const response = await fetch('https://dvwmyljnssspwfpwocof.supabase.co/functions/v1/send-business-request', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2d215bGpuc3NzcHdmcHdvY29mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzcxMjI2MTUsImV4cCI6MjA1MjY5ODYxNX0.bhJ41w6gV6BsIxcPlHiJhc0uWm1Z3lc3G6NX7PUgpL0`
-        },
-        body: JSON.stringify({
-          companyName: formData.companyName,
-          email: formData.email
-        })
-      });
-      
-      console.log('📡 Response status:', response.status);
-      const responseData = await response.text();
-      console.log('📡 Response data:', responseData);
+      // SOLUZIONE SEMPLICE: salviamo direttamente nel database Supabase
+      const { data, error } = await supabase
+        .from('brochure_downloads')
+        .insert({
+          full_name: formData.companyName,
+          email: formData.email,
+          company: formData.companyName,
+          request_type: 'business_intelligence'
+        });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}, body: ${responseData}`);
+      console.log('Database insert result:', { data, error });
+
+      if (error) {
+        throw error;
       }
 
+      console.log('✅ SUCCESS - Data saved to database!');
+      
       setIsModalOpen(false);
       setFormData({ companyName: '', email: '' });
       toast({
         title: "✅ Request Submitted Successfully",
-        description: "We'll contact you within 24 hours with a custom quote and wire transfer instructions.",
+        description: "Your request has been saved! We'll contact you within 24 hours.",
       });
       
-      console.log('✅ SUCCESS - Form completed successfully');
-      
     } catch (error) {
-      console.error('❌ ERROR submitting request:', error);
+      console.error('❌ ERROR saving to database:', error);
       toast({
-        title: "❌ Error", 
-        description: `There was an error: ${error}`,
+        title: "❌ Error",
+        description: "There was an error submitting your request. Please try again.",
         variant: "destructive"
       });
     } finally {
