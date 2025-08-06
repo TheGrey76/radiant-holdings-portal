@@ -23,15 +23,21 @@ const BusinessIntelligenceReport = () => {
     e.preventDefault();
     setIsSubmitting(true);
     
+    console.log('Form submitted:', { companyName: formData.companyName, email: formData.email });
+    
     try {
-      const { error } = await supabase.functions.invoke('send-business-request', {
+      console.log('Calling Edge Function...');
+      const { data, error } = await supabase.functions.invoke('send-business-request', {
         body: {
           companyName: formData.companyName,
           email: formData.email
         }
       });
 
+      console.log('Edge Function response:', { data, error });
+
       if (error) {
+        console.error('Edge Function error:', error);
         throw error;
       }
 
