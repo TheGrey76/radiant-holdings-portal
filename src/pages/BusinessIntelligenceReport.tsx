@@ -24,55 +24,58 @@ const BusinessIntelligenceReport = () => {
     setIsSubmitting(true);
     
     // TEST IMMEDIATO
-    alert(`🚀 FORM CHIAMATO! Nome: ${formData.companyName}, Email: ${formData.email}`);
     console.log('🚀 FORM SUBMITTED');
     console.log('Form data:', formData);
     
-    // Se non funziona nemmeno questo alert, il problema è nel React form
-    
     try {
-      console.log('Saving to database...');
+      console.log('🗄️ Saving to database...');
+      
+      // Test database connection first
+      const testResult = await supabase.from('brochure_downloads').select('*').limit(1);
+      console.log('📊 Database test:', testResult);
+      
+      const insertData = {
+        full_name: formData.companyName,
+        email: formData.email,
+        company: formData.companyName,
+        request_type: 'business_intelligence'
+      };
+      
+      console.log('📝 Inserting data:', insertData);
       
       const { data, error } = await supabase
         .from('brochure_downloads')
-        .insert({
-          full_name: formData.companyName,
-          email: formData.email,
-          company: formData.companyName,
-          request_type: 'business_intelligence'
-        });
+        .insert(insertData);
 
-      console.log('Database result:', { data, error });
+      console.log('✅ Database result:', { data, error });
 
       if (error) {
-        console.error('Database error:', error);
-        throw error;
+        console.error('❌ Database error:', error);
+        throw new Error(`Database error: ${error.message}`);
       }
 
-      // INVIO EMAIL SEMPLICE
-      console.log('Sending email...');
-      const { data: emailData, error: emailError } = await supabase.functions.invoke('send-business-request', {
-        body: {
-          companyName: formData.companyName,
-          email: formData.email
-        }
+      console.log('✉️ Sending email...');
+      
+      // Simplified email call
+      const emailResult = await supabase.functions.invoke('send-business-request', {
+        body: insertData
       });
       
-      console.log('Email result:', { emailData, emailError });
+      console.log('📧 Email result:', emailResult);
       
       setIsModalOpen(false);
       setFormData({ companyName: '', email: '' });
       
       toast({
         title: "✅ SUCCESS!",
-        description: "Request saved and email sent to quinley.martini@aries76.com",
+        description: "Data saved and email sent to quinley.martini@aries76.com",
       });
       
     } catch (error) {
-      console.error('❌ ERROR:', error);
+      console.error('❌ FULL ERROR:', error);
       toast({
         title: "❌ Error",
-        description: `Error: ${error}`,
+        description: `Error: ${error.message || error}`,
         variant: "destructive"
       });
     } finally {
