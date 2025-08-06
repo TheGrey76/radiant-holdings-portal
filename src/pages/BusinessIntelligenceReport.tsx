@@ -1,91 +1,9 @@
-import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Check, Download, TrendingUp, BarChart3, Brain, Users, Target, FileText, ArrowLeft, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Check, Download, TrendingUp, BarChart3, Brain, Users, Target, FileText, ArrowLeft, Mail } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
 
 const BusinessIntelligenceReport = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [formData, setFormData] = useState({
-    companyName: '',
-    email: ''
-  });
-  const { toast } = useToast();
-
-  const handleSubmitOrder = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    
-    // TEST IMMEDIATO
-    console.log('🚀 FORM SUBMITTED');
-    console.log('Form data:', formData);
-    
-    try {
-      console.log('🗄️ Saving to database...');
-      
-      // Test database connection first
-      const testResult = await supabase.from('brochure_downloads').select('*').limit(1);
-      console.log('📊 Database test:', testResult);
-      
-      const insertData = {
-        full_name: formData.companyName,
-        email: formData.email,
-        company: formData.companyName,
-        request_type: 'business_intelligence'
-      };
-      
-      console.log('📝 Inserting data:', insertData);
-      
-      const { data, error } = await supabase
-        .from('brochure_downloads')
-        .insert(insertData);
-
-      console.log('✅ Database result:', { data, error });
-
-      if (error) {
-        console.error('❌ Database error:', error);
-        throw new Error(`Database error: ${error.message}`);
-      }
-
-      console.log('✉️ Sending email...');
-      
-      // Simplified email call
-      const emailResult = await supabase.functions.invoke('send-business-request', {
-        body: insertData
-      });
-      
-      console.log('📧 Email result:', emailResult);
-      
-      setIsModalOpen(false);
-      setFormData({ companyName: '', email: '' });
-      
-      toast({
-        title: "✅ SUCCESS!",
-        description: "Data saved and email sent to quinley.martini@aries76.com",
-      });
-      
-    } catch (error) {
-      console.error('❌ FULL ERROR:', error);
-      toast({
-        title: "❌ Error",
-        description: `Error: ${error.message || error}`,
-        variant: "destructive"
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-  };
 
   const features = [
     {
@@ -225,7 +143,7 @@ const BusinessIntelligenceReport = () => {
             </Card>
           </motion.div>
 
-          {/* Order Section */}
+          {/* Contact Section */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -234,18 +152,24 @@ const BusinessIntelligenceReport = () => {
           >
             <Card>
               <CardContent className="p-8 text-center">
-                <h3 className="text-xl font-bold text-aries-navy mb-4">Get Instant Access</h3>
+                <h3 className="text-xl font-bold text-aries-navy mb-4">Get Your Analysis</h3>
                 <p className="text-slate-600 mb-6">Consultation and analysis delivered within 5-7 business days</p>
                 
                 <div className="text-3xl font-bold text-aries-blue mb-2">Price on Request</div>
                 <div className="text-slate-500 mb-8">Custom quote based on requirements</div>
                 
-                <Button 
-                  onClick={() => setIsModalOpen(true)}
-                  className="w-full bg-aries-blue hover:bg-aries-navy text-white py-3 text-lg"
-                >
-                  Request Quote
-                </Button>
+                <div className="bg-aries-blue/10 p-6 rounded-lg border border-aries-blue/20 mb-6">
+                  <div className="flex items-center justify-center mb-4">
+                    <Mail className="w-6 h-6 text-aries-blue mr-3" />
+                    <h4 className="text-lg font-semibold text-aries-navy">Contact Directly</h4>
+                  </div>
+                  <p className="text-aries-navy font-medium text-lg mb-2">
+                    quinley.martini@aries76.com
+                  </p>
+                  <p className="text-slate-600 text-sm">
+                    Send us your requirements and we'll respond within 24 hours with a custom quote
+                  </p>
+                </div>
                 
                 <div className="mt-6 text-sm text-slate-500 space-y-1">
                   <div>Custom pricing & wire transfer payment</div>
@@ -290,72 +214,6 @@ const BusinessIntelligenceReport = () => {
         </motion.div>
       </div>
 
-      {/* Order Modal */}
-      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="sm:max-w-md bg-white border-aries-blue/20">
-          <DialogHeader>
-            <DialogTitle className="text-aries-navy text-xl font-bold">Request Business Intelligence Analysis</DialogTitle>
-          </DialogHeader>
-          
-          <form onSubmit={handleSubmitOrder} className="space-y-6">
-            <div className="space-y-4">
-              <div>
-                <Label htmlFor="company" className="text-aries-navy font-medium">Company Name</Label>
-                <Input
-                  id="company"
-                  type="text"
-                  value={formData.companyName}
-                  onChange={(e) => handleInputChange('companyName', e.target.value)}
-                  placeholder="Enter your company name"
-                  required
-                  className="mt-1 border-slate-300 focus:border-aries-blue focus:ring-aries-blue"
-                />
-              </div>
-              
-              <div>
-                <Label htmlFor="email" className="text-aries-navy font-medium">Business Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => handleInputChange('email', e.target.value)}
-                  placeholder="Enter your business email"
-                  required
-                  className="mt-1 border-slate-300 focus:border-aries-blue focus:ring-aries-blue"
-                />
-              </div>
-            </div>
-
-            <div className="bg-aries-blue/5 p-4 rounded-lg border border-aries-blue/20">
-              <p className="text-sm text-aries-navy">
-                <strong>What happens next:</strong><br />
-                1. We'll review your requirements<br />
-                2. Custom quote within 24 hours<br />
-                3. Wire transfer instructions provided<br />
-                4. Analysis delivered in 5-7 business days
-              </p>
-            </div>
-            
-            <div className="flex gap-3">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setIsModalOpen(false)}
-                className="flex-1 border-aries-blue/30 text-aries-navy hover:bg-aries-blue/5"
-              >
-                Cancel
-              </Button>
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="flex-1 bg-aries-blue hover:bg-aries-navy text-white"
-              >
-                {isSubmitting ? 'Submitting...' : 'Submit Request'}
-              </Button>
-            </div>
-          </form>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };
