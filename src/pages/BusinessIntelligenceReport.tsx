@@ -1,25 +1,41 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Check, Download, TrendingUp, BarChart3, Brain, Users, Target, FileText, ArrowLeft } from 'lucide-react';
+import { Check, Download, TrendingUp, BarChart3, Brain, Users, Target, FileText, ArrowLeft, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 
 const BusinessIntelligenceReport = () => {
-  const [isOrdering, setIsOrdering] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState({
+    companyName: '',
+    email: ''
+  });
   const { toast } = useToast();
 
-  const handleOrderReport = () => {
-    setIsOrdering(true);
+  const handleSubmitOrder = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
     // Simulate order processing
     setTimeout(() => {
-      setIsOrdering(false);
+      setIsSubmitting(false);
+      setIsModalOpen(false);
+      setFormData({ companyName: '', email: '' });
       toast({
-        title: "Order Confirmed",
-        description: "Wire transfer instructions have been sent to your email. Report will be delivered upon payment confirmation.",
+        title: "Request Submitted",
+        description: "We'll contact you within 24 hours with a custom quote and wire transfer instructions.",
       });
     }, 2000);
+  };
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
   };
 
   const features = [
@@ -166,19 +182,18 @@ const BusinessIntelligenceReport = () => {
                 <h3 className="text-xl font-bold text-aries-navy mb-4">Get Instant Access</h3>
                 <p className="text-slate-600 mb-6">Consultation and analysis delivered within 5-7 business days</p>
                 
-                <div className="text-4xl font-bold text-aries-blue mb-2">£2,500</div>
-                <div className="text-slate-500 mb-8">One-time investment</div>
+                <div className="text-3xl font-bold text-aries-blue mb-2">Price on Request</div>
+                <div className="text-slate-500 mb-8">Custom quote based on requirements</div>
                 
                 <Button 
-                  onClick={handleOrderReport}
-                  disabled={isOrdering}
+                  onClick={() => setIsModalOpen(true)}
                   className="w-full bg-aries-blue hover:bg-aries-navy text-white py-3 text-lg"
                 >
-                  {isOrdering ? "Processing..." : "Order Analysis"}
+                  Request Quote
                 </Button>
                 
                 <div className="mt-6 text-sm text-slate-500 space-y-1">
-                  <div>Payment via wire transfer</div>
+                  <div>Custom pricing & wire transfer payment</div>
                   <div>30-day satisfaction guarantee</div>
                 </div>
               </CardContent>
@@ -219,6 +234,73 @@ const BusinessIntelligenceReport = () => {
           </Card>
         </motion.div>
       </div>
+
+      {/* Order Modal */}
+      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <DialogContent className="sm:max-w-md bg-white border-aries-blue/20">
+          <DialogHeader>
+            <DialogTitle className="text-aries-navy text-xl font-bold">Request Business Intelligence Analysis</DialogTitle>
+          </DialogHeader>
+          
+          <form onSubmit={handleSubmitOrder} className="space-y-6">
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="company" className="text-aries-navy font-medium">Company Name</Label>
+                <Input
+                  id="company"
+                  type="text"
+                  value={formData.companyName}
+                  onChange={(e) => handleInputChange('companyName', e.target.value)}
+                  placeholder="Enter your company name"
+                  required
+                  className="mt-1 border-slate-300 focus:border-aries-blue focus:ring-aries-blue"
+                />
+              </div>
+              
+              <div>
+                <Label htmlFor="email" className="text-aries-navy font-medium">Business Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => handleInputChange('email', e.target.value)}
+                  placeholder="Enter your business email"
+                  required
+                  className="mt-1 border-slate-300 focus:border-aries-blue focus:ring-aries-blue"
+                />
+              </div>
+            </div>
+
+            <div className="bg-aries-blue/5 p-4 rounded-lg border border-aries-blue/20">
+              <p className="text-sm text-aries-navy">
+                <strong>What happens next:</strong><br />
+                1. We'll review your requirements<br />
+                2. Custom quote within 24 hours<br />
+                3. Wire transfer instructions provided<br />
+                4. Analysis delivered in 5-7 business days
+              </p>
+            </div>
+            
+            <div className="flex gap-3">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setIsModalOpen(false)}
+                className="flex-1 border-aries-blue/30 text-aries-navy hover:bg-aries-blue/5"
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="flex-1 bg-aries-blue hover:bg-aries-navy text-white"
+              >
+                {isSubmitting ? 'Submitting...' : 'Submit Request'}
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
