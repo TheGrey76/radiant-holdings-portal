@@ -29,9 +29,9 @@ const Auth = () => {
         setSession(session);
         setUser(session?.user ?? null);
         
-        // Redirect authenticated users to sneaker report
+        // Redirect authenticated users to main site
         if (session?.user) {
-          navigate('/sneaker-report');
+          window.location.href = 'https://www.aries76.com';
         }
       }
     );
@@ -42,7 +42,7 @@ const Auth = () => {
       setUser(session?.user ?? null);
       
       if (session?.user) {
-        navigate('/sneaker-report');
+        window.location.href = 'https://www.aries76.com';
       }
     });
 
