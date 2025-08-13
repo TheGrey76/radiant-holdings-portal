@@ -46,12 +46,6 @@ const Navbar = () => {
         </motion.div>
         
         <div className="flex items-center space-x-4">
-          <Link 
-            to="/sneaker-report"
-            className="text-aries-navy hover:text-aries-orange transition-colors font-medium"
-          >
-            Sneaker Report
-          </Link>
           <motion.a 
             href="#contact"
             className="px-5 py-2 bg-aries-navy text-white rounded-md font-medium transition-all hover:bg-aries-blue"
