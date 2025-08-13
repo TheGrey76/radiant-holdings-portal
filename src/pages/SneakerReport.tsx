@@ -190,30 +190,30 @@ const SneakerReport = () => {
             </Card>
 
             {/* Payment Instructions */}
-            {orders.some(order => order.status === 'pending') && (
-              <Card className="border-aries-orange/20 bg-aries-orange/5">
-                <CardHeader>
-                  <CardTitle className="text-aries-navy flex items-center gap-2">
-                    <CreditCard className="h-5 w-5" />
-                    Payment Instructions
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <Alert className="border-aries-orange/20 bg-aries-orange/10">
-                    <AlertDescription className="text-aries-navy">
-                      <strong>Bank Transfer Details:</strong><br />
-                      Account Name: Aries76 Ltd<br />
-                      Sort Code: 12-34-56<br />
-                      Account Number: 87654321<br />
-                      Reference: Your Order ID<br />
-                      Amount: £10,000.00 GBP<br /><br />
-                      
-                      Please contact quinley.martini@aries76.com with proof of payment to activate your access.
-                    </AlertDescription>
-                  </Alert>
-                </CardContent>
-              </Card>
-            )}
+            <Card className="border-aries-orange/20 bg-aries-orange/5 mb-8">
+              <CardHeader>
+                <CardTitle className="text-aries-navy flex items-center gap-2">
+                  <CreditCard className="h-5 w-5" />
+                  Payment Instructions
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Alert className="border-aries-orange/20 bg-aries-orange/10">
+                  <AlertDescription className="text-aries-navy">
+                    <strong>Bank Transfer Details:</strong><br />
+                    Account Name: Aries76 Ltd<br />
+                    Sort Code: 12-34-56<br />
+                    Account Number: 87654321<br />
+                    Reference: SNEAKER-REPORT-{user?.id?.slice(0, 8)}<br />
+                    Amount: £10,000.00 GBP<br /><br />
+                    
+                    <strong>Contact for Payment Confirmation:</strong><br />
+                    Email: quinley.martini@aries76.com<br />
+                    Please send proof of payment to activate your access immediately.
+                  </AlertDescription>
+                </Alert>
+              </CardContent>
+            </Card>
           </div>
         ) : (
           /* Report Access Section */
