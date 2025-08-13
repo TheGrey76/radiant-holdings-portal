@@ -83,6 +83,45 @@ export type Database = {
         }
         Relationships: []
       }
+      orders: {
+        Row: {
+          amount: number
+          bank_reference: string | null
+          created_at: string
+          currency: string
+          id: string
+          payment_method: string
+          product_type: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount?: number
+          bank_reference?: string | null
+          created_at?: string
+          currency?: string
+          id?: string
+          payment_method?: string
+          product_type?: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          bank_reference?: string | null
+          created_at?: string
+          currency?: string
+          id?: string
+          payment_method?: string
+          product_type?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           company: string | null

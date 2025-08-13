@@ -8,6 +8,8 @@ import Index from "./pages/Index";
 import Network from "./pages/Network";
 import Profile from "./pages/Profile";
 import BusinessIntelligenceReport from "./pages/BusinessIntelligenceReport";
+import Auth from "./pages/Auth";
+import SneakerReport from "./pages/SneakerReport";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -23,6 +25,8 @@ const App = () => (
           <Route path="/network" element={<Network />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/intelligence" element={<BusinessIntelligenceReport />} />
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/sneaker-report" element={<SneakerReport />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
