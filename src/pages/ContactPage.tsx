@@ -45,7 +45,7 @@ const ContactPage = () => {
                   <p className="text-muted-foreground font-light">
                     Aries76 Ltd
                     <br />
-                    London | Budapest
+                    London, United Kingdom
                   </p>
                 </div>
               </div>

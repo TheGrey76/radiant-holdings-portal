@@ -30,7 +30,7 @@ const Footer = () => {
           
           <div>
             <h3 className="text-xs uppercase tracking-widest mb-6 font-light">Contact</h3>
-            <p className="text-white/70 font-light mb-2 text-sm">London | Budapest</p>
+            <p className="text-white/70 font-light mb-2 text-sm">London, United Kingdom</p>
             <a href="mailto:info@aries76.com" className="text-white/70 hover:text-accent transition-colors font-light text-sm">
               info@aries76.com
             </a>
