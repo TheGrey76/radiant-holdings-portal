@@ -30,9 +30,12 @@ const Legal = () => {
                   Company Information
                 </h2>
                 <p className="text-muted-foreground font-light leading-relaxed mb-4">
-                  Aries76 Ltd is a UK-registered company (Companies House no. 12732961) acting as an independent advisory and capital introduction firm.
+                  Aries76 Ltd is a UK-registered company (Companies House no. 15324504) acting as an independent advisory and capital introduction firm.
                 </p>
                 <p className="text-muted-foreground font-light leading-relaxed">
+                  Registered office: 27 Old Gloucester Street, London, United Kingdom, WC1N 3AX
+                </p>
+                <p className="text-muted-foreground font-light leading-relaxed mt-4">
                   Aries76 Ltd does not conduct any regulated investment activity and does not provide investment advice to retail clients. All introductions and activities are carried out on a professional and institutional basis in accordance with UK and European regulations.
                 </p>
               </div>
@@ -59,9 +62,11 @@ const Legal = () => {
 
           <div className="pt-8 border-t border-border">
             <p className="text-sm text-muted-foreground font-light leading-relaxed">
-              Registered Office: London, United Kingdom
+              Registered Office: 27 Old Gloucester Street, London, United Kingdom, WC1N 3AX
               <br />
-              Company Number: 12732961
+              Company Number: 15324504
+              <br />
+              Incorporated: 3 December 2023
               <br />
               Aries76 Ltd is not authorised or regulated by the Financial Conduct Authority (FCA).
             </p>
