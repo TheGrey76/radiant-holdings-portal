@@ -1,5 +1,5 @@
-
 import { Link } from 'react-router-dom';
+import aries76Logo from '@/assets/aries76-logo-new.png';
 
 const Footer = () => {
   return (
@@ -8,9 +8,9 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
           <div>
             <img 
-              src="/lovable-uploads/ba0e4dd6-4e22-4db9-9da2-6b3359300d31.png" 
+              src={aries76Logo} 
               alt="Aries76 Logo" 
-              className="h-16 mb-6 brightness-0 invert" 
+              className="h-12 mb-6" 
             />
             <p className="text-white/70 font-light leading-relaxed">
               Strategic & Fund Advisory for Alternative Investments
