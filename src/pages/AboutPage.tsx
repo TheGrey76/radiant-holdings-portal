@@ -28,23 +28,18 @@ const AboutPage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="mb-20"
+          className="mb-24"
         >
-          <h1 className="text-4xl md:text-6xl font-light text-foreground mb-16 tracking-tight uppercase">
-            About <span className="text-accent">Aries76</span>
-          </h1>
-          
-          <div className="grid md:grid-cols-2 gap-12 items-start mb-16">
+          <div className="grid md:grid-cols-[400px_1fr] gap-16 items-start mb-20">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="flex justify-center md:justify-start"
             >
               <img 
                 src={edoardoImage} 
                 alt="Edoardo Grigione - Founder of Aries76"
-                className="w-48 h-auto rounded-lg shadow-lg"
+                className="w-full h-auto rounded-lg shadow-xl"
               />
             </motion.div>
             
@@ -52,17 +47,22 @@ const AboutPage = () => {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
+              className="pt-8"
             >
-              <h2 className="text-3xl md:text-4xl font-light text-foreground mb-6 uppercase tracking-wide">
+              <h1 className="text-4xl md:text-5xl font-light text-foreground mb-3 uppercase tracking-tight">
                 Edoardo Grigione
-              </h2>
-              <p className="text-xl text-accent mb-6 font-light">Founder & Principal Advisor</p>
-              <p className="text-lg text-muted-foreground font-light leading-relaxed mb-4">
-                With over 25 years of experience across hedge funds, private equity, and alternative investments, Edoardo founded Aries76 Ltd to provide strategic advisory services to select institutional investors and fund managers.
+              </h1>
+              <p className="text-xl text-accent mb-8 font-light uppercase tracking-wider">
+                Founder & Principal Advisor
               </p>
-              <p className="text-lg text-muted-foreground font-light leading-relaxed">
-                Based in London, Aries76 combines global market expertise with local precision, acting as a trusted advisor to family-backed businesses and institutional investors seeking strategic capital formation and market intelligence.
-              </p>
+              <div className="space-y-6">
+                <p className="text-lg text-muted-foreground font-light leading-relaxed">
+                  With over 25 years of experience across hedge funds, private equity, and alternative investments, Edoardo founded Aries76 Ltd to provide strategic advisory services to select institutional investors and fund managers.
+                </p>
+                <p className="text-lg text-muted-foreground font-light leading-relaxed">
+                  Based in London, Aries76 combines global market expertise with local precision, acting as a trusted advisor to family-backed businesses and institutional investors seeking strategic capital formation and market intelligence.
+                </p>
+              </div>
             </motion.div>
           </div>
         </motion.div>
