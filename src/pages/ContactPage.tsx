@@ -1,187 +1,117 @@
-import { useState } from 'react';
 import { motion } from 'framer-motion';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
-import { MapPin, Mail } from 'lucide-react';
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
+import { Mail, MapPin } from 'lucide-react';
 
 const ContactPage = () => {
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     message: ''
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const { toast } = useToast();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    
-    // Simulate form submission
-    setTimeout(() => {
-      toast({
-        title: "Message sent successfully",
-        description: "We'll get back to you as soon as possible.",
-      });
-      setFormData({ name: '', email: '', message: '' });
-      setIsSubmitting(false);
-    }, 1500);
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
+    toast({
+      title: "Message Sent",
+      description: "We'll get back to you soon.",
     });
+    setFormData({ name: '', email: '', message: '' });
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      <Navbar />
-      
-      {/* Hero Section */}
-      <section className="pt-32 pb-20 bg-aries-gray">
-        <div className="container mx-auto px-6">
-          <motion.h1 
-            className="text-5xl md:text-6xl font-light uppercase tracking-wide text-aries-navy mb-6"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+    <div className="min-h-screen bg-background">
+      <div className="max-w-5xl mx-auto px-6 py-32">
+        <div className="grid md:grid-cols-2 gap-16">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
           >
-            Get in Touch
-          </motion.h1>
-          <motion.p 
-            className="text-xl text-gray-600 font-light max-w-3xl"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            For collaboration or institutional enquiries, please contact our office.
-          </motion.p>
-        </div>
-      </section>
-      
-      {/* Contact Content */}
-      <section className="py-24">
-        <div className="container mx-auto px-6 max-w-6xl">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
-            {/* Contact Information */}
-            <motion.div
-              className="space-y-8"
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-            >
-              <div>
-                <h2 className="text-3xl font-light uppercase tracking-wide text-aries-navy mb-8">
-                  Contact Information
-                </h2>
-                
-                <div className="space-y-6">
-                  <div className="flex items-start space-x-4">
-                    <MapPin className="w-6 h-6 text-aries-copper mt-1" strokeWidth={1} />
-                    <div>
-                      <h3 className="text-lg font-light uppercase tracking-wide text-aries-navy mb-2">
-                        Office
-                      </h3>
-                      <p className="text-gray-600 font-light">
-                        London, United Kingdom
-                      </p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start space-x-4">
-                    <Mail className="w-6 h-6 text-aries-copper mt-1" strokeWidth={1} />
-                    <div>
-                      <h3 className="text-lg font-light uppercase tracking-wide text-aries-navy mb-2">
-                        Email
-                      </h3>
-                      <a 
-                        href="mailto:segreteria@aries76.com" 
-                        className="text-gray-600 font-light hover:text-aries-copper transition-colors"
-                      >
-                        segreteria@aries76.com
-                      </a>
-                    </div>
-                  </div>
+            <h1 className="text-4xl md:text-6xl font-light text-foreground mb-8 tracking-tight uppercase">
+              Let's Discuss Your
+              <br />
+              <span className="text-accent">Next Fundraising</span>
+            </h1>
+            
+            <div className="space-y-6 mb-12">
+              <div className="flex items-start gap-4">
+                <MapPin className="h-6 w-6 text-accent mt-1" strokeWidth={1.5} />
+                <div>
+                  <p className="text-muted-foreground font-light">
+                    Aries76 Ltd
+                    <br />
+                    London | Budapest
+                  </p>
                 </div>
               </div>
               
-              <div className="pt-8">
-                <p className="text-gray-600 font-light leading-relaxed">
-                  We maintain strict confidentiality in all our engagements and typically respond 
-                  to institutional enquiries within 48 hours.
-                </p>
+              <div className="flex items-start gap-4">
+                <Mail className="h-6 w-6 text-accent mt-1" strokeWidth={1.5} />
+                <div>
+                  <a 
+                    href="mailto:info@aries76.com" 
+                    className="text-muted-foreground font-light hover:text-accent transition-colors"
+                  >
+                    info@aries76.com
+                  </a>
+                </div>
               </div>
-            </motion.div>
-            
-            {/* Contact Form */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-            >
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <label htmlFor="name" className="block text-sm uppercase tracking-wide text-aries-navy mb-2 font-light">
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 focus:border-aries-copper focus:ring-1 focus:ring-aries-copper outline-none transition-all font-light"
-                  />
-                </div>
-                
-                <div>
-                  <label htmlFor="email" className="block text-sm uppercase tracking-wide text-aries-navy mb-2 font-light">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 focus:border-aries-copper focus:ring-1 focus:ring-aries-copper outline-none transition-all font-light"
-                  />
-                </div>
-                
-                <div>
-                  <label htmlFor="message" className="block text-sm uppercase tracking-wide text-aries-navy mb-2 font-light">
-                    Message
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    required
-                    rows={6}
-                    className="w-full px-4 py-3 border border-gray-300 focus:border-aries-copper focus:ring-1 focus:ring-aries-copper outline-none transition-all resize-none font-light"
-                  />
-                </div>
-                
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full px-8 py-4 bg-aries-navy text-white uppercase tracking-wider font-light text-sm hover:bg-aries-copper transition-all duration-300 disabled:opacity-50"
-                >
-                  {isSubmitting ? 'Sending...' : 'Send Message'}
-                </button>
-              </form>
-            </motion.div>
-          </div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div>
+                <Input
+                  placeholder="Name"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  required
+                  className="bg-secondary/30 border-border"
+                />
+              </div>
+              
+              <div>
+                <Input
+                  type="email"
+                  placeholder="Email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  required
+                  className="bg-secondary/30 border-border"
+                />
+              </div>
+              
+              <div>
+                <Textarea
+                  placeholder="Message"
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  required
+                  rows={6}
+                  className="bg-secondary/30 border-border resize-none"
+                />
+              </div>
+              
+              <Button 
+                type="submit" 
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground uppercase tracking-wider"
+              >
+                Request a Call
+              </Button>
+            </form>
+          </motion.div>
         </div>
-      </section>
-      
-      <Footer />
+      </div>
     </div>
   );
 };

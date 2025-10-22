@@ -1,91 +1,82 @@
 import { motion } from 'framer-motion';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import { Target, TrendingUp, Cpu } from 'lucide-react';
 
 const AboutPage = () => {
+  const approaches = [
+    {
+      icon: Target,
+      title: 'Strategic Advisory',
+      description: 'Structuring and positioning investment opportunities.'
+    },
+    {
+      icon: TrendingUp,
+      title: 'Capital Formation',
+      description: 'Targeted investor relations and institutional fundraising.'
+    },
+    {
+      icon: Cpu,
+      title: 'Innovation',
+      description: 'Integrating AI-driven analytics to enhance investor targeting and market intelligence.'
+    }
+  ];
+
   return (
-    <div className="min-h-screen bg-white">
-      <Navbar />
-      
-      {/* Hero Section */}
-      <section className="pt-32 pb-20 bg-aries-gray">
-        <div className="container mx-auto px-6">
-          <motion.h1 
-            className="text-5xl md:text-6xl font-light uppercase tracking-wide text-aries-navy mb-6"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            About Aries76 Ltd
-          </motion.h1>
-        </div>
-      </section>
-      
-      {/* Main Content */}
-      <section className="py-20">
-        <div className="container mx-auto px-6 max-w-4xl">
-          <motion.div 
-            className="space-y-8"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            <p className="text-xl md:text-2xl text-gray-700 font-light leading-relaxed">
-              Founded in London, Aries76 Ltd provides strategic and capital advisory across private markets. 
-              We support General Partners, sponsors, and family-backed businesses in developing investor 
-              relations and raising institutional capital across Europe and beyond.
+    <div className="min-h-screen bg-background">
+      <div className="max-w-6xl mx-auto px-6 py-32">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="mb-20"
+        >
+          <h1 className="text-4xl md:text-6xl font-light text-foreground mb-8 tracking-tight uppercase">
+            A Global Advisory Firm
+            <br />
+            <span className="text-accent">with Local Precision</span>
+          </h1>
+          
+          <div className="max-w-3xl">
+            <p className="text-lg md:text-xl text-muted-foreground font-light leading-relaxed mb-6">
+              Founded by Edoardo Grigione, Aries76 Ltd combines over 25 years of experience across hedge funds, private equity, and venture capital.
             </p>
-            
-            <p className="text-xl md:text-2xl text-gray-700 font-light leading-relaxed">
-              With over two decades of international experience in private equity, venture capital and 
-              structured finance, we combine market expertise with innovation, helping clients achieve 
-              clarity and execution in complex transactions.
+            <p className="text-lg md:text-xl text-muted-foreground font-light leading-relaxed">
+              With a presence in London and Budapest, we act as a strategic advisor to selected fund managers, family-backed businesses, and institutional investors.
             </p>
-          </motion.div>
-        </div>
-      </section>
-      
-      {/* Regulatory Notice */}
-      <section className="py-20 bg-aries-navy">
-        <div className="container mx-auto px-6 max-w-4xl">
-          <motion.div 
-            className="space-y-6"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <div className="w-16 h-1 bg-aries-copper mb-6" />
-            <p className="text-xl md:text-2xl text-white/90 font-light leading-relaxed">
-              Our advisory activity is unregulated under UK law, allowing flexible and cross-border 
-              engagement with regulated partners as required.
-            </p>
-          </motion.div>
-        </div>
-      </section>
-      
-      {/* Founder Section */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-6 max-w-4xl text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <h2 className="text-3xl md:text-4xl font-light uppercase tracking-wide text-aries-navy mb-8">
-              Leadership & Expertise
-            </h2>
-            <p className="text-lg text-gray-600 font-light leading-relaxed mb-8">
-              Our team brings together decades of experience in alternative investments, institutional fundraising, 
-              and cross-border transactions. We maintain a selective client base, ensuring dedicated attention 
-              to each engagement.
-            </p>
-          </motion.div>
-        </div>
-      </section>
-      
-      <Footer />
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          <h2 className="text-2xl md:text-3xl font-light text-foreground mb-12 uppercase tracking-wider">
+            Our Approach
+          </h2>
+          
+          <div className="grid md:grid-cols-3 gap-12">
+            {approaches.map((approach, index) => (
+              <motion.div
+                key={approach.title}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 + index * 0.1 }}
+                className="group"
+              >
+                <div className="mb-6 inline-block p-4 rounded-lg bg-secondary/50 group-hover:bg-accent/10 transition-colors duration-300">
+                  <approach.icon className="h-8 w-8 text-accent" strokeWidth={1.5} />
+                </div>
+                <h3 className="text-xl font-normal text-foreground mb-3 uppercase tracking-wide">
+                  {approach.title}
+                </h3>
+                <p className="text-muted-foreground font-light leading-relaxed">
+                  {approach.description}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
     </div>
   );
 };

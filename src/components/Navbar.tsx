@@ -27,14 +27,15 @@ const Navbar = () => {
     { name: 'Home', path: '/' },
     { name: 'About', path: '/about' },
     { name: 'Services', path: '/services' },
-    { name: 'Legal', path: '/legal' },
+    { name: 'Partners', path: '/partners' },
+    { name: 'Licences', path: '/legal' },
     { name: 'Contact', path: '/contact' },
   ];
 
   return (
     <motion.header
       className={`fixed top-0 left-0 right-0 z-50 px-6 md:px-10 transition-all duration-300 ${
-        scrolled ? 'py-3 bg-white/95 backdrop-blur-sm shadow-sm' : 'py-4 bg-white/90 backdrop-blur-sm'
+        scrolled ? 'py-3 bg-white/98 backdrop-blur-md shadow-sm' : 'py-4 bg-white/95 backdrop-blur-md'
       }`}
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
@@ -55,7 +56,7 @@ const Navbar = () => {
             <Link
               key={link.path}
               to={link.path}
-              className="text-sm uppercase tracking-wider text-aries-navy hover:text-aries-copper transition-colors font-light"
+              className="text-xs uppercase tracking-widest text-foreground/70 hover:text-accent transition-colors font-light"
             >
               {link.name}
             </Link>
@@ -64,7 +65,7 @@ const Navbar = () => {
         
         {/* Mobile Menu Button */}
         <button
-          className="md:hidden text-aries-navy"
+          className="md:hidden text-foreground"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
           {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -83,7 +84,7 @@ const Navbar = () => {
             <Link
               key={link.path}
               to={link.path}
-              className="block text-sm uppercase tracking-wider text-aries-navy hover:text-aries-copper transition-colors font-light"
+              className="block text-xs uppercase tracking-widest text-foreground/70 hover:text-accent transition-colors font-light"
               onClick={() => setMobileMenuOpen(false)}
             >
               {link.name}

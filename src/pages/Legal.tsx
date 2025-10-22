@@ -1,98 +1,73 @@
 import { motion } from 'framer-motion';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import { FileText, Mail } from 'lucide-react';
 
 const Legal = () => {
   return (
-    <div className="min-h-screen bg-white">
-      <Navbar />
-      
-      {/* Hero Section */}
-      <section className="pt-32 pb-20 bg-aries-gray">
-        <div className="container mx-auto px-6">
-          <motion.h1 
-            className="text-5xl md:text-6xl font-light uppercase tracking-wide text-aries-navy mb-6"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            Regulatory Information
-          </motion.h1>
-        </div>
-      </section>
-      
-      {/* Main Content */}
-      <section className="py-20">
-        <div className="container mx-auto px-6 max-w-4xl">
-          <motion.div 
-            className="space-y-8"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            <p className="text-xl md:text-2xl text-gray-700 font-light leading-relaxed">
-              Aries76 Ltd is a company incorporated in England and Wales, registered under Company Number 12732961.
+    <div className="min-h-screen bg-background">
+      <div className="max-w-4xl mx-auto px-6 py-32">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="mb-16"
+        >
+          <h1 className="text-4xl md:text-6xl font-light text-foreground mb-8 tracking-tight uppercase">
+            Regulatory <span className="text-accent">Disclosure</span>
+          </h1>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="space-y-8"
+        >
+          <div className="p-8 bg-secondary/30 border border-border">
+            <div className="flex items-start gap-4 mb-4">
+              <FileText className="h-6 w-6 text-accent mt-1" strokeWidth={1.5} />
+              <div>
+                <h2 className="text-xl font-normal text-foreground mb-4 uppercase tracking-wide">
+                  Company Information
+                </h2>
+                <p className="text-muted-foreground font-light leading-relaxed mb-4">
+                  Aries76 Ltd is a UK-registered company (Companies House no. 12732961) acting as an independent advisory and capital introduction firm.
+                </p>
+                <p className="text-muted-foreground font-light leading-relaxed">
+                  Aries76 Ltd does not conduct any regulated investment activity and does not provide investment advice to retail clients. All introductions and activities are carried out on a professional and institutional basis in accordance with UK and European regulations.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-8 bg-secondary/30 border border-border">
+            <div className="flex items-start gap-4">
+              <Mail className="h-6 w-6 text-accent mt-1" strokeWidth={1.5} />
+              <div>
+                <h2 className="text-xl font-normal text-foreground mb-4 uppercase tracking-wide">
+                  Contact
+                </h2>
+                <p className="text-muted-foreground font-light leading-relaxed">
+                  For compliance enquiries, please contact:
+                  <br />
+                  <a href="mailto:compliance@aries76.com" className="text-accent hover:text-accent/80 transition-colors">
+                    compliance@aries76.com
+                  </a>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="pt-8 border-t border-border">
+            <p className="text-sm text-muted-foreground font-light leading-relaxed">
+              Registered Office: London, United Kingdom
+              <br />
+              Company Number: 12732961
+              <br />
+              Aries76 Ltd is not authorised or regulated by the Financial Conduct Authority (FCA).
             </p>
-            
-            <p className="text-xl md:text-2xl text-gray-700 font-light leading-relaxed">
-              The firm operates as a non-regulated advisor under UK law, focusing exclusively on business-to-business 
-              activities addressed to professional and institutional investors.
-            </p>
-            
-            <p className="text-xl md:text-2xl text-gray-700 font-light leading-relaxed">
-              Aries76 does not provide investment advice to retail clients and does not carry out regulated activities 
-              within the meaning of the Financial Services and Markets Act 2000 (FSMA).
-            </p>
-          </motion.div>
-        </div>
-      </section>
-      
-      {/* Contact Information Box */}
-      <section className="py-20 bg-aries-gray">
-        <div className="container mx-auto px-6 max-w-4xl">
-          <motion.div 
-            className="border-l-4 border-aries-copper pl-8 space-y-4"
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <h2 className="text-2xl font-light uppercase tracking-wide text-aries-navy mb-6">
-              Company Details
-            </h2>
-            <p className="text-lg text-gray-700 font-light">
-              <strong>Company Name:</strong> Aries76 Ltd
-            </p>
-            <p className="text-lg text-gray-700 font-light">
-              <strong>Company Number:</strong> 12732961
-            </p>
-            <p className="text-lg text-gray-700 font-light">
-              <strong>Registered Office:</strong> London, United Kingdom
-            </p>
-            <p className="text-lg text-gray-700 font-light">
-              <strong>Email:</strong> <a href="mailto:segreteria@aries76.com" className="text-aries-copper hover:underline">segreteria@aries76.com</a>
-            </p>
-          </motion.div>
-        </div>
-      </section>
-      
-      {/* Disclaimer */}
-      <section className="py-16 bg-aries-navy">
-        <div className="container mx-auto px-6 max-w-4xl">
-          <motion.p 
-            className="text-sm text-white/70 font-light text-center"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            Aries76 Ltd is not authorised or regulated by the Financial Conduct Authority (FCA). 
-            This website does not constitute an offer or solicitation to retail investors.
-          </motion.p>
-        </div>
-      </section>
-      
-      <Footer />
+          </div>
+        </motion.div>
+      </div>
     </div>
   );
 };

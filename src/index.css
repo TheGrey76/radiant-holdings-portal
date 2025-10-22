@@ -1,6 +1,4 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Calibri:wght@300;400;500;600;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,39 +6,30 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-
+    --foreground: 210 40% 15%;
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
+    --card-foreground: 210 40% 15%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
+    --popover-foreground: 210 40% 15%;
+    --primary: 207 55% 25%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 15% 92%;
+    --secondary-foreground: 210 40% 15%;
+    --muted: 210 15% 96%;
+    --muted-foreground: 210 20% 45%;
+    --accent: 25 60% 50%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 210 15% 88%;
+    --input: 210 15% 88%;
+    --ring: 207 55% 25%;
     --radius: 0.5rem;
-
-    /* Aries brand colors - New Corporate Identity */
-    --aries-navy: 213 63% 10%; /* #0b1628 */
-    --aries-copper: 26 55% 49%; /* #c07a3b */
-    --aries-gray: 0 0% 98%;
+    --chart-1: 207 55% 25%;
+    --chart-2: 25 60% 50%;
+    --chart-3: 210 15% 70%;
+    --chart-4: 210 20% 50%;
+    --chart-5: 25 50% 40%;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -105,79 +94,5 @@
 @layer components {
   .glass-card {
     @apply backdrop-blur-lg bg-white/10 border border-white/20 shadow-glass;
-  }
-
-  .nav-link {
-    @apply relative py-2 px-2 text-sm font-medium text-aries-navy transition-colors 
-           after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-aries-orange 
-           after:transition-all after:duration-300 hover:text-aries-blue hover:after:w-full;
-  }
-
-  .section-title {
-    @apply text-3xl md:text-4xl font-display font-semibold text-aries-navy mb-4;
-  }
-
-  .section-subtitle {
-    @apply text-lg text-gray-600 max-w-2xl mx-auto mb-10;
-  }
-
-  .stagger-animate > * {
-    opacity: 0;
-  }
-
-  .stagger-animate > *:nth-child(1) {
-    animation: fade-in 0.5s ease-out forwards;
-    animation-delay: 0.1s;
-  }
-
-  .stagger-animate > *:nth-child(2) {
-    animation: fade-in 0.5s ease-out forwards;
-    animation-delay: 0.3s;
-  }
-
-  .stagger-animate > *:nth-child(3) {
-    animation: fade-in 0.5s ease-out forwards;
-    animation-delay: 0.5s;
-  }
-
-  .stagger-animate > *:nth-child(4) {
-    animation: fade-in 0.5s ease-out forwards;
-    animation-delay: 0.7s;
-  }
-
-  .draw-in-svg {
-    stroke-dasharray: 100%;
-    stroke-dashoffset: 100%;
-    animation: draw-line 1.5s ease-in-out forwards;
-  }
-
-  .circuit-line {
-    stroke-dasharray: 1000;
-    stroke-dashoffset: 1000;
-    animation: circuit-flow 3s linear infinite;
-  }
-
-  .line-clamp-3 {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-  }
-
-  /* Blog post content styling */
-  .prose h2 {
-    @apply text-2xl font-display font-semibold text-aries-navy mt-8 mb-4;
-  }
-
-  .prose h3 {
-    @apply text-xl font-display font-semibold text-aries-navy mt-6 mb-3;
-  }
-
-  .prose p {
-    @apply mb-4 text-gray-700 leading-relaxed;
-  }
-
-  .prose p:first-child {
-    @apply text-xl text-gray-600 font-medium;
   }
 }

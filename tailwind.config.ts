@@ -19,6 +19,10 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				sans: ['Inter', 'system-ui', 'sans-serif'],
+				display: ['Inter', 'system-ui', 'sans-serif']
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -62,16 +66,7 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				},
-				aries: {
-					navy: 'hsl(var(--aries-navy))',
-					copper: 'hsl(var(--aries-copper))',
-					gray: 'hsl(var(--aries-gray))'
 				}
-			},
-			fontFamily: {
-				sans: ['Calibri', 'system-ui', 'sans-serif'],
-				display: ['Calibri', 'system-ui', 'sans-serif']
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
