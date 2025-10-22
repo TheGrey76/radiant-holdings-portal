@@ -1,8 +1,25 @@
 import { motion } from 'framer-motion';
-import { Target, TrendingUp, Cpu } from 'lucide-react';
-import edoardoImage from '@/assets/edoardo-grigione.jpg';
+import { Target, TrendingUp, Cpu, Award, Users, BarChart3 } from 'lucide-react';
 
 const AboutPage = () => {
+  const metrics = [
+    {
+      icon: Award,
+      value: '25+',
+      label: 'Years Combined Experience'
+    },
+    {
+      icon: Users,
+      value: '$2B+',
+      label: 'Capital Raised'
+    },
+    {
+      icon: BarChart3,
+      value: '40+',
+      label: 'Successful Transactions'
+    }
+  ];
+
   const approaches = [
     {
       icon: Target,
@@ -21,46 +38,94 @@ const AboutPage = () => {
     }
   ];
 
+  const caseStudies = [
+    {
+      title: 'European Real Estate Fund',
+      description: 'Structured and positioned a €150M real estate fund, achieving full subscription within 6 months.',
+      impact: '150M+ raised'
+    },
+    {
+      title: 'Tech-Enabled Investment Platform',
+      description: 'Advised on capital formation strategy for innovative fintech platform, connecting institutional investors with alternative assets.',
+      impact: '30+ investors onboarded'
+    },
+    {
+      title: 'Family Office Portfolio Optimization',
+      description: 'Delivered comprehensive market intelligence and strategic positioning for multi-generational family office.',
+      impact: '25% portfolio growth'
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-background">
-      <div className="max-w-4xl mx-auto px-6 py-32">
+      <div className="max-w-6xl mx-auto px-6 py-32">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="mb-24"
+          className="mb-24 text-center"
         >
-          <div className="flex items-center gap-6 mb-6">
-            <h1 className="text-4xl md:text-5xl font-light text-foreground uppercase tracking-tight">
-              Edoardo Grigione
-            </h1>
-            <motion.img 
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              src={edoardoImage} 
-              alt="Edoardo Grigione"
-              className="w-20 h-20 rounded-lg shadow-lg object-cover"
-            />
-          </div>
-          
-          <p className="text-xl text-accent mb-10 font-light uppercase tracking-wider">
-            Founder & Principal Advisor
+          <h1 className="text-4xl md:text-6xl font-light text-foreground mb-6 uppercase tracking-tight">
+            Proven Results
+          </h1>
+          <p className="text-xl text-muted-foreground font-light leading-relaxed max-w-3xl mx-auto">
+            Delivering strategic advisory excellence to institutional investors and fund managers across alternative investments.
           </p>
-          
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="space-y-6 max-w-3xl"
-          >
-            <p className="text-lg text-muted-foreground font-light leading-relaxed">
-              With over 25 years of experience across hedge funds, private equity, and alternative investments, Edoardo founded Aries76 Ltd to provide strategic advisory services to select institutional investors and fund managers.
-            </p>
-            <p className="text-lg text-muted-foreground font-light leading-relaxed">
-              Based in London, Aries76 combines global market expertise with local precision, acting as a trusted advisor to family-backed businesses and institutional investors seeking strategic capital formation and market intelligence.
-            </p>
-          </motion.div>
+        </motion.div>
+
+        {/* Metrics Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="grid md:grid-cols-3 gap-8 mb-32"
+        >
+          {metrics.map((metric, index) => (
+            <motion.div
+              key={metric.label}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.3 + index * 0.1 }}
+              className="text-center p-8 rounded-lg bg-secondary/20 hover:bg-secondary/30 transition-colors duration-300"
+            >
+              <metric.icon className="h-10 w-10 text-accent mx-auto mb-4" strokeWidth={1.5} />
+              <div className="text-4xl font-light text-foreground mb-2">{metric.value}</div>
+              <div className="text-sm text-muted-foreground uppercase tracking-wider">{metric.label}</div>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Case Studies Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="mb-32"
+        >
+          <h2 className="text-2xl md:text-3xl font-light text-foreground mb-12 uppercase tracking-wider text-center">
+            Select Engagements
+          </h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {caseStudies.map((study, index) => (
+              <motion.div
+                key={study.title}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.5 + index * 0.1 }}
+                className="p-6 rounded-lg border border-border hover:border-accent/50 transition-colors duration-300"
+              >
+                <h3 className="text-lg font-normal text-foreground mb-3 uppercase tracking-wide">
+                  {study.title}
+                </h3>
+                <p className="text-muted-foreground font-light leading-relaxed mb-4">
+                  {study.description}
+                </p>
+                <div className="text-accent font-light uppercase text-sm tracking-wider">
+                  {study.impact}
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </motion.div>
 
         <motion.div
