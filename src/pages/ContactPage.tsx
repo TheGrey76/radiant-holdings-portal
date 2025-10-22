@@ -3,7 +3,7 @@ import { Mail, MapPin } from 'lucide-react';
 
 const ContactPage = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex items-center justify-center">
       <div className="max-w-3xl mx-auto px-6 py-32">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
