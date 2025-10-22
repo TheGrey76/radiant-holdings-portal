@@ -30,25 +30,23 @@ const AboutPage = () => {
           transition={{ duration: 0.6 }}
           className="mb-24"
         >
-          <h1 className="text-4xl md:text-5xl font-light text-foreground mb-6 uppercase tracking-tight">
-            Edoardo Grigione
-          </h1>
-          <p className="text-xl text-accent mb-8 font-light uppercase tracking-wider">
+          <div className="flex items-center gap-6 mb-6">
+            <h1 className="text-4xl md:text-5xl font-light text-foreground uppercase tracking-tight">
+              Edoardo Grigione
+            </h1>
+            <motion.img 
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              src={edoardoImage} 
+              alt="Edoardo Grigione"
+              className="w-20 h-20 rounded-lg shadow-lg object-cover"
+            />
+          </div>
+          
+          <p className="text-xl text-accent mb-10 font-light uppercase tracking-wider">
             Founder & Principal Advisor
           </p>
-          
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="mb-10"
-          >
-            <img 
-              src={edoardoImage} 
-              alt="Edoardo Grigione - Founder of Aries76"
-              className="w-64 h-auto rounded-lg shadow-lg"
-            />
-          </motion.div>
           
           <motion.div
             initial={{ opacity: 0, y: 20 }}
