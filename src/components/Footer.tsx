@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { Linkedin } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -9,6 +10,14 @@ const Footer = () => {
             <div className="text-2xl font-light tracking-wider text-white uppercase mb-6">
               ARIES<span className="text-accent">76</span>
             </div>
+            <a 
+              href="https://www.linkedin.com/in/edoardogrigione/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-white/70 hover:text-accent transition-colors mb-6"
+            >
+              <Linkedin size={20} />
+            </a>
             <p className="text-white/70 font-light leading-relaxed text-sm">
               Building Bridges Between Capital and Opportunity
               <br />
