@@ -34,16 +34,17 @@ const AboutPage = () => {
             About <span className="text-accent">Aries76</span>
           </h1>
           
-          <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
+          <div className="grid md:grid-cols-2 gap-12 items-start mb-16">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
+              className="flex justify-center md:justify-start"
             >
               <img 
                 src={edoardoImage} 
                 alt="Edoardo Grigione - Founder of Aries76"
-                className="w-full h-auto rounded-lg shadow-lg"
+                className="w-48 h-auto rounded-lg shadow-lg"
               />
             </motion.div>
             
