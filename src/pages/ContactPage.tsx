@@ -45,7 +45,9 @@ const ContactPage = () => {
                   <p className="text-muted-foreground font-light">
                     Aries76 Ltd
                     <br />
-                    London, United Kingdom
+                    27 Old Gloucester Street
+                    <br />
+                    London, United Kingdom, WC1N 3AX
                   </p>
                 </div>
               </div>
@@ -54,10 +56,10 @@ const ContactPage = () => {
                 <Mail className="h-6 w-6 text-accent mt-1" strokeWidth={1.5} />
                 <div>
                   <a 
-                    href="mailto:info@aries76.com" 
+                    href="mailto:quinley.martini@aries76.com" 
                     className="text-muted-foreground font-light hover:text-accent transition-colors"
                   >
-                    info@aries76.com
+                    quinley.martini@aries76.com
                   </a>
                 </div>
               </div>
