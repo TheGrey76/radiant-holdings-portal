@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
-import aries76Logo from '@/assets/aries76-wordmark.png';
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -42,12 +41,8 @@ const Navbar = () => {
       transition={{ duration: 0.5, ease: 'easeOut' }}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <Link to="/">
-          <img 
-            src={aries76Logo} 
-            alt="Aries76 Logo" 
-            className="h-12 md:h-14" 
-          />
+        <Link to="/" className="text-2xl font-light tracking-wider text-foreground uppercase">
+          ARIES<span className="text-accent">76</span>
         </Link>
         
         {/* Desktop Navigation */}

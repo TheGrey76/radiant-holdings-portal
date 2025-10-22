@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import aries76Logo from '@/assets/aries76-wordmark.png';
 
 const Footer = () => {
   return (
@@ -7,11 +6,9 @@ const Footer = () => {
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
           <div>
-            <img 
-              src={aries76Logo} 
-              alt="Aries76 Logo" 
-              className="h-12 mb-6" 
-            />
+            <div className="text-2xl font-light tracking-wider text-white uppercase mb-6">
+              ARIES<span className="text-accent">76</span>
+            </div>
             <p className="text-white/70 font-light leading-relaxed text-sm">
               Building Bridges Between Capital and Opportunity
               <br />
