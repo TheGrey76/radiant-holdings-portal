@@ -1,5 +1,5 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Lexend:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Calibri:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -37,10 +37,10 @@
 
     --radius: 0.5rem;
 
-    /* Aries brand colors */
-    --aries-navy: 222 55% 35%;
-    --aries-blue: 210 100% 35%;
-    --aries-orange: 22 100% 56%;
+    /* Aries brand colors - New Corporate Identity */
+    --aries-navy: 213 63% 10%; /* #0b1628 */
+    --aries-copper: 26 55% 49%; /* #c07a3b */
+    --aries-gray: 0 0% 98%;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;

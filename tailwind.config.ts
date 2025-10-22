@@ -65,16 +65,13 @@ export default {
 				},
 				aries: {
 					navy: 'hsl(var(--aries-navy))',
-					blue: 'hsl(var(--aries-blue))',
-					orange: 'hsl(var(--aries-orange))',
-					light: '#f8f9fa',
-					dark: '#0a0e29',
-					gray: '#f1f3f5'
+					copper: 'hsl(var(--aries-copper))',
+					gray: 'hsl(var(--aries-gray))'
 				}
 			},
 			fontFamily: {
-				sans: ['Inter', 'sans-serif'],
-				display: ['Lexend', 'sans-serif']
+				sans: ['Calibri', 'system-ui', 'sans-serif'],
+				display: ['Calibri', 'system-ui', 'sans-serif']
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

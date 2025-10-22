@@ -1,11 +1,12 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { Menu, X } from 'lucide-react';
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
-  const location = useLocation();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   useEffect(() => {
     const handleScroll = () => {
@@ -21,41 +22,74 @@ const Navbar = () => {
     };
   }, [scrolled]);
 
+  const navLinks = [
+    { name: 'Home', path: '/' },
+    { name: 'About', path: '/about' },
+    { name: 'Services', path: '/services' },
+    { name: 'Legal', path: '/legal' },
+    { name: 'Contact', path: '/contact' },
+  ];
+
   return (
     <motion.header
       className={`fixed top-0 left-0 right-0 z-50 px-6 md:px-10 transition-all duration-300 ${
-        scrolled ? 'py-3 bg-white/90 backdrop-blur-sm shadow-smooth' : 'py-6'
+        scrolled ? 'py-3 bg-white/95 backdrop-blur-sm shadow-sm' : 'py-4 bg-white/90 backdrop-blur-sm'
       }`}
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <motion.div 
-          className="flex items-center space-x-2"
-          whileHover={{ scale: 1.02 }}
-          transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-        >
-          <Link to="/">
-            <img 
-              src="/lovable-uploads/ba0e4dd6-4e22-4db9-9da2-6b3359300d31.png" 
-              alt="Aries76 Logo" 
-              className="h-64 md:h-72" 
-            />
-          </Link>
-        </motion.div>
+        <Link to="/">
+          <img 
+            src="/lovable-uploads/ba0e4dd6-4e22-4db9-9da2-6b3359300d31.png" 
+            alt="Aries76 Logo" 
+            className="h-16 md:h-20" 
+          />
+        </Link>
         
-        <div className="flex items-center space-x-4">
-          <motion.a 
-            href="#contact"
-            className="px-5 py-2 bg-aries-navy text-white rounded-md font-medium transition-all hover:bg-aries-blue"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            Get in Touch
-          </motion.a>
-        </div>
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center space-x-8">
+          {navLinks.map((link) => (
+            <Link
+              key={link.path}
+              to={link.path}
+              className="text-sm uppercase tracking-wider text-aries-navy hover:text-aries-copper transition-colors font-light"
+            >
+              {link.name}
+            </Link>
+          ))}
+        </nav>
+        
+        {/* Mobile Menu Button */}
+        <button
+          className="md:hidden text-aries-navy"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        >
+          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
       </div>
+      
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <motion.nav
+          className="md:hidden mt-4 pb-4 space-y-4"
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: 'auto' }}
+          exit={{ opacity: 0, height: 0 }}
+        >
+          {navLinks.map((link) => (
+            <Link
+              key={link.path}
+              to={link.path}
+              className="block text-sm uppercase tracking-wider text-aries-navy hover:text-aries-copper transition-colors font-light"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              {link.name}
+            </Link>
+          ))}
+        </motion.nav>
+      )}
     </motion.header>
   );
 };
