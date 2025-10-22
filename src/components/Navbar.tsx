@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
-import aries76Logo from '@/assets/aries76-logo-text.png';
+import aries76Logo from '@/assets/aries76-wordmark.png';
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
