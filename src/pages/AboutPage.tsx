@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Target, TrendingUp, Cpu } from 'lucide-react';
+import edoardoImage from '@/assets/edoardo-grigione.jpg';
 
 const AboutPage = () => {
   const approaches = [
@@ -29,19 +30,39 @@ const AboutPage = () => {
           transition={{ duration: 0.6 }}
           className="mb-20"
         >
-          <h1 className="text-4xl md:text-6xl font-light text-foreground mb-8 tracking-tight uppercase">
-            A Global Advisory Firm
-            <br />
-            <span className="text-accent">with Local Precision</span>
+          <h1 className="text-4xl md:text-6xl font-light text-foreground mb-16 tracking-tight uppercase">
+            About <span className="text-accent">Aries76</span>
           </h1>
           
-          <div className="max-w-3xl">
-            <p className="text-lg md:text-xl text-muted-foreground font-light leading-relaxed mb-6">
-              Founded by <span className="font-semibold">Edoardo Grigione</span>, Aries76 Ltd combines over 25 years of experience across hedge funds, private equity, and alternative investments.
-            </p>
-            <p className="text-lg md:text-xl text-muted-foreground font-light leading-relaxed">
-              With a presence in London, we act as a strategic advisor to selected fund managers, family-backed businesses, and institutional investors.
-            </p>
+          <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              <img 
+                src={edoardoImage} 
+                alt="Edoardo Grigione - Founder of Aries76"
+                className="w-full h-auto rounded-lg shadow-lg"
+              />
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              <h2 className="text-3xl md:text-4xl font-light text-foreground mb-6 uppercase tracking-wide">
+                Edoardo Grigione
+              </h2>
+              <p className="text-xl text-accent mb-6 font-light">Founder & Principal Advisor</p>
+              <p className="text-lg text-muted-foreground font-light leading-relaxed mb-4">
+                With over 25 years of experience across hedge funds, private equity, and alternative investments, Edoardo founded Aries76 Ltd to provide strategic advisory services to select institutional investors and fund managers.
+              </p>
+              <p className="text-lg text-muted-foreground font-light leading-relaxed">
+                Based in London, Aries76 combines global market expertise with local precision, acting as a trusted advisor to family-backed businesses and institutional investors seeking strategic capital formation and market intelligence.
+              </p>
+            </motion.div>
           </div>
         </motion.div>
 
