@@ -37,7 +37,7 @@ const AboutPage = () => {
           
           <div className="max-w-3xl">
             <p className="text-lg md:text-xl text-muted-foreground font-light leading-relaxed mb-6">
-              Founded by Edoardo Grigione, Aries76 Ltd combines over 25 years of experience across hedge funds, private equity, and venture capital.
+              Founded by Edoardo Grigione, Aries76 Ltd combines over 25 years of experience across hedge funds, private equity, and alternative investments.
             </p>
             <p className="text-lg md:text-xl text-muted-foreground font-light leading-relaxed">
               With a presence in London, we act as a strategic advisor to selected fund managers, family-backed businesses, and institutional investors.
