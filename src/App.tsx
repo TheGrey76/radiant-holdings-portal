@@ -15,6 +15,7 @@ import ContactPage from "./pages/ContactPage";
 
 import Auth from "./pages/Auth";
 import SneakerReport from "./pages/SneakerReport";
+import AiresData from "./pages/AiresData";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -33,6 +34,7 @@ const App = () => (
           <Route path="/services" element={<Services />} />
           
           <Route path="/legal" element={<Legal />} />
+          <Route path="/aires-data" element={<AiresData />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/sneaker-report" element={<SneakerReport />} />
