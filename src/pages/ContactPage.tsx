@@ -1,28 +1,7 @@
 import { motion } from 'framer-motion';
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { useToast } from '@/hooks/use-toast';
 import { Mail, MapPin } from 'lucide-react';
 
 const ContactPage = () => {
-  const { toast } = useToast();
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: ''
-  });
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    toast({
-      title: "Message Sent",
-      description: "We'll get back to you soon.",
-    });
-    setFormData({ name: '', email: '', message: '' });
-  };
-
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-3xl mx-auto px-6 py-32">
@@ -64,53 +43,6 @@ const ContactPage = () => {
               </div>
             </div>
           </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <Input
-                placeholder="Name"
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                required
-                className="bg-secondary/30 border-border"
-              />
-            </div>
-            
-            <div>
-              <Input
-                type="email"
-                placeholder="Email"
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                required
-                className="bg-secondary/30 border-border"
-              />
-            </div>
-            
-            <div>
-              <Textarea
-                placeholder="Message"
-                value={formData.message}
-                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                required
-                rows={6}
-                className="bg-secondary/30 border-border resize-none"
-              />
-            </div>
-            
-            <Button 
-              type="submit" 
-              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground uppercase tracking-wider"
-            >
-              Request a Call
-            </Button>
-          </form>
         </motion.div>
       </div>
     </div>
