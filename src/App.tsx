@@ -12,7 +12,7 @@ import AboutPage from "./pages/AboutPage";
 import Services from "./pages/Services";
 import Legal from "./pages/Legal";
 import ContactPage from "./pages/ContactPage";
-
+import OurClients from "./pages/OurClients";
 import Auth from "./pages/Auth";
 import SneakerReport from "./pages/SneakerReport";
 import AiresData from "./pages/AiresData";
@@ -32,7 +32,7 @@ const App = () => (
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/services" element={<Services />} />
-          
+          <Route path="/clients" element={<OurClients />} />
           <Route path="/legal" element={<Legal />} />
           <Route path="/aires-data" element={<AiresData />} />
           <Route path="/contact" element={<ContactPage />} />
