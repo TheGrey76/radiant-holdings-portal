@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 
 const Home = () => {
   return (
@@ -43,6 +44,58 @@ const Home = () => {
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Clients Section */}
+      <section className="py-20 px-6 md:px-10 bg-background">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-light text-foreground mb-4 tracking-tight">
+              Our Clients & Partners
+            </h2>
+            <p className="text-lg text-muted-foreground font-light max-w-2xl mx-auto">
+              Working with distinguished investment firms globally
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="max-w-4xl mx-auto"
+          >
+            <Card className="border-border/50 bg-card hover:shadow-smooth-lg transition-shadow duration-300">
+              <CardContent className="p-12">
+                <div className="flex items-center justify-center">
+                  <img 
+                    src="https://www.faroalternativeinvestments.com/wp-content/uploads/2024/03/faro-logo.png" 
+                    alt="Faro Alternative Investments" 
+                    className="max-h-24 max-w-full object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = 'https://via.placeholder.com/400x150?text=Faro+Alternative+Investments';
+                    }}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+            
+            <div className="text-center mt-8">
+              <Link to="/clients">
+                <Button variant="ghost" className="font-light uppercase tracking-wider text-accent hover:text-accent/80">
+                  View All Clients
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
           </motion.div>
         </div>
       </section>
