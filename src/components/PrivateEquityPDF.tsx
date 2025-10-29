@@ -339,8 +339,8 @@ export const PrivateEquityPDFDownload = () => (
   >
     {({ loading }) => (
       <Button 
-        variant="outline" 
-        className="gap-2"
+        size="lg"
+        className="gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/20 font-light uppercase tracking-wider px-8"
         disabled={loading}
       >
         <Download className="w-4 h-4" />
