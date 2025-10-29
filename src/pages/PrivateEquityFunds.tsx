@@ -32,7 +32,7 @@ const PrivateEquityFunds = () => {
     {
       icon: Network,
       title: 'Cross-Border Expertise',
-      description: 'Proven experience across London, Zurich, Luxembourg, and Budapest.'
+      description: 'Proven experience across London, Dubai, Milan and Luxembourg.'
     },
     {
       icon: Shield,
