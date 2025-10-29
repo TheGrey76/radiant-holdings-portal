@@ -46,6 +46,39 @@ const PrivateEquityFunds = () => {
     }
   ];
 
+  const fundraisingSentiment = [
+    {
+      sector: 'Digital Infrastructure & AI Infrastructure',
+      hype: 3,
+      demand: 'High Growth',
+      insight: 'Top-performing segment, combining technology scalability with real-asset stability. Strong crossover with data centers, edge computing, and AI infrastructure.'
+    },
+    {
+      sector: 'Healthcare & Life Sciences',
+      hype: 2,
+      demand: 'Strong Growth',
+      insight: 'Structural growth, defensive sector with high investor conviction in medtech, diagnostics, and specialty clinics.'
+    },
+    {
+      sector: 'Sustainability & Energy Transition',
+      hype: 2,
+      demand: 'Strong Growth',
+      insight: 'ESG-driven but increasingly quantitative; LPs focus on tangible climate metrics, circular economy, and clean industry plays.'
+    },
+    {
+      sector: 'Industrial Technology & Automation',
+      hype: 1,
+      demand: 'Moderate Growth',
+      insight: 'Re-emerging theme driven by nearshoring, robotics, and AI-assisted manufacturing efficiency.'
+    },
+    {
+      sector: 'Consumer & Luxury',
+      hype: 0,
+      demand: 'Stable',
+      insight: 'Selective rebound focused on scalable premium brands, digital distribution, and global lifestyle platforms.'
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
@@ -249,6 +282,108 @@ const PrivateEquityFunds = () => {
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* 2026 Fundraising Sentiment */}
+      <section className="py-20 px-6 md:px-10 bg-gradient-to-br from-[#0f1729]/5 to-[#1a2744]/5">
+        <div className="max-w-6xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-4xl md:text-5xl font-light text-foreground mb-6 tracking-tight">
+              2026 Private Equity <span className="text-accent">Fundraising Sentiment</span>
+            </h2>
+            <p className="text-lg font-light text-muted-foreground leading-relaxed max-w-4xl mx-auto">
+              The current fundraising cycle is increasingly defined by sectoral resilience and investor conviction. While capital concentration favors established GPs, sector specialization and cross-over strategies are driving differentiated performance. The following overview captures the 2026 sentiment across the most active private equity verticals.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="mt-12"
+          >
+            <Card className="border-border/50 bg-card overflow-hidden">
+              <CardContent className="p-0">
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="border-b border-border/50 bg-muted/30">
+                        <th className="text-left p-6 font-light text-sm uppercase tracking-wider text-foreground">Sector</th>
+                        <th className="text-center p-6 font-light text-sm uppercase tracking-wider text-foreground">Hype Level</th>
+                        <th className="text-center p-6 font-light text-sm uppercase tracking-wider text-foreground">LP Demand Trend</th>
+                        <th className="text-left p-6 font-light text-sm uppercase tracking-wider text-foreground">Strategic Insight</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {fundraisingSentiment.map((item, index) => (
+                        <tr 
+                          key={index}
+                          className={`border-b border-border/30 transition-colors hover:bg-muted/20 ${
+                            index % 2 === 0 ? 'bg-background' : 'bg-muted/10'
+                          }`}
+                        >
+                          <td className="p-6 font-light text-foreground">{item.sector}</td>
+                          <td className="p-6 text-center">
+                            <div className="flex items-center justify-center gap-1">
+                              {item.hype === 3 && (
+                                <>
+                                  <Flame className="w-4 h-4 text-accent" />
+                                  <Flame className="w-4 h-4 text-accent" />
+                                  <Flame className="w-4 h-4 text-accent" />
+                                </>
+                              )}
+                              {item.hype === 2 && (
+                                <>
+                                  <Flame className="w-4 h-4 text-accent" />
+                                  <Flame className="w-4 h-4 text-accent" />
+                                </>
+                              )}
+                              {item.hype === 1 && <Zap className="w-4 h-4 text-muted-foreground" />}
+                              {item.hype === 0 && <Minus className="w-4 h-4 text-muted-foreground" />}
+                            </div>
+                          </td>
+                          <td className="p-6 text-center">
+                            <div className="flex items-center justify-center gap-1">
+                              <span className="font-light text-foreground">{item.demand}</span>
+                              {item.demand === 'High Growth' && (
+                                <>
+                                  <ArrowUp className="w-3 h-3 text-accent" />
+                                  <ArrowUp className="w-3 h-3 text-accent" />
+                                  <ArrowUp className="w-3 h-3 text-accent" />
+                                </>
+                              )}
+                              {item.demand === 'Strong Growth' && (
+                                <>
+                                  <ArrowUp className="w-3 h-3 text-accent" />
+                                  <ArrowUp className="w-3 h-3 text-accent" />
+                                </>
+                              )}
+                              {item.demand === 'Moderate Growth' && <ArrowUp className="w-3 h-3 text-muted-foreground" />}
+                              {item.demand === 'Stable' && <ArrowRight className="w-3 h-3 text-muted-foreground" />}
+                            </div>
+                          </td>
+                          <td className="p-6 font-light text-muted-foreground leading-relaxed">{item.insight}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <div className="p-6 bg-muted/10 border-t border-border/30">
+                  <p className="text-xs font-light text-muted-foreground italic text-center">
+                    Data insights and sector sentiment are derived from Aries76's ongoing research and proprietary intelligence frameworks.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
         </div>
       </section>
 
