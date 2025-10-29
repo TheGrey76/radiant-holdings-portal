@@ -5,12 +5,13 @@ import { Download } from 'lucide-react';
 const styles = StyleSheet.create({
   page: {
     backgroundColor: '#ffffff',
-    padding: 40,
+    padding: 50,
     fontFamily: 'Helvetica',
   },
   coverPage: {
+    background: 'linear-gradient(135deg, #0f1729 0%, #1a2744 50%, #0d1424 100%)',
     backgroundColor: '#0f1729',
-    padding: 60,
+    padding: 80,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -18,107 +19,122 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   coverTitle: {
-    fontSize: 36,
+    fontSize: 42,
     color: '#ffffff',
     textAlign: 'center',
-    marginBottom: 20,
+    marginBottom: 16,
     fontFamily: 'Helvetica-Bold',
+    letterSpacing: -0.5,
+    lineHeight: 1.2,
   },
   coverSubtitle: {
-    fontSize: 20,
+    fontSize: 24,
     color: '#fbbf24',
     textAlign: 'center',
-    marginBottom: 40,
-  },
-  coverTagline: {
-    fontSize: 14,
-    color: '#d1d5db',
-    textAlign: 'center',
-    lineHeight: 1.6,
-  },
-  section: {
     marginBottom: 30,
-  },
-  sectionTitle: {
-    fontSize: 20,
-    marginBottom: 15,
-    color: '#0f1729',
     fontFamily: 'Helvetica-Bold',
   },
+  coverTagline: {
+    fontSize: 16,
+    color: '#e5e7eb',
+    textAlign: 'center',
+    lineHeight: 1.6,
+    maxWidth: 500,
+  },
+  section: {
+    marginBottom: 35,
+  },
+  sectionTitle: {
+    fontSize: 24,
+    marginBottom: 20,
+    color: '#0f1729',
+    fontFamily: 'Helvetica-Bold',
+    letterSpacing: -0.3,
+  },
   sectionTitleAccent: {
-    fontSize: 20,
+    fontSize: 24,
     color: '#fbbf24',
     fontFamily: 'Helvetica-Bold',
   },
   paragraph: {
     fontSize: 11,
-    lineHeight: 1.8,
-    color: '#374151',
-    marginBottom: 12,
+    lineHeight: 1.9,
+    color: '#4b5563',
+    marginBottom: 14,
+    textAlign: 'justify',
   },
   subsection: {
     marginBottom: 20,
-    padding: 15,
-    backgroundColor: '#f9fafb',
-    borderRadius: 4,
+    padding: 20,
+    backgroundColor: '#f8fafc',
+    borderLeft: '3px solid #fbbf24',
+    borderRadius: 0,
   },
   subsectionTitle: {
-    fontSize: 14,
-    marginBottom: 8,
+    fontSize: 13,
+    marginBottom: 10,
     color: '#0f1729',
     fontFamily: 'Helvetica-Bold',
   },
   subsectionText: {
     fontSize: 10,
-    lineHeight: 1.6,
-    color: '#4b5563',
+    lineHeight: 1.7,
+    color: '#6b7280',
   },
   bulletPoint: {
     fontSize: 10,
     lineHeight: 1.8,
-    color: '#374151',
+    color: '#4b5563',
     marginBottom: 8,
     paddingLeft: 15,
   },
   table: {
-    marginTop: 15,
-    marginBottom: 20,
+    marginTop: 20,
+    marginBottom: 25,
   },
   tableHeader: {
     flexDirection: 'row',
-    backgroundColor: '#e5e7eb',
-    padding: 10,
-    borderRadius: 4,
-    marginBottom: 5,
+    backgroundColor: '#0f1729',
+    padding: 12,
+    borderRadius: 0,
+    marginBottom: 2,
   },
   tableHeaderCell: {
     fontSize: 9,
     fontFamily: 'Helvetica-Bold',
-    color: '#0f1729',
+    color: '#ffffff',
     textTransform: 'uppercase',
+    letterSpacing: 0.5,
   },
   tableRow: {
     flexDirection: 'row',
-    padding: 10,
+    padding: 12,
     borderBottomWidth: 1,
     borderBottomColor: '#e5e7eb',
+    backgroundColor: '#fafbfc',
   },
   tableCell: {
     fontSize: 9,
-    color: '#374151',
-    lineHeight: 1.4,
+    color: '#4b5563',
+    lineHeight: 1.5,
   },
   footer: {
     position: 'absolute',
     bottom: 30,
-    left: 40,
-    right: 40,
+    left: 50,
+    right: 50,
     fontSize: 8,
     color: '#9ca3af',
     textAlign: 'center',
     borderTopWidth: 1,
-    borderTopColor: '#e5e7eb',
-    paddingTop: 10,
+    borderTopColor: '#d1d5db',
+    paddingTop: 12,
+  },
+  accentDivider: {
+    width: '100%',
+    height: 2,
+    backgroundColor: '#fbbf24',
+    marginVertical: 25,
   },
 });
 
@@ -126,16 +142,19 @@ const PrivateEquityPDFDocument = () => (
   <Document>
     {/* Cover Page */}
     <Page size="A4" style={styles.coverPage}>
-      <View>
-        <Text style={styles.coverTitle}>Strategic Advisory for International</Text>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text style={styles.coverTitle}>Strategic Advisory</Text>
+        <Text style={styles.coverTitle}>for International</Text>
         <Text style={styles.coverTitle}>Private Equity Managers</Text>
+        <View style={{ width: 80, height: 3, backgroundColor: '#fbbf24', marginVertical: 30 }} />
         <Text style={styles.coverSubtitle}>Private Equity Funds Advisory</Text>
         <Text style={styles.coverTagline}>
           Supporting established GPs in cross-border capital formation and investor access
         </Text>
       </View>
-      <View style={{ position: 'absolute', bottom: 40 }}>
-        <Text style={{ fontSize: 12, color: '#d1d5db' }}>ARIES76 Ltd</Text>
+      <View style={{ position: 'absolute', bottom: 50, alignItems: 'center', width: '100%' }}>
+        <Text style={{ fontSize: 18, color: '#fbbf24', fontFamily: 'Helvetica-Bold', letterSpacing: 2 }}>ARIES76</Text>
+        <Text style={{ fontSize: 10, color: '#9ca3af', marginTop: 5 }}>London | Zurich | Luxembourg | Budapest</Text>
       </View>
     </Page>
 
