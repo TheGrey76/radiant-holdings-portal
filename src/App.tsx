@@ -16,6 +16,7 @@ import OurClients from "./pages/OurClients";
 import Auth from "./pages/Auth";
 import SneakerReport from "./pages/SneakerReport";
 import AiresData from "./pages/AiresData";
+import PrivateEquityFunds from "./pages/PrivateEquityFunds";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -35,6 +36,7 @@ const App = () => (
           <Route path="/clients" element={<OurClients />} />
           <Route path="/legal" element={<Legal />} />
           <Route path="/aires-data" element={<AiresData />} />
+          <Route path="/private-equity-funds" element={<PrivateEquityFunds />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/sneaker-report" element={<SneakerReport />} />
