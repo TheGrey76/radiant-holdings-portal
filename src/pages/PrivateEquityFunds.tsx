@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Building2, Users, TrendingUp, Globe2, Network, Brain, Shield, Zap, Flame, ArrowUp, ArrowRight, Minus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { PrivateEquityPDFDownload } from '@/components/PrivateEquityPDF';
 
 const PrivateEquityFunds = () => {
   const deliverables = [
@@ -402,14 +403,17 @@ const PrivateEquityFunds = () => {
             <p className="text-xl font-light text-white/80 mb-10 max-w-2xl mx-auto">
               We invite fund managers to discuss upcoming fundraisings or co-investment strategies. Let's explore how Aries76 can support your capital formation objectives.
             </p>
-            <Link to="/contact">
-              <Button 
-                size="lg" 
-                className="bg-accent hover:bg-accent/90 text-white font-light uppercase tracking-wider px-8"
-              >
-                Request an Introductory Call
-              </Button>
-            </Link>
+            <div className="flex flex-col sm:flex-row gap-4 items-center justify-center">
+              <Link to="/contact">
+                <Button 
+                  size="lg" 
+                  className="bg-accent hover:bg-accent/90 text-white font-light uppercase tracking-wider px-8"
+                >
+                  Request an Introductory Call
+                </Button>
+              </Link>
+              <PrivateEquityPDFDownload />
+            </div>
           </motion.div>
         </div>
       </section>
