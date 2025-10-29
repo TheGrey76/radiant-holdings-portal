@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Building2, Users, TrendingUp, Globe2, Network, Brain, Shield, Zap } from 'lucide-react';
+import { Building2, Users, TrendingUp, Globe2, Network, Brain, Shield, Zap, Flame, ArrowUp, ArrowRight, Minus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 
