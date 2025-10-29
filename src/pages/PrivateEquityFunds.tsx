@@ -116,7 +116,7 @@ const PrivateEquityFunds = () => {
             <Card className="border-border/50 bg-card">
               <CardContent className="p-12">
                 <p className="text-lg font-light text-muted-foreground leading-relaxed">
-                  Aries76 collaborates with second or later-generation General Partners, typically managing between €1–5 billion, based in Luxembourg, London, Paris, or the Nordics. These managers operate in core sectors such as consumer & luxury, healthcare, digital infrastructure, industrial technology, and sustainability.
+                  Aries76 collaborates with second or later-generation General Partners, typically managing between €1–5 billion, based globally. These managers operate in core sectors such as consumer & luxury, healthcare, digital infrastructure, industrial technology, and sustainability.
                 </p>
                 <p className="text-lg font-light text-muted-foreground leading-relaxed mt-6">
                   We support them in accessing private wealth, family offices, and non-traditional Limited Partners across the UK, Central and Eastern Europe, and MENA — enabling strategic capital formation beyond traditional institutional channels.
