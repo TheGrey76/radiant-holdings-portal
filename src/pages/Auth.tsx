@@ -20,6 +20,7 @@ const Auth = () => {
   const [error, setError] = useState('');
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
+  const [isResettingPassword, setIsResettingPassword] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -111,6 +112,33 @@ const Auth = () => {
     }
   };
 
+  const handlePasswordReset = async () => {
+    if (!email) {
+      setError('Please enter your email address');
+      return;
+    }
+
+    setIsResettingPassword(true);
+    setError('');
+
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/auth`,
+      });
+
+      if (error) {
+        setError(error.message);
+        return;
+      }
+
+      toast.success('Password reset email sent! Check your inbox.');
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setIsResettingPassword(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white flex items-center justify-center p-4">
       <Card className="w-full max-w-md">
@@ -198,7 +226,18 @@ const Auth = () => {
             </Button>
           </form>
           
-          <div className="mt-6 text-center">
+          <div className="mt-6 text-center space-y-3">
+            {isLogin && (
+              <button
+                type="button"
+                onClick={handlePasswordReset}
+                disabled={isResettingPassword}
+                className="text-sm text-aries-orange hover:underline block w-full"
+              >
+                {isResettingPassword ? 'Sending...' : 'Forgot password?'}
+              </button>
+            )}
+            
             <button
               onClick={() => {
                 setIsLogin(!isLogin);
