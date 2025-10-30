@@ -402,14 +402,29 @@ const PrivateEquityFunds = () => {
             <p className="text-xl font-light text-white/80 mb-10 max-w-2xl mx-auto">
               We invite fund managers to discuss upcoming fundraisings or co-investment strategies. Let's explore how Aries76 can support your capital formation objectives.
             </p>
-            <Link to="/contact">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link to="/contact">
+                <Button 
+                  size="lg" 
+                  className="bg-accent hover:bg-accent/90 text-white font-light uppercase tracking-wider px-8"
+                >
+                  Request an Introductory Call
+                </Button>
+              </Link>
               <Button 
                 size="lg" 
-                className="bg-accent hover:bg-accent/90 text-white font-light uppercase tracking-wider px-8"
+                onClick={() => {
+                  const link = document.createElement('a');
+                  link.href = '/Aries76_Private_Equity_Funds_C.pdf';
+                  link.download = 'Aries76_Private_Equity_Funds_C.pdf';
+                  link.click();
+                }}
+                className="bg-white/10 text-white border border-white/30 hover:bg-white/20 hover:border-white/50 font-light uppercase tracking-wider px-8 transition-all"
               >
-                Request an Introductory Call
+                <Download className="w-4 h-4 mr-2" />
+                Download Our Presentation
               </Button>
-            </Link>
+            </div>
           </motion.div>
         </div>
       </section>
