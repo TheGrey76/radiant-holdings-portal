@@ -415,7 +415,7 @@ const PrivateEquityFunds = () => {
                 size="lg" 
                 onClick={() => {
                   const link = document.createElement('a');
-                  link.href = '/Aries76_Private_Equity_Funds.pdf';
+                  link.href = '/Aries76_Private_Equity_Presentation.pdf';
                   link.download = 'Aries76_Private_Equity_Presentation.pdf';
                   link.click();
                 }}
