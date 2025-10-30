@@ -414,8 +414,7 @@ const PrivateEquityFunds = () => {
               <a href="/Aries76_Private_Equity_Funds.pdf" download>
                 <Button 
                   size="lg" 
-                  variant="outline"
-                  className="border-white/20 text-white hover:bg-white/10 font-light uppercase tracking-wider px-8"
+                  className="bg-white/10 text-white border border-white/30 hover:bg-white/20 hover:border-white/50 font-light uppercase tracking-wider px-8 transition-all"
                 >
                   <Download className="w-4 h-4 mr-2" />
                   Download Our Presentation
