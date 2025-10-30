@@ -30,9 +30,9 @@ const Auth = () => {
         setSession(session);
         setUser(session?.user ?? null);
         
-        // Redirect authenticated users to main site
+        // Redirect authenticated users to admin
         if (session?.user) {
-          window.location.href = 'https://www.aries76.com';
+          navigate('/admin');
         }
       }
     );
@@ -43,7 +43,7 @@ const Auth = () => {
       setUser(session?.user ?? null);
       
       if (session?.user) {
-        window.location.href = 'https://www.aries76.com';
+        navigate('/admin');
       }
     });
 
