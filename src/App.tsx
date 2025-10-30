@@ -23,6 +23,10 @@ import Blog from "./pages/Blog";
 import Press from "./pages/Press";
 import GPEquityNextFrontier from "./pages/blog/GPEquityNextFrontier";
 import SuccessionPlanningStrategicImperative from "./pages/blog/SuccessionPlanningStrategicImperative";
+import ValuingManagementCompanies from "./pages/blog/ValuingManagementCompanies";
+import DigitalInfrastructureAI from "./pages/blog/DigitalInfrastructureAI";
+import CrossBorderFundStructuring from "./pages/blog/CrossBorderFundStructuring";
+import AIRESTransformingInvestorTargeting from "./pages/blog/AIRESTransformingInvestorTargeting";
 
 const queryClient = new QueryClient();
 
@@ -49,6 +53,10 @@ const App = () => (
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/gp-equity-next-frontier" element={<GPEquityNextFrontier />} />
           <Route path="/blog/succession-planning-strategic-imperative" element={<SuccessionPlanningStrategicImperative />} />
+          <Route path="/blog/valuing-management-companies" element={<ValuingManagementCompanies />} />
+          <Route path="/blog/digital-infrastructure-ai-core-allocation" element={<DigitalInfrastructureAI />} />
+          <Route path="/blog/cross-border-fund-structuring" element={<CrossBorderFundStructuring />} />
+          <Route path="/blog/aires-ai-transforming-investor-targeting" element={<AIRESTransformingInvestorTargeting />} />
           <Route path="/press" element={<Press />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
