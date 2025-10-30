@@ -4,7 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Download, Mail, Calendar, Loader2, LogOut, Home, Users } from "lucide-react";
+import { Download, Mail, Calendar, Loader2, LogOut, Home, Users, PenSquare } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface NewsletterSubscriber {
@@ -209,15 +209,24 @@ const Admin = () => {
                 <Mail className="w-6 h-6 text-accent" />
                 Newsletter Subscribers
               </CardTitle>
-              <Button
-                onClick={exportToCSV}
-                variant="outline"
-                className="gap-2 bg-white/10 border-white/20 text-white hover:bg-white/20"
-                disabled={subscribers.length === 0}
-              >
-                <Download className="w-4 h-4" />
-                Export CSV
-              </Button>
+              <div className="flex gap-3">
+                <Button
+                  onClick={() => navigate('/admin/newsletter')}
+                  className="gap-2 bg-accent hover:bg-accent/90 text-white"
+                >
+                  <PenSquare className="w-4 h-4" />
+                  Compose Newsletter
+                </Button>
+                <Button
+                  onClick={exportToCSV}
+                  variant="outline"
+                  className="gap-2 bg-white/10 border-white/20 text-white hover:bg-white/20"
+                  disabled={subscribers.length === 0}
+                >
+                  <Download className="w-4 h-4" />
+                  Export CSV
+                </Button>
+              </div>
             </div>
           </CardHeader>
           <CardContent>

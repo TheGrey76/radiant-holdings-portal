@@ -22,6 +22,7 @@ import FAQ from "./pages/FAQ";
 import Blog from "./pages/Blog";
 import Press from "./pages/Press";
 import Admin from "./pages/Admin";
+import NewsletterComposer from "./pages/NewsletterComposer";
 import GPEquityNextFrontier from "./pages/blog/GPEquityNextFrontier";
 import SuccessionPlanningStrategicImperative from "./pages/blog/SuccessionPlanningStrategicImperative";
 import ValuingManagementCompanies from "./pages/blog/ValuingManagementCompanies";
@@ -50,6 +51,7 @@ const App = () => (
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/admin" element={<Admin />} />
+          <Route path="/admin/newsletter" element={<NewsletterComposer />} />
           <Route path="/sneaker-report" element={<SneakerReport />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/blog" element={<Blog />} />
