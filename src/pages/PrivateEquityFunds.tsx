@@ -411,7 +411,7 @@ const PrivateEquityFunds = () => {
                   Request an Introductory Call
                 </Button>
               </Link>
-              <a href="/aries76-pe-presentation.pdf" target="_blank" rel="noopener noreferrer">
+              <a href="/Aries76_Private_Equity_Funds.pdf" target="_blank" rel="noopener noreferrer">
                 <Button 
                   size="lg" 
                   className="bg-white/10 text-white border border-white/30 hover:bg-white/20 hover:border-white/50 font-light uppercase tracking-wider px-8 transition-all"
