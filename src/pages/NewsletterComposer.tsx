@@ -34,16 +34,37 @@ const NewsletterComposer = () => {
     setIsSending(true);
     
     try {
-      // TODO: Call edge function to send newsletter
-      toast({
-        title: "Newsletter functionality",
-        description: "Email sending will be implemented next. Template is ready!",
+      const { data, error } = await supabase.functions.invoke('send-newsletter', {
+        body: {
+          subject,
+          preheader,
+          heading,
+          content,
+          ctaText,
+          ctaLink,
+        }
       });
-    } catch (error) {
+
+      if (error) throw error;
+
+      toast({
+        title: "Newsletter sent!",
+        description: `Successfully sent to ${data.sent} subscribers`,
+      });
+
+      // Reset form
+      setSubject("");
+      setPreheader("");
+      setHeading("");
+      setContent("");
+      setCtaText("Read More");
+      setCtaLink("");
+
+    } catch (error: any) {
       console.error("Error sending newsletter:", error);
       toast({
         title: "Error",
-        description: "Failed to send newsletter",
+        description: error.message || "Failed to send newsletter",
         variant: "destructive",
       });
     } finally {
