@@ -8,7 +8,6 @@ const Press = () => {
   const stats = [
     { label: "Founded", value: "2020", icon: Building2 },
     { label: "Headquarters", value: "London, UK", icon: Globe2 },
-    { label: "Global Offices", value: "4 Countries", icon: Globe2 },
     { label: "Client AUM Range", value: "€1-5bn", icon: TrendingUp },
     { label: "Primary Markets", value: "EU & UK", icon: Target },
     { label: "Advisory Focus", value: "GP Capital", icon: Award }
@@ -135,7 +134,7 @@ const Press = () => {
       {/* Quick Stats */}
       <section className="px-6 md:px-10 py-20 bg-gradient-to-br from-[#0f1729]/5 to-[#1a2744]/5">
         <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
             {stats.map((stat, index) => (
               <motion.div
                 key={index}
