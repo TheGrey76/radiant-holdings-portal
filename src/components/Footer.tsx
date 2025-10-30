@@ -29,10 +29,14 @@ const Footer = () => {
             <h3 className="text-xs uppercase tracking-widest mb-6 font-light">Navigation</h3>
             <ul className="space-y-3">
               <li><Link to="/" className="text-white/70 hover:text-accent transition-colors font-light text-sm">Home</Link></li>
+              <li><Link to="/about" className="text-white/70 hover:text-accent transition-colors font-light text-sm">About</Link></li>
               <li><Link to="/services" className="text-white/70 hover:text-accent transition-colors font-light text-sm">Services</Link></li>
               <li><Link to="/private-equity-funds" className="text-white/70 hover:text-accent transition-colors font-light text-sm">Private Equity Funds</Link></li>
+              <li><Link to="/gp-capital-advisory" className="text-white/70 hover:text-accent transition-colors font-light text-sm">GP Capital Advisory</Link></li>
+              <li><Link to="/blog" className="text-white/70 hover:text-accent transition-colors font-light text-sm">Blog</Link></li>
+              <li><Link to="/faq" className="text-white/70 hover:text-accent transition-colors font-light text-sm">FAQ</Link></li>
+              <li><Link to="/press" className="text-white/70 hover:text-accent transition-colors font-light text-sm">Press</Link></li>
               <li><Link to="/legal" className="text-white/70 hover:text-accent transition-colors font-light text-sm">Licences</Link></li>
-              <li><Link to="/aires-data" className="text-white/70 hover:text-accent transition-colors font-light text-sm">Aires Data</Link></li>
               <li><Link to="/contact" className="text-white/70 hover:text-accent transition-colors font-light text-sm">Contact</Link></li>
             </ul>
           </div>
