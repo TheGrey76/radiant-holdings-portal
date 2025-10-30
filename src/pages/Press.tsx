@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 
 const Press = () => {
   const stats = [
-    { label: "Founded", value: "2020", icon: Building2 },
+    { label: "Founded", value: "2023", icon: Building2 },
     { label: "Headquarters", value: "London, UK", icon: Globe2 },
     { label: "Client AUM Range", value: "€1-5bn", icon: TrendingUp },
     { label: "Primary Markets", value: "EU & UK", icon: Target },
@@ -16,7 +16,7 @@ const Press = () => {
   const keyFacts = [
     {
       title: "Company Overview",
-      content: "Aries76 Ltd is a London-based boutique advisory firm specializing in GP capital advisory and strategic fund advisory for private markets managers. Founded in 2020, we support second and later-generation GPs in capital formation, management company structuring, and institutional investor access across Europe, the UK, and select global markets."
+      content: "Aries76 Ltd is a London-based boutique advisory firm specializing in GP capital advisory and strategic fund advisory for private markets managers. Founded in 2023, we support second and later-generation GPs in capital formation, management company structuring, and institutional investor access across Europe, the UK, and select global markets."
     },
     {
       title: "Core Services",
@@ -69,7 +69,7 @@ const Press = () => {
       "description": "London-based boutique advisory firm specializing in GP capital advisory and strategic fund advisory for private markets managers",
       "url": "https://www.aries76.com",
       "logo": "https://www.aries76.com/aries76-og-logo.png",
-      "foundingDate": "2020",
+      "foundingDate": "2023",
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "London",
