@@ -411,15 +411,19 @@ const PrivateEquityFunds = () => {
                   Request an Introductory Call
                 </Button>
               </Link>
-              <a href="/Aries76_Private_Equity_Funds.pdf" target="_blank" rel="noopener noreferrer">
-                <Button 
-                  size="lg" 
-                  className="bg-white/10 text-white border border-white/30 hover:bg-white/20 hover:border-white/50 font-light uppercase tracking-wider px-8 transition-all"
-                >
-                  <Download className="w-4 h-4 mr-2" />
-                  Download Our Presentation
-                </Button>
-              </a>
+              <Button 
+                size="lg" 
+                onClick={() => {
+                  const link = document.createElement('a');
+                  link.href = '/Aries76_Private_Equity_Funds.pdf';
+                  link.download = 'Aries76_Private_Equity_Presentation.pdf';
+                  link.click();
+                }}
+                className="bg-white/10 text-white border border-white/30 hover:bg-white/20 hover:border-white/50 font-light uppercase tracking-wider px-8 transition-all"
+              >
+                <Download className="w-4 h-4 mr-2" />
+                Download Our Presentation
+              </Button>
             </div>
           </motion.div>
         </div>
