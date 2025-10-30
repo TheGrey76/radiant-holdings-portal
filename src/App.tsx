@@ -18,6 +18,9 @@ import AiresData from "./pages/AiresData";
 import PrivateEquityFunds from "./pages/PrivateEquityFunds";
 import GPCapitalAdvisory from "./pages/GPCapitalAdvisory";
 import NotFound from "./pages/NotFound";
+import FAQ from "./pages/FAQ";
+import Blog from "./pages/Blog";
+import Press from "./pages/Press";
 
 const queryClient = new QueryClient();
 
@@ -40,6 +43,9 @@ const App = () => (
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/sneaker-report" element={<SneakerReport />} />
+          <Route path="/faq" element={<FAQ />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/press" element={<Press />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />
