@@ -11,7 +11,7 @@ const Footer = () => {
               ARIES<span className="text-accent">76</span>
             </div>
             <a 
-              href="https://www.linkedin.com/in/edoardogrigione/" 
+              href="https://www.linkedin.com/company/109761476/" 
               target="_blank" 
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-white/70 hover:text-accent transition-colors mb-6"
