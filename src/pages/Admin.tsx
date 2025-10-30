@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Download, Mail, Calendar, Loader2 } from "lucide-react";
+import { Download, Mail, Calendar, Loader2, LogOut, Home, Users } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface NewsletterSubscriber {
@@ -102,6 +102,11 @@ const Admin = () => {
     });
   };
 
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate('/auth');
+  };
+
   if (!isAdmin || loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0f1729] via-[#1a2744] to-[#0d1424]">
@@ -111,24 +116,103 @@ const Admin = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0f1729] via-[#1a2744] to-[#0d1424] py-12 px-6">
-      <div className="container mx-auto max-w-6xl">
-        <div className="mb-8">
-          <h1 className="text-4xl font-light text-white mb-2">Admin Dashboard</h1>
-          <p className="text-white/70">Manage newsletter subscribers</p>
+    <div className="min-h-screen bg-gradient-to-br from-[#0f1729] via-[#1a2744] to-[#0d1424]">
+      {/* Header */}
+      <header className="bg-black/20 backdrop-blur-sm border-b border-white/10">
+        <div className="container mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <Link to="/" className="text-2xl font-light tracking-wider text-white uppercase">
+                ARIES<span className="text-accent">76</span>
+              </Link>
+              <span className="text-white/40">|</span>
+              <span className="text-white/70 text-sm">Admin Dashboard</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => navigate('/')}
+                className="text-white/70 hover:text-white hover:bg-white/10"
+              >
+                <Home className="w-4 h-4 mr-2" />
+                Home
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleLogout}
+                className="text-white/70 hover:text-white hover:bg-white/10"
+              >
+                <LogOut className="w-4 h-4 mr-2" />
+                Logout
+              </Button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div className="container mx-auto px-6 py-12 max-w-7xl">
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-white/60 text-sm mb-1">Total Subscribers</p>
+                  <p className="text-3xl font-light text-white">{subscribers.length}</p>
+                </div>
+                <Users className="w-10 h-10 text-accent opacity-50" />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-white/60 text-sm mb-1">Active</p>
+                  <p className="text-3xl font-light text-white">
+                    {subscribers.filter(s => s.subscribed).length}
+                  </p>
+                </div>
+                <Mail className="w-10 h-10 text-green-400 opacity-50" />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-white/60 text-sm mb-1">This Month</p>
+                  <p className="text-3xl font-light text-white">
+                    {subscribers.filter(s => {
+                      const subDate = new Date(s.created_at);
+                      const now = new Date();
+                      return subDate.getMonth() === now.getMonth() && 
+                             subDate.getFullYear() === now.getFullYear();
+                    }).length}
+                  </p>
+                </div>
+                <Calendar className="w-10 h-10 text-accent opacity-50" />
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
+        {/* Subscribers Table */}
         <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
           <CardHeader>
             <div className="flex items-center justify-between">
-              <CardTitle className="text-white flex items-center gap-2">
-                <Mail className="w-5 h-5 text-accent" />
-                Newsletter Subscribers ({subscribers.length})
+              <CardTitle className="text-white text-2xl font-light flex items-center gap-3">
+                <Mail className="w-6 h-6 text-accent" />
+                Newsletter Subscribers
               </CardTitle>
               <Button
                 onClick={exportToCSV}
                 variant="outline"
-                className="gap-2"
+                className="gap-2 bg-white/10 border-white/20 text-white hover:bg-white/20"
                 disabled={subscribers.length === 0}
               >
                 <Download className="w-4 h-4" />
@@ -138,22 +222,26 @@ const Admin = () => {
           </CardHeader>
           <CardContent>
             {subscribers.length === 0 ? (
-              <div className="text-center py-12 text-white/50">
-                No subscribers yet
+              <div className="text-center py-16">
+                <Mail className="w-16 h-16 mx-auto mb-4 text-white/20" />
+                <p className="text-white/50 text-lg">No subscribers yet</p>
+                <p className="text-white/30 text-sm mt-2">
+                  Subscribers will appear here when they sign up via the Blog page
+                </p>
               </div>
             ) : (
               <div className="overflow-x-auto">
                 <Table>
                   <TableHeader>
                     <TableRow className="border-white/10 hover:bg-white/5">
-                      <TableHead className="text-white/70">Email</TableHead>
-                      <TableHead className="text-white/70">
+                      <TableHead className="text-white/70 font-light">Email</TableHead>
+                      <TableHead className="text-white/70 font-light">
                         <div className="flex items-center gap-2">
                           <Calendar className="w-4 h-4" />
                           Subscribed Date
                         </div>
                       </TableHead>
-                      <TableHead className="text-white/70">Status</TableHead>
+                      <TableHead className="text-white/70 font-light">Status</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -173,10 +261,10 @@ const Admin = () => {
                           })}
                         </TableCell>
                         <TableCell>
-                          <span className={`px-2 py-1 rounded text-xs font-light ${
+                          <span className={`px-3 py-1 rounded-full text-xs font-light ${
                             subscriber.subscribed 
-                              ? 'bg-green-500/20 text-green-400' 
-                              : 'bg-red-500/20 text-red-400'
+                              ? 'bg-green-500/20 text-green-400 border border-green-500/30' 
+                              : 'bg-red-500/20 text-red-400 border border-red-500/30'
                           }`}>
                             {subscriber.subscribed ? 'Active' : 'Unsubscribed'}
                           </span>
