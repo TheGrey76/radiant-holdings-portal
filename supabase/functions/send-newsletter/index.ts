@@ -45,9 +45,15 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     // Check if user is admin
-    const { data: roleData, error: roleError } = await supabase.rpc('get_current_user_role');
+    const { data: roleData, error: roleError } = await supabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', user.id)
+      .eq('role', 'admin')
+      .single();
     
-    if (roleError || roleData !== 'admin') {
+    if (roleError || !roleData) {
+      console.error("Role check error:", roleError);
       throw new Error("Forbidden: Admin access required");
     }
 
