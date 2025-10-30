@@ -3,9 +3,62 @@ import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, ArrowRight } from 'lucide-react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 const Blog = () => {
+  const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!email || !email.includes('@')) {
+      toast({
+        title: "Invalid email",
+        description: "Please enter a valid email address",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const { error } = await supabase
+        .from('newsletter_subscribers')
+        .insert([{ email: email.toLowerCase().trim() }]);
+
+      if (error) {
+        if (error.code === '23505') { // Unique constraint violation
+          toast({
+            title: "Already subscribed",
+            description: "This email is already subscribed to our newsletter",
+          });
+        } else {
+          throw error;
+        }
+      } else {
+        toast({
+          title: "Successfully subscribed!",
+          description: "Thank you for subscribing to our newsletter",
+        });
+        setEmail("");
+      }
+    } catch (error) {
+      console.error('Newsletter subscription error:', error);
+      toast({
+        title: "Error",
+        description: "Failed to subscribe. Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const blogPosts = [
     {
       title: "GP Equity: The Next Frontier in Private Markets Capital Formation",
@@ -167,16 +220,23 @@ const Blog = () => {
             <p className="text-lg text-muted-foreground mb-8">
               Subscribe to receive our latest insights on GP capital advisory and private markets trends
             </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-xl mx-auto">
+            <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-xl mx-auto">
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="w-full px-6 py-3 rounded-md border border-border bg-background text-foreground font-light focus:outline-none focus:ring-2 focus:ring-accent"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={isSubmitting}
+                className="w-full px-6 py-3 rounded-md border border-border bg-background text-foreground font-light focus:outline-none focus:ring-2 focus:ring-accent disabled:opacity-50"
               />
-              <button className="w-full sm:w-auto bg-accent hover:bg-accent/90 text-white font-light px-8 py-3 rounded-md uppercase tracking-wider transition-colors whitespace-nowrap">
-                Subscribe
+              <button 
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full sm:w-auto bg-accent hover:bg-accent/90 text-white font-light px-8 py-3 rounded-md uppercase tracking-wider transition-colors whitespace-nowrap disabled:opacity-50"
+              >
+                {isSubmitting ? 'Subscribing...' : 'Subscribe'}
               </button>
-            </div>
+            </form>
           </motion.div>
         </div>
       </section>
