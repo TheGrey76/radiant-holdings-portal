@@ -118,32 +118,34 @@ const Blog = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                <Card className="border-border/50 bg-card hover:shadow-smooth-lg transition-all h-full group cursor-pointer">
-                  <CardContent className="p-8">
-                    <div className="flex items-center justify-between mb-4">
-                      <Badge variant="outline" className="font-light">
-                        {post.category}
-                      </Badge>
-                      <span className="text-xs text-muted-foreground font-light">{post.readTime}</span>
-                    </div>
-                    
-                    <h3 className="text-xl font-light text-foreground mb-3 tracking-tight group-hover:text-accent transition-colors">
-                      {post.title}
-                    </h3>
-                    
-                    <p className="text-muted-foreground font-light leading-relaxed mb-6">
-                      {post.excerpt}
-                    </p>
-                    
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                        <Calendar className="w-4 h-4" />
-                        <span>{new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                <Link to={`/blog/${post.slug}`}>
+                  <Card className="border-border/50 bg-card hover:shadow-smooth-lg transition-all h-full group cursor-pointer">
+                    <CardContent className="p-8">
+                      <div className="flex items-center justify-between mb-4">
+                        <Badge variant="outline" className="font-light">
+                          {post.category}
+                        </Badge>
+                        <span className="text-xs text-muted-foreground font-light">{post.readTime}</span>
                       </div>
-                      <ArrowRight className="w-5 h-5 text-accent opacity-0 group-hover:opacity-100 transition-opacity" />
-                    </div>
-                  </CardContent>
-                </Card>
+                      
+                      <h3 className="text-xl font-light text-foreground mb-3 tracking-tight group-hover:text-accent transition-colors">
+                        {post.title}
+                      </h3>
+                      
+                      <p className="text-muted-foreground font-light leading-relaxed mb-6">
+                        {post.excerpt}
+                      </p>
+                      
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                          <Calendar className="w-4 h-4" />
+                          <span>{new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                        </div>
+                        <ArrowRight className="w-5 h-5 text-accent opacity-0 group-hover:opacity-100 transition-opacity" />
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
               </motion.div>
             ))}
           </div>

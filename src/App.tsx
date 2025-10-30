@@ -21,6 +21,8 @@ import NotFound from "./pages/NotFound";
 import FAQ from "./pages/FAQ";
 import Blog from "./pages/Blog";
 import Press from "./pages/Press";
+import GPEquityNextFrontier from "./pages/blog/GPEquityNextFrontier";
+import SuccessionPlanningStrategicImperative from "./pages/blog/SuccessionPlanningStrategicImperative";
 
 const queryClient = new QueryClient();
 
@@ -45,6 +47,8 @@ const App = () => (
           <Route path="/sneaker-report" element={<SneakerReport />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/gp-equity-next-frontier" element={<GPEquityNextFrontier />} />
+          <Route path="/blog/succession-planning-strategic-imperative" element={<SuccessionPlanningStrategicImperative />} />
           <Route path="/press" element={<Press />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
