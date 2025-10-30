@@ -41,21 +41,32 @@ const handler = async (req: Request): Promise<Response> => {
     const { data: { user }, error: authError } = await supabase.auth.getUser(token);
 
     if (authError || !user) {
+      console.error("Auth error:", authError);
       throw new Error("Unauthorized");
     }
 
-    // Check if user is admin
+    console.log("User authenticated:", user.email);
+
+    // Check if user is admin using service role (bypasses RLS)
     const { data: roleData, error: roleError } = await supabase
       .from('user_roles')
       .select('role')
       .eq('user_id', user.id)
-      .eq('role', 'admin')
-      .single();
+      .maybeSingle();
     
-    if (roleError || !roleData) {
-      console.error("Role check error:", roleError);
+    console.log("Role check result:", { roleData, roleError, userId: user.id });
+    
+    if (roleError) {
+      console.error("Role query error:", roleError);
+      throw new Error("Error checking user role");
+    }
+
+    if (!roleData || roleData.role !== 'admin') {
+      console.error("User is not admin:", { email: user.email, role: roleData?.role });
       throw new Error("Forbidden: Admin access required");
     }
+
+    console.log("Admin verified, proceeding with newsletter send");
 
     const { subject, preheader, heading, content, ctaText, ctaLink }: NewsletterRequest = await req.json();
 
