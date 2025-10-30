@@ -220,19 +220,20 @@ const Blog = () => {
             <p className="text-lg text-muted-foreground mb-8">
               Subscribe to receive our latest insights on GP capital advisory and private markets trends
             </p>
-            <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-xl mx-auto">
+            <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-xl mx-auto relative z-10">
               <input
                 type="email"
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={isSubmitting}
-                className="w-full px-6 py-3 rounded-md border border-border bg-background text-foreground font-light focus:outline-none focus:ring-2 focus:ring-accent disabled:opacity-50"
+                required
+                className="w-full px-6 py-3 rounded-md border border-border bg-background text-foreground font-light focus:outline-none focus:ring-2 focus:ring-accent disabled:opacity-50 cursor-text"
               />
               <button 
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full sm:w-auto bg-accent hover:bg-accent/90 text-white font-light px-8 py-3 rounded-md uppercase tracking-wider transition-colors whitespace-nowrap disabled:opacity-50"
+                className="w-full sm:w-auto bg-accent hover:bg-accent/90 text-white font-light px-8 py-3 rounded-md uppercase tracking-wider transition-colors whitespace-nowrap disabled:opacity-50 cursor-pointer relative z-10"
               >
                 {isSubmitting ? 'Subscribing...' : 'Subscribe'}
               </button>
