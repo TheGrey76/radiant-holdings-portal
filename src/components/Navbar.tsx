@@ -27,6 +27,7 @@ const Navbar = () => {
     { name: 'About', path: '/about' },
     { name: 'Services', path: '/services' },
     { name: 'Private Equity Funds', path: '/private-equity-funds' },
+    { name: 'GP Capital Advisory', path: '/gp-capital-advisory' },
     { name: 'Licences', path: '/legal' },
     { name: 'Contact', path: '/contact' },
   ];
