@@ -1,5 +1,4 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
-import { Resend } from "npm:resend@2.0.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -36,61 +35,79 @@ const handler = async (req: Request): Promise<Response> => {
     
     console.log("📝 Processing request for:", { companyName, email });
 
-    // Check if RESEND_API_KEY exists
-    const resendApiKey = Deno.env.get("RESEND_API_KEY");
-    console.log("🔑 RESEND_API_KEY exists:", !!resendApiKey);
+    // Check if SENDGRID_API_KEY exists
+    const sendgridApiKey = Deno.env.get("SENDGRID_API_KEY");
+    console.log("🔑 SENDGRID_API_KEY exists:", !!sendgridApiKey);
     
-    if (!resendApiKey) {
-      console.error("❌ RESEND_API_KEY not found!");
-      throw new Error("RESEND_API_KEY not configured");
+    if (!sendgridApiKey) {
+      console.error("❌ SENDGRID_API_KEY not found!");
+      throw new Error("SENDGRID_API_KEY not configured");
     }
-    
-    const resend = new Resend(resendApiKey);
-    console.log("📧 Resend client initialized");
 
-    // Send email to ARIES76
+    // Send email to ARIES76 using SendGrid
     console.log("📤 Sending email to quinley.martini@aries76.com...");
     
-    const emailResponse = await resend.emails.send({
-      from: "ARIES76 Requests <onboarding@resend.dev>",
-      to: ["quinley.martini@aries76.com"],
-      subject: `🔥 NEW Business Intelligence Request - ${companyName}`,
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 2px solid #3b82f6; border-radius: 10px; padding: 20px;">
-          <h1 style="color: #1e3a8a; text-align: center;">🔥 NEW REQUEST ALERT!</h1>
-          
-          <div style="background-color: #fef3c7; padding: 15px; border-radius: 8px; margin: 20px 0;">
-            <h2 style="color: #92400e; margin-top: 0;">Client Information</h2>
-            <p><strong>Company:</strong> ${companyName}</p>
-            <p><strong>Email:</strong> ${email}</p>
-            <p><strong>Service:</strong> Business Intelligence Analysis</p>
-            <p><strong>Date:</strong> ${new Date().toLocaleDateString()}</p>
-            <p><strong>Time:</strong> ${new Date().toLocaleTimeString()}</p>
-          </div>
-          
-          <div style="background-color: #dbeafe; padding: 15px; border-radius: 8px;">
-            <h3 style="color: #1e40af;">Action Required:</h3>
-            <p>✅ Review requirements<br>
-            ✅ Prepare custom quote<br>
-            ✅ Send quote within 24 hours<br>
-            ✅ Schedule delivery (5-7 days)</p>
-          </div>
-          
-          <p style="text-align: center; margin-top: 30px; color: #6b7280;">
-            Sent from ARIES76 Business Intelligence System
-          </p>
-        </div>
-      `,
+    const emailResponse = await fetch("https://api.sendgrid.com/v3/mail/send", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${sendgridApiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        personalizations: [
+          {
+            to: [{ email: "quinley.martini@aries76.com" }],
+            subject: `🔥 NEW Business Intelligence Request - ${companyName}`,
+          },
+        ],
+        from: { email: "noreply@aries76.com", name: "ARIES76 Requests" },
+        content: [
+          {
+            type: "text/html",
+            value: `
+              <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 2px solid #3b82f6; border-radius: 10px; padding: 20px;">
+                <h1 style="color: #1e3a8a; text-align: center;">🔥 NEW REQUEST ALERT!</h1>
+                
+                <div style="background-color: #fef3c7; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                  <h2 style="color: #92400e; margin-top: 0;">Client Information</h2>
+                  <p><strong>Company:</strong> ${companyName}</p>
+                  <p><strong>Email:</strong> ${email}</p>
+                  <p><strong>Service:</strong> Business Intelligence Analysis</p>
+                  <p><strong>Date:</strong> ${new Date().toLocaleDateString()}</p>
+                  <p><strong>Time:</strong> ${new Date().toLocaleTimeString()}</p>
+                </div>
+                
+                <div style="background-color: #dbeafe; padding: 15px; border-radius: 8px;">
+                  <h3 style="color: #1e40af;">Action Required:</h3>
+                  <p>✅ Review requirements<br>
+                  ✅ Prepare custom quote<br>
+                  ✅ Send quote within 24 hours<br>
+                  ✅ Schedule delivery (5-7 days)</p>
+                </div>
+                
+                <p style="text-align: center; margin-top: 30px; color: #6b7280;">
+                  Sent from ARIES76 Business Intelligence System
+                </p>
+              </div>
+            `,
+          },
+        ],
+      }),
     });
 
-    console.log("✅ Email sent successfully!", emailResponse);
+    if (!emailResponse.ok) {
+      const errorText = await emailResponse.text();
+      console.error("❌ SendGrid error:", errorText);
+      throw new Error(`SendGrid API error: ${errorText}`);
+    }
+
+    console.log("✅ Email sent successfully via SendGrid!");
 
     return new Response(
       JSON.stringify({ 
         success: true, 
-        message: "Email sent successfully",
-        emailId: emailResponse.data?.id || "unknown"
-      }), 
+        message: "Email sent successfully via SendGrid"
+      }),
       {
         status: 200,
         headers: {
