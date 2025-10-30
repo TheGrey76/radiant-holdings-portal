@@ -178,7 +178,7 @@ const handler = async (req: Request): Promise<Response> => {
     // Send emails to all subscribers
     const emailPromises = subscribers.map(async (subscriber) => {
       try {
-        const { error } = await resend.emails.send({
+        const { data, error } = await resend.emails.send({
           from: 'Aries76 <onboarding@resend.dev>',
           to: [subscriber.email],
           subject: subject,
@@ -186,11 +186,11 @@ const handler = async (req: Request): Promise<Response> => {
         });
 
         if (error) {
-          console.error(`Failed to send to ${subscriber.email}:`, error);
+          console.error(`Failed to send to ${subscriber.email}:`, JSON.stringify(error));
           return { email: subscriber.email, success: false, error };
         }
 
-        console.log(`Sent to ${subscriber.email}`);
+        console.log(`Sent to ${subscriber.email}, message ID:`, data?.id);
         return { email: subscriber.email, success: true };
       } catch (err) {
         console.error(`Error sending to ${subscriber.email}:`, err);
@@ -203,6 +203,26 @@ const handler = async (req: Request): Promise<Response> => {
     const failed = results.filter(r => !r.success).length;
 
     console.log(`Newsletter sent: ${successful} successful, ${failed} failed`);
+
+    // Save newsletter to database
+    const { error: saveError } = await supabase
+      .from('sent_newsletters')
+      .insert({
+        subject,
+        preheader,
+        heading,
+        content,
+        cta_text: ctaText,
+        cta_link: ctaLink,
+        sent_by: user.id,
+        recipients_count: subscribers.length,
+        successful_sends: successful,
+        failed_sends: failed,
+      });
+
+    if (saveError) {
+      console.error("Error saving newsletter record:", saveError);
+    }
 
     return new Response(
       JSON.stringify({ 

@@ -170,6 +170,54 @@ export type Database = {
         }
         Relationships: []
       }
+      sent_newsletters: {
+        Row: {
+          content: string
+          created_at: string
+          cta_link: string | null
+          cta_text: string | null
+          failed_sends: number
+          heading: string
+          id: string
+          preheader: string | null
+          recipients_count: number
+          sent_at: string
+          sent_by: string | null
+          subject: string
+          successful_sends: number
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          cta_link?: string | null
+          cta_text?: string | null
+          failed_sends?: number
+          heading: string
+          id?: string
+          preheader?: string | null
+          recipients_count?: number
+          sent_at?: string
+          sent_by?: string | null
+          subject: string
+          successful_sends?: number
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          cta_link?: string | null
+          cta_text?: string | null
+          failed_sends?: number
+          heading?: string
+          id?: string
+          preheader?: string | null
+          recipients_count?: number
+          sent_at?: string
+          sent_by?: string | null
+          subject?: string
+          successful_sends?: number
+        }
+        Relationships: []
+      }
       stocks: {
         Row: {
           beta: number
