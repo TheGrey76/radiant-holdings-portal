@@ -3,55 +3,9 @@ import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, ArrowRight } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { useEffect } from 'react';
 
 const Blog = () => {
-  const [email, setEmail] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const { toast } = useToast();
-
-  const handleNewsletterSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!email || !email.includes('@')) {
-      toast({
-        title: "Invalid email",
-        description: "Please enter a valid email address",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setIsSubmitting(true);
-
-    try {
-      // Call Mailchimp edge function
-      const { data, error } = await supabase.functions.invoke('subscribe-mailchimp', {
-        body: { email: email.toLowerCase().trim() }
-      });
-
-      if (error) {
-        throw error;
-      }
-
-      toast({
-        title: "Successfully subscribed!",
-        description: "Thank you for subscribing to our newsletter via Mailchimp",
-      });
-      setEmail("");
-    } catch (error: any) {
-      console.error('Newsletter subscription error:', error);
-      toast({
-        title: "Error",
-        description: error.message || "Failed to subscribe. Please try again later.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
 
   const blogPosts = [
     {
@@ -199,42 +153,6 @@ const Blog = () => {
         </div>
       </section>
 
-      {/* Newsletter CTA */}
-      <section className="px-6 md:px-10 py-16 bg-gradient-to-br from-[#0f1729]/5 to-[#1a2744]/5">
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className="text-3xl md:text-4xl font-light text-foreground mb-6">
-              Stay Informed
-            </h2>
-            <p className="text-lg text-muted-foreground mb-8">
-              Subscribe to receive our latest insights on GP capital advisory and private markets trends
-            </p>
-            <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-xl mx-auto relative z-10">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                disabled={isSubmitting}
-                required
-                className="w-full px-6 py-3 rounded-md border border-border bg-background text-foreground font-light focus:outline-none focus:ring-2 focus:ring-accent disabled:opacity-50 cursor-text"
-              />
-              <button 
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full sm:w-auto bg-accent hover:bg-accent/90 text-white font-light px-8 py-3 rounded-md uppercase tracking-wider transition-colors whitespace-nowrap disabled:opacity-50 cursor-pointer relative z-10"
-              >
-                {isSubmitting ? 'Subscribing...' : 'Subscribe'}
-              </button>
-            </form>
-          </motion.div>
-        </div>
-      </section>
     </div>
   );
 };
