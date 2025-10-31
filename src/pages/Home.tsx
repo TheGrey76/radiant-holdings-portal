@@ -1,9 +1,54 @@
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { useState } from 'react';
+import { Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 const Home = () => {
+  const [email, setEmail] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!email) {
+      toast({
+        title: "Email required",
+        description: "Please enter your email address",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const { error } = await supabase.functions.invoke('subscribe-mailchimp', {
+        body: { email },
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Successfully subscribed!",
+        description: "Thank you for subscribing to our newsletter.",
+      });
+      setEmail('');
+    } catch (error: any) {
+      console.error('Newsletter subscription error:', error);
+      toast({
+        title: "Subscription failed",
+        description: error.message || "Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -36,13 +81,30 @@ const Home = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
+            className="max-w-md mx-auto"
           >
-            <Link to="/about">
-              <Button size="lg" variant="outline" className="bg-white/10 border-white/30 text-white hover:bg-white hover:text-primary backdrop-blur-sm">
-                Discover Our Work
-                <ArrowRight className="ml-2 h-4 w-4" />
+            <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-3 backdrop-blur-sm bg-white/5 p-6 rounded-lg border border-white/10">
+              <Input
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="flex-1 bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                disabled={isLoading}
+              />
+              <Button 
+                type="submit" 
+                size="lg"
+                disabled={isLoading}
+                className="bg-accent hover:bg-accent/90 text-white"
+              >
+                <Mail className="mr-2 h-4 w-4" />
+                {isLoading ? 'Subscribing...' : 'Subscribe'}
               </Button>
-            </Link>
+            </form>
+            <p className="text-white/60 text-sm mt-3 text-center">
+              Stay informed about private equity insights and market updates
+            </p>
           </motion.div>
         </div>
       </section>
