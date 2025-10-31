@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
 import { Resend } from "npm:resend@2.0.0";
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
@@ -11,6 +12,16 @@ const corsHeaders = {
   "Access-Control-Allow-Headers":
     "authorization, x-client-info, apikey, content-type",
 };
+
+// Input validation schema
+const newsletterSchema = z.object({
+  subject: z.string().min(1, "Subject required").max(200, "Subject too long"),
+  preheader: z.string().max(200, "Preheader too long").optional(),
+  heading: z.string().min(1, "Heading required").max(300, "Heading too long"),
+  content: z.string().min(1, "Content required").max(50000, "Content too long"),
+  ctaText: z.string().max(100, "CTA text too long").optional(),
+  ctaLink: z.string().url("Invalid URL").max(500, "URL too long").optional(),
+});
 
 interface NewsletterRequest {
   subject: string;
@@ -68,9 +79,21 @@ const handler = async (req: Request): Promise<Response> => {
 
     console.log("Admin verified, proceeding with newsletter send");
 
-    const { subject, preheader, heading, content, ctaText, ctaLink }: NewsletterRequest = await req.json();
+    const rawData: NewsletterRequest = await req.json();
+    
+    // Validate input
+    const validationResult = newsletterSchema.safeParse(rawData);
+    if (!validationResult.success) {
+      console.error("Validation failed:", validationResult.error.errors);
+      return new Response(
+        JSON.stringify({ error: "Invalid newsletter data", success: false }),
+        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
+    
+    const { subject, preheader, heading, content, ctaText, ctaLink } = validationResult.data;
 
-    console.log("Newsletter send request:", { subject, heading });
+    console.log("Newsletter send request validated");
 
     // Get all active subscribers
     const { data: subscribers, error: subscribersError } = await supabase
@@ -239,14 +262,26 @@ const handler = async (req: Request): Promise<Response> => {
     );
   } catch (error: any) {
     console.error("Error in send-newsletter function:", error);
+    
+    // Determine appropriate error message and status
+    let errorMessage = "An error occurred sending the newsletter";
+    let statusCode = 500;
+    
+    if (error.message === "Unauthorized") {
+      errorMessage = "Authentication required";
+      statusCode = 401;
+    } else if (error.message === "Forbidden: Admin access required") {
+      errorMessage = "Admin access required";
+      statusCode = 403;
+    }
+    
     return new Response(
       JSON.stringify({ 
-        error: error.message || "An error occurred",
+        error: errorMessage,
         success: false 
       }),
       {
-        status: error.message === "Unauthorized" ? 401 : 
-                error.message === "Forbidden: Admin access required" ? 403 : 500,
+        status: statusCode,
         headers: { "Content-Type": "application/json", ...corsHeaders },
       }
     );

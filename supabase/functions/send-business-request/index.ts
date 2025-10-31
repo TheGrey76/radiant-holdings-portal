@@ -1,10 +1,19 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
     "authorization, x-client-info, apikey, content-type",
 };
+
+// Input validation schema
+const businessRequestSchema = z.object({
+  email: z.string().email("Invalid email format").max(255, "Email too long"),
+  companyName: z.string().max(200, "Company name too long").optional(),
+  company: z.string().max(200, "Company name too long").optional(),
+  full_name: z.string().max(200, "Name too long").optional(),
+});
 
 interface BusinessRequestData {
   companyName?: string;
@@ -24,16 +33,30 @@ const handler = async (req: Request): Promise<Response> => {
 
   try {
     const body = await req.text();
-    console.log("📥 Request body:", body);
+    console.log("📥 Request received");
     
-    const data: BusinessRequestData = JSON.parse(body);
-    console.log("📊 Parsed data:", data);
+    const rawData: BusinessRequestData = JSON.parse(body);
+    
+    // Validate input
+    const validationResult = businessRequestSchema.safeParse(rawData);
+    if (!validationResult.success) {
+      console.error("❌ Validation failed:", validationResult.error.errors);
+      return new Response(
+        JSON.stringify({ error: "Invalid input data" }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        }
+      );
+    }
+    
+    const data = validationResult.data;
     
     // Get company name from different possible fields
     const companyName = data.companyName || data.company || data.full_name || "Unknown Company";
     const email = data.email;
     
-    console.log("📝 Processing request for:", { companyName, email });
+    console.log("📝 Processing request for company");
 
     // Check if SENDGRID_API_KEY exists
     const sendgridApiKey = Deno.env.get("SENDGRID_API_KEY");
@@ -123,8 +146,7 @@ const handler = async (req: Request): Promise<Response> => {
     
     return new Response(
       JSON.stringify({ 
-        error: error.message,
-        details: error.stack 
+        error: "An error occurred processing your request. Please try again later."
       }),
       {
         status: 500,

@@ -1,9 +1,17 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
+
+// Input validation schema
+const subscribeSchema = z.object({
+  email: z.string().email("Invalid email format").max(255, "Email too long"),
+  firstName: z.string().max(100, "First name too long").optional(),
+  lastName: z.string().max(100, "Last name too long").optional(),
+});
 
 interface SubscribeRequest {
   email: string;
@@ -18,14 +26,19 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const { email, firstName, lastName }: SubscribeRequest = await req.json();
+    const rawData: SubscribeRequest = await req.json();
     
-    if (!email) {
+    // Validate input
+    const validationResult = subscribeSchema.safeParse(rawData);
+    if (!validationResult.success) {
+      console.error('Validation failed:', validationResult.error.errors);
       return new Response(
-        JSON.stringify({ error: 'Email is required' }),
+        JSON.stringify({ error: 'Invalid input data' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
+    
+    const { email, firstName, lastName } = validationResult.data;
 
     const apiKey = Deno.env.get('MAILCHIMP_API_KEY');
     const audienceId = Deno.env.get('MAILCHIMP_AUDIENCE_ID');
@@ -115,7 +128,7 @@ const handler = async (req: Request): Promise<Response> => {
   } catch (error: any) {
     console.error('Error in subscribe-mailchimp function:', error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: 'An error occurred processing your subscription. Please try again later.' }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
