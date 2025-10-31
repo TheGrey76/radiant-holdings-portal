@@ -30,30 +30,43 @@ const handler = async (req: Request): Promise<Response> => {
     const apiKey = Deno.env.get('MAILCHIMP_API_KEY');
     const audienceId = Deno.env.get('MAILCHIMP_AUDIENCE_ID');
 
+    console.log('Raw API Key length:', apiKey?.length);
+    console.log('Raw Audience ID:', audienceId);
+
     if (!apiKey || !audienceId) {
-      console.error('Missing Mailchimp credentials');
+      console.error('Missing Mailchimp credentials - API Key:', !!apiKey, 'Audience ID:', !!audienceId);
       return new Response(
-        JSON.stringify({ error: 'Mailchimp configuration error' }),
+        JSON.stringify({ error: 'Mailchimp configuration error - missing credentials' }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
+
+    // Clean the audience ID - remove any prefix like "id="
+    let cleanAudienceId = audienceId.trim();
+    if (cleanAudienceId.includes('=')) {
+      cleanAudienceId = cleanAudienceId.split('=')[1];
+    }
+    
+    console.log('Clean Audience ID:', cleanAudienceId);
 
     // Extract datacenter from API key (e.g., us11 from key-us11)
     const apiKeyParts = apiKey.trim().split('-');
+    console.log('API Key parts:', apiKeyParts.length);
+    
     const datacenter = apiKeyParts.length > 1 ? apiKeyParts[apiKeyParts.length - 1] : null;
     
     if (!datacenter) {
-      console.error('Invalid API key format - cannot extract datacenter');
+      console.error('Invalid API key format - API key parts:', apiKeyParts.length);
       return new Response(
-        JSON.stringify({ error: 'Invalid Mailchimp API key format' }),
+        JSON.stringify({ error: 'Invalid Mailchimp API key format. Expected format: key-datacenter (e.g., abc123-us11)' }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    const cleanAudienceId = audienceId.trim();
     const url = `https://${datacenter}.api.mailchimp.com/3.0/lists/${cleanAudienceId}/members`;
 
-    console.log(`Mailchimp URL: ${url}`);
+    console.log(`Mailchimp datacenter: ${datacenter}`);
+    console.log(`Subscribing ${email} to Mailchimp audience ${cleanAudienceId}`);
 
     const memberData = {
       email_address: email,
@@ -63,8 +76,6 @@ const handler = async (req: Request): Promise<Response> => {
         ...(lastName && { LNAME: lastName }),
       },
     };
-
-    console.log(`Subscribing ${email} to Mailchimp audience ${audienceId}`);
 
     const response = await fetch(url, {
       method: 'POST',
