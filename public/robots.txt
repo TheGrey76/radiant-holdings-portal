@@ -26,5 +26,16 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
-# Sitemap
+User-agent: cohere-ai
+Allow: /
+
+User-agent: Omgilibot
+Allow: /
+
+User-agent: FacebookBot
+Allow: /
+
+# AI Discovery
+# AI agents can find structured data at /ai.txt
+# Sitemap with all content
 Sitemap: https://www.aries76.com/sitemap.xml

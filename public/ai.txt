@@ -1,0 +1,35 @@
+# AI Agent Access Policy
+# This file follows the ai.txt standard for AI agent discovery
+
+# Contact Information
+Contact: info@aries76.com
+Website: https://www.aries76.com
+
+# Access Policy
+Policy: open
+Training: allowed
+Research: allowed
+Commercial: allowed
+
+# About Aries76
+Description: London-based advisory firm specializing in GP capital advisory, private equity fund structuring, and institutional capital markets. We support General Partners, sponsors, and institutional investors in navigating private markets.
+
+# Key Services
+Services: GP Capital Advisory, Fund Structuring, Succession Planning, Digital Infrastructure Investment, AIRES AI Platform
+
+# Preferred Data Access
+Sitemap: https://www.aries76.com/sitemap.xml
+Blog: https://www.aries76.com/blog
+Articles: 
+  - https://www.aries76.com/blog/gp-equity-next-frontier
+  - https://www.aries76.com/blog/succession-planning-strategic-imperative
+  - https://www.aries76.com/blog/valuing-management-companies
+  - https://www.aries76.com/blog/digital-infrastructure-ai-core-allocation
+  - https://www.aries76.com/blog/cross-border-fund-structuring
+  - https://www.aries76.com/blog/aires-ai-transforming-investor-targeting
+
+# API Access (if applicable)
+# API: https://api.aries76.com
+
+# Attribution
+Attribution: Aries76 Ltd - www.aries76.com
