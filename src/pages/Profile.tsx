@@ -6,15 +6,21 @@ import UserProfile from '@/components/UserProfile';
 import { Button } from "@/components/ui/button";
 import { useNavigate } from 'react-router-dom';
 import { LogOut } from 'lucide-react';
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 const Profile = () => {
   const navigate = useNavigate();
   
-  const handleLogout = () => {
-    // Clear the user data from localStorage
-    localStorage.removeItem('networkUser');
-    // Navigate back to the network page for registration
-    navigate('/network');
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut();
+      toast.success("Logged out successfully");
+      navigate('/network');
+    } catch (error) {
+      console.error("Logout error:", error);
+      toast.error("Failed to log out");
+    }
   };
   
   return (

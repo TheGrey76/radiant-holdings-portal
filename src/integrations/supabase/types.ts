@@ -83,6 +83,84 @@ export type Database = {
         }
         Relationships: []
       }
+      network_profiles: {
+        Row: {
+          account_type: string
+          avatar_url: string | null
+          company: string | null
+          created_at: string
+          description: string | null
+          email: string
+          funding_amount: string | null
+          funding_stage: string | null
+          geographic_focus: string | null
+          id: string
+          investment_range: string | null
+          investment_stage: string | null
+          linkedin: string | null
+          name: string
+          pitch_deck: string | null
+          portfolio_size: string | null
+          profile_complete: boolean | null
+          revenue: string | null
+          sector: string | null
+          team_size: string | null
+          updated_at: string
+          user_id: string
+          website: string | null
+        }
+        Insert: {
+          account_type: string
+          avatar_url?: string | null
+          company?: string | null
+          created_at?: string
+          description?: string | null
+          email: string
+          funding_amount?: string | null
+          funding_stage?: string | null
+          geographic_focus?: string | null
+          id?: string
+          investment_range?: string | null
+          investment_stage?: string | null
+          linkedin?: string | null
+          name: string
+          pitch_deck?: string | null
+          portfolio_size?: string | null
+          profile_complete?: boolean | null
+          revenue?: string | null
+          sector?: string | null
+          team_size?: string | null
+          updated_at?: string
+          user_id: string
+          website?: string | null
+        }
+        Update: {
+          account_type?: string
+          avatar_url?: string | null
+          company?: string | null
+          created_at?: string
+          description?: string | null
+          email?: string
+          funding_amount?: string | null
+          funding_stage?: string | null
+          geographic_focus?: string | null
+          id?: string
+          investment_range?: string | null
+          investment_stage?: string | null
+          linkedin?: string | null
+          name?: string
+          pitch_deck?: string | null
+          portfolio_size?: string | null
+          profile_complete?: boolean | null
+          revenue?: string | null
+          sector?: string | null
+          team_size?: string | null
+          updated_at?: string
+          user_id?: string
+          website?: string | null
+        }
+        Relationships: []
+      }
       newsletter_subscribers: {
         Row: {
           created_at: string
