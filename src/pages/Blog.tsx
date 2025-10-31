@@ -27,31 +27,25 @@ const Blog = () => {
     setIsSubmitting(true);
 
     try {
-      const { error } = await supabase
-        .from('newsletter_subscribers')
-        .insert([{ email: email.toLowerCase().trim() }]);
+      // Call Mailchimp edge function
+      const { data, error } = await supabase.functions.invoke('subscribe-mailchimp', {
+        body: { email: email.toLowerCase().trim() }
+      });
 
       if (error) {
-        if (error.code === '23505') { // Unique constraint violation
-          toast({
-            title: "Already subscribed",
-            description: "This email is already subscribed to our newsletter",
-          });
-        } else {
-          throw error;
-        }
-      } else {
-        toast({
-          title: "Successfully subscribed!",
-          description: "Thank you for subscribing to our newsletter",
-        });
-        setEmail("");
+        throw error;
       }
-    } catch (error) {
+
+      toast({
+        title: "Successfully subscribed!",
+        description: "Thank you for subscribing to our newsletter via Mailchimp",
+      });
+      setEmail("");
+    } catch (error: any) {
       console.error('Newsletter subscription error:', error);
       toast({
         title: "Error",
-        description: "Failed to subscribe. Please try again later.",
+        description: error.message || "Failed to subscribe. Please try again later.",
         variant: "destructive",
       });
     } finally {
