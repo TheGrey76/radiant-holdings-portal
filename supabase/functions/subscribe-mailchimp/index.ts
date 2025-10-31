@@ -39,8 +39,21 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     // Extract datacenter from API key (e.g., us11 from key-us11)
-    const datacenter = apiKey.split('-')[1];
-    const url = `https://${datacenter}.api.mailchimp.com/3.0/lists/${audienceId}/members`;
+    const apiKeyParts = apiKey.trim().split('-');
+    const datacenter = apiKeyParts.length > 1 ? apiKeyParts[apiKeyParts.length - 1] : null;
+    
+    if (!datacenter) {
+      console.error('Invalid API key format - cannot extract datacenter');
+      return new Response(
+        JSON.stringify({ error: 'Invalid Mailchimp API key format' }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const cleanAudienceId = audienceId.trim();
+    const url = `https://${datacenter}.api.mailchimp.com/3.0/lists/${cleanAudienceId}/members`;
+
+    console.log(`Mailchimp URL: ${url}`);
 
     const memberData = {
       email_address: email,
