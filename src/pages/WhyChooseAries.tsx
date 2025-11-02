@@ -11,25 +11,52 @@ const WhyChooseAries = () => {
 
   const competitors = [
     {
+      firm: "Aries76 Ltd",
+      location: "London | Budapest",
+      tagline: "Boutique Precision, Global Reach, AI Intelligence",
+      points: [
+        "Proprietary AI-powered investor intelligence platform to optimize LP targeting and fundraising performance.",
+        "Senior-only execution model: no delegation, no layers — each mandate is founder-led.",
+        "Proven cross-border fundraising record (over €200M raised) with deep insight into European and global investor ecosystems."
+      ],
+      highlight: true,
+      footer: "Positioned as the next-generation capital formation firm for private markets."
+    },
+    {
       firm: "Campbell Lutyens",
-      offering: "Fundraising, Secondary Advisory",
-      focus: "Global (US, UK, EU)",
-      differentiators: "Strong brand legacy",
-      ariesAdvantage: "Aries76 offers boutique agility, personalized mandates, and tech-enabled investor intelligence."
+      location: "London | New York | Hong Kong",
+      tagline: "Legacy Scale, Traditional Processes",
+      points: [
+        "Global secondary and fundraising leader with institutional credibility.",
+        "Focus on large-cap mandates, often limiting flexibility for mid-market GPs.",
+        "Heavy structure and standardized processes can reduce personalization and agility."
+      ],
+      highlight: false,
+      footer: "Aries76 offers same institutional discipline with faster decision cycles, advanced data tools, and tailored execution."
     },
     {
       firm: "REDE Partners",
-      offering: "Private markets placement",
-      focus: "European mid-market",
-      differentiators: "Deep LP network",
-      ariesAdvantage: "Aries76 combines comparable network depth with AI-driven matching and cross-border structuring expertise."
+      location: "London | Continental Europe",
+      tagline: "Established European Network",
+      points: [
+        "Strong relationships across European LPs, primarily focused on fund placement.",
+        "Standardized approach to fundraising, limited technological integration.",
+        "Limited geographic diversification beyond Europe."
+      ],
+      highlight: false,
+      footer: "Aries76 matches the LP access of Rede with AI-driven analytics, ESG-integrated narratives, and multi-jurisdictional reach."
     },
     {
-      firm: "GS Equity",
-      offering: "Institutional fundraising",
-      focus: "Emerging markets",
-      differentiators: "Broad access",
-      ariesAdvantage: "Aries76 provides strategic positioning in Europe with advanced data analytics and direct deal insight."
+      firm: "GS Equity Partners",
+      location: "Emerging Markets",
+      tagline: "Wide Network, Limited Focus",
+      points: [
+        "Broad institutional network but spread across unrelated asset classes.",
+        "Less specialization in alternative markets and illiquid strategies.",
+        "Lacks a proprietary data infrastructure or fundraising intelligence layer."
+      ],
+      highlight: false,
+      footer: "Aries76 focuses on private markets depth over breadth, combining data, insight, and personal relationships."
     }
   ];
 
@@ -72,6 +99,22 @@ const WhyChooseAries = () => {
     ]
   };
 
+  const comparisonJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Fund Placement Firms Comparison",
+    "description": "Comparison of Aries76 with leading capital formation firms",
+    "itemListElement": competitors.map((comp, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "item": {
+        "@type": "Organization",
+        "name": comp.firm,
+        "description": comp.tagline
+      }
+    }))
+  };
+
   return (
     <>
       <Helmet>
@@ -79,6 +122,9 @@ const WhyChooseAries = () => {
         <meta name="description" content="Discover how Aries76 redefines capital formation through precision, technology, and partnership. Compare our boutique approach with global advisors." />
         <script type="application/ld+json">
           {JSON.stringify(jsonLd)}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify(comparisonJsonLd)}
         </script>
       </Helmet>
 
@@ -114,39 +160,98 @@ const WhyChooseAries = () => {
         </div>
       </section>
 
-      {/* Comparative Table */}
+      {/* Competitive Advantage Matrix */}
+      <section className="py-20 bg-background">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 text-primary">
+              The Aries76 Advantage
+            </h2>
+            <p className="text-xl text-center text-muted-foreground mb-16">
+              Redefining Fund Placement in the Age of Intelligence
+            </p>
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+              {competitors.map((comp, idx) => (
+                <Card 
+                  key={idx} 
+                  className={`relative overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${
+                    comp.highlight 
+                      ? 'border-2 border-accent shadow-lg shadow-accent/20' 
+                      : 'border border-primary/20 hover:border-accent/50'
+                  }`}
+                >
+                  {comp.highlight && (
+                    <div className="absolute top-0 right-0 bg-accent text-accent-foreground px-3 py-1 text-xs font-semibold">
+                      Our Advantage
+                    </div>
+                  )}
+                  <CardContent className="p-6">
+                    <div className="mb-4">
+                      <h3 className="text-xl font-bold text-primary mb-1">
+                        {comp.firm}
+                      </h3>
+                      <p className="text-sm text-muted-foreground mb-3">
+                        {comp.location}
+                      </p>
+                      <p className={`text-sm font-semibold italic ${
+                        comp.highlight ? 'text-accent' : 'text-foreground/80'
+                      }`}>
+                        {comp.tagline}
+                      </p>
+                    </div>
+                    
+                    <Separator className="my-4" />
+                    
+                    <ul className="space-y-3 mb-4">
+                      {comp.points.map((point, pidx) => (
+                        <li key={pidx} className="text-sm text-muted-foreground leading-relaxed flex items-start">
+                          <span className={`mr-2 mt-1 flex-shrink-0 ${
+                            comp.highlight ? 'text-accent' : 'text-primary'
+                          }`}>•</span>
+                          <span>{point}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    
+                    {comp.footer && (
+                      <>
+                        <Separator className="my-4" />
+                        <p className={`text-xs italic ${
+                          comp.highlight ? 'text-accent font-medium' : 'text-muted-foreground'
+                        }`}>
+                          → {comp.footer}
+                        </p>
+                      </>
+                    )}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* What Makes Aries76 Different */}
       <section className="py-20 bg-muted/30">
         <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center mb-12 text-primary">
-            How We Compare
-          </h2>
-          <div className="overflow-x-auto">
-            <Card className="border-primary/20">
-              <CardContent className="p-0">
-                <Table>
-                  <TableHeader>
-                    <TableRow className="bg-primary/5">
-                      <TableHead className="font-bold text-primary">Firm</TableHead>
-                      <TableHead className="font-bold text-primary">Core Offering</TableHead>
-                      <TableHead className="font-bold text-primary">Focus & Reach</TableHead>
-                      <TableHead className="font-bold text-primary">Differentiators</TableHead>
-                      <TableHead className="font-bold text-primary">Aries76 Advantage</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {competitors.map((comp, idx) => (
-                      <TableRow key={idx} className="hover:bg-accent/5">
-                        <TableCell className="font-semibold text-foreground">{comp.firm}</TableCell>
-                        <TableCell className="text-muted-foreground">{comp.offering}</TableCell>
-                        <TableCell className="text-muted-foreground">{comp.focus}</TableCell>
-                        <TableCell className="text-muted-foreground">{comp.differentiators}</TableCell>
-                        <TableCell className="text-accent font-medium">{comp.ariesAdvantage}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-4xl font-bold mb-8 text-primary">
+              What Makes Aries76 Different
+            </h2>
+            <div className="text-lg text-foreground leading-relaxed space-y-4">
+              <p>
+                <strong>Aries76 isn't built for volume — it's built for precision.</strong>
+              </p>
+              <p>
+                We merge human expertise with artificial intelligence to deliver a new model of capital formation. 
+                Where traditional placement agents focus on process, we focus on <em>performance</em>.
+              </p>
+              <p>
+                Our hybrid structure combines data analytics, strategic advisory, and cross-border execution 
+                to drive measurable fundraising results.
+              </p>
+            </div>
           </div>
         </div>
       </section>
