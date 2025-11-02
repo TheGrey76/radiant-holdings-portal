@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Calendar } from 'lucide-react';
 import { useEffect } from 'react';
+import ShareButtons from '@/components/ShareButtons';
 
 const GPEquityNextFrontier = () => {
   useEffect(() => {
@@ -67,6 +68,11 @@ const GPEquityNextFrontier = () => {
               <span>•</span>
               <span>8 min read</span>
             </div>
+
+            <ShareButtons 
+              title="GP Equity: The Next Frontier in Private Markets Capital Formation"
+              url={window.location.href}
+            />
 
             <div className="prose prose-lg max-w-none">
               <p className="text-xl text-muted-foreground font-light leading-relaxed mb-8">

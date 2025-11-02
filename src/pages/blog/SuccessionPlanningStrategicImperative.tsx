@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Calendar } from 'lucide-react';
 import { useEffect } from 'react';
+import ShareButtons from '@/components/ShareButtons';
 
 const SuccessionPlanningStrategicImperative = () => {
   useEffect(() => {
@@ -67,6 +68,11 @@ const SuccessionPlanningStrategicImperative = () => {
               <span>•</span>
               <span>6 min read</span>
             </div>
+
+            <ShareButtons 
+              title="Succession Planning for Private Equity Firms: A Strategic Imperative"
+              url={window.location.href}
+            />
 
             <div className="prose prose-lg max-w-none">
               <p className="text-xl text-muted-foreground font-light leading-relaxed mb-8">

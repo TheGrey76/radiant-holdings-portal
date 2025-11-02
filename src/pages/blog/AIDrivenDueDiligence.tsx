@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { useEffect } from 'react';
+import ShareButtons from '@/components/ShareButtons';
 
 const AIDrivenDueDiligence = () => {
   useEffect(() => {
@@ -57,6 +58,11 @@ const AIDrivenDueDiligence = () => {
             <span>•</span>
             <span>7 min read</span>
           </div>
+
+          <ShareButtons 
+            title="AI-Driven Due Diligence: How Machine Learning is Reshaping Private Markets"
+            url={window.location.href}
+          />
 
           <div className="prose prose-lg max-w-none">
             <p className="text-xl text-muted-foreground font-light leading-relaxed mb-8">
