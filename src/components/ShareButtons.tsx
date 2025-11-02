@@ -11,7 +11,7 @@ const ShareButtons = ({ title, url }: ShareButtonsProps) => {
   const shareTitle = encodeURIComponent(title);
 
   const shareLinks = {
-    linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${shareUrl}`,
+    linkedin: `https://www.linkedin.com/shareArticle?mini=true&url=${shareUrl}&title=${shareTitle}`,
     twitter: `https://twitter.com/intent/tweet?url=${shareUrl}&text=${shareTitle}`,
     facebook: `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`
   };
