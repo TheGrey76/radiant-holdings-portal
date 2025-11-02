@@ -1,4 +1,4 @@
-import { Share2, Linkedin, Facebook } from 'lucide-react';
+import { Share2, Linkedin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface ShareButtonsProps {
@@ -12,8 +12,7 @@ const ShareButtons = ({ title, url }: ShareButtonsProps) => {
 
   const shareLinks = {
     linkedin: `https://www.linkedin.com/shareArticle?mini=true&url=${shareUrl}&title=${shareTitle}`,
-    twitter: `https://twitter.com/intent/tweet?url=${shareUrl}&text=${shareTitle}`,
-    facebook: `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`
+    twitter: `https://twitter.com/intent/tweet?url=${shareUrl}&text=${shareTitle}`
   };
 
   const handleShare = (platform: keyof typeof shareLinks) => {
@@ -44,15 +43,6 @@ const ShareButtons = ({ title, url }: ShareButtonsProps) => {
             <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
           </svg>
           X
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => handleShare('facebook')}
-          className="gap-2"
-        >
-          <Facebook className="w-4 h-4" />
-          Facebook
         </Button>
       </div>
     </div>
