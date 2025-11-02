@@ -30,6 +30,7 @@ import ValuingManagementCompanies from "./pages/blog/ValuingManagementCompanies"
 import DigitalInfrastructureAI from "./pages/blog/DigitalInfrastructureAI";
 import CrossBorderFundStructuring from "./pages/blog/CrossBorderFundStructuring";
 import AIRESTransformingInvestorTargeting from "./pages/blog/AIRESTransformingInvestorTargeting";
+import AIDrivenDueDiligence from "./pages/blog/AIDrivenDueDiligence";
 import WhyChooseAries from "./pages/WhyChooseAries";
 
 const queryClient = new QueryClient();
@@ -64,6 +65,7 @@ const App = () => (
           <Route path="/blog/digital-infrastructure-ai-core-allocation" element={<DigitalInfrastructureAI />} />
           <Route path="/blog/cross-border-fund-structuring" element={<CrossBorderFundStructuring />} />
           <Route path="/blog/aires-ai-transforming-investor-targeting" element={<AIRESTransformingInvestorTargeting />} />
+          <Route path="/blog/ai-driven-due-diligence-private-markets" element={<AIDrivenDueDiligence />} />
           <Route path="/press" element={<Press />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

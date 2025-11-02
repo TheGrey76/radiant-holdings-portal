@@ -9,6 +9,14 @@ const Blog = () => {
 
   const blogPosts = [
     {
+      title: "AI-Driven Due Diligence: How Machine Learning is Reshaping Private Markets",
+      excerpt: "Artificial intelligence is revolutionizing the way GPs analyze deals and LPs evaluate fund managers. We examine the latest AI applications in private markets due diligence and their impact on investment decisions.",
+      category: "AI & Technology",
+      date: "2025-11-02",
+      readTime: "7 min read",
+      slug: "ai-driven-due-diligence-private-markets"
+    },
+    {
       title: "GP Equity: The Next Frontier in Private Markets Capital Formation",
       excerpt: "As private markets continue to mature, GP equity is emerging as a critical tool for management company growth. We explore the trends driving this shift and what it means for European GPs.",
       category: "GP Capital Advisory",
@@ -47,14 +55,6 @@ const Blog = () => {
       date: "2025-08-25",
       readTime: "9 min read",
       slug: "cross-border-fund-structuring"
-    },
-    {
-      title: "AIRES: How AI is Transforming Investor Targeting",
-      excerpt: "Our proprietary AIRES platform uses machine learning to identify optimal LP matches and optimize fundraising strategies. A look inside the technology powering modern capital formation.",
-      category: "Technology",
-      date: "2025-08-10",
-      readTime: "5 min read",
-      slug: "aires-ai-transforming-investor-targeting"
     }
   ];
 
