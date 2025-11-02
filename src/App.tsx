@@ -30,6 +30,7 @@ import ValuingManagementCompanies from "./pages/blog/ValuingManagementCompanies"
 import DigitalInfrastructureAI from "./pages/blog/DigitalInfrastructureAI";
 import CrossBorderFundStructuring from "./pages/blog/CrossBorderFundStructuring";
 import AIRESTransformingInvestorTargeting from "./pages/blog/AIRESTransformingInvestorTargeting";
+import WhyChooseAries from "./pages/WhyChooseAries";
 
 const queryClient = new QueryClient();
 
@@ -44,6 +45,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<AboutPage />} />
+          <Route path="/about/why-choose-aries76" element={<WhyChooseAries />} />
           <Route path="/services" element={<Services />} />
           <Route path="/legal" element={<Legal />} />
           <Route path="/aires-data" element={<AiresData />} />
