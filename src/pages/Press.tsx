@@ -28,7 +28,7 @@ const Press = () => {
     },
     {
       title: "Geographic Presence",
-      content: "Headquartered in London with operational presence in Zurich, Luxembourg, and Budapest. Active investor network spans UK, EU, Switzerland, and MENA region. Cross-border transaction experience across European jurisdictions with expertise in multi-jurisdictional fund structuring."
+      content: "Headquartered in London. Active investor network spans UK, EU, Switzerland, and MENA region. Cross-border transaction experience across European jurisdictions with expertise in multi-jurisdictional fund structuring."
     },
     {
       title: "Technology & Innovation",
