@@ -35,7 +35,8 @@ export const CookieConsent = () => {
                 Utilizziamo i cookie
               </p>
               <p>
-                Questo sito utilizza cookie per migliorare l'esperienza utente e analizzare il traffico. 
+                Questo sito utilizza cookie tecnici e di terze parti (Google Analytics, LinkedIn Insight) 
+                per migliorare l'esperienza utente e analizzare il traffico. 
                 Continuando a navigare, accetti l'utilizzo dei cookie in conformità con la nostra{' '}
                 <a href="/legal" className="text-primary hover:underline">
                   Privacy Policy
