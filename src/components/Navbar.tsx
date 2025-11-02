@@ -31,7 +31,7 @@ const Navbar = () => {
     { name: 'Blog', path: '/blog' },
     { name: 'FAQ', path: '/faq' },
     { name: 'Press', path: '/press' },
-    { name: 'Licences', path: '/legal' },
+    { name: 'Why Choose Aries76', path: '/about/why-choose-aries76' },
     { name: 'Contact', path: '/contact' },
   ];
 
