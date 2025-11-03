@@ -9,6 +9,14 @@ const Blog = () => {
 
   const blogPosts = [
     {
+      title: "Italy's Structured Products Market Reaches Record €8 Billion in Q3 2025",
+      excerpt: "The Italian certificates market achieves unprecedented volumes with €8 billion placed in Q3 2025, marking a 47% year-over-year increase and confirming the structural growth of this dynamic sector.",
+      category: "Structured Products",
+      date: "2025-11-02",
+      readTime: "6 min read",
+      slug: "italy-structured-products-record-q3-2025"
+    },
+    {
       title: "AI-Driven Due Diligence: How Machine Learning is Reshaping Private Markets",
       excerpt: "Artificial intelligence is revolutionizing the way GPs analyze deals and LPs evaluate fund managers. We examine the latest AI applications in private markets due diligence and their impact on investment decisions.",
       category: "AI & Technology",
