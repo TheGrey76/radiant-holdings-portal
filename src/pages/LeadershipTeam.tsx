@@ -9,16 +9,19 @@ const LeadershipTeam = () => {
     {
       name: 'Edoardo Grigione',
       role: 'Founder & Strategic Advisor',
+      email: 'edoardo.grigione@aries76.com',
       description: 'Edoardo Grigione is a capital-raising and strategic advisory specialist with over 25 years of experience across hedge funds, private equity, and venture capital. He has advised international fund managers and family-backed businesses on structuring, cross-border fundraising, and investor relations, raising commitments exceeding €200 million. Edoardo founded Aries76 Ltd to deliver an institutional-grade advisory model powered by data, AI, and deep market knowledge, bridging global investors with European opportunities.'
     },
     {
       name: 'Quinley Martini',
       role: 'Head of Investor Relations',
+      email: 'quinley.martini@aries76.com',
       description: 'Quinley Martini leads Investor Relations at Aries76, overseeing communication with institutional LPs, family offices, and strategic partners across Europe and the Middle East. Her background combines financial communications and client strategy with a data-driven approach to capital formation. At Aries76, she ensures transparency, consistency, and long-term trust in every investor interaction, supporting both fundraising execution and relationship management.'
     },
     {
       name: 'Alessandro Catullo',
       role: 'Head of Business Development',
+      email: 'alessandro.catullo@aries76.com',
       description: 'Alessandro oversees Business Development and strategic partnerships at Aries76, focusing on expanding the firm\'s distribution network and origination capabilities across Europe, Switzerland, and the UK. With a solid background in financial events and business networking, he brings a relationship-driven approach to building alliances with private banks, family offices, and institutional investors. His mission is to translate Aries76\'s innovative capabilities into strategic growth opportunities for clients and partners worldwide.'
     }
   ];
@@ -95,9 +98,15 @@ const LeadershipTeam = () => {
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-muted-foreground font-light leading-relaxed text-sm">
+                    <p className="text-muted-foreground font-light leading-relaxed text-sm mb-4">
                       {leader.description}
                     </p>
+                    <a 
+                      href={`mailto:${leader.email}`}
+                      className="text-accent hover:text-accent/80 transition-colors font-light text-sm"
+                    >
+                      {leader.email}
+                    </a>
                   </CardContent>
                 </Card>
               </motion.div>
