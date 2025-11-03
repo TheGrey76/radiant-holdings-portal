@@ -228,17 +228,6 @@ const StructuredProducts = () => {
               ))}
             </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="mt-12 text-center"
-            >
-              <Link to="/contact" className="inline-flex items-center gap-2 text-accent text-lg font-light hover:gap-4 transition-all border-b-2 border-accent pb-1">
-                Request term sheet examples <ArrowRight className="w-5 h-5" />
-              </Link>
-            </motion.div>
           </div>
         </section>
 
