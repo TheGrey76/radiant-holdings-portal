@@ -9,16 +9,19 @@ interface ShareButtonsProps {
 const ShareButtons = ({ title, url }: ShareButtonsProps) => {
   // Ensure we have a full URL for sharing
   const fullUrl = url.startsWith('http') ? url : `${window.location.origin}${url}`;
-  const shareUrl = encodeURIComponent(fullUrl);
-  const shareTitle = encodeURIComponent(title);
-
-  const shareLinks = {
-    linkedin: `https://www.linkedin.com/shareArticle?mini=true&url=${shareUrl}&title=${shareTitle}`,
-    twitter: `https://twitter.com/intent/tweet?url=${shareUrl}&text=${shareTitle}`
-  };
-
-  const handleShare = (platform: keyof typeof shareLinks) => {
-    window.open(shareLinks[platform], '_blank', 'width=600,height=400');
+  
+  const handleShare = (platform: 'linkedin' | 'twitter') => {
+    let shareUrl = '';
+    
+    if (platform === 'linkedin') {
+      // LinkedIn share - use non-encoded URL for better compatibility
+      shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(fullUrl)}`;
+    } else {
+      // Twitter/X share
+      shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(fullUrl)}&text=${encodeURIComponent(title)}`;
+    }
+    
+    window.open(shareUrl, '_blank', 'noopener,noreferrer,width=600,height=600');
   };
 
   return (

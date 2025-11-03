@@ -2,46 +2,71 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { useEffect } from 'react';
+import { Helmet } from 'react-helmet';
 import ShareButtons from '@/components/ShareButtons';
 
 const ItalyStructuredProductsRecord = () => {
+  const articleUrl = "https://www.aries76.com/blog/italy-structured-products-record-q3-2025";
+  const articleTitle = "Italy's Structured Products Market Reaches Record €8 Billion in Q3 2025";
+  const articleDescription = "The Italian certificates market has achieved unprecedented volumes, with €8 billion placed in Q3 2025, marking a 47% increase year-over-year and confirming the structural growth trend of the sector.";
+  const articleImage = "https://www.aries76.com/aries76-og-logo.png";
+
   useEffect(() => {
     window.scrollTo(0, 0);
-    
-    // Inject Article Schema
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
-    script.innerHTML = JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "Article",
-      "headline": "Italy's Structured Products Market Reaches Record €8 Billion in Q3 2025",
-      "description": "The Italian certificates market has achieved unprecedented volumes, with €8 billion placed in Q3 2025, marking a 47% increase year-over-year and confirming the structural growth trend of the sector.",
-      "author": {
-        "@type": "Organization",
-        "name": "Aries76 Ltd"
-      },
-      "publisher": {
-        "@type": "Organization",
-        "name": "Aries76 Ltd",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://www.aries76.com/aries76-og-logo.png"
-        }
-      },
-      "datePublished": "2025-11-02",
-      "dateModified": "2025-11-02"
-    });
-    document.head.appendChild(script);
-
-    return () => {
-      if (document.head.contains(script)) {
-        document.head.removeChild(script);
-      }
-    };
   }, []);
 
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>{articleTitle} | Aries76 Blog</title>
+        <meta name="description" content={articleDescription} />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={articleUrl} />
+        <meta property="og:title" content={articleTitle} />
+        <meta property="og:description" content={articleDescription} />
+        <meta property="og:image" content={articleImage} />
+        <meta property="og:site_name" content="Aries76 Ltd" />
+        <meta property="article:published_time" content="2025-11-02T00:00:00Z" />
+        <meta property="article:author" content="Aries76 Ltd" />
+        <meta property="article:section" content="Structured Products" />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content={articleUrl} />
+        <meta name="twitter:title" content={articleTitle} />
+        <meta name="twitter:description" content={articleDescription} />
+        <meta name="twitter:image" content={articleImage} />
+        
+        {/* LinkedIn specific */}
+        <meta property="og:locale" content="en_US" />
+        
+        {/* JSON-LD Schema */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": articleTitle,
+            "description": articleDescription,
+            "image": articleImage,
+            "author": {
+              "@type": "Organization",
+              "name": "Aries76 Ltd"
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "Aries76 Ltd",
+              "logo": {
+                "@type": "ImageObject",
+                "url": "https://www.aries76.com/aries76-og-logo.png"
+              }
+            },
+            "datePublished": "2025-11-02",
+            "dateModified": "2025-11-02"
+          })}
+        </script>
+      </Helmet>
       <div className="max-w-4xl mx-auto px-6 py-24">
         <Link to="/blog" className="inline-flex items-center gap-2 text-muted-foreground hover:text-accent transition-colors mb-8">
           <ArrowLeft className="w-4 h-4" />
