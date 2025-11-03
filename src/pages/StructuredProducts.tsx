@@ -82,7 +82,7 @@ const StructuredProducts = () => {
 
       <div className="min-h-screen bg-background">
         {/* Hero Section */}
-        <section className="relative py-32 px-6 md:px-10 overflow-hidden bg-gradient-to-br from-blue-900 via-blue-700 to-blue-500">
+        <section className="relative py-32 px-6 md:px-10 overflow-hidden bg-gradient-to-br from-primary via-primary/90 to-primary/80">
           <div className="max-w-6xl mx-auto relative z-10">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
