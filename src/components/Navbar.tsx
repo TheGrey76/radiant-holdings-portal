@@ -33,7 +33,7 @@ const Navbar = () => {
   const menuStructure = {
     about: [
       { name: 'Who We Are', path: '/about' },
-      { name: 'Leadership', path: '/about' },
+      { name: 'Leadership Team', path: '/leadership-team' },
       { name: 'Our Clients', path: '/about' },
     ],
     advisory: [
@@ -54,7 +54,7 @@ const Navbar = () => {
     { name: 'Home', path: '/' },
     { name: 'About', path: '/about', section: 'about' },
     { name: 'Who We Are', path: '/about', indent: true },
-    { name: 'Leadership', path: '/about', indent: true },
+    { name: 'Leadership Team', path: '/leadership-team', indent: true },
     { name: 'Our Clients', path: '/about', indent: true },
     { name: 'Advisory Services', path: '#', section: 'advisory' },
     { name: 'Fund Placement', path: '/private-equity-funds', indent: true },

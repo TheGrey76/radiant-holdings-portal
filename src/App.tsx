@@ -33,6 +33,7 @@ import CrossBorderFundStructuring from "./pages/blog/CrossBorderFundStructuring"
 import AIRESTransformingInvestorTargeting from "./pages/blog/AIRESTransformingInvestorTargeting";
 import AIDrivenDueDiligence from "./pages/blog/AIDrivenDueDiligence";
 import WhyChooseAries from "./pages/WhyChooseAries";
+import LeadershipTeam from "./pages/LeadershipTeam";
 
 const queryClient = new QueryClient();
 
@@ -48,6 +49,7 @@ const App = () => (
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/about/why-choose-aries76" element={<WhyChooseAries />} />
+          <Route path="/leadership-team" element={<LeadershipTeam />} />
           <Route path="/services" element={<Services />} />
           <Route path="/legal" element={<Legal />} />
           <Route path="/aires-data" element={<AiresData />} />
