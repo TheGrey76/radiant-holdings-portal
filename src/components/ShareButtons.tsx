@@ -7,11 +7,13 @@ interface ShareButtonsProps {
 }
 
 const ShareButtons = ({ title, url }: ShareButtonsProps) => {
-  const shareUrl = encodeURIComponent(url);
+  // Ensure we have a full URL for sharing
+  const fullUrl = url.startsWith('http') ? url : `${window.location.origin}${url}`;
+  const shareUrl = encodeURIComponent(fullUrl);
   const shareTitle = encodeURIComponent(title);
 
   const shareLinks = {
-    linkedin: `https://www.linkedin.com/shareArticle?mini=true&url=${shareUrl}&title=${shareTitle}`,
+    linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${shareUrl}`,
     twitter: `https://twitter.com/intent/tweet?url=${shareUrl}&text=${shareTitle}`
   };
 
