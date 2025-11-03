@@ -33,7 +33,7 @@ const StructuredProducts = () => {
 
   const marketData = [
     { label: 'Products Structured Annually', value: '500+', description: 'Across European and Swiss issuers' },
-    { label: 'Average Ticket Size', value: '€2-50M', description: 'Institutional and private placement' },
+    { label: 'Average Ticket Size', value: '€1-10M', description: 'Institutional and private placement' },
     { label: 'Issuers Network', value: '15+', description: 'Top-tier European banks' },
     { label: 'Years in Structured Finance', value: '25+', description: 'Deep institutional expertise' },
   ];
