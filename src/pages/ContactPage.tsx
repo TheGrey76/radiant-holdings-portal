@@ -298,6 +298,44 @@ const ContactPage = () => {
         </div>
       </section>
 
+      {/* Calendar Section */}
+      <section className="py-20 bg-muted/20">
+        <div className="container mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="max-w-4xl mx-auto"
+          >
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-light text-foreground mb-6">
+                Schedule a call with <span className="text-accent">Aries76</span>
+              </h2>
+              <p className="text-muted-foreground font-light leading-relaxed max-w-2xl mx-auto">
+                You can review my availability directly in the calendar below and select a suitable time slot 
+                for an introductory call or meeting. For dedicated mandates or confidential discussions, 
+                please also use the contact form above.
+              </p>
+            </div>
+
+            <div className="bg-card border border-border rounded-lg overflow-hidden">
+              <div className="w-full min-h-[600px] md:min-h-[800px]">
+                <iframe
+                  src="https://calendar.google.com/calendar/embed?src=TUO_CALENDARIO&ctz=Europe/Budapest"
+                  style={{ border: 0 }}
+                  width="100%"
+                  height="600"
+                  className="md:h-[800px]"
+                  frameBorder="0"
+                  scrolling="no"
+                  title="Aries76 Calendar"
+                />
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
     </div>
   );
 };
