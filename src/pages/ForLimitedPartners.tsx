@@ -490,7 +490,7 @@ const ForLimitedPartners = () => {
       </section>
 
       {/* LP Access and Next Steps Section */}
-      <section className="py-20">
+      <section id="lp-contact-form" className="py-20">
         <div className="max-w-4xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
