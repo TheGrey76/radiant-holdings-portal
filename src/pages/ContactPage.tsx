@@ -333,7 +333,7 @@ const ContactPage = () => {
             <div className="bg-card border border-border rounded-lg overflow-hidden">
               <div 
                 className="calendly-inline-widget" 
-                data-url="https://calendly.com/edoardo-grigione-aries76?hide_event_type_details=1&hide_gdpr_banner=1"
+                data-url="https://calendly.com/edoardo-grigione?hide_event_type_details=1&hide_gdpr_banner=1"
                 style={{ minWidth: '320px', height: '700px' }}
               />
             </div>
