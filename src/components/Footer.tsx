@@ -40,6 +40,7 @@ const Footer = () => {
               <li><Link to="/private-equity-funds" className="text-white/70 hover:text-accent transition-colors font-light text-sm">Fund Placement</Link></li>
               <li><Link to="/gp-capital-advisory" className="text-white/70 hover:text-accent transition-colors font-light text-sm">GP Capital Advisory</Link></li>
               <li><Link to="/structured-products" className="text-white/70 hover:text-accent transition-colors font-light text-sm">Structured Products</Link></li>
+              <li><Link to="/for-limited-partners" className="text-white/70 hover:text-accent transition-colors font-light text-sm">For Limited Partners</Link></li>
             </ul>
             <h3 className="text-xs uppercase tracking-widest mb-6 font-light mt-8">Insights</h3>
             <ul className="space-y-3">

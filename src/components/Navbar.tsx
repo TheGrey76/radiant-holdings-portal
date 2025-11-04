@@ -63,8 +63,7 @@ const Navbar = () => {
     { name: 'Fund Placement', path: '/private-equity-funds', indent: true },
     { name: 'GP Capital Advisory', path: '/gp-capital-advisory', indent: true },
     { name: 'Structured Products', path: '/structured-products', indent: true },
-    // Temporarily hidden - LP section still in development
-    // { name: 'For LPs', path: '/for-limited-partners' },
+    { name: 'For LPs', path: '/for-limited-partners' },
     { name: 'Insights', path: '#', section: 'insights' },
     { name: 'Articles & Analysis', path: '/blog', indent: true },
     { name: 'Case Studies', path: '/press', indent: true },
@@ -136,17 +135,16 @@ const Navbar = () => {
                       </li>
                     ))}
                   </ul>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
 
-              {/* Temporarily hidden - LP section still in development */}
-              {/* <NavigationMenuItem>
-                <Link to="/for-limited-partners" className="text-xs tracking-widest text-foreground/70 hover:text-accent transition-colors font-light px-4 py-2 inline-block">
-                  FOR LP<span className="lowercase">s</span>
-                </Link>
-              </NavigationMenuItem> */}
+            <NavigationMenuItem>
+              <Link to="/for-limited-partners" className="text-xs tracking-widest text-foreground/70 hover:text-accent transition-colors font-light px-4 py-2 inline-block">
+                FOR LP<span className="lowercase">s</span>
+              </Link>
+            </NavigationMenuItem>
 
-              <NavigationMenuItem>
+            <NavigationMenuItem>
                 <NavigationMenuTrigger className="text-xs uppercase tracking-widest text-foreground/70 hover:text-accent transition-colors font-light bg-transparent">
                   Insights
                 </NavigationMenuTrigger>
