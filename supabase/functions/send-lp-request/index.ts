@@ -111,7 +111,7 @@ const handler = async (req: Request): Promise<Response> => {
     
     const emailResponse = await resend.emails.send({
       from: "Aries76 LP Requests <onboarding@resend.dev>",
-      to: ["quinley.martini@aries76.com"],
+      to: ["edoardo.grigione@aries76.com"],
       subject: `🔥 NEW LP Information Request - ${data.organization}`,
       html: `
         <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f8f9fa;">
