@@ -319,16 +319,15 @@ const ContactPage = () => {
             </div>
 
             <div className="bg-card border border-border rounded-lg overflow-hidden">
-              <div className="w-full min-h-[600px] md:min-h-[800px]">
+              <div className="w-full min-h-[600px] md:min-h-[700px]">
                 <iframe
-                  src="https://calendar.google.com/calendar/embed?src=edoardo.grigione%40aries76.com&ctz=Europe%2FRome"
+                  src="https://calendly.com/edoardo-grigione-aries76"
                   style={{ border: 0 }}
                   width="100%"
                   height="600"
-                  className="md:h-[800px]"
+                  className="md:h-[700px]"
                   frameBorder="0"
-                  scrolling="no"
-                  title="Aries76 Calendar"
+                  title="Schedule a meeting with Aries76"
                 />
               </div>
             </div>
