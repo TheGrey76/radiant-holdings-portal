@@ -1,8 +1,14 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "npm:resend@2.0.0";
 import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
+
+// Initialize Supabase client
+const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -67,6 +73,33 @@ const handler = async (req: Request): Promise<Response> => {
     const data = validationResult.data;
     
     console.log("📝 Processing LP request for:", data.organization);
+
+    // Save to database
+    console.log("💾 Saving LP registration to database...");
+    const { data: dbData, error: dbError } = await supabase
+      .from('lp_registrations')
+      .insert([
+        {
+          full_name: data.fullName,
+          email: data.email,
+          organization: data.organization,
+          role: data.role,
+          jurisdiction: data.jurisdiction,
+          investor_type: data.investorType,
+          areas_of_interest: data.areasOfInterest || [],
+          message: data.message,
+          status: 'new'
+        }
+      ])
+      .select()
+      .single();
+
+    if (dbError) {
+      console.error("❌ Database error:", dbError);
+      throw new Error(`Failed to save registration: ${dbError.message}`);
+    }
+
+    console.log("✅ LP registration saved to database with ID:", dbData.id);
 
     // Prepare areas of interest string
     const areasText = data.areasOfInterest && data.areasOfInterest.length > 0

@@ -119,6 +119,51 @@ export type Database = {
         }
         Relationships: []
       }
+      lp_registrations: {
+        Row: {
+          areas_of_interest: string[] | null
+          created_at: string
+          email: string
+          full_name: string
+          id: string
+          investor_type: string | null
+          jurisdiction: string | null
+          message: string | null
+          organization: string
+          role: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          areas_of_interest?: string[] | null
+          created_at?: string
+          email: string
+          full_name: string
+          id?: string
+          investor_type?: string | null
+          jurisdiction?: string | null
+          message?: string | null
+          organization: string
+          role?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          areas_of_interest?: string[] | null
+          created_at?: string
+          email?: string
+          full_name?: string
+          id?: string
+          investor_type?: string | null
+          jurisdiction?: string | null
+          message?: string | null
+          organization?: string
+          role?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       network_profiles: {
         Row: {
           account_type: string

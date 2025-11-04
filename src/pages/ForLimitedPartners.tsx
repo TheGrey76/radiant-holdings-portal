@@ -36,6 +36,7 @@ const ForLimitedPartners = () => {
   // LP Contact form state
   const [lpContactForm, setLpContactForm] = useState({
     fullName: '',
+    email: '',
     organization: '',
     role: '',
     jurisdiction: '',
@@ -105,7 +106,23 @@ const ForLimitedPartners = () => {
     setIsSubmitting(true);
     
     try {
-      // In a real implementation, this would send to an edge function
+      const { error } = await supabase.functions.invoke('send-lp-request', {
+        body: {
+          fullName: lpContactForm.fullName,
+          email: lpContactForm.email,
+          organization: lpContactForm.organization,
+          role: lpContactForm.role,
+          jurisdiction: lpContactForm.jurisdiction,
+          investorType: lpContactForm.investorType,
+          areasOfInterest: lpContactForm.areasOfInterest,
+          message: lpContactForm.message,
+        }
+      });
+
+      if (error) {
+        throw error;
+      }
+
       toast({
         title: "Message sent",
         description: "Thank you for reaching out. We will contact you shortly for a confidential discussion.",
@@ -113,6 +130,7 @@ const ForLimitedPartners = () => {
       
       setLpContactForm({
         fullName: '',
+        email: '',
         organization: '',
         role: '',
         jurisdiction: '',
@@ -121,6 +139,7 @@ const ForLimitedPartners = () => {
         message: '',
       });
     } catch (error) {
+      console.error('Error submitting LP contact:', error);
       toast({
         title: "Submission failed",
         description: "Please try again later.",
@@ -511,6 +530,17 @@ const ForLimitedPartners = () => {
                         id="lp-name"
                         value={lpContactForm.fullName}
                         onChange={(e) => setLpContactForm({ ...lpContactForm, fullName: e.target.value })}
+                        required
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="lp-email">Email</Label>
+                      <Input
+                        id="lp-email"
+                        type="email"
+                        value={lpContactForm.email}
+                        onChange={(e) => setLpContactForm({ ...lpContactForm, email: e.target.value })}
                         required
                       />
                     </div>
