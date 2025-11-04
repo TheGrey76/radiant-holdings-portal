@@ -4,7 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Download, Mail, Calendar, Loader2, LogOut, Home, Users, PenSquare, Building2, Eye, CheckCircle, XCircle } from "lucide-react";
+import { Download, Mail, Calendar, Loader2, LogOut, Home, Users, PenSquare, Building2, Eye, CheckCircle, XCircle, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
@@ -137,6 +137,34 @@ const Admin = () => {
       toast({
         title: "Error",
         description: "Failed to update LP status",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const deleteLPRegistration = async (id: string) => {
+    if (!confirm('Sei sicuro di voler eliminare questa registrazione LP?')) {
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from('lp_registrations')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+
+      await fetchLPRegistrations();
+      toast({
+        title: "Success",
+        description: "LP registration deleted successfully",
+      });
+    } catch (error) {
+      console.error("Error deleting LP registration:", error);
+      toast({
+        title: "Error",
+        description: "Failed to delete LP registration",
         variant: "destructive",
       });
     }
@@ -412,6 +440,14 @@ const Admin = () => {
                                 <CheckCircle className="w-4 h-4" />
                               </Button>
                             )}
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => deleteLPRegistration(lp.id)}
+                              className="text-red-400 hover:text-red-300 hover:bg-red-500/10"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
                           </div>
                         </TableCell>
                       </TableRow>
