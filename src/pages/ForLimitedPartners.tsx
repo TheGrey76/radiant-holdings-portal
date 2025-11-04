@@ -182,12 +182,12 @@ const ForLimitedPartners = () => {
                 size="lg" 
                 variant="outline"
                 className="bg-white/10 border-white/20 text-white hover:bg-white/20"
-                asChild
+                onClick={() => {
+                  document.getElementById('lp-contact-form')?.scrollIntoView({ behavior: 'smooth' });
+                }}
               >
-                <a href="/contact">
-                  <Calendar className="mr-2 h-5 w-5" />
-                  Schedule a call
-                </a>
+                <Mail className="mr-2 h-5 w-5" />
+                Register Your Interest
               </Button>
             </div>
           </motion.div>
