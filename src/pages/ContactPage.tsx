@@ -321,7 +321,7 @@ const ContactPage = () => {
             <div className="bg-card border border-border rounded-lg overflow-hidden">
               <div className="w-full min-h-[600px] md:min-h-[800px]">
                 <iframe
-                  src="https://calendar.google.com/calendar/embed?src=TUO_CALENDARIO&ctz=Europe/Budapest"
+                  src="https://calendar.google.com/calendar/embed?src=edoardo.grigione%40aries76.com&ctz=Europe%2FRome"
                   style={{ border: 0 }}
                   width="100%"
                   height="600"
