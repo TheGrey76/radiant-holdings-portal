@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
-import { Mail, Calendar } from 'lucide-react';
+import { Mail, Calendar, Shield, Users, TrendingUp, FileCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 
 const ForLimitedPartners = () => {
   return (
@@ -54,6 +55,51 @@ const ForLimitedPartners = () => {
                 </a>
               </Button>
             </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Value Proposition Cards */}
+      <section className="py-20 bg-background">
+        <div className="max-w-6xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16"
+          >
+            <Card className="p-6 border-primary/20 hover:border-primary/40 transition-colors">
+              <Shield className="h-10 w-10 text-primary mb-4" />
+              <h3 className="text-lg font-semibold mb-2">Independent Advisory</h3>
+              <p className="text-sm text-muted-foreground">
+                Unbiased guidance focused on your investment objectives and risk profile.
+              </p>
+            </Card>
+
+            <Card className="p-6 border-primary/20 hover:border-primary/40 transition-colors">
+              <Users className="h-10 w-10 text-primary mb-4" />
+              <h3 className="text-lg font-semibold mb-2">Curated Access</h3>
+              <p className="text-sm text-muted-foreground">
+                Exclusive opportunities with vetted GPs and sponsors in private markets.
+              </p>
+            </Card>
+
+            <Card className="p-6 border-primary/20 hover:border-primary/40 transition-colors">
+              <TrendingUp className="h-10 w-10 text-primary mb-4" />
+              <h3 className="text-lg font-semibold mb-2">Long-term Partnership</h3>
+              <p className="text-sm text-muted-foreground">
+                Building lasting relationships beyond single transactions.
+              </p>
+            </Card>
+
+            <Card className="p-6 border-primary/20 hover:border-primary/40 transition-colors">
+              <FileCheck className="h-10 w-10 text-primary mb-4" />
+              <h3 className="text-lg font-semibold mb-2">Institutional Standards</h3>
+              <p className="text-sm text-muted-foreground">
+                Professional-grade due diligence and documentation processes.
+              </p>
+            </Card>
           </motion.div>
         </div>
       </section>
