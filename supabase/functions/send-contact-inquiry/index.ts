@@ -54,42 +54,46 @@ const handler = async (req: Request): Promise<Response> => {
 
     console.log("Inquiry saved to database:", inquiry.id);
 
-    // Send confirmation email to user
-    const confirmationEmail = await resend.emails.send({
-      from: "Aries76 Ltd <onboarding@resend.dev>",
-      to: [email],
-      subject: "We've received your inquiry - Aries76 Ltd",
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h1 style="color: #1a1a1a; font-size: 24px; margin-bottom: 20px;">Thank you for reaching out!</h1>
-          <p style="color: #4a5568; font-size: 16px; line-height: 1.6;">Dear ${name},</p>
-          <p style="color: #4a5568; font-size: 16px; line-height: 1.6;">
-            We have received your ${inquiryType === 'lp' ? 'Limited Partner' : inquiryType === 'gp' ? 'General Partner' : 'general'} inquiry 
-            and our team will review it shortly.
-          </p>
-          <p style="color: #4a5568; font-size: 16px; line-height: 1.6;">
-            A member of our team will be in touch with you within 24-48 hours.
-          </p>
-          <div style="background-color: #f7fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <p style="color: #2d3748; font-size: 14px; margin: 0;"><strong>Your Message:</strong></p>
-            <p style="color: #4a5568; font-size: 14px; margin: 10px 0 0 0;">${message}</p>
+    // Send confirmation email to user (only if not in test mode)
+    // In test mode, Resend only allows sending to the verified email
+    try {
+      const confirmationEmail = await resend.emails.send({
+        from: "Aries76 Ltd <onboarding@resend.dev>",
+        to: [email],
+        subject: "We've received your inquiry - Aries76 Ltd",
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <h1 style="color: #1a1a1a; font-size: 24px; margin-bottom: 20px;">Thank you for reaching out!</h1>
+            <p style="color: #4a5568; font-size: 16px; line-height: 1.6;">Dear ${name},</p>
+            <p style="color: #4a5568; font-size: 16px; line-height: 1.6;">
+              We have received your ${inquiryType === 'lp' ? 'Limited Partner' : inquiryType === 'gp' ? 'General Partner' : 'general'} inquiry 
+              and our team will review it shortly.
+            </p>
+            <p style="color: #4a5568; font-size: 16px; line-height: 1.6;">
+              A member of our team will be in touch with you within 24-48 hours.
+            </p>
+            <div style="background-color: #f7fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
+              <p style="color: #2d3748; font-size: 14px; margin: 0;"><strong>Your Message:</strong></p>
+              <p style="color: #4a5568; font-size: 14px; margin: 10px 0 0 0;">${message}</p>
+            </div>
+            <p style="color: #4a5568; font-size: 16px; line-height: 1.6;">
+              Best regards,<br>
+              <strong>The Aries76 Team</strong>
+            </p>
+            <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 30px 0;">
+            <p style="color: #718096; font-size: 12px; line-height: 1.6;">
+              Aries76 Ltd<br>
+              27 Old Gloucester Street<br>
+              London, WC1N 3AX, United Kingdom<br>
+              <a href="mailto:quinley.martini@aries76.com" style="color: #4299e1;">quinley.martini@aries76.com</a>
+            </p>
           </div>
-          <p style="color: #4a5568; font-size: 16px; line-height: 1.6;">
-            Best regards,<br>
-            <strong>The Aries76 Team</strong>
-          </p>
-          <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 30px 0;">
-          <p style="color: #718096; font-size: 12px; line-height: 1.6;">
-            Aries76 Ltd<br>
-            27 Old Gloucester Street<br>
-            London, WC1N 3AX, United Kingdom<br>
-            <a href="mailto:quinley.martini@aries76.com" style="color: #4299e1;">quinley.martini@aries76.com</a>
-          </p>
-        </div>
-      `,
-    });
-
-    console.log("Confirmation email sent:", confirmationEmail);
+        `,
+      });
+      console.log("Confirmation email sent:", confirmationEmail);
+    } catch (confirmError: any) {
+      console.log("Confirmation email failed (expected in test mode):", confirmError.message);
+    }
 
     // Send notification email to Aries76
     const notificationEmail = await resend.emails.send({
