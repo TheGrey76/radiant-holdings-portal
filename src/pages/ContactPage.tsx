@@ -66,7 +66,7 @@ const ContactPage = () => {
 
   const handleWhatsApp = () => {
     const message = encodeURIComponent("Hello! I'm interested in learning more about Aries76.");
-    window.open(`https://wa.me/447700000000?text=${message}`, '_blank');
+    window.open(`https://wa.me/393440621264?text=${message}`, '_blank');
   };
 
   const handleScheduleCall = () => {
