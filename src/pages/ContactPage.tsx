@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, MapPin, Phone, MessageSquare, Calendar, Send, Building2, User, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -74,18 +74,6 @@ const ContactPage = () => {
     const body = encodeURIComponent("Hello,\n\nI would like to schedule a call to discuss...\n\nBest regards,");
     window.open(`mailto:edoardo.grigione@aries76.com,quinley.martini@aries76.com?subject=${subject}&body=${body}`, '_blank');
   };
-
-  useEffect(() => {
-    // Load Calendly widget script
-    const script = document.createElement('script');
-    script.src = 'https://assets.calendly.com/assets/external/widget.js';
-    script.async = true;
-    document.body.appendChild(script);
-
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
 
   return (
     <div className="min-h-screen bg-background">
@@ -307,37 +295,6 @@ const ContactPage = () => {
               </form>
             </motion.div>
           </div>
-        </div>
-      </section>
-
-      {/* Calendar Section */}
-      <section className="py-20 bg-muted/20">
-        <div className="container mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="max-w-4xl mx-auto"
-          >
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-light text-foreground mb-6">
-                Schedule a call with <span className="text-accent">Aries76</span>
-              </h2>
-              <p className="text-muted-foreground font-light leading-relaxed max-w-2xl mx-auto">
-                You can review my availability directly in the calendar below and select a suitable time slot 
-                for an introductory call or meeting. For dedicated mandates or confidential discussions, 
-                please also use the contact form above.
-              </p>
-            </div>
-
-            <div className="bg-card border border-border rounded-lg overflow-hidden">
-              <div 
-                className="calendly-inline-widget" 
-                data-url="https://calendly.com/edoardo-grigione?hide_event_type_details=1&hide_gdpr_banner=1"
-                style={{ minWidth: '320px', height: '700px' }}
-              />
-            </div>
-          </motion.div>
         </div>
       </section>
 
