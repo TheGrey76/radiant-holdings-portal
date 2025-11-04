@@ -309,61 +309,6 @@ const ContactPage = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-accent/5 to-background">
-        <div className="container mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="max-w-4xl mx-auto"
-          >
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-light text-foreground mb-6">
-                Prefer a Different <span className="text-accent">Approach?</span>
-              </h2>
-              <p className="text-muted-foreground font-light max-w-2xl mx-auto">
-                Choose the communication method that works best for you
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="bg-card border border-border rounded-lg p-6 text-center hover:border-accent transition-colors cursor-pointer">
-                <Mail className="h-8 w-8 text-accent mx-auto mb-4" strokeWidth={1.5} />
-                <h3 className="font-medium text-foreground mb-2">Email Us</h3>
-                <a 
-                  href="mailto:quinley.martini@aries76.com" 
-                  className="text-sm text-muted-foreground hover:text-accent transition-colors"
-                >
-                  quinley.martini@aries76.com
-                </a>
-              </div>
-
-              <div 
-                className="bg-card border border-border rounded-lg p-6 text-center hover:border-accent transition-colors cursor-pointer"
-                onClick={handleWhatsApp}
-              >
-                <MessageSquare className="h-8 w-8 text-accent mx-auto mb-4" strokeWidth={1.5} />
-                <h3 className="font-medium text-foreground mb-2">WhatsApp</h3>
-                <p className="text-sm text-muted-foreground hover:text-accent transition-colors">
-                  Chat with us instantly
-                </p>
-              </div>
-
-              <div 
-                className="bg-card border border-border rounded-lg p-6 text-center hover:border-accent transition-colors cursor-pointer"
-                onClick={handleScheduleCall}
-              >
-                <Calendar className="h-8 w-8 text-accent mx-auto mb-4" strokeWidth={1.5} />
-                <h3 className="font-medium text-foreground mb-2">Schedule a Call</h3>
-                <p className="text-sm text-muted-foreground hover:text-accent transition-colors">
-                  Book a meeting
-                </p>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
     </div>
   );
 };
