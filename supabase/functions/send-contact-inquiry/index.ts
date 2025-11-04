@@ -94,7 +94,7 @@ const handler = async (req: Request): Promise<Response> => {
     // Send notification email to Aries76
     const notificationEmail = await resend.emails.send({
       from: "Aries76 Contact Form <onboarding@resend.dev>",
-      to: ["quinley.martini@aries76.com"],
+      to: ["edoardo.grigione@aries76.com"],
       subject: `New ${inquiryType.toUpperCase()} Inquiry from ${name}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">

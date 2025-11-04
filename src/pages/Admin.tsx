@@ -205,6 +205,34 @@ const Admin = () => {
     }
   };
 
+  const deleteContactInquiry = async (id: string) => {
+    if (!confirm('Sei sicuro di voler eliminare questa richiesta di contatto?')) {
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from('contact_inquiries')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+
+      await fetchContactInquiries();
+      toast({
+        title: "Success",
+        description: "Contact inquiry deleted successfully",
+      });
+    } catch (error) {
+      console.error("Error deleting contact inquiry:", error);
+      toast({
+        title: "Error",
+        description: "Failed to delete contact inquiry",
+        variant: "destructive",
+      });
+    }
+  };
+
   const exportToCSV = () => {
     const csvContent = [
       ['Email', 'Subscribed Date', 'Status'],
@@ -582,14 +610,24 @@ const Admin = () => {
                           </Badge>
                         </TableCell>
                         <TableCell>
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            onClick={() => setSelectedInquiry(inquiry)}
-                            className="text-white/70 hover:text-white hover:bg-white/10"
-                          >
-                            <Eye className="w-4 h-4" />
-                          </Button>
+                          <div className="flex items-center gap-2">
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => setSelectedInquiry(inquiry)}
+                              className="text-white/70 hover:text-white hover:bg-white/10"
+                            >
+                              <Eye className="w-4 h-4" />
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => deleteContactInquiry(inquiry.id)}
+                              className="text-red-400 hover:text-red-300 hover:bg-red-500/10"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
                         </TableCell>
                       </TableRow>
                     ))}
