@@ -110,7 +110,7 @@ const handler = async (req: Request): Promise<Response> => {
     console.log("📤 Sending email to quinley.martini@aries76.com...");
     
     const emailResponse = await resend.emails.send({
-      from: "Aries76 LP Requests <noreply@aries76.com>",
+      from: "Aries76 LP Requests <onboarding@resend.dev>",
       to: ["quinley.martini@aries76.com"],
       subject: `🔥 NEW LP Information Request - ${data.organization}`,
       html: `
