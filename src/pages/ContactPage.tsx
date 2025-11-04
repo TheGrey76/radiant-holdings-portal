@@ -161,17 +161,6 @@ const ContactPage = () => {
                 </div>
               </div>
 
-              {/* Stats */}
-              <div className="grid grid-cols-2 gap-4 pt-8 border-t border-border">
-                <div>
-                  <div className="text-3xl font-light text-accent mb-1">24h</div>
-                  <div className="text-sm text-muted-foreground">Response Time</div>
-                </div>
-                <div>
-                  <div className="text-3xl font-light text-accent mb-1">100%</div>
-                  <div className="text-sm text-muted-foreground">Confidential</div>
-                </div>
-              </div>
             </motion.div>
 
             {/* Right Column - Form */}
