@@ -41,6 +41,9 @@ const Navbar = () => {
       { name: 'GP Capital Advisory', path: '/gp-capital-advisory' },
       { name: 'Structured Products', path: '/structured-products' },
     ],
+    lps: [
+      { name: 'For Limited Partners', path: '/for-limited-partners' },
+    ],
     insights: [
       { name: 'Articles & Analysis', path: '/blog' },
       { name: 'Case Studies', path: '/press' },
@@ -60,6 +63,7 @@ const Navbar = () => {
     { name: 'Fund Placement', path: '/private-equity-funds', indent: true },
     { name: 'GP Capital Advisory', path: '/gp-capital-advisory', indent: true },
     { name: 'Structured Products', path: '/structured-products', indent: true },
+    { name: 'For LPs', path: '/for-limited-partners' },
     { name: 'Insights', path: '#', section: 'insights' },
     { name: 'Articles & Analysis', path: '/blog', indent: true },
     { name: 'Case Studies', path: '/press', indent: true },
@@ -132,6 +136,12 @@ const Navbar = () => {
                     ))}
                   </ul>
                 </NavigationMenuContent>
+              </NavigationMenuItem>
+
+              <NavigationMenuItem>
+                <Link to="/for-limited-partners" className="text-xs uppercase tracking-widest text-foreground/70 hover:text-accent transition-colors font-light px-4 py-2 inline-block">
+                  For LPs
+                </Link>
               </NavigationMenuItem>
 
               <NavigationMenuItem>
