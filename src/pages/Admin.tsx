@@ -4,7 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Download, Mail, Calendar, Loader2, LogOut, Home, Users, PenSquare, Building2, Eye, CheckCircle, XCircle, Trash2 } from "lucide-react";
+import { Download, Mail, Calendar, Loader2, LogOut, Home, Users, PenSquare, Building2, Eye, CheckCircle, XCircle, Trash2, MessageSquare } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
@@ -31,10 +31,24 @@ interface LPRegistration {
   updated_at: string;
 }
 
+interface ContactInquiry {
+  id: string;
+  name: string;
+  email: string;
+  phone: string | null;
+  company: string | null;
+  inquiry_type: string;
+  message: string;
+  status: string;
+  created_at: string;
+}
+
 const Admin = () => {
   const [subscribers, setSubscribers] = useState<NewsletterSubscriber[]>([]);
   const [lpRegistrations, setLpRegistrations] = useState<LPRegistration[]>([]);
+  const [contactInquiries, setContactInquiries] = useState<ContactInquiry[]>([]);
   const [selectedLP, setSelectedLP] = useState<LPRegistration | null>(null);
+  const [selectedInquiry, setSelectedInquiry] = useState<ContactInquiry | null>(null);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
@@ -69,6 +83,7 @@ const Admin = () => {
       setIsAdmin(true);
       fetchSubscribers();
       fetchLPRegistrations();
+      fetchContactInquiries();
     } catch (error) {
       console.error("Error checking admin access:", error);
       navigate("/");
@@ -113,6 +128,26 @@ const Admin = () => {
       toast({
         title: "Error",
         description: "Failed to load LP registrations",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const fetchContactInquiries = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('contact_inquiries')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      setContactInquiries(data || []);
+    } catch (error) {
+      console.error("Error fetching contact inquiries:", error);
+      toast({
+        title: "Error",
+        description: "Failed to load contact inquiries",
         variant: "destructive",
       });
     }
@@ -275,7 +310,7 @@ const Admin = () => {
 
       <div className="container mx-auto px-6 py-12 max-w-7xl">
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
           <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
@@ -304,9 +339,21 @@ const Admin = () => {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-white/60 text-sm mb-1">New LP Requests</p>
+                  <p className="text-white/60 text-sm mb-1">Contact Forms</p>
+                  <p className="text-3xl font-light text-white">{contactInquiries.length}</p>
+                </div>
+                <MessageSquare className="w-10 h-10 text-accent opacity-50" />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-white/60 text-sm mb-1">New Requests</p>
                   <p className="text-3xl font-light text-white">
-                    {lpRegistrations.filter(lp => lp.status === 'new').length}
+                    {contactInquiries.filter(inq => inq.status === 'new').length}
                   </p>
                 </div>
                 <Mail className="w-10 h-10 text-green-400 opacity-50" />
@@ -449,6 +496,100 @@ const Admin = () => {
                               <Trash2 className="w-4 h-4" />
                             </Button>
                           </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Contact Inquiries Table */}
+        <Card className="bg-white/5 border-white/10 backdrop-blur-sm mb-8">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-white text-2xl font-light flex items-center gap-3">
+                <MessageSquare className="w-6 h-6 text-accent" />
+                Contact Inquiries
+              </CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent>
+            {contactInquiries.length === 0 ? (
+              <div className="text-center py-16">
+                <MessageSquare className="w-16 h-16 mx-auto mb-4 text-white/20" />
+                <p className="text-white/50 text-lg">No contact inquiries yet</p>
+                <p className="text-white/30 text-sm mt-2">
+                  Contact form submissions will appear here
+                </p>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="border-white/10 hover:bg-white/5">
+                      <TableHead className="text-white/70 font-light">Name</TableHead>
+                      <TableHead className="text-white/70 font-light">Email</TableHead>
+                      <TableHead className="text-white/70 font-light">Company</TableHead>
+                      <TableHead className="text-white/70 font-light">Inquiry Type</TableHead>
+                      <TableHead className="text-white/70 font-light">
+                        <div className="flex items-center gap-2">
+                          <Calendar className="w-4 h-4" />
+                          Date
+                        </div>
+                      </TableHead>
+                      <TableHead className="text-white/70 font-light">Status</TableHead>
+                      <TableHead className="text-white/70 font-light">Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {contactInquiries.map((inquiry) => (
+                      <TableRow 
+                        key={inquiry.id}
+                        className="border-white/10 hover:bg-white/5"
+                      >
+                        <TableCell className="text-white font-light">
+                          {inquiry.name}
+                        </TableCell>
+                        <TableCell className="text-white/70 font-light">
+                          {inquiry.email}
+                        </TableCell>
+                        <TableCell className="text-white/70 font-light">
+                          {inquiry.company || '-'}
+                        </TableCell>
+                        <TableCell className="text-white/70 font-light">
+                          {inquiry.inquiry_type}
+                        </TableCell>
+                        <TableCell className="text-white/70 font-light">
+                          {new Date(inquiry.created_at).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric'
+                          })}
+                        </TableCell>
+                        <TableCell>
+                          <Badge 
+                            variant={inquiry.status === 'new' ? 'default' : 'secondary'}
+                            className={
+                              inquiry.status === 'new' 
+                                ? 'bg-green-500/20 text-green-400 border-green-500/30' 
+                                : 'bg-gray-500/20 text-gray-400 border-gray-500/30'
+                            }
+                          >
+                            {inquiry.status}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => setSelectedInquiry(inquiry)}
+                            className="text-white/70 hover:text-white hover:bg-white/10"
+                          >
+                            <Eye className="w-4 h-4" />
+                          </Button>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -645,6 +786,84 @@ const Admin = () => {
                 <Button
                   variant="outline"
                   onClick={() => setSelectedLP(null)}
+                  className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+                >
+                  Close
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Contact Inquiry Details Dialog */}
+      <Dialog open={!!selectedInquiry} onOpenChange={(open) => !open && setSelectedInquiry(null)}>
+        <DialogContent className="bg-gradient-to-br from-[#1a2744] to-[#0d1424] border-white/10 text-white max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-light">Contact Inquiry Details</DialogTitle>
+            <DialogDescription className="text-white/60">
+              Complete information about this contact inquiry
+            </DialogDescription>
+          </DialogHeader>
+          {selectedInquiry && (
+            <div className="space-y-6 mt-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-white/60 text-sm mb-1">Name</p>
+                  <p className="text-white font-light">{selectedInquiry.name}</p>
+                </div>
+                <div>
+                  <p className="text-white/60 text-sm mb-1">Email</p>
+                  <p className="text-white font-light">{selectedInquiry.email}</p>
+                </div>
+                <div>
+                  <p className="text-white/60 text-sm mb-1">Phone</p>
+                  <p className="text-white font-light">{selectedInquiry.phone || '-'}</p>
+                </div>
+                <div>
+                  <p className="text-white/60 text-sm mb-1">Company</p>
+                  <p className="text-white font-light">{selectedInquiry.company || '-'}</p>
+                </div>
+                <div>
+                  <p className="text-white/60 text-sm mb-1">Inquiry Type</p>
+                  <p className="text-white font-light">{selectedInquiry.inquiry_type}</p>
+                </div>
+                <div>
+                  <p className="text-white/60 text-sm mb-1">Status</p>
+                  <Badge 
+                    variant={selectedInquiry.status === 'new' ? 'default' : 'secondary'}
+                    className={
+                      selectedInquiry.status === 'new' 
+                        ? 'bg-green-500/20 text-green-400 border-green-500/30' 
+                        : 'bg-gray-500/20 text-gray-400 border-gray-500/30'
+                    }
+                  >
+                    {selectedInquiry.status}
+                  </Badge>
+                </div>
+                <div>
+                  <p className="text-white/60 text-sm mb-1">Date</p>
+                  <p className="text-white font-light">
+                    {new Date(selectedInquiry.created_at).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric'
+                    })}
+                  </p>
+                </div>
+              </div>
+
+              <div>
+                <p className="text-white/60 text-sm mb-2">Message</p>
+                <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+                  <p className="text-white font-light whitespace-pre-wrap">{selectedInquiry.message}</p>
+                </div>
+              </div>
+
+              <div className="flex gap-2 pt-4 border-t border-white/10">
+                <Button
+                  variant="outline"
+                  onClick={() => setSelectedInquiry(null)}
                   className="bg-white/10 border-white/20 text-white hover:bg-white/20"
                 >
                   Close
