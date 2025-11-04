@@ -70,7 +70,9 @@ const ContactPage = () => {
   };
 
   const handleScheduleCall = () => {
-    window.open('https://calendly.com/aries76', '_blank');
+    const subject = encodeURIComponent("Request for Call - Aries76");
+    const body = encodeURIComponent("Hello,\n\nI would like to schedule a call to discuss...\n\nBest regards,");
+    window.open(`mailto:edoardo.grigione@aries76.com,quinley.martini@aries76.com?subject=${subject}&body=${body}`, '_blank');
   };
 
   return (
