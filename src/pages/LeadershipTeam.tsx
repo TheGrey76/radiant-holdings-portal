@@ -13,6 +13,12 @@ const LeadershipTeam = () => {
       description: 'Edoardo Grigione is a capital-raising and strategic advisory specialist with over 25 years of experience across hedge funds, private equity, and venture capital. He has advised international fund managers and family-backed businesses on structuring, cross-border fundraising, and investor relations, raising commitments exceeding €200 million. Edoardo founded Aries76 Ltd to deliver an institutional-grade advisory model powered by data, AI, and deep market knowledge, bridging global investors with European opportunities.'
     },
     {
+      name: 'Julio Elizondo',
+      role: 'Partner & Head of AI & Market Intelligence',
+      email: 'julio.elizondo@aries76.com',
+      description: 'Julio Elizondo leads AI strategy and quantitative research at Aries76, bringing deep experience at the intersection of markets, data, and applied machine intelligence. He founded TradePhantom LLC, an AI-driven market intelligence firm, where he architected multi-agent systems for real-time macro, earnings, options-gamma and volatility-regime analysis used by professional traders and institutions. Earlier in his career he served in military counter-intelligence, a background that informs his rigorous approach to model governance, operational security, and transparent analytics. At Aries76, Julio drives the design of the AI Market Engine, oversees model validation and telemetry, and partners with clients to integrate institutional-grade analytics across portfolios and workflows. His focus is turning fragmented market data into clear, actionable intelligence for banks, family offices, and asset managers across Europe and the Middle East.'
+    },
+    {
       name: 'Quinley Martini',
       role: 'Head of Investor Relations',
       email: 'quinley.martini@aries76.com',
