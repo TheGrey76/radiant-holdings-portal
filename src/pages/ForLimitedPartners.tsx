@@ -8,12 +8,26 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 
 const ForLimitedPartners = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [gpRequestDialogOpen, setGpRequestDialogOpen] = useState(false);
+  
+  // GP Request form state
+  const [gpRequestForm, setGpRequestForm] = useState({
+    fullName: '',
+    organization: '',
+    email: '',
+    role: '',
+    jurisdiction: '',
+    investorType: '',
+    areasOfInterest: [] as string[],
+    message: '',
+  });
   
   // Document access form state
   const [documentAccess, setDocumentAccess] = useState({
@@ -100,6 +114,45 @@ const ForLimitedPartners = () => {
     }
   };
 
+  const handleGPRequestSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    try {
+      const { error } = await supabase.functions.invoke('send-lp-request', {
+        body: gpRequestForm,
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Request sent successfully",
+        description: "We will send you the GP information pack shortly.",
+      });
+      
+      setGpRequestForm({
+        fullName: '',
+        organization: '',
+        email: '',
+        role: '',
+        jurisdiction: '',
+        investorType: '',
+        areasOfInterest: [],
+        message: '',
+      });
+      
+      setGpRequestDialogOpen(false);
+    } catch (error) {
+      toast({
+        title: "Submission failed",
+        description: "Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const handleLPContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -159,16 +212,200 @@ const ForLimitedPartners = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
-                size="lg" 
-                className="bg-accent hover:bg-accent/90 text-white"
-                asChild
-              >
-                <a href="mailto:quinley.martini@aries76.com?subject=GP Information Request">
-                  <Mail className="mr-2 h-5 w-5" />
-                  Request GP information pack
-                </a>
-              </Button>
+              <Dialog open={gpRequestDialogOpen} onOpenChange={setGpRequestDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button 
+                    size="lg" 
+                    className="bg-accent hover:bg-accent/90 text-white"
+                  >
+                    <Mail className="mr-2 h-5 w-5" />
+                    Request GP information pack
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                  <DialogHeader>
+                    <DialogTitle className="text-2xl font-light">Request GP Information Pack</DialogTitle>
+                    <DialogDescription>
+                      Please provide your details and we will send you information about our selected General Partners and investment opportunities.
+                    </DialogDescription>
+                  </DialogHeader>
+                  
+                  <form onSubmit={handleGPRequestSubmit} className="space-y-6 mt-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="space-y-2">
+                        <Label htmlFor="gp-fullname">Full Name *</Label>
+                        <Input
+                          id="gp-fullname"
+                          value={gpRequestForm.fullName}
+                          onChange={(e) => setGpRequestForm({ ...gpRequestForm, fullName: e.target.value })}
+                          required
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="gp-organization">Organization *</Label>
+                        <Input
+                          id="gp-organization"
+                          value={gpRequestForm.organization}
+                          onChange={(e) => setGpRequestForm({ ...gpRequestForm, organization: e.target.value })}
+                          required
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="gp-email">Email *</Label>
+                        <Input
+                          id="gp-email"
+                          type="email"
+                          value={gpRequestForm.email}
+                          onChange={(e) => setGpRequestForm({ ...gpRequestForm, email: e.target.value })}
+                          required
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="gp-role">Role</Label>
+                        <Input
+                          id="gp-role"
+                          value={gpRequestForm.role}
+                          onChange={(e) => setGpRequestForm({ ...gpRequestForm, role: e.target.value })}
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="gp-jurisdiction">Jurisdiction</Label>
+                        <Input
+                          id="gp-jurisdiction"
+                          value={gpRequestForm.jurisdiction}
+                          onChange={(e) => setGpRequestForm({ ...gpRequestForm, jurisdiction: e.target.value })}
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="gp-investor-type">Type of Investor</Label>
+                        <Select
+                          value={gpRequestForm.investorType}
+                          onValueChange={(value) => setGpRequestForm({ ...gpRequestForm, investorType: value })}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select type" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="family-office">Family Office</SelectItem>
+                            <SelectItem value="private-bank">Private Bank</SelectItem>
+                            <SelectItem value="wealth-manager">Wealth Manager</SelectItem>
+                            <SelectItem value="institutional">Institutional</SelectItem>
+                            <SelectItem value="other">Other</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div className="space-y-2 md:col-span-2">
+                        <Label>Main Areas of Interest</Label>
+                        <div className="grid grid-cols-2 gap-3 pt-2">
+                          <div className="flex items-center space-x-2">
+                            <Checkbox 
+                              id="gp-pe-funds"
+                              checked={gpRequestForm.areasOfInterest.includes('pe-funds')}
+                              onCheckedChange={(checked) => {
+                                if (checked) {
+                                  setGpRequestForm({ 
+                                    ...gpRequestForm, 
+                                    areasOfInterest: [...gpRequestForm.areasOfInterest, 'pe-funds'] 
+                                  });
+                                } else {
+                                  setGpRequestForm({ 
+                                    ...gpRequestForm, 
+                                    areasOfInterest: gpRequestForm.areasOfInterest.filter(i => i !== 'pe-funds') 
+                                  });
+                                }
+                              }}
+                            />
+                            <Label htmlFor="gp-pe-funds" className="font-light cursor-pointer">Private equity funds</Label>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <Checkbox 
+                              id="gp-co-invest"
+                              checked={gpRequestForm.areasOfInterest.includes('co-invest')}
+                              onCheckedChange={(checked) => {
+                                if (checked) {
+                                  setGpRequestForm({ 
+                                    ...gpRequestForm, 
+                                    areasOfInterest: [...gpRequestForm.areasOfInterest, 'co-invest'] 
+                                  });
+                                } else {
+                                  setGpRequestForm({ 
+                                    ...gpRequestForm, 
+                                    areasOfInterest: gpRequestForm.areasOfInterest.filter(i => i !== 'co-invest') 
+                                  });
+                                }
+                              }}
+                            />
+                            <Label htmlFor="gp-co-invest" className="font-light cursor-pointer">Co-investments</Label>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <Checkbox 
+                              id="gp-structured"
+                              checked={gpRequestForm.areasOfInterest.includes('structured')}
+                              onCheckedChange={(checked) => {
+                                if (checked) {
+                                  setGpRequestForm({ 
+                                    ...gpRequestForm, 
+                                    areasOfInterest: [...gpRequestForm.areasOfInterest, 'structured'] 
+                                  });
+                                } else {
+                                  setGpRequestForm({ 
+                                    ...gpRequestForm, 
+                                    areasOfInterest: gpRequestForm.areasOfInterest.filter(i => i !== 'structured') 
+                                  });
+                                }
+                              }}
+                            />
+                            <Label htmlFor="gp-structured" className="font-light cursor-pointer">Structured solutions</Label>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <Checkbox 
+                              id="gp-other-interest"
+                              checked={gpRequestForm.areasOfInterest.includes('other')}
+                              onCheckedChange={(checked) => {
+                                if (checked) {
+                                  setGpRequestForm({ 
+                                    ...gpRequestForm, 
+                                    areasOfInterest: [...gpRequestForm.areasOfInterest, 'other'] 
+                                  });
+                                } else {
+                                  setGpRequestForm({ 
+                                    ...gpRequestForm, 
+                                    areasOfInterest: gpRequestForm.areasOfInterest.filter(i => i !== 'other') 
+                                  });
+                                }
+                              }}
+                            />
+                            <Label htmlFor="gp-other-interest" className="font-light cursor-pointer">Other</Label>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="space-y-2 md:col-span-2">
+                        <Label htmlFor="gp-message">Additional Information (Optional)</Label>
+                        <Textarea
+                          id="gp-message"
+                          placeholder="Please share any specific requirements or questions..."
+                          value={gpRequestForm.message}
+                          onChange={(e) => setGpRequestForm({ ...gpRequestForm, message: e.target.value })}
+                          rows={4}
+                        />
+                      </div>
+                    </div>
+
+                    <Button type="submit" disabled={isSubmitting} className="w-full bg-accent hover:bg-accent/90">
+                      <Mail className="mr-2 h-4 w-4" />
+                      {isSubmitting ? 'Sending...' : 'Send Request'}
+                    </Button>
+                  </form>
+                </DialogContent>
+              </Dialog>
+              
               <Button 
                 size="lg" 
                 variant="outline"
