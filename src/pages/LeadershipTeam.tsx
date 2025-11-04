@@ -16,7 +16,7 @@ const LeadershipTeam = () => {
       name: 'Julio Elizondo',
       role: 'Partner & Head of AI & Market Intelligence',
       email: 'julio.elizondo@aries76.com',
-      description: 'Julio Elizondo leads AI strategy and quantitative research at Aries76, bringing deep experience at the intersection of markets, data, and applied machine intelligence. He founded TradePhantom LLC, an AI-driven market intelligence firm, where he architected multi-agent systems for real-time macro, earnings, options-gamma and volatility-regime analysis used by professional traders and institutions. Earlier in his career he served in military counter-intelligence, a background that informs his rigorous approach to model governance, operational security, and transparent analytics. At Aries76, Julio drives the design of the AI Market Engine, oversees model validation and telemetry, and partners with clients to integrate institutional-grade analytics across portfolios and workflows. His focus is turning fragmented market data into clear, actionable intelligence for banks, family offices, and asset managers across Europe and the Middle East.'
+      description: 'Julio Elizondo leads AI strategy and quantitative research at Aries76, bringing deep experience at the intersection of markets, data, and applied machine intelligence. He founded TradePhantom LLC, an AI-driven market intelligence firm, where he architected multi-agent systems for real-time macro, earnings, and volatility-regime analysis. At Aries76, Julio drives the design of the AI Market Engine, oversees model validation and telemetry, and partners with clients to integrate institutional-grade analytics across portfolios and workflows.'
     },
     {
       name: 'Quinley Martini',
