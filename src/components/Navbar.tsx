@@ -139,8 +139,8 @@ const Navbar = () => {
               </NavigationMenuItem>
 
               <NavigationMenuItem>
-                <Link to="/for-limited-partners" className="text-xs uppercase tracking-widest text-foreground/70 hover:text-accent transition-colors font-light px-4 py-2 inline-block">
-                  For LPs
+                <Link to="/for-limited-partners" className="text-xs tracking-widest text-foreground/70 hover:text-accent transition-colors font-light px-4 py-2 inline-block">
+                  FOR LP<span className="lowercase">s</span>
                 </Link>
               </NavigationMenuItem>
 
