@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, MapPin, Phone, MessageSquare, Calendar, Send, Building2, User, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -74,6 +74,18 @@ const ContactPage = () => {
     const body = encodeURIComponent("Hello,\n\nI would like to schedule a call to discuss...\n\nBest regards,");
     window.open(`mailto:edoardo.grigione@aries76.com,quinley.martini@aries76.com?subject=${subject}&body=${body}`, '_blank');
   };
+
+  useEffect(() => {
+    // Load Calendly widget script
+    const script = document.createElement('script');
+    script.src = 'https://assets.calendly.com/assets/external/widget.js';
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
 
   return (
     <div className="min-h-screen bg-background">
@@ -319,17 +331,11 @@ const ContactPage = () => {
             </div>
 
             <div className="bg-card border border-border rounded-lg overflow-hidden">
-              <div className="w-full min-h-[600px] md:min-h-[700px]">
-                <iframe
-                  src="https://calendly.com/edoardo-grigione-aries76"
-                  style={{ border: 0 }}
-                  width="100%"
-                  height="600"
-                  className="md:h-[700px]"
-                  frameBorder="0"
-                  title="Schedule a meeting with Aries76"
-                />
-              </div>
+              <div 
+                className="calendly-inline-widget" 
+                data-url="https://calendly.com/edoardo-grigione-aries76?hide_event_type_details=1&hide_gdpr_banner=1"
+                style={{ minWidth: '320px', height: '700px' }}
+              />
             </div>
           </motion.div>
         </div>
