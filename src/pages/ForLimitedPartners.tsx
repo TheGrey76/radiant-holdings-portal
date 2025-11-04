@@ -164,9 +164,9 @@ const ForLimitedPartners = () => {
                 className="bg-accent hover:bg-accent/90 text-white"
                 asChild
               >
-                <a href="mailto:quinley.martini@aries76.com?subject=LP Information Pack Request">
+                <a href="mailto:quinley.martini@aries76.com?subject=GP Information Request">
                   <Mail className="mr-2 h-5 w-5" />
-                  Request LP information pack
+                  Request GP information pack
                 </a>
               </Button>
               <Button 
