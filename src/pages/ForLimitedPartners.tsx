@@ -1,5 +1,5 @@
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
 import { Mail, Calendar, Shield, Users, TrendingUp, Target, CheckCircle, FileText, Download, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
