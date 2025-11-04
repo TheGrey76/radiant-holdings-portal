@@ -158,18 +158,7 @@ const ForLimitedPartners = () => {
               Aries76 is an independent advisory firm supporting a curated set of General Partners and sponsors in their capital formation. We work with professional investors – including family offices, private banks, wealth managers and institutional LPs – to provide access to selected private markets strategies and bespoke opportunities, always with a long-term partnership mindset.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
-                size="lg" 
-                className="bg-accent hover:bg-accent/90 text-white"
-                asChild
-              >
-                <a href="mailto:quinley.martini@aries76.com?subject=GP Information Request">
-                  <Mail className="mr-2 h-5 w-5" />
-                  Request GP information pack
-                </a>
-              </Button>
-              
+            <div className="flex justify-center">
               <Button 
                 size="lg" 
                 variant="outline"
