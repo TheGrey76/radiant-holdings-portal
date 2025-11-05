@@ -38,7 +38,24 @@ const formSchema = z.object({
   lastName: z.string().min(1, "Last name is required").max(100),
   role: z.string().min(1, "Role is required").max(100),
   firmName: z.string().min(1, "Firm name is required").max(200),
-  firmWebsite: z.string().url("Invalid URL").optional().or(z.literal("")),
+  firmWebsite: z.string()
+    .transform((val) => val.trim())
+    .refine(
+      (val) => {
+        if (!val) return true; // Empty is valid
+        // Add https:// if no protocol specified
+        const urlToTest = val.match(/^https?:\/\//) ? val : `https://${val}`;
+        try {
+          new URL(urlToTest);
+          return true;
+        } catch {
+          return false;
+        }
+      },
+      { message: "Please enter a valid URL (e.g., example.com or https://example.com)" }
+    )
+    .optional()
+    .or(z.literal("")),
   workEmail: z.string().email("Invalid email address").max(255),
   aumBracket: z.string().min(1, "Please select an AUM bracket"),
   primaryStrategy: z.array(z.string()).min(1, "Select at least one strategy"),
@@ -218,9 +235,12 @@ const GPRegistrationForm = ({ onSuccess }: GPRegistrationFormProps) => {
                 name="firmWebsite"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Firm Website</FormLabel>
+                    <FormLabel>Firm Website (optional)</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="https://" />
+                      <Input 
+                        {...field} 
+                        placeholder="example.com or https://example.com" 
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
