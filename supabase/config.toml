@@ -17,3 +17,6 @@ verify_jwt = false
 
 [functions.send-gp-confirmation]
 verify_jwt = false
+
+[functions.send-call-request-notification]
+verify_jwt = false

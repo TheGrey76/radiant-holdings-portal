@@ -70,6 +70,23 @@ const GPCallRequestForm = ({ onClose }: GPCallRequestFormProps) => {
 
       if (error) throw error;
 
+      // Send notification emails
+      try {
+        await supabase.functions.invoke("send-call-request-notification", {
+          body: {
+            name: data.name,
+            firm: data.firm,
+            email: data.email,
+            fundInMarket: data.fundInMarket,
+            preferredTimezone: data.preferredTimezone,
+            message: data.message,
+          },
+        });
+      } catch (emailError) {
+        console.error("Email notification error:", emailError);
+        // Don't fail the whole request if email fails
+      }
+
       toast.success("Call request submitted! We'll be in touch soon.");
       onClose();
     } catch (error: any) {
