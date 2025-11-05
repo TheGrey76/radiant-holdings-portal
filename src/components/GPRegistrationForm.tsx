@@ -123,7 +123,7 @@ const GPRegistrationForm = ({ onSuccess }: GPRegistrationFormProps) => {
         }
 
         // Send welcome email if not sent yet (only on first login after email confirmation)
-        if (!gpData.welcome_email_sent) {
+        if (gpData && !gpData.welcome_email_sent) {
           supabase.functions.invoke('send-gp-confirmation', {
             body: {
               firstName: gpData.first_name,
