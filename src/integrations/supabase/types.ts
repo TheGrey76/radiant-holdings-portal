@@ -119,6 +119,93 @@ export type Database = {
         }
         Relationships: []
       }
+      gp_call_requests: {
+        Row: {
+          created_at: string
+          email: string
+          firm: string
+          fund_in_market: string | null
+          id: string
+          message: string | null
+          name: string
+          preferred_timezone: string | null
+          status: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          firm: string
+          fund_in_market?: string | null
+          id?: string
+          message?: string | null
+          name: string
+          preferred_timezone?: string | null
+          status?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          firm?: string
+          fund_in_market?: string | null
+          id?: string
+          message?: string | null
+          name?: string
+          preferred_timezone?: string | null
+          status?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      gp_registrations: {
+        Row: {
+          aum_bracket: string
+          created_at: string
+          firm_name: string
+          firm_website: string | null
+          first_name: string
+          id: string
+          last_name: string
+          main_fund_in_market: string | null
+          primary_strategy: string[]
+          role: string
+          updated_at: string
+          user_id: string | null
+          work_email: string
+        }
+        Insert: {
+          aum_bracket: string
+          created_at?: string
+          firm_name: string
+          firm_website?: string | null
+          first_name: string
+          id?: string
+          last_name: string
+          main_fund_in_market?: string | null
+          primary_strategy: string[]
+          role: string
+          updated_at?: string
+          user_id?: string | null
+          work_email: string
+        }
+        Update: {
+          aum_bracket?: string
+          created_at?: string
+          firm_name?: string
+          firm_website?: string | null
+          first_name?: string
+          id?: string
+          last_name?: string
+          main_fund_in_market?: string | null
+          primary_strategy?: string[]
+          role?: string
+          updated_at?: string
+          user_id?: string | null
+          work_email?: string
+        }
+        Relationships: []
+      }
       lp_registrations: {
         Row: {
           areas_of_interest: string[] | null

@@ -166,13 +166,14 @@ const GPCapitalAdvisory = () => {
                   Schedule an Introductory Call
                 </Button>
               </Link>
-              <Button 
-                size="lg"
-                disabled
-                className="bg-white/10 text-white border border-white/30 hover:bg-white/20 hover:border-white/50 font-light uppercase tracking-wider px-8 transition-all opacity-50 cursor-not-allowed"
-              >
-                Download Overview (Coming Soon)
-              </Button>
+              <Link to="/gp-fundraising-economics">
+                <Button 
+                  size="lg"
+                  className="bg-white/10 text-white border border-white/30 hover:bg-white/20 hover:border-white/50 font-light uppercase tracking-wider px-8 transition-all"
+                >
+                  GP Fundraising Economics
+                </Button>
+              </Link>
             </div>
           </motion.div>
         </div>

@@ -18,6 +18,7 @@ import SneakerReport from "./pages/SneakerReport";
 import AiresData from "./pages/AiresData";
 import PrivateEquityFunds from "./pages/PrivateEquityFunds";
 import GPCapitalAdvisory from "./pages/GPCapitalAdvisory";
+import GPFundraisingEconomics from "./pages/GPFundraisingEconomics";
 import StructuredProducts from "./pages/StructuredProducts";
 import ForLimitedPartners from "./pages/ForLimitedPartners";
 import NotFound from "./pages/NotFound";
@@ -57,6 +58,7 @@ const App = () => (
           <Route path="/aires-data" element={<AiresData />} />
           <Route path="/private-equity-funds" element={<PrivateEquityFunds />} />
           <Route path="/gp-capital-advisory" element={<GPCapitalAdvisory />} />
+          <Route path="/gp-fundraising-economics" element={<GPFundraisingEconomics />} />
           <Route path="/structured-products" element={<StructuredProducts />} />
           <Route path="/for-limited-partners" element={<ForLimitedPartners />} />
           <Route path="/contact" element={<ContactPage />} />
