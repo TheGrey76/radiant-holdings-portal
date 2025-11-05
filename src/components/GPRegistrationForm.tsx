@@ -99,16 +99,25 @@ const GPRegistrationForm = ({ onSuccess }: GPRegistrationFormProps) => {
           password: data.password,
         });
 
-        if (authError) throw authError;
+        if (authError) {
+          if (authError.message.includes("Invalid login credentials")) {
+            toast.error("Invalid email or password. If you just registered, please check your email to confirm your account first.");
+          } else if (authError.message.includes("Email not confirmed")) {
+            toast.error("Please confirm your email address before logging in. Check your inbox for the confirmation link.");
+          } else {
+            toast.error(authError.message);
+          }
+          return;
+        }
 
         // Check if user has GP registration
         const { data: gpData, error: gpError } = await supabase
           .from("gp_registrations")
           .select("*")
           .eq("user_id", authData.user.id)
-          .single();
+          .maybeSingle();
 
-        if (gpError || !gpData) {
+        if (!gpData) {
           toast.error("No GP registration found for this account");
           return;
         }
@@ -132,13 +141,24 @@ const GPRegistrationForm = ({ onSuccess }: GPRegistrationFormProps) => {
         if (authError) throw authError;
         if (!authData.user) throw new Error("User creation failed");
 
-        // Now sign in the user immediately to get auth.uid() available
-        const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
-          email: data.workEmail,
-          password: data.password,
-        });
+        // Check if email confirmation is required
+        if (authData.user && !authData.session) {
+          // Email confirmation required - create registration but inform user
+          // We'll try to sign in anyway in case confirmation is disabled
+          const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+            email: data.workEmail,
+            password: data.password,
+          });
 
-        if (signInError) throw signInError;
+          if (signInError) {
+            // Email confirmation is enabled
+            toast.success(
+              "Registration successful! Please check your email to confirm your account before you can access the content.",
+              { duration: 6000 }
+            );
+            return;
+          }
+        }
 
         // Create GP registration with authenticated user
         const { error: insertError } = await supabase.from("gp_registrations").insert({
