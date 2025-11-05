@@ -28,7 +28,7 @@ const GPFundraisingEconomics = () => {
           .from("gp_registrations")
           .select("*")
           .eq("user_id", user.id)
-          .single();
+          .maybeSingle();
 
         if (data && !error) {
           setIsGPRegistered(true);
@@ -47,10 +47,13 @@ const GPFundraisingEconomics = () => {
             .from("gp_registrations")
             .select("*")
             .eq("user_id", session.user.id)
-            .single();
+            .maybeSingle();
           
           setIsGPRegistered(!!data);
+        } else {
+          setIsGPRegistered(false);
         }
+        setLoading(false);
       }
     );
 
