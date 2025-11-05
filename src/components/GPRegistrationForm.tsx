@@ -167,8 +167,15 @@ const GPRegistrationForm = ({ onSuccess }: GPRegistrationFormProps) => {
           }
         }).catch(err => console.error("Email send error:", err));
 
-        toast.success("Registration successful! Welcome to GP Capital Advisory.");
-        onSuccess();
+        // Check if email confirmation is required
+        if (authData.session) {
+          // User is automatically logged in (email confirmation disabled)
+          toast.success("Registration successful! Welcome to GP Capital Advisory.");
+          onSuccess();
+        } else {
+          // Email confirmation required
+          toast.success("Registration successful! Please check your email to confirm your account before logging in.");
+        }
       }
     } catch (error: any) {
       console.error("Registration/Login error:", error);
