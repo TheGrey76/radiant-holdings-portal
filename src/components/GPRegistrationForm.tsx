@@ -130,7 +130,7 @@ const GPRegistrationForm = ({ onSuccess }: GPRegistrationFormProps) => {
           email: data.workEmail,
           password: data.password,
           options: {
-            emailRedirectTo: `${window.location.origin}/gp-fundraising-economics`,
+            emailRedirectTo: `https://aries76.com/gp-fundraising-economics`,
             data: {
               first_name: data.firstName,
               last_name: data.lastName,
