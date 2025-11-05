@@ -1,118 +1,13 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { supabase } from "@/integrations/supabase/client";
-import { User } from "@supabase/supabase-js";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import GPRegistrationForm from "@/components/GPRegistrationForm";
 import GPCallRequestForm from "@/components/GPCallRequestForm";
 import { CheckCircle } from "lucide-react";
 
 const GPFundraisingEconomics = () => {
-  const navigate = useNavigate();
-  const [user, setUser] = useState<User | null>(null);
-  const [isGPRegistered, setIsGPRegistered] = useState(false);
-  const [loading, setLoading] = useState(true);
   const [showCallForm, setShowCallForm] = useState(false);
 
-  useEffect(() => {
-    // Check authentication and GP registration status
-    const checkAuth = async () => {
-      try {
-        const { data: { user } } = await supabase.auth.getUser();
-        setUser(user);
-
-        if (user) {
-          // Check if user is registered as GP
-          const { data } = await supabase
-            .from("gp_registrations")
-            .select("*")
-            .eq("user_id", user.id)
-            .maybeSingle();
-
-          setIsGPRegistered(!!data);
-        }
-      } catch (error) {
-        console.error("Auth check error:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    checkAuth();
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        setUser(session?.user ?? null);
-        if (session?.user) {
-          const { data } = await supabase
-            .from("gp_registrations")
-            .select("*")
-            .eq("user_id", session.user.id)
-            .maybeSingle();
-          
-          setIsGPRegistered(!!data);
-        } else {
-          setIsGPRegistered(false);
-        }
-      }
-    );
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  const handleRegistrationComplete = () => {
-    setIsGPRegistered(true);
-  };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-4 text-muted-foreground">Loading...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // Show registration gate if not authenticated or not registered as GP
-  if (!user || !isGPRegistered) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-background via-background/95 to-background/90 pt-24 pb-16">
-        <div className="container max-w-4xl mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <h1 className="text-3xl md:text-4xl font-bold mb-6">
-              Access Reserved to GPs
-            </h1>
-            <p className="text-base text-muted-foreground max-w-2xl mx-auto">
-              This section is reserved to General Partners interested in structuring a transparent, 
-              long-term fundraising mandate with Aries76. Please register or log in to view the full 
-              economics model.
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <Card className="p-8 bg-card/50 backdrop-blur">
-              <GPRegistrationForm onSuccess={handleRegistrationComplete} />
-            </Card>
-          </motion.div>
-        </div>
-      </div>
-    );
-  }
-
-  // Show full page content for registered GPs
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-background/95 to-background/90 pt-24 pb-16">
       <div className="container max-w-5xl mx-auto px-4">
