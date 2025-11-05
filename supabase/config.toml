@@ -14,3 +14,6 @@ verify_jwt = false
 
 [functions.send-lp-request]
 verify_jwt = false
+
+[functions.send-gp-confirmation]
+verify_jwt = false
