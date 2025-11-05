@@ -172,6 +172,7 @@ export type Database = {
           role: string
           updated_at: string
           user_id: string | null
+          welcome_email_sent: boolean
           work_email: string
         }
         Insert: {
@@ -187,6 +188,7 @@ export type Database = {
           role: string
           updated_at?: string
           user_id?: string | null
+          welcome_email_sent?: boolean
           work_email: string
         }
         Update: {
@@ -202,6 +204,7 @@ export type Database = {
           role?: string
           updated_at?: string
           user_id?: string | null
+          welcome_email_sent?: boolean
           work_email?: string
         }
         Relationships: []

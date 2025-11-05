@@ -122,6 +122,24 @@ const GPRegistrationForm = ({ onSuccess }: GPRegistrationFormProps) => {
           return;
         }
 
+        // Send welcome email if not sent yet (only on first login after email confirmation)
+        if (!gpData.welcome_email_sent) {
+          supabase.functions.invoke('send-gp-confirmation', {
+            body: {
+              firstName: gpData.first_name,
+              lastName: gpData.last_name,
+              email: gpData.work_email,
+              firmName: gpData.firm_name,
+            }
+          }).then(() => {
+            // Mark welcome email as sent
+            supabase.from("gp_registrations")
+              .update({ welcome_email_sent: true })
+              .eq("user_id", authData.user.id)
+              .then(() => console.log("Welcome email sent"));
+          }).catch(err => console.error("Email send error:", err));
+        }
+
         toast.success("Successfully logged in!");
         onSuccess();
       } else {
@@ -157,23 +175,29 @@ const GPRegistrationForm = ({ onSuccess }: GPRegistrationFormProps) => {
 
         if (insertError) throw insertError;
 
-        // Send welcome email (non-blocking)
-        supabase.functions.invoke('send-gp-confirmation', {
-          body: {
-            firstName: data.firstName,
-            lastName: data.lastName,
-            email: data.workEmail,
-            firmName: data.firmName,
-          }
-        }).catch(err => console.error("Email send error:", err));
-
         // Check if email confirmation is required
         if (authData.session) {
           // User is automatically logged in (email confirmation disabled)
+          // Send welcome email immediately
+          supabase.functions.invoke('send-gp-confirmation', {
+            body: {
+              firstName: data.firstName,
+              lastName: data.lastName,
+              email: data.workEmail,
+              firmName: data.firmName,
+            }
+          }).then(() => {
+            // Mark welcome email as sent
+            supabase.from("gp_registrations")
+              .update({ welcome_email_sent: true })
+              .eq("user_id", authData.user.id)
+              .then(() => console.log("Welcome email sent"));
+          }).catch(err => console.error("Email send error:", err));
+          
           toast.success("Registration successful! Welcome to GP Capital Advisory.");
           onSuccess();
         } else {
-          // Email confirmation required
+          // Email confirmation required - welcome email will be sent on first login
           toast.success("Registration successful! Please check your email to confirm your account before logging in.");
         }
       }
