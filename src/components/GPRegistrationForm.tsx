@@ -116,19 +116,31 @@ const GPRegistrationForm = ({ onSuccess }: GPRegistrationFormProps) => {
         toast.success("Successfully logged in!");
         onSuccess();
       } else {
-        // Register new user
+        // Register new user - first create auth account
         const { data: authData, error: authError } = await supabase.auth.signUp({
           email: data.workEmail,
           password: data.password,
           options: {
             emailRedirectTo: `${window.location.origin}/gp-fundraising-economics`,
+            data: {
+              first_name: data.firstName,
+              last_name: data.lastName,
+            }
           },
         });
 
         if (authError) throw authError;
         if (!authData.user) throw new Error("User creation failed");
 
-        // Create GP registration
+        // Now sign in the user immediately to get auth.uid() available
+        const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+          email: data.workEmail,
+          password: data.password,
+        });
+
+        if (signInError) throw signInError;
+
+        // Create GP registration with authenticated user
         const { error: insertError } = await supabase.from("gp_registrations").insert({
           user_id: authData.user.id,
           first_name: data.firstName,
