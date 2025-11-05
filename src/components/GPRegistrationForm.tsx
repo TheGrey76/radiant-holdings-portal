@@ -143,31 +143,7 @@ const GPRegistrationForm = ({ onSuccess }: GPRegistrationFormProps) => {
         if (authError) throw authError;
         if (!authData.user) throw new Error("User creation failed");
 
-        // Check if email confirmation is required
-        if (authData.user && !authData.session) {
-          // Email confirmation is required
-          // Send welcome email
-          try {
-            await supabase.functions.invoke('send-gp-confirmation', {
-              body: {
-                firstName: data.firstName,
-                lastName: data.lastName,
-                email: data.workEmail,
-                firmName: data.firmName,
-              }
-            });
-          } catch (emailError) {
-            console.error("Error sending confirmation email:", emailError);
-          }
-
-          setRegisteredEmail(data.workEmail);
-          setPendingVerification(true);
-          setLoading(false);
-          return;
-        }
-
-        // Email confirmation is disabled or user is already confirmed
-        // Create GP registration
+        // Create GP registration immediately (don't wait for email confirmation)
         const { error: insertError } = await supabase.from("gp_registrations").insert({
           user_id: authData.user.id,
           first_name: data.firstName,
@@ -182,6 +158,16 @@ const GPRegistrationForm = ({ onSuccess }: GPRegistrationFormProps) => {
         });
 
         if (insertError) throw insertError;
+
+        // Send welcome email (non-blocking)
+        supabase.functions.invoke('send-gp-confirmation', {
+          body: {
+            firstName: data.firstName,
+            lastName: data.lastName,
+            email: data.workEmail,
+            firmName: data.firmName,
+          }
+        }).catch(err => console.error("Email send error:", err));
 
         toast.success("Registration successful! Welcome to GP Capital Advisory.");
         onSuccess();
