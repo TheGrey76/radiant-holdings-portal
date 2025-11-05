@@ -72,6 +72,8 @@ interface GPRegistrationFormProps {
 const GPRegistrationForm = ({ onSuccess }: GPRegistrationFormProps) => {
   const [loading, setLoading] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
+  const [pendingVerification, setPendingVerification] = useState(false);
+  const [registeredEmail, setRegisteredEmail] = useState("");
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -143,24 +145,29 @@ const GPRegistrationForm = ({ onSuccess }: GPRegistrationFormProps) => {
 
         // Check if email confirmation is required
         if (authData.user && !authData.session) {
-          // Email confirmation required - create registration but inform user
-          // We'll try to sign in anyway in case confirmation is disabled
-          const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
-            email: data.workEmail,
-            password: data.password,
-          });
-
-          if (signInError) {
-            // Email confirmation is enabled
-            toast.success(
-              "Registration successful! Please check your email to confirm your account before you can access the content.",
-              { duration: 6000 }
-            );
-            return;
+          // Email confirmation is required
+          // Send welcome email
+          try {
+            await supabase.functions.invoke('send-gp-confirmation', {
+              body: {
+                firstName: data.firstName,
+                lastName: data.lastName,
+                email: data.workEmail,
+                firmName: data.firmName,
+              }
+            });
+          } catch (emailError) {
+            console.error("Error sending confirmation email:", emailError);
           }
+
+          setRegisteredEmail(data.workEmail);
+          setPendingVerification(true);
+          setLoading(false);
+          return;
         }
 
-        // Create GP registration with authenticated user
+        // Email confirmation is disabled or user is already confirmed
+        // Create GP registration
         const { error: insertError } = await supabase.from("gp_registrations").insert({
           user_id: authData.user.id,
           first_name: data.firstName,
@@ -186,6 +193,41 @@ const GPRegistrationForm = ({ onSuccess }: GPRegistrationFormProps) => {
       setLoading(false);
     }
   };
+
+  // Show email verification pending screen
+  if (pendingVerification) {
+    return (
+      <div className="text-center py-8">
+        <div className="mb-6">
+          <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg className="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-bold mb-2">Check Your Email</h2>
+          <p className="text-muted-foreground mb-4">
+            We've sent a verification email to:
+          </p>
+          <p className="font-semibold text-lg mb-6">{registeredEmail}</p>
+          <p className="text-muted-foreground mb-4">
+            Please click the verification link in the email to complete your registration and access the GP Fundraising Economics content.
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Didn't receive the email? Check your spam folder or{" "}
+            <button
+              onClick={() => {
+                setPendingVerification(false);
+                setRegisteredEmail("");
+              }}
+              className="text-primary hover:underline"
+            >
+              try registering again
+            </button>
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
