@@ -57,14 +57,9 @@ const GPCallRequestForm = ({ onClose }: GPCallRequestFormProps) => {
     setLoading(true);
     try {
       const { data: { user } } = await supabase.auth.getUser();
-      
-      if (!user) {
-        toast.error("You must be logged in to request a call");
-        return;
-      }
 
       const { error } = await supabase.from("gp_call_requests").insert({
-        user_id: user.id,
+        user_id: user?.id || null,
         name: data.name,
         firm: data.firm,
         email: data.email,
