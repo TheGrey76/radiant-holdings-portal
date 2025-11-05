@@ -4,7 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Download, Mail, Calendar, Loader2, LogOut, Home, Users, PenSquare, Building2, Eye, CheckCircle, XCircle, Trash2, MessageSquare } from "lucide-react";
+import { Download, Mail, Calendar, Loader2, LogOut, Home, Users, PenSquare, Building2, Eye, CheckCircle, XCircle, Trash2, MessageSquare, Briefcase } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
@@ -31,6 +31,22 @@ interface LPRegistration {
   updated_at: string;
 }
 
+interface GPRegistration {
+  id: string;
+  user_id: string | null;
+  first_name: string;
+  last_name: string;
+  role: string;
+  firm_name: string;
+  firm_website: string | null;
+  work_email: string;
+  aum_bracket: string;
+  primary_strategy: string[];
+  main_fund_in_market: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
 interface ContactInquiry {
   id: string;
   name: string;
@@ -46,8 +62,10 @@ interface ContactInquiry {
 const Admin = () => {
   const [subscribers, setSubscribers] = useState<NewsletterSubscriber[]>([]);
   const [lpRegistrations, setLpRegistrations] = useState<LPRegistration[]>([]);
+  const [gpRegistrations, setGpRegistrations] = useState<GPRegistration[]>([]);
   const [contactInquiries, setContactInquiries] = useState<ContactInquiry[]>([]);
   const [selectedLP, setSelectedLP] = useState<LPRegistration | null>(null);
+  const [selectedGP, setSelectedGP] = useState<GPRegistration | null>(null);
   const [selectedInquiry, setSelectedInquiry] = useState<ContactInquiry | null>(null);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -83,6 +101,7 @@ const Admin = () => {
       setIsAdmin(true);
       fetchSubscribers();
       fetchLPRegistrations();
+      fetchGPRegistrations();
       fetchContactInquiries();
     } catch (error) {
       console.error("Error checking admin access:", error);
@@ -128,6 +147,26 @@ const Admin = () => {
       toast({
         title: "Error",
         description: "Failed to load LP registrations",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const fetchGPRegistrations = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('gp_registrations')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      setGpRegistrations(data || []);
+    } catch (error) {
+      console.error("Error fetching GP registrations:", error);
+      toast({
+        title: "Error",
+        description: "Failed to load GP registrations",
         variant: "destructive",
       });
     }
@@ -286,6 +325,37 @@ const Admin = () => {
     });
   };
 
+  const exportGPToCSV = () => {
+    const csvContent = [
+      ['First Name', 'Last Name', 'Email', 'Role', 'Firm', 'Website', 'AUM Bracket', 'Strategy', 'Fund in Market', 'Date'],
+      ...gpRegistrations.map(gp => [
+        gp.first_name,
+        gp.last_name,
+        gp.work_email,
+        gp.role,
+        gp.firm_name,
+        gp.firm_website || '',
+        gp.aum_bracket,
+        gp.primary_strategy.join('; '),
+        gp.main_fund_in_market || '',
+        new Date(gp.created_at).toLocaleDateString()
+      ])
+    ].map(row => row.join(',')).join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `gp-registrations-${new Date().toISOString().split('T')[0]}.csv`;
+    a.click();
+    window.URL.revokeObjectURL(url);
+
+    toast({
+      title: "Success",
+      description: "GP registrations exported to CSV",
+    });
+  };
+
   const handleLogout = async () => {
     await supabase.auth.signOut();
     navigate('/auth');
@@ -338,7 +408,7 @@ const Admin = () => {
 
       <div className="container mx-auto px-6 py-12 max-w-7xl">
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-6 mb-8">
           <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
@@ -359,6 +429,18 @@ const Admin = () => {
                   <p className="text-3xl font-light text-white">{lpRegistrations.length}</p>
                 </div>
                 <Building2 className="w-10 h-10 text-accent opacity-50" />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-white/60 text-sm mb-1">GP Registrations</p>
+                  <p className="text-3xl font-light text-white">{gpRegistrations.length}</p>
+                </div>
+                <Briefcase className="w-10 h-10 text-accent opacity-50" />
               </div>
             </CardContent>
           </Card>
@@ -395,12 +477,17 @@ const Admin = () => {
                 <div>
                   <p className="text-white/60 text-sm mb-1">This Month</p>
                   <p className="text-3xl font-light text-white">
-                    {lpRegistrations.filter(lp => {
+                    {(lpRegistrations.filter(lp => {
                       const lpDate = new Date(lp.created_at);
                       const now = new Date();
                       return lpDate.getMonth() === now.getMonth() && 
                              lpDate.getFullYear() === now.getFullYear();
-                    }).length}
+                    }).length + gpRegistrations.filter(gp => {
+                      const gpDate = new Date(gp.created_at);
+                      const now = new Date();
+                      return gpDate.getMonth() === now.getMonth() && 
+                             gpDate.getFullYear() === now.getFullYear();
+                    }).length)}
                   </p>
                 </div>
                 <Calendar className="w-10 h-10 text-accent opacity-50" />
@@ -524,6 +611,96 @@ const Admin = () => {
                               <Trash2 className="w-4 h-4" />
                             </Button>
                           </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* GP Registrations Table */}
+        <Card className="bg-white/5 border-white/10 backdrop-blur-sm mb-8">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-white text-2xl font-light flex items-center gap-3">
+                <Briefcase className="w-6 h-6 text-accent" />
+                GP Registrations
+              </CardTitle>
+              <Button
+                onClick={exportGPToCSV}
+                variant="outline"
+                className="gap-2 bg-white/10 border-white/20 text-white hover:bg-white/20"
+                disabled={gpRegistrations.length === 0}
+              >
+                <Download className="w-4 h-4" />
+                Export CSV
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent>
+            {gpRegistrations.length === 0 ? (
+              <div className="text-center py-16">
+                <Briefcase className="w-16 h-16 mx-auto mb-4 text-white/20" />
+                <p className="text-white/50 text-lg">No GP registrations yet</p>
+                <p className="text-white/30 text-sm mt-2">
+                  GP registrations will appear here when GPs sign up
+                </p>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="border-white/10 hover:bg-white/5">
+                      <TableHead className="text-white/70 font-light">Name</TableHead>
+                      <TableHead className="text-white/70 font-light">Email</TableHead>
+                      <TableHead className="text-white/70 font-light">Firm</TableHead>
+                      <TableHead className="text-white/70 font-light">AUM Bracket</TableHead>
+                      <TableHead className="text-white/70 font-light">
+                        <div className="flex items-center gap-2">
+                          <Calendar className="w-4 h-4" />
+                          Date
+                        </div>
+                      </TableHead>
+                      <TableHead className="text-white/70 font-light">Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {gpRegistrations.map((gp) => (
+                      <TableRow 
+                        key={gp.id}
+                        className="border-white/10 hover:bg-white/5"
+                      >
+                        <TableCell className="text-white font-light">
+                          {gp.first_name} {gp.last_name}
+                        </TableCell>
+                        <TableCell className="text-white/70 font-light">
+                          {gp.work_email}
+                        </TableCell>
+                        <TableCell className="text-white/70 font-light">
+                          {gp.firm_name}
+                        </TableCell>
+                        <TableCell className="text-white/70 font-light">
+                          {gp.aum_bracket}
+                        </TableCell>
+                        <TableCell className="text-white/70 font-light">
+                          {new Date(gp.created_at).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric'
+                          })}
+                        </TableCell>
+                        <TableCell>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => setSelectedGP(gp)}
+                            className="text-white/70 hover:text-white hover:bg-white/10"
+                          >
+                            <Eye className="w-4 h-4" />
+                          </Button>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -824,6 +1001,95 @@ const Admin = () => {
                 <Button
                   variant="outline"
                   onClick={() => setSelectedLP(null)}
+                  className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+                >
+                  Close
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* GP Details Dialog */}
+      <Dialog open={!!selectedGP} onOpenChange={(open) => !open && setSelectedGP(null)}>
+        <DialogContent className="bg-gradient-to-br from-[#1a2744] to-[#0d1424] border-white/10 text-white max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-light">GP Registration Details</DialogTitle>
+            <DialogDescription className="text-white/60">
+              Complete information about this GP registration
+            </DialogDescription>
+          </DialogHeader>
+          {selectedGP && (
+            <div className="space-y-6 mt-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-white/60 text-sm mb-1">First Name</p>
+                  <p className="text-white font-light">{selectedGP.first_name}</p>
+                </div>
+                <div>
+                  <p className="text-white/60 text-sm mb-1">Last Name</p>
+                  <p className="text-white font-light">{selectedGP.last_name}</p>
+                </div>
+                <div>
+                  <p className="text-white/60 text-sm mb-1">Email</p>
+                  <p className="text-white font-light">{selectedGP.work_email}</p>
+                </div>
+                <div>
+                  <p className="text-white/60 text-sm mb-1">Role</p>
+                  <p className="text-white font-light">{selectedGP.role}</p>
+                </div>
+                <div>
+                  <p className="text-white/60 text-sm mb-1">Firm Name</p>
+                  <p className="text-white font-light">{selectedGP.firm_name}</p>
+                </div>
+                <div>
+                  <p className="text-white/60 text-sm mb-1">Firm Website</p>
+                  <p className="text-white font-light">
+                    {selectedGP.firm_website ? (
+                      <a href={selectedGP.firm_website} target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+                        {selectedGP.firm_website}
+                      </a>
+                    ) : '-'}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-white/60 text-sm mb-1">AUM Bracket</p>
+                  <p className="text-white font-light">{selectedGP.aum_bracket}</p>
+                </div>
+                <div>
+                  <p className="text-white/60 text-sm mb-1">Main Fund in Market</p>
+                  <p className="text-white font-light">{selectedGP.main_fund_in_market || '-'}</p>
+                </div>
+                <div className="col-span-2">
+                  <p className="text-white/60 text-sm mb-1">Registration Date</p>
+                  <p className="text-white font-light">
+                    {new Date(selectedGP.created_at).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric'
+                    })}
+                  </p>
+                </div>
+              </div>
+
+              {selectedGP.primary_strategy && selectedGP.primary_strategy.length > 0 && (
+                <div>
+                  <p className="text-white/60 text-sm mb-2">Primary Strategy</p>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedGP.primary_strategy.map((strategy, index) => (
+                      <Badge key={index} variant="outline" className="bg-white/5 border-white/20 text-white">
+                        {strategy}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <div className="flex gap-2 pt-4 border-t border-white/10">
+                <Button
+                  variant="outline"
+                  onClick={() => setSelectedGP(null)}
                   className="bg-white/10 border-white/20 text-white hover:bg-white/20"
                 >
                   Close
