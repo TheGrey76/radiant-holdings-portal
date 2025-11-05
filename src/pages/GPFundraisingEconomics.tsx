@@ -19,22 +19,25 @@ const GPFundraisingEconomics = () => {
   useEffect(() => {
     // Check authentication and GP registration status
     const checkAuth = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      setUser(user);
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        setUser(user);
 
-      if (user) {
-        // Check if user is registered as GP
-        const { data, error } = await supabase
-          .from("gp_registrations")
-          .select("*")
-          .eq("user_id", user.id)
-          .maybeSingle();
+        if (user) {
+          // Check if user is registered as GP
+          const { data } = await supabase
+            .from("gp_registrations")
+            .select("*")
+            .eq("user_id", user.id)
+            .maybeSingle();
 
-        if (data && !error) {
-          setIsGPRegistered(true);
+          setIsGPRegistered(!!data);
         }
+      } catch (error) {
+        console.error("Auth check error:", error);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
 
     checkAuth();
@@ -53,7 +56,6 @@ const GPFundraisingEconomics = () => {
         } else {
           setIsGPRegistered(false);
         }
-        setLoading(false);
       }
     );
 
