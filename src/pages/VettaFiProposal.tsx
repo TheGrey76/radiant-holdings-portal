@@ -181,51 +181,6 @@ const VettaFiProposal = () => {
               </div>
             </div>
 
-            {/* Client Category White Space */}
-            <div className="mb-10">
-              <h3 className="text-xl font-semibold text-foreground mb-6 flex items-center gap-2">
-                <span className="h-2 w-2 bg-primary rounded-full"></span>
-                New Client Categories
-              </h3>
-              <div className="space-y-6">
-                <Card className="border-primary/20 shadow-lg bg-gradient-to-br from-card to-primary/5">
-                  <CardContent className="p-6">
-                    <h4 className="text-base font-semibold text-foreground mb-3 flex items-center gap-2">
-                      <span className="text-primary">→</span>
-                      Private Market Fund Managers
-                    </h4>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      Private equity, venture capital, and infrastructure fund managers increasingly need liquid, index-based strategies for cash management and portfolio hedging. VettaFi's thematic indexes can serve as benchmarking tools and complement private market allocations.
-                    </p>
-                  </CardContent>
-                </Card>
-
-                <Card className="border-primary/20 shadow-lg bg-gradient-to-br from-card to-primary/5">
-                  <CardContent className="p-6">
-                    <h4 className="text-base font-semibold text-foreground mb-3 flex items-center gap-2">
-                      <span className="text-primary">→</span>
-                      Structured Product Issuers
-                    </h4>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      Certificate issuers (e.g., Vontobel, Leonteq, BNP Paribas) create thousands of structured products annually, requiring diverse underlying indexes. VettaFi's thematic coverage (Defence, AI, Energy) aligns perfectly with retail investor demand for innovative underlyings.
-                    </p>
-                  </CardContent>
-                </Card>
-
-                <Card className="border-primary/20 shadow-lg bg-gradient-to-br from-card to-primary/5">
-                  <CardContent className="p-6">
-                    <h4 className="text-base font-semibold text-foreground mb-3 flex items-center gap-2">
-                      <span className="text-primary">→</span>
-                      Regional Private Banks & Wealth Managers
-                    </h4>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      Boutique private banks and independent wealth managers across Southern Europe and MENA lack access to cutting-edge thematic research and index solutions. They require tailored, locally compliant products with strong educational content—exactly what VettaFi's full-funnel model delivers.
-                    </p>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
-
             {/* Product & Compliance Gaps */}
             <div className="mb-10">
               <h3 className="text-xl font-semibold text-foreground mb-6 flex items-center gap-2">
