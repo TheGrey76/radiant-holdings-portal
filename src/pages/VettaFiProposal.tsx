@@ -98,7 +98,7 @@ const VettaFiProposal = () => {
               <span className="text-primary">VettaFi's Growth in EMEA</span>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
-              For Peter Dietrich, Head of Sales for Index, Data, and Analytics
+              For Peter Dietrich, Global Head of Index Sales
             </p>
           </div>
 
