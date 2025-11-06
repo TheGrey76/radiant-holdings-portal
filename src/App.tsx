@@ -38,6 +38,7 @@ import ItalyStructuredProductsRecord from "./pages/blog/ItalyStructuredProductsR
 import WhyChooseAries from "./pages/WhyChooseAries";
 import LeadershipTeam from "./pages/LeadershipTeam";
 import VettaFiProposal from "./pages/VettaFiProposal";
+import ConfidentialProposalAccess from "./pages/ConfidentialProposalAccess";
 
 const queryClient = new QueryClient();
 
@@ -67,6 +68,7 @@ const App = () => (
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/newsletter" element={<NewsletterComposer />} />
           <Route path="/sneaker-report" element={<SneakerReport />} />
+          <Route path="/confidential-proposal-access" element={<ConfidentialProposalAccess />} />
           <Route path="/confidential-proposal" element={<VettaFiProposal />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/blog" element={<Blog />} />

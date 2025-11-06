@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Loader2, ShieldAlert } from 'lucide-react';
-import { toast } from 'sonner';
 
 const AUTHORIZED_EMAILS = ['peter.dietrich@tmx.com', 'edoardo.grigione@aries76.com'];
 
@@ -15,33 +13,24 @@ const VettaFiProposal = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
-        
-        if (!session) {
-          toast.error('Accesso richiesto');
-          navigate('/auth');
-          return;
-        }
-
-        if (!AUTHORIZED_EMAILS.includes(session.user.email || '')) {
-          toast.error('Accesso negato - Area riservata');
-          setIsAuthorized(false);
-          setIsLoading(false);
-          return;
-        }
-
-        setIsAuthorized(true);
-      } catch (error) {
-        console.error('Auth check error:', error);
-        navigate('/');
-      } finally {
-        setIsLoading(false);
+    const checkAccess = () => {
+      const accessEmail = sessionStorage.getItem("proposal_access_email");
+      
+      if (!accessEmail) {
+        navigate("/confidential-proposal-access");
+        return;
       }
+
+      if (AUTHORIZED_EMAILS.includes(accessEmail.toLowerCase())) {
+        setIsAuthorized(true);
+      } else {
+        setIsAuthorized(false);
+      }
+      
+      setIsLoading(false);
     };
 
-    checkAuth();
+    checkAccess();
   }, [navigate]);
 
   if (isLoading) {
