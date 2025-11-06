@@ -271,6 +271,158 @@ const VettaFiProposal = () => {
             </div>
           </section>
 
+          {/* Partnership Roadmap Timeline */}
+          <section className="mb-20">
+            <div className="flex items-center gap-4 mb-8">
+              <div className="h-1 w-12 bg-primary rounded-full"></div>
+              <h2 className="text-2xl md:text-3xl font-bold text-foreground">
+                Partnership Roadmap
+              </h2>
+            </div>
+            <p className="text-base mb-10 text-muted-foreground leading-relaxed max-w-4xl">
+              A phased approach to building a successful partnership:
+            </p>
+            
+            <div className="relative">
+              {/* Timeline line */}
+              <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-primary/50 to-primary/20 hidden md:block"></div>
+              
+              <div className="space-y-8">
+                {/* Phase 1 */}
+                <div className="relative flex gap-6 md:gap-8">
+                  <div className="flex-shrink-0">
+                    <div className="h-16 w-16 bg-primary rounded-full flex items-center justify-center shadow-lg ring-4 ring-background">
+                      <span className="text-primary-foreground font-bold text-lg">Q4</span>
+                    </div>
+                  </div>
+                  <Card className="flex-grow border-primary/20 shadow-lg hover:shadow-xl transition-all duration-300">
+                    <CardHeader>
+                      <div className="flex items-center justify-between flex-wrap gap-2">
+                        <CardTitle className="text-lg">Phase 1: Discovery & Alignment</CardTitle>
+                        <span className="text-xs font-semibold px-3 py-1 bg-primary/10 text-primary rounded-full">2025 Q4</span>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <ul className="space-y-3 text-sm text-muted-foreground">
+                        <li className="flex gap-3">
+                          <span className="text-primary mt-1">•</span>
+                          <span>Initial partnership framework discussion and mutual goals alignment</span>
+                        </li>
+                        <li className="flex gap-3">
+                          <span className="text-primary mt-1">•</span>
+                          <span>Market assessment and opportunity sizing for priority markets</span>
+                        </li>
+                        <li className="flex gap-3">
+                          <span className="text-primary mt-1">•</span>
+                          <span>Define KPIs and success metrics for pilot phase</span>
+                        </li>
+                      </ul>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                {/* Phase 2 */}
+                <div className="relative flex gap-6 md:gap-8">
+                  <div className="flex-shrink-0">
+                    <div className="h-16 w-16 bg-primary/80 rounded-full flex items-center justify-center shadow-lg ring-4 ring-background">
+                      <span className="text-primary-foreground font-bold text-lg">Q1</span>
+                    </div>
+                  </div>
+                  <Card className="flex-grow border-primary/20 shadow-lg hover:shadow-xl transition-all duration-300">
+                    <CardHeader>
+                      <div className="flex items-center justify-between flex-wrap gap-2">
+                        <CardTitle className="text-lg">Phase 2: Pilot Launch</CardTitle>
+                        <span className="text-xs font-semibold px-3 py-1 bg-primary/10 text-primary rounded-full">2026 Q1</span>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <ul className="space-y-3 text-sm text-muted-foreground">
+                        <li className="flex gap-3">
+                          <span className="text-primary mt-1">•</span>
+                          <span>Launch pilot program focusing on 1-2 priority indexes (Defence, AI, or Energy)</span>
+                        </li>
+                        <li className="flex gap-3">
+                          <span className="text-primary mt-1">•</span>
+                          <span>Introduce VettaFi to 5-8 pre-qualified institutional clients</span>
+                        </li>
+                        <li className="flex gap-3">
+                          <span className="text-primary mt-1">•</span>
+                          <span>Coordinate initial product structuring discussions with ETF issuers</span>
+                        </li>
+                      </ul>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                {/* Phase 3 */}
+                <div className="relative flex gap-6 md:gap-8">
+                  <div className="flex-shrink-0">
+                    <div className="h-16 w-16 bg-primary/60 rounded-full flex items-center justify-center shadow-lg ring-4 ring-background">
+                      <span className="text-primary-foreground font-bold text-lg">Q2</span>
+                    </div>
+                  </div>
+                  <Card className="flex-grow border-primary/20 shadow-lg hover:shadow-xl transition-all duration-300">
+                    <CardHeader>
+                      <div className="flex items-center justify-between flex-wrap gap-2">
+                        <CardTitle className="text-lg">Phase 3: Scale & Expand</CardTitle>
+                        <span className="text-xs font-semibold px-3 py-1 bg-primary/10 text-primary rounded-full">2026 Q2-Q3</span>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <ul className="space-y-3 text-sm text-muted-foreground">
+                        <li className="flex gap-3">
+                          <span className="text-primary mt-1">•</span>
+                          <span>Review pilot results and refine go-to-market strategy</span>
+                        </li>
+                        <li className="flex gap-3">
+                          <span className="text-primary mt-1">•</span>
+                          <span>Expand index coverage and client outreach across EMEA</span>
+                        </li>
+                        <li className="flex gap-3">
+                          <span className="text-primary mt-1">•</span>
+                          <span>Launch full-funnel ecosystem integration (data, distribution, analytics)</span>
+                        </li>
+                      </ul>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                {/* Phase 4 */}
+                <div className="relative flex gap-6 md:gap-8">
+                  <div className="flex-shrink-0">
+                    <div className="h-16 w-16 bg-primary/40 rounded-full flex items-center justify-center shadow-lg ring-4 ring-background">
+                      <span className="text-primary-foreground font-bold text-lg">Q4</span>
+                    </div>
+                  </div>
+                  <Card className="flex-grow border-primary/20 shadow-lg hover:shadow-xl transition-all duration-300">
+                    <CardHeader>
+                      <div className="flex items-center justify-between flex-wrap gap-2">
+                        <CardTitle className="text-lg">Phase 4: Strategic Partnership</CardTitle>
+                        <span className="text-xs font-semibold px-3 py-1 bg-primary/10 text-primary rounded-full">2026 Q4+</span>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <ul className="space-y-3 text-sm text-muted-foreground">
+                        <li className="flex gap-3">
+                          <span className="text-primary mt-1">•</span>
+                          <span>Establish VettaFi as a recognized leader in EMEA thematic indexes</span>
+                        </li>
+                        <li className="flex gap-3">
+                          <span className="text-primary mt-1">•</span>
+                          <span>Formalize long-term partnership structure and revenue-sharing model</span>
+                        </li>
+                        <li className="flex gap-3">
+                          <span className="text-primary mt-1">•</span>
+                          <span>Explore co-development opportunities for EMEA-specific index products</span>
+                        </li>
+                      </ul>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
+            </div>
+          </section>
+
           {/* Call to Action */}
           <section className="relative overflow-hidden rounded-2xl">
             <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary to-primary/80"></div>
