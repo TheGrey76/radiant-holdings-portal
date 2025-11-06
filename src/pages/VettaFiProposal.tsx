@@ -318,34 +318,6 @@ const VettaFiProposal = () => {
                   </ul>
                 </CardContent>
               </Card>
-
-              <Card className="border-primary/20 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-card to-primary/5">
-                <CardHeader>
-                  <CardTitle className="text-xl flex items-center gap-2">
-                    <span className="h-2 w-2 bg-primary rounded-full"></span>
-                    Structured Products Expertise
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                    We unlock VettaFi's potential in the €1+ trillion European structured products market:
-                  </p>
-                  <ul className="space-y-3 text-sm text-muted-foreground">
-                    <li className="flex gap-2">
-                      <span className="text-primary mt-0.5">•</span>
-                      <span><strong className="text-foreground">Certificate Issuer Relationships:</strong> Direct connections to Leonteq, Vontobel, BNP Paribas, and regional issuers</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-primary mt-0.5">•</span>
-                      <span><strong className="text-foreground">Thematic Product Development:</strong> Co-develop certificates on VettaFi indexes tailored to retail investor demand (Defence, AI, Energy Transition)</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-primary mt-0.5">•</span>
-                      <span><strong className="text-foreground">Retail Distribution Channels:</strong> Access to private banking networks across Switzerland, Italy, and MENA for mass-market product distribution</span>
-                    </li>
-                  </ul>
-                </CardContent>
-              </Card>
             </div>
 
             <div className="bg-gradient-to-br from-primary/5 to-card p-8 rounded-lg border border-primary/20">
