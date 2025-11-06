@@ -856,6 +856,303 @@ const VettaFiProposal = () => {
             </Card>
           </section>
 
+          {/* Competitive Advantage Matrix */}
+          <section className="mb-20">
+            <div className="text-center mb-12">
+              <div className="inline-block mb-4 px-6 py-2 bg-primary/10 rounded-full">
+                <p className="text-xs font-semibold text-primary uppercase tracking-wide">Competitive Edge</p>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+                Why Aries76 Outperforms Traditional Advisors
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+                A comprehensive comparison highlighting our unique value proposition in the EMEA market
+              </p>
+            </div>
+
+            <Card className="border-primary/20 overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-border bg-muted/50">
+                      <th className="text-left p-6 font-semibold text-foreground min-w-[200px]">
+                        Key Differentiator
+                      </th>
+                      <th className="text-center p-6 font-semibold text-primary border-l border-primary/20 bg-primary/5 min-w-[180px]">
+                        Aries76
+                      </th>
+                      <th className="text-center p-6 font-semibold text-muted-foreground border-l border-border min-w-[180px]">
+                        Traditional<br />Placement Agents
+                      </th>
+                      <th className="text-center p-6 font-semibold text-muted-foreground border-l border-border min-w-[180px]">
+                        Large Investment<br />Banks
+                      </th>
+                      <th className="text-center p-6 font-semibold text-muted-foreground border-l border-border min-w-[180px]">
+                        Boutique<br />Consultants
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {/* EMEA Network Depth */}
+                    <tr className="border-b border-border hover:bg-muted/30 transition-colors">
+                      <td className="p-6">
+                        <div className="font-semibold text-foreground mb-1">EMEA Network Depth</div>
+                        <div className="text-sm text-muted-foreground">Direct relationships with key decision-makers</div>
+                      </td>
+                      <td className="text-center p-6 border-l border-primary/20 bg-primary/5">
+                        <div className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-primary/20 mb-2">
+                          <span className="text-xl">★★★</span>
+                        </div>
+                        <p className="text-sm font-semibold text-primary">Exceptional</p>
+                        <p className="text-xs text-muted-foreground mt-1">500+ GP/LP contacts</p>
+                      </td>
+                      <td className="text-center p-6 border-l border-border">
+                        <div className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-muted mb-2">
+                          <span className="text-xl text-muted-foreground">★★</span>
+                        </div>
+                        <p className="text-sm text-muted-foreground">Good</p>
+                        <p className="text-xs text-muted-foreground mt-1">Region-specific</p>
+                      </td>
+                      <td className="text-center p-6 border-l border-border">
+                        <div className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-muted mb-2">
+                          <span className="text-xl text-muted-foreground">★★</span>
+                        </div>
+                        <p className="text-sm text-muted-foreground">Good</p>
+                        <p className="text-xs text-muted-foreground mt-1">Broad but shallow</p>
+                      </td>
+                      <td className="text-center p-6 border-l border-border">
+                        <div className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-muted mb-2">
+                          <span className="text-xl text-muted-foreground">★</span>
+                        </div>
+                        <p className="text-sm text-muted-foreground">Limited</p>
+                        <p className="text-xs text-muted-foreground mt-1">Niche focus</p>
+                      </td>
+                    </tr>
+
+                    {/* Index/ETF Expertise */}
+                    <tr className="border-b border-border hover:bg-muted/30 transition-colors">
+                      <td className="p-6">
+                        <div className="font-semibold text-foreground mb-1">Index/ETF Specialization</div>
+                        <div className="text-sm text-muted-foreground">Deep knowledge of thematic index strategies</div>
+                      </td>
+                      <td className="text-center p-6 border-l border-primary/20 bg-primary/5">
+                        <div className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-primary/20 mb-2">
+                          <span className="text-xl">★★★</span>
+                        </div>
+                        <p className="text-sm font-semibold text-primary">Expert</p>
+                        <p className="text-xs text-muted-foreground mt-1">Specialized focus</p>
+                      </td>
+                      <td className="text-center p-6 border-l border-border">
+                        <div className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-muted mb-2">
+                          <span className="text-xl text-muted-foreground">★</span>
+                        </div>
+                        <p className="text-sm text-muted-foreground">Basic</p>
+                        <p className="text-xs text-muted-foreground mt-1">Not core focus</p>
+                      </td>
+                      <td className="text-center p-6 border-l border-border">
+                        <div className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-muted mb-2">
+                          <span className="text-xl text-muted-foreground">★★</span>
+                        </div>
+                        <p className="text-sm text-muted-foreground">Moderate</p>
+                        <p className="text-xs text-muted-foreground mt-1">One of many products</p>
+                      </td>
+                      <td className="text-center p-6 border-l border-border">
+                        <div className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-muted mb-2">
+                          <span className="text-xl text-muted-foreground">★</span>
+                        </div>
+                        <p className="text-sm text-muted-foreground">Variable</p>
+                        <p className="text-xs text-muted-foreground mt-1">Depends on firm</p>
+                      </td>
+                    </tr>
+
+                    {/* Cost Structure */}
+                    <tr className="border-b border-border hover:bg-muted/30 transition-colors">
+                      <td className="p-6">
+                        <div className="font-semibold text-foreground mb-1">Cost Efficiency</div>
+                        <div className="text-sm text-muted-foreground">Transparent, success-based fees</div>
+                      </td>
+                      <td className="text-center p-6 border-l border-primary/20 bg-primary/5">
+                        <div className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-primary/20 mb-2">
+                          <span className="text-xl">★★★</span>
+                        </div>
+                        <p className="text-sm font-semibold text-primary">Optimal</p>
+                        <p className="text-xs text-muted-foreground mt-1">Performance-aligned</p>
+                      </td>
+                      <td className="text-center p-6 border-l border-border">
+                        <div className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-muted mb-2">
+                          <span className="text-xl text-muted-foreground">★★</span>
+                        </div>
+                        <p className="text-sm text-muted-foreground">Moderate</p>
+                        <p className="text-xs text-muted-foreground mt-1">High upfront fees</p>
+                      </td>
+                      <td className="text-center p-6 border-l border-border">
+                        <div className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-muted mb-2">
+                          <span className="text-xl text-muted-foreground">★</span>
+                        </div>
+                        <p className="text-sm text-muted-foreground">Expensive</p>
+                        <p className="text-xs text-muted-foreground mt-1">Premium pricing</p>
+                      </td>
+                      <td className="text-center p-6 border-l border-border">
+                        <div className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-muted mb-2">
+                          <span className="text-xl text-muted-foreground">★★</span>
+                        </div>
+                        <p className="text-sm text-muted-foreground">Variable</p>
+                        <p className="text-xs text-muted-foreground mt-1">Project-based</p>
+                      </td>
+                    </tr>
+
+                    {/* Speed to Market */}
+                    <tr className="border-b border-border hover:bg-muted/30 transition-colors">
+                      <td className="p-6">
+                        <div className="font-semibold text-foreground mb-1">Speed to Market</div>
+                        <div className="text-sm text-muted-foreground">Ability to deploy quickly and efficiently</div>
+                      </td>
+                      <td className="text-center p-6 border-l border-primary/20 bg-primary/5">
+                        <div className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-primary/20 mb-2">
+                          <span className="text-xl">★★★</span>
+                        </div>
+                        <p className="text-sm font-semibold text-primary">Rapid</p>
+                        <p className="text-xs text-muted-foreground mt-1">Immediate activation</p>
+                      </td>
+                      <td className="text-center p-6 border-l border-border">
+                        <div className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-muted mb-2">
+                          <span className="text-xl text-muted-foreground">★★</span>
+                        </div>
+                        <p className="text-sm text-muted-foreground">Moderate</p>
+                        <p className="text-xs text-muted-foreground mt-1">6-12 months</p>
+                      </td>
+                      <td className="text-center p-6 border-l border-border">
+                        <div className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-muted mb-2">
+                          <span className="text-xl text-muted-foreground">★</span>
+                        </div>
+                        <p className="text-sm text-muted-foreground">Slow</p>
+                        <p className="text-xs text-muted-foreground mt-1">12-18 months</p>
+                      </td>
+                      <td className="text-center p-6 border-l border-border">
+                        <div className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-muted mb-2">
+                          <span className="text-xl text-muted-foreground">★★</span>
+                        </div>
+                        <p className="text-sm text-muted-foreground">Variable</p>
+                        <p className="text-xs text-muted-foreground mt-1">Project-dependent</p>
+                      </td>
+                    </tr>
+
+                    {/* Regulatory Knowledge */}
+                    <tr className="border-b border-border hover:bg-muted/30 transition-colors">
+                      <td className="p-6">
+                        <div className="font-semibold text-foreground mb-1">UCITS & EMEA Regulatory Expertise</div>
+                        <div className="text-sm text-muted-foreground">Understanding of local compliance requirements</div>
+                      </td>
+                      <td className="text-center p-6 border-l border-primary/20 bg-primary/5">
+                        <div className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-primary/20 mb-2">
+                          <span className="text-xl">★★★</span>
+                        </div>
+                        <p className="text-sm font-semibold text-primary">Deep</p>
+                        <p className="text-xs text-muted-foreground mt-1">On-the-ground expertise</p>
+                      </td>
+                      <td className="text-center p-6 border-l border-border">
+                        <div className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-muted mb-2">
+                          <span className="text-xl text-muted-foreground">★★</span>
+                        </div>
+                        <p className="text-sm text-muted-foreground">Good</p>
+                        <p className="text-xs text-muted-foreground mt-1">Regional knowledge</p>
+                      </td>
+                      <td className="text-center p-6 border-l border-border">
+                        <div className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-muted mb-2">
+                          <span className="text-xl text-muted-foreground">★★</span>
+                        </div>
+                        <p className="text-sm text-muted-foreground">Good</p>
+                        <p className="text-xs text-muted-foreground mt-1">Legal teams available</p>
+                      </td>
+                      <td className="text-center p-6 border-l border-border">
+                        <div className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-muted mb-2">
+                          <span className="text-xl text-muted-foreground">★</span>
+                        </div>
+                        <p className="text-sm text-muted-foreground">Limited</p>
+                        <p className="text-xs text-muted-foreground mt-1">Outsourced</p>
+                      </td>
+                    </tr>
+
+                    {/* Client Alignment */}
+                    <tr className="hover:bg-muted/30 transition-colors">
+                      <td className="p-6">
+                        <div className="font-semibold text-foreground mb-1">Client-Centric Approach</div>
+                        <div className="text-sm text-muted-foreground">Dedicated focus and customized solutions</div>
+                      </td>
+                      <td className="text-center p-6 border-l border-primary/20 bg-primary/5">
+                        <div className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-primary/20 mb-2">
+                          <span className="text-xl">★★★</span>
+                        </div>
+                        <p className="text-sm font-semibold text-primary">Exclusive</p>
+                        <p className="text-xs text-muted-foreground mt-1">Full partnership focus</p>
+                      </td>
+                      <td className="text-center p-6 border-l border-border">
+                        <div className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-muted mb-2">
+                          <span className="text-xl text-muted-foreground">★★</span>
+                        </div>
+                        <p className="text-sm text-muted-foreground">Shared</p>
+                        <p className="text-xs text-muted-foreground mt-1">Multiple clients</p>
+                      </td>
+                      <td className="text-center p-6 border-l border-border">
+                        <div className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-muted mb-2">
+                          <span className="text-xl text-muted-foreground">★</span>
+                        </div>
+                        <p className="text-sm text-muted-foreground">Diluted</p>
+                        <p className="text-xs text-muted-foreground mt-1">Large client base</p>
+                      </td>
+                      <td className="text-center p-6 border-l border-border">
+                        <div className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-muted mb-2">
+                          <span className="text-xl text-muted-foreground">★★</span>
+                        </div>
+                        <p className="text-sm text-muted-foreground">Variable</p>
+                        <p className="text-xs text-muted-foreground mt-1">Project-dependent</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </Card>
+
+            {/* Key Takeaways */}
+            <div className="grid md:grid-cols-3 gap-6 mt-10">
+              <Card className="border-primary/20 bg-gradient-to-br from-card to-primary/5">
+                <CardContent className="p-6">
+                  <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                    <span className="text-2xl">🎯</span>
+                  </div>
+                  <h3 className="font-semibold text-foreground mb-2">Specialized Focus</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Unlike generalist advisors, we exclusively focus on index licensing and ETF distribution in EMEA, ensuring unmatched expertise and dedication.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="border-primary/20 bg-gradient-to-br from-card to-primary/5">
+                <CardContent className="p-6">
+                  <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                    <span className="text-2xl">🤝</span>
+                  </div>
+                  <h3 className="font-semibold text-foreground mb-2">Relationship Capital</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Our 500+ direct relationships with EMEA GPs and LPs provide immediate market access that would take years to build independently.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="border-primary/20 bg-gradient-to-br from-card to-primary/5">
+                <CardContent className="p-6">
+                  <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                    <span className="text-2xl">⚡</span>
+                  </div>
+                  <h3 className="font-semibold text-foreground mb-2">Rapid Deployment</h3>
+                  <p className="text-sm text-muted-foreground">
+                    We can activate client meetings within weeks, not months, accelerating VettaFi's go-to-market timeline and revenue generation.
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+          </section>
+
           {/* Call to Action */}
           <section className="relative overflow-hidden rounded-2xl">
             <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary to-primary/80"></div>
