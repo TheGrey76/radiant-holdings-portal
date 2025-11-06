@@ -4,7 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Download, Mail, Calendar, Loader2, LogOut, Home, Users, PenSquare, Building2, Eye, CheckCircle, XCircle, Trash2, MessageSquare, Briefcase } from "lucide-react";
+import { Download, Mail, Calendar, Loader2, LogOut, Home, Users, PenSquare, Building2, Eye, CheckCircle, XCircle, Trash2, MessageSquare, Briefcase, TrendingUp } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
@@ -383,6 +383,15 @@ const Admin = () => {
               <span className="text-white/70 text-sm">Admin Dashboard</span>
             </div>
             <div className="flex items-center gap-3">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => navigate('/admin/gp-lp-matching')}
+                className="text-white/70 hover:text-white hover:bg-white/10"
+              >
+                <TrendingUp className="w-4 h-4 mr-2" />
+                GP/LP Matching
+              </Button>
               <Button
                 variant="ghost"
                 size="sm"

@@ -39,6 +39,9 @@ import WhyChooseAries from "./pages/WhyChooseAries";
 import LeadershipTeam from "./pages/LeadershipTeam";
 import VettaFiProposal from "./pages/VettaFiProposal";
 import ConfidentialProposalAccess from "./pages/ConfidentialProposalAccess";
+import GPLPMatching from "./pages/GPLPMatching";
+import GPPortal from "./pages/GPPortal";
+import LPPortal from "./pages/LPPortal";
 
 const queryClient = new QueryClient();
 
@@ -67,6 +70,9 @@ const App = () => (
           <Route path="/auth" element={<Auth />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/newsletter" element={<NewsletterComposer />} />
+          <Route path="/admin/gp-lp-matching" element={<GPLPMatching />} />
+          <Route path="/gp-portal" element={<GPPortal />} />
+          <Route path="/lp-portal" element={<LPPortal />} />
           <Route path="/sneaker-report" element={<SneakerReport />} />
           <Route path="/confidential-proposal-access" element={<ConfidentialProposalAccess />} />
           <Route path="/confidential-proposal" element={<VettaFiProposal />} />
