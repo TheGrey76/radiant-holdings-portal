@@ -101,7 +101,7 @@ const LPPortal = () => {
     <div className="min-h-screen bg-gradient-to-br from-[#0f1729] via-[#1a2744] to-[#0d1424]">
       <Navbar />
 
-      <div className="container mx-auto px-6 py-12 max-w-7xl">
+      <div className="container mx-auto px-6 pt-24 pb-12 max-w-7xl">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
@@ -113,7 +113,7 @@ const LPPortal = () => {
           <Button
             variant="outline"
             onClick={handleLogout}
-            className="border-white/20 text-white hover:bg-white/10"
+            className="border-accent/40 bg-accent/10 text-white hover:bg-accent/20 hover:border-accent/60"
           >
             <LogOut className="w-4 h-4 mr-2" />
             Logout
@@ -226,7 +226,7 @@ const LPPortal = () => {
                 )}
 
                 <div className="pt-6">
-                  <Button variant="outline" className="border-white/20 text-white hover:bg-white/10">
+                  <Button variant="outline" className="border-accent/40 bg-accent/10 text-white hover:bg-accent/20 hover:border-accent/60">
                     <Settings className="w-4 h-4 mr-2" />
                     Modifica Profilo
                   </Button>
