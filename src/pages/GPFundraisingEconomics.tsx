@@ -235,6 +235,10 @@ const GPFundraisingEconomics = () => {
               </p>
               <div className="space-y-3">
                 <div>
+                  <p className="font-semibold">Retainer fee:</p>
+                  <p className="text-sm text-muted-foreground mb-2">Negotiated with GP (mandatory to accept mandate)</p>
+                </div>
+                <div>
                   <p className="font-semibold">Recurring fee:</p>
                   <p className="text-xl font-bold text-primary">20 bps</p>
                   <p className="text-sm text-muted-foreground">on AUM from Introduced Investors</p>
