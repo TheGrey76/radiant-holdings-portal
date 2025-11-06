@@ -4,13 +4,14 @@ import { supabase } from '@/integrations/supabase/client';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2 } from 'lucide-react';
+import { Loader2, ShieldAlert } from 'lucide-react';
+import { toast } from 'sonner';
 
 const AUTHORIZED_EMAIL = 'peter.dietrich@tmx.com';
 
 const VettaFiProposal = () => {
   const navigate = useNavigate();
-  const [isAuthorized, setIsAuthorized] = useState(false);
+  const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -19,12 +20,15 @@ const VettaFiProposal = () => {
         const { data: { session } } = await supabase.auth.getSession();
         
         if (!session) {
+          toast.error('Accesso richiesto');
           navigate('/auth');
           return;
         }
 
         if (session.user.email !== AUTHORIZED_EMAIL) {
-          navigate('/');
+          toast.error('Accesso negato - Area riservata');
+          setIsAuthorized(false);
+          setIsLoading(false);
           return;
         }
 
@@ -44,6 +48,33 @@ const VettaFiProposal = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (!isAuthorized && !isLoading) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Navbar />
+        <main className="flex-grow flex items-center justify-center pt-28">
+          <Card className="max-w-md mx-4">
+            <CardHeader className="text-center">
+              <div className="flex justify-center mb-4">
+                <ShieldAlert className="h-16 w-16 text-destructive" />
+              </div>
+              <CardTitle className="text-2xl">Accesso Negato</CardTitle>
+            </CardHeader>
+            <CardContent className="text-center">
+              <p className="text-muted-foreground mb-4">
+                Questa pagina è riservata esclusivamente a utenti autorizzati.
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Per informazioni, contattare info@aries76.com
+              </p>
+            </CardContent>
+          </Card>
+        </main>
+        <Footer />
       </div>
     );
   }
