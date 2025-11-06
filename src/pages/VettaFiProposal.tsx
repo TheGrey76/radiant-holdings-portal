@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Loader2, ShieldAlert } from 'lucide-react';
 import { toast } from 'sonner';
 
-const AUTHORIZED_EMAIL = 'peter.dietrich@tmx.com';
+const AUTHORIZED_EMAILS = ['peter.dietrich@tmx.com', 'edoardo.grigione@aries76.com'];
 
 const VettaFiProposal = () => {
   const navigate = useNavigate();
@@ -25,7 +25,7 @@ const VettaFiProposal = () => {
           return;
         }
 
-        if (session.user.email !== AUTHORIZED_EMAIL) {
+        if (!AUTHORIZED_EMAILS.includes(session.user.email || '')) {
           toast.error('Accesso negato - Area riservata');
           setIsAuthorized(false);
           setIsLoading(false);
