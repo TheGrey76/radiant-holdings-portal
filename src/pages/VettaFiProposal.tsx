@@ -420,12 +420,12 @@ const VettaFiProposal = () => {
             </div>
           </section>
 
-          {/* Valore Aggiunto per VettaFi */}
+          {/* Added Value for VettaFi */}
           <section className="mb-20">
             <div className="flex items-center gap-4 mb-8">
               <div className="h-1 w-12 bg-primary rounded-full"></div>
               <h2 className="text-2xl md:text-3xl font-bold text-foreground">
-                Valore Aggiunto per VettaFi
+                Added Value for VettaFi
               </h2>
             </div>
             <p className="text-base mb-10 text-muted-foreground leading-relaxed max-w-4xl">
