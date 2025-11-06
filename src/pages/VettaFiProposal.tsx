@@ -1756,19 +1756,18 @@ const VettaFiProposal = () => {
             <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary to-primary/80"></div>
             <div className="relative text-primary-foreground p-12 md:p-16 text-center">
               <h2 className="text-2xl md:text-3xl font-bold mb-6">
-                Let's Discuss Your EMEA Strategy
+                Let's Build the Future of VettaFi in EMEA
               </h2>
               <div className="max-w-3xl mx-auto space-y-6 text-base md:text-lg">
                 <p className="leading-relaxed">
-                  We invite you to a confidential conversation to explore how Aries76 can accelerate VettaFi's growth across EMEA markets. This is an opportunity to discuss partnership economics, market priorities, and specific opportunities tailored to your strategic objectives.
+                  We are confident that a strategic partnership is the most effective way to achieve our mutual goals. We are ready to discuss the framework for a pilot project and define the next steps.
+                </p>
+                <p className="text-lg font-semibold">
+                  Thank you for your time and consideration.
                 </p>
                 <div className="bg-primary-foreground/10 backdrop-blur-sm rounded-lg p-6 mt-8">
-                  <p className="text-lg font-semibold mb-4">Next Steps</p>
-                  <p className="leading-relaxed mb-6">
-                    We propose a confidential meeting to discuss the partnership framework, compensation structure, and pilot program details. All terms are fully negotiable and designed to align with VettaFi's budget parameters and strategic priorities.
-                  </p>
                   <div className="border-t border-primary-foreground/20 pt-6">
-                    <p className="text-sm font-semibold mb-3">Contact Information</p>
+                    <p className="text-sm font-semibold mb-3">For further information, please contact:</p>
                     <a 
                       href="mailto:edoardo.grigione@aries76.com" 
                       className="inline-flex items-center gap-2 text-primary-foreground hover:text-primary-foreground/90 transition-colors"
@@ -1783,9 +1782,6 @@ const VettaFiProposal = () => {
                     </p>
                   </div>
                 </div>
-                <p className="text-base mt-8 italic opacity-90">
-                  We look forward to building a successful partnership that transforms VettaFi's presence in EMEA.
-                </p>
               </div>
             </div>
           </section>
