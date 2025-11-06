@@ -91,13 +91,13 @@ const VettaFiProposal = () => {
           {/* Header */}
           <div className="text-center pb-12 mb-16 border-b border-primary/20">
             <div className="inline-block mb-6 px-6 py-2 bg-primary/10 rounded-full">
-              <p className="text-sm font-semibold text-primary uppercase tracking-wide">Confidential Proposal</p>
+              <p className="text-xs font-semibold text-primary uppercase tracking-wide">Confidential Proposal</p>
             </div>
-            <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6 leading-tight">
+            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-6 leading-tight">
               A Strategic Partnership to Unlock<br />
               <span className="text-primary">VettaFi's Growth in EMEA</span>
             </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
+            <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
               For Peter Dietrich, Head of Sales for Index, Data, and Analytics
             </p>
           </div>
@@ -106,18 +106,18 @@ const VettaFiProposal = () => {
           <section className="mb-20">
             <div className="flex items-center gap-4 mb-8">
               <div className="h-1 w-12 bg-primary rounded-full"></div>
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+              <h2 className="text-2xl md:text-3xl font-bold text-foreground">
                 The Vision: Aligning with Your Global Strategy
               </h2>
             </div>
             <Card className="border-primary/20 shadow-lg hover:shadow-xl transition-shadow duration-300">
               <CardContent className="p-8 md:p-10">
-                <div className="space-y-6 text-lg leading-relaxed">
+                <div className="space-y-6 text-base leading-relaxed">
                   <p className="text-foreground/90">
                     We have observed VettaFi's strategic evolution, particularly the acquisition by TMX Group and the clear mandate for global expansion. Your "full-funnel" ecosystem—integrating indexing, data, and digital distribution—is a powerful differentiator that the European and Middle Eastern markets are ready for.
                   </p>
                   <div className="bg-primary/5 border-l-4 border-primary p-6 rounded-r-lg">
-                    <p className="text-foreground font-semibold text-xl">
+                    <p className="text-foreground font-semibold text-lg">
                       Our proposal is simple: <span className="text-primary">we offer to be your strategic partner on the ground</span>, transforming VettaFi's global vision into regional success. We provide the local expertise and established network to accelerate your entry and capture significant market share.
                     </p>
                   </div>
@@ -130,7 +130,7 @@ const VettaFiProposal = () => {
           <section className="mb-20">
             <div className="flex items-center gap-4 mb-8">
               <div className="h-1 w-12 bg-primary rounded-full"></div>
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+              <h2 className="text-2xl md:text-3xl font-bold text-foreground">
                 Our Value Proposition: Your Full-Funnel Partner in EMEA
               </h2>
             </div>
@@ -140,10 +140,10 @@ const VettaFiProposal = () => {
                   <div className="h-12 w-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                     <span className="text-2xl font-bold text-primary">1</span>
                   </div>
-                  <CardTitle className="text-2xl">Immediate Market Access</CardTitle>
+                  <CardTitle className="text-xl">Immediate Market Access</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <ul className="space-y-4 text-muted-foreground">
+                  <ul className="space-y-4 text-sm text-muted-foreground">
                     <li className="flex gap-3">
                       <span className="text-primary mt-1">•</span>
                       <span>Established relationships with asset managers, private banks, and financial institutions</span>
@@ -165,10 +165,10 @@ const VettaFiProposal = () => {
                   <div className="h-12 w-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                     <span className="text-2xl font-bold text-primary">2</span>
                   </div>
-                  <CardTitle className="text-2xl">Local Regulatory & Market Expertise</CardTitle>
+                  <CardTitle className="text-xl">Local Regulatory & Market Expertise</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <ul className="space-y-4 text-muted-foreground">
+                  <ul className="space-y-4 text-sm text-muted-foreground">
                     <li className="flex gap-3">
                       <span className="text-primary mt-1">•</span>
                       <span>In-depth knowledge of the UCITS framework and SFDR compliance requirements</span>
@@ -190,10 +190,10 @@ const VettaFiProposal = () => {
                   <div className="h-12 w-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                     <span className="text-2xl font-bold text-primary">3</span>
                   </div>
-                  <CardTitle className="text-2xl">Full Ecosystem Distribution</CardTitle>
+                  <CardTitle className="text-xl">Full Ecosystem Distribution</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <ul className="space-y-4 text-muted-foreground">
+                  <ul className="space-y-4 text-sm text-muted-foreground">
                     <li className="flex gap-3">
                       <span className="text-primary mt-1">•</span>
                       <span>We don't just sell indexes; we enable your entire business model</span>
@@ -216,24 +216,24 @@ const VettaFiProposal = () => {
           <section className="mb-20">
             <div className="flex items-center gap-4 mb-8">
               <div className="h-1 w-12 bg-primary rounded-full"></div>
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+              <h2 className="text-2xl md:text-3xl font-bold text-foreground">
                 Actionable Opportunities: Where We Can Win Together
               </h2>
             </div>
-            <p className="text-xl mb-10 text-muted-foreground leading-relaxed max-w-4xl">
+            <p className="text-base mb-10 text-muted-foreground leading-relaxed max-w-4xl">
               We have identified three high-impact thematic areas where VettaFi's indexes are perfectly aligned with current market demand in EMEA:
             </p>
             <div className="grid md:grid-cols-3 gap-8">
               <Card className="border-primary/20 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden">
                 <div className="h-2 bg-gradient-to-r from-primary to-primary/60"></div>
                 <CardHeader>
-                  <CardTitle className="text-2xl text-primary">Defence & Security</CardTitle>
+                  <CardTitle className="text-xl text-primary">Defence & Security</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <p className="text-muted-foreground leading-relaxed">
+                  <p className="text-sm text-muted-foreground leading-relaxed">
                     With NATO members increasing spending, your <strong className="text-foreground">European Future of Defence Index (ARMYS)</strong> is the ideal underlying for new UCITS ETFs.
                   </p>
-                  <p className="text-foreground font-semibold">
+                  <p className="text-sm text-foreground font-semibold">
                     We can connect you with the right issuers immediately.
                   </p>
                 </CardContent>
@@ -242,13 +242,13 @@ const VettaFiProposal = () => {
               <Card className="border-primary/20 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden">
                 <div className="h-2 bg-gradient-to-r from-primary to-primary/60"></div>
                 <CardHeader>
-                  <CardTitle className="text-2xl text-primary">AI & Technology</CardTitle>
+                  <CardTitle className="text-xl text-primary">AI & Technology</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <p className="text-muted-foreground leading-relaxed">
+                  <p className="text-sm text-muted-foreground leading-relaxed">
                     Your <strong className="text-foreground">ROBO Global AI Index (THNQ)</strong> is a globally recognized brand.
                   </p>
-                  <p className="text-foreground font-semibold">
+                  <p className="text-sm text-foreground font-semibold">
                     We can leverage this to capture demand from European investors and Middle Eastern sovereign funds diversifying into tech.
                   </p>
                 </CardContent>
@@ -257,13 +257,13 @@ const VettaFiProposal = () => {
               <Card className="border-primary/20 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden">
                 <div className="h-2 bg-gradient-to-r from-primary to-primary/60"></div>
                 <CardHeader>
-                  <CardTitle className="text-2xl text-primary">Energy Transition & Security</CardTitle>
+                  <CardTitle className="text-xl text-primary">Energy Transition & Security</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <p className="text-muted-foreground leading-relaxed">
+                  <p className="text-sm text-muted-foreground leading-relaxed">
                     Your <strong className="text-foreground">Alerian (AMEI)</strong> and <strong className="text-foreground">Nuclear (NUKZX)</strong> indexes offer a complete energy narrative.
                   </p>
-                  <p className="text-foreground font-semibold">
+                  <p className="text-sm text-foreground font-semibold">
                     A powerful story for institutional investors focused on both current security and future transition.
                   </p>
                 </CardContent>
@@ -275,14 +275,14 @@ const VettaFiProposal = () => {
           <section className="relative overflow-hidden rounded-2xl">
             <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary to-primary/80"></div>
             <div className="relative text-primary-foreground p-12 md:p-16 text-center">
-              <h2 className="text-3xl md:text-5xl font-bold mb-6">
+              <h2 className="text-2xl md:text-3xl font-bold mb-6">
                 Let's Build the Future of VettaFi in EMEA
               </h2>
-              <div className="max-w-3xl mx-auto space-y-6 text-lg md:text-xl">
+              <div className="max-w-3xl mx-auto space-y-6 text-base md:text-lg">
                 <p className="leading-relaxed">
                   We are confident that a strategic partnership is the most effective way to achieve our mutual goals. We are ready to discuss the framework for a pilot project and define the next steps.
                 </p>
-                <p className="text-xl font-semibold">
+                <p className="text-lg font-semibold">
                   Thank you for your time and consideration.
                 </p>
               </div>
