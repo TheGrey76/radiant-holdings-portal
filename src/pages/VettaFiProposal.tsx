@@ -566,17 +566,21 @@ const VettaFiProposal = () => {
             {/* ROI Highlights */}
             <div className="mt-10 grid md:grid-cols-2 gap-6">
               <Card className="border-primary/20 shadow-lg">
-                <CardHeader>
+<CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2">
                     <span className="h-2 w-2 bg-primary rounded-full"></span>
-                    Key Value Drivers
+                    Partnership Economics
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <ul className="space-y-3 text-sm text-muted-foreground">
                     <li className="flex gap-3">
                       <span className="text-primary mt-1">✓</span>
-                      <span><strong className="text-foreground">Zero upfront investment</strong> - Performance-based partnership model</span>
+                      <span><strong className="text-foreground">Upfront investment</strong> - Strategic commitment to be negotiated based on scope</span>
+                    </li>
+                    <li className="flex gap-3">
+                      <span className="text-primary mt-1">✓</span>
+                      <span><strong className="text-foreground">Success-based fees</strong> - Aries76 commission tied to revenue generation</span>
                     </li>
                     <li className="flex gap-3">
                       <span className="text-primary mt-1">✓</span>
@@ -586,10 +590,6 @@ const VettaFiProposal = () => {
                       <span className="text-primary mt-1">✓</span>
                       <span><strong className="text-foreground">Scalable model</strong> - Proven distribution network across EMEA</span>
                     </li>
-                    <li className="flex gap-3">
-                      <span className="text-primary mt-1">✓</span>
-                      <span><strong className="text-foreground">Brand positioning</strong> - Establish VettaFi as EMEA thematic leader</span>
-                    </li>
                   </ul>
                 </CardContent>
               </Card>
@@ -598,31 +598,262 @@ const VettaFiProposal = () => {
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2">
                     <span className="h-2 w-2 bg-primary rounded-full"></span>
-                    Success Assumptions
+                    Revenue Model & Assumptions
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <ul className="space-y-3 text-sm text-muted-foreground">
-                    <li className="flex gap-3">
-                      <span className="text-primary mt-1">•</span>
-                      <span>Average index licensing fee: 5-7 bps on AUM</span>
-                    </li>
-                    <li className="flex gap-3">
-                      <span className="text-primary mt-1">•</span>
-                      <span>Average product size: €50-75M at maturity</span>
-                    </li>
-                    <li className="flex gap-3">
-                      <span className="text-primary mt-1">•</span>
-                      <span>Client conversion rate: 30-40% from qualified pipeline</span>
-                    </li>
-                    <li className="flex gap-3">
-                      <span className="text-primary mt-1">•</span>
-                      <span>Market conditions: Continued thematic investing demand</span>
-                    </li>
-                  </ul>
+                  <div className="space-y-4">
+                    <div className="bg-primary/5 p-4 rounded-lg border border-primary/10">
+                      <p className="text-sm font-semibold text-foreground mb-2">Commission Structure (To Be Negotiated)</p>
+                      <ul className="space-y-2 text-sm text-muted-foreground">
+                        <li className="flex gap-2">
+                          <span className="text-primary">•</span>
+                          <span>Aries76 success fee: 15-25% of VettaFi licensing revenue generated</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-primary">•</span>
+                          <span>Plus upfront strategic investment from VettaFi for market development</span>
+                        </li>
+                      </ul>
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-foreground mb-2">VettaFi Revenue Assumptions</p>
+                      <ul className="space-y-2 text-sm text-muted-foreground">
+                        <li className="flex gap-2">
+                          <span className="text-primary">•</span>
+                          <span>Average index licensing fee: 5-7 bps on AUM</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-primary">•</span>
+                          <span>Average product size: €50-75M at maturity</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-primary">•</span>
+                          <span>Client conversion rate: 30-40% from qualified pipeline</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
             </div>
+          </section>
+
+          {/* Risk Analysis & Mitigation */}
+          <section className="mb-20">
+            <div className="flex items-center gap-4 mb-8">
+              <div className="h-1 w-12 bg-primary rounded-full"></div>
+              <h2 className="text-2xl md:text-3xl font-bold text-foreground">
+                Risk Analysis & Mitigation Strategies
+              </h2>
+            </div>
+            <p className="text-base mb-10 text-muted-foreground leading-relaxed max-w-4xl">
+              Proactive identification of potential challenges and our mitigation approach:
+            </p>
+
+            <div className="space-y-6">
+              {/* Risk 1 */}
+              <Card className="border-destructive/20 hover:border-destructive/40 transition-colors duration-300">
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-start gap-3">
+                    <span className="flex-shrink-0 h-8 w-8 rounded-full bg-destructive/10 flex items-center justify-center text-destructive font-bold mt-0.5">1</span>
+                    <span>Market Timing & Economic Downturn</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <p className="text-sm font-semibold text-destructive mb-2">Risk</p>
+                      <p className="text-sm text-muted-foreground">
+                        Economic volatility or market downturn could reduce investor appetite for thematic ETFs and delay product launches.
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-primary mb-2">Mitigation</p>
+                      <ul className="space-y-2 text-sm text-muted-foreground">
+                        <li className="flex gap-2">
+                          <span className="text-primary">✓</span>
+                          <span>Focus on defensive themes (Defence, Energy Security) with structural demand</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-primary">✓</span>
+                          <span>Diversified product pipeline across multiple sectors</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-primary">✓</span>
+                          <span>Phased approach allows for pause/adjust based on market conditions</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Risk 2 */}
+              <Card className="border-destructive/20 hover:border-destructive/40 transition-colors duration-300">
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-start gap-3">
+                    <span className="flex-shrink-0 h-8 w-8 rounded-full bg-destructive/10 flex items-center justify-center text-destructive font-bold mt-0.5">2</span>
+                    <span>Competitive Pressure from Established Players</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <p className="text-sm font-semibold text-destructive mb-2">Risk</p>
+                      <p className="text-sm text-muted-foreground">
+                        MSCI, FTSE Russell, and other major index providers already have EMEA presence and brand recognition.
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-primary mb-2">Mitigation</p>
+                      <ul className="space-y-2 text-sm text-muted-foreground">
+                        <li className="flex gap-2">
+                          <span className="text-primary">✓</span>
+                          <span>VettaFi's specialized thematic focus vs. broad-market competitors</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-primary">✓</span>
+                          <span>Full-funnel ecosystem (data + distribution) creates switching costs</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-primary">✓</span>
+                          <span>Aries76's established relationships provide competitive moat</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Risk 3 */}
+              <Card className="border-destructive/20 hover:border-destructive/40 transition-colors duration-300">
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-start gap-3">
+                    <span className="flex-shrink-0 h-8 w-8 rounded-full bg-destructive/10 flex items-center justify-center text-destructive font-bold mt-0.5">3</span>
+                    <span>Regulatory Complexity & Compliance</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <p className="text-sm font-semibold text-destructive mb-2">Risk</p>
+                      <p className="text-sm text-muted-foreground">
+                        UCITS requirements, SFDR disclosures, and varying national regulations across EMEA markets add complexity.
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-primary mb-2">Mitigation</p>
+                      <ul className="space-y-2 text-sm text-muted-foreground">
+                        <li className="flex gap-2">
+                          <span className="text-primary">✓</span>
+                          <span>Aries76's deep expertise in UCITS framework and local regulations</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-primary">✓</span>
+                          <span>Partnership with experienced ETF issuers who handle compliance</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-primary">✓</span>
+                          <span>VettaFi's proven methodology adaptable to European standards</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Risk 4 */}
+              <Card className="border-destructive/20 hover:border-destructive/40 transition-colors duration-300">
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-start gap-3">
+                    <span className="flex-shrink-0 h-8 w-8 rounded-full bg-destructive/10 flex items-center justify-center text-destructive font-bold mt-0.5">4</span>
+                    <span>Slower-than-Expected Client Adoption</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <p className="text-sm font-semibold text-destructive mb-2">Risk</p>
+                      <p className="text-sm text-muted-foreground">
+                        Sales cycles may be longer than projected, or conversion rates lower than assumed 30-40%.
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-primary mb-2">Mitigation</p>
+                      <ul className="space-y-2 text-sm text-muted-foreground">
+                        <li className="flex gap-2">
+                          <span className="text-primary">✓</span>
+                          <span>Pre-qualified pipeline from existing Aries76 relationships</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-primary">✓</span>
+                          <span>Pilot phase with conservative targets to validate assumptions</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-primary">✓</span>
+                          <span>Flexible partnership structure allows for recalibration</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Risk 5 */}
+              <Card className="border-destructive/20 hover:border-destructive/40 transition-colors duration-300">
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-start gap-3">
+                    <span className="flex-shrink-0 h-8 w-8 rounded-full bg-destructive/10 flex items-center justify-center text-destructive font-bold mt-0.5">5</span>
+                    <span>Brand Recognition & Trust Building</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <p className="text-sm font-semibold text-destructive mb-2">Risk</p>
+                      <p className="text-sm text-muted-foreground">
+                        VettaFi is a new brand in EMEA; establishing credibility and trust will require time and marketing investment.
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-primary mb-2">Mitigation</p>
+                      <ul className="space-y-2 text-sm text-muted-foreground">
+                        <li className="flex gap-2">
+                          <span className="text-primary">✓</span>
+                          <span>Leverage Aries76's brand and credibility for warm introductions</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-primary">✓</span>
+                          <span>Showcase VettaFi's US track record and ROBO Global heritage</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-primary">✓</span>
+                          <span>Targeted thought leadership and education campaigns</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Overall Risk Assessment */}
+            <Card className="mt-10 border-primary/20 bg-gradient-to-br from-card to-primary/5">
+              <CardContent className="p-8">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+                    <span className="text-2xl">✓</span>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-foreground mb-2">Overall Risk Assessment: Moderate</p>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      While challenges exist, they are manageable through our phased approach, local expertise, and VettaFi's proven product offering. The partnership structure allows for validation at each stage before scaling investment. Our conservative projections and strong mitigation strategies position us for success even in challenging market conditions.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </section>
 
           {/* Call to Action */}
