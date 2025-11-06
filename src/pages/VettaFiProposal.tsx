@@ -413,352 +413,373 @@ const VettaFiProposal = () => {
             </div>
           </section>
 
-          {/* Financial Projections */}
+          {/* Partnership Economics */}
           <section className="mb-20">
             <div className="flex items-center gap-4 mb-8">
               <div className="h-1 w-12 bg-primary rounded-full"></div>
               <h2 className="text-2xl md:text-3xl font-bold text-foreground">
-                Financial Projections & ROI
+                Partnership Economics
               </h2>
             </div>
             <p className="text-base mb-10 text-muted-foreground leading-relaxed max-w-4xl">
-              Market-aligned estimates based on realistic European ETF dynamics and VettaFi's competitive positioning:
+              A transparent, performance-aligned partnership structure designed for mutual success.
             </p>
 
-            {/* Key Metrics Cards */}
-            <div className="grid md:grid-cols-3 gap-6 mb-10">
-              <Card className="border-primary/20 shadow-lg bg-gradient-to-br from-card to-primary/5">
-                <CardHeader className="text-center pb-3">
-                  <p className="text-sm text-muted-foreground uppercase tracking-wide">AUM and Revenue Scenarios – 3-Year View</p>
-                </CardHeader>
-                <CardContent className="text-center pt-4">
-                  <p className="text-xs text-muted-foreground leading-relaxed mb-4 italic">
-                    Projections based on VettaFi's index licensing fee model and realistic European ETF growth dynamics
-                  </p>
-                  <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                    The financial model is built on VettaFi's core business: licensing proprietary thematic indexes to ETF issuers across EMEA. VettaFi earns a licensing fee (expressed in basis points) on the assets under management of ETFs that track their indexes.
-                  </p>
-                  <p className="text-sm text-foreground font-semibold mb-3">
-                    We project three scenarios for total AUM across all ETFs referencing VettaFi indexes introduced through the Aries76 partnership:
-                  </p>
-                  <ul className="text-xs text-left text-muted-foreground space-y-2 mb-4">
-                    <li className="flex gap-2">
-                      <span className="text-primary mt-0.5">•</span>
-                      <span><strong className="text-foreground">Conservative scenario:</strong> 900M€ – 1.2B€ by Year 3</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-primary mt-0.5">•</span>
-                      <span><strong className="text-foreground">Base case scenario:</strong> 1.2B€ – 1.5B€ by Year 3</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-primary mt-0.5">•</span>
-                      <span><strong className="text-foreground">Upside scenario:</strong> 1.5B€ – 2.0B€+ by Year 3</span>
-                    </li>
-                  </ul>
-                  <p className="text-xs text-muted-foreground italic">
-                    These projections assume a portfolio of 4-6 thematic ETFs launched across the three-year period, focusing on high-demand themes (Defence, AI, Energy Transition) with strong structural tailwinds in European markets.
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="border-primary/20 shadow-lg bg-gradient-to-br from-card to-primary/5">
-                <CardHeader className="text-center pb-3">
-                  <p className="text-sm text-muted-foreground uppercase tracking-wide">Index Licensing Economics for VettaFi</p>
-                </CardHeader>
-                <CardContent className="text-center pt-4">
-                  <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                    VettaFi's revenue model is based on licensing fees charged to ETF issuers, not on the total expense ratio (TER) paid by end investors.
-                  </p>
-                  <p className="text-sm text-foreground font-semibold mb-3">How it works:</p>
-                  <ul className="text-xs text-left text-muted-foreground space-y-2 mb-4">
-                    <li className="flex gap-2">
-                      <span className="text-primary mt-0.5">•</span>
-                      <span>ETF issuers (e.g., DWS, Invesco, VanEck) create ETFs that track VettaFi indexes</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-primary mt-0.5">•</span>
-                      <span>These ETFs charge investors a TER (typically 0.35%-0.50% for thematic equity strategies in Europe)</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-primary mt-0.5">•</span>
-                      <span>Within this TER, the ETF issuer pays VettaFi a licensing fee for the use of the index</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-primary mt-0.5">•</span>
-                      <span><strong className="text-foreground">VettaFi's licensing fee typically ranges from 3 to 8 basis points (0.03% - 0.08%)</strong> depending on index complexity, exclusivity, and competitive positioning</span>
-                    </li>
-                  </ul>
-                  <p className="text-sm text-foreground font-semibold mb-3">Our revenue assumptions for VettaFi:</p>
-                  <ul className="text-xs text-left text-muted-foreground space-y-2 mb-4">
-                    <li className="flex gap-2">
-                      <span className="text-primary mt-0.5">•</span>
-                      <span><strong className="text-foreground">Conservative scenario:</strong> Average licensing fee of 4 basis points (0.04%)</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-primary mt-0.5">•</span>
-                      <span><strong className="text-foreground">Base case scenario:</strong> Average licensing fee of 5 basis points (0.05%)</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-primary mt-0.5">•</span>
-                      <span><strong className="text-foreground">Upside scenario:</strong> Average licensing fee of 7 basis points (0.07%) for premium, highly differentiated thematic indexes</span>
-                    </li>
-                  </ul>
-                  <p className="text-xs text-muted-foreground italic">
-                    This licensing fee structure creates a scalable, capital-light, recurring revenue stream for VettaFi that grows directly with AUM, without requiring VettaFi to issue or manage ETFs.
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="border-primary/20 shadow-lg bg-gradient-to-br from-card to-primary/5">
-                <CardHeader className="text-center pb-3">
-                  <p className="text-sm text-muted-foreground uppercase tracking-wide">3-Year Revenue Projections & Partnership ROI</p>
-                </CardHeader>
-                <CardContent className="pt-4">
-                  <p className="text-sm text-muted-foreground leading-relaxed mb-4 text-center">
-                    Based on the licensing fee model and our AUM targets, here are the projected annual revenues for VettaFi from the Aries76 partnership:
-                  </p>
-                  
-                  {/* Base Case Table */}
-                  <div className="mb-6 bg-primary/5 p-4 rounded-lg border border-primary/10">
-                    <p className="text-xs font-semibold text-foreground mb-3 text-center">Base Case Scenario (1.5B€ AUM by Year 3, 5 bps licensing fee)</p>
-                    <div className="overflow-x-auto">
-                      <table className="w-full text-xs">
-                        <thead>
-                          <tr className="border-b border-primary/20">
-                            <th className="text-left py-2 text-muted-foreground font-semibold">Year</th>
-                            <th className="text-right py-2 text-muted-foreground font-semibold">Cumulative AUM</th>
-                            <th className="text-right py-2 text-muted-foreground font-semibold">VettaFi Annual Revenue</th>
-                            <th className="text-right py-2 text-muted-foreground font-semibold">Aries76 Commission (25%)</th>
-                          </tr>
-                        </thead>
-                        <tbody className="text-muted-foreground">
-                          <tr className="border-b border-primary/10">
-                            <td className="py-2">Year 1 (2026)</td>
-                            <td className="text-right">€300M</td>
-                            <td className="text-right font-semibold text-foreground">€150,000</td>
-                            <td className="text-right">€37,500</td>
-                          </tr>
-                          <tr className="border-b border-primary/10">
-                            <td className="py-2">Year 2 (2027)</td>
-                            <td className="text-right">€700M</td>
-                            <td className="text-right font-semibold text-foreground">€350,000</td>
-                            <td className="text-right">€87,500</td>
-                          </tr>
-                          <tr className="border-b border-primary/10">
-                            <td className="py-2">Year 3 (2028)</td>
-                            <td className="text-right">€1,500M</td>
-                            <td className="text-right font-semibold text-foreground">€750,000</td>
-                            <td className="text-right">€187,500</td>
-                          </tr>
-                          <tr className="font-semibold">
-                            <td className="py-2 text-foreground">Total 3-Year</td>
-                            <td className="text-right">-</td>
-                            <td className="text-right text-primary">€1,250,000</td>
-                            <td className="text-right text-foreground">€312,500</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-
-                  {/* Upside Case Table */}
-                  <div className="mb-6 bg-primary/5 p-4 rounded-lg border border-primary/10">
-                    <p className="text-xs font-semibold text-foreground mb-3 text-center">Upside Scenario (2.0B€ AUM by Year 3, 7 bps licensing fee)</p>
-                    <div className="overflow-x-auto">
-                      <table className="w-full text-xs">
-                        <thead>
-                          <tr className="border-b border-primary/20">
-                            <th className="text-left py-2 text-muted-foreground font-semibold">Year</th>
-                            <th className="text-right py-2 text-muted-foreground font-semibold">Cumulative AUM</th>
-                            <th className="text-right py-2 text-muted-foreground font-semibold">VettaFi Annual Revenue</th>
-                            <th className="text-right py-2 text-muted-foreground font-semibold">Aries76 Commission (25%)</th>
-                          </tr>
-                        </thead>
-                        <tbody className="text-muted-foreground">
-                          <tr className="border-b border-primary/10">
-                            <td className="py-2">Year 1 (2026)</td>
-                            <td className="text-right">€400M</td>
-                            <td className="text-right font-semibold text-foreground">€280,000</td>
-                            <td className="text-right">€70,000</td>
-                          </tr>
-                          <tr className="border-b border-primary/10">
-                            <td className="py-2">Year 2 (2027)</td>
-                            <td className="text-right">€1,000M</td>
-                            <td className="text-right font-semibold text-foreground">€700,000</td>
-                            <td className="text-right">€175,000</td>
-                          </tr>
-                          <tr className="border-b border-primary/10">
-                            <td className="py-2">Year 3 (2028)</td>
-                            <td className="text-right">€2,000M</td>
-                            <td className="text-right font-semibold text-foreground">€1,400,000</td>
-                            <td className="text-right">€350,000</td>
-                          </tr>
-                          <tr className="font-semibold">
-                            <td className="py-2 text-foreground">Total 3-Year</td>
-                            <td className="text-right">-</td>
-                            <td className="text-right text-primary">€2,380,000</td>
-                            <td className="text-right text-foreground">€595,000</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-
-                  {/* Key ROI Metrics */}
-                  <div className="space-y-3">
-                    <p className="text-xs font-semibold text-foreground">Key ROI Metrics:</p>
-                    <ul className="text-xs text-left text-muted-foreground space-y-2">
-                      <li className="flex gap-2">
-                        <span className="text-primary mt-0.5">•</span>
-                        <span><strong className="text-foreground">Recurring revenue stream:</strong> All revenues are annual and recurring as long as AUM remains invested</span>
-                      </li>
-                      <li className="flex gap-2">
-                        <span className="text-primary mt-0.5">•</span>
-                        <span><strong className="text-foreground">Scalability:</strong> Beyond Year 3, the revenue base continues to generate income with minimal incremental cost</span>
-                      </li>
-                      <li className="flex gap-2">
-                        <span className="text-primary mt-0.5">•</span>
-                        <span><strong className="text-foreground">Break-even timeline:</strong> Partnership achieves economic break-even within 18-24 months in base case</span>
-                      </li>
-                      <li className="flex gap-2">
-                        <span className="text-primary mt-0.5">•</span>
-                        <span><strong className="text-foreground">Long-term value:</strong> A successful 1.5B€ AUM base generates €750K+ in annual recurring revenue for VettaFi, with significant growth potential as themes mature</span>
-                      </li>
-                    </ul>
-                  </div>
-                </CardContent>
-              </Card>
+            {/* Understanding VettaFi's Business Model */}
+            <div className="mb-10 bg-gradient-to-br from-primary/5 to-card p-8 rounded-lg border border-primary/20">
+              <h3 className="text-xl font-semibold text-foreground mb-4 flex items-center gap-2">
+                <span className="h-2 w-2 bg-primary rounded-full"></span>
+                Understanding VettaFi's Business Model
+              </h3>
+              <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+                VettaFi generates revenue by licensing proprietary indexes to ETF issuers across global markets. When an ETF issuer (such as DWS, Invesco, or VanEck) creates an ETF that tracks a VettaFi index, they pay VettaFi a licensing fee—typically ranging from <strong className="text-foreground">3 to 8 basis points (0.03% - 0.08%)</strong> of assets under management, depending on index complexity and strategic value.
+              </p>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                This creates a <strong className="text-foreground">scalable, capital-light, recurring revenue stream</strong> that grows directly with AUM, without requiring VettaFi to issue or manage investment products.
+              </p>
             </div>
 
-            {/* Comparison vs Alternative Go-to-Market */}
-            <div className="mb-10 bg-gradient-to-br from-primary/5 to-card p-6 rounded-lg border border-primary/20">
-              <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+            {/* Aries76 Partnership Structure */}
+            <div className="mb-10">
+              <h3 className="text-xl font-semibold text-foreground mb-6 flex items-center gap-2">
                 <span className="h-2 w-2 bg-primary rounded-full"></span>
-                Comparison to Alternative Go-to-Market Strategies
+                Aries76 Partnership Structure
               </h3>
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <p className="text-sm font-semibold text-foreground mb-3">Building an in-house EMEA sales team would require:</p>
+              <p className="text-sm text-muted-foreground leading-relaxed mb-6">
+                Our compensation model balances VettaFi's need for predictable market development with Aries76's operational requirements, while maintaining strong performance alignment.
+              </p>
+
+              <div className="grid md:grid-cols-2 gap-6 mb-6">
+                {/* Component 1: Annual Retainer */}
+                <Card className="border-primary/20 shadow-lg bg-gradient-to-br from-card to-primary/5">
+                  <CardHeader>
+                    <CardTitle className="text-lg flex items-center gap-2">
+                      <span className="h-2 w-2 bg-primary rounded-full"></span>
+                      1. Annual Strategic Retainer
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="mb-4 p-4 bg-primary/10 rounded-lg border border-primary/20">
+                      <p className="text-2xl font-bold text-foreground text-center">€120,000 - €180,000</p>
+                      <p className="text-xs text-muted-foreground text-center mt-1">Fixed annual fee</p>
+                    </div>
+                    <ul className="space-y-2 text-sm text-muted-foreground">
+                      <li className="flex gap-2">
+                        <span className="text-primary mt-0.5">•</span>
+                        <span>Fixed annual fee supporting dedicated EMEA market development</span>
+                      </li>
+                      <li className="flex gap-2">
+                        <span className="text-primary mt-0.5">•</span>
+                        <span>Covers relationship management, market intelligence, client engagement, and strategic advisory</span>
+                      </li>
+                      <li className="flex gap-2">
+                        <span className="text-primary mt-0.5">•</span>
+                        <span>Ensures priority access to Aries76's institutional network and focused partnership attention</span>
+                      </li>
+                      <li className="flex gap-2">
+                        <span className="text-primary mt-0.5">•</span>
+                        <span>Provides VettaFi with predictable investment planning</span>
+                      </li>
+                      <li className="flex gap-2">
+                        <span className="text-primary mt-0.5">•</span>
+                        <span><strong className="text-foreground">Payable quarterly in advance</strong></span>
+                      </li>
+                    </ul>
+                  </CardContent>
+                </Card>
+
+                {/* Component 2: Success-Based Commission */}
+                <Card className="border-primary/20 shadow-lg bg-gradient-to-br from-card to-primary/5">
+                  <CardHeader>
+                    <CardTitle className="text-lg flex items-center gap-2">
+                      <span className="h-2 w-2 bg-primary rounded-full"></span>
+                      2. Success-Based Commission
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="mb-4 p-4 bg-primary/10 rounded-lg border border-primary/20">
+                      <p className="text-2xl font-bold text-foreground text-center">15-25%</p>
+                      <p className="text-xs text-muted-foreground text-center mt-1">of Licensing Revenue</p>
+                    </div>
+                    <ul className="space-y-2 text-sm text-muted-foreground">
+                      <li className="flex gap-2">
+                        <span className="text-primary mt-0.5">•</span>
+                        <span>Variable fee tied directly to VettaFi's licensing revenue from assets raised by Aries76</span>
+                      </li>
+                      <li className="flex gap-2">
+                        <span className="text-primary mt-0.5">•</span>
+                        <span>Aligns incentives for maximum AUM growth and long-term partnership success</span>
+                      </li>
+                      <li className="flex gap-2">
+                        <span className="text-primary mt-0.5">•</span>
+                        <span>Continues for the life of the assets, creating recurring value for both parties</span>
+                      </li>
+                      <li className="flex gap-2">
+                        <span className="text-primary mt-0.5">•</span>
+                        <span>Provides unlimited upside potential as the partnership scales</span>
+                      </li>
+                      <li className="flex gap-2">
+                        <span className="text-primary mt-0.5">•</span>
+                        <span><strong className="text-foreground">Calculated and paid quarterly based on actual AUM</strong></span>
+                      </li>
+                    </ul>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Key Partnership Advantages */}
+              <div className="bg-gradient-to-br from-primary/5 to-card p-6 rounded-lg border border-primary/20">
+                <h4 className="text-lg font-semibold text-foreground mb-4">Key Partnership Advantages</h4>
+                <div className="grid md:grid-cols-2 gap-4">
                   <ul className="space-y-2 text-sm text-muted-foreground">
                     <li className="flex gap-2">
-                      <span className="text-destructive mt-0.5">✗</span>
-                      <span>2-3 senior sales directors: €600K-900K/year in fixed costs</span>
+                      <span className="text-primary mt-0.5">✓</span>
+                      <span><strong className="text-foreground">No Fixed Headcount</strong> - Avoid €600K-900K/year in salaries for 2-3 EMEA sales directors</span>
                     </li>
                     <li className="flex gap-2">
-                      <span className="text-destructive mt-0.5">✗</span>
-                      <span>2-3 years to build relationships and achieve first product launches</span>
+                      <span className="text-primary mt-0.5">✓</span>
+                      <span><strong className="text-foreground">No Long-Term Employment Risk</strong> - Flexible partnership vs. permanent hiring commitments</span>
                     </li>
                     <li className="flex gap-2">
-                      <span className="text-destructive mt-0.5">✗</span>
-                      <span>No guarantee of success or AUM targets</span>
+                      <span className="text-primary mt-0.5">✓</span>
+                      <span><strong className="text-foreground">Immediate Market Access</strong> - 500+ institutional relationships from Day 1</span>
                     </li>
                   </ul>
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-foreground mb-3">The Aries76 partnership offers:</p>
                   <ul className="space-y-2 text-sm text-muted-foreground">
                     <li className="flex gap-2">
                       <span className="text-primary mt-0.5">✓</span>
-                      <span><strong className="text-foreground">Zero fixed costs</strong> – success-based fees only</span>
+                      <span><strong className="text-foreground">Performance Alignment</strong> - Majority of compensation tied to measurable results</span>
                     </li>
                     <li className="flex gap-2">
                       <span className="text-primary mt-0.5">✓</span>
-                      <span><strong className="text-foreground">Immediate market access</strong> – qualified pipeline from Day 1</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-primary mt-0.5">✓</span>
-                      <span><strong className="text-foreground">Proven distribution network</strong> – 500+ institutional relationships</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-primary mt-0.5">✓</span>
-                      <span><strong className="text-foreground">Aligned incentives</strong> – Aries76 succeeds only when VettaFi succeeds</span>
+                      <span><strong className="text-foreground">Scalable Model</strong> - Proven distribution infrastructure across EMEA</span>
                     </li>
                   </ul>
                 </div>
               </div>
             </div>
 
-            {/* Detailed Projections - REMOVED to avoid duplicate outdated numbers */}
+            {/* Investment Comparison */}
+            <div className="mb-10">
+              <h3 className="text-xl font-semibold text-foreground mb-6 flex items-center gap-2">
+                <span className="h-2 w-2 bg-primary rounded-full"></span>
+                Investment Comparison
+              </h3>
+              <div className="grid md:grid-cols-2 gap-6">
+                <Card className="border-destructive/20 shadow-lg">
+                  <CardHeader>
+                    <CardTitle className="text-lg flex items-center gap-2">
+                      <span className="h-2 w-2 bg-destructive rounded-full"></span>
+                      Building an In-House EMEA Team
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-2 text-sm text-muted-foreground">
+                      <li className="flex gap-2">
+                        <span className="text-destructive mt-0.5">✗</span>
+                        <span><strong className="text-foreground">Annual fixed costs:</strong> €900K - €1.3M (salaries, benefits, office, overhead)</span>
+                      </li>
+                      <li className="flex gap-2">
+                        <span className="text-destructive mt-0.5">✗</span>
+                        <span><strong className="text-foreground">Time to first results:</strong> 24-36 months</span>
+                      </li>
+                      <li className="flex gap-2">
+                        <span className="text-destructive mt-0.5">✗</span>
+                        <span><strong className="text-foreground">Risk:</strong> No guarantee of AUM targets or ROI</span>
+                      </li>
+                      <li className="flex gap-2">
+                        <span className="text-destructive mt-0.5">✗</span>
+                        <span><strong className="text-foreground">Commitment:</strong> Long-term employment obligations</span>
+                      </li>
+                    </ul>
+                  </CardContent>
+                </Card>
 
-            {/* ROI Highlights */}
-            <div className="mt-10 grid md:grid-cols-2 gap-6">
-              <Card className="border-primary/20 shadow-lg">
-<CardHeader>
-                  <CardTitle className="text-lg flex items-center gap-2">
-                    <span className="h-2 w-2 bg-primary rounded-full"></span>
-                    Partnership Economics
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-3 text-sm text-muted-foreground">
-                    <li className="flex gap-3">
-                      <span className="text-primary mt-1">✓</span>
-                      <span><strong className="text-foreground">Upfront investment</strong> - Strategic commitment to be negotiated based on scope</span>
-                    </li>
-                    <li className="flex gap-3">
-                      <span className="text-primary mt-1">✓</span>
-                      <span><strong className="text-foreground">Success-based fees</strong> - Aries76 commission tied to revenue generation</span>
-                    </li>
-                    <li className="flex gap-3">
-                      <span className="text-primary mt-1">✓</span>
-                      <span><strong className="text-foreground">Fast time-to-market</strong> - Immediate access to qualified pipeline</span>
-                    </li>
-                    <li className="flex gap-3">
-                      <span className="text-primary mt-1">✓</span>
-                      <span><strong className="text-foreground">Scalable model</strong> - Proven distribution network across EMEA</span>
-                    </li>
-                  </ul>
-                </CardContent>
-              </Card>
+                <Card className="border-primary/20 shadow-lg bg-gradient-to-br from-card to-primary/5">
+                  <CardHeader>
+                    <CardTitle className="text-lg flex items-center gap-2">
+                      <span className="h-2 w-2 bg-primary rounded-full"></span>
+                      Aries76 Partnership
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-2 text-sm text-muted-foreground">
+                      <li className="flex gap-2">
+                        <span className="text-primary mt-0.5">✓</span>
+                        <span><strong className="text-foreground">Annual retainer:</strong> €120K - €180K + performance-based fees</span>
+                      </li>
+                      <li className="flex gap-2">
+                        <span className="text-primary mt-0.5">✓</span>
+                        <span><strong className="text-foreground">Time to first results:</strong> 6-12 months (qualified pipeline from Day 1)</span>
+                      </li>
+                      <li className="flex gap-2">
+                        <span className="text-primary mt-0.5">✓</span>
+                        <span><strong className="text-foreground">Risk:</strong> Minimal—success fees only paid on actual results</span>
+                      </li>
+                      <li className="flex gap-2">
+                        <span className="text-primary mt-0.5">✓</span>
+                        <span><strong className="text-foreground">Commitment:</strong> Flexible partnership structure with mutual review points</span>
+                      </li>
+                    </ul>
+                  </CardContent>
+                </Card>
+              </div>
+              <p className="text-sm text-muted-foreground leading-relaxed mt-6 italic">
+                The partnership offers VettaFi a capital-efficient, low-risk path to establish meaningful presence in EMEA, with the flexibility to scale investment based on demonstrated results.
+              </p>
+            </div>
 
+            {/* Example Economics */}
+            <div className="mb-10 bg-gradient-to-br from-primary/5 to-card p-8 rounded-lg border border-primary/20">
+              <h3 className="text-xl font-semibold text-foreground mb-4 flex items-center gap-2">
+                <span className="h-2 w-2 bg-primary rounded-full"></span>
+                Example Economics
+              </h3>
+              <p className="text-sm text-muted-foreground leading-relaxed mb-6">
+                If the partnership generates <strong className="text-foreground">€500M in AUM by Year 2</strong> (conservative scenario):
+              </p>
+              <div className="grid md:grid-cols-3 gap-6 mb-6">
+                <Card className="border-primary/20">
+                  <CardContent className="pt-6 text-center">
+                    <p className="text-xs text-muted-foreground mb-2">VettaFi licensing revenue (at 5 bps)</p>
+                    <p className="text-2xl font-bold text-foreground">€250,000/year</p>
+                  </CardContent>
+                </Card>
+                <Card className="border-primary/20">
+                  <CardContent className="pt-6 text-center">
+                    <p className="text-xs text-muted-foreground mb-2">Aries76 total compensation</p>
+                    <p className="text-lg font-semibold text-foreground">€150K retainer + €50K success fee (20%)</p>
+                    <p className="text-xl font-bold text-primary mt-1">= €200K</p>
+                  </CardContent>
+                </Card>
+                <Card className="border-primary/20 bg-gradient-to-br from-card to-primary/5">
+                  <CardContent className="pt-6 text-center">
+                    <p className="text-xs text-muted-foreground mb-2">VettaFi net annual profit</p>
+                    <p className="text-2xl font-bold text-primary">€50,000</p>
+                    <p className="text-xs text-muted-foreground mt-2 italic">and growing as AUM scales</p>
+                  </CardContent>
+                </Card>
+              </div>
+              <p className="text-sm text-muted-foreground leading-relaxed italic">
+                As AUM grows to €1B+, VettaFi's net profit scales proportionally while Aries76's retainer remains fixed, creating increasingly attractive economics for VettaFi.
+              </p>
+            </div>
+
+            {/* Next Steps */}
+            <div className="bg-gradient-to-br from-card to-primary/5 p-6 rounded-lg border border-primary/20">
+              <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
+                <span className="h-2 w-2 bg-primary rounded-full"></span>
+                Next Steps
+              </h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                We are ready to discuss how to structure the partnership within this framework, tailored to VettaFi's strategic priorities and desired partnership scope. Specific terms (retainer level, commission percentage, performance milestones) can be finalized based on our mutual goals and expectations.
+              </p>
+            </div>
+
+            {/* Partnership Compensation Framework */}
+            <div className="mt-10">
               <Card className="border-primary/20 shadow-lg">
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2">
                     <span className="h-2 w-2 bg-primary rounded-full"></span>
-                    Revenue Model & Assumptions
+                    Partnership Compensation Framework
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-4">
-                    <div className="bg-primary/5 p-4 rounded-lg border border-primary/10">
-                      <p className="text-sm font-semibold text-foreground mb-2">Commission Structure (To Be Negotiated)</p>
+                  <div className="space-y-6">
+                    {/* Proposed Compensation Structure */}
+                    <div>
+                      <h4 className="text-base font-semibold text-foreground mb-4">Proposed Compensation Structure</h4>
+                      <div className="space-y-4">
+                        <div className="bg-primary/5 p-4 rounded-lg border border-primary/10">
+                          <p className="text-sm font-semibold text-foreground mb-2">Annual Strategic Retainer: €120,000 - €180,000</p>
+                          <ul className="space-y-2 text-sm text-muted-foreground">
+                            <li className="flex gap-2">
+                              <span className="text-primary">•</span>
+                              <span>Covers dedicated market development, relationship management, and strategic advisory</span>
+                            </li>
+                            <li className="flex gap-2">
+                              <span className="text-primary">•</span>
+                              <span>Payable quarterly in advance</span>
+                            </li>
+                            <li className="flex gap-2">
+                              <span className="text-primary">•</span>
+                              <span>Reviewed annually based on performance and market conditions</span>
+                            </li>
+                          </ul>
+                        </div>
+                        <div className="bg-primary/5 p-4 rounded-lg border border-primary/10">
+                          <p className="text-sm font-semibold text-foreground mb-2">Success-Based Commission: 15-25% of VettaFi Licensing Revenue</p>
+                          <ul className="space-y-2 text-sm text-muted-foreground">
+                            <li className="flex gap-2">
+                              <span className="text-primary">•</span>
+                              <span>Applied to all licensing revenue generated from institutional assets raised by Aries76</span>
+                            </li>
+                            <li className="flex gap-2">
+                              <span className="text-primary">•</span>
+                              <span>Calculated and paid quarterly based on actual AUM and licensing fees</span>
+                            </li>
+                            <li className="flex gap-2">
+                              <span className="text-primary">•</span>
+                              <span>Continues for the life of the assets (as long as AUM remains invested)</span>
+                            </li>
+                          </ul>
+                        </div>
+                        <div className="bg-primary/5 p-4 rounded-lg border border-primary/10">
+                          <p className="text-sm font-semibold text-foreground mb-2">Optional Performance Bonuses</p>
+                          <ul className="space-y-2 text-sm text-muted-foreground">
+                            <li className="flex gap-2">
+                              <span className="text-primary">•</span>
+                              <span>Milestone bonuses for exceeding agreed AUM targets</span>
+                            </li>
+                            <li className="flex gap-2">
+                              <span className="text-primary">•</span>
+                              <span>New client introduction fees for strategic institutional relationships</span>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* VettaFi's Index Licensing Model */}
+                    <div>
+                      <h4 className="text-base font-semibold text-foreground mb-3">VettaFi's Index Licensing Model</h4>
+                      <p className="text-sm text-muted-foreground mb-3">For context, VettaFi's typical licensing economics include:</p>
                       <ul className="space-y-2 text-sm text-muted-foreground">
                         <li className="flex gap-2">
                           <span className="text-primary">•</span>
-                          <span>Aries76 success fee: 20-25% of VettaFi licensing revenue generated from institutional assets raised by Aries76</span>
+                          <span><strong className="text-foreground">Licensing fees:</strong> 3-8 basis points (0.03%-0.08%) depending on index complexity and competitive positioning</span>
                         </li>
                         <li className="flex gap-2">
                           <span className="text-primary">•</span>
-                          <span>Plus potential upfront strategic investment from VettaFi for market development (to be discussed)</span>
+                          <span><strong className="text-foreground">Revenue scales directly</strong> with ETF assets under management</span>
                         </li>
                         <li className="flex gap-2">
                           <span className="text-primary">•</span>
-                          <span>Additional finder's fees for new institutional client introductions (optional)</span>
+                          <span><strong className="text-foreground">Recurring annual revenue stream</strong> for the life of the investment products</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-primary">•</span>
+                          <span><strong className="text-foreground">Capital-light model</strong> with high incremental margins</span>
                         </li>
                       </ul>
                     </div>
+
+                    {/* Target Markets */}
                     <div>
-                      <p className="text-sm font-semibold text-foreground mb-2">VettaFi Index Licensing Assumptions</p>
+                      <h4 className="text-base font-semibold text-foreground mb-3">Target Markets</h4>
                       <ul className="space-y-2 text-sm text-muted-foreground">
                         <li className="flex gap-2">
                           <span className="text-primary">•</span>
-                          <span>Average licensing fee: 4-7 basis points (0.04%-0.07%) depending on index complexity and competitive positioning</span>
+                          <span>Average ETF product size at maturity: €150-300M in EMEA markets</span>
                         </li>
                         <li className="flex gap-2">
                           <span className="text-primary">•</span>
-                          <span>Average ETF product size at maturity: €150-300M in base case</span>
+                          <span>Number of potential ETF launches: 4-6 products over initial 3-year period</span>
                         </li>
                         <li className="flex gap-2">
                           <span className="text-primary">•</span>
-                          <span>Number of ETF launches: 4-6 products over 3-year period</span>
-                        </li>
-                        <li className="flex gap-2">
-                          <span className="text-primary">•</span>
-                          <span>Client conversion rate: 30-40% from qualified pipeline to launched product</span>
-                        </li>
-                        <li className="flex gap-2">
-                          <span className="text-primary">•</span>
-                          <span>AUM ramp-up: Conservative 12-18 month period from launch to maturity for each product</span>
+                          <span>Focus on high-growth thematic areas: Defence, AI, Energy Transition</span>
                         </li>
                       </ul>
                     </div>
