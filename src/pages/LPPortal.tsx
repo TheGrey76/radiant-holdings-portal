@@ -44,13 +44,14 @@ const LPPortal = () => {
       }
 
       // Recupera dati LP usando l'email dell'utente
-      const { data: lpRegistration, error } = await supabase
+      const { data: lpRegistrations, error } = await supabase
         .from('lp_registrations')
         .select('*')
         .eq('email', currentUser.email)
-        .single();
+        .order('created_at', { ascending: false })
+        .limit(1);
 
-      if (error) {
+      if (error || !lpRegistrations || lpRegistrations.length === 0) {
         console.error("Error fetching LP data:", error);
         toast({
           title: "Accesso Negato",
@@ -61,7 +62,7 @@ const LPPortal = () => {
         return;
       }
 
-      setLpData(lpRegistration);
+      setLpData(lpRegistrations[0]);
     } catch (error) {
       console.error("Error checking LP access:", error);
       navigate("/");
