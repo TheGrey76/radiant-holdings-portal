@@ -42,6 +42,9 @@ import ConfidentialProposalAccess from "./pages/ConfidentialProposalAccess";
 import GPLPMatching from "./pages/GPLPMatching";
 import GPPortal from "./pages/GPPortal";
 import LPPortal from "./pages/LPPortal";
+import GPLPDashboard from "./pages/GPLPDashboard";
+import GPRegistrationPage from "./pages/GPRegistrationPage";
+import LPRegistrationPage from "./pages/LPRegistrationPage";
 
 const queryClient = new QueryClient();
 
@@ -71,8 +74,11 @@ const App = () => (
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/newsletter" element={<NewsletterComposer />} />
           <Route path="/admin/gp-lp-matching" element={<GPLPMatching />} />
+          <Route path="/admin/gp-lp-dashboard" element={<GPLPDashboard />} />
           <Route path="/gp-portal" element={<GPPortal />} />
           <Route path="/lp-portal" element={<LPPortal />} />
+          <Route path="/gp-registration" element={<GPRegistrationPage />} />
+          <Route path="/lp-registration" element={<LPRegistrationPage />} />
           <Route path="/sneaker-report" element={<SneakerReport />} />
           <Route path="/confidential-proposal-access" element={<ConfidentialProposalAccess />} />
           <Route path="/confidential-proposal" element={<VettaFiProposal />} />
