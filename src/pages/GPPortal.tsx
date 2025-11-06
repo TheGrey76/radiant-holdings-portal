@@ -47,14 +47,15 @@ const GPPortal = () => {
 
       setUser(currentUser);
 
-      // Recupera dati GP
-      const { data: gpRegistration, error } = await supabase
+      // Recupera dati GP usando l'email (più affidabile di user_id)
+      const { data: gpRegistrations, error } = await supabase
         .from('gp_registrations')
         .select('*')
-        .eq('user_id', currentUser.id)
-        .single();
+        .eq('work_email', currentUser.email)
+        .order('created_at', { ascending: false })
+        .limit(1);
 
-      if (error) {
+      if (error || !gpRegistrations || gpRegistrations.length === 0) {
         console.error("Error fetching GP data:", error);
         toast({
           title: "Accesso Negato",
@@ -65,7 +66,7 @@ const GPPortal = () => {
         return;
       }
 
-      setGpData(gpRegistration);
+      setGpData(gpRegistrations[0]);
     } catch (error) {
       console.error("Error checking GP access:", error);
       navigate("/");
