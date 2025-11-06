@@ -18,6 +18,7 @@ const VettaFiProposal = () => {
       
       if (!accessEmail) {
         navigate("/confidential-proposal-access");
+        setIsLoading(false);
         return;
       }
 
@@ -41,7 +42,7 @@ const VettaFiProposal = () => {
     );
   }
 
-  if (!isAuthorized && !isLoading) {
+  if (!isAuthorized) {
     return (
       <div className="min-h-screen flex flex-col">
         <Navbar />
