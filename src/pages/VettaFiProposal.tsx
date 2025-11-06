@@ -423,6 +423,208 @@ const VettaFiProposal = () => {
             </div>
           </section>
 
+          {/* Financial Projections */}
+          <section className="mb-20">
+            <div className="flex items-center gap-4 mb-8">
+              <div className="h-1 w-12 bg-primary rounded-full"></div>
+              <h2 className="text-2xl md:text-3xl font-bold text-foreground">
+                Financial Projections & ROI
+              </h2>
+            </div>
+            <p className="text-base mb-10 text-muted-foreground leading-relaxed max-w-4xl">
+              Conservative estimates based on current EMEA market dynamics and VettaFi's competitive positioning:
+            </p>
+
+            {/* Key Metrics Cards */}
+            <div className="grid md:grid-cols-3 gap-6 mb-10">
+              <Card className="border-primary/20 shadow-lg bg-gradient-to-br from-card to-primary/5">
+                <CardHeader className="text-center pb-3">
+                  <p className="text-sm text-muted-foreground uppercase tracking-wide">Target AUM (3 Years)</p>
+                </CardHeader>
+                <CardContent className="text-center">
+                  <p className="text-4xl font-bold text-primary mb-2">€500M+</p>
+                  <p className="text-xs text-muted-foreground">Across VettaFi index-based products</p>
+                </CardContent>
+              </Card>
+
+              <Card className="border-primary/20 shadow-lg bg-gradient-to-br from-card to-primary/5">
+                <CardHeader className="text-center pb-3">
+                  <p className="text-sm text-muted-foreground uppercase tracking-wide">Est. Annual Revenue</p>
+                </CardHeader>
+                <CardContent className="text-center">
+                  <p className="text-4xl font-bold text-primary mb-2">$2.5M+</p>
+                  <p className="text-xs text-muted-foreground">From licensing fees at maturity</p>
+                </CardContent>
+              </Card>
+
+              <Card className="border-primary/20 shadow-lg bg-gradient-to-br from-card to-primary/5">
+                <CardHeader className="text-center pb-3">
+                  <p className="text-sm text-muted-foreground uppercase tracking-wide">Break-even Timeline</p>
+                </CardHeader>
+                <CardContent className="text-center">
+                  <p className="text-4xl font-bold text-primary mb-2">12-18M</p>
+                  <p className="text-xs text-muted-foreground">Months from partnership launch</p>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Detailed Projections */}
+            <Card className="border-primary/20 shadow-lg">
+              <CardHeader>
+                <CardTitle className="text-xl">Year-by-Year Growth Projection</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6">
+                  {/* Year 1 */}
+                  <div className="relative">
+                    <div className="flex items-center justify-between mb-3">
+                      <div>
+                        <p className="font-semibold text-foreground">Year 1 (2026)</p>
+                        <p className="text-sm text-muted-foreground">Foundation & Early Traction</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-lg font-bold text-primary">€75-100M AUM</p>
+                        <p className="text-xs text-muted-foreground">Est. $375K-500K revenue</p>
+                      </div>
+                    </div>
+                    <div className="h-2 bg-muted rounded-full overflow-hidden">
+                      <div className="h-full bg-gradient-to-r from-primary to-primary/60 rounded-full" style={{width: '20%'}}></div>
+                    </div>
+                    <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
+                      <li className="flex gap-2">
+                        <span className="text-primary">•</span>
+                        <span>2-3 ETF launches using VettaFi indexes</span>
+                      </li>
+                      <li className="flex gap-2">
+                        <span className="text-primary">•</span>
+                        <span>10-15 institutional clients introduced to VettaFi ecosystem</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  {/* Year 2 */}
+                  <div className="relative">
+                    <div className="flex items-center justify-between mb-3">
+                      <div>
+                        <p className="font-semibold text-foreground">Year 2 (2027)</p>
+                        <p className="text-sm text-muted-foreground">Acceleration & Market Penetration</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-lg font-bold text-primary">€250-300M AUM</p>
+                        <p className="text-xs text-muted-foreground">Est. $1.25-1.5M revenue</p>
+                      </div>
+                    </div>
+                    <div className="h-2 bg-muted rounded-full overflow-hidden">
+                      <div className="h-full bg-gradient-to-r from-primary to-primary/60 rounded-full" style={{width: '50%'}}></div>
+                    </div>
+                    <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
+                      <li className="flex gap-2">
+                        <span className="text-primary">•</span>
+                        <span>5-7 active products across multiple themes</span>
+                      </li>
+                      <li className="flex gap-2">
+                        <span className="text-primary">•</span>
+                        <span>Expansion into Middle East sovereign wealth funds</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  {/* Year 3 */}
+                  <div className="relative">
+                    <div className="flex items-center justify-between mb-3">
+                      <div>
+                        <p className="font-semibold text-foreground">Year 3 (2028)</p>
+                        <p className="text-sm text-muted-foreground">Maturity & Ecosystem Leadership</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-lg font-bold text-primary">€500M+ AUM</p>
+                        <p className="text-xs text-muted-foreground">Est. $2.5M+ revenue</p>
+                      </div>
+                    </div>
+                    <div className="h-2 bg-muted rounded-full overflow-hidden">
+                      <div className="h-full bg-gradient-to-r from-primary to-primary/60 rounded-full" style={{width: '100%'}}></div>
+                    </div>
+                    <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
+                      <li className="flex gap-2">
+                        <span className="text-primary">•</span>
+                        <span>10+ active ETFs and structured products</span>
+                      </li>
+                      <li className="flex gap-2">
+                        <span className="text-primary">•</span>
+                        <span>Full-funnel ecosystem adoption (data, analytics, distribution)</span>
+                      </li>
+                      <li className="flex gap-2">
+                        <span className="text-primary">•</span>
+                        <span>Co-development of EMEA-specific thematic indexes</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* ROI Highlights */}
+            <div className="mt-10 grid md:grid-cols-2 gap-6">
+              <Card className="border-primary/20 shadow-lg">
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <span className="h-2 w-2 bg-primary rounded-full"></span>
+                    Key Value Drivers
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-3 text-sm text-muted-foreground">
+                    <li className="flex gap-3">
+                      <span className="text-primary mt-1">✓</span>
+                      <span><strong className="text-foreground">Zero upfront investment</strong> - Performance-based partnership model</span>
+                    </li>
+                    <li className="flex gap-3">
+                      <span className="text-primary mt-1">✓</span>
+                      <span><strong className="text-foreground">Fast time-to-market</strong> - Immediate access to qualified pipeline</span>
+                    </li>
+                    <li className="flex gap-3">
+                      <span className="text-primary mt-1">✓</span>
+                      <span><strong className="text-foreground">Scalable model</strong> - Proven distribution network across EMEA</span>
+                    </li>
+                    <li className="flex gap-3">
+                      <span className="text-primary mt-1">✓</span>
+                      <span><strong className="text-foreground">Brand positioning</strong> - Establish VettaFi as EMEA thematic leader</span>
+                    </li>
+                  </ul>
+                </CardContent>
+              </Card>
+
+              <Card className="border-primary/20 shadow-lg">
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <span className="h-2 w-2 bg-primary rounded-full"></span>
+                    Success Assumptions
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-3 text-sm text-muted-foreground">
+                    <li className="flex gap-3">
+                      <span className="text-primary mt-1">•</span>
+                      <span>Average index licensing fee: 5-7 bps on AUM</span>
+                    </li>
+                    <li className="flex gap-3">
+                      <span className="text-primary mt-1">•</span>
+                      <span>Average product size: €50-75M at maturity</span>
+                    </li>
+                    <li className="flex gap-3">
+                      <span className="text-primary mt-1">•</span>
+                      <span>Client conversion rate: 30-40% from qualified pipeline</span>
+                    </li>
+                    <li className="flex gap-3">
+                      <span className="text-primary mt-1">•</span>
+                      <span>Market conditions: Continued thematic investing demand</span>
+                    </li>
+                  </ul>
+                </CardContent>
+              </Card>
+            </div>
+          </section>
+
           {/* Call to Action */}
           <section className="relative overflow-hidden rounded-2xl">
             <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary to-primary/80"></div>
