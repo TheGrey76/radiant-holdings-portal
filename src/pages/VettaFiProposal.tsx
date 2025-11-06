@@ -82,10 +82,11 @@ const VettaFiProposal = () => {
               <p className="text-xs font-semibold text-primary uppercase tracking-wide">Confidential Proposal</p>
             </div>
             <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-6 leading-tight">
-              Confidential Proposal for VettaFi
+              A Strategic Partnership to Unlock<br />
+              <span className="text-primary">VettaFi's Growth in EMEA</span>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
-              Strategic Partnership for EMEA Expansion
+              For Peter Dietrich, Global Head of Index Sales
             </p>
           </div>
 
