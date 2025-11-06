@@ -37,6 +37,7 @@ import AIDrivenDueDiligence from "./pages/blog/AIDrivenDueDiligence";
 import ItalyStructuredProductsRecord from "./pages/blog/ItalyStructuredProductsRecord";
 import WhyChooseAries from "./pages/WhyChooseAries";
 import LeadershipTeam from "./pages/LeadershipTeam";
+import VettaFiProposal from "./pages/VettaFiProposal";
 
 const queryClient = new QueryClient();
 
@@ -66,6 +67,7 @@ const App = () => (
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/newsletter" element={<NewsletterComposer />} />
           <Route path="/sneaker-report" element={<SneakerReport />} />
+          <Route path="/vettafi-proposal" element={<VettaFiProposal />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/gp-equity-next-frontier" element={<GPEquityNextFrontier />} />
