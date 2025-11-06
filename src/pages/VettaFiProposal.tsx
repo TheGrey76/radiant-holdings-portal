@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Loader2, ShieldAlert } from 'lucide-react';
 
@@ -64,7 +63,6 @@ const VettaFiProposal = () => {
             </CardContent>
           </Card>
         </main>
-        <Footer />
       </div>
     );
   }
@@ -1293,7 +1291,6 @@ const VettaFiProposal = () => {
           </div>
         </div>
       </main>
-      <Footer />
     </div>
   );
 };
