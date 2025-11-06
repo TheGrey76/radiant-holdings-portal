@@ -422,136 +422,97 @@ const VettaFiProposal = () => {
               </h2>
             </div>
             <p className="text-base mb-10 text-muted-foreground leading-relaxed max-w-4xl">
-              Conservative estimates based on current EMEA market dynamics and VettaFi's competitive positioning:
+              Market-aligned estimates based on realistic European ETF dynamics and VettaFi's competitive positioning:
             </p>
 
             {/* Key Metrics Cards */}
             <div className="grid md:grid-cols-3 gap-6 mb-10">
               <Card className="border-primary/20 shadow-lg bg-gradient-to-br from-card to-primary/5">
                 <CardHeader className="text-center pb-3">
-                  <p className="text-sm text-muted-foreground uppercase tracking-wide">Target AUM (3 Years)</p>
+                  <p className="text-sm text-muted-foreground uppercase tracking-wide">AUM scenarios – 3-year horizon</p>
                 </CardHeader>
-                <CardContent className="text-center">
-                  <p className="text-4xl font-bold text-primary mb-2">€500M+</p>
-                  <p className="text-xs text-muted-foreground">Across VettaFi index-based products</p>
+                <CardContent className="text-center pt-4">
+                  <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+                    Assumptions are calibrated on realistic European ETF dynamics and thematic flows.
+                  </p>
+                  <ul className="text-xs text-left text-muted-foreground space-y-3">
+                    <li className="flex gap-2">
+                      <span className="text-primary mt-0.5">•</span>
+                      <span><strong className="text-foreground">Conservative:</strong> 90–150M€ total AUM across 3–4 ETFs referencing the new indices (approx. 30–50M€ per product).</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="text-primary mt-0.5">•</span>
+                      <span><strong className="text-foreground">Base case:</strong> 150–225M€ total AUM (approx. 50–75M€ per product), assuming solid but not exceptional adoption across key platforms.</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="text-primary mt-0.5">•</span>
+                      <span><strong className="text-foreground">Upside:</strong> 225–300M€+ total AUM (75–100M€+ per product) if one or more strategies become reference exposures in their segment.</span>
+                    </li>
+                  </ul>
+                  <p className="text-xs text-muted-foreground mt-4 italic">
+                    These ranges are consistent with market experience for successful but focused thematic and factor exposures in EMEA.
+                  </p>
                 </CardContent>
               </Card>
 
               <Card className="border-primary/20 shadow-lg bg-gradient-to-br from-card to-primary/5">
                 <CardHeader className="text-center pb-3">
-                  <p className="text-sm text-muted-foreground uppercase tracking-wide">Est. Annual Revenue</p>
+                  <p className="text-sm text-muted-foreground uppercase tracking-wide">Index licensing economics (market-aligned)</p>
                 </CardHeader>
-                <CardContent className="text-center">
-                  <p className="text-4xl font-bold text-primary mb-2">$2.5M+</p>
-                  <p className="text-xs text-muted-foreground">From licensing fees at maturity</p>
+                <CardContent className="text-center pt-4">
+                  <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+                    Licensing fees are positioned fully in line with European ETF practice.
+                  </p>
+                  <ul className="text-xs text-left text-muted-foreground space-y-3">
+                    <li className="flex gap-2">
+                      <span className="text-primary mt-0.5">•</span>
+                      <span><strong className="text-foreground">Typical index licensing fee:</strong> 4–9 bps on ETF AUM, depending on mandate size, theme complexity and share-class architecture.</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="text-primary mt-0.5">•</span>
+                      <span>At the base-case AUM range (150–225M€), this results in a recurring, low- to mid-six-figure annual revenue pool for VettaFi over the life of the products.</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="text-primary mt-0.5">•</span>
+                      <span>Aries76 participates via a 15–25% revenue-share on licensing revenues attributable to assets raised through its institutional network; the majority of economics remains with VettaFi.</span>
+                    </li>
+                  </ul>
+                  <p className="text-xs text-muted-foreground mt-4 italic">
+                    The model preserves pricing competitiveness for the ETF issuer while creating a scalable, capital-light revenue line for VettaFi.
+                  </p>
                 </CardContent>
               </Card>
 
               <Card className="border-primary/20 shadow-lg bg-gradient-to-br from-card to-primary/5">
                 <CardHeader className="text-center pb-3">
-                  <p className="text-sm text-muted-foreground uppercase tracking-wide">Break-even Timeline</p>
+                  <p className="text-sm text-muted-foreground uppercase tracking-wide">Capital-light ROI for VettaFi</p>
                 </CardHeader>
-                <CardContent className="text-center">
-                  <p className="text-4xl font-bold text-primary mb-2">12-18M</p>
-                  <p className="text-xs text-muted-foreground">Months from partnership launch</p>
+                <CardContent className="text-center pt-4">
+                  <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+                    The partnership is designed to be capital-efficient while offering meaningful upside.
+                  </p>
+                  <ul className="text-xs text-left text-muted-foreground space-y-3">
+                    <li className="flex gap-2">
+                      <span className="text-primary mt-0.5">•</span>
+                      <span>Index design, methodology work and launch require a limited upfront investment compared with the potential lifetime licensing stream from multiple ETFs.</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="text-primary mt-0.5">•</span>
+                      <span>Under the base-case AUM scenario, the project reaches economic break-even for VettaFi within approximately 24–36 months, assuming typical build and operating costs for a family of 3–4 indices.</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="text-primary mt-0.5">•</span>
+                      <span>Upside scenarios – for example if one theme scales beyond 100M€ in AUM – accelerate payback and convert the indices into high-margin, repeatable revenue assets.</span>
+                    </li>
+                  </ul>
+                  <p className="text-xs text-muted-foreground mt-4 italic">
+                    Overall, the economics are calibrated to be credible versus current ETF industry data while still offering attractive long-term ROI for VettaFi.
+                  </p>
                 </CardContent>
               </Card>
             </div>
 
-            {/* Detailed Projections */}
-            <Card className="border-primary/20 shadow-lg">
-              <CardHeader>
-                <CardTitle className="text-xl">Year-by-Year Growth Projection</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-6">
-                  {/* Year 1 */}
-                  <div className="relative">
-                    <div className="flex items-center justify-between mb-3">
-                      <div>
-                        <p className="font-semibold text-foreground">Year 1 (2026)</p>
-                        <p className="text-sm text-muted-foreground">Foundation & Early Traction</p>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-lg font-bold text-primary">€75-100M AUM</p>
-                        <p className="text-xs text-muted-foreground">Est. $375K-500K revenue</p>
-                      </div>
-                    </div>
-                    <div className="h-2 bg-muted rounded-full overflow-hidden">
-                      <div className="h-full bg-gradient-to-r from-primary to-primary/60 rounded-full" style={{width: '20%'}}></div>
-                    </div>
-                    <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-                      <li className="flex gap-2">
-                        <span className="text-primary">•</span>
-                        <span>2-3 ETF launches using VettaFi indexes</span>
-                      </li>
-                      <li className="flex gap-2">
-                        <span className="text-primary">•</span>
-                        <span>10-15 institutional clients introduced to VettaFi ecosystem</span>
-                      </li>
-                    </ul>
-                  </div>
-
-                  {/* Year 2 */}
-                  <div className="relative">
-                    <div className="flex items-center justify-between mb-3">
-                      <div>
-                        <p className="font-semibold text-foreground">Year 2 (2027)</p>
-                        <p className="text-sm text-muted-foreground">Acceleration & Market Penetration</p>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-lg font-bold text-primary">€250-300M AUM</p>
-                        <p className="text-xs text-muted-foreground">Est. $1.25-1.5M revenue</p>
-                      </div>
-                    </div>
-                    <div className="h-2 bg-muted rounded-full overflow-hidden">
-                      <div className="h-full bg-gradient-to-r from-primary to-primary/60 rounded-full" style={{width: '50%'}}></div>
-                    </div>
-                    <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-                      <li className="flex gap-2">
-                        <span className="text-primary">•</span>
-                        <span>5-7 active products across multiple themes</span>
-                      </li>
-                      <li className="flex gap-2">
-                        <span className="text-primary">•</span>
-                        <span>Expansion into Middle East sovereign wealth funds</span>
-                      </li>
-                    </ul>
-                  </div>
-
-                  {/* Year 3 */}
-                  <div className="relative">
-                    <div className="flex items-center justify-between mb-3">
-                      <div>
-                        <p className="font-semibold text-foreground">Year 3 (2028)</p>
-                        <p className="text-sm text-muted-foreground">Maturity & Ecosystem Leadership</p>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-lg font-bold text-primary">€500M+ AUM</p>
-                        <p className="text-xs text-muted-foreground">Est. $2.5M+ revenue</p>
-                      </div>
-                    </div>
-                    <div className="h-2 bg-muted rounded-full overflow-hidden">
-                      <div className="h-full bg-gradient-to-r from-primary to-primary/60 rounded-full" style={{width: '100%'}}></div>
-                    </div>
-                    <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-                      <li className="flex gap-2">
-                        <span className="text-primary">•</span>
-                        <span>10+ active ETFs and structured products</span>
-                      </li>
-                      <li className="flex gap-2">
-                        <span className="text-primary">•</span>
-                        <span>Full-funnel ecosystem adoption (data, analytics, distribution)</span>
-                      </li>
-                      <li className="flex gap-2">
-                        <span className="text-primary">•</span>
-                        <span>Co-development of EMEA-specific thematic indexes</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            {/* Detailed Projections - REMOVED to avoid duplicate outdated numbers */}
 
             {/* ROI Highlights */}
             <div className="mt-10 grid md:grid-cols-2 gap-6">
@@ -598,7 +559,7 @@ const VettaFiProposal = () => {
                       <ul className="space-y-2 text-sm text-muted-foreground">
                         <li className="flex gap-2">
                           <span className="text-primary">•</span>
-                          <span>Aries76 success fee: 15-25% of VettaFi licensing revenue generated</span>
+                          <span>Aries76 success fee: 15-25% of VettaFi licensing revenue generated through institutional assets raised by Aries76</span>
                         </li>
                         <li className="flex gap-2">
                           <span className="text-primary">•</span>
@@ -611,11 +572,11 @@ const VettaFiProposal = () => {
                       <ul className="space-y-2 text-sm text-muted-foreground">
                         <li className="flex gap-2">
                           <span className="text-primary">•</span>
-                          <span>Average index licensing fee: 5-7 bps on AUM</span>
+                          <span>Typical index licensing fee: 4-9 bps on AUM, depending on mandate complexity</span>
                         </li>
                         <li className="flex gap-2">
                           <span className="text-primary">•</span>
-                          <span>Average product size: €50-75M at maturity</span>
+                          <span>Average product size: €50-75M at maturity in base case</span>
                         </li>
                         <li className="flex gap-2">
                           <span className="text-primary">•</span>
