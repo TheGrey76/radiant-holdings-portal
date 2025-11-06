@@ -23,9 +23,7 @@ const ConfidentialProposalAccess = () => {
     if (AUTHORIZED_EMAILS.includes(normalizedEmail)) {
       sessionStorage.setItem("proposal_access_email", normalizedEmail);
       toast.success("Access granted");
-      setTimeout(() => {
-        navigate("/confidential-proposal");
-      }, 500);
+      navigate("/confidential-proposal");
     } else {
       toast.error("Access denied. Email not authorized.");
       setIsLoading(false);
