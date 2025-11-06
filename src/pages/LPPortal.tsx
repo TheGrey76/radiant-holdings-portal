@@ -181,7 +181,7 @@ const LPPortal = () => {
                   Il Tuo Profilo
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-6">
+              <CardContent className="space-y-6 pb-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <p className="text-white/50 text-sm mb-1">Nome Completo</p>
@@ -193,7 +193,7 @@ const LPPortal = () => {
                   </div>
                   <div>
                     <p className="text-white/50 text-sm mb-1">Email</p>
-                    <p className="text-white text-lg">{lpData.email}</p>
+                    <p className="text-white text-lg break-words">{lpData.email}</p>
                   </div>
                   <div>
                     <p className="text-white/50 text-sm mb-1">Giurisdizione</p>
@@ -202,7 +202,7 @@ const LPPortal = () => {
                 </div>
 
                 <div>
-                  <p className="text-white/50 text-sm mb-2">Aree di Interesse</p>
+                  <p className="text-white/50 text-sm mb-3">Aree di Interesse</p>
                   <div className="flex flex-wrap gap-2">
                     {lpData.areas_of_interest && lpData.areas_of_interest.length > 0 ? (
                       lpData.areas_of_interest.map((interest, idx) => (
@@ -218,14 +218,14 @@ const LPPortal = () => {
 
                 {lpData.message && (
                   <div>
-                    <p className="text-white/50 text-sm mb-1">Messaggio</p>
+                    <p className="text-white/50 text-sm mb-2">Messaggio</p>
                     <p className="text-white/70 text-sm bg-white/5 p-4 rounded-lg border border-white/10">
                       {lpData.message}
                     </p>
                   </div>
                 )}
 
-                <div className="pt-4">
+                <div className="pt-6">
                   <Button variant="outline" className="border-white/20 text-white hover:bg-white/10">
                     <Settings className="w-4 h-4 mr-2" />
                     Modifica Profilo
