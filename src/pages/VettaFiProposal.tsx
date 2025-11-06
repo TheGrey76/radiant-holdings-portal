@@ -102,38 +102,37 @@ const VettaFiProposal = () => {
               <CardContent className="p-8 md:p-10">
                 <div className="space-y-6 text-base leading-relaxed">
                   <p className="text-foreground/90">
-                    Aries76 presents itself as a strategic partner for VettaFi's expansion across EMEA markets. 
+                    Aries76 presents itself as a strategic partner for VettaFi's expansion across Southern Europe and MENA. 
                     With deep expertise in cross-border transactions, capital raising, and institutional investor relations, 
-                    we offer VettaFi a proven pathway to unlock untapped growth opportunities in Southern Europe, Central 
-                    and Eastern Europe, MENA, and Africa.
+                    we offer VettaFi a proven pathway to unlock untapped growth opportunities in these key markets.
                   </p>
                   <p className="text-foreground/90">
                     Our comprehensive approach combines local market intelligence, established distribution networks, 
-                    and regulatory expertise to position VettaFi's indexing, data, and media solutions within new investor 
-                    segments—from private market managers to structured product issuers and regional wealth managers.
+                    and regulatory expertise to position VettaFi's indexing and data solutions within new investor 
+                    segments—from regional wealth managers to family offices and institutional asset managers.
                   </p>
                 </div>
               </CardContent>
             </Card>
           </section>
 
-          {/* White Space in EMEA */}
+          {/* Strategic Opportunities in EMEA */}
           <section className="mb-20">
             <div className="flex items-center gap-4 mb-8">
               <div className="h-1 w-12 bg-primary rounded-full"></div>
               <h2 className="text-2xl md:text-3xl font-bold text-foreground">
-                White Space in EMEA
+                Strategic Opportunities in EMEA
               </h2>
             </div>
             <p className="text-base mb-10 text-muted-foreground leading-relaxed max-w-4xl">
-              While VettaFi has established presence in core European markets, significant untapped opportunities exist across the broader EMEA landscape. Aries76 has identified critical white space where VettaFi's full-funnel ecosystem can generate substantial value.
+              VettaFi has established strong presence in core Northern European markets. However, significant untapped opportunities exist in regions where Aries76 has deep market penetration and established relationships.
             </p>
 
-            {/* Geographic White Space */}
+            {/* Priority Geographic Markets */}
             <div className="mb-10">
               <h3 className="text-xl font-semibold text-foreground mb-6 flex items-center gap-2">
                 <span className="h-2 w-2 bg-primary rounded-full"></span>
-                Underserved Geographic Markets
+                Priority Geographic Markets
               </h3>
               <div className="grid md:grid-cols-2 gap-6">
                 <Card className="border-primary/20 shadow-lg hover:shadow-xl transition-all duration-300">
@@ -142,18 +141,7 @@ const VettaFiProposal = () => {
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      Italy, Spain, Portugal, and Greece represent a €3+ trillion wealth management market with limited exposure to thematic ETF strategies. These markets are dominated by traditional banking distribution channels where Aries76 has established relationships.
-                    </p>
-                  </CardContent>
-                </Card>
-
-                <Card className="border-primary/20 shadow-lg hover:shadow-xl transition-all duration-300">
-                  <CardHeader>
-                    <CardTitle className="text-lg text-primary">Central & Eastern Europe</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      Poland, Czech Republic, Hungary, and Romania are experiencing rapid wealth accumulation, with growing institutional appetite for sophisticated index-based strategies. Current distribution is fragmented and requires local expertise.
+                      Italy, Spain, and Portugal represent a €3+ trillion wealth management market with limited exposure to thematic ETF strategies. These markets are dominated by traditional banking distribution channels where Aries76 has established relationships with key decision-makers.
                     </p>
                   </CardContent>
                 </Card>
@@ -164,348 +152,54 @@ const VettaFiProposal = () => {
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      UAE, Saudi Arabia, Qatar, and Egypt offer access to sovereign wealth funds, family offices, and high-net-worth individuals actively seeking global thematic exposure. Cultural and regulatory nuances require specialized market knowledge.
-                    </p>
-                  </CardContent>
-                </Card>
-
-                <Card className="border-primary/20 shadow-lg hover:shadow-xl transition-all duration-300">
-                  <CardHeader>
-                    <CardTitle className="text-lg text-primary">Sub-Saharan Africa</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      South Africa, Nigeria, and Kenya are emerging hubs for institutional investment, with pension funds and asset managers seeking diversified index solutions. Market access requires trusted local partnerships.
+                      UAE, Saudi Arabia, and Qatar offer access to sovereign wealth funds, family offices, and high-net-worth individuals actively seeking global thematic exposure. Success in these markets requires cultural understanding and trusted local partnerships that Aries76 provides.
                     </p>
                   </CardContent>
                 </Card>
               </div>
             </div>
 
-            {/* Product & Compliance Gaps */}
+            {/* Key Market Access Challenges */}
             <div className="mb-10">
               <h3 className="text-xl font-semibold text-foreground mb-6 flex items-center gap-2">
                 <span className="h-2 w-2 bg-primary rounded-full"></span>
-                Current Offering Limitations
+                Key Market Access Challenges
               </h3>
               <div className="bg-gradient-to-br from-primary/5 to-card p-8 rounded-lg border border-primary/20">
                 <div className="space-y-4">
                   <div className="flex gap-3">
                     <span className="text-primary mt-1">•</span>
                     <div>
-                      <p className="text-sm font-semibold text-foreground">Limited UCITS and SFDR-Compliant Products</p>
+                      <p className="text-sm font-semibold text-foreground">Regulatory Complexity</p>
                       <p className="text-sm text-muted-foreground mt-1">
-                        Many European clients require UCITS-compliant ETFs and SFDR-aligned indexes to meet regulatory mandates. Localizing VettaFi's indexes for European compliance opens significant distribution channels.
+                        Many European and MENA clients require UCITS-compliant ETFs and SFDR-aligned indexes to meet regulatory mandates. Localizing VettaFi's indexes for regional compliance opens significant distribution channels.
                       </p>
                     </div>
                   </div>
                   <div className="flex gap-3">
                     <span className="text-primary mt-1">•</span>
                     <div>
-                      <p className="text-sm font-semibold text-foreground">Minimal Presence in Retail Mass-Market Distribution</p>
-                      <p className="text-sm text-muted-foreground mt-1">
-                        While institutional sales are critical, retail distribution via certificates, ETFs on regional exchanges, and digital wealth platforms represents a massive untapped revenue stream that requires specialized distribution expertise.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex gap-3">
-                    <span className="text-primary mt-1">•</span>
-                    <div>
-                      <p className="text-sm font-semibold text-foreground">Language and Cultural Barriers</p>
+                      <p className="text-sm font-semibold text-foreground">Cultural and Language Barriers</p>
                       <p className="text-sm text-muted-foreground mt-1">
                         Success in Southern Europe and MENA requires multilingual sales support, culturally adapted marketing materials, and deep understanding of local decision-making processes—areas where Aries76 excels.
                       </p>
                     </div>
                   </div>
+                  <div className="flex gap-3">
+                    <span className="text-primary mt-1">•</span>
+                    <div>
+                      <p className="text-sm font-semibold text-foreground">Distribution Channel Gaps</p>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        While institutional sales are critical, retail distribution via regional exchanges and digital wealth platforms represents a massive untapped revenue stream that requires specialized distribution expertise.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </section>
 
-          {/* Aries76 as Strategic Distribution Partner */}
-          <section className="mb-20">
-            <div className="flex items-center gap-4 mb-8">
-              <div className="h-1 w-12 bg-primary rounded-full"></div>
-              <h2 className="text-2xl md:text-3xl font-bold text-foreground">
-                Aries76 as Strategic Distribution Partner
-              </h2>
-            </div>
-            <p className="text-base mb-10 text-muted-foreground leading-relaxed max-w-4xl">
-              Aries76's core competency lies in bridging the gap between sophisticated financial products and underserved EMEA distribution channels. Our network and expertise enable VettaFi to capture white space opportunities with precision and speed.
-            </p>
 
-            <div className="grid md:grid-cols-2 gap-8 mb-10">
-              <Card className="border-primary/20 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-card to-primary/5">
-                <CardHeader>
-                  <CardTitle className="text-xl flex items-center gap-2">
-                    <span className="h-2 w-2 bg-primary rounded-full"></span>
-                    Deep Market Penetration
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                    We deliver VettaFi's solutions directly into target markets through:
-                  </p>
-                  <ul className="space-y-3 text-sm text-muted-foreground">
-                    <li className="flex gap-2">
-                      <span className="text-primary mt-0.5">•</span>
-                      <span><strong className="text-foreground">500+ institutional relationships</strong> across private banks, asset managers, and family offices in Italy, Spain, Switzerland, UAE, and beyond</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-primary mt-0.5">•</span>
-                      <span><strong className="text-foreground">Direct access to decision-makers</strong> rather than gatekeepers, accelerating sales cycles</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-primary mt-0.5">•</span>
-                      <span><strong className="text-foreground">Regional distribution infrastructure</strong> enabling simultaneous multi-market launches</span>
-                    </li>
-                  </ul>
-                </CardContent>
-              </Card>
-
-              <Card className="border-primary/20 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-card to-primary/5">
-                <CardHeader>
-                  <CardTitle className="text-xl flex items-center gap-2">
-                    <span className="h-2 w-2 bg-primary rounded-full"></span>
-                    Regulatory & Compliance Expertise
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                    We navigate complex EMEA regulatory landscapes by providing:
-                  </p>
-                  <ul className="space-y-3 text-sm text-muted-foreground">
-                    <li className="flex gap-2">
-                      <span className="text-primary mt-0.5">•</span>
-                      <span><strong className="text-foreground">UCITS and SFDR compliance guidance</strong> for index adaptation and ETF structuring</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-primary mt-0.5">•</span>
-                      <span><strong className="text-foreground">Local regulatory intelligence</strong> on evolving ESG mandates, MiFID II requirements, and cross-border distribution rules</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-primary mt-0.5">•</span>
-                      <span><strong className="text-foreground">Product structuring advisory</strong> for certificates, notes, and hybrid instruments</span>
-                    </li>
-                  </ul>
-                </CardContent>
-              </Card>
-
-              <Card className="border-primary/20 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-card to-primary/5">
-                <CardHeader>
-                  <CardTitle className="text-xl flex items-center gap-2">
-                    <span className="h-2 w-2 bg-primary rounded-full"></span>
-                    Full Ecosystem Integration
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                    We don't just sell indexes—we amplify VettaFi's entire value chain:
-                  </p>
-                  <ul className="space-y-3 text-sm text-muted-foreground">
-                    <li className="flex gap-2">
-                      <span className="text-primary mt-0.5">•</span>
-                      <span><strong className="text-foreground">Data & Analytics Distribution:</strong> Position VettaFi's research and data feeds within regional wealth management platforms</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-primary mt-0.5">•</span>
-                      <span><strong className="text-foreground">Media & Content Syndication:</strong> Leverage VettaFi's thought leadership content to educate EMEA investors and build brand authority</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-primary mt-0.5">•</span>
-                      <span><strong className="text-foreground">Co-Marketing Initiatives:</strong> Joint webinars, white papers, and conference participation to establish VettaFi as a EMEA market leader</span>
-                    </li>
-                  </ul>
-                </CardContent>
-              </Card>
-            </div>
-
-            <div className="bg-gradient-to-br from-primary/5 to-card p-8 rounded-lg border border-primary/20">
-              <h3 className="text-lg font-semibold text-foreground mb-4">Why Aries76 is Uniquely Positioned</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                Unlike traditional sales representatives or generic distribution platforms, Aries76 combines:
-              </p>
-              <div className="grid md:grid-cols-3 gap-6">
-                <div>
-                  <p className="text-sm font-semibold text-primary mb-2">Mediterranean Banking DNA</p>
-                  <p className="text-xs text-muted-foreground">
-                    Deep understanding of relationship-driven sales cultures in Southern Europe and MENA, where trust and personal connections drive business development.
-                  </p>
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-primary mb-2">Private Markets Expertise</p>
-                  <p className="text-xs text-muted-foreground">
-                    Experience working with GPs, LPs, and alternative asset managers who increasingly seek liquid thematic strategies for diversification and liquidity management.
-                  </p>
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-primary mb-2">Cross-Border Structuring</p>
-                  <p className="text-xs text-muted-foreground">
-                    Proven track record navigating multi-jurisdictional regulatory frameworks, tax optimization, and fund domiciliation strategies.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* Added Value for VettaFi */}
-          <section className="mb-20">
-            <div className="flex items-center gap-4 mb-8">
-              <div className="h-1 w-12 bg-primary rounded-full"></div>
-              <h2 className="text-2xl md:text-3xl font-bold text-foreground">
-                Added Value for VettaFi
-              </h2>
-            </div>
-            <p className="text-base mb-10 text-muted-foreground leading-relaxed max-w-4xl">
-              Partnering with Aries76 delivers tangible, measurable benefits that extend beyond traditional distribution relationships. We create strategic value across multiple dimensions of VettaFi's business.
-            </p>
-
-            <div className="grid md:grid-cols-2 gap-8 mb-10">
-              <Card className="border-primary/20 shadow-lg hover:shadow-xl transition-all duration-300">
-                <div className="h-2 bg-gradient-to-r from-primary to-primary/60"></div>
-                <CardHeader>
-                  <CardTitle className="text-xl text-primary">Geographic Penetration</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                    <strong className="text-foreground">Immediate Access to High-Growth Markets:</strong>
-                  </p>
-                  <ul className="space-y-3 text-sm text-muted-foreground">
-                    <li className="flex gap-2">
-                      <span className="text-primary mt-0.5">•</span>
-                      <span>Southern Europe (Italy, Spain): €3+ trillion wealth management market with limited thematic ETF penetration</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-primary mt-0.5">•</span>
-                      <span>MENA (UAE, Saudi Arabia, Qatar): Sovereign wealth funds and family offices actively seeking global thematic exposure</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-primary mt-0.5">•</span>
-                      <span>CEE (Poland, Czech Republic): Rapidly growing institutional investor base with appetite for sophisticated strategies</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-primary mt-0.5">•</span>
-                      <span>Reduces time-to-market from years to months in underserved regions</span>
-                    </li>
-                  </ul>
-                </CardContent>
-              </Card>
-
-              <Card className="border-primary/20 shadow-lg hover:shadow-xl transition-all duration-300">
-                <div className="h-2 bg-gradient-to-r from-primary to-primary/60"></div>
-                <CardHeader>
-                  <CardTitle className="text-xl text-primary">New AUM Flows</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                    <strong className="text-foreground">Diversified Revenue Streams Beyond Traditional ETF Issuers:</strong>
-                  </p>
-                  <ul className="space-y-3 text-sm text-muted-foreground">
-                    <li className="flex gap-2">
-                      <span className="text-primary mt-0.5">•</span>
-                      <span>Structured product issuers creating certificates on VettaFi indexes (€1+ trillion European market)</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-primary mt-0.5">•</span>
-                      <span>Private market fund managers using liquid thematic indexes for cash management and hedging</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-primary mt-0.5">•</span>
-                      <span>Regional wealth managers and private banks distributing UCITS-compliant ETFs</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-primary mt-0.5">•</span>
-                      <span>Recurring licensing revenue from long-term institutional mandates</span>
-                    </li>
-                  </ul>
-                </CardContent>
-              </Card>
-
-              <Card className="border-primary/20 shadow-lg hover:shadow-xl transition-all duration-300">
-                <div className="h-2 bg-gradient-to-r from-primary to-primary/60"></div>
-                <CardHeader>
-                  <CardTitle className="text-xl text-primary">Localized Educational Content</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                    <strong className="text-foreground">Amplifying VettaFi's Thought Leadership in EMEA:</strong>
-                  </p>
-                  <ul className="space-y-3 text-sm text-muted-foreground">
-                    <li className="flex gap-2">
-                      <span className="text-primary mt-0.5">•</span>
-                      <span>Translation and cultural adaptation of VettaFi research for Italian, Spanish, Arabic, and French markets</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-primary mt-0.5">•</span>
-                      <span>Joint webinars and conferences positioning VettaFi as EMEA market thought leader</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-primary mt-0.5">•</span>
-                      <span>White papers and case studies tailored to regional investor preferences (e.g., SFDR alignment, energy security narratives)</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-primary mt-0.5">•</span>
-                      <span>Enhanced brand recognition and investor education, driving organic demand for VettaFi products</span>
-                    </li>
-                  </ul>
-                </CardContent>
-              </Card>
-
-              <Card className="border-primary/20 shadow-lg hover:shadow-xl transition-all duration-300">
-                <div className="h-2 bg-gradient-to-r from-primary to-primary/60"></div>
-                <CardHeader>
-                  <CardTitle className="text-xl text-primary">Commercial Synergies</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                    <strong className="text-foreground">Leveraging VettaFi's Full Ecosystem (Indexes + Data + Media):</strong>
-                  </p>
-                  <ul className="space-y-3 text-sm text-muted-foreground">
-                    <li className="flex gap-2">
-                      <span className="text-primary mt-0.5">•</span>
-                      <span><strong className="text-foreground">Index Licensing:</strong> Direct revenue from ETF issuers and structured product creators</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-primary mt-0.5">•</span>
-                      <span><strong className="text-foreground">Data Subscriptions:</strong> Regional wealth platforms and asset managers subscribing to VettaFi data feeds for portfolio analytics</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-primary mt-0.5">•</span>
-                      <span><strong className="text-foreground">Media & Distribution:</strong> Content licensing to EMEA financial media and digital wealth platforms</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-primary mt-0.5">•</span>
-                      <span><strong className="text-foreground">Cross-Selling Opportunities:</strong> Clients introduced for one service (e.g., indexes) naturally adopt additional VettaFi solutions</span>
-                    </li>
-                  </ul>
-                </CardContent>
-              </Card>
-            </div>
-
-            <div className="bg-gradient-to-br from-primary/5 to-card p-8 rounded-lg border border-primary/20">
-              <h3 className="text-lg font-semibold text-foreground mb-6 flex items-center gap-2">
-                <span className="h-2 w-2 bg-primary rounded-full"></span>
-                Quantifiable Impact
-              </h3>
-              <div className="grid md:grid-cols-3 gap-6">
-                <div className="text-center p-4 bg-background/50 rounded-lg">
-                  <p className="text-3xl font-bold text-primary mb-2">6-12</p>
-                  <p className="text-sm font-semibold text-foreground mb-1">Months to First Results</p>
-                  <p className="text-xs text-muted-foreground">vs. 24-36 months building in-house EMEA team</p>
-                </div>
-                <div className="text-center p-4 bg-background/50 rounded-lg">
-                  <p className="text-3xl font-bold text-primary mb-2">500+</p>
-                  <p className="text-sm font-semibold text-foreground mb-1">Institutional Relationships</p>
-                  <p className="text-xs text-muted-foreground">Immediate access vs. years of cold outreach</p>
-                </div>
-                <div className="text-center p-4 bg-background/50 rounded-lg">
-                  <p className="text-3xl font-bold text-primary mb-2">3+</p>
-                  <p className="text-sm font-semibold text-foreground mb-1">Revenue Streams Activated</p>
-                  <p className="text-xs text-muted-foreground">Indexes, Data, Media—not just ETF licensing</p>
-                </div>
-              </div>
-            </div>
-          </section>
 
           {/* Vision Section */}
           <section className="mb-20">
