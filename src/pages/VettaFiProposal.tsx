@@ -429,84 +429,92 @@ const VettaFiProposal = () => {
             <div className="grid md:grid-cols-3 gap-6 mb-10">
               <Card className="border-primary/20 shadow-lg bg-gradient-to-br from-card to-primary/5">
                 <CardHeader className="text-center pb-3">
-                  <p className="text-sm text-muted-foreground uppercase tracking-wide">AUM scenarios – 3-year horizon</p>
+                  <p className="text-sm text-muted-foreground uppercase tracking-wide">AUM and revenue scenarios – 3-year view</p>
                 </CardHeader>
                 <CardContent className="text-center pt-4">
                   <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                    Assumptions are calibrated on realistic European ETF dynamics and thematic flows.
+                    Projections are built on realistic European ETF dynamics and a competitive product-level TER.
                   </p>
                   <ul className="text-xs text-left text-muted-foreground space-y-3">
                     <li className="flex gap-2">
                       <span className="text-primary mt-0.5">•</span>
-                      <span><strong className="text-foreground">Conservative:</strong> 90–150M€ total AUM across 3–4 ETFs referencing the new indices (approx. 30–50M€ per product).</span>
+                      <span>Total AUM across the suite of ETFs referencing the new indices is modelled in three bands:</span>
                     </li>
-                    <li className="flex gap-2">
-                      <span className="text-primary mt-0.5">•</span>
-                      <span><strong className="text-foreground">Base case:</strong> 150–225M€ total AUM (approx. 50–75M€ per product), assuming solid but not exceptional adoption across key platforms.</span>
+                    <li className="flex gap-2 pl-4">
+                      <span className="text-primary mt-0.5">–</span>
+                      <span><strong className="text-foreground">Conservative:</strong> 90–150M€</span>
                     </li>
-                    <li className="flex gap-2">
+                    <li className="flex gap-2 pl-4">
+                      <span className="text-primary mt-0.5">–</span>
+                      <span><strong className="text-foreground">Base case:</strong> 150–225M€</span>
+                    </li>
+                    <li className="flex gap-2 pl-4">
+                      <span className="text-primary mt-0.5">–</span>
+                      <span><strong className="text-foreground">Upside:</strong> 225–300M€+</span>
+                    </li>
+                    <li className="flex gap-2 mt-3">
                       <span className="text-primary mt-0.5">•</span>
-                      <span><strong className="text-foreground">Upside:</strong> 225–300M€+ total AUM (75–100M€+ per product) if one or more strategies become reference exposures in their segment.</span>
+                      <span>For all scenarios, each ETF is assumed to carry an all-in total expense ratio (TER) of approximately <strong className="text-foreground">0.40% per year</strong>. This level is consistent with efficient, competitively priced equity exposures in today's ETF market.</span>
                     </li>
                   </ul>
                   <p className="text-xs text-muted-foreground mt-4 italic">
-                    These ranges are consistent with market experience for successful but focused thematic and factor exposures in EMEA.
+                    This framework allows VettaFi and its ETF partners to model product-level revenues using familiar TER economics, without increasing the headline cost for investors.
                   </p>
                 </CardContent>
               </Card>
 
               <Card className="border-primary/20 shadow-lg bg-gradient-to-br from-card to-primary/5">
                 <CardHeader className="text-center pb-3">
-                  <p className="text-sm text-muted-foreground uppercase tracking-wide">Index licensing economics (market-aligned)</p>
+                  <p className="text-sm text-muted-foreground uppercase tracking-wide">TER-based economics for VettaFi</p>
                 </CardHeader>
                 <CardContent className="text-center pt-4">
                   <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                    Licensing fees are positioned fully in line with European ETF practice.
+                    The economic model is anchored explicitly in the product's total expense ratio, not in standalone index licensing bps.
                   </p>
                   <ul className="text-xs text-left text-muted-foreground space-y-3">
                     <li className="flex gap-2">
                       <span className="text-primary mt-0.5">•</span>
-                      <span><strong className="text-foreground">Typical index licensing fee:</strong> 4–9 bps on ETF AUM, depending on mandate size, theme complexity and share-class architecture.</span>
+                      <span>Each ETF is expected to be priced at an all-in TER of around <strong className="text-foreground">0.40% per year</strong>.</span>
                     </li>
                     <li className="flex gap-2">
                       <span className="text-primary mt-0.5">•</span>
-                      <span>At the base-case AUM range (150–225M€), this results in a recurring, low- to mid-six-figure annual revenue pool for VettaFi over the life of the products.</span>
+                      <span>Within this TER, only a modest portion is associated with index and data services, leaving ample room for ETF issuers and distributors to retain attractive economics.</span>
                     </li>
                     <li className="flex gap-2">
                       <span className="text-primary mt-0.5">•</span>
-                      <span>Aries76 participates via a 15–25% revenue-share on licensing revenues attributable to assets raised through its institutional network; the majority of economics remains with VettaFi.</span>
+                      <span>VettaFi's revenues from the partnership are linked to this index- and data-related component of the TER, creating a scalable, capital-light recurring revenue stream tied directly to AUM growth.</span>
                     </li>
                   </ul>
                   <p className="text-xs text-muted-foreground mt-4 italic">
-                    The model preserves pricing competitiveness for the ETF issuer while creating a scalable, capital-light revenue line for VettaFi.
+                    This approach keeps the offer fully aligned with prevailing fee levels in the European ETF market while preserving investor-friendly pricing.
                   </p>
                 </CardContent>
               </Card>
 
               <Card className="border-primary/20 shadow-lg bg-gradient-to-br from-card to-primary/5">
                 <CardHeader className="text-center pb-3">
-                  <p className="text-sm text-muted-foreground uppercase tracking-wide">Capital-light ROI for VettaFi</p>
+                  <p className="text-sm text-muted-foreground uppercase tracking-wide">ROI and payback profile</p>
                 </CardHeader>
                 <CardContent className="text-center pt-4">
                   <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                    The partnership is designed to be capital-efficient while offering meaningful upside.
+                    The 3-year partnership horizon combines realistic AUM paths with a TER level that remains clearly competitive.
                   </p>
                   <ul className="text-xs text-left text-muted-foreground space-y-3">
                     <li className="flex gap-2">
                       <span className="text-primary mt-0.5">•</span>
-                      <span>Index design, methodology work and launch require a limited upfront investment compared with the potential lifetime licensing stream from multiple ETFs.</span>
+                      <span>Under the base case (150–225M€ AUM with a 0.40% TER), the overall product-level fee pool is meaningful, while the ETF range remains attractively priced versus existing solutions.</span>
                     </li>
                     <li className="flex gap-2">
                       <span className="text-primary mt-0.5">•</span>
-                      <span>Under the base-case AUM scenario, the project reaches economic break-even for VettaFi within approximately 24–36 months, assuming typical build and operating costs for a family of 3–4 indices.</span>
+                      <span>VettaFi's share of TER-linked revenues provides a clear and transparent path to economic break-even within approximately 24–36 months, with significant upside if one or more themes surpass the base-case AUM range.</span>
                     </li>
                     <li className="flex gap-2">
                       <span className="text-primary mt-0.5">•</span>
-                      <span>Upside scenarios – for example if one theme scales beyond 100M€ in AUM – accelerate payback and convert the indices into high-margin, repeatable revenue assets.</span>
+                      <span>Beyond the initial 3-year ramp-up, the indices and related content continue to support recurring, high-margin revenues over the full life of the ETFs, without any need to raise TER for investors.</span>
                     </li>
                   </ul>
                   <p className="text-xs text-muted-foreground mt-4 italic">
-                    Overall, the economics are calibrated to be credible versus current ETF industry data while still offering attractive long-term ROI for VettaFi.
+                    Overall, the economics look and feel like a standard, well-priced ETF offering, while still delivering attractive long-term ROI for VettaFi.
                   </p>
                 </CardContent>
               </Card>
@@ -572,7 +580,7 @@ const VettaFiProposal = () => {
                       <ul className="space-y-2 text-sm text-muted-foreground">
                         <li className="flex gap-2">
                           <span className="text-primary">•</span>
-                          <span>Typical index licensing fee: 4-9 bps on AUM, depending on mandate complexity</span>
+                          <span>Product-level TER: 0.40% per year across all ETFs</span>
                         </li>
                         <li className="flex gap-2">
                           <span className="text-primary">•</span>
