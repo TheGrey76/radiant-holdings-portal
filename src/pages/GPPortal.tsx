@@ -244,6 +244,35 @@ const GPPortal = () => {
 
       setUser(currentUser);
 
+      // Check if user is admin
+      const { data: userRole } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', currentUser.id)
+        .single();
+
+      // If admin, allow access without GP registration
+      if (userRole?.role === 'admin') {
+        // Create a dummy GP data for admin display
+        setGpData({
+          id: 'admin',
+          user_id: currentUser.id,
+          first_name: 'Admin',
+          last_name: 'User',
+          role: 'Administrator',
+          firm_name: 'Aries76',
+          firm_website: 'https://aries76.com',
+          work_email: currentUser.email || '',
+          aum_bracket: 'N/A',
+          primary_strategy: ['Admin Access'],
+          main_fund_in_market: null,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        });
+        setLoading(false);
+        return;
+      }
+
       // Fetch GP data using email (more reliable than user_id)
       const { data: gpRegistrations, error } = await supabase
         .from('gp_registrations')
