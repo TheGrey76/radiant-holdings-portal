@@ -51,7 +51,7 @@ const targetGPs: TargetGP[] = [
     hqCity: "Stockholm",
     primaryStrategy: "Pan-European buyout + infra + growth",
     sizeBucket: "Mega / multi-strategy",
-    ariesAngle: "Ingresso selettivo su nuovi LP europei e mid-sized institutions con angolo AI/digital; mandate regionale o di segmento LP."
+    ariesAngle: "Selective entry for new European LPs and mid-sized institutions with AI/digital angle; regional or LP segment mandate."
   },
   {
     name: "Ardian",
@@ -59,7 +59,7 @@ const targetGPs: TargetGP[] = [
     hqCity: "Paris",
     primaryStrategy: "Multi-strategy (buyout, infra, secondaries, private debt)",
     sizeBucket: "Mega / multi-strategy",
-    ariesAngle: "Supporto su LP mid-tier e geografie meno coperte (Southern Europe / DACH mid-tier) con copertura sistematica."
+    ariesAngle: "Support for mid-tier LPs and less covered geographies (Southern Europe / DACH mid-tier) with systematic coverage."
   },
   {
     name: "CVC Capital Partners",
@@ -67,7 +67,7 @@ const targetGPs: TargetGP[] = [
     hqCity: "Luxembourg",
     primaryStrategy: "Global PE / credit / secondaries",
     sizeBucket: "Mega / multi-strategy",
-    ariesAngle: "Mandato focalizzato su specifici veicoli o nuovi mercati geografici; posizionamento come partner esternalizzato per capital formation."
+    ariesAngle: "Focused mandate on specific vehicles or new geographic markets; positioning as outsourced partner for capital formation."
   },
   {
     name: "Bridgepoint",
@@ -75,7 +75,7 @@ const targetGPs: TargetGP[] = [
     hqCity: "London",
     primaryStrategy: "European mid/large-cap PE + credit",
     sizeBucket: "Large pan-European",
-    ariesAngle: "Mandato su fondi specifici (es. growth, sector funds) per LP selezionati in Europa continentale."
+    ariesAngle: "Mandate on specific funds (e.g. growth, sector funds) for selected LPs in continental Europe."
   },
   {
     name: "Apax Partners",
@@ -83,7 +83,7 @@ const targetGPs: TargetGP[] = [
     hqCity: "London",
     primaryStrategy: "Global buyout / growth (TMT, health, services)",
     sizeBucket: "Mega",
-    ariesAngle: "Focus su LP europei non core o family offices istituzionali; advisory + fundraising per veicoli tematici."
+    ariesAngle: "Focus on non-core European LPs or institutional family offices; advisory + fundraising for thematic vehicles."
   },
   {
     name: "Permira",
@@ -91,7 +91,7 @@ const targetGPs: TargetGP[] = [
     hqCity: "London",
     primaryStrategy: "Global buyout (consumer, tech, services)",
     sizeBucket: "Mega",
-    ariesAngle: "Angolo su LP sub-1bn / wealth managers e FO istituzionali che non sono al centro del loro coverage diretto."
+    ariesAngle: "Angle on sub-1bn LPs / wealth managers and institutional FOs not at the center of their direct coverage."
   },
   {
     name: "Cinven",
@@ -99,7 +99,7 @@ const targetGPs: TargetGP[] = [
     hqCity: "London",
     primaryStrategy: "Pan-European buyout",
     sizeBucket: "Large pan-European",
-    ariesAngle: "Focalizzazione su alcuni mercati (es. Italia / Iberia / CEE) con modello di copertura continuativa e pipeline LP dedicata."
+    ariesAngle: "Focus on specific markets (e.g. Italy / Iberia / CEE) with continuous coverage model and dedicated LP pipeline."
   },
   {
     name: "BC Partners",
@@ -107,7 +107,7 @@ const targetGPs: TargetGP[] = [
     hqCity: "London",
     primaryStrategy: "PE + credit + real estate",
     sizeBucket: "Large pan-European",
-    ariesAngle: "Partner esterno per ampliamento base LP in cluster geografici specifici (Southern Europe / CEE / Mid-East)."
+    ariesAngle: "External partner for LP base expansion in specific geographic clusters (Southern Europe / CEE / Mid-East)."
   },
   {
     name: "PAI Partners",
@@ -115,7 +115,7 @@ const targetGPs: TargetGP[] = [
     hqCity: "Paris",
     primaryStrategy: "European buyout",
     sizeBucket: "Large European",
-    ariesAngle: "Supporto su mid-tier institutions e FO europei con processi strutturati di fundraising e IR."
+    ariesAngle: "Support for mid-tier institutions and European FOs with structured fundraising and IR processes."
   },
   {
     name: "Eurazeo",
@@ -123,7 +123,7 @@ const targetGPs: TargetGP[] = [
     hqCity: "Paris",
     primaryStrategy: "Multi-asset (PE, infra, private debt, VC)",
     sizeBucket: "Large / multi-strategy",
-    ariesAngle: "Mandato su strategie selezionate (growth, infra, thematic) e geografie non core."
+    ariesAngle: "Mandate on selected strategies (growth, infra, thematic) and non-core geographies."
   },
   {
     name: "Advent International (EU)",
@@ -131,7 +131,7 @@ const targetGPs: TargetGP[] = [
     hqCity: "London",
     primaryStrategy: "Global buyout (franchise europea)",
     sizeBucket: "Mega",
-    ariesAngle: "Angolo su selezione LP europei / MEA mid-tier dove non hanno copertura diretta continua."
+    ariesAngle: "Angle on selected European / MEA mid-tier LPs where they lack continuous direct coverage."
   },
   {
     name: "Hg",
@@ -139,7 +139,7 @@ const targetGPs: TargetGP[] = [
     hqCity: "London",
     primaryStrategy: "Software & tech services-focused PE",
     sizeBucket: "Large growth/buyout",
-    ariesAngle: "Posizionamento forte sul verticale software dove puoi unire narrativa AI + recurring fee model."
+    ariesAngle: "Strong positioning on software vertical where you can combine AI narrative + recurring fee model."
   },
   {
     name: "Partners Group",
@@ -147,7 +147,7 @@ const targetGPs: TargetGP[] = [
     hqCity: "Zug",
     primaryStrategy: "Global multi-asset (PE, infra, private debt)",
     sizeBucket: "Mega / multi-strategy",
-    ariesAngle: "Mandato mirato per investitori non core (es. alcune banche private / FO europei) su veicoli selezionati."
+    ariesAngle: "Targeted mandate for non-core investors (e.g. some private banks / European FOs) on selected vehicles."
   },
   {
     name: "Triton Partners",
@@ -155,7 +155,7 @@ const targetGPs: TargetGP[] = [
     hqCity: "Frankfurt/Sweden",
     primaryStrategy: "Industrial & services-focused PE",
     sizeBucket: "Mid/large pan-European",
-    ariesAngle: "Target con angolo industrial / real economy su LP europei istituzionali e FO imprenditoriali."
+    ariesAngle: "Target with industrial / real economy angle on European institutional LPs and entrepreneurial FOs."
   },
   {
     name: "Nordic Capital",
@@ -163,7 +163,7 @@ const targetGPs: TargetGP[] = [
     hqCity: "Stockholm/Jersey",
     primaryStrategy: "Healthcare + tech-enabled services",
     sizeBucket: "Large / sector-focused",
-    ariesAngle: "Proporre su specifici LP istituzionali EMEA interessati a settori healthcare & tech con supporto continuativo."
+    ariesAngle: "Propose to specific EMEA institutional LPs interested in healthcare & tech sectors with continuous support."
   },
   {
     name: "Investindustrial",
@@ -171,7 +171,7 @@ const targetGPs: TargetGP[] = [
     hqCity: "Milan/London",
     primaryStrategy: "Southern European mid-cap buyout",
     sizeBucket: "Mid/large-cap",
-    ariesAngle: "Forte focalizzazione su LP continentali e family offices imprenditoriali che cercano esposizione Southern Europe."
+    ariesAngle: "Strong focus on continental LPs and entrepreneurial family offices seeking Southern Europe exposure."
   },
   {
     name: "Carlyle (Europe)",
@@ -179,7 +179,7 @@ const targetGPs: TargetGP[] = [
     hqCity: "London",
     primaryStrategy: "Multi-strategy (buyout, growth, credit)",
     sizeBucket: "Mega / multi-strategy",
-    ariesAngle: "Mandato specifico per alcuni fondi regionali o settoriali (es. growth, infra); esternalizzazione selettiva."
+    ariesAngle: "Specific mandate for certain regional or sector funds (e.g. growth, infra); selective outsourcing."
   },
   {
     name: "KKR (Europe)",
@@ -187,7 +187,7 @@ const targetGPs: TargetGP[] = [
     hqCity: "London",
     primaryStrategy: "Multi-asset (PE, infra, credit)",
     sizeBucket: "Mega / multi-strategy",
-    ariesAngle: "Focus su nuovi LP non-core (family offices, wealth managers) e geografie dove la coverage diretta è meno capillare."
+    ariesAngle: "Focus on new non-core LPs (family offices, wealth managers) and geographies where direct coverage is less extensive."
   },
   {
     name: "Blackstone (Europe)",
@@ -195,7 +195,7 @@ const targetGPs: TargetGP[] = [
     hqCity: "London",
     primaryStrategy: "Multi-asset (PE, RE, credit, hedge fund solutions)",
     sizeBucket: "Mega / multi-strategy",
-    ariesAngle: "Mandato per fondi specifici o geografie non core; supporto su LP retail-oriented o mid-sized institutions."
+    ariesAngle: "Mandate for specific funds or non-core geographies; support for retail-oriented or mid-sized institutions LPs."
   },
   {
     name: "Apollo (Europe)",
@@ -203,7 +203,7 @@ const targetGPs: TargetGP[] = [
     hqCity: "London",
     primaryStrategy: "Multi-asset (PE, credit, real assets)",
     sizeBucket: "Mega / multi-strategy",
-    ariesAngle: "Posizionamento selettivo per veicoli credit-focused; supporto su LP mid-tier e wealth managers europei."
+    ariesAngle: "Selective positioning for credit-focused vehicles; support for mid-tier LPs and European wealth managers."
   }
 ];
 
@@ -244,7 +244,7 @@ const GPPortal = () => {
 
       setUser(currentUser);
 
-      // Recupera dati GP usando l'email (più affidabile di user_id)
+      // Fetch GP data using email (more reliable than user_id)
       const { data: gpRegistrations, error } = await supabase
         .from('gp_registrations')
         .select('*')
@@ -255,8 +255,8 @@ const GPPortal = () => {
       if (error || !gpRegistrations || gpRegistrations.length === 0) {
         console.error("Error fetching GP data:", error);
         toast({
-          title: "Accesso Negato",
-          description: "Non sei registrato come General Partner",
+          title: "Access Denied",
+          description: "You are not registered as a General Partner",
           variant: "destructive",
         });
         navigate("/");
@@ -289,9 +289,9 @@ const GPPortal = () => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0f1729] via-[#1a2744] to-[#0d1424]">
         <Card className="bg-white/5 border-white/10 backdrop-blur-sm p-8 max-w-md">
-          <p className="text-white text-center">Non sei registrato come General Partner</p>
+          <p className="text-white text-center">You are not registered as a General Partner</p>
           <Button onClick={() => navigate('/')} className="w-full mt-4">
-            Torna alla Home
+            Back to Home
           </Button>
         </Card>
       </div>
@@ -307,7 +307,7 @@ const GPPortal = () => {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-4xl font-light text-white mb-2">
-              Benvenuto, <span className="text-accent">{gpData.first_name}</span>
+              Welcome, <span className="text-accent">{gpData.first_name}</span>
             </h1>
             <p className="text-white/60 text-lg">{gpData.role} @ {gpData.firm_name}</p>
           </div>
