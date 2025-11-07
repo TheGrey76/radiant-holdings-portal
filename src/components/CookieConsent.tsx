@@ -32,12 +32,12 @@ export const CookieConsent = () => {
             <Cookie className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
             <div className="text-sm text-muted-foreground">
               <p className="font-medium text-foreground mb-1">
-                Utilizziamo i cookie
+                We use cookies
               </p>
               <p>
-                Questo sito utilizza cookie tecnici e di terze parti (Google Analytics, LinkedIn Insight) 
-                per migliorare l'esperienza utente e analizzare il traffico. 
-                Continuando a navigare, accetti l'utilizzo dei cookie in conformità con la nostra{' '}
+                This site uses technical and third-party cookies (Google Analytics, LinkedIn Insight) 
+                to improve user experience and analyze traffic. 
+                By continuing to browse, you accept the use of cookies in accordance with our{' '}
                 <a href="/legal" className="text-primary hover:underline">
                   Privacy Policy
                 </a>
