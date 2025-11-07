@@ -299,22 +299,21 @@ const GPPortal = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0f1729] via-[#1a2744] to-[#0d1424]">
+    <div className="min-h-screen bg-background">
       <Navbar />
 
-      <div className="container mx-auto px-6 py-12 max-w-7xl">
+      <div className="container mx-auto px-6 py-24 pt-32 max-w-7xl">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-4xl font-light text-white mb-2">
+            <h1 className="text-4xl font-light text-foreground mb-2">
               Welcome, <span className="text-accent">{gpData.first_name}</span>
             </h1>
-            <p className="text-white/60 text-lg">{gpData.role} @ {gpData.firm_name}</p>
+            <p className="text-muted-foreground text-lg">{gpData.role} @ {gpData.firm_name}</p>
           </div>
           <Button
-            variant="outline"
+            variant="destructive"
             onClick={handleLogout}
-            className="border-white/20 text-white hover:bg-white/10"
           >
             <LogOut className="w-4 h-4 mr-2" />
             Logout
