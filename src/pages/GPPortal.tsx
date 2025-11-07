@@ -56,7 +56,7 @@ const targetGPs: TargetGP[] = [
     sizeBucket: "Mega / multi-strategy",
     ariesAngle: "Selective entry for new European LPs and mid-sized institutions with AI/digital angle; regional or LP segment mandate.",
     website: "https://eqtgroup.com",
-    linkedinUrl: "https://linkedin.com/company/eqt",
+    linkedinUrl: "https://www.linkedin.com/company/eqt-group/posts/?feedView=all",
     decisionMaker: "Christian Sinding (CEO)"
   },
   {
