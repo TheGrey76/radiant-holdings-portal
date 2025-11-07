@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2, LogOut, Building2, TrendingUp, FileText, Search, Filter } from "lucide-react";
+import { Loader2, LogOut, Building2, TrendingUp, FileText, Search, Filter, ExternalLink, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
 import Navbar from "@/components/Navbar";
@@ -42,6 +42,9 @@ interface TargetGP {
   primaryStrategy: string;
   sizeBucket: string;
   ariesAngle: string;
+  website: string;
+  linkedinUrl: string;
+  decisionMaker: string;
 }
 
 const targetGPs: TargetGP[] = [
@@ -51,7 +54,10 @@ const targetGPs: TargetGP[] = [
     hqCity: "Stockholm",
     primaryStrategy: "Pan-European buyout + infra + growth",
     sizeBucket: "Mega / multi-strategy",
-    ariesAngle: "Selective entry for new European LPs and mid-sized institutions with AI/digital angle; regional or LP segment mandate."
+    ariesAngle: "Selective entry for new European LPs and mid-sized institutions with AI/digital angle; regional or LP segment mandate.",
+    website: "https://eqtgroup.com",
+    linkedinUrl: "https://linkedin.com/company/eqt",
+    decisionMaker: "Christian Sinding (CEO)"
   },
   {
     name: "Ardian",
@@ -59,7 +65,10 @@ const targetGPs: TargetGP[] = [
     hqCity: "Paris",
     primaryStrategy: "Multi-strategy (buyout, infra, secondaries, private debt)",
     sizeBucket: "Mega / multi-strategy",
-    ariesAngle: "Support for mid-tier LPs and less covered geographies (Southern Europe / DACH mid-tier) with systematic coverage."
+    ariesAngle: "Support for mid-tier LPs and less covered geographies (Southern Europe / DACH mid-tier) with systematic coverage.",
+    website: "https://ardian.com",
+    linkedinUrl: "https://linkedin.com/company/ardian",
+    decisionMaker: "Benoît Verbrugghe (Head of Fundraising)"
   },
   {
     name: "CVC Capital Partners",
@@ -67,7 +76,10 @@ const targetGPs: TargetGP[] = [
     hqCity: "Luxembourg",
     primaryStrategy: "Global PE / credit / secondaries",
     sizeBucket: "Mega / multi-strategy",
-    ariesAngle: "Focused mandate on specific vehicles or new geographic markets; positioning as outsourced partner for capital formation."
+    ariesAngle: "Focused mandate on specific vehicles or new geographic markets; positioning as outsourced partner for capital formation.",
+    website: "https://cvc.com",
+    linkedinUrl: "https://linkedin.com/company/cvc-capital-partners",
+    decisionMaker: "Stephen Marquardt (Head of Capital Formation)"
   },
   {
     name: "Bridgepoint",
@@ -75,7 +87,10 @@ const targetGPs: TargetGP[] = [
     hqCity: "London",
     primaryStrategy: "European mid/large-cap PE + credit",
     sizeBucket: "Large pan-European",
-    ariesAngle: "Mandate on specific funds (e.g. growth, sector funds) for selected LPs in continental Europe."
+    ariesAngle: "Mandate on specific funds (e.g. growth, sector funds) for selected LPs in continental Europe.",
+    website: "https://bridgepoint.eu",
+    linkedinUrl: "https://linkedin.com/company/bridgepoint",
+    decisionMaker: "William Jackson (Managing Partner)"
   },
   {
     name: "Apax Partners",
@@ -83,7 +98,10 @@ const targetGPs: TargetGP[] = [
     hqCity: "London",
     primaryStrategy: "Global buyout / growth (TMT, health, services)",
     sizeBucket: "Mega",
-    ariesAngle: "Focus on non-core European LPs or institutional family offices; advisory + fundraising for thematic vehicles."
+    ariesAngle: "Focus on non-core European LPs or institutional family offices; advisory + fundraising for thematic vehicles.",
+    website: "https://apax.com",
+    linkedinUrl: "https://linkedin.com/company/apax-partners",
+    decisionMaker: "Martin Halusa (CEO)"
   },
   {
     name: "Permira",
@@ -91,7 +109,10 @@ const targetGPs: TargetGP[] = [
     hqCity: "London",
     primaryStrategy: "Global buyout (consumer, tech, services)",
     sizeBucket: "Mega",
-    ariesAngle: "Angle on sub-1bn LPs / wealth managers and institutional FOs not at the center of their direct coverage."
+    ariesAngle: "Angle on sub-1bn LPs / wealth managers and institutional FOs not at the center of their direct coverage.",
+    website: "https://permira.com",
+    linkedinUrl: "https://linkedin.com/company/permira",
+    decisionMaker: "Kurt Björklund (Co-Head)"
   },
   {
     name: "Cinven",
@@ -99,7 +120,10 @@ const targetGPs: TargetGP[] = [
     hqCity: "London",
     primaryStrategy: "Pan-European buyout",
     sizeBucket: "Large pan-European",
-    ariesAngle: "Focus on specific markets (e.g. Italy / Iberia / CEE) with continuous coverage model and dedicated LP pipeline."
+    ariesAngle: "Focus on specific markets (e.g. Italy / Iberia / CEE) with continuous coverage model and dedicated LP pipeline.",
+    website: "https://cinven.com",
+    linkedinUrl: "https://linkedin.com/company/cinven",
+    decisionMaker: "Jörg Zirener (Managing Partner)"
   },
   {
     name: "BC Partners",
@@ -107,7 +131,10 @@ const targetGPs: TargetGP[] = [
     hqCity: "London",
     primaryStrategy: "PE + credit + real estate",
     sizeBucket: "Large pan-European",
-    ariesAngle: "External partner for LP base expansion in specific geographic clusters (Southern Europe / CEE / Mid-East)."
+    ariesAngle: "External partner for LP base expansion in specific geographic clusters (Southern Europe / CEE / Mid-East).",
+    website: "https://bcpartners.com",
+    linkedinUrl: "https://linkedin.com/company/bc-partners",
+    decisionMaker: "Raymond Svider (Chairman)"
   },
   {
     name: "PAI Partners",
@@ -115,7 +142,10 @@ const targetGPs: TargetGP[] = [
     hqCity: "Paris",
     primaryStrategy: "European buyout",
     sizeBucket: "Large European",
-    ariesAngle: "Support for mid-tier institutions and European FOs with structured fundraising and IR processes."
+    ariesAngle: "Support for mid-tier institutions and European FOs with structured fundraising and IR processes.",
+    website: "https://paipartners.com",
+    linkedinUrl: "https://linkedin.com/company/pai-partners",
+    decisionMaker: "Patrice Bergé (Managing Partner)"
   },
   {
     name: "Eurazeo",
@@ -123,7 +153,10 @@ const targetGPs: TargetGP[] = [
     hqCity: "Paris",
     primaryStrategy: "Multi-asset (PE, infra, private debt, VC)",
     sizeBucket: "Large / multi-strategy",
-    ariesAngle: "Mandate on selected strategies (growth, infra, thematic) and non-core geographies."
+    ariesAngle: "Mandate on selected strategies (growth, infra, thematic) and non-core geographies.",
+    website: "https://eurazeo.com",
+    linkedinUrl: "https://linkedin.com/company/eurazeo",
+    decisionMaker: "Christophe Bavière (CEO)"
   },
   {
     name: "Advent International (EU)",
@@ -131,7 +164,10 @@ const targetGPs: TargetGP[] = [
     hqCity: "London",
     primaryStrategy: "Global buyout (franchise europea)",
     sizeBucket: "Mega",
-    ariesAngle: "Angle on selected European / MEA mid-tier LPs where they lack continuous direct coverage."
+    ariesAngle: "Angle on selected European / MEA mid-tier LPs where they lack continuous direct coverage.",
+    website: "https://adventinternational.com",
+    linkedinUrl: "https://linkedin.com/company/advent-international",
+    decisionMaker: "David Mussafer (Managing Partner)"
   },
   {
     name: "Hg",
@@ -139,7 +175,10 @@ const targetGPs: TargetGP[] = [
     hqCity: "London",
     primaryStrategy: "Software & tech services-focused PE",
     sizeBucket: "Large growth/buyout",
-    ariesAngle: "Strong positioning on software vertical where you can combine AI narrative + recurring fee model."
+    ariesAngle: "Strong positioning on software vertical where you can combine AI narrative + recurring fee model.",
+    website: "https://hgcapital.com",
+    linkedinUrl: "https://linkedin.com/company/hg",
+    decisionMaker: "Nic Humphries (Senior Partner)"
   },
   {
     name: "Partners Group",
@@ -147,7 +186,10 @@ const targetGPs: TargetGP[] = [
     hqCity: "Zug",
     primaryStrategy: "Global multi-asset (PE, infra, private debt)",
     sizeBucket: "Mega / multi-strategy",
-    ariesAngle: "Targeted mandate for non-core investors (e.g. some private banks / European FOs) on selected vehicles."
+    ariesAngle: "Targeted mandate for non-core investors (e.g. some private banks / European FOs) on selected vehicles.",
+    website: "https://partnersgroup.com",
+    linkedinUrl: "https://linkedin.com/company/partners-group",
+    decisionMaker: "David Layton (CEO)"
   },
   {
     name: "Triton Partners",
@@ -155,7 +197,10 @@ const targetGPs: TargetGP[] = [
     hqCity: "Frankfurt/Sweden",
     primaryStrategy: "Industrial & services-focused PE",
     sizeBucket: "Mid/large pan-European",
-    ariesAngle: "Target with industrial / real economy angle on European institutional LPs and entrepreneurial FOs."
+    ariesAngle: "Target with industrial / real economy angle on European institutional LPs and entrepreneurial FOs.",
+    website: "https://triton-partners.com",
+    linkedinUrl: "https://linkedin.com/company/triton-partners",
+    decisionMaker: "Peder Prahl (Partner)"
   },
   {
     name: "Nordic Capital",
@@ -163,7 +208,10 @@ const targetGPs: TargetGP[] = [
     hqCity: "Stockholm/Jersey",
     primaryStrategy: "Healthcare + tech-enabled services",
     sizeBucket: "Large / sector-focused",
-    ariesAngle: "Propose to specific EMEA institutional LPs interested in healthcare & tech sectors with continuous support."
+    ariesAngle: "Propose to specific EMEA institutional LPs interested in healthcare & tech sectors with continuous support.",
+    website: "https://nordiccapital.com",
+    linkedinUrl: "https://linkedin.com/company/nordic-capital",
+    decisionMaker: "Fredrik Näslund (Managing Partner)"
   },
   {
     name: "Investindustrial",
@@ -171,7 +219,10 @@ const targetGPs: TargetGP[] = [
     hqCity: "Milan/London",
     primaryStrategy: "Southern European mid-cap buyout",
     sizeBucket: "Mid/large-cap",
-    ariesAngle: "Strong focus on continental LPs and entrepreneurial family offices seeking Southern Europe exposure."
+    ariesAngle: "Strong focus on continental LPs and entrepreneurial family offices seeking Southern Europe exposure.",
+    website: "https://investindustrial.com",
+    linkedinUrl: "https://linkedin.com/company/investindustrial",
+    decisionMaker: "Andrea C. Bonomi (Chairman)"
   },
   {
     name: "Carlyle (Europe)",
@@ -179,7 +230,10 @@ const targetGPs: TargetGP[] = [
     hqCity: "London",
     primaryStrategy: "Multi-strategy (buyout, growth, credit)",
     sizeBucket: "Mega / multi-strategy",
-    ariesAngle: "Specific mandate for certain regional or sector funds (e.g. growth, infra); selective outsourcing."
+    ariesAngle: "Specific mandate for certain regional or sector funds (e.g. growth, infra); selective outsourcing.",
+    website: "https://carlyle.com",
+    linkedinUrl: "https://linkedin.com/company/the-carlyle-group",
+    decisionMaker: "Marcel van Poecke (Head of Europe)"
   },
   {
     name: "KKR (Europe)",
@@ -187,7 +241,10 @@ const targetGPs: TargetGP[] = [
     hqCity: "London",
     primaryStrategy: "Multi-asset (PE, infra, credit)",
     sizeBucket: "Mega / multi-strategy",
-    ariesAngle: "Focus on new non-core LPs (family offices, wealth managers) and geographies where direct coverage is less extensive."
+    ariesAngle: "Focus on new non-core LPs (family offices, wealth managers) and geographies where direct coverage is less extensive.",
+    website: "https://kkr.com",
+    linkedinUrl: "https://linkedin.com/company/kkr",
+    decisionMaker: "Johannes Huth (Head of Europe)"
   },
   {
     name: "Blackstone (Europe)",
@@ -195,7 +252,10 @@ const targetGPs: TargetGP[] = [
     hqCity: "London",
     primaryStrategy: "Multi-asset (PE, RE, credit, hedge fund solutions)",
     sizeBucket: "Mega / multi-strategy",
-    ariesAngle: "Mandate for specific funds or non-core geographies; support for retail-oriented or mid-sized institutions LPs."
+    ariesAngle: "Mandate for specific funds or non-core geographies; support for retail-oriented or mid-sized institutions LPs.",
+    website: "https://blackstone.com",
+    linkedinUrl: "https://linkedin.com/company/blackstone",
+    decisionMaker: "Lionel Assant (Head of Europe)"
   },
   {
     name: "Apollo (Europe)",
@@ -203,7 +263,10 @@ const targetGPs: TargetGP[] = [
     hqCity: "London",
     primaryStrategy: "Multi-asset (PE, credit, real assets)",
     sizeBucket: "Mega / multi-strategy",
-    ariesAngle: "Selective positioning for credit-focused vehicles; support for mid-tier LPs and European wealth managers."
+    ariesAngle: "Selective positioning for credit-focused vehicles; support for mid-tier LPs and European wealth managers.",
+    website: "https://apollo.com",
+    linkedinUrl: "https://linkedin.com/company/apollo-global-management",
+    decisionMaker: "Scott Kleinman (Co-President)"
   }
 ];
 
@@ -214,10 +277,19 @@ const GPPortal = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [countryFilter, setCountryFilter] = useState("all");
   const [sizeFilter, setSizeFilter] = useState("all");
+  const [displayedGPs, setDisplayedGPs] = useState<TargetGP[]>(targetGPs);
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const filteredGPs = targetGPs.filter(gp => {
+  const handleRemoveGP = (gpName: string) => {
+    setDisplayedGPs(prev => prev.filter(gp => gp.name !== gpName));
+    toast({
+      title: "GP Removed",
+      description: `${gpName} has been removed from your target list`,
+    });
+  };
+
+  const filteredGPs = displayedGPs.filter(gp => {
     const matchesSearch = gp.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          gp.primaryStrategy.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          gp.hqCity.toLowerCase().includes(searchTerm.toLowerCase());
@@ -227,7 +299,7 @@ const GPPortal = () => {
     return matchesSearch && matchesCountry && matchesSize;
   });
 
-  const uniqueCountries = Array.from(new Set(targetGPs.map(gp => gp.hqCountry))).sort();
+  const uniqueCountries = Array.from(new Set(displayedGPs.map(gp => gp.hqCountry))).sort();
 
   useEffect(() => {
     checkGPAccess();
@@ -469,9 +541,12 @@ const GPPortal = () => {
                       <TableRow className="border-white/10 hover:bg-white/5">
                         <TableHead className="text-white/70">GP Name</TableHead>
                         <TableHead className="text-white/70">HQ</TableHead>
+                        <TableHead className="text-white/70">Decision Maker</TableHead>
                         <TableHead className="text-white/70">Primary Strategy</TableHead>
                         <TableHead className="text-white/70">Size</TableHead>
                         <TableHead className="text-white/70">Aries Angle</TableHead>
+                        <TableHead className="text-white/70">Links</TableHead>
+                        <TableHead className="text-white/70">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -489,6 +564,9 @@ const GPPortal = () => {
                               <div className="text-white/50">{gp.hqCountry}</div>
                             </div>
                           </TableCell>
+                          <TableCell className="text-white/70 text-sm">
+                            {gp.decisionMaker}
+                          </TableCell>
                           <TableCell className="text-white/70 max-w-xs">
                             <div className="text-sm truncate" title={gp.primaryStrategy}>
                               {gp.primaryStrategy}
@@ -503,6 +581,41 @@ const GPPortal = () => {
                             <div className="line-clamp-2" title={gp.ariesAngle}>
                               {gp.ariesAngle}
                             </div>
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex gap-2">
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-8 w-8 p-0 text-white/60 hover:text-accent hover:bg-white/5"
+                                onClick={() => window.open(gp.website, '_blank')}
+                                title="Visit website"
+                              >
+                                <ExternalLink className="h-4 w-4" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-8 w-8 p-0 text-white/60 hover:text-accent hover:bg-white/5"
+                                onClick={() => window.open(gp.linkedinUrl, '_blank')}
+                                title="LinkedIn profile"
+                              >
+                                <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+                                  <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                                </svg>
+                              </Button>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-8 w-8 p-0 text-red-400 hover:text-red-300 hover:bg-red-500/10"
+                              onClick={() => handleRemoveGP(gp.name)}
+                              title="Remove GP"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
                           </TableCell>
                         </TableRow>
                       ))}
@@ -597,7 +710,7 @@ const GPPortal = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                   <div className="bg-white/5 rounded-lg p-6 border border-white/10">
                     <p className="text-white/60 text-sm mb-2">Total Target GPs</p>
-                    <p className="text-3xl font-semibold text-white">{targetGPs.length}</p>
+                    <p className="text-3xl font-semibold text-white">{displayedGPs.length}</p>
                   </div>
                   <div className="bg-white/5 rounded-lg p-6 border border-white/10">
                     <p className="text-white/60 text-sm mb-2">Countries Covered</p>
@@ -606,7 +719,7 @@ const GPPortal = () => {
                   <div className="bg-white/5 rounded-lg p-6 border border-white/10">
                     <p className="text-white/60 text-sm mb-2">Mega/Large Funds</p>
                     <p className="text-3xl font-semibold text-white">
-                      {targetGPs.filter(gp => gp.sizeBucket.toLowerCase().includes('mega') || gp.sizeBucket.toLowerCase().includes('large')).length}
+                      {displayedGPs.filter(gp => gp.sizeBucket.toLowerCase().includes('mega') || gp.sizeBucket.toLowerCase().includes('large')).length}
                     </p>
                   </div>
                 </div>
@@ -615,7 +728,8 @@ const GPPortal = () => {
                   <h3 className="text-white text-lg font-medium">Geographic Distribution</h3>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                     {uniqueCountries.map(country => {
-                      const count = targetGPs.filter(gp => gp.hqCountry === country).length;
+                      const count = displayedGPs.filter(gp => gp.hqCountry === country).length;
+                      if (count === 0) return null;
                       return (
                         <div key={country} className="bg-white/5 rounded-lg p-4 border border-white/10">
                           <p className="text-white/60 text-xs mb-1">{country}</p>
