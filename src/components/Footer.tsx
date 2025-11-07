@@ -67,6 +67,15 @@ const Footer = () => {
             <br className="md:hidden" />
             <span className="hidden md:inline"> | </span>
             The company does not conduct any regulated investment activity as defined by the UK Financial Services and Markets Act 2000.
+            <br />
+            <Link to="/legal" className="hover:text-accent transition-colors">Privacy Policy</Link>
+            <span className="mx-2">|</span>
+            <button 
+              onClick={() => window.dispatchEvent(new Event('reopenCookieSettings'))}
+              className="hover:text-accent transition-colors"
+            >
+              Cookie Settings
+            </button>
           </p>
         </div>
       </div>

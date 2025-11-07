@@ -10,6 +10,14 @@ export const CookieConsent = () => {
     if (!consent) {
       setShowBanner(true);
     }
+
+    // Listen for custom event to reopen cookie settings
+    const handleReopenSettings = () => {
+      setShowBanner(true);
+    };
+
+    window.addEventListener('reopenCookieSettings', handleReopenSettings);
+    return () => window.removeEventListener('reopenCookieSettings', handleReopenSettings);
   }, []);
 
   const handleAccept = () => {
