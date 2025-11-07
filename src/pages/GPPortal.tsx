@@ -277,7 +277,7 @@ const targetGPs: TargetGP[] = [
     sizeBucket: "Mid-cap",
     ariesAngle: "Next generation private debt fund (€250m target) focusing on senior secured lending in Northern European lower midmarket companies, primarily tech and business services (€15-100m EV).",
     website: "https://armadacredit.com/",
-    linkedinUrl: "https://linkedin.com/company/armada-credit-partners",
+    linkedinUrl: "https://www.linkedin.com/company/armada-credit/",
     decisionMaker: "TBD"
   },
   {
