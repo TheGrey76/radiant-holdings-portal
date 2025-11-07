@@ -279,17 +279,17 @@ const GPPortal = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0f1729] via-[#1a2744] to-[#0d1424]">
-        <Loader2 className="w-8 h-8 animate-spin text-accent" />
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
       </div>
     );
   }
 
   if (!gpData) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0f1729] via-[#1a2744] to-[#0d1424]">
-        <Card className="bg-white/5 border-white/10 backdrop-blur-sm p-8 max-w-md">
-          <p className="text-white text-center">You are not registered as a General Partner</p>
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <Card className="p-8 max-w-md">
+          <p className="text-foreground text-center">You are not registered as a General Partner</p>
           <Button onClick={() => navigate('/')} className="w-full mt-4">
             Back to Home
           </Button>
@@ -322,38 +322,38 @@ const GPPortal = () => {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
+          <Card>
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-white/60 text-sm mb-1">Firm</p>
-                  <p className="text-2xl font-light text-white">{gpData.firm_name}</p>
+                  <p className="text-muted-foreground text-sm mb-1">Firm</p>
+                  <p className="text-2xl font-semibold text-foreground">{gpData.firm_name}</p>
                 </div>
-                <Building2 className="w-10 h-10 text-accent opacity-50" />
+                <Building2 className="w-10 h-10 text-primary/60" />
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
+          <Card>
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-white/60 text-sm mb-1">AUM Bracket</p>
-                  <p className="text-2xl font-light text-white">{gpData.aum_bracket}</p>
+                  <p className="text-muted-foreground text-sm mb-1">AUM Bracket</p>
+                  <p className="text-2xl font-semibold text-foreground">{gpData.aum_bracket}</p>
                 </div>
-                <TrendingUp className="w-10 h-10 text-accent opacity-50" />
+                <TrendingUp className="w-10 h-10 text-primary/60" />
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
+          <Card>
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-white/60 text-sm mb-1">Strategies</p>
-                  <p className="text-2xl font-light text-white">{gpData.primary_strategy.length}</p>
+                  <p className="text-muted-foreground text-sm mb-1">Strategies</p>
+                  <p className="text-2xl font-semibold text-foreground">{gpData.primary_strategy.length}</p>
                 </div>
-                <FileText className="w-10 h-10 text-accent opacity-50" />
+                <FileText className="w-10 h-10 text-primary/60" />
               </div>
             </CardContent>
           </Card>
@@ -491,20 +491,20 @@ const GPPortal = () => {
 
           {/* Resources Tab */}
           <TabsContent value="resources" className="space-y-6">
-            <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
+            <Card>
               <CardHeader>
-                <CardTitle className="text-white text-2xl font-light">
+                <CardTitle className="text-2xl font-semibold">
                   Resources & Tools
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="bg-white/5 rounded-lg p-6 border border-white/10 hover:bg-white/10 transition-colors">
-                    <Building2 className="w-8 h-8 text-accent mb-3" />
-                    <h3 className="text-white text-lg font-medium mb-2">
+                  <div className="bg-muted rounded-lg p-6 border hover:border-primary transition-colors">
+                    <Building2 className="w-8 h-8 text-primary mb-3" />
+                    <h3 className="text-foreground text-lg font-medium mb-2">
                       GP Capital Advisory
                     </h3>
-                    <p className="text-white/60 mb-4 text-sm">
+                    <p className="text-muted-foreground mb-4 text-sm">
                       Strategic solutions for GP capital management and optimization
                     </p>
                     <Button onClick={() => navigate('/gp-capital-advisory')} variant="outline" className="w-full">
@@ -512,12 +512,12 @@ const GPPortal = () => {
                     </Button>
                   </div>
 
-                  <div className="bg-white/5 rounded-lg p-6 border border-white/10 hover:bg-white/10 transition-colors">
-                    <TrendingUp className="w-8 h-8 text-accent mb-3" />
-                    <h3 className="text-white text-lg font-medium mb-2">
+                  <div className="bg-muted rounded-lg p-6 border hover:border-primary transition-colors">
+                    <TrendingUp className="w-8 h-8 text-primary mb-3" />
+                    <h3 className="text-foreground text-lg font-medium mb-2">
                       Fundraising Economics
                     </h3>
-                    <p className="text-white/60 mb-4 text-sm">
+                    <p className="text-muted-foreground mb-4 text-sm">
                       Analysis and insights on fundraising economics and market trends
                     </p>
                     <Button onClick={() => navigate('/gp-fundraising-economics')} variant="outline" className="w-full">
@@ -525,12 +525,12 @@ const GPPortal = () => {
                     </Button>
                   </div>
 
-                  <div className="bg-white/5 rounded-lg p-6 border border-white/10 hover:bg-white/10 transition-colors">
-                    <FileText className="w-8 h-8 text-accent mb-3" />
-                    <h3 className="text-white text-lg font-medium mb-2">
+                  <div className="bg-muted rounded-lg p-6 border hover:border-primary transition-colors">
+                    <FileText className="w-8 h-8 text-primary mb-3" />
+                    <h3 className="text-foreground text-lg font-medium mb-2">
                       Private Equity Funds
                     </h3>
-                    <p className="text-white/60 mb-4 text-sm">
+                    <p className="text-muted-foreground mb-4 text-sm">
                       Information about our private equity fund structures and strategies
                     </p>
                     <Button onClick={() => navigate('/private-equity-funds')} variant="outline" className="w-full">
@@ -538,12 +538,12 @@ const GPPortal = () => {
                     </Button>
                   </div>
 
-                  <div className="bg-white/5 rounded-lg p-6 border border-white/10 hover:bg-white/10 transition-colors">
-                    <FileText className="w-8 h-8 text-accent mb-3" />
-                    <h3 className="text-white text-lg font-medium mb-2">
+                  <div className="bg-muted rounded-lg p-6 border hover:border-primary transition-colors">
+                    <FileText className="w-8 h-8 text-primary mb-3" />
+                    <h3 className="text-foreground text-lg font-medium mb-2">
                       Market Intelligence
                     </h3>
-                    <p className="text-white/60 mb-4 text-sm">
+                    <p className="text-muted-foreground mb-4 text-sm">
                       Access to proprietary market data and competitive intelligence
                     </p>
                     <Button onClick={() => navigate('/aires-data')} variant="outline" className="w-full">
@@ -557,39 +557,39 @@ const GPPortal = () => {
 
           {/* Analytics Tab */}
           <TabsContent value="analytics" className="space-y-6">
-            <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
+            <Card>
               <CardHeader>
-                <CardTitle className="text-white text-2xl font-light">
+                <CardTitle className="text-2xl font-semibold">
                   Portfolio Analytics
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                  <div className="bg-white/5 rounded-lg p-6 border border-white/10">
-                    <p className="text-white/50 text-sm mb-2">Total Target GPs</p>
-                    <p className="text-3xl font-light text-white">{targetGPs.length}</p>
+                  <div className="bg-muted rounded-lg p-6 border">
+                    <p className="text-muted-foreground text-sm mb-2">Total Target GPs</p>
+                    <p className="text-3xl font-semibold text-foreground">{targetGPs.length}</p>
                   </div>
-                  <div className="bg-white/5 rounded-lg p-6 border border-white/10">
-                    <p className="text-white/50 text-sm mb-2">Countries Covered</p>
-                    <p className="text-3xl font-light text-white">{uniqueCountries.length}</p>
+                  <div className="bg-muted rounded-lg p-6 border">
+                    <p className="text-muted-foreground text-sm mb-2">Countries Covered</p>
+                    <p className="text-3xl font-semibold text-foreground">{uniqueCountries.length}</p>
                   </div>
-                  <div className="bg-white/5 rounded-lg p-6 border border-white/10">
-                    <p className="text-white/50 text-sm mb-2">Mega/Large Funds</p>
-                    <p className="text-3xl font-light text-white">
+                  <div className="bg-muted rounded-lg p-6 border">
+                    <p className="text-muted-foreground text-sm mb-2">Mega/Large Funds</p>
+                    <p className="text-3xl font-semibold text-foreground">
                       {targetGPs.filter(gp => gp.sizeBucket.toLowerCase().includes('mega') || gp.sizeBucket.toLowerCase().includes('large')).length}
                     </p>
                   </div>
                 </div>
 
                 <div className="space-y-4">
-                  <h3 className="text-white text-lg font-medium">Geographic Distribution</h3>
+                  <h3 className="text-foreground text-lg font-medium">Geographic Distribution</h3>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                     {uniqueCountries.map(country => {
                       const count = targetGPs.filter(gp => gp.hqCountry === country).length;
                       return (
-                        <div key={country} className="bg-white/5 rounded-lg p-4 border border-white/10">
-                          <p className="text-white/50 text-xs mb-1">{country}</p>
-                          <p className="text-2xl font-light text-white">{count}</p>
+                        <div key={country} className="bg-muted rounded-lg p-4 border">
+                          <p className="text-muted-foreground text-xs mb-1">{country}</p>
+                          <p className="text-2xl font-semibold text-foreground">{count}</p>
                         </div>
                       );
                     })}
