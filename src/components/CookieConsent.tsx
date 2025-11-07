@@ -60,14 +60,14 @@ export const CookieConsent = () => {
               onClick={handleReject}
               className="flex-1 sm:flex-none"
             >
-              Rifiuta
+              Reject
             </Button>
             <Button
               size="sm"
               onClick={handleAccept}
               className="flex-1 sm:flex-none"
             >
-              Accetta
+              Accept
             </Button>
           </div>
         </div>
