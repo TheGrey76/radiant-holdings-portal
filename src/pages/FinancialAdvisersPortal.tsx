@@ -198,63 +198,63 @@ export default function FinancialAdvisersPortal() {
   ];
 
   return (
-    <div className="min-h-screen bg-muted/30">
+    <div className="min-h-screen bg-gradient-to-br from-[#0f1729] via-[#1a2744] to-[#0d1424]">
       <Navbar />
       
-      <div className="container mx-auto px-4 py-8 mt-20">
+      <div className="container mx-auto px-6 py-24 pt-32 max-w-7xl">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-foreground mb-2">Financial Advisers Portal</h1>
-          <p className="text-muted-foreground">Access our network of financial advisers and investment professionals</p>
+          <h1 className="text-4xl font-light text-white mb-2">Financial Advisers Portal</h1>
+          <p className="text-white/60 text-lg">Access our network of financial advisers and investment professionals</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           {statsCards.map((card, index) => (
-            <Card key={index} className="bg-card border-border">
+            <Card key={index} className="bg-white/5 border-white/10 backdrop-blur-sm">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium text-card-foreground">{card.title}</CardTitle>
-                <card.icon className="h-4 w-4 text-muted-foreground" />
+                <CardTitle className="text-sm font-medium text-white/90">{card.title}</CardTitle>
+                <card.icon className="h-4 w-4 text-white/60" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-card-foreground">{card.value}</div>
-                <p className="text-xs text-muted-foreground mt-1">{card.description}</p>
+                <div className="text-2xl font-bold text-white">{card.value}</div>
+                <p className="text-xs text-white/60 mt-1">{card.description}</p>
               </CardContent>
             </Card>
           ))}
         </div>
 
         <Tabs defaultValue="advisers" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 bg-muted">
-            <TabsTrigger value="advisers" className="data-[state=active]:bg-background data-[state=active]:text-foreground">
+          <TabsList className="grid w-full grid-cols-2 bg-white/5 border-white/10">
+            <TabsTrigger value="advisers" className="data-[state=active]:bg-white/10 data-[state=active]:text-white text-white/60">
               Financial Advisers
             </TabsTrigger>
-            <TabsTrigger value="analytics" className="data-[state=active]:bg-background data-[state=active]:text-foreground">
+            <TabsTrigger value="analytics" className="data-[state=active]:bg-white/10 data-[state=active]:text-white text-white/60">
               Analytics
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="advisers" className="space-y-4">
-            <Card className="bg-card border-border">
+            <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
               <CardHeader>
-                <CardTitle className="text-card-foreground">Search & Filter</CardTitle>
+                <CardTitle className="text-white">Search & Filter</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex gap-4 flex-wrap">
                   <div className="flex-1 min-w-[200px]">
                     <div className="relative">
-                      <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                      <Search className="absolute left-3 top-3 h-4 w-4 text-white/60" />
                       <Input
                         placeholder="Search advisers..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="pl-10 bg-background text-foreground border-input"
+                        className="pl-10 bg-white/5 text-white border-white/10 placeholder:text-white/40"
                       />
                     </div>
                   </div>
                   <Select value={regionFilter} onValueChange={setRegionFilter}>
-                    <SelectTrigger className="w-[200px] bg-background text-foreground border-input">
+                    <SelectTrigger className="w-[200px] bg-white/5 text-white border-white/10">
                       <SelectValue placeholder="Filter by Region" />
                     </SelectTrigger>
-                    <SelectContent className="bg-background border-border">
+                    <SelectContent className="bg-[#1a2744] border-white/10">
                       <SelectItem value="all">All Regions</SelectItem>
                       {uniqueRegions.map(region => (
                         <SelectItem key={region} value={region}>{region}</SelectItem>
@@ -262,10 +262,10 @@ export default function FinancialAdvisersPortal() {
                     </SelectContent>
                   </Select>
                   <Select value={intermediaryFilter} onValueChange={setIntermediaryFilter}>
-                    <SelectTrigger className="w-[250px] bg-background text-foreground border-input">
+                    <SelectTrigger className="w-[250px] bg-white/5 text-white border-white/10">
                       <SelectValue placeholder="Filter by Intermediary" />
                     </SelectTrigger>
-                    <SelectContent className="bg-background border-border">
+                    <SelectContent className="bg-[#1a2744] border-white/10">
                       <SelectItem value="all">All Intermediaries</SelectItem>
                       {uniqueIntermediaries.map(intermediary => (
                         <SelectItem key={intermediary} value={intermediary}>{intermediary}</SelectItem>
@@ -273,52 +273,51 @@ export default function FinancialAdvisersPortal() {
                     </SelectContent>
                   </Select>
                 </div>
-                <div className="text-sm text-muted-foreground">
+                <div className="text-sm text-white/60">
                   Showing {filteredAdvisers.length} of {financialAdvisers.length} advisers
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-card border-border">
+            <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
               <CardContent className="p-0">
                 <div className="overflow-x-auto">
                   <Table>
                     <TableHeader>
-                      <TableRow className="border-border hover:bg-muted/50">
-                        <TableHead className="text-muted-foreground">Name</TableHead>
-                        <TableHead className="text-muted-foreground">Intermediary</TableHead>
-                        <TableHead className="text-muted-foreground">Location</TableHead>
-                        <TableHead className="text-muted-foreground">Role</TableHead>
-                        <TableHead className="text-muted-foreground">Portfolio</TableHead>
-                        <TableHead className="text-muted-foreground">Contact</TableHead>
+                      <TableRow className="border-white/10 hover:bg-white/5">
+                        <TableHead className="text-white/70">Name</TableHead>
+                        <TableHead className="text-white/70">Intermediary</TableHead>
+                        <TableHead className="text-white/70">Location</TableHead>
+                        <TableHead className="text-white/70">Role</TableHead>
+                        <TableHead className="text-white/70">Portfolio</TableHead>
+                        <TableHead className="text-white/70">Contact</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {filteredAdvisers.map((adviser, index) => (
-                        <TableRow key={index} className="border-border hover:bg-muted/50">
-                          <TableCell className="text-foreground">
+                        <TableRow key={index} className="border-white/10 hover:bg-white/5">
+                          <TableCell className="text-white">
                             <div>
                               <div className="font-medium">{adviser.fullName}</div>
-                              <div className="text-sm text-muted-foreground">Age: {adviser.age}</div>
+                              <div className="text-sm text-white/60">Age: {adviser.age}</div>
                             </div>
                           </TableCell>
-                          <TableCell className="text-foreground">
+                          <TableCell className="text-white">
                             <div className="text-sm">{adviser.intermediary}</div>
                           </TableCell>
-                          <TableCell className="text-foreground">
+                          <TableCell className="text-white">
                             <div>
                               <div className="font-medium">{adviser.city}</div>
-                              <div className="text-sm text-muted-foreground">{adviser.province}</div>
+                              <div className="text-sm text-white/60">{adviser.province}</div>
                             </div>
                           </TableCell>
-                          <TableCell className="text-foreground">
-                            {adviser.role && (
-                              <Badge variant="secondary" className="bg-secondary text-secondary-foreground">
+                          <TableCell className="text-white">{adviser.role && (
+                              <Badge variant="secondary" className="bg-white/10 text-white border-white/20">
                                 {adviser.role}
                               </Badge>
                             )}
                           </TableCell>
-                          <TableCell className="text-foreground">
+                          <TableCell className="text-white">
                             {adviser.portfolio && (
                               <div className="text-sm font-medium">{adviser.portfolio}</div>
                             )}
@@ -358,9 +357,9 @@ export default function FinancialAdvisersPortal() {
 
           <TabsContent value="analytics" className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Card className="bg-card border-border">
+              <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
                 <CardHeader>
-                  <CardTitle className="text-card-foreground">Distribution by Region</CardTitle>
+                  <CardTitle className="text-white">Distribution by Region</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
@@ -370,12 +369,12 @@ export default function FinancialAdvisersPortal() {
                       return (
                         <div key={region} className="space-y-2">
                           <div className="flex justify-between text-sm">
-                            <span className="text-foreground">{region}</span>
-                            <span className="text-muted-foreground">{count} ({percentage}%)</span>
+                            <span className="text-white">{region}</span>
+                            <span className="text-white/60">{count} ({percentage}%)</span>
                           </div>
-                          <div className="w-full bg-muted rounded-full h-2">
+                          <div className="w-full bg-white/10 rounded-full h-2">
                             <div
-                              className="bg-primary h-2 rounded-full"
+                              className="bg-accent h-2 rounded-full"
                               style={{ width: `${percentage}%` }}
                             />
                           </div>
@@ -386,9 +385,9 @@ export default function FinancialAdvisersPortal() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-card border-border">
+              <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
                 <CardHeader>
-                  <CardTitle className="text-card-foreground">Top Intermediaries</CardTitle>
+                  <CardTitle className="text-white">Top Intermediaries</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
@@ -398,12 +397,12 @@ export default function FinancialAdvisersPortal() {
                       return (
                         <div key={intermediary} className="space-y-2">
                           <div className="flex justify-between text-sm">
-                            <span className="text-foreground truncate flex-1">{intermediary}</span>
-                            <span className="text-muted-foreground ml-2">{count}</span>
+                            <span className="text-white truncate flex-1">{intermediary}</span>
+                            <span className="text-white/60 ml-2">{count}</span>
                           </div>
-                          <div className="w-full bg-muted rounded-full h-2">
+                          <div className="w-full bg-white/10 rounded-full h-2">
                             <div
-                              className="bg-primary h-2 rounded-full"
+                              className="bg-accent h-2 rounded-full"
                               style={{ width: `${percentage}%` }}
                             />
                           </div>
