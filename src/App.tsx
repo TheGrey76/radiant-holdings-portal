@@ -35,6 +35,7 @@ import CrossBorderFundStructuring from "./pages/blog/CrossBorderFundStructuring"
 import AIRESTransformingInvestorTargeting from "./pages/blog/AIRESTransformingInvestorTargeting";
 import AIDrivenDueDiligence from "./pages/blog/AIDrivenDueDiligence";
 import ItalyStructuredProductsRecord from "./pages/blog/ItalyStructuredProductsRecord";
+import StructuredProductsDigitalRevolution from "./pages/blog/StructuredProductsDigitalRevolution";
 import WhyChooseAries from "./pages/WhyChooseAries";
 import LeadershipTeam from "./pages/LeadershipTeam";
 import VettaFiProposal from "./pages/VettaFiProposal";
@@ -94,6 +95,7 @@ const App = () => (
           <Route path="/blog/aires-ai-transforming-investor-targeting" element={<AIRESTransformingInvestorTargeting />} />
           <Route path="/blog/ai-driven-due-diligence-private-markets" element={<AIDrivenDueDiligence />} />
           <Route path="/blog/italy-structured-products-record-q3-2025" element={<ItalyStructuredProductsRecord />} />
+          <Route path="/blog/structured-products-digital-revolution-2025" element={<StructuredProductsDigitalRevolution />} />
           <Route path="/press" element={<Press />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

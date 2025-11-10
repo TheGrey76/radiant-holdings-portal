@@ -9,6 +9,14 @@ const Blog = () => {
 
   const blogPosts = [
     {
+      title: "The Digital Revolution in Structured Products: Tokenization and AI Transform the Market in 2025",
+      excerpt: "How blockchain tokenization, AI-powered structuring, and digital distribution are reshaping the €500 billion European structured products market.",
+      category: "Structured Products",
+      date: "2025-11-10",
+      readTime: "8 min read",
+      slug: "structured-products-digital-revolution-2025"
+    },
+    {
       title: "Italy's Structured Products Market Reaches Record €8 Billion in Q3 2025",
       excerpt: "The Italian certificates market achieves unprecedented volumes with €8 billion placed in Q3 2025, marking a 47% year-over-year increase and confirming the structural growth of this dynamic sector.",
       category: "Structured Products",
