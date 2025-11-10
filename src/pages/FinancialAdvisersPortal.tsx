@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Building2, TrendingUp, FileText, Search, ExternalLink, Mail, Phone, MapPin } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import Navbar from "@/components/Navbar";
+import ImportAdvisersDialog from "@/components/ImportAdvisersDialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -130,9 +131,12 @@ export default function FinancialAdvisersPortal() {
       <Navbar />
       
       <div className="container mx-auto px-6 py-24 pt-32 max-w-7xl">
-        <div className="mb-8">
-          <h1 className="text-4xl font-light text-white mb-2">Financial Advisers Portal</h1>
-          <p className="text-white/60 text-lg">Access our network of financial advisers and investment professionals</p>
+        <div className="mb-8 flex justify-between items-start">
+          <div>
+            <h1 className="text-4xl font-light text-white mb-2">Financial Advisers Portal</h1>
+            <p className="text-white/60 text-lg">Access our network of financial advisers and investment professionals</p>
+          </div>
+          <ImportAdvisersDialog onImportComplete={fetchAdvisers} />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
