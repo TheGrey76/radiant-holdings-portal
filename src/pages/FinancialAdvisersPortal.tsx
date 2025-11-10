@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Building2, TrendingUp, FileText, Search, ExternalLink, Mail, Phone, MapPin } from "lucide-react";
+import { Building2, TrendingUp, FileText, Search, ExternalLink, Mail, Phone, MapPin, Linkedin } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import Navbar from "@/components/Navbar";
 import ImportAdvisersDialog from "@/components/ImportAdvisersDialog";
@@ -32,6 +32,7 @@ interface FinancialAdviser {
   role: string;
   region: string;
   portfolio: string;
+  linkedinUrl: string;
 }
 
 export default function FinancialAdvisersPortal() {
@@ -70,7 +71,8 @@ export default function FinancialAdvisersPortal() {
           email: adviser.email || '',
           role: adviser.role || '',
           region: adviser.region || '',
-          portfolio: adviser.portfolio || ''
+          portfolio: adviser.portfolio || '',
+          linkedinUrl: adviser.linkedin_url || ''
         }));
         setFinancialAdvisers(mappedData);
       }
@@ -274,6 +276,16 @@ export default function FinancialAdvisersPortal() {
                                   className="hover:bg-accent hover:text-accent-foreground"
                                 >
                                   <Phone className="h-4 w-4" />
+                                </Button>
+                              )}
+                              {adviser.linkedinUrl && (
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => window.open(adviser.linkedinUrl, '_blank')}
+                                  className="hover:bg-accent hover:text-accent-foreground"
+                                >
+                                  <Linkedin className="h-4 w-4" />
                                 </Button>
                               )}
                             </div>

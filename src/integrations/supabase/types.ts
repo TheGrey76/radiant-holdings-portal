@@ -98,6 +98,7 @@ export type Database = {
           id: string
           intermediary: string | null
           last_name: string
+          linkedin_url: string | null
           phone: string | null
           portfolio: string | null
           province: string | null
@@ -116,6 +117,7 @@ export type Database = {
           id?: string
           intermediary?: string | null
           last_name: string
+          linkedin_url?: string | null
           phone?: string | null
           portfolio?: string | null
           province?: string | null
@@ -134,6 +136,7 @@ export type Database = {
           id?: string
           intermediary?: string | null
           last_name?: string
+          linkedin_url?: string | null
           phone?: string | null
           portfolio?: string | null
           province?: string | null
