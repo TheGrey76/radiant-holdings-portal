@@ -250,14 +250,12 @@ export default function FinancialAdvisersPortal() {
                   <Table>
                     <TableHeader>
                       <TableRow className="border-white/10 hover:bg-white/5">
-                        <TableHead className="text-white/70">Name</TableHead>
-                        <TableHead className="text-white/70">Intermediary</TableHead>
-                        <TableHead className="text-white/70">Location</TableHead>
-                        <TableHead className="text-white/70">Email</TableHead>
-                        <TableHead className="text-white/70">Role</TableHead>
-                        <TableHead className="text-white/70">Portfolio</TableHead>
-                        <TableHead className="text-white/70">Contact</TableHead>
-                        {isAdmin && <TableHead className="text-white/70">Actions</TableHead>}
+                        <TableHead className="text-white/70 w-[200px]">Adviser</TableHead>
+                        <TableHead className="text-white/70 w-[180px]">Intermediary</TableHead>
+                        <TableHead className="text-white/70 w-[140px]">Location</TableHead>
+                        <TableHead className="text-white/70 w-[180px]">Contact Info</TableHead>
+                        <TableHead className="text-white/70 w-[120px]">Details</TableHead>
+                        {isAdmin && <TableHead className="text-white/70 w-[80px]">Edit</TableHead>}
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -265,70 +263,58 @@ export default function FinancialAdvisersPortal() {
                         <TableRow key={index} className="border-white/10 hover:bg-white/5">
                           <TableCell className="text-white">
                             <div>
-                              <div className="font-medium">{adviser.fullName}</div>
-                              <div className="text-sm text-white/60">Age: {adviser.age}</div>
+                              <div className="font-medium text-sm">{adviser.fullName}</div>
+                              <div className="text-xs text-white/60">Age: {adviser.age}</div>
                             </div>
                           </TableCell>
                           <TableCell className="text-white">
-                            <div className="text-sm">{adviser.intermediary}</div>
+                            <div className="text-xs truncate max-w-[180px]" title={adviser.intermediary}>
+                              {adviser.intermediary}
+                            </div>
                           </TableCell>
                           <TableCell className="text-white">
                             <div>
-                              <div className="font-medium">{adviser.city}</div>
-                              <div className="text-sm text-white/60">{adviser.province}</div>
+                              <div className="text-sm">{adviser.city}</div>
+                              <div className="text-xs text-white/60">{adviser.province}</div>
                             </div>
                           </TableCell>
                           <TableCell className="text-white">
-                            {adviser.email ? (
-                              <a href={`mailto:${adviser.email}`} className="text-white/80 hover:text-white text-sm hover:underline">
-                                {adviser.email}
-                              </a>
-                            ) : (
-                              <span className="text-white/40 text-sm">-</span>
-                            )}
-                          </TableCell>
-                          <TableCell className="text-white">{adviser.role && (
-                              <Badge variant="secondary" className="bg-white/10 text-white border-white/20">
-                                {adviser.role}
-                              </Badge>
-                            )}
-                          </TableCell>
-                          <TableCell className="text-white">
-                            {adviser.portfolio && (
-                              <div className="text-sm font-medium">{adviser.portfolio}</div>
-                            )}
-                          </TableCell>
-                          <TableCell>
-                            <div className="flex gap-2">
+                            <div className="space-y-1">
                               {adviser.email && (
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={() => window.location.href = `mailto:${adviser.email}`}
-                                  className="hover:bg-white/10 text-white/80 hover:text-white"
-                                >
-                                  <Mail className="h-4 w-4" />
-                                </Button>
+                                <div className="flex items-center gap-1">
+                                  <Mail className="h-3 w-3 text-white/60" />
+                                  <a href={`mailto:${adviser.email}`} className="text-xs text-white/80 hover:text-white hover:underline truncate max-w-[160px]" title={adviser.email}>
+                                    {adviser.email}
+                                  </a>
+                                </div>
                               )}
                               {adviser.phone && (
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={() => window.location.href = `tel:${adviser.phone}`}
-                                  className="hover:bg-white/10 text-white/80 hover:text-white"
-                                >
-                                  <Phone className="h-4 w-4" />
-                                </Button>
+                                <div className="flex items-center gap-1">
+                                  <Phone className="h-3 w-3 text-white/60" />
+                                  <a href={`tel:${adviser.phone}`} className="text-xs text-white/80 hover:text-white hover:underline">
+                                    {adviser.phone}
+                                  </a>
+                                </div>
                               )}
                               {adviser.linkedinUrl && (
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={() => window.open(adviser.linkedinUrl, '_blank')}
-                                  className="hover:bg-white/10 text-white/80 hover:text-white"
-                                >
-                                  <Linkedin className="h-4 w-4" />
-                                </Button>
+                                <div className="flex items-center gap-1">
+                                  <Linkedin className="h-3 w-3 text-white/60" />
+                                  <a href={adviser.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-white/80 hover:text-white hover:underline">
+                                    LinkedIn
+                                  </a>
+                                </div>
+                              )}
+                            </div>
+                          </TableCell>
+                          <TableCell className="text-white">
+                            <div className="space-y-1">
+                              {adviser.role && (
+                                <Badge variant="secondary" className="bg-white/10 text-white border-white/20 text-xs">
+                                  {adviser.role}
+                                </Badge>
+                              )}
+                              {adviser.portfolio && (
+                                <div className="text-xs text-white/60">{adviser.portfolio}</div>
                               )}
                             </div>
                           </TableCell>
