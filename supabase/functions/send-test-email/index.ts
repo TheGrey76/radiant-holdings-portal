@@ -264,7 +264,7 @@ serve(async (req) => {
             </div>
             
             <div class="content">
-              <div class="greeting">Gentile [Nome Destinatario],</div>
+              <div class="greeting">Gentile Mario Rossi,</div>
               
               <div class="main-content">
                 ${content}
