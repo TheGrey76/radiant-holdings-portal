@@ -159,7 +159,14 @@ export default function FinancialAdvisersPortal() {
       <div className="container mx-auto px-6 py-24 pt-32 max-w-7xl">
         <div className="mb-8 flex justify-between items-start">
           <div>
-            <h1 className="text-4xl font-light text-white mb-2">Financial Advisers Portal</h1>
+            <div className="flex items-center gap-3 mb-2">
+              <h1 className="text-4xl font-light text-white">Financial Advisers Portal</h1>
+              {isAdmin && (
+                <Badge className="bg-primary text-white border-primary/20">
+                  ADMIN MODE
+                </Badge>
+              )}
+            </div>
             <p className="text-white/60 text-lg">Access our network of financial advisers and investment professionals</p>
           </div>
           <ImportAdvisersDialog onImportComplete={fetchAdvisers} />
