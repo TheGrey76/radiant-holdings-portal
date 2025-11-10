@@ -6,8 +6,18 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { Mail, Send, Eye, History } from "lucide-react";
+import { Mail, Send, Eye, History, AlertTriangle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import {
   Table,
   TableBody,
@@ -50,6 +60,7 @@ export default function EmailCampaignTab({
   const [showHistory, setShowHistory] = useState(false);
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [previewMode, setPreviewMode] = useState(false);
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
   // Form state
   const [campaignName, setCampaignName] = useState("");
@@ -223,7 +234,8 @@ export default function EmailCampaignTab({
     }
   };
 
-  const handleSendCampaign = async () => {
+
+  const confirmAndSendCampaign = () => {
     if (!campaignName.trim() || !subject.trim() || !content.trim()) {
       toast({
         title: "Campi Mancanti",
@@ -242,6 +254,12 @@ export default function EmailCampaignTab({
       });
       return;
     }
+
+    setShowConfirmDialog(true);
+  };
+
+  const handleSendCampaign = async () => {
+    setShowConfirmDialog(false);
 
     try {
       setLoading(true);
@@ -565,9 +583,9 @@ export default function EmailCampaignTab({
                 {previewMode ? "Nascondi" : "Anteprima"}
               </Button>
               <Button
-                onClick={handleSendCampaign}
+                onClick={confirmAndSendCampaign}
                 disabled={loading}
-                className="flex-1 bg-accent hover:bg-accent/90 text-white"
+                className="flex-1 bg-red-500 hover:bg-red-600 text-white"
               >
                 <Send className="h-4 w-4 mr-2" />
                 {loading ? "Invio in corso..." : "Invia Campagna"}
@@ -707,6 +725,47 @@ export default function EmailCampaignTab({
           </Card>
         )}
       </div>
+
+      <AlertDialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
+        <AlertDialogContent className="bg-gradient-to-br from-[#0f1729] to-[#1a2744] border-red-500/30">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2 text-white text-xl">
+              <AlertTriangle className="h-6 w-6 text-red-500" />
+              Conferma Invio Campagna
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-gray-300 space-y-3 pt-2">
+              <p className="text-base">Stai per inviare questa campagna email a:</p>
+              <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 space-y-2">
+                <p className="text-white font-semibold text-lg">{getRecipientCount()} advisers finanziari</p>
+                {regionFilter !== "all" && (
+                  <p className="text-sm text-gray-400">Regione: <span className="text-white">{regionFilter}</span></p>
+                )}
+                {intermediaryFilter !== "all" && (
+                  <p className="text-sm text-gray-400">Intermediario: <span className="text-white">{intermediaryFilter}</span></p>
+                )}
+              </div>
+              <div className="space-y-1 text-sm">
+                <p><strong className="text-white">Oggetto:</strong> <span className="text-gray-400">{subject}</span></p>
+                <p><strong className="text-white">Campagna:</strong> <span className="text-gray-400">{campaignName}</span></p>
+              </div>
+              <p className="text-yellow-300 font-medium pt-2">
+                ⚠️ Questa azione non può essere annullata. Sei sicuro di voler procedere?
+              </p>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="bg-white/10 text-white border-white/20 hover:bg-white/20">
+              Annulla
+            </AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={handleSendCampaign}
+              className="bg-red-500 hover:bg-red-600 text-white"
+            >
+              Conferma e Invia
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
