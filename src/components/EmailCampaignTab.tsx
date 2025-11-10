@@ -68,8 +68,9 @@ export default function EmailCampaignTab({
   const [testEmail, setTestEmail] = useState("");
   const [sendingTest, setSendingTest] = useState(false);
   const [content, setContent] = useState(`<div class="highlight-box">
-  <p style="font-size: 17px; font-weight: 600; color: #60a5fa; margin-bottom: 12px;">Opportunità Esclusive - Structured Products ARIES76</p>
-  <p>In un contesto di mercato in continua evoluzione, i nostri Structured Products rappresentano la soluzione ideale per offrire ai vostri clienti strumenti di investimento sofisticati, trasparenti e personalizzabili.</p>
+  <p style="font-size: 17px; font-weight: 600; color: #60a5fa; margin-bottom: 12px;">Buongiorno,</p>
+  <p>vi scriviamo oggi per condividere con voi una nuova opportunità che crediamo possa davvero fare la differenza per i vostri clienti: i nostri Structured Products ARIES76.</p>
+  <p>In questo momento di mercato così dinamico, sappiamo quanto sia importante offrire strumenti che combinino protezione e performance. Ed è proprio qui che entriamo in gioco noi.</p>
 </div>
 
 <div class="feature-grid">
@@ -95,12 +96,12 @@ export default function EmailCampaignTab({
   </div>
 </div>
 
-<p><strong>Le nostre soluzioni includono:</strong></p>
+<p>Avete mai pensato a quanto potrebbe essere prezioso offrire ai vostri clienti:</p>
 <ul>
-  <li><strong>Capital Protected Notes</strong> - Protezione del capitale al 100% con partecipazione ai mercati azionari</li>
-  <li><strong>Yield Enhancement</strong> - Ottimizzazione del rendimento attraverso strategie opzionali avanzate</li>
-  <li><strong>Participation Products</strong> - Esposizione diretta a indici e basket personalizzati</li>
-  <li><strong>Multi-Asset Solutions</strong> - Combinazioni sofisticate di asset class diverse</li>
+  <li><strong>Capital Protected Notes</strong> - Il capitale è al sicuro al 100%, ma possono comunque partecipare alla crescita dei mercati azionari</li>
+  <li><strong>Yield Enhancement</strong> - Rendiamo più interessanti anche gli investimenti più prudenti, grazie a strategie opzionali sofisticate</li>
+  <li><strong>Participation Products</strong> - Esposizione diretta a indici e basket che costruiamo su misura</li>
+  <li><strong>Multi-Asset Solutions</strong> - Perché limitarsi a una sola asset class quando si possono combinare più opportunità?</li>
 </ul>
 
 <div class="stats-container">
@@ -118,27 +119,28 @@ export default function EmailCampaignTab({
   </div>
 </div>
 
-<p>I nostri Structured Products sono progettati in collaborazione con i principali emittenti internazionali e offrono:</p>
+<p>Lavoriamo fianco a fianco con i migliori emittenti internazionali, e tutto quello che facciamo passa per controlli rigorosi. Vi diamo anche:</p>
 <ul>
-  <li>Strutture certificate e quotate su mercati regolamentati</li>
-  <li>Due diligence istituzionale su tutti gli emittenti</li>
-  <li>Supporto continuo pre e post-vendita</li>
-  <li>Materiale marketing professionale per i vostri clienti</li>
+  <li>Strutture certificate, quotate su mercati regolamentati - nessuna sorpresa</li>
+  <li>Una due diligence seria su tutti gli emittenti con cui collaboriamo</li>
+  <li>Supporto costante, dalla fase di pre-vendita fino a dopo la sottoscrizione</li>
+  <li>Materiale marketing già pronto che potete condividere direttamente con i vostri clienti</li>
 </ul>
 
 <div class="cta-container">
-  <a href="https://aries76.com/contact" class="cta-primary">Richiedi Informazioni</a>
+  <a href="https://aries76.com/contact" class="cta-primary">Parliamone insieme</a>
 </div>
 
-<p style="margin-top: 30px;">Il nostro team di specialist è a vostra disposizione per:</p>
+<p style="margin-top: 30px;">Se vi interessa approfondire, il nostro team è qui per voi. Possiamo:</p>
 <ul>
-  <li>Presentazioni personalizzate per i vostri team</li>
-  <li>Analisi di soluzioni su misura per portafogli specifici</li>
-  <li>Supporto nella strutturazione di prodotti dedicati</li>
-  <li>Formazione continua sulle ultime innovazioni del mercato</li>
+  <li>Venire a presentarvi le soluzioni in una sessione dedicata al vostro team</li>
+  <li>Analizzare insieme quali prodotti potrebbero funzionare meglio per portafogli specifici</li>
+  <li>Aiutarvi a strutturare prodotti dedicati, se ne avete bisogno</li>
+  <li>Tenervi aggiornati sulle ultime novità e innovazioni di questo mercato</li>
 </ul>
 
-<p><strong>Non perdete l'opportunità di offrire ai vostri clienti le soluzioni più innovative del mercato.</strong></p>`);
+<p><strong>Se pensate che potrebbe essere interessante per voi e per i vostri clienti, basta un click. Ci facciamo sentire e ne parliamo con calma.</strong></p>
+<p>A presto,<br>Il Team ARIES76</p>`);
   const [regionFilter, setRegionFilter] = useState("all");
   const [intermediaryFilter, setIntermediaryFilter] = useState("all");
 
@@ -301,23 +303,24 @@ export default function EmailCampaignTab({
       // Reset form
       setCampaignName("");
       setContent(`<div class="highlight-box">
-  <p style="font-size: 17px; font-weight: 600; color: #60a5fa; margin-bottom: 12px;">Opportunità Esclusive - Structured Products ARIES76</p>
-  <p>In un contesto di mercato in continua evoluzione, i nostri Structured Products rappresentano la soluzione ideale per offrire ai vostri clienti strumenti di investimento sofisticati, trasparenti e personalizzabili.</p>
+  <p style="font-size: 17px; font-weight: 600; color: #60a5fa; margin-bottom: 12px;">Buongiorno,</p>
+  <p>vi scriviamo oggi per condividere con voi una nuova opportunità che crediamo possa davvero fare la differenza per i vostri clienti: i nostri Structured Products ARIES76.</p>
+  <p>In questo momento di mercato così dinamico, sappiamo quanto sia importante offrire strumenti che combinino protezione e performance. Ed è proprio qui che entriamo in gioco noi.</p>
 </div>
 
 <div class="feature-grid">
   <div class="feature-card">
-    <div class="feature-icon">🛡️</div>
+    <div class="feature-icon">◆</div>
     <div class="feature-title">Protezione Garantita</div>
     <div class="feature-desc">Capitale protetto con rendimenti potenziali superiori al mercato</div>
   </div>
   <div class="feature-card">
-    <div class="feature-icon">📊</div>
+    <div class="feature-icon">◊</div>
     <div class="feature-title">Diversificazione</div>
     <div class="feature-desc">Accesso a strategie multi-asset e geografiche</div>
   </div>
   <div class="feature-card">
-    <div class="feature-icon">⚙️</div>
+    <div class="feature-icon">●</div>
     <div class="feature-title">Su Misura</div>
     <div class="feature-desc">Soluzioni personalizzate per ogni profilo di rischio</div>
   </div>
@@ -328,12 +331,12 @@ export default function EmailCampaignTab({
   </div>
 </div>
 
-<p><strong>Le nostre soluzioni includono:</strong></p>
+<p>Avete mai pensato a quanto potrebbe essere prezioso offrire ai vostri clienti:</p>
 <ul>
-  <li><strong>Capital Protected Notes</strong> - Protezione del capitale al 100% con partecipazione ai mercati azionari</li>
-  <li><strong>Yield Enhancement</strong> - Ottimizzazione del rendimento attraverso strategie opzionali avanzate</li>
-  <li><strong>Participation Products</strong> - Esposizione diretta a indici e basket personalizzati</li>
-  <li><strong>Multi-Asset Solutions</strong> - Combinazioni sofisticate di asset class diverse</li>
+  <li><strong>Capital Protected Notes</strong> - Il capitale è al sicuro al 100%, ma possono comunque partecipare alla crescita dei mercati azionari</li>
+  <li><strong>Yield Enhancement</strong> - Rendiamo più interessanti anche gli investimenti più prudenti, grazie a strategie opzionali sofisticate</li>
+  <li><strong>Participation Products</strong> - Esposizione diretta a indici e basket che costruiamo su misura</li>
+  <li><strong>Multi-Asset Solutions</strong> - Perché limitarsi a una sola asset class quando si possono combinare più opportunità?</li>
 </ul>
 
 <div class="stats-container">
@@ -351,27 +354,28 @@ export default function EmailCampaignTab({
   </div>
 </div>
 
-<p>I nostri Structured Products sono progettati in collaborazione con i principali emittenti internazionali e offrono:</p>
+<p>Lavoriamo fianco a fianco con i migliori emittenti internazionali, e tutto quello che facciamo passa per controlli rigorosi. Vi diamo anche:</p>
 <ul>
-  <li>Strutture certificate e quotate su mercati regolamentati</li>
-  <li>Due diligence istituzionale su tutti gli emittenti</li>
-  <li>Supporto continuo pre e post-vendita</li>
-  <li>Materiale marketing professionale per i vostri clienti</li>
+  <li>Strutture certificate, quotate su mercati regolamentati - nessuna sorpresa</li>
+  <li>Una due diligence seria su tutti gli emittenti con cui collaboriamo</li>
+  <li>Supporto costante, dalla fase di pre-vendita fino a dopo la sottoscrizione</li>
+  <li>Materiale marketing già pronto che potete condividere direttamente con i vostri clienti</li>
 </ul>
 
 <div class="cta-container">
-  <a href="https://aries76.com/contact" class="cta-primary">Richiedi Informazioni</a>
+  <a href="https://aries76.com/contact" class="cta-primary">Parliamone insieme</a>
 </div>
 
-<p style="margin-top: 30px;">Il nostro team di specialist è a vostra disposizione per:</p>
+<p style="margin-top: 30px;">Se vi interessa approfondire, il nostro team è qui per voi. Possiamo:</p>
 <ul>
-  <li>Presentazioni personalizzate per i vostri team</li>
-  <li>Analisi di soluzioni su misura per portafogli specifici</li>
-  <li>Supporto nella strutturazione di prodotti dedicati</li>
-  <li>Formazione continua sulle ultime innovazioni del mercato</li>
+  <li>Venire a presentarvi le soluzioni in una sessione dedicata al vostro team</li>
+  <li>Analizzare insieme quali prodotti potrebbero funzionare meglio per portafogli specifici</li>
+  <li>Aiutarvi a strutturare prodotti dedicati, se ne avete bisogno</li>
+  <li>Tenervi aggiornati sulle ultime novità e innovazioni di questo mercato</li>
 </ul>
 
-<p><strong>Non perdete l'opportunità di offrire ai vostri clienti le soluzioni più innovative del mercato.</strong></p>`);
+<p><strong>Se pensate che potrebbe essere interessante per voi e per i vostri clienti, basta un click. Ci facciamo sentire e ne parliamo con calma.</strong></p>
+<p>A presto,<br>Il Team ARIES76</p>`);
       setRegionFilter("all");
       setIntermediaryFilter("all");
       setPreviewMode(false);
