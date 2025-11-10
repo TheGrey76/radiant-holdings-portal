@@ -8,6 +8,7 @@ import Navbar from "@/components/Navbar";
 import ImportAdvisersDialog from "@/components/ImportAdvisersDialog";
 import BackToTop from "@/components/BackToTop";
 import EditAdviserDialog from "@/components/EditAdviserDialog";
+import EmailCampaignTab from "@/components/EmailCampaignTab";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -188,9 +189,12 @@ export default function FinancialAdvisersPortal() {
         </div>
 
         <Tabs defaultValue="advisers" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 bg-white/5 border-white/10">
+          <TabsList className="grid w-full grid-cols-3 bg-white/5 border-white/10">
             <TabsTrigger value="advisers" className="data-[state=active]:bg-white/10 data-[state=active]:text-white text-white/60">
               Financial Advisers
+            </TabsTrigger>
+            <TabsTrigger value="campaigns" className="data-[state=active]:bg-white/10 data-[state=active]:text-white text-white/60">
+              Email Campaigns
             </TabsTrigger>
             <TabsTrigger value="analytics" className="data-[state=active]:bg-white/10 data-[state=active]:text-white text-white/60">
               Analytics
@@ -330,6 +334,23 @@ export default function FinancialAdvisersPortal() {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="campaigns" className="space-y-4">
+            {isAdmin ? (
+              <EmailCampaignTab
+                regions={uniqueRegions}
+                intermediaries={uniqueIntermediaries}
+                adviserCount={financialAdvisers.length}
+                filteredCount={filteredAdvisers.length}
+              />
+            ) : (
+              <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
+                <CardContent className="p-8 text-center">
+                  <p className="text-white/60">È richiesto l'accesso amministratore per gestire le campagne email.</p>
+                </CardContent>
+              </Card>
+            )}
           </TabsContent>
 
           <TabsContent value="analytics" className="space-y-4">

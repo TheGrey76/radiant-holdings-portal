@@ -86,6 +86,54 @@ export type Database = {
         }
         Relationships: []
       }
+      email_campaigns: {
+        Row: {
+          campaign_name: string
+          content: string
+          created_at: string
+          failed_sends: number
+          filter_intermediary: string | null
+          filter_region: string | null
+          id: string
+          recipient_count: number
+          sent_at: string | null
+          sent_by: string | null
+          status: string
+          subject: string
+          successful_sends: number
+        }
+        Insert: {
+          campaign_name: string
+          content: string
+          created_at?: string
+          failed_sends?: number
+          filter_intermediary?: string | null
+          filter_region?: string | null
+          id?: string
+          recipient_count?: number
+          sent_at?: string | null
+          sent_by?: string | null
+          status?: string
+          subject: string
+          successful_sends?: number
+        }
+        Update: {
+          campaign_name?: string
+          content?: string
+          created_at?: string
+          failed_sends?: number
+          filter_intermediary?: string | null
+          filter_region?: string | null
+          id?: string
+          recipient_count?: number
+          sent_at?: string | null
+          sent_by?: string | null
+          status?: string
+          subject?: string
+          successful_sends?: number
+        }
+        Relationships: []
+      }
       financial_advisers: {
         Row: {
           age: number | null
