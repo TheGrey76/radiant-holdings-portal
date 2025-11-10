@@ -54,21 +54,26 @@ export default function EmailCampaignTab({
   // Form state
   const [campaignName, setCampaignName] = useState("");
   const [subject, setSubject] = useState("ARIES76 Structured Products - Nuova Opportunità di Investimento");
-  const [content, setContent] = useState(`<p>Siamo lieti di presentarvi le ultime opportunità nei <strong>Structured Products</strong> di ARIES76.</p>
+  const [content, setContent] = useState(`<div class="highlight-box">
+  <p><strong>Novità Structured Products ARIES76</strong></p>
+  <p>Siamo lieti di presentarvi le ultime opportunità nei nostri Structured Products, progettati per offrire ai vostri clienti soluzioni di investimento innovative e personalizzate.</p>
+</div>
 
-<p>I nostri structured products offrono:</p>
+<p><strong>I nostri Structured Products offrono:</strong></p>
 <ul>
-  <li>Protezione del capitale con potenziale di rendimento</li>
-  <li>Diversificazione del portafoglio</li>
-  <li>Soluzioni personalizzate per clienti istituzionali</li>
-  <li>Trasparenza e conformità regolamentare</li>
+  <li><strong>Protezione del capitale</strong> con potenziale di rendimento superiore</li>
+  <li><strong>Diversificazione strategica</strong> del portafoglio d'investimento</li>
+  <li><strong>Soluzioni su misura</strong> per clienti istituzionali e private</li>
+  <li><strong>Trasparenza totale</strong> e conformità regolamentare</li>
 </ul>
 
-<p>Per maggiori informazioni sui nostri prodotti strutturati e per discutere opportunità specifiche per i vostri clienti, non esitate a contattarci.</p>
+<p>Le nostre strutture sono pensate per rispondere alle esigenze più sofisticate del mercato, combinando protezione e opportunità di crescita.</p>
 
-<a href="https://aries76.com/structured-products" class="cta-button">Scopri di più</a>
+<div class="cta-container">
+  <a href="https://aries76.com/structured-products" class="cta-button">Scopri le Nostre Soluzioni</a>
+</div>
 
-<p>Cordiali saluti,<br>Il Team ARIES76</p>`);
+<p>Per discutere opportunità specifiche per i vostri clienti o per ricevere la nostra documentazione dettagliata, il nostro team è a vostra completa disposizione.</p>`);
   const [regionFilter, setRegionFilter] = useState("all");
   const [intermediaryFilter, setIntermediaryFilter] = useState("all");
 
@@ -163,21 +168,26 @@ export default function EmailCampaignTab({
 
       // Reset form
       setCampaignName("");
-      setContent(`<p>Siamo lieti di presentarvi le ultime opportunità nei <strong>Structured Products</strong> di ARIES76.</p>
+      setContent(`<div class="highlight-box">
+  <p><strong>Novità Structured Products ARIES76</strong></p>
+  <p>Siamo lieti di presentarvi le ultime opportunità nei nostri Structured Products, progettati per offrire ai vostri clienti soluzioni di investimento innovative e personalizzate.</p>
+</div>
 
-<p>I nostri structured products offrono:</p>
+<p><strong>I nostri Structured Products offrono:</strong></p>
 <ul>
-  <li>Protezione del capitale con potenziale di rendimento</li>
-  <li>Diversificazione del portafoglio</li>
-  <li>Soluzioni personalizzate per clienti istituzionali</li>
-  <li>Trasparenza e conformità regolamentare</li>
+  <li><strong>Protezione del capitale</strong> con potenziale di rendimento superiore</li>
+  <li><strong>Diversificazione strategica</strong> del portafoglio d'investimento</li>
+  <li><strong>Soluzioni su misura</strong> per clienti istituzionali e private</li>
+  <li><strong>Trasparenza totale</strong> e conformità regolamentare</li>
 </ul>
 
-<p>Per maggiori informazioni sui nostri prodotti strutturati e per discutere opportunità specifiche per i vostri clienti, non esitate a contattarci.</p>
+<p>Le nostre strutture sono pensate per rispondere alle esigenze più sofisticate del mercato, combinando protezione e opportunità di crescita.</p>
 
-<a href="https://aries76.com/structured-products" class="cta-button">Scopri di più</a>
+<div class="cta-container">
+  <a href="https://aries76.com/structured-products" class="cta-button">Scopri le Nostre Soluzioni</a>
+</div>
 
-<p>Cordiali saluti,<br>Il Team ARIES76</p>`);
+<p>Per discutere opportunità specifiche per i vostri clienti o per ricevere la nostra documentazione dettagliata, il nostro team è a vostra completa disposizione.</p>`);
       setRegionFilter("all");
       setIntermediaryFilter("all");
       setPreviewMode(false);
@@ -382,20 +392,38 @@ export default function EmailCampaignTab({
               <CardTitle className="text-white">Anteprima Email</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="bg-white rounded-lg p-6 text-gray-900">
-                <div className="bg-gradient-to-r from-[#0f1729] to-[#1a2744] text-white p-8 text-center rounded-t-lg">
-                  <h1 className="text-2xl font-bold">ARIES76 Structured Products</h1>
+              <div className="bg-white rounded-lg overflow-hidden shadow-xl">
+                <div className="bg-gradient-to-r from-[#0f1729] via-[#1a2744] to-[#2d3f5f] text-white p-10 text-center">
+                  <h1 className="text-3xl font-bold tracking-wider mb-2">ARIES76</h1>
+                  <p className="text-sm text-gray-300 tracking-widest uppercase">Capital Advisory</p>
                 </div>
-                <div className="p-8 bg-gray-50">
-                  <p className="mb-4"><strong>Oggetto:</strong> {subject}</p>
-                  <hr className="my-4" />
-                  <p className="mb-4">Gentile [Nome Adviser],</p>
-                  <div dangerouslySetInnerHTML={{ __html: content }} />
+                <div className="p-8 bg-white">
+                  <p className="text-lg font-medium text-gray-800 mb-5">Gentile [Nome Adviser],</p>
+                  <div 
+                    className="text-gray-700 leading-relaxed prose prose-blue max-w-none"
+                    dangerouslySetInnerHTML={{ __html: content }} 
+                    style={{
+                      fontSize: '15px',
+                    }}
+                  />
+                  <div className="mt-8 pt-6 border-t-2 border-gray-100">
+                    <p className="font-semibold text-gray-900">Il Team ARIES76</p>
+                    <p className="text-sm text-gray-600">Capital Advisory</p>
+                  </div>
                 </div>
-                <div className="p-6 text-center text-sm text-gray-600 bg-gray-100 rounded-b-lg">
-                  <p>ARIES76 Capital Advisory<br />
-                  London, United Kingdom<br />
-                  <a href="https://aries76.com" className="text-blue-600">www.aries76.com</a></p>
+                <div className="bg-[#0f1729] p-8 text-center text-gray-400 text-sm">
+                  <p className="text-white font-semibold mb-1">ARIES76 Capital Advisory</p>
+                  <p className="mb-3">London, United Kingdom</p>
+                  <div className="space-x-4 mb-4">
+                    <a href="https://aries76.com" className="text-blue-400 hover:text-blue-300">Website</a>
+                    <span className="text-gray-600">•</span>
+                    <a href="https://aries76.com/structured-products" className="text-blue-400 hover:text-blue-300">Structured Products</a>
+                    <span className="text-gray-600">•</span>
+                    <a href="https://aries76.com/contact" className="text-blue-400 hover:text-blue-300">Contattaci</a>
+                  </div>
+                  <div className="border-t border-gray-700 pt-4 mt-4 text-xs">
+                    <p>&copy; 2025 ARIES76. Tutti i diritti riservati.</p>
+                  </div>
                 </div>
               </div>
             </CardContent>
