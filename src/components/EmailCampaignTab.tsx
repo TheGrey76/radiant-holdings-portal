@@ -54,6 +54,8 @@ export default function EmailCampaignTab({
   // Form state
   const [campaignName, setCampaignName] = useState("");
   const [subject, setSubject] = useState("ARIES76 Structured Products - Nuova Opportunità di Investimento");
+  const [testEmail, setTestEmail] = useState("");
+  const [sendingTest, setSendingTest] = useState(false);
   const [content, setContent] = useState(`<div class="highlight-box">
   <p style="font-size: 17px; font-weight: 600; color: #60a5fa; margin-bottom: 12px;">Opportunità Esclusive - Structured Products ARIES76</p>
   <p>In un contesto di mercato in continua evoluzione, i nostri Structured Products rappresentano la soluzione ideale per offrire ai vostri clienti strumenti di investimento sofisticati, trasparenti e personalizzabili.</p>
@@ -159,6 +161,66 @@ export default function EmailCampaignTab({
       return adviserCount;
     }
     return filteredCount;
+  };
+
+  const handleSendTest = async () => {
+    if (!testEmail.trim()) {
+      toast({
+        title: "Email Mancante",
+        description: "Inserisci un indirizzo email per il test",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(testEmail)) {
+      toast({
+        title: "Email Non Valida",
+        description: "Inserisci un indirizzo email valido",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!subject.trim() || !content.trim()) {
+      toast({
+        title: "Campi Mancanti",
+        description: "Compila oggetto e contenuto prima di inviare il test",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      setSendingTest(true);
+      console.log("Sending test email to:", testEmail);
+
+      const { data, error } = await supabase.functions.invoke("send-test-email", {
+        body: {
+          testEmail: testEmail,
+          subject: subject,
+          content: content,
+        },
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Email di Test Inviata!",
+        description: `Email di test inviata con successo a ${testEmail}`,
+      });
+    } catch (error: any) {
+      console.error("Error sending test email:", error);
+      toast({
+        title: "Errore Invio Test",
+        description: error.message || "Impossibile inviare l'email di test",
+        variant: "destructive",
+      });
+    } finally {
+      setSendingTest(false);
+    }
   };
 
   const handleSendCampaign = async () => {
@@ -468,7 +530,32 @@ export default function EmailCampaignTab({
               </p>
             </div>
 
-            <div className="flex gap-2">
+            <div className="space-y-3">
+              <div>
+                <label className="text-sm text-white/70 mb-2 block">Email di Test</label>
+                <div className="flex gap-2">
+                  <Input
+                    type="email"
+                    value={testEmail}
+                    onChange={(e) => setTestEmail(e.target.value)}
+                    placeholder="test@esempio.com"
+                    className="flex-1 bg-white/10 text-white border-white/20 placeholder:text-white/50"
+                  />
+                  <Button
+                    onClick={handleSendTest}
+                    disabled={sendingTest}
+                    variant="outline"
+                    className="bg-yellow-500/10 text-yellow-300 border-yellow-500/30 hover:bg-yellow-500/20"
+                  >
+                    <Mail className="h-4 w-4 mr-2" />
+                    {sendingTest ? "Invio..." : "Invia Test"}
+                  </Button>
+                </div>
+                <p className="text-xs text-white/50 mt-2">Invia un'email di prova prima dell'invio massivo</p>
+              </div>
+            </div>
+
+            <div className="flex gap-2 pt-4 border-t border-white/10">
               <Button
                 onClick={() => setPreviewMode(!previewMode)}
                 variant="outline"
