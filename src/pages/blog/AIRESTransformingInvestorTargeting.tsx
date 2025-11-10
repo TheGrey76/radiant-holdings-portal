@@ -2,40 +2,43 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Calendar } from 'lucide-react';
 import { useEffect } from 'react';
+import { Helmet } from 'react-helmet';
 
 const AIRESTransformingInvestorTargeting = () => {
+  const articleUrl = "https://www.aries76.com/blog/aires-transforming-investor-targeting";
+  const articleTitle = "AIRES: How AI is Transforming Investor Targeting";
+  const articleDescription = "Our proprietary AIRES platform uses machine learning to identify optimal LP matches and optimize fundraising strategies.";
+
   useEffect(() => {
     window.scrollTo(0, 0);
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
-    script.innerHTML = JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "Article",
-      "headline": "AIRES: How AI is Transforming Investor Targeting",
-      "description": "Our proprietary AIRES platform uses machine learning to identify optimal LP matches and optimize fundraising strategies.",
-      "author": {
-        "@type": "Organization",
-        "name": "Aries76 Ltd"
-      },
-      "publisher": {
-        "@type": "Organization",
-        "name": "Aries76 Ltd",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://www.aries76.com/aries76-og-logo.png"
-        }
-      },
-      "datePublished": "2025-08-10",
-      "dateModified": "2025-08-10"
-    });
-    document.head.appendChild(script);
-    return () => {
-      document.head.removeChild(script);
-    };
   }, []);
 
   return (
     <div className="min-h-screen bg-background pt-24 pb-20">
+      <Helmet>
+        <title>{articleTitle} | Aries76 Blog</title>
+        <meta name="description" content={articleDescription} />
+        <link rel="canonical" href={articleUrl} />
+        <meta property="article:published_time" content="2025-08-10T09:00:00+00:00" />
+        <meta property="article:modified_time" content="2025-08-10T09:00:00+00:00" />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": articleTitle,
+            "description": articleDescription,
+            "author": { "@type": "Organization", "name": "Aries76 Ltd" },
+            "publisher": {
+              "@type": "Organization",
+              "name": "Aries76 Ltd",
+              "logo": { "@type": "ImageObject", "url": "https://www.aries76.com/aries76-og-logo.png" }
+            },
+            "datePublished": "2025-08-10T09:00:00+00:00",
+            "dateModified": "2025-08-10T09:00:00+00:00",
+            "mainEntityOfPage": { "@type": "WebPage", "@id": articleUrl }
+          })}
+        </script>
+      </Helmet>
       <article className="px-6 md:px-10">
         <div className="max-w-4xl mx-auto">
           <Link
@@ -62,7 +65,7 @@ const AIRESTransformingInvestorTargeting = () => {
             <div className="flex items-center gap-4 text-sm text-muted-foreground mb-12">
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4" />
-                <span>August 10, 2025</span>
+                <time dateTime="2025-08-10T09:00:00+00:00">August 10, 2025</time>
               </div>
               <span>•</span>
               <span>5 min read</span>

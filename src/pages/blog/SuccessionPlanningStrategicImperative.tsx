@@ -2,41 +2,44 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Calendar } from 'lucide-react';
 import { useEffect } from 'react';
+import { Helmet } from 'react-helmet';
 import ShareButtons from '@/components/ShareButtons';
 
 const SuccessionPlanningStrategicImperative = () => {
+  const articleUrl = "https://www.aries76.com/blog/succession-planning-strategic-imperative";
+  const articleTitle = "Succession Planning for Private Equity Firms: A Strategic Imperative";
+  const articleDescription = "How second-generation GPs can navigate leadership transitions while maintaining performance and investor confidence.";
+
   useEffect(() => {
     window.scrollTo(0, 0);
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
-    script.innerHTML = JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "Article",
-      "headline": "Succession Planning for Private Equity Firms: A Strategic Imperative",
-      "description": "How second-generation GPs can navigate leadership transitions while maintaining performance and investor confidence.",
-      "author": {
-        "@type": "Organization",
-        "name": "Aries76 Ltd"
-      },
-      "publisher": {
-        "@type": "Organization",
-        "name": "Aries76 Ltd",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://www.aries76.com/aries76-og-logo.png"
-        }
-      },
-      "datePublished": "2025-10-01",
-      "dateModified": "2025-10-01"
-    });
-    document.head.appendChild(script);
-    return () => {
-      document.head.removeChild(script);
-    };
   }, []);
 
   return (
     <div className="min-h-screen bg-background pt-24 pb-20">
+      <Helmet>
+        <title>{articleTitle} | Aries76 Blog</title>
+        <meta name="description" content={articleDescription} />
+        <link rel="canonical" href={articleUrl} />
+        <meta property="article:published_time" content="2025-10-01T09:00:00+00:00" />
+        <meta property="article:modified_time" content="2025-10-01T09:00:00+00:00" />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": articleTitle,
+            "description": articleDescription,
+            "author": { "@type": "Organization", "name": "Aries76 Ltd" },
+            "publisher": {
+              "@type": "Organization",
+              "name": "Aries76 Ltd",
+              "logo": { "@type": "ImageObject", "url": "https://www.aries76.com/aries76-og-logo.png" }
+            },
+            "datePublished": "2025-10-01T09:00:00+00:00",
+            "dateModified": "2025-10-01T09:00:00+00:00",
+            "mainEntityOfPage": { "@type": "WebPage", "@id": articleUrl }
+          })}
+        </script>
+      </Helmet>
       <article className="px-6 md:px-10">
         <div className="max-w-4xl mx-auto">
           <Link
@@ -63,7 +66,7 @@ const SuccessionPlanningStrategicImperative = () => {
             <div className="flex items-center gap-4 text-sm text-muted-foreground mb-12">
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4" />
-                <span>October 1, 2025</span>
+                <time dateTime="2025-10-01T09:00:00+00:00">October 1, 2025</time>
               </div>
               <span>•</span>
               <span>6 min read</span>

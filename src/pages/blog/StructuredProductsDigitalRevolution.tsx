@@ -37,8 +37,12 @@ const StructuredProductsDigitalRevolution = () => {
           "url": "https://www.aries76.com/aries76-og-logo.png"
         }
       },
-      "datePublished": "2025-11-10",
-      "dateModified": "2025-11-10"
+            "datePublished": "2025-11-10T09:00:00+00:00",
+            "dateModified": "2025-11-10T09:00:00+00:00",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://www.aries76.com/blog/structured-products-digital-revolution-2025"
+            }
     });
     document.head.appendChild(script);
 
@@ -55,6 +59,12 @@ const StructuredProductsDigitalRevolution = () => {
         <title>{articleData.title} | Aries76</title>
         <meta name="description" content={articleData.description} />
         <link rel="canonical" href={articleData.url} />
+        
+        {/* Article metadata */}
+        <meta property="article:published_time" content="2025-11-10T09:00:00+00:00" />
+        <meta property="article:modified_time" content="2025-11-10T09:00:00+00:00" />
+        <meta property="article:author" content="Aries76 Ltd" />
+        <meta property="article:section" content="Structured Products" />
         
         {/* Open Graph */}
         <meta property="og:title" content={articleData.title} />
@@ -92,7 +102,7 @@ const StructuredProductsDigitalRevolution = () => {
             <div className="flex items-center gap-6 text-muted-foreground mb-8 pb-8 border-b border-border/50">
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4" />
-                <span className="text-sm font-light">November 10, 2025</span>
+                <time dateTime="2025-11-10T09:00:00+00:00" className="text-sm font-light">November 10, 2025</time>
               </div>
               <div className="flex items-center gap-2">
                 <Clock className="w-4 h-4" />

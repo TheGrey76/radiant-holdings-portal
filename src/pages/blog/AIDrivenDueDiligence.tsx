@@ -2,42 +2,44 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { useEffect } from 'react';
+import { Helmet } from 'react-helmet';
 import ShareButtons from '@/components/ShareButtons';
 
 const AIDrivenDueDiligence = () => {
+  const articleUrl = "https://www.aries76.com/blog/ai-driven-due-diligence-private-markets";
+  const articleTitle = "AI-Driven Due Diligence: How Machine Learning is Reshaping Private Markets";
+  const articleDescription = "Artificial intelligence is revolutionizing the way GPs analyze deals and LPs evaluate fund managers.";
+
   useEffect(() => {
     window.scrollTo(0, 0);
-    
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
-    script.innerHTML = JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "Article",
-      "headline": "AI-Driven Due Diligence: How Machine Learning is Reshaping Private Markets",
-      "description": "Artificial intelligence is revolutionizing the way GPs analyze deals and LPs evaluate fund managers. We examine the latest AI applications in private markets due diligence and their impact on investment decisions.",
-      "author": {
-        "@type": "Organization",
-        "name": "Aries76 Ltd"
-      },
-      "publisher": {
-        "@type": "Organization",
-        "name": "Aries76 Ltd",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://www.aries76.com/aries76-og-logo.png"
-        }
-      },
-      "datePublished": "2025-11-02",
-      "dateModified": "2025-11-02"
-    });
-    document.head.appendChild(script);
-    return () => {
-      document.head.removeChild(script);
-    };
   }, []);
 
   return (
     <div className="min-h-screen bg-background pt-24 pb-20">
+      <Helmet>
+        <title>{articleTitle} | Aries76 Blog</title>
+        <meta name="description" content={articleDescription} />
+        <link rel="canonical" href={articleUrl} />
+        <meta property="article:published_time" content="2025-11-02T09:00:00+00:00" />
+        <meta property="article:modified_time" content="2025-11-02T09:00:00+00:00" />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": articleTitle,
+            "description": articleDescription,
+            "author": { "@type": "Organization", "name": "Aries76 Ltd" },
+            "publisher": {
+              "@type": "Organization",
+              "name": "Aries76 Ltd",
+              "logo": { "@type": "ImageObject", "url": "https://www.aries76.com/aries76-og-logo.png" }
+            },
+            "datePublished": "2025-11-02T09:00:00+00:00",
+            "dateModified": "2025-11-02T09:00:00+00:00",
+            "mainEntityOfPage": { "@type": "WebPage", "@id": articleUrl }
+          })}
+        </script>
+      </Helmet>
       <article className="max-w-4xl mx-auto px-6 md:px-10">
         <Link to="/blog" className="inline-flex items-center gap-2 text-accent hover:underline mb-8">
           <ArrowLeft className="w-4 h-4" />
@@ -54,7 +56,7 @@ const AIDrivenDueDiligence = () => {
           </h1>
           
           <div className="flex items-center gap-4 text-sm text-muted-foreground mb-12">
-            <time dateTime="2025-11-02">November 2, 2025</time>
+            <time dateTime="2025-11-02T09:00:00+00:00">November 2, 2025</time>
             <span>•</span>
             <span>7 min read</span>
           </div>
