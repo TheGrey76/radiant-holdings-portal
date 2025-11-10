@@ -165,6 +165,8 @@ serve(async (req) => {
                     color: #cbd5e1;
                     font-size: 15px;
                     line-height: 1.8;
+                    font-weight: 300;
+                    letter-spacing: 0.3px;
                   }
                   .main-content p {
                     margin-bottom: 18px;
