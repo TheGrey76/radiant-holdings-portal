@@ -253,6 +253,7 @@ export default function FinancialAdvisersPortal() {
                         <TableHead className="text-white/70">Name</TableHead>
                         <TableHead className="text-white/70">Intermediary</TableHead>
                         <TableHead className="text-white/70">Location</TableHead>
+                        <TableHead className="text-white/70">Email</TableHead>
                         <TableHead className="text-white/70">Role</TableHead>
                         <TableHead className="text-white/70">Portfolio</TableHead>
                         <TableHead className="text-white/70">Contact</TableHead>
@@ -276,6 +277,15 @@ export default function FinancialAdvisersPortal() {
                               <div className="font-medium">{adviser.city}</div>
                               <div className="text-sm text-white/60">{adviser.province}</div>
                             </div>
+                          </TableCell>
+                          <TableCell className="text-white">
+                            {adviser.email ? (
+                              <a href={`mailto:${adviser.email}`} className="text-white/80 hover:text-white text-sm hover:underline">
+                                {adviser.email}
+                              </a>
+                            ) : (
+                              <span className="text-white/40 text-sm">-</span>
+                            )}
                           </TableCell>
                           <TableCell className="text-white">{adviser.role && (
                               <Badge variant="secondary" className="bg-white/10 text-white border-white/20">
