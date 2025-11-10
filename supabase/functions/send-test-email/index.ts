@@ -303,7 +303,7 @@ serve(async (req) => {
     `;
 
     await resend.emails.send({
-      from: "ARIES76 Capital Advisory <onboarding@resend.dev>",
+      from: "ARIES76 Capital Advisory <info@aries76.com>",
       to: [testEmail],
       subject: `[TEST] ${subject}`,
       html: htmlContent,

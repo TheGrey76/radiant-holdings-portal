@@ -386,7 +386,7 @@ serve(async (req) => {
           `;
 
           await resend.emails.send({
-            from: "ARIES76 Capital Advisory <onboarding@resend.dev>",
+            from: "ARIES76 Capital Advisory <info@aries76.com>",
             to: [adviser.email],
             subject: subject,
             html: htmlContent,

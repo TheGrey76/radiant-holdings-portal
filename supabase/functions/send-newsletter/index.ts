@@ -202,7 +202,7 @@ const handler = async (req: Request): Promise<Response> => {
     const emailPromises = subscribers.map(async (subscriber) => {
       try {
         const { data, error } = await resend.emails.send({
-          from: 'Aries76 <onboarding@resend.dev>',
+          from: 'ARIES76 Newsletter <info@aries76.com>',
           to: [subscriber.email],
           subject: subject,
           html: htmlTemplate,
