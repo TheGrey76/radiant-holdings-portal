@@ -112,224 +112,231 @@ serve(async (req) => {
                 <meta charset="utf-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <style>
-                  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+                  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
                   * { margin: 0; padding: 0; box-sizing: border-box; }
                   body { 
                     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                    line-height: 1.7; 
-                    color: #1e293b;
-                    background: #f8fafc;
-                    padding: 40px 20px;
+                    line-height: 1.6; 
+                    color: #e2e8f0;
+                    background: linear-gradient(135deg, #0f1729 0%, #1a2744 50%, #0d1424 100%);
+                    padding: 20px 0;
                   }
                   .email-wrapper { 
                     max-width: 600px; 
                     margin: 0 auto; 
-                    background: #ffffff;
-                    border-radius: 4px;
+                    background: rgba(15, 23, 41, 0.95);
+                    border: 1px solid rgba(59, 130, 246, 0.2);
+                    border-radius: 12px;
                     overflow: hidden;
+                    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
                   }
                   .header { 
-                    background: #0f172a;
-                    padding: 40px 40px 32px;
+                    background: linear-gradient(135deg, #0f1729 0%, #1a2744 50%, #2d3f5f 100%);
+                    padding: 50px 30px;
                     text-align: center;
+                    border-bottom: 2px solid rgba(59, 130, 246, 0.3);
                   }
                   .logo { 
                     color: #ffffff;
-                    font-size: 32px;
-                    font-weight: 500;
-                    letter-spacing: 6px;
+                    font-size: 42px;
+                    font-weight: 300;
+                    letter-spacing: 8px;
                     margin-bottom: 8px;
+                    text-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
                   }
                   .tagline {
                     color: #94a3b8;
-                    font-size: 12px;
-                    letter-spacing: 2px;
+                    font-size: 13px;
+                    letter-spacing: 3px;
                     text-transform: uppercase;
-                    font-weight: 400;
+                    font-weight: 300;
                   }
                   .content { 
-                    padding: 48px 40px;
-                    background: #ffffff;
+                    padding: 45px 35px;
+                    background: rgba(26, 39, 68, 0.4);
                   }
                   .greeting {
-                    font-size: 16px;
-                    color: #0f172a;
-                    margin-bottom: 32px;
+                    font-size: 18px;
+                    color: #ffffff;
+                    margin-bottom: 25px;
                     font-weight: 400;
                   }
                   .main-content {
-                    color: #475569;
+                    color: #cbd5e1;
                     font-size: 15px;
-                    line-height: 1.7;
+                    line-height: 1.8;
                   }
                   .main-content p {
-                    margin-bottom: 20px;
+                    margin-bottom: 18px;
                   }
                   .main-content ul {
-                    margin: 24px 0;
+                    margin: 25px 0;
                     padding-left: 0;
                     list-style: none;
                   }
                   .main-content li {
-                    margin-bottom: 12px;
-                    color: #475569;
-                    padding-left: 24px;
+                    margin-bottom: 16px;
+                    color: #cbd5e1;
+                    padding-left: 35px;
                     position: relative;
                   }
                   .main-content li:before {
-                    content: "•";
+                    content: "◆";
                     position: absolute;
-                    left: 8px;
+                    left: 0;
                     color: #3b82f6;
-                    font-size: 14px;
+                    font-size: 12px;
                   }
                   .main-content strong {
-                    color: #0f172a;
+                    color: #ffffff;
                     font-weight: 600;
                   }
                   .feature-grid {
                     display: grid;
                     grid-template-columns: 1fr 1fr;
-                    gap: 16px;
-                    margin: 32px 0;
+                    gap: 20px;
+                    margin: 30px 0;
                   }
                   .feature-card {
-                    background: #f8fafc;
-                    border: 1px solid #e2e8f0;
-                    border-radius: 4px;
-                    padding: 24px 20px;
+                    background: rgba(59, 130, 246, 0.08);
+                    border: 1px solid rgba(59, 130, 246, 0.2);
+                    border-radius: 8px;
+                    padding: 20px;
                     text-align: center;
                   }
                   .feature-icon {
-                    font-size: 32px;
+                    font-size: 40px;
                     margin-bottom: 12px;
-                    color: #3b82f6;
-                    font-weight: 400;
+                    color: #60a5fa;
+                    font-weight: 300;
+                    line-height: 1;
                   }
                   .feature-title {
-                    color: #0f172a;
+                    color: #60a5fa;
                     font-size: 14px;
                     font-weight: 600;
-                    margin-bottom: 6px;
+                    margin-bottom: 8px;
                   }
                   .feature-desc {
-                    color: #64748b;
-                    font-size: 13px;
-                    line-height: 1.6;
+                    color: #94a3b8;
+                    font-size: 12px;
+                    line-height: 1.5;
                   }
                   .highlight-box {
-                    background: #f0f9ff;
-                    border-left: 3px solid #3b82f6;
-                    padding: 24px;
-                    margin: 28px 0;
-                    border-radius: 4px;
+                    background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(37, 99, 235, 0.1) 100%);
+                    border-left: 4px solid #3b82f6;
+                    padding: 25px;
+                    margin: 30px 0;
+                    border-radius: 6px;
                   }
                   .stats-container {
                     display: flex;
                     justify-content: space-around;
-                    margin: 32px 0;
-                    padding: 32px 24px;
-                    background: #f8fafc;
-                    border-radius: 4px;
+                    margin: 35px 0;
+                    padding: 25px;
+                    background: rgba(15, 23, 41, 0.6);
+                    border-radius: 8px;
+                    border: 1px solid rgba(59, 130, 246, 0.15);
                   }
                   .stat-item {
                     text-align: center;
                   }
                   .stat-number {
-                    font-size: 32px;
-                    font-weight: 600;
-                    color: #0f172a;
-                    margin-bottom: 4px;
+                    font-size: 28px;
+                    font-weight: 700;
+                    color: #60a5fa;
+                    margin-bottom: 5px;
                   }
                   .stat-label {
-                    font-size: 12px;
-                    color: #64748b;
+                    font-size: 11px;
+                    color: #94a3b8;
                     text-transform: uppercase;
-                    letter-spacing: 0.5px;
+                    letter-spacing: 1px;
                   }
                   .cta-container {
                     text-align: center;
-                    margin: 40px 0 24px;
+                    margin: 40px 0;
                   }
                   .cta-primary { 
                     display: inline-block;
-                    padding: 14px 32px;
-                    background: #3b82f6;
+                    padding: 18px 45px;
+                    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
                     color: #ffffff !important;
                     text-decoration: none;
-                    border-radius: 4px;
-                    font-weight: 500;
-                    font-size: 15px;
-                    margin: 0 6px 12px;
-                    transition: background 0.2s;
+                    border-radius: 8px;
+                    font-weight: 600;
+                    font-size: 16px;
+                    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+                    margin: 0 8px 15px 8px;
+                    transition: all 0.3s ease;
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
                   }
                   .cta-secondary {
                     display: inline-block;
-                    padding: 14px 32px;
-                    background: #ffffff;
-                    color: #3b82f6 !important;
+                    padding: 18px 45px;
+                    background: transparent;
+                    color: #60a5fa !important;
                     text-decoration: none;
-                    border-radius: 4px;
-                    font-weight: 500;
-                    font-size: 15px;
-                    border: 1px solid #e2e8f0;
-                    margin: 0 6px 12px;
-                    transition: background 0.2s;
+                    border-radius: 8px;
+                    font-weight: 600;
+                    font-size: 16px;
+                    border: 2px solid rgba(59, 130, 246, 0.5);
+                    margin: 0 8px 15px 8px;
+                    transition: all 0.3s ease;
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
                   }
                   .divider {
                     height: 1px;
-                    background: #e2e8f0;
-                    margin: 32px 0;
+                    background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.3), transparent);
+                    margin: 35px 0;
                   }
                   .signature {
-                    margin-top: 40px;
-                    padding-top: 24px;
-                    border-top: 1px solid #e2e8f0;
+                    margin-top: 35px;
+                    padding-top: 25px;
+                    border-top: 1px solid rgba(59, 130, 246, 0.2);
                   }
                   .signature-name {
-                    font-weight: 500;
-                    color: #0f172a;
-                    margin-bottom: 4px;
+                    font-weight: 600;
+                    color: #ffffff;
+                    margin-bottom: 5px;
                     font-size: 15px;
                   }
                   .signature-title {
-                    color: #64748b;
-                    font-size: 14px;
+                    color: #94a3b8;
+                    font-size: 13px;
                   }
                   .footer { 
-                    background: #f8fafc;
-                    padding: 32px 40px;
+                    background: rgba(15, 23, 41, 0.95);
+                    padding: 35px 30px;
                     text-align: center;
-                    border-top: 1px solid #e2e8f0;
+                    border-top: 1px solid rgba(59, 130, 246, 0.2);
                   }
                   .footer-content {
-                    color: #64748b;
+                    color: #94a3b8;
                     font-size: 13px;
-                    line-height: 1.8;
+                    line-height: 1.9;
                   }
                   .footer-links {
-                    margin-top: 16px;
+                    margin-top: 20px;
                   }
                   .footer-link {
-                    color: #3b82f6;
+                    color: #60a5fa;
                     text-decoration: none;
-                    margin: 0 10px;
+                    margin: 0 12px;
                     font-size: 13px;
                     font-weight: 500;
                   }
                   .contact-info {
-                    margin-top: 20px;
-                    padding-top: 20px;
-                    border-top: 1px solid #e2e8f0;
+                    margin-top: 25px;
+                    padding-top: 25px;
+                    border-top: 1px solid rgba(59, 130, 246, 0.15);
                   }
                   @media only screen and (max-width: 600px) {
-                    .email-wrapper { border-radius: 0; }
-                    .header { padding: 32px 24px 24px; }
-                    .content { padding: 32px 24px; }
-                    .footer { padding: 24px 24px; }
                     .feature-grid { grid-template-columns: 1fr; }
                     .stats-container { flex-direction: column; gap: 20px; }
-                    .cta-primary, .cta-secondary { display: block; margin: 8px 0; }
+                    .cta-primary, .cta-secondary { display: block; margin: 10px 0; }
                   }
                 </style>
               </head>
@@ -349,27 +356,27 @@ serve(async (req) => {
                     
                     <div class="signature">
                       <div class="signature-name">Il Team ARIES76</div>
-                      <div class="signature-title">Capital Advisory</div>
+                      <div class="signature-title">Capital Advisory - Structured Products Division</div>
                     </div>
                   </div>
                   
                   <div class="footer">
                     <div class="footer-content">
-                      <strong style="color: #0f172a; font-size: 14px;">ARIES76 Capital Advisory</strong><br>
+                      <strong style="color: #ffffff; font-size: 15px;">ARIES76 Capital Advisory</strong><br>
                       London, United Kingdom
                     </div>
                     
                     <div class="footer-links">
                       <a href="https://aries76.com" class="footer-link">Website</a>
-                      <span style="color: #cbd5e1;">•</span>
+                      <span style="color: #475569;">•</span>
                       <a href="https://aries76.com/structured-products" class="footer-link">Structured Products</a>
-                      <span style="color: #cbd5e1;">•</span>
+                      <span style="color: #475569;">•</span>
                       <a href="https://aries76.com/contact" class="footer-link">Contattaci</a>
                     </div>
                     
                     <div class="contact-info">
                       <div class="footer-content" style="font-size: 12px;">
-                        <a href="mailto:info@aries76.com" style="color: #3b82f6; text-decoration: none;">info@aries76.com</a><br>
+                        <a href="mailto:info@aries76.com" style="color: #60a5fa; text-decoration: none;">info@aries76.com</a><br>
                         &copy; ${new Date().getFullYear()} ARIES76. Tutti i diritti riservati.
                       </div>
                     </div>

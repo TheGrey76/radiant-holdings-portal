@@ -67,96 +67,78 @@ export default function EmailCampaignTab({
   const [subject, setSubject] = useState("ARIES76 Structured Products - Nuova Opportunità di Investimento");
   const [testEmail, setTestEmail] = useState("");
   const [sendingTest, setSendingTest] = useState(false);
-  const [content, setContent] = useState(`<div style="max-width: 600px; margin: 0 auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-  
-  <div style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); padding: 48px 32px; text-align: center; border-radius: 8px 8px 0 0;">
-    <h1 style="color: white; font-size: 28px; font-weight: 600; margin: 0 0 12px 0; line-height: 1.2;">Structured Products ARIES76</h1>
-    <p style="color: rgba(255,255,255,0.9); font-size: 16px; margin: 0; line-height: 1.5;">Soluzioni di investimento innovative per i vostri clienti</p>
+  const [content, setContent] = useState(`<div class="highlight-box">
+  <p style="font-size: 17px; font-weight: 600; color: #60a5fa; margin-bottom: 12px;">Opportunità Esclusive - Structured Products ARIES76</p>
+  <p>In un contesto di mercato in continua evoluzione, i nostri Structured Products rappresentano la soluzione ideale per offrire ai vostri clienti strumenti di investimento sofisticati, trasparenti e personalizzabili.</p>
+</div>
+
+<div class="feature-grid">
+  <div class="feature-card">
+    <div class="feature-icon">◆</div>
+    <div class="feature-title">Protezione Garantita</div>
+    <div class="feature-desc">Capitale protetto con rendimenti potenziali superiori al mercato</div>
   </div>
-  
-  <div style="background: white; padding: 40px 32px;">
-    
-    <p style="color: #1f2937; font-size: 16px; line-height: 1.6; margin: 0 0 24px 0;">
-      In un contesto di mercato in continua evoluzione, i nostri Structured Products rappresentano la soluzione ideale per offrire strumenti di investimento sofisticati, trasparenti e personalizzabili.
-    </p>
-    
-    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin: 32px 0;">
-      <div style="padding: 24px; background: #f8fafc; border-radius: 8px; border-left: 3px solid #3b82f6;">
-        <div style="color: #3b82f6; font-size: 24px; margin-bottom: 8px;">🛡️</div>
-        <h3 style="color: #1f2937; font-size: 16px; font-weight: 600; margin: 0 0 8px 0;">Protezione Garantita</h3>
-        <p style="color: #6b7280; font-size: 14px; margin: 0; line-height: 1.5;">Capitale protetto con rendimenti potenziali superiori</p>
-      </div>
-      
-      <div style="padding: 24px; background: #f8fafc; border-radius: 8px; border-left: 3px solid #3b82f6;">
-        <div style="color: #3b82f6; font-size: 24px; margin-bottom: 8px;">📊</div>
-        <h3 style="color: #1f2937; font-size: 16px; font-weight: 600; margin: 0 0 8px 0;">Diversificazione</h3>
-        <p style="color: #6b7280; font-size: 14px; margin: 0; line-height: 1.5;">Accesso a strategie multi-asset e geografiche</p>
-      </div>
-      
-      <div style="padding: 24px; background: #f8fafc; border-radius: 8px; border-left: 3px solid #3b82f6;">
-        <div style="color: #3b82f6; font-size: 24px; margin-bottom: 8px;">⚙️</div>
-        <h3 style="color: #1f2937; font-size: 16px; font-weight: 600; margin: 0 0 8px 0;">Su Misura</h3>
-        <p style="color: #6b7280; font-size: 14px; margin: 0; line-height: 1.5;">Soluzioni personalizzate per ogni profilo di rischio</p>
-      </div>
-      
-      <div style="padding: 24px; background: #f8fafc; border-radius: 8px; border-left: 3px solid #3b82f6;">
-        <div style="color: #3b82f6; font-size: 24px; margin-bottom: 8px;">✓</div>
-        <h3 style="color: #1f2937; font-size: 16px; font-weight: 600; margin: 0 0 8px 0;">Trasparenza</h3>
-        <p style="color: #6b7280; font-size: 14px; margin: 0; line-height: 1.5;">Conformità regolamentare e reporting dettagliato</p>
-      </div>
-    </div>
-    
-    <h2 style="color: #1f2937; font-size: 20px; font-weight: 600; margin: 32px 0 16px 0;">Le nostre soluzioni</h2>
-    
-    <ul style="margin: 0 0 32px 0; padding-left: 20px; color: #4b5563; line-height: 1.8;">
-      <li style="margin-bottom: 8px;"><strong>Capital Protected Notes</strong> — Protezione del capitale al 100% con partecipazione ai mercati azionari</li>
-      <li style="margin-bottom: 8px;"><strong>Yield Enhancement</strong> — Ottimizzazione del rendimento attraverso strategie opzionali avanzate</li>
-      <li style="margin-bottom: 8px;"><strong>Participation Products</strong> — Esposizione diretta a indici e basket personalizzati</li>
-      <li style="margin-bottom: 8px;"><strong>Multi-Asset Solutions</strong> — Combinazioni sofisticate di asset class diverse</li>
-    </ul>
-    
-    <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 32px; border-radius: 8px; margin: 32px 0; text-align: center;">
-      <div style="display: flex; justify-content: space-around; align-items: center;">
-        <div>
-          <div style="color: #1e40af; font-size: 32px; font-weight: 700; margin-bottom: 4px;">€2.5B+</div>
-          <div style="color: #1e40af; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">AUM Gestito</div>
-        </div>
-        <div>
-          <div style="color: #1e40af; font-size: 32px; font-weight: 700; margin-bottom: 4px;">150+</div>
-          <div style="color: #1e40af; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Prodotti Attivi</div>
-        </div>
-        <div>
-          <div style="color: #1e40af; font-size: 32px; font-weight: 700; margin-bottom: 4px;">98%</div>
-          <div style="color: #1e40af; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Client Satisfaction</div>
-        </div>
-      </div>
-    </div>
-    
-    <p style="color: #4b5563; font-size: 15px; line-height: 1.6; margin: 24px 0;">
-      I nostri Structured Products sono progettati in collaborazione con i principali emittenti internazionali e offrono strutture certificate quotate su mercati regolamentati, due diligence istituzionale, supporto continuo e materiale marketing professionale.
-    </p>
-    
-    <div style="text-align: center; margin: 40px 0;">
-      <a href="https://aries76.com/contact" style="display: inline-block; background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white; padding: 16px 40px; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);">Richiedi Informazioni</a>
-    </div>
-    
-    <div style="background: #f9fafb; padding: 24px; border-radius: 8px; border: 1px solid #e5e7eb; margin-top: 32px;">
-      <p style="color: #1f2937; font-weight: 600; margin: 0 0 12px 0;">Il nostro team è a vostra disposizione per:</p>
-      <ul style="margin: 0; padding-left: 20px; color: #4b5563; line-height: 1.7;">
-        <li>Presentazioni personalizzate per i vostri team</li>
-        <li>Analisi di soluzioni su misura per portafogli specifici</li>
-        <li>Supporto nella strutturazione di prodotti dedicati</li>
-        <li>Formazione continua sulle ultime innovazioni del mercato</li>
-      </ul>
-    </div>
-    
+  <div class="feature-card">
+    <div class="feature-icon">◊</div>
+    <div class="feature-title">Diversificazione</div>
+    <div class="feature-desc">Accesso a strategie multi-asset e geografiche</div>
   </div>
-  
-  <div style="background: #1f2937; padding: 24px 32px; text-align: center; border-radius: 0 0 8px 8px;">
-    <p style="color: #9ca3af; font-size: 13px; margin: 0;">© 2025 ARIES76. Tutti i diritti riservati.</p>
+  <div class="feature-card">
+    <div class="feature-icon">●</div>
+    <div class="feature-title">Su Misura</div>
+    <div class="feature-desc">Soluzioni personalizzate per ogni profilo di rischio</div>
   </div>
-  
-</div>`);
+  <div class="feature-card">
+    <div class="feature-icon">✓</div>
+    <div class="feature-title">Trasparenza</div>
+    <div class="feature-desc">Conformità regolamentare e reporting dettagliato</div>
+  </div>
+</div>
+
+<p><strong>Le nostre soluzioni includono:</strong></p>
+<ul>
+  <li><strong>Capital Protected Notes</strong> - Protezione del capitale al 100% con partecipazione ai mercati azionari</li>
+  <li><strong>Yield Enhancement</strong> - Ottimizzazione del rendimento attraverso strategie opzionali avanzate</li>
+  <li><strong>Participation Products</strong> - Esposizione diretta a indici e basket personalizzati</li>
+  <li><strong>Multi-Asset Solutions</strong> - Combinazioni sofisticate di asset class diverse</li>
+</ul>
+
+<div class="stats-container">
+  <div class="stat-item">
+    <div class="stat-number">€2.5B+</div>
+    <div class="stat-label">AUM Gestito</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">150+</div>
+    <div class="stat-label">Prodotti Attivi</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">98%</div>
+    <div class="stat-label">Client Satisfaction</div>
+  </div>
+</div>
+
+<p>I nostri Structured Products sono progettati in collaborazione con i principali emittenti internazionali e offrono:</p>
+<ul>
+  <li>Strutture certificate e quotate su mercati regolamentati</li>
+  <li>Due diligence istituzionale su tutti gli emittenti</li>
+  <li>Supporto continuo pre e post-vendita</li>
+  <li>Materiale marketing professionale per i vostri clienti</li>
+</ul>
+
+<div class="cta-container">
+  <a href="https://aries76.com/contact" class="cta-primary">Richiedi Informazioni</a>
+</div>
+
+<p style="margin-top: 30px;">Il nostro team di specialist è a vostra disposizione per:</p>
+<ul>
+  <li>Presentazioni personalizzate per i vostri team</li>
+  <li>Analisi di soluzioni su misura per portafogli specifici</li>
+  <li>Supporto nella strutturazione di prodotti dedicati</li>
+  <li>Formazione continua sulle ultime innovazioni del mercato</li>
+</ul>
+
+<p><strong>Non perdete l'opportunità di offrire ai vostri clienti le soluzioni più innovative del mercato.</strong></p>`);
   const [regionFilter, setRegionFilter] = useState("all");
   const [intermediaryFilter, setIntermediaryFilter] = useState("all");
 
@@ -318,96 +300,78 @@ export default function EmailCampaignTab({
 
       // Reset form
       setCampaignName("");
-      setContent(`<div style="max-width: 600px; margin: 0 auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-  
-  <div style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); padding: 48px 32px; text-align: center; border-radius: 8px 8px 0 0;">
-    <h1 style="color: white; font-size: 28px; font-weight: 600; margin: 0 0 12px 0; line-height: 1.2;">Structured Products ARIES76</h1>
-    <p style="color: rgba(255,255,255,0.9); font-size: 16px; margin: 0; line-height: 1.5;">Soluzioni di investimento innovative per i vostri clienti</p>
+      setContent(`<div class="highlight-box">
+  <p style="font-size: 17px; font-weight: 600; color: #60a5fa; margin-bottom: 12px;">Opportunità Esclusive - Structured Products ARIES76</p>
+  <p>In un contesto di mercato in continua evoluzione, i nostri Structured Products rappresentano la soluzione ideale per offrire ai vostri clienti strumenti di investimento sofisticati, trasparenti e personalizzabili.</p>
+</div>
+
+<div class="feature-grid">
+  <div class="feature-card">
+    <div class="feature-icon">🛡️</div>
+    <div class="feature-title">Protezione Garantita</div>
+    <div class="feature-desc">Capitale protetto con rendimenti potenziali superiori al mercato</div>
   </div>
-  
-  <div style="background: white; padding: 40px 32px;">
-    
-    <p style="color: #1f2937; font-size: 16px; line-height: 1.6; margin: 0 0 24px 0;">
-      In un contesto di mercato in continua evoluzione, i nostri Structured Products rappresentano la soluzione ideale per offrire strumenti di investimento sofisticati, trasparenti e personalizzabili.
-    </p>
-    
-    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin: 32px 0;">
-      <div style="padding: 24px; background: #f8fafc; border-radius: 8px; border-left: 3px solid #3b82f6;">
-        <div style="color: #3b82f6; font-size: 24px; margin-bottom: 8px;">🛡️</div>
-        <h3 style="color: #1f2937; font-size: 16px; font-weight: 600; margin: 0 0 8px 0;">Protezione Garantita</h3>
-        <p style="color: #6b7280; font-size: 14px; margin: 0; line-height: 1.5;">Capitale protetto con rendimenti potenziali superiori</p>
-      </div>
-      
-      <div style="padding: 24px; background: #f8fafc; border-radius: 8px; border-left: 3px solid #3b82f6;">
-        <div style="color: #3b82f6; font-size: 24px; margin-bottom: 8px;">📊</div>
-        <h3 style="color: #1f2937; font-size: 16px; font-weight: 600; margin: 0 0 8px 0;">Diversificazione</h3>
-        <p style="color: #6b7280; font-size: 14px; margin: 0; line-height: 1.5;">Accesso a strategie multi-asset e geografiche</p>
-      </div>
-      
-      <div style="padding: 24px; background: #f8fafc; border-radius: 8px; border-left: 3px solid #3b82f6;">
-        <div style="color: #3b82f6; font-size: 24px; margin-bottom: 8px;">⚙️</div>
-        <h3 style="color: #1f2937; font-size: 16px; font-weight: 600; margin: 0 0 8px 0;">Su Misura</h3>
-        <p style="color: #6b7280; font-size: 14px; margin: 0; line-height: 1.5;">Soluzioni personalizzate per ogni profilo di rischio</p>
-      </div>
-      
-      <div style="padding: 24px; background: #f8fafc; border-radius: 8px; border-left: 3px solid #3b82f6;">
-        <div style="color: #3b82f6; font-size: 24px; margin-bottom: 8px;">✓</div>
-        <h3 style="color: #1f2937; font-size: 16px; font-weight: 600; margin: 0 0 8px 0;">Trasparenza</h3>
-        <p style="color: #6b7280; font-size: 14px; margin: 0; line-height: 1.5;">Conformità regolamentare e reporting dettagliato</p>
-      </div>
-    </div>
-    
-    <h2 style="color: #1f2937; font-size: 20px; font-weight: 600; margin: 32px 0 16px 0;">Le nostre soluzioni</h2>
-    
-    <ul style="margin: 0 0 32px 0; padding-left: 20px; color: #4b5563; line-height: 1.8;">
-      <li style="margin-bottom: 8px;"><strong>Capital Protected Notes</strong> — Protezione del capitale al 100% con partecipazione ai mercati azionari</li>
-      <li style="margin-bottom: 8px;"><strong>Yield Enhancement</strong> — Ottimizzazione del rendimento attraverso strategie opzionali avanzate</li>
-      <li style="margin-bottom: 8px;"><strong>Participation Products</strong> — Esposizione diretta a indici e basket personalizzati</li>
-      <li style="margin-bottom: 8px;"><strong>Multi-Asset Solutions</strong> — Combinazioni sofisticate di asset class diverse</li>
-    </ul>
-    
-    <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 32px; border-radius: 8px; margin: 32px 0; text-align: center;">
-      <div style="display: flex; justify-content: space-around; align-items: center;">
-        <div>
-          <div style="color: #1e40af; font-size: 32px; font-weight: 700; margin-bottom: 4px;">€2.5B+</div>
-          <div style="color: #1e40af; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">AUM Gestito</div>
-        </div>
-        <div>
-          <div style="color: #1e40af; font-size: 32px; font-weight: 700; margin-bottom: 4px;">150+</div>
-          <div style="color: #1e40af; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Prodotti Attivi</div>
-        </div>
-        <div>
-          <div style="color: #1e40af; font-size: 32px; font-weight: 700; margin-bottom: 4px;">98%</div>
-          <div style="color: #1e40af; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Client Satisfaction</div>
-        </div>
-      </div>
-    </div>
-    
-    <p style="color: #4b5563; font-size: 15px; line-height: 1.6; margin: 24px 0;">
-      I nostri Structured Products sono progettati in collaborazione con i principali emittenti internazionali e offrono strutture certificate quotate su mercati regolamentati, due diligence istituzionale, supporto continuo e materiale marketing professionale.
-    </p>
-    
-    <div style="text-align: center; margin: 40px 0;">
-      <a href="https://aries76.com/contact" style="display: inline-block; background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white; padding: 16px 40px; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);">Richiedi Informazioni</a>
-    </div>
-    
-    <div style="background: #f9fafb; padding: 24px; border-radius: 8px; border: 1px solid #e5e7eb; margin-top: 32px;">
-      <p style="color: #1f2937; font-weight: 600; margin: 0 0 12px 0;">Il nostro team è a vostra disposizione per:</p>
-      <ul style="margin: 0; padding-left: 20px; color: #4b5563; line-height: 1.7;">
-        <li>Presentazioni personalizzate per i vostri team</li>
-        <li>Analisi di soluzioni su misura per portafogli specifici</li>
-        <li>Supporto nella strutturazione di prodotti dedicati</li>
-        <li>Formazione continua sulle ultime innovazioni del mercato</li>
-      </ul>
-    </div>
-    
+  <div class="feature-card">
+    <div class="feature-icon">📊</div>
+    <div class="feature-title">Diversificazione</div>
+    <div class="feature-desc">Accesso a strategie multi-asset e geografiche</div>
   </div>
-  
-  <div style="background: #1f2937; padding: 24px 32px; text-align: center; border-radius: 0 0 8px 8px;">
-    <p style="color: #9ca3af; font-size: 13px; margin: 0;">© 2025 ARIES76. Tutti i diritti riservati.</p>
+  <div class="feature-card">
+    <div class="feature-icon">⚙️</div>
+    <div class="feature-title">Su Misura</div>
+    <div class="feature-desc">Soluzioni personalizzate per ogni profilo di rischio</div>
   </div>
-  
-</div>`);
+  <div class="feature-card">
+    <div class="feature-icon">✓</div>
+    <div class="feature-title">Trasparenza</div>
+    <div class="feature-desc">Conformità regolamentare e reporting dettagliato</div>
+  </div>
+</div>
+
+<p><strong>Le nostre soluzioni includono:</strong></p>
+<ul>
+  <li><strong>Capital Protected Notes</strong> - Protezione del capitale al 100% con partecipazione ai mercati azionari</li>
+  <li><strong>Yield Enhancement</strong> - Ottimizzazione del rendimento attraverso strategie opzionali avanzate</li>
+  <li><strong>Participation Products</strong> - Esposizione diretta a indici e basket personalizzati</li>
+  <li><strong>Multi-Asset Solutions</strong> - Combinazioni sofisticate di asset class diverse</li>
+</ul>
+
+<div class="stats-container">
+  <div class="stat-item">
+    <div class="stat-number">€2.5B+</div>
+    <div class="stat-label">AUM Gestito</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">150+</div>
+    <div class="stat-label">Prodotti Attivi</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">98%</div>
+    <div class="stat-label">Client Satisfaction</div>
+  </div>
+</div>
+
+<p>I nostri Structured Products sono progettati in collaborazione con i principali emittenti internazionali e offrono:</p>
+<ul>
+  <li>Strutture certificate e quotate su mercati regolamentati</li>
+  <li>Due diligence istituzionale su tutti gli emittenti</li>
+  <li>Supporto continuo pre e post-vendita</li>
+  <li>Materiale marketing professionale per i vostri clienti</li>
+</ul>
+
+<div class="cta-container">
+  <a href="https://aries76.com/contact" class="cta-primary">Richiedi Informazioni</a>
+</div>
+
+<p style="margin-top: 30px;">Il nostro team di specialist è a vostra disposizione per:</p>
+<ul>
+  <li>Presentazioni personalizzate per i vostri team</li>
+  <li>Analisi di soluzioni su misura per portafogli specifici</li>
+  <li>Supporto nella strutturazione di prodotti dedicati</li>
+  <li>Formazione continua sulle ultime innovazioni del mercato</li>
+</ul>
+
+<p><strong>Non perdete l'opportunità di offrire ai vostri clienti le soluzioni più innovative del mercato.</strong></p>`);
       setRegionFilter("all");
       setIntermediaryFilter("all");
       setPreviewMode(false);
