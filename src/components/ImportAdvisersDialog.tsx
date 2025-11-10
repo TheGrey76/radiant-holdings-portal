@@ -34,23 +34,43 @@ export default function ImportAdvisersDialog({ onImportComplete }: ImportAdviser
     try {
       // Read CSV file
       const text = await file.text();
-      const lines = text.split('\n');
-      const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
+      const lines = text.split('\n').filter(line => line.trim());
       
-      // Parse CSV data
-      const csvData = lines.slice(1)
-        .filter(line => line.trim())
+      // Detect separator (semicolon for Italian Excel exports)
+      const separator = lines[0].includes(';') ? ';' : ',';
+      console.log('Using separator:', separator);
+      
+      const headers = lines[0].split(separator).map(h => h.trim().replace(/"/g, ''));
+      console.log('Headers:', headers);
+      
+      // Parse CSV data - limit to actual data rows (skip header, take max 2000 rows)
+      const csvData = lines.slice(1, 2001)
+        .filter(line => line.trim() && line.split(separator).length > 1)
         .map(line => {
-          const values = line.split(',').map(v => v.trim().replace(/"/g, ''));
+          const values = line.split(separator).map(v => v.trim().replace(/"/g, ''));
           const row: any = {};
           headers.forEach((header, index) => {
             row[header] = values[index] || '';
           });
           return row;
+        })
+        .filter(row => {
+          // Filter out empty rows
+          const hasData = Object.values(row).some(val => val && val !== '');
+          return hasData;
         });
 
       console.log('Parsed CSV data:', csvData.length, 'rows');
-      console.log('Sample row:', csvData[0]);
+      if (csvData.length > 0) {
+        console.log('Sample row:', csvData[0]);
+      }
+
+      if (csvData.length === 0) {
+        toast.error('Nessun dato valido trovato nel file CSV');
+        return;
+      }
+
+      toast.info(`Importazione di ${csvData.length} consulenti in corso...`);
 
       // Call edge function to import data
       const { data, error } = await supabase.functions.invoke('import-financial-advisers', {
