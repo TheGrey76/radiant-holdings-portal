@@ -20,3 +20,9 @@ verify_jwt = false
 
 [functions.send-call-request-notification]
 verify_jwt = false
+
+[functions.send-adviser-campaign]
+verify_jwt = true
+
+[functions.send-test-email]
+verify_jwt = true
