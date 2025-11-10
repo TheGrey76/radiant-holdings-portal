@@ -204,8 +204,11 @@ serve(async (req) => {
                     text-align: center;
                   }
                   .feature-icon {
-                    font-size: 32px;
-                    margin-bottom: 10px;
+                    font-size: 40px;
+                    margin-bottom: 12px;
+                    color: #60a5fa;
+                    font-weight: 300;
+                    line-height: 1;
                   }
                   .feature-title {
                     color: #60a5fa;

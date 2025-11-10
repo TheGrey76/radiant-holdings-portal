@@ -61,17 +61,17 @@ export default function EmailCampaignTab({
 
 <div class="feature-grid">
   <div class="feature-card">
-    <div class="feature-icon">🛡️</div>
+    <div class="feature-icon">◆</div>
     <div class="feature-title">Protezione Garantita</div>
     <div class="feature-desc">Capitale protetto con rendimenti potenziali superiori al mercato</div>
   </div>
   <div class="feature-card">
-    <div class="feature-icon">📊</div>
+    <div class="feature-icon">◊</div>
     <div class="feature-title">Diversificazione</div>
     <div class="feature-desc">Accesso a strategie multi-asset e geografiche</div>
   </div>
   <div class="feature-card">
-    <div class="feature-icon">⚙️</div>
+    <div class="feature-icon">●</div>
     <div class="feature-title">Su Misura</div>
     <div class="feature-desc">Soluzioni personalizzate per ogni profilo di rischio</div>
   </div>
@@ -114,8 +114,7 @@ export default function EmailCampaignTab({
 </ul>
 
 <div class="cta-container">
-  <a href="https://aries76.com/structured-products" class="cta-primary">Esplora i Prodotti</a>
-  <a href="https://aries76.com/contact" class="cta-secondary">Richiedi Consulenza</a>
+  <a href="https://aries76.com/contact" class="cta-primary">Richiedi Informazioni</a>
 </div>
 
 <p style="margin-top: 30px;">Il nostro team di specialist è a vostra disposizione per:</p>
@@ -281,8 +280,7 @@ export default function EmailCampaignTab({
 </ul>
 
 <div class="cta-container">
-  <a href="https://aries76.com/structured-products" class="cta-primary">Esplora i Prodotti</a>
-  <a href="https://aries76.com/contact" class="cta-secondary">Richiedi Consulenza</a>
+  <a href="https://aries76.com/contact" class="cta-primary">Richiedi Informazioni</a>
 </div>
 
 <p style="margin-top: 30px;">Il nostro team di specialist è a vostra disposizione per:</p>
@@ -545,8 +543,11 @@ export default function EmailCampaignTab({
                   text-align: center;
                 }
                 .email-preview-content .feature-icon {
-                  font-size: 32px;
-                  margin-bottom: 10px;
+                  font-size: 40px;
+                  margin-bottom: 12px;
+                  color: #60a5fa;
+                  font-weight: 300;
+                  line-height: 1;
                 }
                 .email-preview-content .feature-title {
                   color: #60a5fa;
@@ -592,22 +593,8 @@ export default function EmailCampaignTab({
                   text-decoration: none;
                   border-radius: 8px;
                   font-weight: 600;
-                  margin: 0 8px 15px 8px;
+                  margin: 0 auto;
                   box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
-                  text-transform: uppercase;
-                  letter-spacing: 1px;
-                  font-size: 14px;
-                }
-                .email-preview-content .cta-secondary {
-                  display: inline-block;
-                  padding: 16px 40px;
-                  background: transparent;
-                  color: #60a5fa !important;
-                  text-decoration: none;
-                  border-radius: 8px;
-                  font-weight: 600;
-                  border: 2px solid rgba(59, 130, 246, 0.5);
-                  margin: 0 8px 15px 8px;
                   text-transform: uppercase;
                   letter-spacing: 1px;
                   font-size: 14px;
