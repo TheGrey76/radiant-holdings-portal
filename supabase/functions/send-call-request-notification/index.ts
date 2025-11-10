@@ -34,6 +34,12 @@ const handler = async (req: Request): Promise<Response> => {
       to: ["edoardo.grigione@aries76.com"],
       subject: "New GP Call Request",
       html: `
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+          </head>
+          <body style="font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
         <h2>New Call Request Received</h2>
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>Firm:</strong> ${firm}</p>
@@ -43,6 +49,8 @@ const handler = async (req: Request): Promise<Response> => {
         ${message ? `<p><strong>Message:</strong><br>${message}</p>` : ''}
         <hr>
         <p style="color: #666; font-size: 12px;">Received at: ${new Date().toLocaleString()}</p>
+          </body>
+        </html>
       `,
     });
 
@@ -54,6 +62,12 @@ const handler = async (req: Request): Promise<Response> => {
       to: [email],
       subject: "Your Call Request Has Been Received",
       html: `
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+          </head>
+          <body style="font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
         <h2>Thank you for your interest, ${name}!</h2>
         <p>We have received your request for an introductory call and will get back to you shortly.</p>
         
@@ -71,6 +85,8 @@ const handler = async (req: Request): Promise<Response> => {
           Aries76 Capital Advisory<br>
           <a href="https://aries76.com">www.aries76.com</a>
         </p>
+          </body>
+        </html>
       `,
     });
 

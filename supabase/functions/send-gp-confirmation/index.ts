@@ -36,7 +36,8 @@ const handler = async (req: Request): Promise<Response> => {
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Welcome to Aries76</title>
           </head>
-          <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #0f1729;">
+          <body style="margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #0f1729;">
+            <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
             <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #0f1729;">
               <tr>
                 <td align="center" style="padding: 40px 20px;">
