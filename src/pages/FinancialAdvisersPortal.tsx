@@ -265,7 +265,7 @@ export default function FinancialAdvisersPortal() {
                                   variant="ghost"
                                   size="sm"
                                   onClick={() => window.location.href = `mailto:${adviser.email}`}
-                                  className="hover:bg-accent hover:text-accent-foreground"
+                                  className="hover:bg-white/10 text-white/80 hover:text-white"
                                 >
                                   <Mail className="h-4 w-4" />
                                 </Button>
@@ -275,7 +275,7 @@ export default function FinancialAdvisersPortal() {
                                   variant="ghost"
                                   size="sm"
                                   onClick={() => window.location.href = `tel:${adviser.phone}`}
-                                  className="hover:bg-accent hover:text-accent-foreground"
+                                  className="hover:bg-white/10 text-white/80 hover:text-white"
                                 >
                                   <Phone className="h-4 w-4" />
                                 </Button>
@@ -285,7 +285,7 @@ export default function FinancialAdvisersPortal() {
                                   variant="ghost"
                                   size="sm"
                                   onClick={() => window.open(adviser.linkedinUrl, '_blank')}
-                                  className="hover:bg-accent hover:text-accent-foreground"
+                                  className="hover:bg-white/10 text-white/80 hover:text-white"
                                 >
                                   <Linkedin className="h-4 w-4" />
                                 </Button>
