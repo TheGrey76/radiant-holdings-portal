@@ -6,6 +6,7 @@ import { Building2, TrendingUp, FileText, Search, ExternalLink, Mail, Phone, Map
 import { Badge } from "@/components/ui/badge";
 import Navbar from "@/components/Navbar";
 import ImportAdvisersDialog from "@/components/ImportAdvisersDialog";
+import BackToTop from "@/components/BackToTop";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -131,6 +132,7 @@ export default function FinancialAdvisersPortal() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0f1729] via-[#1a2744] to-[#0d1424]">
       <Navbar />
+      <BackToTop />
       
       <div className="container mx-auto px-6 py-24 pt-32 max-w-7xl">
         <div className="mb-8 flex justify-between items-start">
