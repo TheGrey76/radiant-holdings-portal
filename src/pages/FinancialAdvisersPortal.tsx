@@ -178,29 +178,29 @@ export default function FinancialAdvisersPortal() {
                         placeholder="Search advisers..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="pl-10 bg-white/5 text-white border-white/10 placeholder:text-white/40"
+                        className="pl-10 bg-white/10 text-white border-white/20 placeholder:text-white/50 hover:bg-white/15 focus:bg-white/15"
                       />
                     </div>
                   </div>
                   <Select value={regionFilter} onValueChange={setRegionFilter}>
-                    <SelectTrigger className="w-[200px] bg-white/5 text-white border-white/10">
+                    <SelectTrigger className="w-[200px] bg-white/10 text-white border-white/20 hover:bg-white/15">
                       <SelectValue placeholder="Filter by Region" />
                     </SelectTrigger>
-                    <SelectContent className="bg-[#1a2744] border-white/10">
-                      <SelectItem value="all">All Regions</SelectItem>
+                    <SelectContent className="bg-[#0f1729] border-white/20">
+                      <SelectItem value="all" className="text-white hover:bg-white/10 focus:bg-white/10 focus:text-white">All Regions</SelectItem>
                       {uniqueRegions.map(region => (
-                        <SelectItem key={region} value={region}>{region}</SelectItem>
+                        <SelectItem key={region} value={region} className="text-white hover:bg-white/10 focus:bg-white/10 focus:text-white">{region}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                   <Select value={intermediaryFilter} onValueChange={setIntermediaryFilter}>
-                    <SelectTrigger className="w-[250px] bg-white/5 text-white border-white/10">
+                    <SelectTrigger className="w-[250px] bg-white/10 text-white border-white/20 hover:bg-white/15">
                       <SelectValue placeholder="Filter by Intermediary" />
                     </SelectTrigger>
-                    <SelectContent className="bg-[#1a2744] border-white/10">
-                      <SelectItem value="all">All Intermediaries</SelectItem>
+                    <SelectContent className="bg-[#0f1729] border-white/20">
+                      <SelectItem value="all" className="text-white hover:bg-white/10 focus:bg-white/10 focus:text-white">All Intermediaries</SelectItem>
                       {uniqueIntermediaries.map(intermediary => (
-                        <SelectItem key={intermediary} value={intermediary}>{intermediary}</SelectItem>
+                        <SelectItem key={intermediary} value={intermediary} className="text-white hover:bg-white/10 focus:bg-white/10 focus:text-white">{intermediary}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
