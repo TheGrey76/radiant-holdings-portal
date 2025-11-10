@@ -45,6 +45,7 @@ import LPPortal from "./pages/LPPortal";
 import GPLPDashboard from "./pages/GPLPDashboard";
 import GPRegistrationPage from "./pages/GPRegistrationPage";
 import LPRegistrationPage from "./pages/LPRegistrationPage";
+import FinancialAdvisersPortal from "./pages/FinancialAdvisersPortal";
 
 const queryClient = new QueryClient();
 
@@ -77,6 +78,7 @@ const App = () => (
           <Route path="/admin/gp-lp-dashboard" element={<GPLPDashboard />} />
           <Route path="/gp-portal" element={<GPPortal />} />
           <Route path="/lp-portal" element={<LPPortal />} />
+          <Route path="/financial-advisers" element={<FinancialAdvisersPortal />} />
           <Route path="/gp-registration" element={<GPRegistrationPage />} />
           <Route path="/lp-registration" element={<LPRegistrationPage />} />
           <Route path="/sneaker-report" element={<SneakerReport />} />
