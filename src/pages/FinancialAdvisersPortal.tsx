@@ -41,7 +41,7 @@ interface FinancialAdviser {
 export default function FinancialAdvisersPortal() {
   const [financialAdvisers, setFinancialAdvisers] = useState<FinancialAdviser[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(true);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [regionFilter, setRegionFilter] = useState("all");
