@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import Navbar from "@/components/Navbar";
 import ImportAdvisersDialog from "@/components/ImportAdvisersDialog";
 import BackToTop from "@/components/BackToTop";
+import EditAdviserDialog from "@/components/EditAdviserDialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -20,6 +21,7 @@ import {
 } from "@/components/ui/table";
 
 interface FinancialAdviser {
+  id: string;
   firstName: string;
   lastName: string;
   fullName: string;
@@ -39,6 +41,7 @@ interface FinancialAdviser {
 export default function FinancialAdvisersPortal() {
   const [financialAdvisers, setFinancialAdvisers] = useState<FinancialAdviser[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [regionFilter, setRegionFilter] = useState("all");
@@ -46,7 +49,25 @@ export default function FinancialAdvisersPortal() {
 
   useEffect(() => {
     fetchAdvisers();
+    checkAdminStatus();
   }, []);
+
+  const checkAdminStatus = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      setIsAdmin(false);
+      return;
+    }
+
+    const { data, error } = await supabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', user.id)
+      .eq('role', 'admin')
+      .maybeSingle();
+
+    setIsAdmin(!!data && !error);
+  };
 
   const fetchAdvisers = async () => {
     try {
@@ -60,6 +81,7 @@ export default function FinancialAdvisersPortal() {
 
       if (data) {
         const mappedData: FinancialAdviser[] = data.map(adviser => ({
+          id: adviser.id,
           firstName: adviser.first_name,
           lastName: adviser.last_name,
           fullName: adviser.full_name,
@@ -227,6 +249,7 @@ export default function FinancialAdvisersPortal() {
                         <TableHead className="text-white/70">Role</TableHead>
                         <TableHead className="text-white/70">Portfolio</TableHead>
                         <TableHead className="text-white/70">Contact</TableHead>
+                        {isAdmin && <TableHead className="text-white/70">Actions</TableHead>}
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -292,6 +315,11 @@ export default function FinancialAdvisersPortal() {
                               )}
                             </div>
                           </TableCell>
+                          {isAdmin && (
+                            <TableCell>
+                              <EditAdviserDialog adviser={adviser} onUpdate={fetchAdvisers} />
+                            </TableCell>
+                          )}
                         </TableRow>
                       ))}
                     </TableBody>
