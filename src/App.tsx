@@ -24,6 +24,7 @@ import ForLimitedPartners from "./pages/ForLimitedPartners";
 import NotFound from "./pages/NotFound";
 import FAQ from "./pages/FAQ";
 import Blog from "./pages/Blog";
+import BlogArchive from "./pages/BlogArchive";
 import Press from "./pages/Press";
 import Admin from "./pages/Admin";
 import NewsletterComposer from "./pages/NewsletterComposer";
@@ -87,6 +88,7 @@ const App = () => (
           <Route path="/confidential-proposal" element={<VettaFiProposal />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/archive" element={<BlogArchive />} />
           <Route path="/blog/gp-equity-next-frontier" element={<GPEquityNextFrontier />} />
           <Route path="/blog/succession-planning-strategic-imperative" element={<SuccessionPlanningStrategicImperative />} />
           <Route path="/blog/valuing-management-companies" element={<ValuingManagementCompanies />} />

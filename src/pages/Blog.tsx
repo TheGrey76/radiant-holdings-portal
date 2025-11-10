@@ -2,7 +2,8 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, ArrowRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Calendar, ArrowRight, Archive } from 'lucide-react';
 import { useEffect } from 'react';
 
 const Blog = () => {
@@ -64,15 +65,23 @@ const Blog = () => {
       readTime: "7 min read",
       slug: "digital-infrastructure-ai-core-allocation"
     },
-    {
-      title: "Cross-Border Fund Structuring: Luxembourg vs. Ireland vs. UK",
-      excerpt: "A comparative analysis of fund domicile options for European GPs raising global capital. Tax considerations, regulatory frameworks, and investor preferences examined.",
-      category: "Fund Structuring",
-      date: "2025-08-25",
-      readTime: "9 min read",
-      slug: "cross-border-fund-structuring"
-    }
-  ];
+      {
+        title: "AIRES: Transforming Investor Targeting with AI-Powered Precision",
+        excerpt: "Discover how AIRES leverages artificial intelligence to revolutionize investor targeting in private markets, helping GPs identify and engage the right LPs with unprecedented accuracy.",
+        category: "AI & Technology",
+        date: "2025-10-28",
+        readTime: "6 min read",
+        slug: "aires-transforming-investor-targeting"
+      },
+      {
+        title: "Cross-Border Fund Structuring: Luxembourg vs. Ireland vs. UK",
+        excerpt: "A comparative analysis of fund domicile options for European GPs raising global capital. Tax considerations, regulatory frameworks, and investor preferences examined.",
+        category: "Fund Structuring",
+        date: "2025-08-25",
+        readTime: "9 min read",
+        slug: "cross-border-fund-structuring"
+      }
+    ];
 
   // Inject Blog Schema
   useEffect(() => {
@@ -116,10 +125,23 @@ const Blog = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-xl font-light text-white/80 max-w-3xl"
+            className="text-xl font-light text-white/80 max-w-3xl mb-8"
           >
             Expert perspectives on GP capital advisory, private markets trends, and institutional capital formation
           </motion.p>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <Link to="/blog/archive">
+              <Button variant="outline" className="gap-2 bg-white/10 border-white/20 text-white hover:bg-white/20">
+                <Archive className="w-4 h-4" />
+                Browse Archive
+              </Button>
+            </Link>
+          </motion.div>
         </div>
       </section>
 
@@ -127,7 +149,7 @@ const Blog = () => {
       <section className="px-6 md:px-10 py-20">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {blogPosts.map((post, index) => (
+            {blogPosts.slice(0, 6).map((post, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 30 }}
@@ -145,9 +167,9 @@ const Blog = () => {
                         <span className="text-xs text-muted-foreground font-light">{post.readTime}</span>
                       </div>
                       
-                      <h3 className="text-xl font-light text-foreground mb-3 tracking-tight group-hover:text-accent transition-colors">
+                      <h2 className="text-xl font-light text-foreground mb-3 tracking-tight group-hover:text-accent transition-colors">
                         {post.title}
-                      </h3>
+                      </h2>
                       
                       <p className="text-muted-foreground font-light leading-relaxed mb-6">
                         {post.excerpt}
@@ -156,7 +178,9 @@ const Blog = () => {
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2 text-xs text-muted-foreground">
                           <Calendar className="w-4 h-4" />
-                          <span>{new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                          <time dateTime={post.date}>
+                            {new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                          </time>
                         </div>
                         <ArrowRight className="w-5 h-5 text-accent opacity-0 group-hover:opacity-100 transition-opacity" />
                       </div>
@@ -165,6 +189,16 @@ const Blog = () => {
                 </Link>
               </motion.div>
             ))}
+          </div>
+
+          {/* View All Link */}
+          <div className="mt-16 text-center">
+            <Link to="/blog/archive">
+              <Button variant="outline" size="lg" className="gap-2">
+                <Archive className="w-5 h-5" />
+                View All Articles
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
