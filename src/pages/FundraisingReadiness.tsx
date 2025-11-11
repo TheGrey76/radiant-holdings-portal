@@ -8,12 +8,14 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { CheckCircle, TrendingUp, Users, Building } from "lucide-react";
+import { CheckCircle, TrendingUp, Users, Building, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const FundraisingReadiness = () => {
   const [showAssessmentForm, setShowAssessmentForm] = useState(false);
   const [showReportRequest, setShowReportRequest] = useState(false);
+  const [isSubmittingReport, setIsSubmittingReport] = useState(false);
   const { toast } = useToast();
 
   const handleAssessmentSubmit = (e: React.FormEvent) => {
@@ -25,13 +27,53 @@ const FundraisingReadiness = () => {
     setShowAssessmentForm(false);
   };
 
-  const handleReportRequest = (e: React.FormEvent) => {
+  const handleReportRequest = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Request sent",
-      description: "You'll receive a sample report via email.",
-    });
-    setShowReportRequest(false);
+    setIsSubmittingReport(true);
+
+    const formData = new FormData(e.target as HTMLFormElement);
+    const data = {
+      full_name: formData.get("reportName") as string,
+      email: formData.get("reportEmail") as string,
+      company: formData.get("reportCompany") as string,
+      role: formData.get("reportRole") as string,
+      fund_type: formData.get("reportType") as string,
+      message: formData.get("reportMessage") as string,
+    };
+
+    try {
+      // Save to database
+      const { error: dbError } = await supabase
+        .from("fundraising_report_requests")
+        .insert([data]);
+
+      if (dbError) throw dbError;
+
+      // Send emails via edge function
+      const { error: emailError } = await supabase.functions.invoke(
+        "send-fundraising-report-request",
+        {
+          body: data,
+        }
+      );
+
+      if (emailError) throw emailError;
+
+      toast({
+        title: "Request sent successfully",
+        description: "You'll receive a sample report via email within 24-48 hours.",
+      });
+      setShowReportRequest(false);
+    } catch (error: any) {
+      console.error("Error submitting report request:", error);
+      toast({
+        title: "Error",
+        description: "Failed to submit request. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmittingReport(false);
+    }
   };
 
   return (
@@ -514,31 +556,81 @@ const FundraisingReadiness = () => {
             <form onSubmit={handleReportRequest} className="space-y-4">
               <div>
                 <Label htmlFor="reportName">Full Name</Label>
-                <Input id="reportName" required />
+                <Input 
+                  id="reportName" 
+                  name="reportName"
+                  required 
+                  disabled={isSubmittingReport}
+                />
               </div>
               <div>
                 <Label htmlFor="reportEmail">Email</Label>
-                <Input id="reportEmail" type="email" required />
+                <Input 
+                  id="reportEmail" 
+                  name="reportEmail"
+                  type="email" 
+                  required 
+                  disabled={isSubmittingReport}
+                />
+              </div>
+              <div>
+                <Label htmlFor="reportCompany">Company (Optional)</Label>
+                <Input 
+                  id="reportCompany" 
+                  name="reportCompany"
+                  disabled={isSubmittingReport}
+                />
+              </div>
+              <div>
+                <Label htmlFor="reportRole">Role (Optional)</Label>
+                <Input 
+                  id="reportRole" 
+                  name="reportRole"
+                  disabled={isSubmittingReport}
+                />
               </div>
               <div>
                 <Label htmlFor="reportType">Report Type</Label>
-                <Select required>
+                <Select name="reportType" required disabled={isSubmittingReport}>
                   <SelectTrigger id="reportType">
                     <SelectValue placeholder="Select..." />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="startup">Startup</SelectItem>
-                    <SelectItem value="vc">VC Fund</SelectItem>
-                    <SelectItem value="pe">PE / Alternatives</SelectItem>
+                    <SelectItem value="Startup">Startup</SelectItem>
+                    <SelectItem value="VC Fund">VC Fund</SelectItem>
+                    <SelectItem value="PE / Alternatives">PE / Alternatives</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
+              <div>
+                <Label htmlFor="reportMessage">Additional Notes (Optional)</Label>
+                <Textarea 
+                  id="reportMessage" 
+                  name="reportMessage"
+                  rows={3}
+                  placeholder="Any specific questions or areas of interest..."
+                  disabled={isSubmittingReport}
+                />
+              </div>
               <div className="flex gap-4">
-                <Button type="button" variant="outline" onClick={() => setShowReportRequest(false)} className="flex-1">
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={() => setShowReportRequest(false)} 
+                  className="flex-1"
+                  disabled={isSubmittingReport}
+                >
                   Cancel
                 </Button>
-                <Button type="submit" className="flex-1">
-                  Submit Request
+                <Button type="submit" className="flex-1" disabled={isSubmittingReport}>
+                  {isSubmittingReport ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Submitting...
+                    </>
+                  ) : (
+                    "Submit Request"
+                  )}
                 </Button>
               </div>
             </form>

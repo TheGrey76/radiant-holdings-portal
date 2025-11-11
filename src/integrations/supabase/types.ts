@@ -194,6 +194,45 @@ export type Database = {
         }
         Relationships: []
       }
+      fundraising_report_requests: {
+        Row: {
+          company: string | null
+          created_at: string
+          email: string
+          full_name: string
+          fund_type: string | null
+          id: string
+          message: string | null
+          role: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          company?: string | null
+          created_at?: string
+          email: string
+          full_name: string
+          fund_type?: string | null
+          id?: string
+          message?: string | null
+          role?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          company?: string | null
+          created_at?: string
+          email?: string
+          full_name?: string
+          fund_type?: string | null
+          id?: string
+          message?: string | null
+          role?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       funds: {
         Row: {
           aum: number
