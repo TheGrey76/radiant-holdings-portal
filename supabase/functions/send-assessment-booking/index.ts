@@ -34,7 +34,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send notification email to admin
     const adminEmailResponse = await resend.emails.send({
-      from: "Aries76 Assessments <onboarding@resend.dev>",
+      from: "Aries76 Assessments <noreply@aries76.com>",
       to: ["quinley.martini@aries76.com"],
       subject: `New Assessment Booking: ${bookingData.contact_name} - ${bookingData.client_type}`,
       html: `
@@ -74,7 +74,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send confirmation email to the user
     const userEmailResponse = await resend.emails.send({
-      from: "Aries76 <onboarding@resend.dev>",
+      from: "Aries76 <noreply@aries76.com>",
       to: [bookingData.contact_email],
       subject: "Assessment Booking Confirmation - Aries76",
       html: `
