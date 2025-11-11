@@ -16,15 +16,59 @@ const FundraisingReadiness = () => {
   const [showAssessmentForm, setShowAssessmentForm] = useState(false);
   const [showReportRequest, setShowReportRequest] = useState(false);
   const [isSubmittingReport, setIsSubmittingReport] = useState(false);
+  const [isSubmittingAssessment, setIsSubmittingAssessment] = useState(false);
   const { toast } = useToast();
 
-  const handleAssessmentSubmit = (e: React.FormEvent) => {
+  const handleAssessmentSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Request sent",
-      description: "We'll contact you shortly to discuss your assessment.",
-    });
-    setShowAssessmentForm(false);
+    setIsSubmittingAssessment(true);
+
+    const formData = new FormData(e.target as HTMLFormElement);
+    const data = {
+      client_type: formData.get("clientType") as string,
+      fundraising_target: formData.get("fundraisingTarget") as string,
+      timeline: formData.get("timeline") as string,
+      materials: formData.get("materials") as string,
+      key_metrics: formData.get("keyMetrics") as string,
+      lp_preferences: formData.get("lpPreferences") as string,
+      contact_name: formData.get("contactName") as string,
+      contact_role: formData.get("contactRole") as string,
+      contact_email: formData.get("contactEmail") as string,
+      contact_phone: formData.get("contactPhone") as string,
+    };
+
+    try {
+      // Save to database
+      const { error: dbError } = await supabase
+        .from("assessment_bookings")
+        .insert([data]);
+
+      if (dbError) throw dbError;
+
+      // Send email notifications
+      const { error: emailError } = await supabase.functions.invoke(
+        "send-assessment-booking",
+        { body: data }
+      );
+
+      if (emailError) throw emailError;
+
+      toast({
+        title: "Request sent successfully!",
+        description: "We'll contact you shortly to discuss your assessment.",
+      });
+      setShowAssessmentForm(false);
+      (e.target as HTMLFormElement).reset();
+    } catch (error: any) {
+      console.error("Error submitting assessment booking:", error);
+      toast({
+        title: "Error",
+        description: "There was a problem submitting your request. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmittingAssessment(false);
+    }
   };
 
   const handleReportRequest = async (e: React.FormEvent) => {
@@ -452,7 +496,7 @@ const FundraisingReadiness = () => {
               <div className="space-y-4">
                 <div>
                   <Label htmlFor="clientType">Client Type</Label>
-                  <Select required>
+                  <Select name="clientType" required disabled={isSubmittingAssessment}>
                     <SelectTrigger id="clientType">
                       <SelectValue placeholder="Select..." />
                     </SelectTrigger>
@@ -467,77 +511,126 @@ const FundraisingReadiness = () => {
                 <div>
                   <Label htmlFor="fundraisingTarget">Fundraising Target</Label>
                   <Input 
-                    id="fundraisingTarget" 
+                    id="fundraisingTarget"
+                    name="fundraisingTarget"
                     placeholder="e.g., €5M seed round / €50M Fund I"
                     required
+                    disabled={isSubmittingAssessment}
                   />
                 </div>
 
                 <div>
                   <Label htmlFor="timeline">Expected Timeline</Label>
                   <Input 
-                    id="timeline" 
+                    id="timeline"
+                    name="timeline"
                     placeholder="e.g., Q2 2025"
                     required
+                    disabled={isSubmittingAssessment}
                   />
                 </div>
 
                 <div>
                   <Label htmlFor="materials">Available Materials</Label>
                   <Textarea 
-                    id="materials" 
+                    id="materials"
+                    name="materials"
                     placeholder="Pitch deck, business plan, financial model, track record..."
                     rows={3}
+                    disabled={isSubmittingAssessment}
                   />
                 </div>
 
                 <div>
                   <Label htmlFor="keyMetrics">Key Metrics</Label>
                   <Textarea 
-                    id="keyMetrics" 
+                    id="keyMetrics"
+                    name="keyMetrics"
                     placeholder="MRR, ARR, IRR, TVPI, portfolio size..."
                     rows={3}
+                    disabled={isSubmittingAssessment}
                   />
                 </div>
 
                 <div>
                   <Label htmlFor="lpPreferences">LP / Target Investor Preferences</Label>
                   <Textarea 
-                    id="lpPreferences" 
+                    id="lpPreferences"
+                    name="lpPreferences"
                     placeholder="Family office, institutional, corporate VC, geo focus..."
                     rows={3}
+                    disabled={isSubmittingAssessment}
                   />
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="contactName">Full Name</Label>
-                    <Input id="contactName" required />
+                    <Input 
+                      id="contactName"
+                      name="contactName"
+                      required
+                      disabled={isSubmittingAssessment}
+                    />
                   </div>
                   <div>
                     <Label htmlFor="contactRole">Role</Label>
-                    <Input id="contactRole" placeholder="e.g., CEO, Managing Partner" required />
+                    <Input 
+                      id="contactRole"
+                      name="contactRole"
+                      placeholder="e.g., CEO, Managing Partner"
+                      required
+                      disabled={isSubmittingAssessment}
+                    />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="contactEmail">Email</Label>
-                    <Input id="contactEmail" type="email" required />
+                    <Input 
+                      id="contactEmail"
+                      name="contactEmail"
+                      type="email"
+                      required
+                      disabled={isSubmittingAssessment}
+                    />
                   </div>
                   <div>
                     <Label htmlFor="contactPhone">Phone</Label>
-                    <Input id="contactPhone" type="tel" />
+                    <Input 
+                      id="contactPhone"
+                      name="contactPhone"
+                      type="tel"
+                      disabled={isSubmittingAssessment}
+                    />
                   </div>
                 </div>
               </div>
 
               <div className="flex gap-4">
-                <Button type="button" variant="outline" onClick={() => setShowAssessmentForm(false)} className="flex-1">
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={() => setShowAssessmentForm(false)} 
+                  className="flex-1"
+                  disabled={isSubmittingAssessment}
+                >
                   Cancel
                 </Button>
-                <Button type="submit" className="flex-1">
-                  Submit Request
+                <Button 
+                  type="submit" 
+                  className="flex-1"
+                  disabled={isSubmittingAssessment}
+                >
+                  {isSubmittingAssessment ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Sending...
+                    </>
+                  ) : (
+                    "Submit Request"
+                  )}
                 </Button>
               </div>
             </form>

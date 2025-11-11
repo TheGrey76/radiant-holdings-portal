@@ -14,6 +14,57 @@ export type Database = {
   }
   public: {
     Tables: {
+      assessment_bookings: {
+        Row: {
+          client_type: string
+          contact_email: string
+          contact_name: string
+          contact_phone: string | null
+          contact_role: string
+          created_at: string
+          fundraising_target: string
+          id: string
+          key_metrics: string | null
+          lp_preferences: string | null
+          materials: string | null
+          status: string
+          timeline: string
+          updated_at: string
+        }
+        Insert: {
+          client_type: string
+          contact_email: string
+          contact_name: string
+          contact_phone?: string | null
+          contact_role: string
+          created_at?: string
+          fundraising_target: string
+          id?: string
+          key_metrics?: string | null
+          lp_preferences?: string | null
+          materials?: string | null
+          status?: string
+          timeline: string
+          updated_at?: string
+        }
+        Update: {
+          client_type?: string
+          contact_email?: string
+          contact_name?: string
+          contact_phone?: string | null
+          contact_role?: string
+          created_at?: string
+          fundraising_target?: string
+          id?: string
+          key_metrics?: string | null
+          lp_preferences?: string | null
+          materials?: string | null
+          status?: string
+          timeline?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       brochure_downloads: {
         Row: {
           company: string | null

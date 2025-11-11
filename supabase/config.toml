@@ -1,5 +1,8 @@
 project_id = "dvwmyljnssspwfpwocof"
 
+[functions.send-assessment-booking]
+verify_jwt = false
+
 [functions.send-business-request]
 verify_jwt = false
 
