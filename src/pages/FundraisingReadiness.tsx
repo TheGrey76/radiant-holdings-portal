@@ -203,6 +203,9 @@ const FundraisingReadiness = () => {
                   <CheckCircle className="w-4 h-4 text-primary mr-2" />
                   <span className="text-sm">Materials & Pitch</span>
                 </div>
+                <p className="text-xs text-muted-foreground italic pt-3 border-t">
+                  These are examples — the full model includes additional indicators for each dimension
+                </p>
               </CardContent>
             </Card>
 
@@ -232,6 +235,9 @@ const FundraisingReadiness = () => {
                   <CheckCircle className="w-4 h-4 text-primary mr-2" />
                   <span className="text-sm">Marketing Materials</span>
                 </div>
+                <p className="text-xs text-muted-foreground italic pt-3 border-t">
+                  These are examples — the full model includes additional indicators for each dimension
+                </p>
               </CardContent>
             </Card>
 
@@ -261,6 +267,9 @@ const FundraisingReadiness = () => {
                   <CheckCircle className="w-4 h-4 text-primary mr-2" />
                   <span className="text-sm">Compliance & DDQ</span>
                 </div>
+                <p className="text-xs text-muted-foreground italic pt-3 border-t">
+                  These are examples — the full model includes additional indicators for each dimension
+                </p>
               </CardContent>
             </Card>
           </div>
