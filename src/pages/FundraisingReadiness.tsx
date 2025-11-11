@@ -188,11 +188,11 @@ const FundraisingReadiness = () => {
                   <span className="font-bold text-primary">30%</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm">Prodotto & Traction</span>
+                  <span className="text-sm">Product & Traction</span>
                   <span className="font-bold text-primary">25%</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm">Mercato & Timing</span>
+                  <span className="text-sm">Market & Timing</span>
                   <span className="font-bold text-primary">20%</span>
                 </div>
                 <div className="flex justify-between items-center">
@@ -200,7 +200,7 @@ const FundraisingReadiness = () => {
                   <span className="font-bold text-primary">15%</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm">Materiali & Pitch</span>
+                  <span className="text-sm">Materials & Pitch</span>
                   <span className="font-bold text-primary">10%</span>
                 </div>
               </CardContent>
@@ -217,7 +217,7 @@ const FundraisingReadiness = () => {
                   <span className="font-bold text-primary">35%</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm">Strategia & Tesi</span>
+                  <span className="text-sm">Strategy & Thesis</span>
                   <span className="font-bold text-primary">25%</span>
                 </div>
                 <div className="flex justify-between items-center">
@@ -246,7 +246,7 @@ const FundraisingReadiness = () => {
                   <span className="font-bold text-primary">30%</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm">Strategia & Dealflow</span>
+                  <span className="text-sm">Strategy & Dealflow</span>
                   <span className="font-bold text-primary">25%</span>
                 </div>
                 <div className="flex justify-between items-center">
