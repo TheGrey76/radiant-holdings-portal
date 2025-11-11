@@ -19,8 +19,8 @@ const FundraisingReadiness = () => {
   const handleAssessmentSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     toast({
-      title: "Richiesta inviata",
-      description: "Ti contatteremo a breve per discutere il tuo assessment.",
+      title: "Request sent",
+      description: "We'll contact you shortly to discuss your assessment.",
     });
     setShowAssessmentForm(false);
   };
@@ -28,8 +28,8 @@ const FundraisingReadiness = () => {
   const handleReportRequest = (e: React.FormEvent) => {
     e.preventDefault();
     toast({
-      title: "Richiesta inviata",
-      description: "Riceverai un esempio di report via email.",
+      title: "Request sent",
+      description: "You'll receive a sample report via email.",
     });
     setShowReportRequest(false);
   };
@@ -48,7 +48,7 @@ const FundraisingReadiness = () => {
             Fundraising Readiness & Probability Assessment
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Un modello proprietario per stimare la probabilità di raccolta e identificare le aree di miglioramento prima di andare in fundraising
+            A proprietary model to estimate fundraising probability and identify areas for improvement before going to market
           </p>
         </motion.div>
 
@@ -67,29 +67,29 @@ const FundraisingReadiness = () => {
                   <TrendingUp className="w-6 h-6 text-primary" />
                 </div>
                 <CardTitle className="text-2xl">Startup</CardTitle>
-                <CardDescription>Valutazione per round seed e Serie A</CardDescription>
+                <CardDescription>Assessment for seed and Series A rounds</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <h4 className="font-semibold mb-2">Cosa analizziamo</h4>
+                  <h4 className="font-semibold mb-2">What we analyze</h4>
                   <p className="text-sm text-muted-foreground">
-                    Team, prodotto/MVP, traction, mercato TAM/SAM, competizione, business model, materiali pitch
+                    Team, product/MVP, traction, TAM/SAM market, competition, business model, pitch materials
                   </p>
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-2">Cosa ricevi</h4>
+                  <h4 className="font-semibold mb-2">What you receive</h4>
                   <p className="text-sm text-muted-foreground">
-                    Report con scoring 0-100, benchmark settoriale, gap analysis, raccomandazioni prioritizzate
+                    Report with 0-100 scoring, industry benchmark, gap analysis, prioritized recommendations
                   </p>
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-2">Tempistiche</h4>
-                  <p className="text-sm text-muted-foreground">5-7 giorni lavorativi</p>
+                  <h4 className="font-semibold mb-2">Timeline</h4>
+                  <p className="text-sm text-muted-foreground">5-7 business days</p>
                 </div>
                 <div className="pt-4 border-t">
-                  <h4 className="font-semibold mb-2">Prezzo</h4>
-                  <p className="text-2xl font-bold text-primary">€2.500 - €5.000</p>
-                  <p className="text-xs text-muted-foreground mt-1">In base alla complessità</p>
+                  <h4 className="font-semibold mb-2">Price</h4>
+                  <p className="text-2xl font-bold text-primary">€2,500 - €5,000</p>
+                  <p className="text-xs text-muted-foreground mt-1">Based on complexity</p>
                 </div>
               </CardContent>
             </Card>
@@ -101,29 +101,29 @@ const FundraisingReadiness = () => {
                   <Users className="w-6 h-6 text-primary" />
                 </div>
                 <CardTitle className="text-2xl">VC Funds</CardTitle>
-                <CardDescription>Valutazione per fondi venture capital</CardDescription>
+                <CardDescription>Assessment for venture capital funds</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <h4 className="font-semibold mb-2">Cosa analizziamo</h4>
+                  <h4 className="font-semibold mb-2">What we analyze</h4>
                   <p className="text-sm text-muted-foreground">
-                    Track record GP, strategia, pipeline/portfolio, governance, materiali marketing, compliance, posizionamento LP
+                    GP track record, strategy, pipeline/portfolio, governance, marketing materials, compliance, LP positioning
                   </p>
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-2">Cosa ricevi</h4>
+                  <h4 className="font-semibold mb-2">What you receive</h4>
                   <p className="text-sm text-muted-foreground">
-                    Report dettagliato con scoring, analisi competitiva, gap critici, roadmap operativa, preview LP feedback
+                    Detailed report with scoring, competitive analysis, critical gaps, operational roadmap, LP feedback preview
                   </p>
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-2">Tempistiche</h4>
-                  <p className="text-sm text-muted-foreground">10-14 giorni lavorativi</p>
+                  <h4 className="font-semibold mb-2">Timeline</h4>
+                  <p className="text-sm text-muted-foreground">10-14 business days</p>
                 </div>
                 <div className="pt-4 border-t">
-                  <h4 className="font-semibold mb-2">Prezzo</h4>
-                  <p className="text-2xl font-bold text-primary">€7.500 - €15.000</p>
-                  <p className="text-xs text-muted-foreground mt-1">Target size e complessità</p>
+                  <h4 className="font-semibold mb-2">Price</h4>
+                  <p className="text-2xl font-bold text-primary">€7,500 - €15,000</p>
+                  <p className="text-xs text-muted-foreground mt-1">Target size and complexity</p>
                 </div>
               </CardContent>
             </Card>
@@ -135,29 +135,29 @@ const FundraisingReadiness = () => {
                   <Building className="w-6 h-6 text-primary" />
                 </div>
                 <CardTitle className="text-2xl">PE / Alternatives</CardTitle>
-                <CardDescription>Valutazione per fondi PE e alternativi</CardDescription>
+                <CardDescription>Assessment for PE and alternative funds</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <h4 className="font-semibold mb-2">Cosa analizziamo</h4>
+                  <h4 className="font-semibold mb-2">What we analyze</h4>
                   <p className="text-sm text-muted-foreground">
-                    Track record GP, strategia tesi investimento, pipeline/portfolio, governance, ESG, materiali DDQ, conformità regolamentare
+                    GP track record, investment thesis strategy, pipeline/portfolio, governance, ESG, DDQ materials, regulatory compliance
                   </p>
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-2">Cosa ricevi</h4>
+                  <h4 className="font-semibold mb-2">What you receive</h4>
                   <p className="text-sm text-muted-foreground">
-                    Report esecutivo con scoring, analisi posizionamento, gap analysis, roadmap, simulazione feedback istituzionali
+                    Executive report with scoring, positioning analysis, gap analysis, roadmap, institutional feedback simulation
                   </p>
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-2">Tempistiche</h4>
-                  <p className="text-sm text-muted-foreground">14-21 giorni lavorativi</p>
+                  <h4 className="font-semibold mb-2">Timeline</h4>
+                  <p className="text-sm text-muted-foreground">14-21 business days</p>
                 </div>
                 <div className="pt-4 border-t">
-                  <h4 className="font-semibold mb-2">Prezzo</h4>
-                  <p className="text-2xl font-bold text-primary">€10.000 - €20.000</p>
-                  <p className="text-xs text-muted-foreground mt-1">AUM target e settore</p>
+                  <h4 className="font-semibold mb-2">Price</h4>
+                  <p className="text-2xl font-bold text-primary">€10,000 - €20,000</p>
+                  <p className="text-xs text-muted-foreground mt-1">Target AUM and sector</p>
                 </div>
               </CardContent>
             </Card>
@@ -171,9 +171,9 @@ const FundraisingReadiness = () => {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="mb-20"
         >
-          <h2 className="text-3xl font-bold mb-8 text-center">Metodologia di Valutazione</h2>
+          <h2 className="text-3xl font-bold mb-8 text-center">Assessment Methodology</h2>
           <p className="text-muted-foreground text-center mb-12 max-w-3xl mx-auto">
-            Il nostro modello proprietario analizza cinque dimensioni chiave, ciascuna ponderata in base al segmento di riferimento
+            Our proprietary model analyzes five key dimensions, each weighted according to the specific segment
           </p>
 
           <div className="grid md:grid-cols-3 gap-8">
@@ -269,7 +269,7 @@ const FundraisingReadiness = () => {
             <CardContent className="p-6">
               <p className="text-sm text-muted-foreground">
                 <CheckCircle className="inline w-4 h-4 mr-2 text-primary" />
-                Ogni dimensione viene valutata con criteri oggettivi e quantitativi, producendo uno score complessivo 0-100 e un profilo di probabilità di successo
+                Each dimension is assessed with objective and quantitative criteria, producing an overall 0-100 score and a success probability profile
               </p>
             </CardContent>
           </Card>
@@ -285,25 +285,25 @@ const FundraisingReadiness = () => {
           <div className="grid md:grid-cols-2 gap-6">
             <Card className="bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20">
               <CardContent className="p-8">
-                <h3 className="text-2xl font-bold mb-4">Prenota un Assessment</h3>
+                <h3 className="text-2xl font-bold mb-4">Book an Assessment</h3>
                 <p className="text-muted-foreground mb-6">
-                  Compila il modulo di intake per ricevere una proposta personalizzata e iniziare la tua valutazione
+                  Complete the intake form to receive a customized proposal and start your assessment
                 </p>
                 <Button 
                   size="lg" 
                   className="w-full"
                   onClick={() => setShowAssessmentForm(true)}
                 >
-                  Prenota Assessment
+                  Book Assessment
                 </Button>
               </CardContent>
             </Card>
 
             <Card className="bg-card/50 border-primary/20">
               <CardContent className="p-8">
-                <h3 className="text-2xl font-bold mb-4">Richiedi un Esempio di Report</h3>
+                <h3 className="text-2xl font-bold mb-4">Request a Sample Report</h3>
                 <p className="text-muted-foreground mb-6">
-                  Vuoi vedere come appare un report completo? Richiedi un esempio anonimizzato
+                  Want to see what a complete report looks like? Request an anonymized sample
                 </p>
                 <Button 
                   size="lg" 
@@ -311,7 +311,7 @@ const FundraisingReadiness = () => {
                   className="w-full"
                   onClick={() => setShowReportRequest(true)}
                 >
-                  Richiedi Esempio
+                  Request Sample
                 </Button>
               </CardContent>
             </Card>
@@ -325,49 +325,49 @@ const FundraisingReadiness = () => {
           transition={{ duration: 0.6, delay: 0.5 }}
           className="mb-20"
         >
-          <h2 className="text-3xl font-bold mb-8 text-center">Domande Frequenti</h2>
+          <h2 className="text-3xl font-bold mb-8 text-center">Frequently Asked Questions</h2>
           <Accordion type="single" collapsible className="max-w-3xl mx-auto">
             <AccordionItem value="item-1">
               <AccordionTrigger className="text-left">
-                Quanto è accurata la stima di probabilità?
+                How accurate is the probability estimate?
               </AccordionTrigger>
               <AccordionContent>
-                Il modello è calibrato su oltre 200 casi reali di fundraising tra startup, VC e PE dal 2018 ad oggi. 
-                La correlazione tra lo score finale e l'esito effettivo della raccolta è superiore all'82%. 
-                Tuttavia, la probabilità stimata va intesa come indicatore di positioning relativo, non come certezza assoluta.
+                The model is calibrated on over 200 real fundraising cases across startups, VC, and PE from 2018 to present. 
+                The correlation between the final score and the actual fundraising outcome exceeds 82%. 
+                However, the estimated probability should be understood as an indicator of relative positioning, not as absolute certainty.
               </AccordionContent>
             </AccordionItem>
 
             <AccordionItem value="item-2">
               <AccordionTrigger className="text-left">
-                L'assessment sostituisce la due diligence degli investitori?
+                Does the assessment replace investor due diligence?
               </AccordionTrigger>
               <AccordionContent>
-                No. L'assessment valuta la "readiness" del soggetto che raccoglie e identifica gap da colmare prima 
-                di andare sul mercato. La due diligence formale degli investitori resta un processo separato e 
-                approfondito che avviene dopo il primo contatto.
+                No. The assessment evaluates the "readiness" of the fundraising entity and identifies gaps to address before 
+                going to market. Formal investor due diligence remains a separate and thorough process that occurs after 
+                initial contact.
               </AccordionContent>
             </AccordionItem>
 
             <AccordionItem value="item-3">
               <AccordionTrigger className="text-left">
-                Posso richiedere l'assessment se sono già in fundraising?
+                Can I request the assessment if I'm already fundraising?
               </AccordionTrigger>
               <AccordionContent>
-                Sì, ma il valore maggiore si ottiene prima di iniziare il processo. Se sei già in raccolta, 
-                l'assessment può comunque aiutarti a diagnosticare eventuali problemi e correggere la strategia in corsa, 
-                ma alcune modifiche (es. governance, team) potrebbero richiedere tempi incompatibili con una campagna già avviata.
+                Yes, but the greatest value is obtained before starting the process. If you're already fundraising, 
+                the assessment can still help diagnose problems and adjust strategy mid-course, but some changes 
+                (e.g., governance, team) might require timelines incompatible with an already-launched campaign.
               </AccordionContent>
             </AccordionItem>
 
             <AccordionItem value="item-4">
               <AccordionTrigger className="text-left">
-                Le informazioni condivise rimangono confidenziali?
+                Does shared information remain confidential?
               </AccordionTrigger>
               <AccordionContent>
-                Assolutamente sì. Tutti i materiali e i dati forniti sono trattati con la massima riservatezza 
-                e coperti da NDA. Il report finale viene condiviso solo con i soggetti da te autorizzati. 
-                Eventuali esempi o benchmark utilizzati in comunicazioni esterne sono sempre completamente anonimizzati.
+                Absolutely. All materials and data provided are treated with the utmost confidentiality 
+                and covered by NDA. The final report is shared only with parties you authorize. 
+                Any examples or benchmarks used in external communications are always completely anonymized.
               </AccordionContent>
             </AccordionItem>
           </Accordion>
@@ -382,12 +382,12 @@ const FundraisingReadiness = () => {
           <Card className="bg-muted/30 border-muted">
             <CardContent className="p-6">
               <p className="text-xs text-muted-foreground leading-relaxed">
-                <strong>Disclaimer:</strong> Il Fundraising Readiness Assessment è uno strumento diagnostico proprietario 
-                di Aries76 Capital Advisory e non costituisce consulenza di investimento, sollecitazione al pubblico risparmio 
-                o attività di placement regolamentata. Le stime di probabilità sono indicative e basate su modelli statistici 
-                che non garantiscono il successo di una raccolta. Ogni decisione di investimento o fundraising resta di esclusiva 
-                responsabilità del cliente. Aries76 opera in conformità alle normative vigenti in materia di consulenza finanziaria 
-                e trattamento dei dati personali (GDPR).
+                <strong>Disclaimer:</strong> The Fundraising Readiness Assessment is a proprietary diagnostic tool 
+                of Aries76 Capital Advisory and does not constitute investment advice, public solicitation, 
+                or regulated placement activity. Probability estimates are indicative and based on statistical models 
+                that do not guarantee fundraising success. All investment or fundraising decisions remain the sole 
+                responsibility of the client. Aries76 operates in compliance with current regulations regarding financial 
+                advisory and personal data processing (GDPR).
               </p>
             </CardContent>
           </Card>
@@ -397,18 +397,18 @@ const FundraisingReadiness = () => {
         <Dialog open={showAssessmentForm} onOpenChange={setShowAssessmentForm}>
           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>Prenota il tuo Assessment</DialogTitle>
+              <DialogTitle>Book Your Assessment</DialogTitle>
               <DialogDescription>
-                Compila il modulo per ricevere una proposta personalizzata
+                Complete the form to receive a customized proposal
               </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleAssessmentSubmit} className="space-y-6">
               <div className="space-y-4">
                 <div>
-                  <Label htmlFor="clientType">Tipo di Cliente</Label>
+                  <Label htmlFor="clientType">Client Type</Label>
                   <Select required>
                     <SelectTrigger id="clientType">
-                      <SelectValue placeholder="Seleziona..." />
+                      <SelectValue placeholder="Select..." />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="startup">Startup</SelectItem>
@@ -419,25 +419,25 @@ const FundraisingReadiness = () => {
                 </div>
 
                 <div>
-                  <Label htmlFor="fundraisingTarget">Obiettivo di Raccolta</Label>
+                  <Label htmlFor="fundraisingTarget">Fundraising Target</Label>
                   <Input 
                     id="fundraisingTarget" 
-                    placeholder="es. €5M seed round / €50M Fund I"
+                    placeholder="e.g., €5M seed round / €50M Fund I"
                     required
                   />
                 </div>
 
                 <div>
-                  <Label htmlFor="timeline">Tempistica Prevista</Label>
+                  <Label htmlFor="timeline">Expected Timeline</Label>
                   <Input 
                     id="timeline" 
-                    placeholder="es. Q2 2025"
+                    placeholder="e.g., Q2 2025"
                     required
                   />
                 </div>
 
                 <div>
-                  <Label htmlFor="materials">Materiali Disponibili</Label>
+                  <Label htmlFor="materials">Available Materials</Label>
                   <Textarea 
                     id="materials" 
                     placeholder="Pitch deck, business plan, financial model, track record..."
@@ -446,7 +446,7 @@ const FundraisingReadiness = () => {
                 </div>
 
                 <div>
-                  <Label htmlFor="keyMetrics">Metriche Chiave</Label>
+                  <Label htmlFor="keyMetrics">Key Metrics</Label>
                   <Textarea 
                     id="keyMetrics" 
                     placeholder="MRR, ARR, IRR, TVPI, portfolio size..."
@@ -455,22 +455,22 @@ const FundraisingReadiness = () => {
                 </div>
 
                 <div>
-                  <Label htmlFor="lpPreferences">Preferenze LP / Investitori Target</Label>
+                  <Label htmlFor="lpPreferences">LP / Target Investor Preferences</Label>
                   <Textarea 
                     id="lpPreferences" 
-                    placeholder="Family office, istituzionali, corporate VC, geo focus..."
+                    placeholder="Family office, institutional, corporate VC, geo focus..."
                     rows={3}
                   />
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="contactName">Nome e Cognome</Label>
+                    <Label htmlFor="contactName">Full Name</Label>
                     <Input id="contactName" required />
                   </div>
                   <div>
-                    <Label htmlFor="contactRole">Ruolo</Label>
-                    <Input id="contactRole" placeholder="es. CEO, Managing Partner" required />
+                    <Label htmlFor="contactRole">Role</Label>
+                    <Input id="contactRole" placeholder="e.g., CEO, Managing Partner" required />
                   </div>
                 </div>
 
@@ -480,7 +480,7 @@ const FundraisingReadiness = () => {
                     <Input id="contactEmail" type="email" required />
                   </div>
                   <div>
-                    <Label htmlFor="contactPhone">Telefono</Label>
+                    <Label htmlFor="contactPhone">Phone</Label>
                     <Input id="contactPhone" type="tel" />
                   </div>
                 </div>
@@ -488,10 +488,10 @@ const FundraisingReadiness = () => {
 
               <div className="flex gap-4">
                 <Button type="button" variant="outline" onClick={() => setShowAssessmentForm(false)} className="flex-1">
-                  Annulla
+                  Cancel
                 </Button>
                 <Button type="submit" className="flex-1">
-                  Invia Richiesta
+                  Submit Request
                 </Button>
               </div>
             </form>
@@ -502,14 +502,14 @@ const FundraisingReadiness = () => {
         <Dialog open={showReportRequest} onOpenChange={setShowReportRequest}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Richiedi Esempio di Report</DialogTitle>
+              <DialogTitle>Request Sample Report</DialogTitle>
               <DialogDescription>
-                Inserisci i tuoi dati per ricevere un esempio di report via email
+                Enter your details to receive a sample report via email
               </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleReportRequest} className="space-y-4">
               <div>
-                <Label htmlFor="reportName">Nome e Cognome</Label>
+                <Label htmlFor="reportName">Full Name</Label>
                 <Input id="reportName" required />
               </div>
               <div>
@@ -517,10 +517,10 @@ const FundraisingReadiness = () => {
                 <Input id="reportEmail" type="email" required />
               </div>
               <div>
-                <Label htmlFor="reportType">Tipo di Report</Label>
+                <Label htmlFor="reportType">Report Type</Label>
                 <Select required>
                   <SelectTrigger id="reportType">
-                    <SelectValue placeholder="Seleziona..." />
+                    <SelectValue placeholder="Select..." />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="startup">Startup</SelectItem>
@@ -531,10 +531,10 @@ const FundraisingReadiness = () => {
               </div>
               <div className="flex gap-4">
                 <Button type="button" variant="outline" onClick={() => setShowReportRequest(false)} className="flex-1">
-                  Annulla
+                  Cancel
                 </Button>
                 <Button type="submit" className="flex-1">
-                  Invia Richiesta
+                  Submit Request
                 </Button>
               </div>
             </form>
