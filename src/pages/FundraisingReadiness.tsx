@@ -183,25 +183,25 @@ const FundraisingReadiness = () => {
                 <CardTitle className="text-lg">Startup</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <div className="flex justify-between items-center">
+                <div className="flex items-center">
+                  <CheckCircle className="w-4 h-4 text-primary mr-2" />
                   <span className="text-sm">Team & Execution</span>
-                  <span className="font-bold text-primary">30%</span>
                 </div>
-                <div className="flex justify-between items-center">
+                <div className="flex items-center">
+                  <CheckCircle className="w-4 h-4 text-primary mr-2" />
                   <span className="text-sm">Product & Traction</span>
-                  <span className="font-bold text-primary">25%</span>
                 </div>
-                <div className="flex justify-between items-center">
+                <div className="flex items-center">
+                  <CheckCircle className="w-4 h-4 text-primary mr-2" />
                   <span className="text-sm">Market & Timing</span>
-                  <span className="font-bold text-primary">20%</span>
                 </div>
-                <div className="flex justify-between items-center">
+                <div className="flex items-center">
+                  <CheckCircle className="w-4 h-4 text-primary mr-2" />
                   <span className="text-sm">Business Model</span>
-                  <span className="font-bold text-primary">15%</span>
                 </div>
-                <div className="flex justify-between items-center">
+                <div className="flex items-center">
+                  <CheckCircle className="w-4 h-4 text-primary mr-2" />
                   <span className="text-sm">Materials & Pitch</span>
-                  <span className="font-bold text-primary">10%</span>
                 </div>
               </CardContent>
             </Card>
@@ -212,25 +212,25 @@ const FundraisingReadiness = () => {
                 <CardTitle className="text-lg">VC Funds</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <div className="flex justify-between items-center">
+                <div className="flex items-center">
+                  <CheckCircle className="w-4 h-4 text-primary mr-2" />
                   <span className="text-sm">Track Record & Team</span>
-                  <span className="font-bold text-primary">35%</span>
                 </div>
-                <div className="flex justify-between items-center">
+                <div className="flex items-center">
+                  <CheckCircle className="w-4 h-4 text-primary mr-2" />
                   <span className="text-sm">Strategy & Thesis</span>
-                  <span className="font-bold text-primary">25%</span>
                 </div>
-                <div className="flex justify-between items-center">
+                <div className="flex items-center">
+                  <CheckCircle className="w-4 h-4 text-primary mr-2" />
                   <span className="text-sm">Pipeline & Portfolio</span>
-                  <span className="font-bold text-primary">20%</span>
                 </div>
-                <div className="flex justify-between items-center">
+                <div className="flex items-center">
+                  <CheckCircle className="w-4 h-4 text-primary mr-2" />
                   <span className="text-sm">Governance & Compliance</span>
-                  <span className="font-bold text-primary">12%</span>
                 </div>
-                <div className="flex justify-between items-center">
+                <div className="flex items-center">
+                  <CheckCircle className="w-4 h-4 text-primary mr-2" />
                   <span className="text-sm">Marketing Materials</span>
-                  <span className="font-bold text-primary">8%</span>
                 </div>
               </CardContent>
             </Card>
@@ -241,25 +241,25 @@ const FundraisingReadiness = () => {
                 <CardTitle className="text-lg">PE / Alternatives</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <div className="flex justify-between items-center">
+                <div className="flex items-center">
+                  <CheckCircle className="w-4 h-4 text-primary mr-2" />
                   <span className="text-sm">Track Record & Team</span>
-                  <span className="font-bold text-primary">30%</span>
                 </div>
-                <div className="flex justify-between items-center">
+                <div className="flex items-center">
+                  <CheckCircle className="w-4 h-4 text-primary mr-2" />
                   <span className="text-sm">Strategy & Dealflow</span>
-                  <span className="font-bold text-primary">25%</span>
                 </div>
-                <div className="flex justify-between items-center">
+                <div className="flex items-center">
+                  <CheckCircle className="w-4 h-4 text-primary mr-2" />
                   <span className="text-sm">Performance & Exits</span>
-                  <span className="font-bold text-primary">20%</span>
                 </div>
-                <div className="flex justify-between items-center">
+                <div className="flex items-center">
+                  <CheckCircle className="w-4 h-4 text-primary mr-2" />
                   <span className="text-sm">Governance & ESG</span>
-                  <span className="font-bold text-primary">15%</span>
                 </div>
-                <div className="flex justify-between items-center">
+                <div className="flex items-center">
+                  <CheckCircle className="w-4 h-4 text-primary mr-2" />
                   <span className="text-sm">Compliance & DDQ</span>
-                  <span className="font-bold text-primary">10%</span>
                 </div>
               </CardContent>
             </Card>
