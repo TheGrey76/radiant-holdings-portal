@@ -203,9 +203,6 @@ const FundraisingReadiness = () => {
                   <CheckCircle className="w-4 h-4 text-primary mr-2" />
                   <span className="text-sm">Materials & Pitch</span>
                 </div>
-                <p className="text-xs text-muted-foreground italic pt-3 border-t">
-                  These are examples — the full model includes additional indicators for each dimension
-                </p>
               </CardContent>
             </Card>
 
@@ -235,9 +232,6 @@ const FundraisingReadiness = () => {
                   <CheckCircle className="w-4 h-4 text-primary mr-2" />
                   <span className="text-sm">Marketing Materials</span>
                 </div>
-                <p className="text-xs text-muted-foreground italic pt-3 border-t">
-                  These are examples — the full model includes additional indicators for each dimension
-                </p>
               </CardContent>
             </Card>
 
@@ -267,18 +261,19 @@ const FundraisingReadiness = () => {
                   <CheckCircle className="w-4 h-4 text-primary mr-2" />
                   <span className="text-sm">Compliance & DDQ</span>
                 </div>
-                <p className="text-xs text-muted-foreground italic pt-3 border-t">
-                  These are examples — the full model includes additional indicators for each dimension
-                </p>
               </CardContent>
             </Card>
           </div>
 
           <Card className="mt-8 bg-primary/5 border-primary/20">
-            <CardContent className="p-6">
+            <CardContent className="p-6 space-y-3">
               <p className="text-sm text-muted-foreground">
                 <CheckCircle className="inline w-4 h-4 mr-2 text-primary" />
                 Each dimension is assessed with objective and quantitative criteria, producing an overall 0-100 score and a success probability profile
+              </p>
+              <p className="text-sm text-muted-foreground italic">
+                <CheckCircle className="inline w-4 h-4 mr-2 text-primary" />
+                The indicators shown above are examples — the full model includes additional criteria for each dimension
               </p>
             </CardContent>
           </Card>
