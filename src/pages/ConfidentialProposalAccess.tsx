@@ -13,6 +13,7 @@ const ConfidentialProposalAccess = () => {
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const [selectedProposal, setSelectedProposal] = useState<"vettafi" | "alkemia">("vettafi");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,9 +22,14 @@ const ConfidentialProposalAccess = () => {
     const normalizedEmail = email.toLowerCase().trim();
 
     if (AUTHORIZED_EMAILS.includes(normalizedEmail)) {
-      sessionStorage.setItem("proposal_access_email", normalizedEmail);
+      sessionStorage.setItem("confidentialAccessEmail", normalizedEmail);
       toast.success("Access granted");
-      navigate("/confidential-proposal");
+      
+      if (selectedProposal === "alkemia") {
+        navigate("/alkemia-praesidium-proposal");
+      } else {
+        navigate("/vettafi-proposal");
+      }
     } else {
       toast.error("Access denied. Email not authorized.");
       setIsLoading(false);
@@ -44,6 +50,30 @@ const ConfidentialProposalAccess = () => {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <label className="text-sm font-medium text-foreground mb-2 block">
+                Select Proposal
+              </label>
+              <div className="grid grid-cols-2 gap-2 mb-4">
+                <Button
+                  type="button"
+                  variant={selectedProposal === "vettafi" ? "default" : "outline"}
+                  onClick={() => setSelectedProposal("vettafi")}
+                  disabled={isLoading}
+                >
+                  VettaFi
+                </Button>
+                <Button
+                  type="button"
+                  variant={selectedProposal === "alkemia" ? "default" : "outline"}
+                  onClick={() => setSelectedProposal("alkemia")}
+                  disabled={isLoading}
+                >
+                  Alkemia
+                </Button>
+              </div>
+            </div>
+
             <div>
               <Input
                 type="email"

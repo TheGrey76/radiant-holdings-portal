@@ -90,7 +90,6 @@ const App = () => (
           <Route path="/confidential-proposal-access" element={<ConfidentialProposalAccess />} />
           <Route path="/vettafi-proposal" element={<VettaFiProposal />} />
           <Route path="/alkemia-praesidium-proposal" element={<AlkemiaPraesidiumProposal />} />
-          <Route path="/confidential-proposal" element={<VettaFiProposal />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/archive" element={<BlogArchive />} />
