@@ -204,7 +204,166 @@ const AlkemiaPraesidiumProposal = () => {
             </Card>
           </section>
 
-          {/* Rischi / Criticità */}
+          {/* Competitive Positioning */}
+          <section className="mb-20">
+            <div className="flex items-center gap-4 mb-8">
+              <div className="h-1 w-12 bg-primary rounded-full"></div>
+              <h2 className="text-2xl md:text-3xl font-bold text-foreground">
+                Competitive Positioning
+              </h2>
+            </div>
+            <p className="text-base mb-8 text-muted-foreground leading-relaxed">
+              Confronto con fondi hybrid/quasi-equity sul mercato italiano ed europeo
+            </p>
+            
+            {/* Tabella Comparativa */}
+            <Card className="border-primary/20 shadow-lg mb-8">
+              <CardContent className="p-8 md:p-10">
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="border-b border-border">
+                        <th className="text-left py-4 px-4 font-semibold text-foreground">Parametro</th>
+                        <th className="text-left py-4 px-4 font-semibold text-primary">Alkemia Praesidium</th>
+                        <th className="text-left py-4 px-4 font-semibold text-muted-foreground">Media Mercato IT</th>
+                        <th className="text-left py-4 px-4 font-semibold text-muted-foreground">Media Mercato EU</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className="border-b border-border/50">
+                        <td className="py-4 px-4 text-foreground">Yield cedolare</td>
+                        <td className="py-4 px-4 font-semibold text-primary">5% annuo</td>
+                        <td className="py-4 px-4 text-muted-foreground">3-4%</td>
+                        <td className="py-4 px-4 text-muted-foreground">4-5%</td>
+                      </tr>
+                      <tr className="border-b border-border/50">
+                        <td className="py-4 px-4 text-foreground">IRR netto target</td>
+                        <td className="py-4 px-4 font-semibold text-primary">12%</td>
+                        <td className="py-4 px-4 text-muted-foreground">10-12%</td>
+                        <td className="py-4 px-4 text-muted-foreground">11-13%</td>
+                      </tr>
+                      <tr className="border-b border-border/50">
+                        <td className="py-4 px-4 text-foreground">Focus settoriale</td>
+                        <td className="py-4 px-4 font-semibold text-primary">FV/5G/RE prime</td>
+                        <td className="py-4 px-4 text-muted-foreground">Diversificato</td>
+                        <td className="py-4 px-4 text-muted-foreground">Infra/RE broad</td>
+                      </tr>
+                      <tr className="border-b border-border/50">
+                        <td className="py-4 px-4 text-foreground">Ticket medio</td>
+                        <td className="py-4 px-4 font-semibold text-primary">€5-15m</td>
+                        <td className="py-4 px-4 text-muted-foreground">€10-25m</td>
+                        <td className="py-4 px-4 text-muted-foreground">€15-40m</td>
+                      </tr>
+                      <tr className="border-b border-border/50">
+                        <td className="py-4 px-4 text-foreground">Holding period</td>
+                        <td className="py-4 px-4 font-semibold text-primary">3-5 anni</td>
+                        <td className="py-4 px-4 text-muted-foreground">4-6 anni</td>
+                        <td className="py-4 px-4 text-muted-foreground">5-7 anni</td>
+                      </tr>
+                      <tr>
+                        <td className="py-4 px-4 text-foreground">Protezione downside</td>
+                        <td className="py-4 px-4 font-semibold text-primary">Collaterale + preferred</td>
+                        <td className="py-4 px-4 text-muted-foreground">Variabile</td>
+                        <td className="py-4 px-4 text-muted-foreground">Strutturata</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Differenziatori Chiave */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <Card className="border-primary/20 shadow-lg hover:shadow-xl transition-all duration-300">
+                <CardHeader>
+                  <CardTitle className="text-xl text-primary flex items-center gap-3">
+                    <TrendingUp className="h-5 w-5" />
+                    Vantaggi Competitivi
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <ul className="space-y-3">
+                    <li className="flex items-start gap-3">
+                      <CheckCircle className="h-4 w-4 text-green-600 mt-1 flex-shrink-0" />
+                      <span className="text-base text-muted-foreground"><strong className="text-foreground">Rendimento cedolare superiore:</strong> 5% vs 3-4% medio mercato IT, con visibilità cash flow per LP income-driven</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle className="h-4 w-4 text-green-600 mt-1 flex-shrink-0" />
+                      <span className="text-base text-muted-foreground"><strong className="text-foreground">Focus tematico chiaro:</strong> specializzazione su transizione energetica e digital infra vs approccio multi-settore generico</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle className="h-4 w-4 text-green-600 mt-1 flex-shrink-0" />
+                      <span className="text-base text-muted-foreground"><strong className="text-foreground">Ticket flessibile:</strong> accessibile a LP mid-size (€5-15m) vs soglie più elevate competitor europei</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle className="h-4 w-4 text-green-600 mt-1 flex-shrink-0" />
+                      <span className="text-base text-muted-foreground"><strong className="text-foreground">Holding period ottimizzato:</strong> 3-5 anni vs 5-7 anni standard, permettendo rotazione capitale più rapida</span>
+                    </li>
+                  </ul>
+                </CardContent>
+              </Card>
+
+              <Card className="border-destructive/20 shadow-lg hover:shadow-xl transition-all duration-300">
+                <CardHeader>
+                  <CardTitle className="text-xl text-destructive flex items-center gap-3">
+                    <AlertTriangle className="h-5 w-5" />
+                    Gap vs Competitor Strutturati
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <ul className="space-y-3">
+                    <li className="flex items-start gap-3">
+                      <span className="h-2 w-2 bg-destructive rounded-full mt-2 flex-shrink-0"></span>
+                      <span className="text-base text-muted-foreground"><strong className="text-foreground">Track record limitato:</strong> competitor EU hanno 3+ vintage funds con track record verificabile su strutture ibride</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="h-2 w-2 bg-destructive rounded-full mt-2 flex-shrink-0"></span>
+                      <span className="text-base text-muted-foreground"><strong className="text-foreground">Brand recognition:</strong> fondi Pan-EU (Infravia, Ardian, DWS) hanno network LP consolidato e placement power superiore</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="h-2 w-2 bg-destructive rounded-full mt-2 flex-shrink-0"></span>
+                      <span className="text-base text-muted-foreground"><strong className="text-foreground">Scala operativa:</strong> team più contenuto vs 15-30 professionisti dedicated di competitor strutturati</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="h-2 w-2 bg-destructive rounded-full mt-2 flex-shrink-0"></span>
+                      <span className="text-base text-muted-foreground"><strong className="text-foreground">Infrastruttura LP services:</strong> competitor offrono investor relations, reporting e portali dedicati già operativi</span>
+                    </li>
+                  </ul>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Posizionamento Strategico */}
+            <Card className="border-primary/20 shadow-lg mt-8 bg-gradient-to-br from-primary/5 to-card">
+              <CardHeader>
+                <CardTitle className="text-xl text-primary">Posizionamento Strategico Raccomandato</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <p className="text-base text-muted-foreground leading-relaxed">
+                  <strong className="text-foreground">Nicchia premium:</strong> Alkemia dovrebbe posizionarsi come "boutique specializzata" su hybrid/preferred capital per PMI italiane in settori ad alto impatto ESG, puntando su LP domestici (fondazioni, casse, family office) che valorizzano:
+                </p>
+                <ul className="space-y-2 ml-6">
+                  <li className="flex items-start gap-3">
+                    <span className="h-1.5 w-1.5 bg-primary rounded-full mt-2 flex-shrink-0"></span>
+                    <span className="text-base text-muted-foreground">Rendimento cedolare superiore alla media (5% vs 3-4%)</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="h-1.5 w-1.5 bg-primary rounded-full mt-2 flex-shrink-0"></span>
+                    <span className="text-base text-muted-foreground">Accesso diretto a deal flow mid-market italiano non presidiato da fondi Pan-EU</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="h-1.5 w-1.5 bg-primary rounded-full mt-2 flex-shrink-0"></span>
+                    <span className="text-base text-muted-foreground">Flessibilità strutturale e proximity geografica per due diligence hands-on</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="h-1.5 w-1.5 bg-primary rounded-full mt-2 flex-shrink-0"></span>
+                    <span className="text-base text-muted-foreground">Impact measurability su transizione energetica e digital infrastructure</span>
+                  </li>
+                </ul>
+              </CardContent>
+            </Card>
+          </section>
+
           <section className="mb-20">
             <div className="flex items-center gap-4 mb-8">
               <div className="h-1 w-12 bg-primary rounded-full"></div>
