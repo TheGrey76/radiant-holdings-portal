@@ -193,20 +193,37 @@ const AlkemiaPraesidiumProposal = () => {
             </div>
             <Card className="border-destructive/20 shadow-lg hover:shadow-xl transition-shadow duration-300">
               <CardContent className="p-8 md:p-10">
-                <ul className="space-y-4">
-                  <li className="flex items-start gap-3">
-                    <AlertTriangle className="h-5 w-5 text-destructive mt-1 flex-shrink-0" />
-                    <span className="text-base text-foreground/90">Execution risk autorizzativo/realizzativo (FV, 5G, RE)</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <AlertTriangle className="h-5 w-5 text-destructive mt-1 flex-shrink-0" />
-                    <span className="text-base text-foreground/90">Prova di replicabilità su strumenti ibridi identici alla tesi Praesidium</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <AlertTriangle className="h-5 w-5 text-destructive mt-1 flex-shrink-0" />
-                    <span className="text-base text-foreground/90">Domicilio Italia: per alcuni LP esteri serve comfort fiscale/regolatorio addizionale</span>
-                  </li>
-                </ul>
+                <div className="space-y-8">
+                  <div>
+                    <div className="flex items-start gap-3 mb-3">
+                      <AlertTriangle className="h-5 w-5 text-destructive mt-1 flex-shrink-0" />
+                      <h3 className="text-lg font-semibold text-foreground">Track record "strategy-match" debole</h3>
+                    </div>
+                    <p className="text-base text-muted-foreground leading-relaxed ml-8">
+                      Mancano casi chiusi davvero comparabili alla tesi Praesidium, quindi gli LP faticano a validarne la replicabilità e a sbloccare ticket significativi.
+                    </p>
+                  </div>
+                  
+                  <div>
+                    <div className="flex items-start gap-3 mb-3">
+                      <AlertTriangle className="h-5 w-5 text-destructive mt-1 flex-shrink-0" />
+                      <h3 className="text-lg font-semibold text-foreground">Pipeline non ancora "ancorata" e assenza di anchor LP</h3>
+                    </div>
+                    <p className="text-base text-muted-foreground leading-relaxed ml-8">
+                      Troppe opportunità soft/early: senza 1–2 term sheet firmabili e un anchor da €10–15m il momentum di fundraising resta fragile.
+                    </p>
+                  </div>
+                  
+                  <div>
+                    <div className="flex items-start gap-3 mb-3">
+                      <AlertTriangle className="h-5 w-5 text-destructive mt-1 flex-shrink-0" />
+                      <h3 className="text-lg font-semibold text-foreground">Struttura e terms poco "LP-friendly" per investitori esteri</h3>
+                    </div>
+                    <p className="text-base text-muted-foreground leading-relaxed ml-8">
+                      Veicolo/domicilio e waterfall non pienamente cristallini riducono il mercato indirizzabile; servono feeder Lux e terms trasparenti (priorità di cassa, trigger, oneri fiscali).
+                    </p>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </section>
