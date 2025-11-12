@@ -338,20 +338,6 @@ const AlkemiaPraesidiumProposal = () => {
           </CardContent>
         </Card>
 
-        {/* Download PDF */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-2xl">Download Documento Completo</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Button asChild className="w-full md:w-auto">
-              <a href="/Alkemia_Praesidium_FRPA.pdf" download>
-                <FileText className="mr-2 h-4 w-4" />
-                Scarica FRPA™ Report (PDF)
-              </a>
-            </Button>
-          </CardContent>
-        </Card>
 
         {/* Footer */}
         <div className="mt-12 pt-8 border-t text-center text-sm text-muted-foreground">
