@@ -169,16 +169,37 @@ const AlkemiaPraesidiumProposal = () => {
             </div>
             <Card className="border-green-600/20 shadow-lg hover:shadow-xl transition-shadow duration-300">
               <CardContent className="p-8 md:p-10">
-                <ul className="space-y-4">
-                  <li className="flex items-start gap-3">
-                    <CheckCircle className="h-5 w-5 text-green-600 mt-1 flex-shrink-0" />
-                    <span className="text-base text-foreground/90">Proposta ibrida (preferred/quasi equity): distribuzione 5% e IRR netto target 12%</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <CheckCircle className="h-5 w-5 text-green-600 mt-1 flex-shrink-0" />
-                    <span className="text-base text-foreground/90">Contesto settoriale favorevole (FV/5G/prime residenziale) con driver pubblici e domanda strutturale</span>
-                  </li>
-                </ul>
+                <div className="space-y-8">
+                  <div>
+                    <div className="flex items-start gap-3 mb-3">
+                      <CheckCircle className="h-5 w-5 text-green-600 mt-1 flex-shrink-0" />
+                      <h3 className="text-lg font-semibold text-foreground">Proposta ibrida solida e distintiva</h3>
+                    </div>
+                    <p className="text-base text-muted-foreground leading-relaxed ml-8">
+                      Il modello preferred/quasi-equity offre un equilibrio credibile tra rendimento cedolare (5% annuo) e potenziale di upside (IRR netto target 12%), con un profilo rischio-rendimento facilmente comunicabile agli LP income-driven.
+                    </p>
+                  </div>
+                  
+                  <div>
+                    <div className="flex items-start gap-3 mb-3">
+                      <CheckCircle className="h-5 w-5 text-green-600 mt-1 flex-shrink-0" />
+                      <h3 className="text-lg font-semibold text-foreground">Posizionamento chiaro su asset reali ad alta visibilità</h3>
+                    </div>
+                    <p className="text-base text-muted-foreground leading-relaxed ml-8">
+                      Focus su settori tangibili — fotovoltaico, infrastrutture digitali e residenziale prime — sostenuti da driver pubblici, transizione energetica e domanda strutturale di lungo periodo.
+                    </p>
+                  </div>
+                  
+                  <div>
+                    <div className="flex items-start gap-3 mb-3">
+                      <CheckCircle className="h-5 w-5 text-green-600 mt-1 flex-shrink-0" />
+                      <h3 className="text-lg font-semibold text-foreground">Storyline coerente e appeal per LP tradizionali</h3>
+                    </div>
+                    <p className="text-base text-muted-foreground leading-relaxed ml-8">
+                      Combina stabilità cash-flow con esposizione equity controllata: un mix attraente per fondazioni, casse previdenziali e family office orientati a rendimento costante con protezione downside.
+                    </p>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </section>
