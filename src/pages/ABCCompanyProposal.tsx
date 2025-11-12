@@ -50,7 +50,7 @@ const ABCCompanyProposal = () => {
               <div className="text-sm text-muted-foreground mt-1">Prezzo/Azione</div>
             </div>
             <div className="bg-card border border-border rounded-lg p-6 min-w-[200px]">
-              <div className="text-3xl font-bold text-primary">31 Dic 2025</div>
+              <div className="text-3xl font-bold text-primary">Q4 2026</div>
               <div className="text-sm text-muted-foreground mt-1">Deadline</div>
             </div>
           </div>
