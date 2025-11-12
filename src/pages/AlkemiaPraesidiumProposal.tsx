@@ -754,7 +754,7 @@ const AlkemiaPraesidiumProposal = () => {
                   </div>
                   <div className="pt-6 border-t border-border">
                     <p className="text-base text-muted-foreground leading-relaxed">
-                      Con le azioni prioritarie implementate nei prossimi 90 giorni, il readiness score può passare da <strong className="text-foreground">67 a 78</strong>, sbloccando un first close realistico di <strong className="text-foreground">€30-50m entro Q3 2025</strong> e aprendo la strada a un target finale di <strong className="text-foreground">€100m in 12-18 mesi</strong>.
+                      Con le azioni prioritarie implementate nei prossimi 90 giorni, il readiness score può passare da <strong className="text-foreground">67 a 78</strong>, sbloccando un first close realistico di <strong className="text-foreground">€30-50m entro Q3 2026</strong> e aprendo la strada a un target finale di <strong className="text-foreground">€100m in 12-18 mesi</strong>.
                     </p>
                   </div>
                 </div>
