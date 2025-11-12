@@ -228,7 +228,130 @@ const AlkemiaPraesidiumProposal = () => {
             </Card>
           </section>
 
-          {/* GAP Informativi */}
+          {/* Piano di Mitigazione */}
+          <section className="mb-20">
+            <div className="flex items-center gap-4 mb-8">
+              <div className="h-1 w-12 bg-primary rounded-full"></div>
+              <h2 className="text-2xl md:text-3xl font-bold text-foreground">
+                Piano di Mitigazione
+              </h2>
+            </div>
+            <div className="space-y-6">
+              {/* Mitigazione 1 */}
+              <Card className="border-primary/20 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <CardHeader>
+                  <CardTitle className="text-xl text-primary flex items-center gap-3">
+                    <Target className="h-5 w-5" />
+                    Track record "strategy-match" debole
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <h4 className="font-semibold text-foreground mb-2">Azioni concrete:</h4>
+                    <ul className="space-y-3 ml-4">
+                      <li className="flex items-start gap-3">
+                        <CheckCircle className="h-4 w-4 text-primary mt-1 flex-shrink-0" />
+                        <span className="text-base text-muted-foreground">Documentare 3–5 case studies chiusi con strutture simili (preferred/quasi-equity) includendo: timeline, capex vs budget, MOIC/IRR realizzati, evidenze di cedola pagata</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <CheckCircle className="h-4 w-4 text-primary mt-1 flex-shrink-0" />
+                        <span className="text-base text-muted-foreground">Creare playbook standardizzato: credit box (LTV, DSCR minimi), criteri di selezione, processo di due diligence, template term sheet</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <CheckCircle className="h-4 w-4 text-primary mt-1 flex-shrink-0" />
+                        <span className="text-base text-muted-foreground">Evidenziare team expertise: CV dei key professionals con track record specifico su strumenti ibridi, advisory board con credibilità settoriale</span>
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="pt-4 border-t border-border">
+                    <div className="flex items-center gap-3">
+                      <span className="font-semibold text-foreground">Impatto atteso:</span>
+                      <Badge className="bg-green-600/10 text-green-600 border-green-600/20">Readiness +8 punti</Badge>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Mitigazione 2 */}
+              <Card className="border-primary/20 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <CardHeader>
+                  <CardTitle className="text-xl text-primary flex items-center gap-3">
+                    <Briefcase className="h-5 w-5" />
+                    Pipeline non ancora "ancorata" e assenza di anchor LP
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <h4 className="font-semibold text-foreground mb-2">Azioni concrete:</h4>
+                    <ul className="space-y-3 ml-4">
+                      <li className="flex items-start gap-3">
+                        <CheckCircle className="h-4 w-4 text-primary mt-1 flex-shrink-0" />
+                        <span className="text-base text-muted-foreground">Convertire 2 deal in term sheet firmabili entro 60 giorni: permessi rilasciati, connessione TICA definita, land rights chiusi, EPC pricing fissato</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <CheckCircle className="h-4 w-4 text-primary mt-1 flex-shrink-0" />
+                        <span className="text-base text-muted-foreground">Identificare e chiudere 1 anchor LP da €10–15m (fondazione, cassa previdenza, family office) con soft commitment pre-first close</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <CheckCircle className="h-4 w-4 text-primary mt-1 flex-shrink-0" />
+                        <span className="text-base text-muted-foreground">Creare pipeline tracker con KPI: deal screened, in DD, term sheet issued, conversion rate, average time to close</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <CheckCircle className="h-4 w-4 text-primary mt-1 flex-shrink-0" />
+                        <span className="text-base text-muted-foreground">Attivare dealflow strutturato: partnership con advisor M&A, network corporate finance, origination dedicata su 5G/FV</span>
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="pt-4 border-t border-border">
+                    <div className="flex items-center gap-3">
+                      <span className="font-semibold text-foreground">Impatto atteso:</span>
+                      <Badge className="bg-green-600/10 text-green-600 border-green-600/20">Probabilità first close +20-25%</Badge>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Mitigazione 3 */}
+              <Card className="border-primary/20 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <CardHeader>
+                  <CardTitle className="text-xl text-primary flex items-center gap-3">
+                    <Users className="h-5 w-5" />
+                    Struttura e terms poco "LP-friendly" per investitori esteri
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <h4 className="font-semibold text-foreground mb-2">Azioni concrete:</h4>
+                    <ul className="space-y-3 ml-4">
+                      <li className="flex items-start gap-3">
+                        <CheckCircle className="h-4 w-4 text-primary mt-1 flex-shrink-0" />
+                        <span className="text-base text-muted-foreground">Strutturare feeder Lux (SCSp/RAIF) per LP esteri con ottimizzazione fiscale: analisi ritenute, convenzioni contro doppie imposizioni, flussi net-of-tax</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <CheckCircle className="h-4 w-4 text-primary mt-1 flex-shrink-0" />
+                        <span className="text-base text-muted-foreground">Cristallizzare waterfall e governance: priorità di cassa (cedola 5% senior), trigger di protezione (DSCR, delay, cost overrun), diritti di veto LP</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <CheckCircle className="h-4 w-4 text-primary mt-1 flex-shrink-0" />
+                        <span className="text-base text-muted-foreground">Preparare tax & legal pack: opinion su struttura, trattamento fiscale cedole/capital gain per categorie LP, security package con enforcement rapido</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <CheckCircle className="h-4 w-4 text-primary mt-1 flex-shrink-0" />
+                        <span className="text-base text-muted-foreground">Compliance istituzionale: reporting SFDR/KID, procedure AML/KYC, amministratore indipendente, audit Big4</span>
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="pt-4 border-t border-border">
+                    <div className="flex items-center gap-3">
+                      <span className="font-semibold text-foreground">Impatto atteso:</span>
+                      <Badge className="bg-green-600/10 text-green-600 border-green-600/20">Mercato indirizzabile +40%</Badge>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </section>
+
           <section className="mb-20">
             <div className="flex items-center gap-4 mb-8">
               <div className="h-1 w-12 bg-primary rounded-full"></div>
