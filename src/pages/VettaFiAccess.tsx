@@ -6,14 +6,14 @@ import { toast } from "sonner";
 
 const AUTHORIZED_EMAILS = [
   "peter.dietrich@tmx.com",
-  "edoardo.grigione@aries76.com"
+  "edoardo.grigione@aries76.com",
+  "quinley.martini@aries76.com"
 ];
 
-const ConfidentialProposalAccess = () => {
+const VettaFiAccess = () => {
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const [selectedProposal, setSelectedProposal] = useState<"vettafi" | "alkemia">("vettafi");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,14 +22,9 @@ const ConfidentialProposalAccess = () => {
     const normalizedEmail = email.toLowerCase().trim();
 
     if (AUTHORIZED_EMAILS.includes(normalizedEmail)) {
-      sessionStorage.setItem("confidentialAccessEmail", normalizedEmail);
+      sessionStorage.setItem("vettafiAccessEmail", normalizedEmail);
       toast.success("Access granted");
-      
-      if (selectedProposal === "alkemia") {
-        navigate("/alkemia-praesidium-proposal");
-      } else {
-        navigate("/vettafi-proposal");
-      }
+      navigate("/vettafi-proposal");
     } else {
       toast.error("Access denied. Email not authorized.");
       setIsLoading(false);
@@ -42,38 +37,14 @@ const ConfidentialProposalAccess = () => {
         <div className="bg-card border border-border rounded-lg shadow-lg p-8">
           <div className="text-center mb-8">
             <h1 className="text-2xl font-bold text-foreground mb-2">
-              Confidential Access
+              VettaFi Proposal
             </h1>
             <p className="text-muted-foreground text-sm">
-              Enter your authorized email to access the proposal
+              Enter your authorized email to access the confidential proposal
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label className="text-sm font-medium text-foreground mb-2 block">
-                Select Proposal
-              </label>
-              <div className="grid grid-cols-2 gap-2 mb-4">
-                <Button
-                  type="button"
-                  variant={selectedProposal === "vettafi" ? "default" : "outline"}
-                  onClick={() => setSelectedProposal("vettafi")}
-                  disabled={isLoading}
-                >
-                  VettaFi
-                </Button>
-                <Button
-                  type="button"
-                  variant={selectedProposal === "alkemia" ? "default" : "outline"}
-                  onClick={() => setSelectedProposal("alkemia")}
-                  disabled={isLoading}
-                >
-                  Alkemia
-                </Button>
-              </div>
-            </div>
-
             <div>
               <Input
                 type="email"
@@ -91,7 +62,7 @@ const ConfidentialProposalAccess = () => {
               className="w-full"
               disabled={isLoading}
             >
-              {isLoading ? "Verifying..." : "Access"}
+              {isLoading ? "Verifying..." : "Access Proposal"}
             </Button>
           </form>
         </div>
@@ -100,4 +71,4 @@ const ConfidentialProposalAccess = () => {
   );
 };
 
-export default ConfidentialProposalAccess;
+export default VettaFiAccess;

@@ -16,10 +16,10 @@ const AlkemiaPraesidiumProposal = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const accessEmail = sessionStorage.getItem("confidentialAccessEmail");
+    const accessEmail = sessionStorage.getItem("alkemiaAccessEmail");
     
     if (!accessEmail) {
-      navigate("/confidential-proposal-access");
+      navigate("/alkemia-praesidium-access");
       return;
     }
 

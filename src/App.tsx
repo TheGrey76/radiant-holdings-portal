@@ -41,8 +41,9 @@ import StructuredProductsDigitalRevolution from "./pages/blog/StructuredProducts
 import WhyChooseAries from "./pages/WhyChooseAries";
 import LeadershipTeam from "./pages/LeadershipTeam";
 import VettaFiProposal from "./pages/VettaFiProposal";
+import VettaFiAccess from "./pages/VettaFiAccess";
 import AlkemiaPraesidiumProposal from "./pages/AlkemiaPraesidiumProposal";
-import ConfidentialProposalAccess from "./pages/ConfidentialProposalAccess";
+import AlkemiaPraesidiumAccess from "./pages/AlkemiaPraesidiumAccess";
 import GPLPMatching from "./pages/GPLPMatching";
 import GPPortal from "./pages/GPPortal";
 import LPPortal from "./pages/LPPortal";
@@ -87,8 +88,9 @@ const App = () => (
           <Route path="/gp-registration" element={<GPRegistrationPage />} />
           <Route path="/lp-registration" element={<LPRegistrationPage />} />
           <Route path="/sneaker-report" element={<SneakerReport />} />
-          <Route path="/confidential-proposal-access" element={<ConfidentialProposalAccess />} />
+          <Route path="/vettafi-access" element={<VettaFiAccess />} />
           <Route path="/vettafi-proposal" element={<VettaFiProposal />} />
+          <Route path="/alkemia-praesidium-access" element={<AlkemiaPraesidiumAccess />} />
           <Route path="/alkemia-praesidium-proposal" element={<AlkemiaPraesidiumProposal />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/blog" element={<Blog />} />

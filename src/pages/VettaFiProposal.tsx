@@ -13,10 +13,10 @@ const VettaFiProposal = () => {
 
   useEffect(() => {
     const checkAccess = () => {
-      const accessEmail = sessionStorage.getItem("proposal_access_email");
+      const accessEmail = sessionStorage.getItem("vettafiAccessEmail");
       
       if (!accessEmail) {
-        navigate("/confidential-proposal-access");
+        navigate("/vettafi-access");
         setIsLoading(false);
         return;
       }
