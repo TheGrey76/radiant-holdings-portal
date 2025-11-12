@@ -729,13 +729,35 @@ const AlkemiaPraesidiumProposal = () => {
                 Conclusione
               </h2>
             </div>
-            <Card className="border-primary/20 shadow-lg">
+            <Card className="border-primary/20 shadow-lg bg-gradient-to-br from-primary/5 to-card">
               <CardContent className="p-8 md:p-10">
-                <p className="text-base text-foreground/90 leading-relaxed">
-                  La proposta è coerente con bisogni reali delle PMI e può attrarre LP orientati a income + protezione. 
-                  La bancabilità dipende dalla trasformazione della pipeline in prove dure (term sheet, permessi, appraisal, 
-                  collateral enforceable) e dalla dimostrazione di replicabilità con 1–2 casi signature chiusi.
-                </p>
+                <div className="space-y-6">
+                  <p className="text-lg font-semibold text-foreground leading-relaxed">
+                    Alkemia Praesidium presenta una tesi coerente e difendibile, ma la bancabilità istituzionale dipende da tre fattori critici:
+                  </p>
+                  <div className="grid md:grid-cols-3 gap-6">
+                    <div className="p-4 bg-background/50 rounded-lg border border-primary/10">
+                      <div className="text-3xl font-bold text-primary mb-2">1</div>
+                      <p className="text-sm font-semibold text-foreground mb-1">Track record tangibile</p>
+                      <p className="text-xs text-muted-foreground">3-5 case studies chiusi con evidenze di cedola 5% e multipli realizzati</p>
+                    </div>
+                    <div className="p-4 bg-background/50 rounded-lg border border-primary/10">
+                      <div className="text-3xl font-bold text-primary mb-2">2</div>
+                      <p className="text-sm font-semibold text-foreground mb-1">Pipeline ancorata</p>
+                      <p className="text-xs text-muted-foreground">2 deal con term sheet firmabili + anchor LP da €10-15m</p>
+                    </div>
+                    <div className="p-4 bg-background/50 rounded-lg border border-primary/10">
+                      <div className="text-3xl font-bold text-primary mb-2">3</div>
+                      <p className="text-sm font-semibold text-foreground mb-1">Struttura LP-friendly</p>
+                      <p className="text-xs text-muted-foreground">Feeder Lux, waterfall cristallino, governance trasparente</p>
+                    </div>
+                  </div>
+                  <div className="pt-6 border-t border-border">
+                    <p className="text-base text-muted-foreground leading-relaxed">
+                      Con le azioni prioritarie implementate nei prossimi 90 giorni, il readiness score può passare da <strong className="text-foreground">67 a 78</strong>, sbloccando un first close realistico di <strong className="text-foreground">€30-50m entro Q3 2025</strong> e aprendo la strada a un target finale di <strong className="text-foreground">€100m in 12-18 mesi</strong>.
+                    </p>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </section>
