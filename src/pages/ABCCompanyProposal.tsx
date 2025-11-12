@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Download, TrendingUp, Target, Users, Award, AlertCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { TrendingUp, Target, Users, Award, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 
 const AUTHORIZED_EMAILS = [
@@ -20,20 +19,12 @@ const ABCCompanyProposal = () => {
     }
   }, [navigate]);
 
-  const handleDownloadPDF = () => {
-    window.open("/ABC_Company_Capital_Raise.pdf", "_blank");
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
       {/* Header */}
       <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+        <div className="container mx-auto px-4 py-4">
           <h1 className="text-2xl font-bold text-foreground">ABC Company S.p.A.</h1>
-          <Button onClick={handleDownloadPDF} variant="outline" size="sm">
-            <Download className="mr-2 h-4 w-4" />
-            Download PDF
-          </Button>
         </div>
       </header>
 
@@ -460,13 +451,6 @@ const ABCCompanyProposal = () => {
           </div>
         </section>
 
-        {/* CTA */}
-        <section className="text-center">
-          <Button onClick={handleDownloadPDF} size="lg" className="gap-2">
-            <Download className="h-5 w-5" />
-            Download Complete Presentation
-          </Button>
-        </section>
       </main>
 
       {/* Footer */}
