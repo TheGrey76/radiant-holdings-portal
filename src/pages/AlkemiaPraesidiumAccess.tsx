@@ -6,7 +6,9 @@ import { toast } from "sonner";
 
 const AUTHORIZED_EMAILS = [
   "edoardo.grigione@aries76.com",
-  "quinley.martini@aries76.com"
+  "quinley.martini@aries76.com",
+  "luca.duranti@alkemiacapital.com",
+  "domenico.massaro@alkemiacapital.com",
 ];
 
 const AlkemiaPraesidiumAccess = () => {
