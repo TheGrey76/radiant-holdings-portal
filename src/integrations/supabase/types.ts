@@ -452,6 +452,51 @@ export type Database = {
         }
         Relationships: []
       }
+      mazal_innovation_access: {
+        Row: {
+          access_granted_at: string
+          created_at: string
+          email: string
+          id: string
+        }
+        Insert: {
+          access_granted_at?: string
+          created_at?: string
+          email: string
+          id?: string
+        }
+        Update: {
+          access_granted_at?: string
+          created_at?: string
+          email?: string
+          id?: string
+        }
+        Relationships: []
+      }
+      mazal_investor_brief_requests: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          name: string | null
+          organization: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          name?: string | null
+          organization?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          name?: string | null
+          organization?: string | null
+        }
+        Relationships: []
+      }
       network_profiles: {
         Row: {
           account_type: string
