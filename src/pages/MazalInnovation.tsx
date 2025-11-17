@@ -17,7 +17,8 @@ import {
   CheckCircle2, 
   Target,
   Lightbulb,
-  BarChart3
+  BarChart3,
+  Languages
 } from "lucide-react";
 
 const emailSchema = z.object({
@@ -33,6 +34,7 @@ const investorBriefSchema = z.object({
 const MazalInnovation = () => {
   const [hasAccess, setHasAccess] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [language, setLanguage] = useState<"it" | "en">("en");
 
   const gateForm = useForm({
     resolver: zodResolver(emailSchema),
@@ -51,11 +53,19 @@ const MazalInnovation = () => {
 
       if (error) throw error;
 
-      toast.success("Access granted! Welcome to Mazal Innovation");
+      toast.success(
+        language === "en" 
+          ? "Access granted! Welcome to Mazal Innovation" 
+          : "Accesso consentito! Benvenuto su Mazal Innovation"
+      );
       setHasAccess(true);
     } catch (error) {
       console.error("Error granting access:", error);
-      toast.error("An error occurred. Please try again.");
+      toast.error(
+        language === "en" 
+          ? "An error occurred. Please try again." 
+          : "Si è verificato un errore. Riprova."
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -74,23 +84,276 @@ const MazalInnovation = () => {
 
       if (error) throw error;
 
-      toast.success("Request submitted! We'll send you the investor brief shortly.");
+      toast.success(
+        language === "en"
+          ? "Request submitted! We'll send you the investor brief shortly."
+          : "Richiesta inviata! Ti invieremo l'investor brief a breve."
+      );
       briefForm.reset();
     } catch (error) {
       console.error("Error submitting request:", error);
-      toast.error("An error occurred. Please try again.");
+      toast.error(
+        language === "en"
+          ? "An error occurred. Please try again."
+          : "Si è verificato un errore. Riprova."
+      );
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  const content = {
+    en: {
+      gate: {
+        title: "Mazal Innovation",
+        subtitle: "Unlocking European AI Growth Deals",
+        byline: "By Mazal Capital",
+        placeholder: "Enter your email to request access",
+        button: "Request Access",
+        footer: "Exclusive access for institutional investors, family offices, and qualified partners"
+      },
+      hero: {
+        title: "Mazal Innovation",
+        subtitle: "Accelerating AI-Driven Growth Opportunities Across Europe",
+        description: "Mazal Innovation is the dedicated platform of Mazal Capital focused on identifying, structuring and scaling high-conviction investment opportunities in Artificial Intelligence and data-enabled businesses. We connect institutional capital with exceptional founders, scalable technologies and resilient business models."
+      },
+      about: {
+        title: "About Mazal Innovation",
+        paragraphs: [
+          "Mazal Innovation was born as a strategic extension of Mazal Capital, with the objective of building a specialized investment platform in AI-driven technologies that are redefining operational models in Europe. Our combined experience in capital markets, private equity and entrepreneurship-through-acquisition allows us to integrate origination, execution and capital formation with a unique approach in the European landscape.",
+          "We work with high-potential technology companies, quality founding teams and scalable models based on AI applied to sectors such as financial services, cybersecurity, healthcare, industrial automation, enterprise software and data analytics.",
+          "Mazal Innovation operates as a long-term partner, selecting opportunities with strong commercial traction and solid technological architectures, capable of generating sustainable growth and progressive value creation."
+        ]
+      },
+      value: {
+        title: "Our Value Proposition",
+        subtitle: "Rigor in origination, quality in execution and selective access to capital",
+        items: [
+          {
+            title: "Proprietary Sourcing",
+            description: "A European and international network that includes founders, accelerators, VC funds, researchers and industrial operators."
+          },
+          {
+            title: "Technical and Commercial Analysis",
+            description: "We evaluate technology, scalability, risks, unit economics and market potential with a structured and replicable process."
+          },
+          {
+            title: "Deal Structuring and Integrated Fundraising",
+            description: "We support the definition of investment architecture, the construction of investor-ready material and the fundraising process with qualified investors."
+          },
+          {
+            title: "Transparent and Aligned Execution",
+            description: "We accompany each operation until closing, including coordination, term-sheet, due-diligence and stakeholder management."
+          }
+        ]
+      },
+      criteria: {
+        title: "Investment Criteria",
+        items: [
+          {
+            title: "Geography",
+            description: "Western and Central Europe, with preference for United Kingdom, DACH, Nordics and Italy."
+          },
+          {
+            title: "Sectors",
+            description: "AI applied to enterprise software, fintech, cybersecurity, healthcare, data-infrastructure, automation."
+          },
+          {
+            title: "Stage",
+            description: "Late-Seed, Series A, Series B, early growth."
+          },
+          {
+            title: "Ticket Size",
+            description: "€5M – €30M (equity and co-investments)."
+          },
+          {
+            title: "Business Model",
+            description: "Recurring revenues, strong scalability, high retention, clear product economics."
+          },
+          {
+            title: "Technology",
+            description: "Defensible intellectual property, proprietary or integrated ML/AI architectures, credible roadmap."
+          }
+        ]
+      },
+      portfolio: {
+        title: "Portfolio Highlights",
+        items: [
+          {
+            title: "AI-Driven Enterprise Automation",
+            location: "UK",
+            description: "Scale-up with document automation technology based on proprietary LLM models, ARR > €10M, annual growth >40%."
+          },
+          {
+            title: "Data-Enhanced Cyber Intelligence",
+            location: "DACH",
+            description: "ML platform for threat detection in industrial and financial environments, European blue-chip clients, expanding margins."
+          },
+          {
+            title: "Predictive Healthcare Analytics",
+            location: "Nordics",
+            description: "AI solution for predictive diagnosis and clinical optimization, partnerships with three hospital groups and rapid scale-up path."
+          }
+        ]
+      },
+      work: {
+        title: "How We Work with Investors",
+        subtitle: "Mazal Innovation operates according to a collaborative model, built to be fully aligned with investors",
+        items: [
+          "Rigorous selection of opportunities and presentation of only deals that pass our internal due-diligence",
+          "Clear, concise and execution-oriented investment material",
+          "Direct access to founding teams, data and technical advisors",
+          "Complete management of the fundraising and closing process",
+          "Continuous reporting during the process and after the investment"
+        ],
+        footer: "Our approach allows investors to access operations already validated from a technological, commercial and financial perspective, reducing the time needed to evaluate and finalize an investment."
+      },
+      brief: {
+        title: "Request the Investor Brief",
+        subtitle: "Investors who wish to access the complete materials can request our Investor Brief, which includes:",
+        items: [
+          "Executive summary of active deal-flow",
+          "Evaluation criteria",
+          "Updated pipeline",
+          "Selected materials for advanced-stage operations"
+        ],
+        namePlaceholder: "Your name *",
+        emailPlaceholder: "Your email *",
+        orgPlaceholder: "Organization (optional)",
+        button: "Request Investor Brief"
+      }
+    },
+    it: {
+      gate: {
+        title: "Mazal Innovation",
+        subtitle: "Sbloccare Opportunità di Crescita AI in Europa",
+        byline: "Di Mazal Capital",
+        placeholder: "Inserisci la tua email per richiedere l'accesso",
+        button: "Richiedi Accesso",
+        footer: "Accesso esclusivo per investitori istituzionali, family office e partner qualificati"
+      },
+      hero: {
+        title: "Mazal Innovation",
+        subtitle: "Accelerare Opportunità di Crescita AI in Europa",
+        description: "Mazal Innovation è la piattaforma dedicata di Mazal Capital focalizzata sull'identificazione, strutturazione e scaling di opportunità di investimento ad alta convinzione nell'Intelligenza Artificiale e nelle imprese data-enabled. Connettiamo capitale istituzionale con fondatori eccezionali, tecnologie scalabili e modelli di business resilienti."
+      },
+      about: {
+        title: "Chi è Mazal Innovation",
+        paragraphs: [
+          "Mazal Innovation nasce come estensione strategica di Mazal Capital, con l'obiettivo di costruire una piattaforma di investimento specializzata nelle tecnologie AI-driven che stanno ridefinendo i modelli operativi in Europa. La nostra esperienza combinata in capital markets, private equity ed entrepreneurship-through-acquisition ci consente di integrare origination, execution e capital formation con un approccio unico nel panorama europeo.",
+          "Lavoriamo con aziende tecnologiche ad alto potenziale, team fondatori di qualità e modelli scalabili basati su AI applicata a settori come financial services, cybersecurity, healthcare, industrial automation, enterprise software e data analytics.",
+          "Mazal Innovation opera come partner a lungo termine, selezionando opportunità con forte trazione commerciale e architetture tecnologiche solide, in grado di generare crescita sostenibile e creazione di valore progressiva."
+        ]
+      },
+      value: {
+        title: "La Nostra Proposta di Valore",
+        subtitle: "Rigore nell'origination, qualità nell'execution e accesso selettivo al capitale",
+        items: [
+          {
+            title: "Sourcing proprietario",
+            description: "Una rete europea e internazionale che include fondatori, acceleratori, fondi VC, ricercatori e operatori industriali."
+          },
+          {
+            title: "Analisi tecnologica e commerciale",
+            description: "Valutiamo tecnologia, scalabilità, rischi, unit economics e potenziale di mercato con un processo strutturato e replicabile."
+          },
+          {
+            title: "Strutturazione deal e fundraising integrato",
+            description: "Supportiamo la definizione dell'architettura dell'investimento, la costruzione del materiale investor-ready e il processo di raccolta con investitori qualificati."
+          },
+          {
+            title: "Execution trasparente e allineata",
+            description: "Accompagniamo ogni operazione fino alla chiusura, inclusi coordination, term-sheet, due-diligence e stakeholder management."
+          }
+        ]
+      },
+      criteria: {
+        title: "Criteri di Investimento",
+        items: [
+          {
+            title: "Geografia",
+            description: "Europa Occidentale e Centrale, con preferenza per Regno Unito, DACH, Nordics e Italia."
+          },
+          {
+            title: "Settori",
+            description: "AI applicata a enterprise software, fintech, cybersecurity, healthcare, data-infrastructure, automation."
+          },
+          {
+            title: "Stage",
+            description: "Late-Seed, Series A, Series B, early growth."
+          },
+          {
+            title: "Ticket Size",
+            description: "€5M – €30M (equity e co-investimenti)."
+          },
+          {
+            title: "Business Model",
+            description: "Ricavi ricorrenti, forte scalabilità, retention elevata, economie di prodotto chiare."
+          },
+          {
+            title: "Tecnologia",
+            description: "Proprietà intellettuale difendibile, architetture ML/AI proprietarie o integrate, roadmap credibile."
+          }
+        ]
+      },
+      portfolio: {
+        title: "Portfolio Highlights",
+        items: [
+          {
+            title: "AI-Driven Enterprise Automation",
+            location: "UK",
+            description: "Scale-up con tecnologia di automazione documentale basata su modelli proprietari LLM, ARR > €10M, crescita annuale >40%."
+          },
+          {
+            title: "Data-Enhanced Cyber Intelligence",
+            location: "DACH",
+            description: "Piattaforma ML per threat detection in ambienti industriali e finanziari, clienti blue-chip europei, margini in espansione."
+          },
+          {
+            title: "Predictive Healthcare Analytics",
+            location: "Nordics",
+            description: "Soluzione AI per diagnosi predittiva e ottimizzazione clinica, partnership con tre gruppi ospedalieri e rapido percorso di scale-up."
+          }
+        ]
+      },
+      work: {
+        title: "Come Lavoriamo con gli Investitori",
+        subtitle: "Mazal Innovation opera secondo un modello collaborativo, costruito per essere pienamente allineato agli investitori",
+        items: [
+          "Selezione rigorosa delle opportunità e presentazione dei soli deal che superano la nostra due-diligence interna",
+          "Materiale di investimento chiaro, sintetico e orientato all'esecuzione",
+          "Accesso diretto ai team fondatori, ai dati e agli advisor tecnici",
+          "Gestione completa del processo di fundraising e closing",
+          "Reporting continuo durante il processo e dopo l'investimento"
+        ],
+        footer: "Il nostro approccio consente agli investitori di accedere a operazioni già validate sotto il profilo tecnologico, commerciale e finanziario, riducendo il tempo necessario per valutare e finalizzare un investimento."
+      },
+      brief: {
+        title: "Richiedi l'Investor Brief",
+        subtitle: "Gli investitori che desiderano accedere ai materiali completi possono richiedere il nostro Investor Brief, che include:",
+        items: [
+          "Executive summary del deal-flow attivo",
+          "Criteri di valutazione",
+          "Pipeline aggiornata",
+          "Materiali selezionati per operazioni in fase avanzata"
+        ],
+        namePlaceholder: "Il tuo nome *",
+        emailPlaceholder: "La tua email *",
+        orgPlaceholder: "Organizzazione (opzionale)",
+        button: "Richiedi Investor Brief"
+      }
+    }
+  };
+
+  const t = content[language];
+
   return (
     <>
       <Helmet>
-        <title>Mazal Innovation - Unlocking European AI Growth Deals | Mazal Capital</title>
-        <meta name="description" content="Mazal Innovation accelerates AI-driven growth opportunities across Europe. Connecting institutional capital with exceptional founders, scalable technologies and resilient business models." />
-        <meta property="og:title" content="Mazal Innovation - Unlocking European AI Growth Deals" />
-        <meta property="og:description" content="Strategic AI investment platform by Mazal Capital focused on European growth opportunities" />
+        <title>Mazal Innovation - {language === "en" ? "Unlocking European AI Growth Deals" : "Sbloccare Opportunità di Crescita AI in Europa"} | Mazal Capital</title>
+        <meta name="description" content={language === "en" ? "Mazal Innovation accelerates AI-driven growth opportunities across Europe. Connecting institutional capital with exceptional founders, scalable technologies and resilient business models." : "Mazal Innovation accelera opportunità di crescita AI in Europa. Connettendo capitale istituzionale con fondatori eccezionali, tecnologie scalabili e modelli di business resilienti."} />
+        <meta property="og:title" content={`Mazal Innovation - ${language === "en" ? "Unlocking European AI Growth Deals" : "Sbloccare Opportunità di Crescita AI in Europa"}`} />
+        <meta property="og:description" content={language === "en" ? "Strategic AI investment platform by Mazal Capital focused on European growth opportunities" : "Piattaforma di investimento AI strategica di Mazal Capital focalizzata su opportunità di crescita europee"} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Helmet>
 
@@ -114,21 +377,40 @@ const MazalInnovation = () => {
                   <Brain className="w-8 h-8 text-primary" />
                 </div>
                 <h1 className="text-3xl font-bold text-foreground mb-2">
-                  Mazal Innovation
+                  {t.gate.title}
                 </h1>
                 <p className="text-xl text-primary font-semibold mb-1">
-                  Unlocking European AI Growth Deals
+                  {t.gate.subtitle}
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  By Mazal Capital
+                  {t.gate.byline}
                 </p>
+              </div>
+
+              <div className="flex justify-center gap-2 mb-6">
+                <Button
+                  variant={language === "en" ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setLanguage("en")}
+                  className="min-w-[80px]"
+                >
+                  English
+                </Button>
+                <Button
+                  variant={language === "it" ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setLanguage("it")}
+                  className="min-w-[80px]"
+                >
+                  Italiano
+                </Button>
               </div>
 
               <form onSubmit={gateForm.handleSubmit(handleGateSubmit)} className="space-y-4">
                 <div>
                   <Input
                     type="email"
-                    placeholder="Enter your email to request access"
+                    placeholder={t.gate.placeholder}
                     {...gateForm.register("email")}
                     className="w-full"
                     disabled={isSubmitting}
@@ -145,12 +427,12 @@ const MazalInnovation = () => {
                   className="w-full bg-primary hover:bg-primary/90"
                   disabled={isSubmitting}
                 >
-                  {isSubmitting ? "Submitting..." : "Request Access"}
+                  {isSubmitting ? (language === "en" ? "Submitting..." : "Invio...") : t.gate.button}
                 </Button>
               </form>
 
               <p className="text-xs text-muted-foreground text-center mt-4">
-                Exclusive access for institutional investors, family offices, and qualified partners
+                {t.gate.footer}
               </p>
             </motion.div>
           </motion.div>
@@ -159,6 +441,28 @@ const MazalInnovation = () => {
 
       {/* Main Content */}
       <div className="min-h-screen bg-background">
+        {/* Language Toggle - Fixed Position */}
+        <div className="fixed top-20 right-4 z-40 flex gap-2 bg-card/80 backdrop-blur-sm border border-border rounded-lg p-2 shadow-lg">
+          <Button
+            variant={language === "en" ? "default" : "ghost"}
+            size="sm"
+            onClick={() => setLanguage("en")}
+            className="min-w-[70px]"
+          >
+            <Languages className="w-4 h-4 mr-1" />
+            EN
+          </Button>
+          <Button
+            variant={language === "it" ? "default" : "ghost"}
+            size="sm"
+            onClick={() => setLanguage("it")}
+            className="min-w-[70px]"
+          >
+            <Languages className="w-4 h-4 mr-1" />
+            IT
+          </Button>
+        </div>
+
         {/* Hero Section */}
         <section className="relative py-20 px-4 bg-gradient-to-br from-background via-background to-primary/5">
           <div className="max-w-6xl mx-auto text-center">
@@ -169,13 +473,13 @@ const MazalInnovation = () => {
             >
               <div className="inline-flex items-center gap-2 mb-6">
                 <Brain className="w-12 h-12 text-primary" />
-                <h1 className="text-5xl font-bold text-foreground">Mazal Innovation</h1>
+                <h1 className="text-5xl font-bold text-foreground">{t.hero.title}</h1>
               </div>
               <h2 className="text-3xl font-semibold text-primary mb-6">
-                Accelerating AI-Driven Growth Opportunities Across Europe
+                {t.hero.subtitle}
               </h2>
               <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-                Mazal Innovation is the dedicated platform of Mazal Capital focused on identifying, structuring and scaling high-conviction investment opportunities in Artificial Intelligence and data-enabled businesses. We connect institutional capital with exceptional founders, scalable technologies and resilient business models.
+                {t.hero.description}
               </p>
             </motion.div>
           </div>
@@ -190,17 +494,11 @@ const MazalInnovation = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-3xl font-bold text-foreground mb-8 text-center">About Mazal Innovation</h2>
+              <h2 className="text-3xl font-bold text-foreground mb-8 text-center">{t.about.title}</h2>
               <div className="prose prose-lg max-w-none text-muted-foreground space-y-4">
-                <p>
-                  Mazal Innovation nasce come estensione strategica di Mazal Capital, con l'obiettivo di costruire una piattaforma di investimento specializzata nelle tecnologie AI-driven che stanno ridefinendo i modelli operativi in Europa. La nostra esperienza combinata in capital markets, private equity ed entrepreneurship-through-acquisition ci consente di integrare origination, execution e capital formation con un approccio unico nel panorama europeo.
-                </p>
-                <p>
-                  Lavoriamo con aziende tecnologiche ad alto potenziale, team fondatori di qualità e modelli scalabili basati su AI applicata a settori come financial services, cybersecurity, healthcare, industrial automation, enterprise software e data analytics.
-                </p>
-                <p>
-                  Mazal Innovation opera come partner a lungo termine, selezionando opportunità con forte trazione commerciale e architetture tecnologiche solide, in grado di generare crescita sostenibile e creazione di valore progressiva.
-                </p>
+                {t.about.paragraphs.map((paragraph, index) => (
+                  <p key={index}>{paragraph}</p>
+                ))}
               </div>
             </motion.div>
           </div>
@@ -215,34 +513,13 @@ const MazalInnovation = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-3xl font-bold text-foreground mb-4 text-center">Our Value Proposition</h2>
+              <h2 className="text-3xl font-bold text-foreground mb-4 text-center">{t.value.title}</h2>
               <p className="text-xl text-center text-muted-foreground mb-12">
-                Rigore nell'origination, qualità nell'execution e accesso selettivo al capitale
+                {t.value.subtitle}
               </p>
 
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                {[
-                  {
-                    icon: <Globe className="w-8 h-8" />,
-                    title: "Sourcing proprietario",
-                    description: "Una rete europea e internazionale che include fondatori, acceleratori, fondi VC, ricercatori e operatori industriali."
-                  },
-                  {
-                    icon: <BarChart3 className="w-8 h-8" />,
-                    title: "Analisi tecnologica e commerciale",
-                    description: "Valutiamo tecnologia, scalabilità, rischi, unit economics e potenziale di mercato con un processo strutturato e replicabile."
-                  },
-                  {
-                    icon: <Target className="w-8 h-8" />,
-                    title: "Strutturazione deal e fundraising integrato",
-                    description: "Supportiamo la definizione dell'architettura dell'investimento, la costruzione del materiale investor-ready e il processo di raccolta con investitori qualificati."
-                  },
-                  {
-                    icon: <CheckCircle2 className="w-8 h-8" />,
-                    title: "Execution trasparente e allineata",
-                    description: "Accompagniamo ogni operazione fino alla chiusura, inclusi coordination, term-sheet, due-diligence e stakeholder management."
-                  }
-                ].map((item, index) => (
+                {t.value.items.map((item, index) => (
                   <motion.div
                     key={index}
                     initial={{ opacity: 0, y: 20 }}
@@ -251,7 +528,12 @@ const MazalInnovation = () => {
                     transition={{ duration: 0.4, delay: index * 0.1 }}
                     className="p-6 bg-card border border-border rounded-lg hover:shadow-lg transition-shadow"
                   >
-                    <div className="text-primary mb-4">{item.icon}</div>
+                    <div className="text-primary mb-4">
+                      {index === 0 && <Globe className="w-8 h-8" />}
+                      {index === 1 && <BarChart3 className="w-8 h-8" />}
+                      {index === 2 && <Target className="w-8 h-8" />}
+                      {index === 3 && <CheckCircle2 className="w-8 h-8" />}
+                    </div>
                     <h3 className="text-lg font-semibold text-foreground mb-2">{item.title}</h3>
                     <p className="text-sm text-muted-foreground">{item.description}</p>
                   </motion.div>
@@ -270,54 +552,34 @@ const MazalInnovation = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-3xl font-bold text-foreground mb-8 text-center">Investment Criteria</h2>
+              <h2 className="text-3xl font-bold text-foreground mb-8 text-center">{t.criteria.title}</h2>
               <div className="grid md:grid-cols-2 gap-8">
                 <div className="space-y-4">
-                  <div className="flex items-start gap-3">
-                    <Globe className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
-                    <div>
-                      <h4 className="font-semibold text-foreground mb-1">Geografia</h4>
-                      <p className="text-muted-foreground">Europa Occidentale e Centrale, con preferenza per Regno Unito, DACH, Nordics e Italia.</p>
+                  {t.criteria.items.slice(0, 3).map((item, index) => (
+                    <div key={index} className="flex items-start gap-3">
+                      {index === 0 && <Globe className="w-5 h-5 text-primary mt-1 flex-shrink-0" />}
+                      {index === 1 && <Lightbulb className="w-5 h-5 text-primary mt-1 flex-shrink-0" />}
+                      {index === 2 && <TrendingUp className="w-5 h-5 text-primary mt-1 flex-shrink-0" />}
+                      <div>
+                        <h4 className="font-semibold text-foreground mb-1">{item.title}</h4>
+                        <p className="text-muted-foreground">{item.description}</p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <Lightbulb className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
-                    <div>
-                      <h4 className="font-semibold text-foreground mb-1">Settori</h4>
-                      <p className="text-muted-foreground">AI applicata a enterprise software, fintech, cybersecurity, healthcare, data-infrastructure, automation.</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <TrendingUp className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
-                    <div>
-                      <h4 className="font-semibold text-foreground mb-1">Stage</h4>
-                      <p className="text-muted-foreground">Late-Seed, Series A, Series B, early growth.</p>
-                    </div>
-                  </div>
+                  ))}
                 </div>
 
                 <div className="space-y-4">
-                  <div className="flex items-start gap-3">
-                    <Target className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
-                    <div>
-                      <h4 className="font-semibold text-foreground mb-1">Ticket Size</h4>
-                      <p className="text-muted-foreground">€5M – €30M (equity e co-investimenti).</p>
+                  {t.criteria.items.slice(3, 6).map((item, index) => (
+                    <div key={index} className="flex items-start gap-3">
+                      {index === 0 && <Target className="w-5 h-5 text-primary mt-1 flex-shrink-0" />}
+                      {index === 1 && <BarChart3 className="w-5 h-5 text-primary mt-1 flex-shrink-0" />}
+                      {index === 2 && <Shield className="w-5 h-5 text-primary mt-1 flex-shrink-0" />}
+                      <div>
+                        <h4 className="font-semibold text-foreground mb-1">{item.title}</h4>
+                        <p className="text-muted-foreground">{item.description}</p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <BarChart3 className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
-                    <div>
-                      <h4 className="font-semibold text-foreground mb-1">Business Model</h4>
-                      <p className="text-muted-foreground">Ricavi ricorrenti, forte scalabilità, retention elevata, economie di prodotto chiare.</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <Shield className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
-                    <div>
-                      <h4 className="font-semibold text-foreground mb-1">Tecnologia</h4>
-                      <p className="text-muted-foreground">Proprietà intellettuale difendibile, architetture ML/AI proprietarie o integrate, roadmap credibile.</p>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             </motion.div>
@@ -333,25 +595,9 @@ const MazalInnovation = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-3xl font-bold text-foreground mb-12 text-center">Portfolio Highlights</h2>
+              <h2 className="text-3xl font-bold text-foreground mb-12 text-center">{t.portfolio.title}</h2>
               <div className="grid md:grid-cols-3 gap-6">
-                {[
-                  {
-                    title: "AI-Driven Enterprise Automation",
-                    location: "UK",
-                    description: "Scale-up con tecnologia di automazione documentale basata su modelli proprietari LLM, ARR > €10M, crescita annuale >40%."
-                  },
-                  {
-                    title: "Data-Enhanced Cyber Intelligence",
-                    location: "DACH",
-                    description: "Piattaforma ML per threat detection in ambienti industriali e finanziari, clienti blue-chip europei, margini in espansione."
-                  },
-                  {
-                    title: "Predictive Healthcare Analytics",
-                    location: "Nordics",
-                    description: "Soluzione AI per diagnosi predittiva e ottimizzazione clinica, partnership con tre gruppi ospedalieri e rapido percorso di scale-up."
-                  }
-                ].map((item, index) => (
+                {t.portfolio.items.map((item, index) => (
                   <motion.div
                     key={index}
                     initial={{ opacity: 0, y: 20 }}
@@ -384,19 +630,13 @@ const MazalInnovation = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-3xl font-bold text-foreground mb-8 text-center">How We Work with Investors</h2>
+              <h2 className="text-3xl font-bold text-foreground mb-8 text-center">{t.work.title}</h2>
               <p className="text-lg text-muted-foreground text-center mb-12 max-w-3xl mx-auto">
-                Mazal Innovation opera secondo un modello collaborativo, costruito per essere pienamente allineato agli investitori
+                {t.work.subtitle}
               </p>
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {[
-                  "Selezione rigorosa delle opportunità e presentazione dei soli deal che superano la nostra due-diligence interna",
-                  "Materiale di investimento chiaro, sintetico e orientato all'esecuzione",
-                  "Accesso diretto ai team fondatori, ai dati e agli advisor tecnici",
-                  "Gestione completa del processo di fundraising e closing",
-                  "Reporting continuo durante il processo e dopo l'investimento"
-                ].map((item, index) => (
+                {t.work.items.map((item, index) => (
                   <motion.div
                     key={index}
                     initial={{ opacity: 0, y: 20 }}
@@ -412,7 +652,7 @@ const MazalInnovation = () => {
               </div>
 
               <p className="text-center text-muted-foreground mt-8 max-w-3xl mx-auto">
-                Il nostro approccio consente agli investitori di accedere a operazioni già validate sotto il profilo tecnologico, commerciale e finanziario, riducendo il tempo necessario per valutare e finalizzare un investimento.
+                {t.work.footer}
               </p>
             </motion.div>
           </div>
@@ -430,27 +670,17 @@ const MazalInnovation = () => {
             >
               <div className="text-center mb-8">
                 <Users className="w-12 h-12 text-primary mx-auto mb-4" />
-                <h2 className="text-3xl font-bold text-foreground mb-4">Request the Investor Brief</h2>
+                <h2 className="text-3xl font-bold text-foreground mb-4">{t.brief.title}</h2>
                 <p className="text-muted-foreground mb-6">
-                  Gli investitori che desiderano accedere ai materiali completi possono richiedere il nostro Investor Brief, che include:
+                  {t.brief.subtitle}
                 </p>
                 <ul className="text-left text-muted-foreground space-y-2 max-w-2xl mx-auto mb-8">
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                    <span>Executive summary del deal-flow attivo</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                    <span>Criteri di valutazione</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                    <span>Pipeline aggiornata</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                    <span>Materiali selezionati per operazioni in fase avanzata</span>
-                  </li>
+                  {t.brief.items.map((item, index) => (
+                    <li key={index} className="flex items-start gap-2">
+                      <CheckCircle2 className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
                 </ul>
               </div>
 
@@ -458,7 +688,7 @@ const MazalInnovation = () => {
                 <div>
                   <Input
                     type="text"
-                    placeholder="Your name *"
+                    placeholder={t.brief.namePlaceholder}
                     {...briefForm.register("name")}
                     disabled={isSubmitting}
                   />
@@ -472,7 +702,7 @@ const MazalInnovation = () => {
                 <div>
                   <Input
                     type="email"
-                    placeholder="Your email *"
+                    placeholder={t.brief.emailPlaceholder}
                     {...briefForm.register("email")}
                     disabled={isSubmitting}
                   />
@@ -486,7 +716,7 @@ const MazalInnovation = () => {
                 <div>
                   <Input
                     type="text"
-                    placeholder="Organization (optional)"
+                    placeholder={t.brief.orgPlaceholder}
                     {...briefForm.register("organization")}
                     disabled={isSubmitting}
                   />
@@ -497,7 +727,7 @@ const MazalInnovation = () => {
                   className="w-full bg-primary hover:bg-primary/90"
                   disabled={isSubmitting}
                 >
-                  {isSubmitting ? "Submitting..." : "Request Investor Brief"}
+                  {isSubmitting ? (language === "en" ? "Submitting..." : "Invio...") : t.brief.button}
                 </Button>
               </form>
             </motion.div>
