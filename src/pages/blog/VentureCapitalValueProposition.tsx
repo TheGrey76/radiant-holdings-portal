@@ -37,8 +37,8 @@ const VentureCapitalValueProposition = () => {
           "url": "https://www.aries76.com/aries76-og-logo.png"
         }
       },
-      "datePublished": "2025-01-15T09:00:00+00:00",
-      "dateModified": "2025-01-15T09:00:00+00:00",
+      "datePublished": "2025-11-17T09:00:00+00:00",
+      "dateModified": "2025-11-17T09:00:00+00:00",
       "mainEntityOfPage": {
         "@type": "WebPage",
         "@id": "https://www.aries76.com/blog/venture-capital-value-proposition-2025"
@@ -61,8 +61,8 @@ const VentureCapitalValueProposition = () => {
         <link rel="canonical" href={articleData.url} />
         
         {/* Article metadata */}
-        <meta property="article:published_time" content="2025-01-15T09:00:00+00:00" />
-        <meta property="article:modified_time" content="2025-01-15T09:00:00+00:00" />
+        <meta property="article:published_time" content="2025-11-17T09:00:00+00:00" />
+        <meta property="article:modified_time" content="2025-11-17T09:00:00+00:00" />
         <meta property="article:author" content="Aries76 Ltd" />
         <meta property="article:section" content="Venture Capital" />
         
@@ -102,7 +102,7 @@ const VentureCapitalValueProposition = () => {
             <div className="flex items-center gap-6 text-muted-foreground mb-8 pb-8 border-b border-border/50">
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4" />
-                <time dateTime="2025-01-15T09:00:00+00:00" className="text-sm font-light">January 15, 2025</time>
+                <time dateTime="2025-11-17T09:00:00+00:00" className="text-sm font-light">November 17, 2025</time>
               </div>
               <div className="flex items-center gap-2">
                 <Clock className="w-4 h-4" />
