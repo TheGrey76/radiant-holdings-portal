@@ -20,7 +20,7 @@ const RssFeed = () => {
       <link>${baseUrl}/blog/${post.slug}</link>
       <guid>${baseUrl}/blog/${post.slug}</guid>
       <description><![CDATA[${post.excerpt}]]></description>
-      <category>${post.category}</category>
+      <category>${post.category.replace(/&/g, '&amp;')}</category>
       <pubDate>${new Date(post.date).toUTCString()}</pubDate>
     </item>`).join('')}
   </channel>
