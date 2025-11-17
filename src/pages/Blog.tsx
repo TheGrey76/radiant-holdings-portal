@@ -10,6 +10,14 @@ const Blog = () => {
 
   const blogPosts = [
     {
+      title: "5 Key Trends Shaping Private Equity Fundraising in 2026",
+      excerpt: "The era of easy capital is over. Discover the five fundamental trends every GP must understand to succeed in fundraising in 2026, from the flight to quality to AI-driven differentiation.",
+      category: "Private Equity",
+      date: "2025-11-18",
+      readTime: "8 min read",
+      slug: "private-equity-fundraising-trends-2026"
+    },
+    {
       title: "Does Venture Capital Still Make Sense in 2025? A Strategic Reassessment",
       excerpt: "After challenging years for VC, we examine whether venture capital still offers value to sophisticated investors and explore emerging structural alternatives in the innovation economy.",
       category: "Venture Capital",
