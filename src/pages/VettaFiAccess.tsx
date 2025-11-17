@@ -6,6 +6,7 @@ import { toast } from "sonner";
 
 const AUTHORIZED_EMAILS = [
   "peter.dietrich@tmx.com",
+  "peter.diel@tmx.com",
   "edoardo.grigione@aries76.com",
   "quinley.martini@aries76.com"
 ];
