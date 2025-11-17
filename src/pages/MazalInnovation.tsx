@@ -441,8 +441,8 @@ const MazalInnovation = () => {
 
       {/* Main Content */}
       <div className="min-h-screen bg-white">
-        {/* Language Toggle - Fixed Position */}
-        <div className="fixed top-6 right-6 z-40 flex gap-1 bg-white/95 backdrop-blur-sm border border-slate-200 rounded-sm p-1 shadow-sm">
+        {/* Language Toggle - Hidden on mobile */}
+        <div className="fixed top-6 right-6 z-40 hidden md:flex gap-1 bg-white/95 backdrop-blur-sm border border-slate-200 rounded-sm p-1 shadow-sm">
           <Button
             variant={language === "en" ? "default" : "ghost"}
             size="sm"
