@@ -20,23 +20,95 @@ const PrivateEquityFundraisingTrends2026 = () => {
         <title>5 Key Trends Shaping Private Equity Fundraising in 2026 | Aries76</title>
         <meta name="description" content={articleDescription} />
         <link rel="canonical" href={articleUrl} />
+        
+        {/* Open Graph */}
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content={articleTitle} />
+        <meta property="og:description" content={articleDescription} />
+        <meta property="og:url" content={articleUrl} />
+        <meta property="og:image" content="https://www.aries76.com/aries76-og-logo.png" />
+        <meta property="og:site_name" content="Aries76" />
+        
+        {/* Article specific */}
         <meta property="article:published_time" content="2025-11-18T09:00:00+00:00" />
         <meta property="article:modified_time" content="2025-11-18T09:00:00+00:00" />
+        <meta property="article:author" content="Aries76 Ltd" />
+        <meta property="article:section" content="Private Equity" />
+        <meta property="article:tag" content="Private Equity" />
+        <meta property="article:tag" content="Fundraising" />
+        <meta property="article:tag" content="GP Capital Advisory" />
+        <meta property="article:tag" content="AI" />
+        <meta property="article:tag" content="Limited Partners" />
+        
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={articleTitle} />
+        <meta name="twitter:description" content={articleDescription} />
+        <meta name="twitter:image" content="https://www.aries76.com/aries76-og-logo.png" />
+        
+        {/* Additional SEO */}
+        <meta name="keywords" content="private equity fundraising, GP capital advisory, limited partners, AI fundraising, PE trends 2026, continuation vehicles, cross-border PE" />
+        <meta name="author" content="Aries76 Ltd" />
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Article",
             "headline": articleTitle,
             "description": articleDescription,
-            "author": { "@type": "Organization", "name": "Aries76 Ltd" },
+            "image": "https://www.aries76.com/aries76-og-logo.png",
+            "datePublished": "2025-11-18T09:00:00+00:00",
+            "dateModified": "2025-11-18T09:00:00+00:00",
+            "author": {
+              "@type": "Organization",
+              "name": "Aries76 Ltd",
+              "url": "https://www.aries76.com"
+            },
             "publisher": {
               "@type": "Organization",
               "name": "Aries76 Ltd",
-              "logo": { "@type": "ImageObject", "url": "https://www.aries76.com/aries76-og-logo.png" }
+              "logo": {
+                "@type": "ImageObject",
+                "url": "https://www.aries76.com/aries76-og-logo.png"
+              }
             },
-            "datePublished": "2025-11-18T09:00:00+00:00",
-            "dateModified": "2025-11-18T09:00:00+00:00",
-            "mainEntityOfPage": { "@type": "WebPage", "@id": articleUrl }
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": articleUrl
+            },
+            "articleSection": "Private Equity",
+            "keywords": ["private equity", "fundraising", "GP capital advisory", "limited partners", "AI", "continuation vehicles"],
+            "wordCount": 1200,
+            "inLanguage": "en-US"
+          })}
+        </script>
+        
+        {/* Breadcrumb Schema */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://www.aries76.com"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Blog",
+                "item": "https://www.aries76.com/blog"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": articleTitle,
+                "item": articleUrl
+              }
+            ]
           })}
         </script>
       </Helmet>
@@ -114,7 +186,7 @@ const PrivateEquityFundraisingTrends2026 = () => {
               <strong>The Aries76 Advantage:</strong> Our cross-border expertise is a cornerstone of our offering. Our leadership team has a decades-long track record of connecting global capital with investment opportunities in markets like CEE and MENA. We understand the cultural, regulatory, and business nuances of these regions, providing our clients with privileged access to unique pools of capital.
             </p>
 
-            <h2 className="text-3xl font-light text-foreground mt-12 mb-6">Trend 4: Technology and AI as a Key Differentiator</h2>
+            <h2 className="text-3xl font-light text-foreground mt-12 mb-6">Trend 4: Technology and AI as a Key Differentiator in PE Fundraising</h2>
             <p className="text-muted-foreground font-light leading-relaxed mb-6">
               Technology is no longer a back-office topic. LPs are conducting increasingly thorough due diligence on GPs' technology stacks. They want to understand how technology is used to improve deal sourcing, investment analysis, portfolio management, and value creation. Artificial intelligence, in particular, is moving from a "nice-to-have" to a core evaluation element.
             </p>
@@ -141,13 +213,13 @@ const PrivateEquityFundraisingTrends2026 = () => {
               Fundraising in 2026 requires a new approach. Success will not come from a good track record alone, but from the ability to combine a differentiated strategy, operational excellence, and the smart adoption of technology. The five trends we have outlined are not isolated challenges, but interconnected pieces of a new, complex puzzle.
             </p>
             <p className="text-muted-foreground font-light leading-relaxed mb-6">
-              Navigating this landscape requires a partner who not only understands the market but is at the forefront of innovation. At Aries76, we combine the agility and focus of a boutique with the power of artificial intelligence and deep expertise in structured finance and cross-border markets.
+              Navigating this landscape requires a partner who not only understands the market but is at the forefront of innovation. At <Link to="/" className="text-accent hover:underline">Aries76</Link>, we combine the agility and focus of a boutique with the power of artificial intelligence and deep expertise in <Link to="/structured-products" className="text-accent hover:underline">structured finance</Link> and <Link to="/gp-capital-advisory" className="text-accent hover:underline">cross-border markets</Link>.
             </p>
             <p className="text-muted-foreground font-light leading-relaxed mb-6">
               <strong>Is your fundraising strategy ready for 2026?</strong>
             </p>
             <p className="text-muted-foreground font-light leading-relaxed mb-6">
-              Contact us for a confidential consultation and discover how our intelligence-driven approach can help you achieve your goals.
+              <Link to="/contact" className="text-accent hover:underline font-medium">Contact us</Link> for a confidential consultation and discover how our intelligence-driven approach can help you achieve your fundraising goals.
             </p>
           </div>
         </motion.div>
