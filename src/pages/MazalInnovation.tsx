@@ -363,36 +363,36 @@ const MazalInnovation = () => {
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-background via-background to-primary/5 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900"
           >
             <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
+              initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
+              exit={{ scale: 0.95, opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="w-full max-w-md mx-4 p-8 bg-card border border-border rounded-lg shadow-2xl"
+              className="w-full max-w-lg mx-4 p-10 bg-white rounded-sm shadow-2xl border border-slate-200"
             >
-              <div className="text-center mb-8">
-                <div className="inline-flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-primary/10">
-                  <Brain className="w-8 h-8 text-primary" />
+              <div className="text-center mb-10">
+                <div className="inline-flex items-center justify-center w-20 h-20 mb-6 rounded-sm bg-slate-900">
+                  <Brain className="w-10 h-10 text-white" />
                 </div>
-                <h1 className="text-3xl font-bold text-foreground mb-2">
+                <h1 className="text-4xl font-light text-slate-900 mb-3 tracking-tight">
                   {t.gate.title}
                 </h1>
-                <p className="text-xl text-primary font-semibold mb-1">
+                <p className="text-xl text-slate-700 font-light mb-2 tracking-wide">
                   {t.gate.subtitle}
                 </p>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-slate-500 font-light uppercase tracking-widest">
                   {t.gate.byline}
                 </p>
               </div>
 
-              <div className="flex justify-center gap-2 mb-6">
+              <div className="flex justify-center gap-2 mb-8">
                 <Button
                   variant={language === "en" ? "default" : "outline"}
                   size="sm"
                   onClick={() => setLanguage("en")}
-                  className="min-w-[80px]"
+                  className="min-w-[90px] font-light tracking-wide"
                 >
                   English
                 </Button>
@@ -400,23 +400,23 @@ const MazalInnovation = () => {
                   variant={language === "it" ? "default" : "outline"}
                   size="sm"
                   onClick={() => setLanguage("it")}
-                  className="min-w-[80px]"
+                  className="min-w-[90px] font-light tracking-wide"
                 >
                   Italiano
                 </Button>
               </div>
 
-              <form onSubmit={gateForm.handleSubmit(handleGateSubmit)} className="space-y-4">
+              <form onSubmit={gateForm.handleSubmit(handleGateSubmit)} className="space-y-5">
                 <div>
                   <Input
                     type="email"
                     placeholder={t.gate.placeholder}
                     {...gateForm.register("email")}
-                    className="w-full"
+                    className="w-full h-12 bg-slate-50 border-slate-300 rounded-sm font-light"
                     disabled={isSubmitting}
                   />
                   {gateForm.formState.errors.email && (
-                    <p className="text-sm text-destructive mt-1">
+                    <p className="text-sm text-red-600 mt-2 font-light">
                       {String(gateForm.formState.errors.email.message)}
                     </p>
                   )}
@@ -424,14 +424,14 @@ const MazalInnovation = () => {
 
                 <Button
                   type="submit"
-                  className="w-full bg-primary hover:bg-primary/90"
+                  className="w-full h-12 bg-slate-900 hover:bg-slate-800 text-white rounded-sm font-light tracking-wide uppercase text-sm"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? (language === "en" ? "Submitting..." : "Invio...") : t.gate.button}
                 </Button>
               </form>
 
-              <p className="text-xs text-muted-foreground text-center mt-4">
+              <p className="text-xs text-slate-500 text-center mt-6 font-light leading-relaxed">
                 {t.gate.footer}
               </p>
             </motion.div>
@@ -440,45 +440,46 @@ const MazalInnovation = () => {
       </AnimatePresence>
 
       {/* Main Content */}
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-white">
         {/* Language Toggle - Fixed Position */}
-        <div className="fixed top-20 right-4 z-40 flex gap-2 bg-card/80 backdrop-blur-sm border border-border rounded-lg p-2 shadow-lg">
+        <div className="fixed top-6 right-6 z-40 flex gap-1 bg-white/95 backdrop-blur-sm border border-slate-200 rounded-sm p-1 shadow-sm">
           <Button
             variant={language === "en" ? "default" : "ghost"}
             size="sm"
             onClick={() => setLanguage("en")}
-            className="min-w-[70px]"
+            className="min-w-[70px] rounded-sm font-light"
           >
-            <Languages className="w-4 h-4 mr-1" />
             EN
           </Button>
           <Button
             variant={language === "it" ? "default" : "ghost"}
             size="sm"
             onClick={() => setLanguage("it")}
-            className="min-w-[70px]"
+            className="min-w-[70px] rounded-sm font-light"
           >
-            <Languages className="w-4 h-4 mr-1" />
             IT
           </Button>
         </div>
 
         {/* Hero Section */}
-        <section className="relative py-20 px-4 bg-gradient-to-br from-background via-background to-primary/5">
+        <section className="relative py-32 px-4 bg-gradient-to-b from-slate-50 to-white border-b border-slate-200">
           <div className="max-w-6xl mx-auto text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <div className="inline-flex items-center gap-2 mb-6">
-                <Brain className="w-12 h-12 text-primary" />
-                <h1 className="text-5xl font-bold text-foreground">{t.hero.title}</h1>
+              <div className="inline-flex items-center gap-4 mb-8">
+                <div className="flex items-center justify-center w-16 h-16 bg-slate-900 rounded-sm">
+                  <Brain className="w-8 h-8 text-white" />
+                </div>
+                <h1 className="text-6xl font-light text-slate-900 tracking-tight">{t.hero.title}</h1>
               </div>
-              <h2 className="text-3xl font-semibold text-primary mb-6">
+              <div className="w-24 h-px bg-slate-900 mb-8"></div>
+              <h2 className="text-3xl font-light text-slate-700 mb-8 tracking-wide">
                 {t.hero.subtitle}
               </h2>
-              <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+              <p className="text-lg text-slate-600 max-w-4xl mx-auto leading-relaxed font-light">
                 {t.hero.description}
               </p>
             </motion.div>
@@ -486,7 +487,7 @@ const MazalInnovation = () => {
         </section>
 
         {/* About Section */}
-        <section className="py-16 px-4 bg-card/30">
+        <section className="py-24 px-4 bg-white border-b border-slate-200">
           <div className="max-w-6xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -494,10 +495,11 @@ const MazalInnovation = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-3xl font-bold text-foreground mb-8 text-center">{t.about.title}</h2>
-              <div className="prose prose-lg max-w-none text-muted-foreground space-y-4">
+              <h2 className="text-4xl font-light text-slate-900 mb-12 text-center tracking-tight">{t.about.title}</h2>
+              <div className="w-16 h-px bg-slate-900 mx-auto mb-12"></div>
+              <div className="prose prose-lg max-w-4xl mx-auto text-slate-600 space-y-6">
                 {t.about.paragraphs.map((paragraph, index) => (
-                  <p key={index}>{paragraph}</p>
+                  <p key={index} className="font-light leading-relaxed">{paragraph}</p>
                 ))}
               </div>
             </motion.div>
@@ -505,7 +507,7 @@ const MazalInnovation = () => {
         </section>
 
         {/* Value Proposition */}
-        <section className="py-16 px-4">
+        <section className="py-24 px-4 bg-slate-50">
           <div className="max-w-6xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -513,29 +515,30 @@ const MazalInnovation = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-3xl font-bold text-foreground mb-4 text-center">{t.value.title}</h2>
-              <p className="text-xl text-center text-muted-foreground mb-12">
+              <h2 className="text-4xl font-light text-slate-900 mb-4 text-center tracking-tight">{t.value.title}</h2>
+              <div className="w-16 h-px bg-slate-900 mx-auto mb-6"></div>
+              <p className="text-lg text-center text-slate-600 mb-16 font-light max-w-3xl mx-auto">
                 {t.value.subtitle}
               </p>
 
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+              <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
                 {t.value.items.map((item, index) => (
                   <motion.div
                     key={index}
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: index * 0.1 }}
-                    className="p-6 bg-card border border-border rounded-lg hover:shadow-lg transition-shadow"
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    className="p-8 bg-white border border-slate-200 rounded-sm hover:shadow-md transition-all duration-300"
                   >
-                    <div className="text-primary mb-4">
-                      {index === 0 && <Globe className="w-8 h-8" />}
-                      {index === 1 && <BarChart3 className="w-8 h-8" />}
-                      {index === 2 && <Target className="w-8 h-8" />}
-                      {index === 3 && <CheckCircle2 className="w-8 h-8" />}
+                    <div className="text-slate-900 mb-6">
+                      {index === 0 && <Globe className="w-6 h-6" />}
+                      {index === 1 && <BarChart3 className="w-6 h-6" />}
+                      {index === 2 && <Target className="w-6 h-6" />}
+                      {index === 3 && <CheckCircle2 className="w-6 h-6" />}
                     </div>
-                    <h3 className="text-lg font-semibold text-foreground mb-2">{item.title}</h3>
-                    <p className="text-sm text-muted-foreground">{item.description}</p>
+                    <h3 className="text-xl font-light text-slate-900 mb-3 tracking-wide">{item.title}</h3>
+                    <p className="text-sm text-slate-600 font-light leading-relaxed">{item.description}</p>
                   </motion.div>
                 ))}
               </div>
@@ -544,7 +547,7 @@ const MazalInnovation = () => {
         </section>
 
         {/* Investment Criteria */}
-        <section className="py-16 px-4 bg-card/30">
+        <section className="py-24 px-4 bg-white border-b border-slate-200">
           <div className="max-w-6xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -552,31 +555,32 @@ const MazalInnovation = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-3xl font-bold text-foreground mb-8 text-center">{t.criteria.title}</h2>
-              <div className="grid md:grid-cols-2 gap-8">
-                <div className="space-y-4">
+              <h2 className="text-4xl font-light text-slate-900 mb-12 text-center tracking-tight">{t.criteria.title}</h2>
+              <div className="w-16 h-px bg-slate-900 mx-auto mb-16"></div>
+              <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
+                <div className="space-y-6">
                   {t.criteria.items.slice(0, 3).map((item, index) => (
-                    <div key={index} className="flex items-start gap-3">
-                      {index === 0 && <Globe className="w-5 h-5 text-primary mt-1 flex-shrink-0" />}
-                      {index === 1 && <Lightbulb className="w-5 h-5 text-primary mt-1 flex-shrink-0" />}
-                      {index === 2 && <TrendingUp className="w-5 h-5 text-primary mt-1 flex-shrink-0" />}
+                    <div key={index} className="flex items-start gap-4 pb-6 border-b border-slate-200 last:border-0">
+                      {index === 0 && <Globe className="w-5 h-5 text-slate-900 mt-1 flex-shrink-0" />}
+                      {index === 1 && <Lightbulb className="w-5 h-5 text-slate-900 mt-1 flex-shrink-0" />}
+                      {index === 2 && <TrendingUp className="w-5 h-5 text-slate-900 mt-1 flex-shrink-0" />}
                       <div>
-                        <h4 className="font-semibold text-foreground mb-1">{item.title}</h4>
-                        <p className="text-muted-foreground">{item.description}</p>
+                        <h4 className="font-light text-slate-900 mb-2 text-lg tracking-wide">{item.title}</h4>
+                        <p className="text-slate-600 font-light leading-relaxed">{item.description}</p>
                       </div>
                     </div>
                   ))}
                 </div>
 
-                <div className="space-y-4">
+                <div className="space-y-6">
                   {t.criteria.items.slice(3, 6).map((item, index) => (
-                    <div key={index} className="flex items-start gap-3">
-                      {index === 0 && <Target className="w-5 h-5 text-primary mt-1 flex-shrink-0" />}
-                      {index === 1 && <BarChart3 className="w-5 h-5 text-primary mt-1 flex-shrink-0" />}
-                      {index === 2 && <Shield className="w-5 h-5 text-primary mt-1 flex-shrink-0" />}
+                    <div key={index} className="flex items-start gap-4 pb-6 border-b border-slate-200 last:border-0">
+                      {index === 0 && <Target className="w-5 h-5 text-slate-900 mt-1 flex-shrink-0" />}
+                      {index === 1 && <BarChart3 className="w-5 h-5 text-slate-900 mt-1 flex-shrink-0" />}
+                      {index === 2 && <Shield className="w-5 h-5 text-slate-900 mt-1 flex-shrink-0" />}
                       <div>
-                        <h4 className="font-semibold text-foreground mb-1">{item.title}</h4>
-                        <p className="text-muted-foreground">{item.description}</p>
+                        <h4 className="font-light text-slate-900 mb-2 text-lg tracking-wide">{item.title}</h4>
+                        <p className="text-slate-600 font-light leading-relaxed">{item.description}</p>
                       </div>
                     </div>
                   ))}
@@ -587,7 +591,7 @@ const MazalInnovation = () => {
         </section>
 
         {/* Portfolio Highlights */}
-        <section className="py-16 px-4">
+        <section className="py-24 px-4 bg-slate-50">
           <div className="max-w-6xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -595,25 +599,26 @@ const MazalInnovation = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-3xl font-bold text-foreground mb-12 text-center">{t.portfolio.title}</h2>
-              <div className="grid md:grid-cols-3 gap-6">
+              <h2 className="text-4xl font-light text-slate-900 mb-12 text-center tracking-tight">{t.portfolio.title}</h2>
+              <div className="w-16 h-px bg-slate-900 mx-auto mb-16"></div>
+              <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
                 {t.portfolio.items.map((item, index) => (
                   <motion.div
                     key={index}
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: index * 0.1 }}
-                    className="p-6 bg-card border border-border rounded-lg hover:shadow-lg transition-shadow"
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    className="p-8 bg-white border border-slate-200 rounded-sm hover:shadow-md transition-all duration-300"
                   >
-                    <div className="flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-primary/10">
-                      <Brain className="w-8 h-8 text-primary" />
+                    <div className="flex items-center justify-center w-14 h-14 mb-6 bg-slate-900 rounded-sm">
+                      <Brain className="w-7 h-7 text-white" />
                     </div>
-                    <h3 className="text-xl font-semibold text-foreground mb-2">{item.title}</h3>
-                    <div className="inline-block px-3 py-1 mb-3 text-xs font-medium bg-primary/10 text-primary rounded-full">
+                    <h3 className="text-xl font-light text-slate-900 mb-3 tracking-wide">{item.title}</h3>
+                    <div className="inline-block px-3 py-1 mb-4 text-xs font-light bg-slate-100 text-slate-700 rounded-sm uppercase tracking-wider">
                       {item.location}
                     </div>
-                    <p className="text-sm text-muted-foreground">{item.description}</p>
+                    <p className="text-sm text-slate-600 font-light leading-relaxed">{item.description}</p>
                   </motion.div>
                 ))}
               </div>
@@ -622,7 +627,7 @@ const MazalInnovation = () => {
         </section>
 
         {/* How We Work */}
-        <section className="py-16 px-4 bg-card/30">
+        <section className="py-24 px-4 bg-white border-b border-slate-200">
           <div className="max-w-6xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -630,28 +635,29 @@ const MazalInnovation = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-3xl font-bold text-foreground mb-8 text-center">{t.work.title}</h2>
-              <p className="text-lg text-muted-foreground text-center mb-12 max-w-3xl mx-auto">
+              <h2 className="text-4xl font-light text-slate-900 mb-12 text-center tracking-tight">{t.work.title}</h2>
+              <div className="w-16 h-px bg-slate-900 mx-auto mb-6"></div>
+              <p className="text-lg text-slate-600 text-center mb-16 max-w-3xl mx-auto font-light">
                 {t.work.subtitle}
               </p>
 
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto mb-12">
                 {t.work.items.map((item, index) => (
                   <motion.div
                     key={index}
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: index * 0.1 }}
-                    className="flex items-start gap-3 p-4 bg-card border border-border rounded-lg"
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    className="flex items-start gap-4 p-6 bg-slate-50 border border-slate-200 rounded-sm"
                   >
-                    <CheckCircle2 className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
-                    <p className="text-muted-foreground">{item}</p>
+                    <CheckCircle2 className="w-5 h-5 text-slate-900 mt-1 flex-shrink-0" />
+                    <p className="text-slate-600 font-light leading-relaxed">{item}</p>
                   </motion.div>
                 ))}
               </div>
 
-              <p className="text-center text-muted-foreground mt-8 max-w-3xl mx-auto">
+              <p className="text-center text-slate-600 max-w-4xl mx-auto font-light leading-relaxed">
                 {t.work.footer}
               </p>
             </motion.div>
@@ -659,41 +665,45 @@ const MazalInnovation = () => {
         </section>
 
         {/* Investor Brief Request */}
-        <section className="py-16 px-4">
+        <section className="py-24 px-4 bg-slate-900">
           <div className="max-w-3xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="p-8 bg-gradient-to-br from-card via-card to-primary/5 border border-border rounded-lg"
+              className="p-12 bg-white rounded-sm border border-slate-200"
             >
-              <div className="text-center mb-8">
-                <Users className="w-12 h-12 text-primary mx-auto mb-4" />
-                <h2 className="text-3xl font-bold text-foreground mb-4">{t.brief.title}</h2>
-                <p className="text-muted-foreground mb-6">
+              <div className="text-center mb-10">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-slate-900 rounded-sm mx-auto mb-6">
+                  <Users className="w-8 h-8 text-white" />
+                </div>
+                <h2 className="text-4xl font-light text-slate-900 mb-6 tracking-tight">{t.brief.title}</h2>
+                <div className="w-16 h-px bg-slate-900 mx-auto mb-8"></div>
+                <p className="text-slate-600 mb-8 font-light max-w-2xl mx-auto">
                   {t.brief.subtitle}
                 </p>
-                <ul className="text-left text-muted-foreground space-y-2 max-w-2xl mx-auto mb-8">
+                <ul className="text-left text-slate-600 space-y-3 max-w-2xl mx-auto mb-10">
                   {t.brief.items.map((item, index) => (
-                    <li key={index} className="flex items-start gap-2">
-                      <CheckCircle2 className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                      <span>{item}</span>
+                    <li key={index} className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-slate-900 mt-0.5 flex-shrink-0" />
+                      <span className="font-light">{item}</span>
                     </li>
                   ))}
                 </ul>
               </div>
 
-              <form onSubmit={briefForm.handleSubmit(handleBriefRequest)} className="space-y-4 max-w-md mx-auto">
+              <form onSubmit={briefForm.handleSubmit(handleBriefRequest)} className="space-y-5 max-w-lg mx-auto">
                 <div>
                   <Input
                     type="text"
                     placeholder={t.brief.namePlaceholder}
                     {...briefForm.register("name")}
+                    className="h-12 bg-slate-50 border-slate-300 rounded-sm font-light"
                     disabled={isSubmitting}
                   />
                   {briefForm.formState.errors.name && (
-                    <p className="text-sm text-destructive mt-1">
+                    <p className="text-sm text-red-600 mt-2 font-light">
                       {String(briefForm.formState.errors.name.message)}
                     </p>
                   )}
@@ -704,10 +714,11 @@ const MazalInnovation = () => {
                     type="email"
                     placeholder={t.brief.emailPlaceholder}
                     {...briefForm.register("email")}
+                    className="h-12 bg-slate-50 border-slate-300 rounded-sm font-light"
                     disabled={isSubmitting}
                   />
                   {briefForm.formState.errors.email && (
-                    <p className="text-sm text-destructive mt-1">
+                    <p className="text-sm text-red-600 mt-2 font-light">
                       {String(briefForm.formState.errors.email.message)}
                     </p>
                   )}
@@ -718,13 +729,14 @@ const MazalInnovation = () => {
                     type="text"
                     placeholder={t.brief.orgPlaceholder}
                     {...briefForm.register("organization")}
+                    className="h-12 bg-slate-50 border-slate-300 rounded-sm font-light"
                     disabled={isSubmitting}
                   />
                 </div>
 
                 <Button
                   type="submit"
-                  className="w-full bg-primary hover:bg-primary/90"
+                  className="w-full h-12 bg-slate-900 hover:bg-slate-800 text-white rounded-sm font-light tracking-wide uppercase text-sm"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? (language === "en" ? "Submitting..." : "Invio...") : t.brief.button}
