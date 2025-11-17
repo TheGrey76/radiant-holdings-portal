@@ -137,6 +137,63 @@ export type Database = {
         }
         Relationships: []
       }
+      content_distributions: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          platform: string
+          updated_at: string | null
+          webhook_url: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          platform: string
+          updated_at?: string | null
+          webhook_url: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          platform?: string
+          updated_at?: string | null
+          webhook_url?: string
+        }
+        Relationships: []
+      }
+      distribution_logs: {
+        Row: {
+          content_title: string
+          content_url: string
+          distributed_at: string | null
+          id: string
+          metadata: Json | null
+          platform: string
+          status: string | null
+        }
+        Insert: {
+          content_title: string
+          content_url: string
+          distributed_at?: string | null
+          id?: string
+          metadata?: Json | null
+          platform: string
+          status?: string | null
+        }
+        Update: {
+          content_title?: string
+          content_url?: string
+          distributed_at?: string | null
+          id?: string
+          metadata?: Json | null
+          platform?: string
+          status?: string | null
+        }
+        Relationships: []
+      }
       email_campaigns: {
         Row: {
           campaign_name: string
