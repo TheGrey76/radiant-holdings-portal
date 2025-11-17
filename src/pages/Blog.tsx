@@ -10,6 +10,14 @@ const Blog = () => {
 
   const blogPosts = [
     {
+      title: "Does Venture Capital Still Make Sense in 2025? A Strategic Reassessment",
+      excerpt: "After challenging years for VC, we examine whether venture capital still offers value to sophisticated investors and explore emerging structural alternatives in the innovation economy.",
+      category: "Venture Capital",
+      date: "2025-01-15",
+      readTime: "10 min read",
+      slug: "venture-capital-value-proposition-2025"
+    },
+    {
       title: "The Digital Revolution in Structured Products: Tokenization and AI Transform the Market in 2025",
       excerpt: "How blockchain tokenization, AI-powered structuring, and digital distribution are reshaping the €500 billion European structured products market.",
       category: "Structured Products",
