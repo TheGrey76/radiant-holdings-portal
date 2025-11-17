@@ -29,6 +29,7 @@ import BlogArchive from "./pages/BlogArchive";
 import Press from "./pages/Press";
 import Admin from "./pages/Admin";
 import NewsletterComposer from "./pages/NewsletterComposer";
+import DistributionDashboard from "./pages/DistributionDashboard";
 import GPEquityNextFrontier from "./pages/blog/GPEquityNextFrontier";
 import SuccessionPlanningStrategicImperative from "./pages/blog/SuccessionPlanningStrategicImperative";
 import ValuingManagementCompanies from "./pages/blog/ValuingManagementCompanies";
@@ -85,6 +86,7 @@ const App = () => (
           <Route path="/auth" element={<Auth />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/newsletter" element={<NewsletterComposer />} />
+          <Route path="/admin/distribution" element={<DistributionDashboard />} />
           <Route path="/admin/gp-lp-matching" element={<GPLPMatching />} />
           <Route path="/admin/gp-lp-dashboard" element={<GPLPDashboard />} />
           <Route path="/gp-portal" element={<GPPortal />} />
