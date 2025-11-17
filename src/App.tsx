@@ -39,6 +39,7 @@ import AIDrivenDueDiligence from "./pages/blog/AIDrivenDueDiligence";
 import ItalyStructuredProductsRecord from "./pages/blog/ItalyStructuredProductsRecord";
 import StructuredProductsDigitalRevolution from "./pages/blog/StructuredProductsDigitalRevolution";
 import VentureCapitalValueProposition from "./pages/blog/VentureCapitalValueProposition";
+import PrivateEquityFundraisingTrends2026 from "./pages/blog/PrivateEquityFundraisingTrends2026";
 import MazalInnovation from "./pages/MazalInnovation";
 import WhyChooseAries from "./pages/WhyChooseAries";
 import LeadershipTeam from "./pages/LeadershipTeam";
@@ -111,6 +112,7 @@ const App = () => (
           <Route path="/blog/italy-structured-products-record-q3-2025" element={<ItalyStructuredProductsRecord />} />
           <Route path="/blog/structured-products-digital-revolution-2025" element={<StructuredProductsDigitalRevolution />} />
           <Route path="/blog/venture-capital-value-proposition-2025" element={<VentureCapitalValueProposition />} />
+          <Route path="/blog/private-equity-fundraising-trends-2026" element={<PrivateEquityFundraisingTrends2026 />} />
           <Route path="/mazal-innovation" element={<MazalInnovation />} />
           <Route path="/press" element={<Press />} />
           <Route path="*" element={<NotFound />} />
