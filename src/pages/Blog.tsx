@@ -13,7 +13,7 @@ const Blog = () => {
       title: "Does Venture Capital Still Make Sense in 2025? A Strategic Reassessment",
       excerpt: "After challenging years for VC, we examine whether venture capital still offers value to sophisticated investors and explore emerging structural alternatives in the innovation economy.",
       category: "Venture Capital",
-      date: "2025-01-15",
+      date: "2025-11-17",
       readTime: "10 min read",
       slug: "venture-capital-value-proposition-2025"
     },
