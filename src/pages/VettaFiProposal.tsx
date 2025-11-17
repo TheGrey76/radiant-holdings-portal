@@ -4,7 +4,7 @@ import Navbar from '@/components/Navbar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Loader2, ShieldAlert } from 'lucide-react';
 
-const AUTHORIZED_EMAILS = ['peter.dietrich@tmx.com', 'edoardo.grigione@aries76.com'];
+const AUTHORIZED_EMAILS = ['peter.dietrich@tmx.com', 'peter.diel@tmx.com', 'edoardo.grigione@aries76.com', 'quinley.martini@aries76.com'];
 
 const VettaFiProposal = () => {
   const navigate = useNavigate();
