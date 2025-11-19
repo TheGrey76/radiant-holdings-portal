@@ -258,51 +258,51 @@ const AssetGUProposal = () => {
           </div>
 
           <div className="grid md:grid-cols-3 gap-6 mb-8">
-            <Card className="bg-gradient-to-br from-emerald-900/20 to-emerald-800/10 border-emerald-700/50">
+            <Card className="bg-slate-800 border-emerald-600/50 shadow-lg shadow-emerald-900/20">
               <CardHeader>
                 <div className="flex items-center justify-between mb-2">
-                  <Badge className="bg-emerald-600/20 text-emerald-400 border-emerald-600/30">50%</Badge>
-                  <Shield className="w-5 h-5 text-emerald-500" />
+                  <Badge className="bg-emerald-500 text-white border-0 font-semibold">50%</Badge>
+                  <Shield className="w-5 h-5 text-emerald-400" />
                 </div>
                 <CardTitle className="text-white">Capital Preservation</CardTitle>
-                <CardDescription className="text-emerald-200/70">€1,100,000</CardDescription>
+                <CardDescription className="text-slate-300 font-medium">€1,100,000</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-slate-300 text-sm">
+                <p className="text-slate-200 text-sm leading-relaxed">
                   BOT/BTP ladder, high-grade government and corporate bonds, 
                   capital-guaranteed structured solutions, and money market instruments.
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="bg-gradient-to-br from-blue-900/20 to-blue-800/10 border-blue-700/50">
+            <Card className="bg-slate-800 border-blue-600/50 shadow-lg shadow-blue-900/20">
               <CardHeader>
                 <div className="flex items-center justify-between mb-2">
-                  <Badge className="bg-blue-600/20 text-blue-400 border-blue-600/30">30%</Badge>
-                  <BarChart3 className="w-5 h-5 text-blue-500" />
+                  <Badge className="bg-blue-500 text-white border-0 font-semibold">30%</Badge>
+                  <BarChart3 className="w-5 h-5 text-blue-400" />
                 </div>
                 <CardTitle className="text-white">Medium Risk</CardTitle>
-                <CardDescription className="text-blue-200/70">€660,000</CardDescription>
+                <CardDescription className="text-slate-300 font-medium">€660,000</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-slate-300 text-sm">
+                <p className="text-slate-200 text-sm leading-relaxed">
                   Diversified mutual funds across global equities, defensive structured products 
                   with moderate barriers, and multi-asset strategies.
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="bg-gradient-to-br from-amber-900/20 to-amber-800/10 border-amber-700/50">
+            <Card className="bg-slate-800 border-amber-600/50 shadow-lg shadow-amber-900/20">
               <CardHeader>
                 <div className="flex items-center justify-between mb-2">
-                  <Badge className="bg-amber-600/20 text-amber-400 border-amber-600/30">20%</Badge>
-                  <TrendingUp className="w-5 h-5 text-amber-500" />
+                  <Badge className="bg-amber-500 text-white border-0 font-semibold">20%</Badge>
+                  <TrendingUp className="w-5 h-5 text-amber-400" />
                 </div>
                 <CardTitle className="text-white">Aggressive</CardTitle>
-                <CardDescription className="text-amber-200/70">€440,000</CardDescription>
+                <CardDescription className="text-slate-300 font-medium">€440,000</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-slate-300 text-sm">
+                <p className="text-slate-200 text-sm leading-relaxed">
                   Thematic equity strategies (AI, robotics, semiconductors), 
                   high-conviction sector funds, and higher-beta structured notes.
                 </p>
