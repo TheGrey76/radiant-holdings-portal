@@ -8,7 +8,8 @@ import { Lock } from "lucide-react";
 
 const AUTHORIZED_EMAILS = [
   "edoardo.grigione@aries76.com",
-  "gp@aries76.com"
+  "gp@aries76.com",
+  "alessandro.catullo@aries76.com"
 ];
 
 const AssetGUAccess = () => {

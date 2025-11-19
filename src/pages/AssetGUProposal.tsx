@@ -8,7 +8,8 @@ import { Loader2, Shield, TrendingUp, PieChart, Target, BarChart3, FileCheck, Ar
 
 const AUTHORIZED_EMAILS = [
   "edoardo.grigione@aries76.com",
-  "gp@aries76.com"
+  "gp@aries76.com",
+  "alessandro.catullo@aries76.com"
 ];
 
 const AssetGUProposal = () => {
