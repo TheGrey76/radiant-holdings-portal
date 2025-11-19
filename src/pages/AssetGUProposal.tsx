@@ -52,7 +52,7 @@ const AssetGUProposal = () => {
           </CardHeader>
           <CardContent>
             <p className="text-sm text-muted-foreground mb-4">
-              Please contact edoardo.grigione@aries76.com for access.
+              Please contact alessandro.catullo@aries76.com for access.
             </p>
             <Button onClick={() => navigate("/asset-gu-access")} variant="outline" className="w-full">
               Return to Access Page
@@ -637,17 +637,10 @@ const AssetGUProposal = () => {
               <Separator className="bg-slate-700 mb-8" />
 
               <div className="text-center">
-                <Button 
-                  size="lg" 
-                  className="bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white px-8"
-                >
-                  <FileCheck className="w-5 h-5 mr-2" />
-                  Request Full Proposal PDF
-                </Button>
-                <p className="text-sm text-slate-400 mt-4">
+                <p className="text-sm text-slate-400">
                   For questions or to schedule a review meeting, contact{" "}
-                  <a href="mailto:edoardo.grigione@aries76.com" className="text-amber-500 hover:text-amber-400 underline">
-                    edoardo.grigione@aries76.com
+                  <a href="mailto:alessandro.catullo@aries76.com" className="text-amber-500 hover:text-amber-400 underline">
+                    alessandro.catullo@aries76.com
                   </a>
                 </p>
               </div>
