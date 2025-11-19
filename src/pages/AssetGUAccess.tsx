@@ -82,8 +82,8 @@ const AssetGUAccess = () => {
           <div className="mt-6 pt-6 border-t border-border">
             <p className="text-xs text-muted-foreground text-center">
               For access inquiries, please contact:{" "}
-              <a href="mailto:edoardo.grigione@aries76.com" className="text-amber-600 hover:text-amber-700 underline">
-                edoardo.grigione@aries76.com
+              <a href="mailto:alessandro.catullo@aries76.com" className="text-amber-600 hover:text-amber-700 underline">
+                alessandro.catullo@aries76.com
               </a>
             </p>
           </div>
