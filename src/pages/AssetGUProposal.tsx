@@ -52,7 +52,7 @@ const AssetGUProposal = () => {
           </CardHeader>
           <CardContent>
             <p className="text-sm text-muted-foreground mb-4">
-              Please contact alessandro.catullo@aries76.com for access.
+              Please contact edoardo.grigione@aries76.com or alessandro.catullo@aries76.com for access.
             </p>
             <Button onClick={() => navigate("/asset-gu-access")} variant="outline" className="w-full">
               Return to Access Page
@@ -639,6 +639,10 @@ const AssetGUProposal = () => {
               <div className="text-center">
                 <p className="text-sm text-slate-400">
                   For questions or to schedule a review meeting, contact{" "}
+                  <a href="mailto:edoardo.grigione@aries76.com" className="text-amber-500 hover:text-amber-400 underline">
+                    edoardo.grigione@aries76.com
+                  </a>
+                  {" or "}
                   <a href="mailto:alessandro.catullo@aries76.com" className="text-amber-500 hover:text-amber-400 underline">
                     alessandro.catullo@aries76.com
                   </a>
