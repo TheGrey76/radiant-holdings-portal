@@ -535,47 +535,47 @@ const AssetGUProposal = () => {
               <h3 className="font-semibold text-white mb-4 text-lg">Policy Framework</h3>
               <ul className="space-y-3">
                 <li className="flex items-start gap-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-amber-600 mt-2 flex-shrink-0" />
-                  <p className="text-slate-300">Formal 50/30/20 strategic asset allocation policy with defined rebalancing bands</p>
+                  <div className="w-1.5 h-1.5 rounded-full bg-amber-500 mt-2 flex-shrink-0" />
+                  <p className="text-slate-200 leading-relaxed">Formal 50/30/20 strategic asset allocation policy with defined rebalancing bands</p>
                 </li>
                 <li className="flex items-start gap-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-amber-600 mt-2 flex-shrink-0" />
-                  <p className="text-slate-300">Structured-products investment guidelines: minimum BBB-rated issuers, barriers ≥40%, maximum single-issuer concentration 25%</p>
+                  <div className="w-1.5 h-1.5 rounded-full bg-amber-500 mt-2 flex-shrink-0" />
+                  <p className="text-slate-200 leading-relaxed">Structured-products investment guidelines: minimum BBB-rated issuers, barriers ≥40%, maximum single-issuer concentration 25%</p>
                 </li>
                 <li className="flex items-start gap-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-amber-600 mt-2 flex-shrink-0" />
-                  <p className="text-slate-300">Quarterly monitoring and comprehensive reporting on portfolio performance, risk metrics, and barrier distances</p>
+                  <div className="w-1.5 h-1.5 rounded-full bg-amber-500 mt-2 flex-shrink-0" />
+                  <p className="text-slate-200 leading-relaxed">Quarterly monitoring and comprehensive reporting on portfolio performance, risk metrics, and barrier distances</p>
                 </li>
                 <li className="flex items-start gap-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-amber-600 mt-2 flex-shrink-0" />
-                  <p className="text-slate-300">Annual strategic review to assess continued suitability of the allocation framework</p>
+                  <div className="w-1.5 h-1.5 rounded-full bg-amber-500 mt-2 flex-shrink-0" />
+                  <p className="text-slate-200 leading-relaxed">Annual strategic review to assess continued suitability of the allocation framework</p>
                 </li>
               </ul>
             </div>
 
-            <Card className="bg-gradient-to-br from-amber-900/20 to-amber-800/10 border-amber-700/50">
+            <Card className="bg-slate-800 border-amber-600/50 shadow-lg shadow-amber-900/20">
               <CardHeader>
                 <CardTitle className="text-white">Transparency & Reporting</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-slate-300 mb-4">
+                <p className="text-slate-200 mb-4 leading-relaxed">
                   Full transparency on each structured note with detailed quarterly reporting including:
                 </p>
-                <ul className="space-y-2 text-sm text-slate-300">
+                <ul className="space-y-2 text-sm text-slate-200">
                   <li className="flex items-center gap-2">
-                    <div className="w-1 h-1 rounded-full bg-amber-500" />
+                    <div className="w-1 h-1 rounded-full bg-amber-400" />
                     Distance to barrier and autocall probability
                   </li>
                   <li className="flex items-center gap-2">
-                    <div className="w-1 h-1 rounded-full bg-amber-500" />
+                    <div className="w-1 h-1 rounded-full bg-amber-400" />
                     Mark-to-market valuation scenarios
                   </li>
                   <li className="flex items-center gap-2">
-                    <div className="w-1 h-1 rounded-full bg-amber-500" />
+                    <div className="w-1 h-1 rounded-full bg-amber-400" />
                     Issuer credit quality monitoring
                   </li>
                   <li className="flex items-center gap-2">
-                    <div className="w-1 h-1 rounded-full bg-amber-500" />
+                    <div className="w-1 h-1 rounded-full bg-amber-400" />
                     Coupon payment schedule and performance tracking
                   </li>
                 </ul>
