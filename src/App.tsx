@@ -49,6 +49,8 @@ import VettaFiProposal from "./pages/VettaFiProposal";
 import VettaFiAccess from "./pages/VettaFiAccess";
 import AlkemiaPraesidiumProposal from "./pages/AlkemiaPraesidiumProposal";
 import AlkemiaPraesidiumAccess from "./pages/AlkemiaPraesidiumAccess";
+import AssetGUProposal from "./pages/AssetGUProposal";
+import AssetGUAccess from "./pages/AssetGUAccess";
 import ABCCompanyProposal from "./pages/ABCCompanyProposal";
 import ABCCompanyAccess from "./pages/ABCCompanyAccess";
 import GPLPMatching from "./pages/GPLPMatching";
@@ -101,6 +103,8 @@ const App = () => (
           <Route path="/vettafi-proposal" element={<VettaFiProposal />} />
           <Route path="/alkemia-praesidium-access" element={<AlkemiaPraesidiumAccess />} />
           <Route path="/alkemia-praesidium-proposal" element={<AlkemiaPraesidiumProposal />} />
+          <Route path="/asset-gu-access" element={<AssetGUAccess />} />
+          <Route path="/asset-gu-proposal" element={<AssetGUProposal />} />
           <Route path="/abc-company-access" element={<ABCCompanyAccess />} />
           <Route path="/abc-company-proposal" element={<ABCCompanyProposal />} />
           <Route path="/faq" element={<FAQ />} />

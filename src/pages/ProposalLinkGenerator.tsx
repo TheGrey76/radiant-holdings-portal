@@ -35,6 +35,12 @@ const PROPOSALS: Proposal[] = [
     name: "ABC Company Capital Raise",
     accessRoute: "/abc-company-access",
     proposalRoute: "/abc-company-proposal"
+  },
+  {
+    id: "assetgu",
+    name: "Asset G.U. Portfolio Architecture",
+    accessRoute: "/asset-gu-access",
+    proposalRoute: "/asset-gu-proposal"
   }
 ];
 
