@@ -7,8 +7,13 @@ const Footer = () => {
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           <div>
-            <div className="text-2xl font-light tracking-wider text-white uppercase mb-6">
-              ARIES<span className="text-accent">76</span>
+            <div className="mb-6">
+              <div className="text-2xl font-light tracking-wider text-white uppercase">
+                ARIES<span className="text-accent">76</span>
+              </div>
+              <div className="text-[0.45rem] font-light tracking-[0.2em] text-white/50 uppercase -mt-1">
+                Capital Intelligence
+              </div>
             </div>
             <a 
               href="https://www.linkedin.com/company/109761476/" 

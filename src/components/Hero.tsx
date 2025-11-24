@@ -67,7 +67,7 @@ const Hero = () => {
       <div className="container mx-auto px-6 relative z-20">
         <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
           <motion.h1 
-            className="text-4xl md:text-6xl lg:text-7xl font-display font-bold text-aries-navy mb-6 tracking-tight"
+            className="text-4xl md:text-6xl lg:text-7xl font-display font-bold text-aries-navy mb-3 tracking-tight"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
@@ -76,6 +76,15 @@ const Hero = () => {
               AI Amplified
             </span>
           </motion.h1>
+
+          <motion.p 
+            className="text-sm md:text-base font-light tracking-wide text-gray-500 uppercase mb-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
+            Capital Intelligence for Private Markets
+          </motion.p>
           
           <motion.p 
             className="text-lg md:text-xl text-gray-600 mb-10 max-w-2xl"
