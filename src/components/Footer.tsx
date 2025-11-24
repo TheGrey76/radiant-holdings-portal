@@ -7,11 +7,11 @@ const Footer = () => {
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           <div>
-            <div className="mb-6 animate-fade-in">
-              <div className="text-2xl sm:text-2xl md:text-3xl font-light tracking-wider text-white uppercase">
+            <div className="mb-6">
+              <div className="text-3xl font-light tracking-wider text-white uppercase">
                 ARIES<span className="text-accent">76</span>
               </div>
-              <div className="text-[0.5rem] sm:text-[0.55rem] md:text-[0.6rem] font-extralight tracking-[0.25em] sm:tracking-[0.28em] md:tracking-[0.3em] text-accent uppercase -mt-0.5">
+              <div className="text-[0.6rem] font-extralight tracking-[0.3em] text-accent uppercase -mt-0.5">
                 Capital Intelligence
               </div>
             </div>

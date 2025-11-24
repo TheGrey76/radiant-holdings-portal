@@ -82,20 +82,14 @@ const Navbar = () => {
       transition={{ duration: 0.5, ease: 'easeOut' }}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: 'easeOut', delay: 0.2 }}
-        >
-          <Link to="/" className="flex flex-col">
-            <span className="text-2xl sm:text-2xl md:text-3xl lg:text-3xl font-light tracking-wider text-foreground uppercase">
-              ARIES<span className="text-accent">76</span>
-            </span>
-            <span className="text-[0.5rem] sm:text-[0.55rem] md:text-[0.6rem] lg:text-[0.65rem] font-extralight tracking-[0.25em] sm:tracking-[0.28em] md:tracking-[0.3em] text-accent uppercase -mt-0.5">
-              Capital Intelligence
-            </span>
-          </Link>
-        </motion.div>
+        <Link to="/" className="flex flex-col">
+          <span className="text-3xl font-light tracking-wider text-foreground uppercase">
+            ARIES<span className="text-accent">76</span>
+          </span>
+          <span className="text-[0.65rem] font-extralight tracking-[0.3em] text-accent uppercase -mt-0.5">
+            Capital Intelligence
+          </span>
+        </Link>
         
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center">
