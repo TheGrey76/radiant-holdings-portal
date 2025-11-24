@@ -83,10 +83,10 @@ const Navbar = () => {
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <Link to="/" className="flex flex-col">
-          <span className="text-3xl font-light tracking-wider text-foreground uppercase">
+          <span className="text-2xl sm:text-2xl md:text-3xl lg:text-3xl font-light tracking-wider text-foreground uppercase">
             ARIES<span className="text-accent">76</span>
           </span>
-          <span className="text-[0.65rem] font-extralight tracking-[0.3em] text-accent uppercase -mt-0.5">
+          <span className="text-[0.5rem] sm:text-[0.55rem] md:text-[0.6rem] lg:text-[0.65rem] font-extralight tracking-[0.25em] sm:tracking-[0.28em] md:tracking-[0.3em] text-accent uppercase -mt-0.5">
             Capital Intelligence
           </span>
         </Link>
