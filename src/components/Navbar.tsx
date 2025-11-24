@@ -39,6 +39,7 @@ const Navbar = () => {
     advisory: [
       { name: 'Fund Placement', path: '/private-equity-funds' },
       { name: 'GP Capital Advisory', path: '/gp-capital-advisory' },
+      { name: 'Family Office Advisory', path: '/family-office-advisory' },
       { name: 'Structured Products', path: '/structured-products' },
     ],
     lps: [
@@ -62,6 +63,7 @@ const Navbar = () => {
     { name: 'Advisory Services', path: '#', section: 'advisory' },
     { name: 'Fund Placement', path: '/private-equity-funds', indent: true },
     { name: 'GP Capital Advisory', path: '/gp-capital-advisory', indent: true },
+    { name: 'Family Office Advisory', path: '/family-office-advisory', indent: true },
     { name: 'Structured Products', path: '/structured-products', indent: true },
     { name: 'For LPs', path: '/for-limited-partners' },
     { name: 'Insights', path: '#', section: 'insights' },
