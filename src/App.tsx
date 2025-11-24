@@ -60,6 +60,7 @@ import GPLPDashboard from "./pages/GPLPDashboard";
 import GPRegistrationPage from "./pages/GPRegistrationPage";
 import LPRegistrationPage from "./pages/LPRegistrationPage";
 import FinancialAdvisersPortal from "./pages/FinancialAdvisersPortal";
+import FamilyOfficeAdvisory from "./pages/FamilyOfficeAdvisory";
 
 const queryClient = new QueryClient();
 
@@ -83,6 +84,7 @@ const App = () => (
           <Route path="/gp-capital-advisory" element={<GPCapitalAdvisory />} />
           <Route path="/gp-fundraising-economics" element={<GPFundraisingEconomics />} />
           <Route path="/fundraising-readiness" element={<FundraisingReadiness />} />
+          <Route path="/family-office-advisory" element={<FamilyOfficeAdvisory />} />
           <Route path="/structured-products" element={<StructuredProducts />} />
           <Route path="/for-limited-partners" element={<ForLimitedPartners />} />
           <Route path="/contact" element={<ContactPage />} />
