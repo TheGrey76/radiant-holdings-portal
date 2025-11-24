@@ -8,10 +8,10 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           <div>
             <div className="mb-6">
-              <div className="text-2xl font-light tracking-wider text-white uppercase">
+              <div className="text-3xl font-light tracking-wider text-white uppercase">
                 ARIES<span className="text-accent">76</span>
               </div>
-              <div className="text-[0.45rem] font-light tracking-[0.2em] text-white/50 uppercase -mt-1">
+              <div className="text-[0.6rem] font-light tracking-[0.2em] text-accent uppercase -mt-0.5">
                 Capital Intelligence
               </div>
             </div>
