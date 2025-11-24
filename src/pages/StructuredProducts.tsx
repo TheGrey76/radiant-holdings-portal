@@ -168,9 +168,16 @@ const StructuredProducts = () => {
                 <p className="text-muted-foreground font-light mb-6 leading-relaxed">
                   Powered by our proprietary AiresData platform, we provide real-time pricing analytics, scenario modelling, and investor sentiment analysis. This technology enables faster structuring, competitive pricing, and enhanced transparency throughout the product lifecycle.
                 </p>
-                <Link to="/aires-data" className="inline-flex items-center gap-2 text-accent text-base font-light hover:gap-4 transition-all">
-                  Explore AiresData <ArrowRight className="w-4 h-4" />
-                </Link>
+                <div className="space-y-3">
+                  <Link to="/aires-data" className="inline-flex items-center gap-2 text-accent text-base font-light hover:gap-4 transition-all">
+                    Explore AiresData <ArrowRight className="w-4 h-4" />
+                  </Link>
+                  <div className="pt-2">
+                    <Link to="/structured-products/alpha-flow" className="inline-flex items-center gap-2 text-accent text-base font-light hover:gap-4 transition-all">
+                      Discover AlphaFlow AI Platform <ArrowRight className="w-4 h-4" />
+                    </Link>
+                  </div>
+                </div>
               </motion.div>
             </div>
           </div>
