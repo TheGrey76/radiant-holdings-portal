@@ -86,7 +86,7 @@ const Navbar = () => {
           <span className="text-3xl font-light tracking-wider text-foreground uppercase">
             ARIES<span className="text-accent">76</span>
           </span>
-          <span className="text-[0.65rem] font-light tracking-[0.2em] text-accent uppercase -mt-0.5">
+          <span className="text-[0.65rem] font-extralight tracking-[0.3em] text-accent uppercase -mt-0.5">
             Capital Intelligence
           </span>
         </Link>

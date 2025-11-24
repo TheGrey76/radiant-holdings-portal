@@ -11,7 +11,7 @@ const Footer = () => {
               <div className="text-3xl font-light tracking-wider text-white uppercase">
                 ARIES<span className="text-accent">76</span>
               </div>
-              <div className="text-[0.6rem] font-light tracking-[0.2em] text-accent uppercase -mt-0.5">
+              <div className="text-[0.6rem] font-extralight tracking-[0.3em] text-accent uppercase -mt-0.5">
                 Capital Intelligence
               </div>
             </div>
