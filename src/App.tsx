@@ -21,7 +21,6 @@ import GPCapitalAdvisory from "./pages/GPCapitalAdvisory";
 import GPFundraisingEconomics from "./pages/GPFundraisingEconomics";
 import FundraisingReadiness from "./pages/FundraisingReadiness";
 import StructuredProducts from "./pages/StructuredProducts";
-import AlphaFlow from "./pages/AlphaFlow";
 import ForLimitedPartners from "./pages/ForLimitedPartners";
 import NotFound from "./pages/NotFound";
 import FAQ from "./pages/FAQ";
@@ -85,7 +84,6 @@ const App = () => (
           <Route path="/gp-fundraising-economics" element={<GPFundraisingEconomics />} />
           <Route path="/fundraising-readiness" element={<FundraisingReadiness />} />
           <Route path="/structured-products" element={<StructuredProducts />} />
-          <Route path="/structured-products/alpha-flow" element={<AlphaFlow />} />
           <Route path="/for-limited-partners" element={<ForLimitedPartners />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/auth" element={<Auth />} />
