@@ -9,6 +9,14 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    title: "Investment Certificates in 2025: Navigating the New Era of Structured Solutions",
+    excerpt: "How investment certificates are evolving to meet sophisticated investor demands in a high-volatility environment. From capital protection to yield enhancement, exploring the strategic role of certificates in modern portfolios.",
+    category: "Structured Products",
+    date: "2025-11-25",
+    readTime: "9 min read",
+    slug: "investment-certificates-2025-new-era"
+  },
+  {
     title: "5 Key Trends Shaping Private Equity Fundraising in 2026",
     excerpt: "The era of easy capital is over. Discover the five fundamental trends every GP must understand to succeed in fundraising in 2026, from the flight to quality to AI-driven differentiation.",
     category: "Private Equity",
