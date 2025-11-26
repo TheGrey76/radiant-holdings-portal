@@ -445,7 +445,7 @@ const StrategicPartnerships = () => {
                 we would be pleased to speak with you.
               </p>
               <p className="text-center text-sm text-muted-foreground/60 font-light">
-                Or email us directly at: <a href="mailto:partnerships@aries76.com" className="text-accent hover:underline font-normal">partnerships@aries76.com</a>
+                Or email us directly at: <a href="mailto:alessandro.catullo@aries76.com" className="text-accent hover:underline font-normal">alessandro.catullo@aries76.com</a>
               </p>
             </div>
           </motion.div>
