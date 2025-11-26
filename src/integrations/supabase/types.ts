@@ -464,6 +464,27 @@ export type Database = {
         }
         Relationships: []
       }
+      gu_portfolio_access: {
+        Row: {
+          access_granted_at: string
+          created_at: string
+          email: string
+          id: string
+        }
+        Insert: {
+          access_granted_at?: string
+          created_at?: string
+          email: string
+          id?: string
+        }
+        Update: {
+          access_granted_at?: string
+          created_at?: string
+          email?: string
+          id?: string
+        }
+        Relationships: []
+      }
       lp_registrations: {
         Row: {
           areas_of_interest: string[] | null
