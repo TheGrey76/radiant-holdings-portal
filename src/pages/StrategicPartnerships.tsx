@@ -181,11 +181,21 @@ const StrategicPartnerships = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: index * 0.1 }}
-                    className="group p-8 bg-white border border-border/50 hover:border-accent/30 hover:shadow-lg transition-all duration-300"
+                    whileHover={{ y: -8, scale: 1.02 }}
+                    className="group p-8 bg-white border border-border/50 hover:border-accent hover:shadow-2xl transition-all duration-500 relative overflow-hidden"
                   >
-                    <Icon className="w-10 h-10 text-accent mb-4" />
-                    <h3 className="text-xl font-semibold text-foreground mb-3">{sector.title}</h3>
-                    <p className="text-muted-foreground/80 leading-relaxed font-light text-sm">{sector.description}</p>
+                    <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    <div className="relative z-10">
+                      <motion.div
+                        initial={{ scale: 1 }}
+                        whileHover={{ scale: 1.1, rotate: 5 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <Icon className="w-10 h-10 text-accent mb-4 group-hover:text-accent/90 transition-colors duration-300" />
+                      </motion.div>
+                      <h3 className="text-xl font-semibold text-foreground mb-3 group-hover:text-accent transition-colors duration-300">{sector.title}</h3>
+                      <p className="text-muted-foreground/80 leading-relaxed font-light text-sm group-hover:text-muted-foreground transition-colors duration-300">{sector.description}</p>
+                    </div>
                   </motion.div>
                 );
               })}
@@ -218,11 +228,22 @@ const StrategicPartnerships = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: index * 0.1 }}
-                    className="p-8 bg-background border border-border/50 hover:border-accent/30 transition-all duration-300"
+                    whileHover={{ y: -10, scale: 1.03 }}
+                    className="p-8 bg-background border border-border/50 hover:border-accent hover:shadow-2xl transition-all duration-500 relative overflow-hidden group"
                   >
-                    <Icon className="w-10 h-10 text-accent mb-4" />
-                    <h3 className="text-xl font-semibold text-foreground mb-3">{counterparty.title}</h3>
-                    <p className="text-muted-foreground/80 leading-relaxed font-light text-sm">{counterparty.description}</p>
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    <div className="absolute top-0 left-0 w-1 h-0 bg-accent group-hover:h-full transition-all duration-500" />
+                    <div className="relative z-10">
+                      <motion.div
+                        initial={{ scale: 1 }}
+                        whileHover={{ scale: 1.15, rotate: -5 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <Icon className="w-10 h-10 text-accent mb-4 group-hover:text-accent/90 transition-colors duration-300" />
+                      </motion.div>
+                      <h3 className="text-xl font-semibold text-foreground mb-3 group-hover:text-accent transition-colors duration-300">{counterparty.title}</h3>
+                      <p className="text-muted-foreground/80 leading-relaxed font-light text-sm group-hover:text-muted-foreground transition-colors duration-300">{counterparty.description}</p>
+                    </div>
                   </motion.div>
                 );
               })}
