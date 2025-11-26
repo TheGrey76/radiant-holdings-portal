@@ -467,18 +467,100 @@ const StructuredProductsGU = () => {
                 <div className="flex items-center gap-3">
                   <Calendar className="h-6 w-6 text-emerald-600" />
                   <div>
-                    <CardTitle>Monthly Coupon Flow Schedule</CardTitle>
-                    <CardDescription className="mt-1">Complete 12-Month Cash Distribution Timeline</CardDescription>
+                    <CardTitle>Monthly Coupon Flow Schedule – All Certificates</CardTitle>
+                    <CardDescription className="mt-1">Complete 12-Month Cash Distribution by Instrument</CardDescription>
                   </div>
                 </div>
               </CardHeader>
               <CardContent className="space-y-6">
-                <div className="p-4 bg-emerald-50 dark:bg-emerald-950/20 rounded-lg border border-emerald-200 dark:border-emerald-900">
-                  <p className="text-sm">
-                    <span className="font-semibold">Phoenix Memory (€160,000):</span> Quarterly payments of €3,728 in observation months (typically Mar, Jun, Sep, Dec).
-                    <br />
-                    <span className="font-semibold">Autocallable Components (€160,000):</span> Estimated annual distribution of ~€9,600 (6% p.a.) paid in Dec.
-                  </p>
+                {/* Breakdown by Certificate */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="p-4 bg-orange-50 dark:bg-orange-950/20 rounded-lg border border-orange-200 dark:border-orange-900">
+                    <h4 className="font-semibold text-sm mb-2 flex items-center gap-2">
+                      <TrendingUp className="h-4 w-4 text-orange-600" />
+                      Phoenix Memory (DE000MS0H1P0)
+                    </h4>
+                    <p className="text-xs text-muted-foreground mb-2">€160,000 allocation</p>
+                    <div className="space-y-1 text-sm">
+                      <div className="flex justify-between">
+                        <span>Q1 (Mar):</span>
+                        <span className="font-semibold text-orange-600">€3,728</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Q2 (Jun):</span>
+                        <span className="font-semibold text-orange-600">€3,728</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Q3 (Sep):</span>
+                        <span className="font-semibold text-orange-600">€3,728</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Q4 (Dec):</span>
+                        <span className="font-semibold text-orange-600">€3,728</span>
+                      </div>
+                      <div className="flex justify-between pt-2 border-t border-orange-200 dark:border-orange-800">
+                        <span className="font-semibold">Annual Total:</span>
+                        <span className="font-bold text-orange-600">€14,912</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-900">
+                    <h4 className="font-semibold text-sm mb-2 flex items-center gap-2">
+                      <Shield className="h-4 w-4 text-blue-600" />
+                      Barclays CPPI (XS3153397073)
+                    </h4>
+                    <p className="text-xs text-muted-foreground mb-2">€80,000 allocation</p>
+                    <div className="space-y-1 text-sm">
+                      <p className="text-muted-foreground italic">No interim coupons</p>
+                      <p className="text-xs mt-2">
+                        Principal + participation payout delivered at maturity (Oct 2030).
+                        Full capital protection regardless of index performance.
+                      </p>
+                      <div className="flex justify-between pt-2 border-t border-blue-200 dark:border-blue-800">
+                        <span className="font-semibold">Annual Flow:</span>
+                        <span className="font-bold text-blue-600">€0</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-purple-50 dark:bg-purple-950/20 rounded-lg border border-purple-200 dark:border-purple-900">
+                    <h4 className="font-semibold text-sm mb-2 flex items-center gap-2">
+                      <Zap className="h-4 w-4 text-purple-600" />
+                      Barclays Tech/AI (XS3188986858)
+                    </h4>
+                    <p className="text-xs text-muted-foreground mb-2">€80,000 allocation</p>
+                    <div className="space-y-1 text-sm">
+                      <p className="text-muted-foreground italic">Conditional coupons</p>
+                      <p className="text-xs mt-2">
+                        Typical autocallable structure with memory feature. Estimated ~6% p.a. 
+                        if barrier conditions met. Payments likely annual or semi-annual.
+                      </p>
+                      <div className="flex justify-between pt-2 border-t border-purple-200 dark:border-purple-800">
+                        <span className="font-semibold">Est. Annual:</span>
+                        <span className="font-bold text-purple-600">~€4,800</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-green-50 dark:bg-green-950/20 rounded-lg border border-green-200 dark:border-green-900">
+                    <h4 className="font-semibold text-sm mb-2 flex items-center gap-2">
+                      <Zap className="h-4 w-4 text-green-600" />
+                      Barclays Energy (XS3189071965)
+                    </h4>
+                    <p className="text-xs text-muted-foreground mb-2">€80,000 allocation</p>
+                    <div className="space-y-1 text-sm">
+                      <p className="text-muted-foreground italic">Conditional coupons</p>
+                      <p className="text-xs mt-2">
+                        Typical autocallable structure with memory feature. Estimated ~6% p.a. 
+                        if barrier conditions met. Payments likely annual or semi-annual.
+                      </p>
+                      <div className="flex justify-between pt-2 border-t border-green-200 dark:border-green-800">
+                        <span className="font-semibold">Est. Annual:</span>
+                        <span className="font-bold text-green-600">~€4,800</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-1 gap-3">
