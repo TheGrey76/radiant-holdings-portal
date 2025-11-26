@@ -269,7 +269,7 @@ const StructuredProductsGU = () => {
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold mb-4">Proposed Allocation</h2>
-            <p className="text-muted-foreground text-lg">Strategic balance across €100,000 portfolio</p>
+            <p className="text-muted-foreground text-lg">Strategic balance across €400,000 portfolio</p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -279,7 +279,7 @@ const StructuredProductsGU = () => {
                 <CardTitle>Portfolio Breakdown</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="space-y-3">
+                  <div className="space-y-3">
                   <div className="flex items-center justify-between p-4 bg-primary/5 rounded-lg border border-primary/20">
                     <div>
                       <p className="font-semibold">MS Phoenix (DE000MS0H1P0)</p>
@@ -287,7 +287,7 @@ const StructuredProductsGU = () => {
                     </div>
                     <div className="text-right">
                       <p className="text-2xl font-bold text-primary">40%</p>
-                      <p className="text-sm text-muted-foreground">€40,000</p>
+                      <p className="text-sm text-muted-foreground">€160,000</p>
                     </div>
                   </div>
                   
@@ -298,7 +298,7 @@ const StructuredProductsGU = () => {
                     </div>
                     <div className="text-right">
                       <p className="text-2xl font-bold text-blue-600">20%</p>
-                      <p className="text-sm text-muted-foreground">€20,000</p>
+                      <p className="text-sm text-muted-foreground">€80,000</p>
                     </div>
                   </div>
                   
@@ -309,7 +309,7 @@ const StructuredProductsGU = () => {
                     </div>
                     <div className="text-right">
                       <p className="text-2xl font-bold text-purple-600">20%</p>
-                      <p className="text-sm text-muted-foreground">€20,000</p>
+                      <p className="text-sm text-muted-foreground">€80,000</p>
                     </div>
                   </div>
                   
@@ -320,7 +320,7 @@ const StructuredProductsGU = () => {
                     </div>
                     <div className="text-right">
                       <p className="text-2xl font-bold text-green-600">20%</p>
-                      <p className="text-sm text-muted-foreground">€20,000</p>
+                      <p className="text-sm text-muted-foreground">€80,000</p>
                     </div>
                   </div>
                 </div>
@@ -328,7 +328,7 @@ const StructuredProductsGU = () => {
                 <div className="pt-4 border-t">
                   <div className="flex items-center justify-between">
                     <p className="text-lg font-semibold">Total Portfolio</p>
-                    <p className="text-2xl font-bold">€100,000</p>
+                    <p className="text-2xl font-bold">€400,000</p>
                   </div>
                 </div>
               </CardContent>
@@ -422,15 +422,15 @@ const StructuredProductsGU = () => {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                   <div className="p-4 bg-primary/5 rounded-lg border border-primary/20 text-center">
                     <p className="text-sm text-muted-foreground mb-1">Investment</p>
-                    <p className="text-2xl font-bold text-primary">€40,000</p>
+                    <p className="text-2xl font-bold text-primary">€160,000</p>
                   </div>
                   <div className="p-4 bg-primary/5 rounded-lg border border-primary/20 text-center">
                     <p className="text-sm text-muted-foreground mb-1">Quarterly Coupon</p>
-                    <p className="text-2xl font-bold text-primary">€932</p>
+                    <p className="text-2xl font-bold text-primary">€3,728</p>
                   </div>
                   <div className="p-4 bg-primary/5 rounded-lg border border-primary/20 text-center">
                     <p className="text-sm text-muted-foreground mb-1">Annual Income</p>
-                    <p className="text-2xl font-bold text-primary">€3,728</p>
+                    <p className="text-2xl font-bold text-primary">€14,912</p>
                   </div>
                   <div className="p-4 bg-primary/5 rounded-lg border border-primary/20 text-center">
                     <p className="text-sm text-muted-foreground mb-1">Effective Yield</p>
@@ -444,7 +444,7 @@ const StructuredProductsGU = () => {
                     {['Q1', 'Q2', 'Q3', 'Q4'].map((quarter, idx) => (
                       <div key={idx} className="p-3 bg-background rounded border text-center">
                         <p className="text-xs text-muted-foreground mb-1">{quarter} 2025</p>
-                        <p className="font-bold text-primary">€932</p>
+                        <p className="font-bold text-primary">€3,728</p>
                         <p className="text-xs text-muted-foreground mt-1">if barrier respected</p>
                       </div>
                     ))}
@@ -476,16 +476,16 @@ const StructuredProductsGU = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="p-4 bg-blue-600/5 rounded-lg border border-blue-600/20 text-center">
                     <p className="text-sm text-muted-foreground mb-1">Investment</p>
-                    <p className="text-2xl font-bold text-blue-600">€20,000</p>
+                    <p className="text-2xl font-bold text-blue-600">€80,000</p>
                   </div>
                   <div className="p-4 bg-green-600/5 rounded-lg border border-green-600/20 text-center">
                     <p className="text-sm text-muted-foreground mb-1">Minimum Redemption</p>
-                    <p className="text-2xl font-bold text-green-600">€20,000</p>
+                    <p className="text-2xl font-bold text-green-600">€80,000</p>
                     <p className="text-xs text-muted-foreground mt-1">100% protected</p>
                   </div>
                   <div className="p-4 bg-primary/5 rounded-lg border border-primary/20 text-center">
                     <p className="text-sm text-muted-foreground mb-1">Maximum Redemption</p>
-                    <p className="text-2xl font-bold text-primary">€30,000</p>
+                    <p className="text-2xl font-bold text-primary">€120,000</p>
                     <p className="text-xs text-muted-foreground mt-1">+50% cap</p>
                   </div>
                 </div>
@@ -591,16 +591,16 @@ const StructuredProductsGU = () => {
                 </div>
 
                 <div className="p-6 bg-gradient-to-r from-purple-600/10 to-green-600/10 rounded-lg border">
-                  <h4 className="font-semibold mb-3 text-center">Combined Investment (€40,000)</h4>
+                  <h4 className="font-semibold mb-3 text-center">Combined Investment (€160,000)</h4>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="text-center">
                       <p className="text-sm text-muted-foreground mb-1">Tech/AI Basket</p>
-                      <p className="text-xl font-bold text-purple-600">€20,000</p>
+                      <p className="text-xl font-bold text-purple-600">€80,000</p>
                       <p className="text-xs text-muted-foreground mt-1">High beta exposure</p>
                     </div>
                     <div className="text-center">
                       <p className="text-sm text-muted-foreground mb-1">Energy/Utilities Basket</p>
-                      <p className="text-xl font-bold text-green-600">€20,000</p>
+                      <p className="text-xl font-bold text-green-600">€80,000</p>
                       <p className="text-xs text-muted-foreground mt-1">Sector balance</p>
                     </div>
                   </div>
