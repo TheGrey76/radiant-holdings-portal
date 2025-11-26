@@ -133,11 +133,11 @@ const StrategicPartnerships = () => {
             </h1>
             <div className="w-24 h-1 bg-accent mx-auto mb-8"></div>
             <p className="text-xl md:text-2xl text-white/90 leading-relaxed font-light mb-6 max-w-4xl mx-auto">
-              An AI-enabled investment partnership platform connecting institutional-grade capital with high-conviction private market opportunities across Europe and beyond.
+              A specialized partnership platform connecting institutional capital with high-conviction private market opportunities across Europe.
             </p>
             <p className="text-base md:text-lg text-white/70 leading-relaxed font-light max-w-3xl mx-auto mb-12">
-              Aries76 is a UK-based partnership platform focusing on thematic, sector-specific deals rather than generalist fundraising. 
-              We combine 25+ years of private markets experience with an AI-driven approach to investor intelligence and deal selection.
+              Aries76 partners with entrepreneurs, GPs and family offices to accelerate growth, expand internationally and preserve what makes each business unique. 
+              We combine 25+ years of private markets experience with AI-driven investor intelligence across four focused verticals: AI & Data Infrastructure, Energy Transition, Healthcare Services and Premium Manufacturing.
             </p>
             <p className="text-sm text-white/50 mt-6 font-light tracking-wide">
               FOR PROFESSIONAL INVESTORS AND FAMILY OFFICES ONLY
