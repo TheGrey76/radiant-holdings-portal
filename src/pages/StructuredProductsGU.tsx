@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Building2, TrendingUp, Shield, BarChart3, Zap, DollarSign } from "lucide-react";
+import { Building2, TrendingUp, Shield, BarChart3, Zap, DollarSign, Calendar } from "lucide-react";
 import { motion } from "framer-motion";
 import { GUPortfolioAccessGate } from "@/components/GUPortfolioAccessGate";
 
@@ -457,6 +457,90 @@ const StructuredProductsGU = () => {
                     remaining above 65% of initial levels. Memory feature ensures missed coupons are paid 
                     retroactively when conditions are met.
                   </p>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Monthly Cash Flow Timeline */}
+            <Card>
+              <CardHeader>
+                <div className="flex items-center gap-3">
+                  <Calendar className="h-6 w-6 text-emerald-600" />
+                  <div>
+                    <CardTitle>Monthly Coupon Flow Schedule</CardTitle>
+                    <CardDescription className="mt-1">Complete 12-Month Cash Distribution Timeline</CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="p-4 bg-emerald-50 dark:bg-emerald-950/20 rounded-lg border border-emerald-200 dark:border-emerald-900">
+                  <p className="text-sm">
+                    <span className="font-semibold">Phoenix Memory (€160,000):</span> Quarterly payments of €3,728 in observation months (typically Mar, Jun, Sep, Dec).
+                    <br />
+                    <span className="font-semibold">Autocallable Components (€160,000):</span> Estimated annual distribution of ~€9,600 (6% p.a.) paid in Dec.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 gap-3">
+                  {[
+                    { month: 'Jan', amount: 0, isPayment: false },
+                    { month: 'Feb', amount: 0, isPayment: false },
+                    { month: 'Mar', amount: 3728, isPayment: true, source: 'Phoenix Q1' },
+                    { month: 'Apr', amount: 0, isPayment: false },
+                    { month: 'May', amount: 0, isPayment: false },
+                    { month: 'Jun', amount: 3728, isPayment: true, source: 'Phoenix Q2' },
+                    { month: 'Jul', amount: 0, isPayment: false },
+                    { month: 'Aug', amount: 0, isPayment: false },
+                    { month: 'Sep', amount: 3728, isPayment: true, source: 'Phoenix Q3' },
+                    { month: 'Oct', amount: 0, isPayment: false },
+                    { month: 'Nov', amount: 0, isPayment: false },
+                    { month: 'Dec', amount: 13328, isPayment: true, source: 'Phoenix Q4 + Autocall Annual' },
+                  ].map((item, index) => (
+                    <div
+                      key={index}
+                      className={`p-4 rounded-lg border flex justify-between items-center transition-all ${
+                        item.isPayment
+                          ? 'bg-emerald-600/10 border-emerald-600/30 hover:bg-emerald-600/15'
+                          : 'bg-muted/30 border-border/50'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <span className="font-semibold w-12">{item.month}</span>
+                        {item.isPayment && (
+                          <span className="text-xs text-muted-foreground">{item.source}</span>
+                        )}
+                      </div>
+                      <div className="text-right">
+                        {item.isPayment ? (
+                          <span className="font-bold text-emerald-600 text-lg">
+                            +€{item.amount.toLocaleString()}
+                          </span>
+                        ) : (
+                          <span className="text-muted-foreground">—</span>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="p-6 bg-gradient-to-r from-emerald-600/10 to-blue-600/10 rounded-lg border">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="text-center">
+                      <p className="text-sm text-muted-foreground mb-1">Annual Total</p>
+                      <p className="text-2xl font-bold text-emerald-600">€24,512</p>
+                      <p className="text-xs text-muted-foreground mt-1">All coupons combined</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-sm text-muted-foreground mb-1">Payment Events</p>
+                      <p className="text-2xl font-bold">5</p>
+                      <p className="text-xs text-muted-foreground mt-1">Distributions per year</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-sm text-muted-foreground mb-1">Blended Yield</p>
+                      <p className="text-2xl font-bold text-blue-600">6.13% p.a.</p>
+                      <p className="text-xs text-muted-foreground mt-1">On €400k allocation</p>
+                    </div>
+                  </div>
                 </div>
               </CardContent>
             </Card>
