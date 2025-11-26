@@ -1,24 +1,9 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Building2, TrendingUp, Heart, Gem, Target, Users2, Handshake, CheckCircle2, ArrowRight } from "lucide-react";
 
 const StrategicPartnerships = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    organization: "",
-    email: "",
-    counterpartType: "",
-    message: ""
-  });
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Form submitted:", formData);
-  };
 
   const sectors = [
     {
@@ -427,75 +412,21 @@ const StrategicPartnerships = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
           >
-            <div className="text-center mb-12">
-              <h2 className="text-4xl md:text-5xl font-light mb-4 text-foreground">Get in Touch</h2>
+            <div className="text-center">
+              <Link to="/contact" className="group inline-block">
+                <h2 className="text-4xl md:text-5xl font-light mb-4 text-foreground group-hover:text-accent transition-colors duration-300">
+                  Get in Touch
+                </h2>
+              </Link>
               <div className="w-16 h-1 bg-accent mx-auto mb-6"></div>
-              <p className="text-muted-foreground/70 text-lg font-light max-w-2xl mx-auto">
+              <p className="text-muted-foreground/70 text-lg font-light max-w-2xl mx-auto mb-8">
                 If you are an entrepreneur, GP, family office or professional investor and would like to explore a strategic partnership with Aries76, 
                 we would be pleased to speak with you.
               </p>
+              <p className="text-center text-sm text-muted-foreground/60 font-light">
+                Or email us directly at: <a href="mailto:partnerships@aries76.com" className="text-accent hover:underline font-normal">partnerships@aries76.com</a>
+              </p>
             </div>
-
-            <form onSubmit={handleSubmit} className="space-y-6 p-8 bg-white border border-border/50">
-              <div>
-                <Input
-                  placeholder="Name"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  required
-                  className="border-border/50 focus:border-accent"
-                />
-              </div>
-              <div>
-                <Input
-                  placeholder="Organisation"
-                  value={formData.organization}
-                  onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
-                  required
-                  className="border-border/50 focus:border-accent"
-                />
-              </div>
-              <div>
-                <Input
-                  type="email"
-                  placeholder="Email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  required
-                  className="border-border/50 focus:border-accent"
-                />
-              </div>
-              <div>
-                <Select value={formData.counterpartType} onValueChange={(value) => setFormData({ ...formData, counterpartType: value })}>
-                  <SelectTrigger className="border-border/50 focus:border-accent">
-                    <SelectValue placeholder="Type of counterpart" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="entrepreneur">Entrepreneur</SelectItem>
-                    <SelectItem value="gp-sponsor">GP or Sponsor</SelectItem>
-                    <SelectItem value="family-office">Family Office</SelectItem>
-                    <SelectItem value="other">Other</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Textarea
-                  placeholder="Message"
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  rows={6}
-                  required
-                  className="border-border/50 focus:border-accent"
-                />
-              </div>
-              <Button type="submit" size="lg" className="w-full bg-accent hover:bg-accent/90">
-                Submit Inquiry
-              </Button>
-            </form>
-
-            <p className="text-center text-sm text-muted-foreground/60 mt-8 font-light">
-              Or email us directly at: <a href="mailto:partnerships@aries76.com" className="text-accent hover:underline font-normal">partnerships@aries76.com</a>
-            </p>
           </motion.div>
         </div>
       </section>
