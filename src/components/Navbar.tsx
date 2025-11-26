@@ -65,6 +65,7 @@ const Navbar = () => {
     { name: 'GP Capital Advisory', path: '/gp-capital-advisory', indent: true },
     { name: 'Family Office Advisory', path: '/family-office-advisory', indent: true },
     { name: 'Structured Products', path: '/structured-products', indent: true },
+    { name: 'Partners', path: '/partners' },
     { name: 'For LPs', path: '/for-limited-partners' },
     { name: 'Insights', path: '#', section: 'insights' },
     { name: 'Articles & Analysis', path: '/blog', indent: true },
@@ -142,7 +143,13 @@ const Navbar = () => {
                       </li>
                     ))}
                   </ul>
-              </NavigationMenuContent>
+            </NavigationMenuContent>
+            </NavigationMenuItem>
+
+            <NavigationMenuItem>
+              <Link to="/partners" className="text-xs uppercase tracking-widest text-foreground/70 hover:text-accent transition-colors font-light px-4 py-2 inline-block">
+                Partners
+              </Link>
             </NavigationMenuItem>
 
             <NavigationMenuItem>
