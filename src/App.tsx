@@ -63,6 +63,7 @@ import LPRegistrationPage from "./pages/LPRegistrationPage";
 import FinancialAdvisersPortal from "./pages/FinancialAdvisersPortal";
 import FamilyOfficeAdvisory from "./pages/FamilyOfficeAdvisory";
 import Partners from "./pages/Partners";
+import StrategicPartnerships from "./pages/StrategicPartnerships";
 import StructuredProductsGU from "./pages/StructuredProductsGU";
 
 const queryClient = new QueryClient();
@@ -89,6 +90,7 @@ const App = () => (
           <Route path="/fundraising-readiness" element={<FundraisingReadiness />} />
           <Route path="/family-office-advisory" element={<FamilyOfficeAdvisory />} />
           <Route path="/partners" element={<Partners />} />
+          <Route path="/strategic-partnerships" element={<StrategicPartnerships />} />
           <Route path="/structured-products-gu" element={<StructuredProductsGU />} />
           <Route path="/structured-products" element={<StructuredProducts />} />
           <Route path="/for-limited-partners" element={<ForLimitedPartners />} />
