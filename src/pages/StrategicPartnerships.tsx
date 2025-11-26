@@ -139,14 +139,6 @@ const StrategicPartnerships = () => {
               Aries76 is a UK-based partnership platform focusing on thematic, sector-specific deals rather than generalist fundraising. 
               We combine 25+ years of private markets experience with an AI-driven approach to investor intelligence and deal selection.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Button size="lg" className="bg-accent hover:bg-accent/90 text-white min-w-[220px]">
-                Discuss a Partnership
-              </Button>
-              <Button size="lg" variant="outline" className="bg-white/10 hover:bg-white/20 text-white border-white/30 min-w-[220px]">
-                Request Investor Deck
-              </Button>
-            </div>
             <p className="text-sm text-white/50 mt-6 font-light tracking-wide">
               FOR PROFESSIONAL INVESTORS AND FAMILY OFFICES ONLY
             </p>
