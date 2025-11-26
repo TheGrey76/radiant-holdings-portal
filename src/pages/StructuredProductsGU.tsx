@@ -3,9 +3,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Building2, TrendingUp, Shield, BarChart3, Zap, DollarSign } from "lucide-react";
 import { motion } from "framer-motion";
+import { GUPortfolioAccessGate } from "@/components/GUPortfolioAccessGate";
 
 const StructuredProductsGU = () => {
   return (
+    <GUPortfolioAccessGate>
     <div className="min-h-screen bg-gradient-to-b from-background to-secondary/10">
       {/* Hero Section */}
       <section className="relative py-24 px-4 overflow-hidden">
@@ -837,6 +839,7 @@ const StructuredProductsGU = () => {
         </div>
       </section>
     </div>
+    </GUPortfolioAccessGate>
   );
 };
 
