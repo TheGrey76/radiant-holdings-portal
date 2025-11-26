@@ -66,6 +66,7 @@ const Navbar = () => {
     { name: 'Family Office Advisory', path: '/family-office-advisory', indent: true },
     { name: 'Structured Products', path: '/structured-products', indent: true },
     { name: 'For LPs', path: '/for-limited-partners' },
+    { name: 'Partnerships', path: '/strategic-partnerships' },
     { name: 'Insights', path: '#', section: 'insights' },
     { name: 'Articles & Analysis', path: '/blog', indent: true },
     { name: 'Case Studies', path: '/press', indent: true },
@@ -148,6 +149,12 @@ const Navbar = () => {
             <NavigationMenuItem>
               <Link to="/for-limited-partners" className="text-xs tracking-widest text-foreground/70 hover:text-accent transition-colors font-light px-4 py-2 inline-block">
                 FOR LP<span className="lowercase">s</span>
+              </Link>
+            </NavigationMenuItem>
+
+            <NavigationMenuItem>
+              <Link to="/strategic-partnerships" className="text-xs uppercase tracking-widest text-foreground/70 hover:text-accent transition-colors font-light px-4 py-2 inline-block">
+                Partnerships
               </Link>
             </NavigationMenuItem>
 
