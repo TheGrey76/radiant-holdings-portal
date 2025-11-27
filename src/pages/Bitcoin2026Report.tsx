@@ -186,6 +186,12 @@ const Bitcoin2026Report = () => {
                     <span className="font-medium">Chapter VIII</span> — Risks and Uncertainties
                   </a>
                   <a 
+                    href="#chapter-10" 
+                    className="block text-sm text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 transition-colors pl-4 border-l-2 border-transparent hover:border-slate-400 dark:hover:border-slate-600 py-1"
+                  >
+                    <span className="font-medium">Chapter X</span> — Bitcoin 2026 Target Price
+                  </a>
+                  <a 
                     href="#chapter-9" 
                     className="block text-sm text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 transition-colors pl-4 border-l-2 border-transparent hover:border-slate-400 dark:hover:border-slate-600 py-1"
                   >
@@ -1171,6 +1177,171 @@ Low Dormancy → ██████████`}
               <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
                 Risk assessment is essential for allocation sizing and hedging. Bitcoin remains a high‑convexity macro asset, requiring disciplined risk management frameworks.
               </p>
+
+              <h2 id="chapter-10" className="text-2xl font-serif font-bold text-slate-900 dark:text-slate-100 mb-6 pb-3 border-b border-slate-200 dark:border-slate-800 mt-16 scroll-mt-20">
+                Chapter X — Bitcoin 2026 Target Price
+              </h2>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                1. Framework Synthesis
+              </h3>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                This report has constructed a comprehensive analytical framework integrating macro‑liquidity dynamics, on‑chain analytics, derivatives‑implied positioning, treasury absorption, mining economics and institutional flow structures. The culmination of this multi‑dimensional approach yields a probabilistic equilibrium price range for Bitcoin at the close of 2026, grounded in quantitative modelling rather than speculative extrapolation.
+              </p>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                2. Central Target: $175,000
+              </h3>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                The central target price for Bitcoin by December 2026 is <strong>$175,000</strong>. This projection reflects a base‑case scenario characterised by:
+              </p>
+
+              <ul className="list-disc pl-6 mb-6 text-slate-700 dark:text-slate-300 leading-relaxed space-y-2">
+                <li><strong>Moderate global liquidity expansion:</strong> Global M2 growth stabilises at 4–6% annually, with gradual easing of quantitative tightening as fiscal constraints intensify across developed markets.</li>
+                <li><strong>Real rates compression:</strong> Real yields decline from elevated 2024–2025 levels toward neutral territory as central banks face mounting refinancing pressures and slower inflation dynamics.</li>
+                <li><strong>Sustained ETF inflows:</strong> Spot Bitcoin ETFs continue to absorb supply at a pace consistent with 2024 adoption trajectories, removing approximately 15–20% of annual mining issuance from liquid circulation.</li>
+                <li><strong>Stable stablecoin supply:</strong> Shadow liquidity channels remain functional, with stablecoin market capitalisation expanding modestly in line with Bitcoin‑denominated trading volumes.</li>
+                <li><strong>Institutional treasury accumulation:</strong> Corporate and sovereign Bitcoin holdings grow incrementally, supported by regulatory normalisation and cross‑border reserve diversification strategies.</li>
+              </ul>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                At $175,000, Bitcoin would represent approximately 2.8× appreciation from current levels, consistent with historical post‑halving expansion phases adjusted for the asset's structural maturation and reduced supply elasticity. This target implies a market capitalisation of approximately $3.5 trillion, positioning Bitcoin within the upper quartile of global reserve assets by nominal value.
+              </p>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                3. Upside Scenario: $250,000
+              </h3>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                In an expansionary liquidity regime, Bitcoin could reach <strong>$250,000</strong> by December 2026. This scenario assumes:
+              </p>
+
+              <ul className="list-disc pl-6 mb-6 text-slate-700 dark:text-slate-300 leading-relaxed space-y-2">
+                <li><strong>Aggressive monetary easing:</strong> Major central banks pivot toward renewed quantitative easing in response to fiscal stress, growth deceleration or financial stability concerns, driving global M2 growth toward 8–10% annually.</li>
+                <li><strong>Sharply negative real rates:</strong> Inflation remains structurally elevated while nominal policy rates are constrained, producing deeply negative real yields that amplify risk appetite and convex asset demand.</li>
+                <li><strong>Accelerated ETF adoption:</strong> Institutional allocations to Bitcoin via ETFs exceed base‑case trajectories, driven by pension funds, endowments and sovereign wealth funds establishing strategic positions.</li>
+                <li><strong>Sovereign reserve integration:</strong> One or more G20 economies formally incorporate Bitcoin into official reserves, triggering cascade effects among emerging market central banks.</li>
+                <li><strong>Derivatives leverage expansion:</strong> Open interest in Bitcoin futures and options markets expands substantially, creating reflexive upside momentum as gamma positioning shifts positive.</li>
+              </ul>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                At $250,000, Bitcoin's market capitalisation would approximate $5 trillion, placing it in direct valuation proximity to gold's investable market. This upside scenario reflects maximum convexity expression in a high‑liquidity, low‑opportunity‑cost macro environment.
+              </p>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                4. Downside Scenario: $95,000
+              </h3>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                In a contractionary liquidity regime, Bitcoin's floor could compress toward <strong>$95,000</strong> by December 2026. This scenario would materialise under:
+              </p>
+
+              <ul className="list-disc pl-6 mb-6 text-slate-700 dark:text-slate-300 leading-relaxed space-y-2">
+                <li><strong>Prolonged quantitative tightening:</strong> Central banks maintain restrictive balance‑sheet policies for longer than anticipated, suppressing global liquidity growth below 2% annually.</li>
+                <li><strong>Sustained high real rates:</strong> Real yields remain elevated or rise further due to persistent inflation or hawkish monetary policy, increasing the opportunity cost of non‑yielding assets.</li>
+                <li><strong>ETF outflows or stagnation:</strong> Institutional demand for Bitcoin ETFs weakens due to risk‑off positioning, regulatory headwinds or competing asset class performance.</li>
+                <li><strong>Stablecoin contraction:</strong> Regulatory interventions or redemption pressures reduce stablecoin supply significantly, tightening synthetic liquidity channels and impairing market depth.</li>
+                <li><strong>Geopolitical or technological shocks:</strong> Major exchange failures, protocol vulnerabilities or adverse regulatory developments trigger deleveraging cascades and sentiment deterioration.</li>
+              </ul>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                At $95,000, Bitcoin would trade near its long‑term holder cost basis and mining‑economic floor, consistent with historical support zones during severe liquidity contractions. This downside scenario represents structural support rather than capitulation, underpinned by on‑chain accumulation patterns and production cost dynamics.
+              </p>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                5. Equilibrium Price Range Summary
+              </h3>
+
+              <div className="my-10 overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b-2 border-slate-300 dark:border-slate-700">
+                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Scenario</th>
+                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Target Price</th>
+                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Market Cap</th>
+                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Key Drivers</th>
+                    </tr>
+                  </thead>
+                  <tbody className="text-slate-700 dark:text-slate-300">
+                    <tr className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
+                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">Upside</td>
+                      <td className="px-6 py-4 font-bold text-green-700 dark:text-green-400">$250,000</td>
+                      <td className="px-6 py-4">~$5.0T</td>
+                      <td className="px-6 py-4">Aggressive QE, negative real rates, sovereign adoption</td>
+                    </tr>
+                    <tr className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors bg-slate-50 dark:bg-slate-900/20">
+                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">Base Case</td>
+                      <td className="px-6 py-4 font-bold text-slate-900 dark:text-slate-100">$175,000</td>
+                      <td className="px-6 py-4">~$3.5T</td>
+                      <td className="px-6 py-4">Moderate M2 growth, real rate compression, sustained ETF flows</td>
+                    </tr>
+                    <tr className="hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
+                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">Downside</td>
+                      <td className="px-6 py-4 font-bold text-orange-700 dark:text-orange-400">$95,000</td>
+                      <td className="px-6 py-4">~$1.9T</td>
+                      <td className="px-6 py-4">Extended QT, elevated real rates, ETF outflows</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                6. Probabilistic Distribution
+              </h3>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Based on the integrated framework and current macro trajectories, the probability distribution for Bitcoin's December 2026 price is estimated as follows:
+              </p>
+
+              <ul className="list-disc pl-6 mb-6 text-slate-700 dark:text-slate-300 leading-relaxed space-y-2">
+                <li><strong>25% probability:</strong> Upside scenario ($220,000–$280,000)</li>
+                <li><strong>50% probability:</strong> Base case scenario ($150,000–$200,000)</li>
+                <li><strong>25% probability:</strong> Downside scenario ($80,000–$120,000)</li>
+              </ul>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                This distribution reflects asymmetric upside convexity characteristic of Bitcoin's supply inelasticity and institutional absorption dynamics, while acknowledging downside structural support via on‑chain cost basis anchors and mining economics.
+              </p>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                7. Investment Implications
+              </h3>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                For institutional allocators and macro portfolio managers, the target price framework suggests the following strategic considerations:
+              </p>
+
+              <ul className="list-disc pl-6 mb-6 text-slate-700 dark:text-slate-300 leading-relaxed space-y-2">
+                <li><strong>Strategic positioning:</strong> Bitcoin warrants allocation as a convex liquidity hedge within diversified macro portfolios, sized according to institutional risk tolerance and liquidity constraints.</li>
+                <li><strong>Tactical timing:</strong> Entry opportunities align with liquidity regime inflection points, particularly when real rates compress, M2 growth accelerates or stablecoin supply expands.</li>
+                <li><strong>Risk management:</strong> Position sizing should reflect Bitcoin's volatility profile and tail risk exposure, with dynamic hedging via options or systematic rebalancing protocols.</li>
+                <li><strong>Regulatory monitoring:</strong> Ongoing assessment of ETF flows, stablecoin regulation and sovereign reserve policy remains essential for scenario recalibration.</li>
+                <li><strong>Structural conviction:</strong> The long‑term trajectory remains constructive, underpinned by fixed supply, institutional normalisation and global liquidity expansion trends.</li>
+              </ul>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                8. Conclusion
+              </h3>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Bitcoin's 2026 equilibrium price range reflects the convergence of macro‑liquidity conditions, institutional adoption patterns and structural supply constraints. The central target of <strong>$175,000</strong> represents a disciplined, quantitatively grounded projection consistent with Bitcoin's evolution into a global macro asset. Upside and downside scenarios provide boundary conditions for risk assessment and portfolio construction. Investors should approach Bitcoin allocation with clarity on regime dependencies, asymmetric convexity and the importance of maintaining disciplined risk frameworks in a high‑volatility asset class.
+              </p>
+
+              <div className="my-12 p-8 bg-slate-100 dark:bg-slate-900/50 border-l-4 border-slate-900 dark:border-slate-100">
+                <p className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mb-4">
+                  Bitcoin 2026 Target Price Summary
+                </p>
+                <div className="space-y-3 text-base text-slate-700 dark:text-slate-300">
+                  <p><strong>Base Case Target:</strong> $175,000</p>
+                  <p><strong>Upside Scenario:</strong> $250,000</p>
+                  <p><strong>Downside Scenario:</strong> $95,000</p>
+                  <p className="text-sm italic mt-4 pt-4 border-t border-slate-300 dark:border-slate-700">
+                    Projection methodology integrates macro‑liquidity analysis, on‑chain metrics, derivatives positioning, ETF flows and mining economics. Target reflects December 2026 equilibrium estimate based on probabilistic scenario modelling.
+                  </p>
+                </div>
+              </div>
 
               <h2 id="chapter-9" className="text-2xl font-serif font-bold text-slate-900 dark:text-slate-100 mb-6 pb-3 border-b border-slate-200 dark:border-slate-800 mt-16 scroll-mt-20">
                 Chapter IX — Appendix
