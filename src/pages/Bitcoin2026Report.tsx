@@ -963,10 +963,6 @@ Low Dormancy → ██████████`}
                 Chapter VI — Scenario Analysis for 2026
               </h2>
 
-              <p className="text-sm italic text-slate-600 dark:text-slate-400 mb-8">
-                Expanded Discursive Edition
-              </p>
-
               <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
                 Regulation defines accessibility, liquidity channels and institutional comfort. Bitcoin's regulatory environment is shifting from fragmented experimentation to structured integration. The trajectory across major jurisdictions indicates that Bitcoin is being normalised as a macro‑financial asset rather than treated as a speculative anomaly.
               </p>
