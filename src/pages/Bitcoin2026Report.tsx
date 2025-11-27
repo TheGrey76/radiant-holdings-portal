@@ -59,174 +59,175 @@ const Bitcoin2026Report = () => {
   };
 
   return (
-    <>
+    <div className="min-h-screen bg-background font-serif">
       <Helmet>
-        <title>Bitcoin 2026: Macro-Liquidity Regime Analysis | ARIES76</title>
-        <meta 
-          name="description" 
-          content="Institutional analysis of Bitcoin's 2025-2026 trajectory through macro-liquidity framework, global M2 dynamics, and derivatives-implied positioning." 
+        <title>Bitcoin 2026: Institutional Macro-Liquidity Analysis | ARIES76</title>
+        <meta
+          name="description"
+          content="Comprehensive institutional research on Bitcoin's 2026 trajectory, analyzing macro-liquidity dynamics, on-chain intelligence, and price forecasting frameworks."
         />
       </Helmet>
 
-      {/* Reading Progress Bar */}
-      <div className="fixed top-0 left-0 right-0 h-1 bg-muted z-50">
-        <div 
-          className="h-full bg-gradient-to-r from-primary to-accent transition-all duration-300"
+      {/* Fixed Reading Progress Bar */}
+      <div className="fixed top-0 left-0 w-full h-0.5 bg-border z-50">
+        <div
+          className="h-full bg-foreground transition-all duration-150"
           style={{ width: `${readingProgress}%` }}
         />
       </div>
 
-      {/* Resume Reading Prompt */}
-      {showResumePrompt && (
-        <div className="fixed top-20 right-8 z-40 bg-card shadow-smooth-lg border-2 border-primary/20 rounded-xl p-5 max-w-sm animate-fade-in">
-          <div className="flex items-start gap-3">
-            <div className="bg-primary/10 p-2 rounded-lg">
-              <BookOpen className="h-5 w-5 text-primary" />
-            </div>
-            <div className="flex-1">
-              <h4 className="text-sm font-bold text-foreground mb-1">
-                Continue Reading
-              </h4>
-              <p className="text-xs text-muted-foreground mb-4">
-                Pick up where you left off in your last session.
+      <div className="container mx-auto px-8 py-20 max-w-4xl">
+        {/* Header */}
+        <header className="mb-24 pb-16 border-b border-border">
+          <div className="space-y-10">
+            <div className="space-y-2">
+              <p className="text-xs font-sans font-medium tracking-widest text-muted-foreground uppercase">
+                Research Report
               </p>
-              <div className="flex gap-2">
-                <Button
-                  onClick={resumeReading}
-                  size="sm"
-                  className="text-xs"
-                >
-                  Resume
-                </Button>
-                <Button
-                  onClick={dismissResumePrompt}
-                  variant="outline"
-                  size="sm"
-                  className="text-xs"
-                >
-                  Start Over
-                </Button>
-              </div>
+              <h1 className="text-6xl font-semibold text-foreground leading-tight tracking-tight">
+                Bitcoin 2026
+              </h1>
+            </div>
+            <p className="text-xl text-muted-foreground font-light leading-relaxed max-w-2xl">
+              Institutional Macro-Liquidity Analysis & Price Framework
+            </p>
+            <div className="flex items-center gap-6 text-xs font-sans text-muted-foreground pt-6 border-t border-border">
+              <span className="font-medium tracking-wide">ARIES76 CAPITAL INTELLIGENCE</span>
+              <span className="text-border">|</span>
+              <span className="tracking-wide">JANUARY 2025</span>
             </div>
           </div>
-        </div>
-      )}
+        </header>
 
-      <div className="min-h-screen bg-background">
-        <div className="container max-w-5xl mx-auto px-6 py-12">
-          <div className="bg-background">
-            <div className="px-0 py-8 mb-12">
-              <div className="text-center mb-12">
-                <p className="text-xs font-light text-muted-foreground uppercase tracking-widest mb-6">Institutional Research Report</p>
-                <h1 className="text-5xl font-light text-foreground mb-3 tracking-tight">
-                  Bitcoin 2026
-                </h1>
-                <p className="text-lg text-muted-foreground font-light tracking-wide">
-                  Macro-Liquidity Regime Analysis
-                </p>
-                <div className="mt-6">
-                  <p className="text-sm font-light text-muted-foreground">ARIES76 Capital Intelligence</p>
-                </div>
+        {/* Table of Contents */}
+        <nav className="mb-24">
+          <h2 className="text-sm font-sans font-semibold mb-8 text-foreground tracking-widest uppercase">
+            Contents
+          </h2>
+          <ol className="space-y-5 border-l border-border pl-8">
+            <li>
+              <a
+                href="#chapter-1"
+                className="text-foreground hover:text-accent transition-colors flex items-start gap-4 group"
+              >
+                <span className="text-sm font-sans text-muted-foreground min-w-[2rem]">I.</span>
+                <span className="text-lg leading-relaxed">Executive Summary & Macro–Liquidity Regime Analysis</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="#chapter-2"
+                className="text-foreground hover:text-accent transition-colors flex items-start gap-4 group"
+              >
+                <span className="text-sm font-sans text-muted-foreground min-w-[2rem]">II.</span>
+                <span className="text-lg leading-relaxed">Advanced Price Framework & Quantitative Modelling</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="#chapter-3"
+                className="text-foreground hover:text-accent transition-colors flex items-start gap-4 group"
+              >
+                <span className="text-sm font-sans text-muted-foreground min-w-[2rem]">III.</span>
+                <span className="text-lg leading-relaxed">Advanced On-Chain Intelligence & Market Microstructure</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="#chapter-4"
+                className="text-foreground hover:text-accent transition-colors flex items-start gap-4 group"
+              >
+                <span className="text-sm font-sans text-muted-foreground min-w-[2rem]">IV.</span>
+                <span className="text-lg leading-relaxed">Bitcoin Treasuries, Technology Outlook & Mining Economics</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="#chapter-5"
+                className="text-foreground hover:text-accent transition-colors flex items-start gap-4 group"
+              >
+                <span className="text-sm font-sans text-muted-foreground min-w-[2rem]">V.</span>
+                <span className="text-lg leading-relaxed">Regulatory Outlook 2025–2026</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="#chapter-6"
+                className="text-foreground hover:text-accent transition-colors flex items-start gap-4 group"
+              >
+                <span className="text-sm font-sans text-muted-foreground min-w-[2rem]">VI.</span>
+                <span className="text-lg leading-relaxed">Scenario Analysis for 2026</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="#chapter-7"
+                className="text-foreground hover:text-accent transition-colors flex items-start gap-4 group"
+              >
+                <span className="text-sm font-sans text-muted-foreground min-w-[2rem]">VII.</span>
+                <span className="text-lg leading-relaxed">Bitcoin 2026 Pricing Projection</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="#chapter-8"
+                className="text-foreground hover:text-accent transition-colors flex items-start gap-4 group"
+              >
+                <span className="text-sm font-sans text-muted-foreground min-w-[2rem]">VIII.</span>
+                <span className="text-lg leading-relaxed">Risks and Uncertainties</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="#chapter-10"
+                className="text-foreground hover:text-accent transition-colors flex items-start gap-4 group"
+              >
+                <span className="text-sm font-sans text-muted-foreground min-w-[2rem]">X.</span>
+                <span className="text-lg leading-relaxed">Bitcoin 2026 Target Price</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="#chapter-9"
+                className="text-foreground hover:text-accent transition-colors flex items-start gap-4 group"
+              >
+                <span className="text-sm font-sans text-muted-foreground min-w-[2rem]">IX.</span>
+                <span className="text-lg leading-relaxed">Appendix</span>
+              </a>
+            </li>
+          </ol>
+        </nav>
+
+        {/* Chapter I */}
+        <section id="chapter-1" className="mb-32 scroll-mt-8">
+          <div className="mb-16">
+            <p className="text-xs font-sans font-medium tracking-widest text-muted-foreground uppercase mb-4">
+              Chapter I
+            </p>
+            <h2 className="text-4xl font-semibold text-foreground leading-tight">
+              Executive Summary & Macro–Liquidity Regime Analysis
+            </h2>
+          </div>
+
+          <div className="space-y-8 text-foreground leading-relaxed text-lg">
+            <p>
+              Bitcoin's trajectory over the 2025–2026 horizon must be interpreted within a refined macro-liquidity framework rather than through the simplistic heuristics that characterised earlier cycles. Bitcoin has evolved into a liquidity-sensitive macro asset whose price formation is dominated by global M2 impulses, real-rate dynamics, cross-border dollar transmission, and the balance-sheet elasticity of shadow banking intermediaries and ETF market makers.
+            </p>
+
+            <figure className="my-16 max-w-3xl mx-auto">
+              <div className="border border-border bg-muted/10 p-8">
+                <img
+                  src={btcPriceFig}
+                  alt="Synthetic Bitcoin Price (2013–2025)"
+                  className="w-full h-auto"
+                />
               </div>
-            </div>
+              <figcaption className="text-xs font-sans text-muted-foreground mt-6 tracking-wide uppercase">
+                Figure 1 — Synthetic Bitcoin Price (2013–2025)
+              </figcaption>
+            </figure>
 
-            <div className="px-0 py-8 space-y-10">
-              {/* Table of Contents */}
-              <div className="mb-12 pb-8 border-b border-border/20">
-                <h2 className="text-xl font-light text-foreground mb-6 tracking-wide">
-                  Table of Contents
-                </h2>
-                <nav className="space-y-2">
-                  <a 
-                    href="#chapter-1" 
-                    className="block text-foreground/70 hover:text-foreground transition-colors py-2 text-sm tracking-wide"
-                  >
-                    <span className="font-medium">Chapter I</span> — Executive Summary & Macro–Liquidity Regime Analysis
-                  </a>
-                  <a 
-                    href="#chapter-2" 
-                    className="block text-foreground/70 hover:text-foreground transition-colors py-2 text-sm tracking-wide"
-                  >
-                    <span className="font-medium">Chapter II</span> — Advanced Price Framework & Quantitative Modelling
-                  </a>
-                  <a 
-                    href="#chapter-3" 
-                    className="block text-foreground/70 hover:text-foreground transition-colors py-2 text-sm tracking-wide"
-                  >
-                    <span className="font-medium">Chapter III</span> — Advanced On-Chain Intelligence & Market Microstructure
-                  </a>
-                  <a 
-                    href="#chapter-4" 
-                    className="block text-foreground/70 hover:text-foreground transition-colors py-2 text-sm tracking-wide"
-                  >
-                    <span className="font-medium">Chapter IV</span> — Bitcoin Treasuries, Technology Outlook & Mining Economics
-                  </a>
-                  <a 
-                    href="#chapter-5" 
-                    className="block text-foreground/70 hover:text-foreground transition-colors py-2 text-sm tracking-wide"
-                  >
-                    <span className="font-medium">Chapter V</span> — Regulatory Outlook 2025–2026
-                  </a>
-                  <a 
-                    href="#chapter-6" 
-                    className="block text-foreground/70 hover:text-foreground transition-colors py-2 text-sm tracking-wide"
-                  >
-                    <span className="font-medium">Chapter VI</span> — Scenario Analysis for 2026
-                  </a>
-                  <a 
-                    href="#chapter-7" 
-                    className="block text-foreground/70 hover:text-foreground transition-colors py-2 text-sm tracking-wide"
-                  >
-                    <span className="font-medium">Chapter VII</span> — Bitcoin 2026 Pricing Projection
-                  </a>
-                  <a 
-                    href="#chapter-8" 
-                    className="block text-foreground/70 hover:text-foreground transition-colors py-2 text-sm tracking-wide"
-                  >
-                    <span className="font-medium">Chapter VIII</span> — Risks and Uncertainties
-                  </a>
-                  <a 
-                    href="#chapter-10" 
-                    className="block text-foreground/70 hover:text-foreground transition-colors py-2 text-sm tracking-wide"
-                  >
-                    <span className="font-medium">Chapter X</span> — Bitcoin 2026 Target Price
-                  </a>
-                  <a 
-                    href="#chapter-9" 
-                    className="block text-foreground/70 hover:text-foreground transition-colors py-2 text-sm tracking-wide"
-                  >
-                    <span className="font-medium">Chapter IX</span> — Appendix
-                  </a>
-                </nav>
-              </div>
-
-              <div id="chapter-1" className="scroll-mt-20 mb-10">
-                <div className="mb-8">
-                  <p className="text-xs font-light text-muted-foreground uppercase tracking-widest mb-4">Chapter I</p>
-                  <h2 className="text-4xl font-light text-foreground mb-3 leading-relaxed tracking-tight">
-                    Executive Summary & Macro–Liquidity Regime Analysis
-                  </h2>
-                </div>
-              </div>
-
-              <p className="text-base leading-loose text-foreground/80 mb-10 font-light">
-                Bitcoin's trajectory over the 2025–2026 horizon must be interpreted within a refined macro-liquidity framework rather than through the simplistic heuristics that characterised earlier cycles. Bitcoin has evolved into a liquidity-sensitive macro asset whose price formation is dominated by global M2 impulses, real-rate dynamics, cross-border dollar transmission, and the balance-sheet elasticity of shadow banking intermediaries and ETF market makers. The increasingly institutionalised microstructure—featuring CME futures, spot ETFs and professionalised delta-neutral liquidity provisioning—has fundamentally altered the conditions under which Bitcoin reacts to liquidity shocks and volatility clusters.
-              </p>
-
-              <figure className="my-10 max-w-4xl mx-auto">
-                <div className="border border-border/30 p-6">
-                  <img 
-                    src={btcPriceFig} 
-                    alt="Figure 1 — Synthetic Bitcoin Price (2013–2025)" 
-                    className="w-full h-auto"
-                  />
-                </div>
-                <figcaption className="text-xs text-muted-foreground mt-6 text-center font-light tracking-wide">
-                  Figure 1 — Synthetic Bitcoin Price (2013–2025)
-                </figcaption>
-              </figure>
-
-              <p className="text-base leading-relaxed text-foreground/80 mb-6">
+            <p>
                 Figure 1 illustrates the synthetic price path of Bitcoin from 2013 to 2025. Although purely model-based, the series reproduces the core structural features of Bitcoin's historical behaviour: extended appreciation phases coinciding with abundant global liquidity, deep drawdowns during periods of tightening and quantitative tightening, and regime transitions triggered by policy inflection points and funding shocks. The main purpose of this synthetic series is not to replicate the exact historical path, but to capture the macro signature that will inform the equilibrium band analysis for 2026.
               </p>
 

@@ -21,6 +21,7 @@ export default {
 		extend: {
 			fontFamily: {
 				sans: ['Inter', 'system-ui', 'sans-serif'],
+				serif: ['Lora', 'Georgia', 'serif'],
 				display: ['Inter', 'system-ui', 'sans-serif']
 			},
 			colors: {
