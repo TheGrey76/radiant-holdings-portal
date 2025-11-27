@@ -37,10 +37,6 @@ const Bitcoin2026Report = () => {
             </div>
 
             <div className="px-12 py-10 space-y-8">
-              <h1 className="text-4xl font-bold mb-4">
-                Bitcoin 2026: Macro-Liquidity Regime Analysis
-              </h1>
-
               <h2 className="text-2xl font-serif font-bold text-slate-900 dark:text-slate-100 mb-6 pb-3 border-b border-slate-200 dark:border-slate-800">
                 Chapter I — Executive Summary & Macro–Liquidity Regime Analysis
               </h2>
