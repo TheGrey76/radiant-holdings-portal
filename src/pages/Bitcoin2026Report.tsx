@@ -411,10 +411,6 @@ const Bitcoin2026Report = () => {
                 Chapter III — Advanced On‑Chain Intelligence & Market Microstructure
               </h2>
 
-              <p className="text-sm italic text-slate-600 dark:text-slate-400 mb-8">
-                Institutional Rewrite — Discursive + Tables + Schematics + ASCII Micro‑Charts
-              </p>
-
               <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
                 1. Introduction
               </h3>
