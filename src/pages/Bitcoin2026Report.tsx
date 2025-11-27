@@ -7,20 +7,20 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 
 // Glossary definitions
 const glossary: Record<string, string> = {
-  "M2": "Aggregato monetario che include circolante, depositi bancari e strumenti finanziari a breve termine. Misura la quantità totale di denaro disponibile nell'economia.",
-  "real rates": "Tassi d'interesse reali, calcolati sottraendo l'inflazione dai tassi nominali. Tassi reali negativi rendono Bitcoin più attraente come riserva di valore.",
-  "ETF flows": "Flussi di capitale in entrata o uscita dagli ETF Bitcoin. Indicatore chiave della domanda istituzionale e del sentiment degli investitori professionali.",
-  "halving": "Evento programmatico che dimezza la ricompensa per il mining di Bitcoin ogni 210.000 blocchi (circa ogni 4 anni), riducendo l'offerta di nuovi Bitcoin.",
-  "store of value": "Asset che mantiene il suo valore nel tempo senza deprezzarsi. Bitcoin è sempre più considerato un 'oro digitale' con questa funzione.",
-  "hash rate": "Potenza computazionale totale della rete Bitcoin, misura della sicurezza e dell'adozione da parte dei miner.",
-  "on-chain": "Dati e metriche derivati direttamente dalla blockchain Bitcoin, come transazioni, indirizzi attivi e volume di scambi.",
-  "QE": "Quantitative Easing - politica monetaria espansiva in cui le banche centrali acquistano asset per aumentare la liquidità nel sistema finanziario.",
-  "Fed pivot": "Cambio di direzione della politica monetaria della Federal Reserve, tipicamente da restrittiva (tassi alti) a espansiva (tassi bassi).",
-  "risk-on": "Contesto di mercato in cui gli investitori sono propensi al rischio e allocano capitale su asset più volatili come azioni e criptovalute.",
-  "liquidity conditions": "Disponibilità di capitale nel sistema finanziario. Maggiore liquidità tende a favorire asset come Bitcoin.",
-  "ETF": "Exchange-Traded Fund - fondo d'investimento negoziato in borsa che replica un asset o indice sottostante, permettendo esposizione semplificata.",
-  "macro-liquidity": "Aggregato di liquidità globale determinato da politiche monetarie delle banche centrali, crescita M2, e condizioni di credito.",
-  "balance-sheet": "Prospetto contabile che mostra attività, passività e patrimonio netto di un'entità. Per le banche centrali, indica espansione o contrazione monetaria."
+  "M2": "Monetary aggregate that includes cash, bank deposits, and short-term financial instruments. Measures the total amount of money available in the economy.",
+  "real rates": "Real interest rates, calculated by subtracting inflation from nominal rates. Negative real rates make Bitcoin more attractive as a store of value.",
+  "ETF flows": "Capital inflows or outflows from Bitcoin ETFs. Key indicator of institutional demand and professional investor sentiment.",
+  "halving": "Programmatic event that halves the mining reward for Bitcoin every 210,000 blocks (approximately every 4 years), reducing the supply of new Bitcoin.",
+  "store of value": "Asset that maintains its value over time without depreciating. Bitcoin is increasingly considered a 'digital gold' with this function.",
+  "hash rate": "Total computational power of the Bitcoin network, a measure of security and miner adoption.",
+  "on-chain": "Data and metrics derived directly from the Bitcoin blockchain, such as transactions, active addresses, and trading volume.",
+  "QE": "Quantitative Easing - expansionary monetary policy in which central banks purchase assets to increase liquidity in the financial system.",
+  "Fed pivot": "Change in direction of Federal Reserve monetary policy, typically from restrictive (high rates) to expansionary (low rates).",
+  "risk-on": "Market environment where investors are willing to take risks and allocate capital to more volatile assets like stocks and cryptocurrencies.",
+  "liquidity conditions": "Availability of capital in the financial system. Greater liquidity tends to favor assets like Bitcoin.",
+  "ETF": "Exchange-Traded Fund - investment fund traded on stock exchanges that tracks an underlying asset or index, allowing simplified exposure.",
+  "macro-liquidity": "Aggregate of global liquidity determined by central bank monetary policies, M2 growth, and credit conditions.",
+  "balance-sheet": "Financial statement showing assets, liabilities, and equity of an entity. For central banks, it indicates monetary expansion or contraction."
 };
 
 // Glossary Term Component
