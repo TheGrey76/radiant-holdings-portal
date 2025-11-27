@@ -77,6 +77,12 @@ const Bitcoin2026Report = () => {
                   >
                     <span className="font-medium">Chapter III</span> — Advanced On-Chain Intelligence & Market Microstructure
                   </a>
+                  <a 
+                    href="#chapter-4" 
+                    className="block text-sm text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 transition-colors pl-4 border-l-2 border-transparent hover:border-slate-400 dark:hover:border-slate-600 py-1"
+                  >
+                    <span className="font-medium">Chapter IV</span> — Bitcoin Treasuries, Technology Outlook & Mining Economics
+                  </a>
                 </nav>
               </div>
 
@@ -465,6 +471,316 @@ const Bitcoin2026Report = () => {
 
               <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
                 On-chain intelligence and microstructure reveal structural tightening of circulating supply, growing institutional dominance and a macro-sensitive liquidity landscape. Together, these indicators provide actionable insights for building the 2026 equilibrium pricing model in the next chapters.
+              </p>
+
+              <h2 id="chapter-4" className="text-2xl font-serif font-bold text-slate-900 dark:text-slate-100 mb-6 pb-3 border-b border-slate-200 dark:border-slate-800 mt-16 scroll-mt-20">
+                Chapter IV — Bitcoin Treasuries, Technology Outlook & Mining Economics
+              </h2>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                1. Bitcoin Treasuries: Corporate, Sovereign and Institutional Integration
+              </h3>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Bitcoin's role within institutional treasuries has expanded significantly, transitioning from a high-volatility tactical position to a strategic reserve asset embedded in balance sheet engineering. The emergence of spot ETFs and regulated custody removes the operational friction that previously constrained institutional adoption, creating structural absorption of circulating supply.
+              </p>
+
+              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+                1.1 Corporate Treasury Adoption
+              </h4>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Corporates increasingly employ Bitcoin as a balance sheet hedge against monetary debasement, sovereign duration risk and liquidity erosion. Bitcoin provides global portability, independence from local banking systems and correlation asymmetry relative to traditional treasury assets.
+              </p>
+
+              <p className="text-sm font-medium text-slate-900 dark:text-slate-100 mb-3">Treasury Positioning Matrix</p>
+
+              <div className="my-8 overflow-x-auto">
+                <table className="w-full text-sm border border-slate-200 dark:border-slate-700">
+                  <thead>
+                    <tr className="bg-slate-100 dark:bg-slate-800">
+                      <th className="px-4 py-3 text-left font-serif font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700">Segment</th>
+                      <th className="px-4 py-3 text-left font-serif font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700">Primary Driver</th>
+                      <th className="px-4 py-3 text-left font-serif font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700">Balance Sheet Impact</th>
+                      <th className="px-4 py-3 text-left font-serif font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700">2026 Outlook</th>
+                    </tr>
+                  </thead>
+                  <tbody className="text-slate-700 dark:text-slate-300">
+                    <tr className="border-b border-slate-200 dark:border-slate-700">
+                      <td className="px-4 py-3 font-medium">Public Companies</td>
+                      <td className="px-4 py-3">Inflation & Cash Dilution</td>
+                      <td className="px-4 py-3">Diversified reserves</td>
+                      <td className="px-4 py-3">Moderate growth</td>
+                    </tr>
+                    <tr className="border-b border-slate-200 dark:border-slate-700">
+                      <td className="px-4 py-3 font-medium">Tech Firms</td>
+                      <td className="px-4 py-3">Global cash flows</td>
+                      <td className="px-4 py-3">FX-neutral hedge</td>
+                      <td className="px-4 py-3">Strong adoption</td>
+                    </tr>
+                    <tr className="border-b border-slate-200 dark:border-slate-700">
+                      <td className="px-4 py-3 font-medium">Multinationals</td>
+                      <td className="px-4 py-3">Cross-border liquidity</td>
+                      <td className="px-4 py-3">Portability premium</td>
+                      <td className="px-4 py-3">Expansion phase</td>
+                    </tr>
+                    <tr>
+                      <td className="px-4 py-3 font-medium">High-Growth SMEs</td>
+                      <td className="px-4 py-3">Capital optimisation</td>
+                      <td className="px-4 py-3">Treasury optionality</td>
+                      <td className="px-4 py-3">Selective uptake</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+                1.2 Sovereign Strategies
+              </h4>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                While sovereign adoption remains limited, early movers demonstrate that Bitcoin can serve as an asymmetric reserve asset. Emerging markets facing currency depreciation, weak institutions or limited access to global capital markets increasingly view Bitcoin as a strategic optionality tool.
+              </p>
+
+              <p className="text-sm font-medium text-slate-900 dark:text-slate-100 mb-3">Sovereign Optionality Spectrum</p>
+
+              <div className="my-8 overflow-x-auto">
+                <table className="w-full text-sm border border-slate-200 dark:border-slate-700">
+                  <thead>
+                    <tr className="bg-slate-100 dark:bg-slate-800">
+                      <th className="px-4 py-3 text-left font-serif font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700">Category</th>
+                      <th className="px-4 py-3 text-left font-serif font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700">Characteristics</th>
+                      <th className="px-4 py-3 text-left font-serif font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700">Role of Bitcoin</th>
+                    </tr>
+                  </thead>
+                  <tbody className="text-slate-700 dark:text-slate-300">
+                    <tr className="border-b border-slate-200 dark:border-slate-700">
+                      <td className="px-4 py-3 font-medium">FX-Unstable EM</td>
+                      <td className="px-4 py-3">High inflation, weak currency</td>
+                      <td className="px-4 py-3">Reserve diversification</td>
+                    </tr>
+                    <tr className="border-b border-slate-200 dark:border-slate-700">
+                      <td className="px-4 py-3 font-medium">Resource-Rich States</td>
+                      <td className="px-4 py-3">Energy surplus</td>
+                      <td className="px-4 py-3">Mining-driven accumulation</td>
+                    </tr>
+                    <tr className="border-b border-slate-200 dark:border-slate-700">
+                      <td className="px-4 py-3 font-medium">Financial Hubs</td>
+                      <td className="px-4 py-3">Open capital flows</td>
+                      <td className="px-4 py-3">Strategic reserve hedge</td>
+                    </tr>
+                    <tr>
+                      <td className="px-4 py-3 font-medium">Developed Markets</td>
+                      <td className="px-4 py-3">Strong institutions</td>
+                      <td className="px-4 py-3">Low direct adoption</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+                1.3 Institutional Treasury Flows
+              </h4>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Institutional treasuries, including hedge funds, endowments and family offices, integrate Bitcoin as:
+              </p>
+
+              <ul className="list-disc list-inside text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6 space-y-2">
+                <li>a liquidity hedge</li>
+                <li>a long-duration macro asset</li>
+                <li>a convexity enhancer</li>
+                <li>a non-sovereign collateral reserve</li>
+              </ul>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                ETF custodians form a persistent structural buyer, absorbing supply from exchanges and OTC markets.
+              </p>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                2. Technology Outlook to 2026
+              </h3>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Bitcoin's technological evolution is defined by the maturation of Layer-2 architectures, improvements in settlement efficiency and the expansion of programmable primitives that preserve Bitcoin's security model.
+              </p>
+
+              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+                2.1 Lightning Network Evolution
+              </h4>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                The Lightning Network transitions from a retail payment layer to an institutional-grade settlement rail. Improved channel management, multi-path routing and liquidity automation drive adoption by fintech platforms and cross-border payment applications.
+              </p>
+
+              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+                2.2 Non-Custodial Layer-2 Architectures
+              </h4>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Emerging rollup-like constructions anchored to Bitcoin provide scalability without compromising security. These L2s are non-custodial, employ fraud or validity proofs and enable complex financial operations.
+              </p>
+
+              <p className="text-sm font-medium text-slate-900 dark:text-slate-100 mb-3">L2 Technology Comparison</p>
+
+              <div className="my-8 overflow-x-auto">
+                <table className="w-full text-sm border border-slate-200 dark:border-slate-700">
+                  <thead>
+                    <tr className="bg-slate-100 dark:bg-slate-800">
+                      <th className="px-4 py-3 text-left font-serif font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700">Feature</th>
+                      <th className="px-4 py-3 text-left font-serif font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700">Lightning</th>
+                      <th className="px-4 py-3 text-left font-serif font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700">Rollups on BTC</th>
+                      <th className="px-4 py-3 text-left font-serif font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700">Federated Mints</th>
+                    </tr>
+                  </thead>
+                  <tbody className="text-slate-700 dark:text-slate-300">
+                    <tr className="border-b border-slate-200 dark:border-slate-700">
+                      <td className="px-4 py-3 font-medium">Settlement</td>
+                      <td className="px-4 py-3">Off-chain</td>
+                      <td className="px-4 py-3">Anchored L1</td>
+                      <td className="px-4 py-3">Federated</td>
+                    </tr>
+                    <tr className="border-b border-slate-200 dark:border-slate-700">
+                      <td className="px-4 py-3 font-medium">Speed</td>
+                      <td className="px-4 py-3">Instant</td>
+                      <td className="px-4 py-3">High throughput</td>
+                      <td className="px-4 py-3">High</td>
+                    </tr>
+                    <tr className="border-b border-slate-200 dark:border-slate-700">
+                      <td className="px-4 py-3 font-medium">Decentralisation</td>
+                      <td className="px-4 py-3">High</td>
+                      <td className="px-4 py-3">Variable</td>
+                      <td className="px-4 py-3">Medium</td>
+                    </tr>
+                    <tr>
+                      <td className="px-4 py-3 font-medium">Use Cases</td>
+                      <td className="px-4 py-3">Payments</td>
+                      <td className="px-4 py-3">Apps, DeFi, Compute</td>
+                      <td className="px-4 py-3">Private payments</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+                2.3 Bitcoin Primitives: PSBT, Miniscript, Covenants
+              </h4>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                These primitives unlock advanced spending conditions and secure vaulting mechanisms. Miniscript simplifies policy management while covenants will enable programmable constraints and enhance capital efficiency.
+              </p>
+
+              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+                2.4 Federated Models: Fedi, Chaumian Mints, Cashu
+              </h4>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Federated systems emerge as privacy-respecting, community-driven monetary layers. They reintroduce bearer-style digital cash with cryptographic integrity anchored to Bitcoin.
+              </p>
+
+              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+                2.5 Blockspace Market & Ordinals
+              </h4>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Ordinals create a new demand vector for blockspace, producing fee revenue that strengthens Bitcoin's long-term security budget. Competition between financial settlement and inscription demand introduces volatility in miner fee markets.
+              </p>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                3. Mining Economics 2025–2026
+              </h3>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Mining economics post-halving are shaped by reduction in block rewards, improvement in ASIC efficiency and expansion into energy-rich regions.
+              </p>
+
+              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+                3.1 Post-Halving Profitability Model
+              </h4>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Mining becomes increasingly sensitive to energy arbitrage and operational efficiency. Margin compression forces miners to adopt dynamic load balancing, co-location with energy producers and financing based on future hashrate.
+              </p>
+
+              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+                3.2 Hashprice Dynamics
+              </h4>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Hashprice, the revenue per unit of hashrate, stabilises at higher structural levels in 2025–2026 due to inscription-driven fees and decreasing new supply issuance.
+              </p>
+
+              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+                3.3 ASIC Efficiency Curve
+              </h4>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                ASIC efficiency improvements slow down due to physical limits, resulting in diminishing gains. Future performance enhancements focus on thermal management and chip architecture.
+              </p>
+
+              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+                3.4 Global Energy Arbitrage
+              </h4>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Miners deploy in regions with:
+              </p>
+
+              <ul className="list-disc list-inside text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6 space-y-2">
+                <li>stranded energy</li>
+                <li>excess hydro</li>
+                <li>curtailed wind and solar</li>
+                <li>flare gas mitigation</li>
+              </ul>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                These deployments enhance grid stability and support sustainable mining.
+              </p>
+
+              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+                3.5 Mining Elasticity Floor Model
+              </h4>
+
+              <div className="my-8 overflow-x-auto">
+                <table className="w-full text-sm border border-slate-200 dark:border-slate-700">
+                  <thead>
+                    <tr className="bg-slate-100 dark:bg-slate-800">
+                      <th className="px-4 py-3 text-left font-serif font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700">Factor</th>
+                      <th className="px-4 py-3 text-left font-serif font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700">Dynamics</th>
+                      <th className="px-4 py-3 text-left font-serif font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700">Effect on Price Floor</th>
+                    </tr>
+                  </thead>
+                  <tbody className="text-slate-700 dark:text-slate-300">
+                    <tr className="border-b border-slate-200 dark:border-slate-700">
+                      <td className="px-4 py-3 font-medium">Difficulty</td>
+                      <td className="px-4 py-3">Responsive to hash fluctuations</td>
+                      <td className="px-4 py-3">Stabilising</td>
+                    </tr>
+                    <tr className="border-b border-slate-200 dark:border-slate-700">
+                      <td className="px-4 py-3 font-medium">Energy Prices</td>
+                      <td className="px-4 py-3">Lower cost regions dominate</td>
+                      <td className="px-4 py-3">Lower floor sensitivity</td>
+                    </tr>
+                    <tr className="border-b border-slate-200 dark:border-slate-700">
+                      <td className="px-4 py-3 font-medium">Fee Market</td>
+                      <td className="px-4 py-3">Ordinals + settlement fees</td>
+                      <td className="px-4 py-3">Higher structural floor</td>
+                    </tr>
+                    <tr>
+                      <td className="px-4 py-3 font-medium">Issuance</td>
+                      <td className="px-4 py-3">Reduced post-halving</td>
+                      <td className="px-4 py-3">Supply tightening</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                4. Synthesis
+              </h3>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Bitcoin's treasury adoption, technological evolution and mining economics collectively reinforce its structural maturation. Corporate and sovereign entities tighten liquid supply, Layer-2 systems enhance scalability, and mining shifts toward efficient global energy arbitrage. These elements form the foundational pillars of the 2026 equilibrium pricing framework explored in the final chapters.
               </p>
             </div>
 
