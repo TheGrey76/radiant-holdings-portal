@@ -116,14 +116,6 @@ const Bitcoin2026Report = () => {
         <div className="container max-w-4xl mx-auto px-8 py-16">
           <div className="bg-background">
             <div className="px-0 py-12 border-b border-border/40">
-              <Link 
-                to="/" 
-                className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors mb-6 group"
-              >
-                <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
-                Back to Home
-              </Link>
-
               <div className="text-center mb-6">
                 <p className="text-xs font-medium text-muted-foreground uppercase tracking-widest mb-6">Institutional Research Report</p>
                 <h1 className="text-6xl font-light text-foreground mb-6 tracking-tight">
@@ -134,8 +126,6 @@ const Bitcoin2026Report = () => {
                 </p>
                 <div className="flex flex-col items-center gap-4">
                   <p className="text-sm font-light text-foreground">ARIES76 Capital Intelligence</p>
-                  <div className="h-px w-12 bg-border/60"></div>
-                  <p className="text-sm text-muted-foreground font-light">January 2025</p>
                 </div>
               </div>
             </div>
