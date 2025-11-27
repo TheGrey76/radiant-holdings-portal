@@ -368,87 +368,94 @@ const Bitcoin2026Report = () => {
                 Bitcoin's valuation throughout the 2025–2026 horizon requires a structural departure from the narrative-driven models that dominated earlier phases of market development. The asset's behaviour is now determined by a multidimensional system of liquidity conditions, derivatives-implied flow constraints, treasury absorption, long-term holder dynamics and mining economics. This chapter introduces the Advanced Price Framework, the analytical backbone used to construct the equilibrium price range for Bitcoin in 2026. The framework integrates macro-liquidity vectors, regime theory, microstructure indicators and supply elasticity models into a coherent investment architecture.
               </p>
 
-              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+              <h3 className="text-2xl font-bold text-foreground mt-12 mb-6 flex items-center gap-3">
+                <div className="w-2 h-2 bg-primary rounded-full"></div>
                 1. Liquidity-Adjusted Demand Model (LADM)
               </h3>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+              <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 The cornerstone of Bitcoin's modern valuation is the liquidity-adjusted demand curve. Rather than treating price as a function of adoption cycles or speculative phases, the LADM models Bitcoin as a convex response to the marginal liquidity impulse. Its structure captures the empirical reality that global M2, shadow banking liquidity and stablecoin aggregates collectively shape the availability of balance-sheet capacity in the system. Bitcoin's supply is fixed, but the demand curve is highly sensitive to liquidity expansion and contraction. When global liquidity rises, Bitcoin exhibits a disproportionate upward reaction due to limited supply elasticity and shrinking free float. When liquidity contracts, the price compresses sharply as derivative leverage unwinds and ETF flow constraints tighten.
               </p>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+              <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 The key conclusion of LADM is that Bitcoin's valuation is a liquidity derivative. Its equilibrium price depends not on long-term adoption narratives, but on the interaction between macro-liquidity conditions and supply inelasticity. This insight is essential for constructing the 2026 equilibrium pricing band.
               </p>
 
-              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+              <h3 className="text-2xl font-bold text-foreground mt-12 mb-6 flex items-center gap-3">
+                <div className="w-2 h-2 bg-primary rounded-full"></div>
                 2. Regime Analysis via Hidden Markov Models
               </h3>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+              <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 Bitcoin's volatility structure is non-linear and regime-driven. Hidden Markov Models provide an efficient method for classifying volatility into discrete states that reflect the underlying forces driving price formation. Three regimes appear consistently in quantitative analysis: low-volatility accumulation phases, trending expansion regimes and corrective deleveraging phases driven by funding stress and shadow liquidity withdrawal.
               </p>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+              <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 Regime analysis matters because Bitcoin does not transition smoothly between volatility states. Expansion regimes tend to follow liquidity inflection points, rising stablecoin issuance, dealer gamma flips and ETF-driven net inflows. Deleveraging regimes typically coincide with spikes in real yields, funding squeezes, ETF outflows and contractions in shadow liquidity. Identifying regime transitions helps build forward-looking scenario structures and improves the fidelity of equilibrium range modelling.
               </p>
 
-              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+              <h3 className="text-2xl font-bold text-foreground mt-12 mb-6 flex items-center gap-3">
+                <div className="w-2 h-2 bg-primary rounded-full"></div>
                 3. Derivatives-Implied Market Structure
               </h3>
 
-              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+              <h4 className="text-xl font-semibold text-foreground mt-8 mb-4">
                 3.1 Options Skew
               </h4>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
-                Bitcoin's options market has undergone structural transformation. Historically, persistent negative skew reflected downside hedging pressure. In the post-ETF environment, skew is flatter due to the presence of institutional call overwriting, structured product flows and arbitrage dynamics. Deviations from this new equilibrium skew provide directional signals regarding volatility expectations and flow imbalances.
+              <p className="text-base leading-relaxed text-foreground/80 mb-8">
+...
               </p>
 
-              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+              <h4 className="text-xl font-semibold text-foreground mt-8 mb-4">
                 3.2 Dealer Gamma Positioning
               </h4>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
-                Dealer gamma is a primary driver of short-term price dynamics. When dealers are short gamma, their hedging behaviour amplifies volatility and reinforces directional trends. When they are long gamma, volatility compresses and market stability increases. Gamma flips often precede major rallies or corrections and are now tightly linked to ETF creation/redemption flows and CME futures positioning.
+              <p className="text-base leading-relaxed text-foreground/80 mb-8">
+...
               </p>
 
-              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+              <h4 className="text-xl font-semibold text-foreground mt-8 mb-4">
                 3.3 CME Futures and Basis
               </h4>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+              <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 CME futures serve as the anchor for global Bitcoin price discovery. The term structure, basis spreads and open interest levels provide information about institutional risk appetite, hedging flows and leverage conditions. Sustained contango regimes typically reflect confidence and liquidity expansion, while backwardation frequently coincides with funding stress or de-risking.
               </p>
 
-              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+              <h3 className="text-2xl font-bold text-foreground mt-12 mb-6 flex items-center gap-3">
+                <div className="w-2 h-2 bg-primary rounded-full"></div>
                 4. Long-Term Holder Cost Basis & Realised Price Bands
               </h3>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+              <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 Long-term holder (LTH) cost basis acts as a structural support level in Bitcoin's valuation. Bitcoin rarely trades sustainably below its LTH cost basis during liquidity expansions, and compressions toward it often signal capitulation in tightening regimes. Realised price bands, representing the aggregated cost basis of the entire network, reflect stress conditions and maturity of market structure. Tightening of these bands indicates reduced speculative churn and increased dominance of committed holders.
               </p>
 
-              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+              <h3 className="text-2xl font-bold text-foreground mt-12 mb-6 flex items-center gap-3">
+                <div className="w-2 h-2 bg-primary rounded-full"></div>
                 5. Hash-Based Difficulty Elasticity Model
               </h3>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+              <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 Mining economics define the elasticity of Bitcoin's supply. Difficulty adjusts dynamically to miner profitability, energy costs and issuance conditions. As miners move toward stranded energy exploitation and dynamic load management, difficulty responds more quickly to price changes. This increased elasticity reduces severe miner capitulation risk and contributes to a stabilising floor during downtrends. Post-halving issuance reduction further amplifies this effect.
               </p>
 
-              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+              <h3 className="text-2xl font-bold text-foreground mt-12 mb-6 flex items-center gap-3">
+                <div className="w-2 h-2 bg-primary rounded-full"></div>
                 6. The Post-2024 Halving Structural Break
               </h3>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+              <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 The 2024 halving introduced a structural break in Bitcoin's market behaviour. Earlier cycles were dominated by retail participation, speculative leverage and predictable supply shocks. The current environment is shaped by ETF flows, macro-liquidity conditions, derivatives hedging and institutional risk frameworks. Supply shocks still matter, but they no longer determine cycle timing. This justifies abandoning halving-based price models in favour of quantitative frameworks such as LADM, HMM clustering, derivatives positioning analysis and mining elasticity modelling.
               </p>
 
-              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+              <h3 className="text-2xl font-bold text-foreground mt-12 mb-6 flex items-center gap-3">
+                <div className="w-2 h-2 bg-primary rounded-full"></div>
                 7. Synthesis for the Equilibrium Price Range
               </h3>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+              <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 The Advanced Price Framework integrates all of the structural components described above into a unified modelling architecture. Bitcoin's 2026 equilibrium band is not a forecast, but a probabilistic range derived from liquidity conditions, supply constraints, volatility regime classification, derivatives-implied flows and mining economics. Later chapters will translate these components into explicit equilibrium pricing corridors, distribution curves and scenario-based outcomes suitable for institutional capital allocation decisions.
               </p>
 
