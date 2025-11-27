@@ -113,27 +113,27 @@ const Bitcoin2026Report = () => {
       )}
 
       <div className="min-h-screen bg-background">
-        <div className="container max-w-4xl mx-auto px-8 py-16">
+        <div className="container max-w-5xl mx-auto px-6 py-12">
           <div className="bg-background">
-            <div className="px-0 py-12 mb-8">
-              <div className="text-center mb-10">
-                <p className="text-xs font-light text-muted-foreground uppercase tracking-widest mb-8">Institutional Research Report</p>
-                <h1 className="text-5xl font-light text-foreground mb-4 tracking-tight">
+            <div className="px-0 py-8 mb-12">
+              <div className="text-center mb-12">
+                <p className="text-xs font-light text-muted-foreground uppercase tracking-widest mb-6">Institutional Research Report</p>
+                <h1 className="text-5xl font-light text-foreground mb-3 tracking-tight">
                   Bitcoin 2026
                 </h1>
                 <p className="text-lg text-muted-foreground font-light tracking-wide">
                   Macro-Liquidity Regime Analysis
                 </p>
-                <div className="mt-8">
+                <div className="mt-6">
                   <p className="text-sm font-light text-muted-foreground">ARIES76 Capital Intelligence</p>
                 </div>
               </div>
             </div>
 
-            <div className="px-0 py-12 space-y-12">
+            <div className="px-0 py-8 space-y-10">
               {/* Table of Contents */}
-              <div className="mb-16">
-                <h2 className="text-xl font-light text-foreground mb-8 tracking-wide">
+              <div className="mb-12 pb-8 border-b border-border/20">
+                <h2 className="text-xl font-light text-foreground mb-6 tracking-wide">
                   Table of Contents
                 </h2>
                 <nav className="space-y-2">
@@ -200,8 +200,8 @@ const Bitcoin2026Report = () => {
                 </nav>
               </div>
 
-              <div id="chapter-1" className="scroll-mt-20 mb-12">
-                <div className="mb-10">
+              <div id="chapter-1" className="scroll-mt-20 mb-10">
+                <div className="mb-8">
                   <p className="text-xs font-light text-muted-foreground uppercase tracking-widest mb-4">Chapter I</p>
                   <h2 className="text-4xl font-light text-foreground mb-3 leading-relaxed tracking-tight">
                     Executive Summary & Macro–Liquidity Regime Analysis
@@ -213,8 +213,8 @@ const Bitcoin2026Report = () => {
                 Bitcoin's trajectory over the 2025–2026 horizon must be interpreted within a refined macro-liquidity framework rather than through the simplistic heuristics that characterised earlier cycles. Bitcoin has evolved into a liquidity-sensitive macro asset whose price formation is dominated by global M2 impulses, real-rate dynamics, cross-border dollar transmission, and the balance-sheet elasticity of shadow banking intermediaries and ETF market makers. The increasingly institutionalised microstructure—featuring CME futures, spot ETFs and professionalised delta-neutral liquidity provisioning—has fundamentally altered the conditions under which Bitcoin reacts to liquidity shocks and volatility clusters.
               </p>
 
-              <figure className="my-12 max-w-3xl mx-auto">
-                <div className="border border-border/30 p-8">
+              <figure className="my-10 max-w-4xl mx-auto">
+                <div className="border border-border/30 p-6">
                   <img 
                     src={btcPriceFig} 
                     alt="Figure 1 — Synthetic Bitcoin Price (2013–2025)" 
@@ -226,7 +226,7 @@ const Bitcoin2026Report = () => {
                 </figcaption>
               </figure>
 
-              <p className="text-base leading-relaxed text-foreground/80 mb-8">
+              <p className="text-base leading-relaxed text-foreground/80 mb-6">
                 Figure 1 illustrates the synthetic price path of Bitcoin from 2013 to 2025. Although purely model-based, the series reproduces the core structural features of Bitcoin's historical behaviour: extended appreciation phases coinciding with abundant global liquidity, deep drawdowns during periods of tightening and quantitative tightening, and regime transitions triggered by policy inflection points and funding shocks. The main purpose of this synthetic series is not to replicate the exact historical path, but to capture the macro signature that will inform the equilibrium band analysis for 2026.
               </p>
 
@@ -242,8 +242,8 @@ const Bitcoin2026Report = () => {
                 Global M2 remains the most important macro variable in understanding Bitcoin's medium-term dynamics. What matters for Bitcoin is not the level of money supply, but the marginal liquidity impulse: accelerations in M2 growth tend to produce convex responses in Bitcoin, while stagnation or contraction in liquidity often coincide with volatility spikes and price compression. This is because Bitcoin's supply is absolutely inelastic, while the free float available for trading is further constrained by long-term holders, custodial solutions and ETF structures.
               </p>
 
-              <figure className="my-12 max-w-3xl mx-auto">
-                <div className="border border-border/30 p-8">
+              <figure className="my-10 max-w-4xl mx-auto">
+                <div className="border border-border/30 p-6">
                   <img 
                     src={m2LiquidityFig} 
                     alt="Figure 2 — Global M2 Liquidity Proxy (Synthetic, 2013–2025)" 
@@ -271,8 +271,8 @@ const Bitcoin2026Report = () => {
                 If global M2 defines the denominator for Bitcoin valuation, real interest rates shape the slope of the demand curve. Rising real yields increase the opportunity cost of holding non-yielding assets, encourage allocation into cash and high-quality duration, and force deleveraging across risk assets. Conversely, declining real yields reduce that opportunity cost and incentivise the search for convex, high-beta exposures to improving liquidity conditions. Bitcoin sits precisely in that slot.
               </p>
 
-              <figure className="my-12 max-w-3xl mx-auto">
-                <div className="border border-border/30 p-8">
+              <figure className="my-10 max-w-4xl mx-auto">
+                <div className="border border-border/30 p-6">
                   <img 
                     src={realRatesFig} 
                     alt="Figure 3 — Real Rates Regime (Synthetic, 2013–2025)" 
@@ -292,7 +292,7 @@ const Bitcoin2026Report = () => {
                 For the 2025–2026 period, the combination of high sovereign debt loads, elevated refinancing needs and rising interest burdens makes it increasingly difficult for developed-market central banks to sustain a regime of structurally positive and rising real yields. As maturity walls approach and fiscal arithmetic becomes more challenging, the probability of a transition toward a lower real-rate environment increases. From Bitcoin's perspective, this constitutes a supportive macro backdrop, particularly when combined with gradual easing of quantitative tightening.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-8 mb-5 tracking-wide">
                 3. Shadow Liquidity, Stablecoins and Cross-Border Dollar Flow
               </h3>
 
@@ -429,8 +429,8 @@ const Bitcoin2026Report = () => {
                 The Advanced Price Framework integrates all of the structural components described above into a unified modelling architecture. Bitcoin's 2026 equilibrium band is not a forecast, but a probabilistic range derived from liquidity conditions, supply constraints, volatility regime classification, derivatives-implied flows and mining economics. Later chapters will translate these components into explicit equilibrium pricing corridors, distribution curves and scenario-based outcomes suitable for institutional capital allocation decisions.
               </p>
 
-              <div id="chapter-3" className="scroll-mt-20 mb-12">
-                <div className="mb-10">
+              <div id="chapter-3" className="scroll-mt-20 mb-10">
+                <div className="mb-8">
                   <p className="text-xs font-light text-muted-foreground uppercase tracking-widest mb-4">Chapter III</p>
                   <h2 className="text-4xl font-light text-foreground mb-3 leading-relaxed tracking-tight">
                     Advanced On‑Chain Intelligence & Market Microstructure
@@ -812,8 +812,8 @@ Low Dormancy → ██████████`}
                 This chapter is foundational for the <strong>2026 Equilibrium Price Model</strong> developed later.
               </p>
 
-              <div id="chapter-4" className="scroll-mt-20 mb-12">
-                <div className="mb-10">
+              <div id="chapter-4" className="scroll-mt-20 mb-10">
+                <div className="mb-8">
                   <p className="text-xs font-light text-muted-foreground uppercase tracking-widest mb-4">Chapter IV</p>
                   <h2 className="text-4xl font-light text-foreground mb-3 leading-relaxed tracking-tight">
                     Bitcoin Treasuries, Technology Outlook & Mining Economics
@@ -935,8 +935,8 @@ Low Dormancy → ██████████`}
                 Treasuries, technology and mining form a reinforcing feedback loop: treasury accumulation tightens free float, technological scaling broadens Bitcoin's addressable market and mining economics strengthen security while integrating Bitcoin into global energy markets. Together, these forces converge into a structural upward bias in Bitcoin's long‑term equilibrium state.
               </p>
 
-              <div id="chapter-5" className="scroll-mt-20 mb-12">
-                <div className="mb-10">
+              <div id="chapter-5" className="scroll-mt-20 mb-10">
+                <div className="mb-8">
                   <p className="text-xs font-light text-muted-foreground uppercase tracking-widest mb-4">Chapter V</p>
                   <h2 className="text-4xl font-light text-foreground mb-3 leading-relaxed tracking-tight">
                     Regulatory Outlook 2025–2026
@@ -992,8 +992,8 @@ Low Dormancy → ██████████`}
                 The regulatory trajectory supports growing institutional participation, deeper liquidity pools and the normalisation of Bitcoin as a cross-border macro asset.
               </p>
 
-              <div id="chapter-6" className="scroll-mt-20 mb-12">
-                <div className="mb-10">
+              <div id="chapter-6" className="scroll-mt-20 mb-10">
+                <div className="mb-8">
                   <p className="text-xs font-light text-muted-foreground uppercase tracking-widest mb-4">Chapter VI</p>
                   <h2 className="text-4xl font-light text-foreground mb-3 leading-relaxed tracking-tight">
                     Scenario Analysis for 2026
@@ -1092,8 +1092,8 @@ Low Dormancy → ██████████`}
                 Across all scenarios, the lower bound rises over time due to structural supply tightening. The upper bound becomes more convex due to decreasing free float and institutionalised liquidity demand.
               </p>
 
-              <div id="chapter-7" className="scroll-mt-20 mb-12">
-                <div className="mb-10">
+              <div id="chapter-7" className="scroll-mt-20 mb-10">
+                <div className="mb-8">
                   <p className="text-xs font-light text-muted-foreground uppercase tracking-widest mb-4">Chapter VII</p>
                   <h2 className="text-4xl font-light text-foreground mb-3 leading-relaxed tracking-tight">
                     Bitcoin 2026 Pricing Projection
@@ -1164,8 +1164,8 @@ Low Dormancy → ██████████`}
                 The pricing model highlights Bitcoin's asymmetric payoff structure: constrained downside, convex upside, and sensitivity to liquidity regimes. Its 2026 valuation is defined more by macro liquidity than by endogenous halving cycles.
               </p>
 
-              <div id="chapter-8" className="scroll-mt-20 mb-12">
-                <div className="mb-10">
+              <div id="chapter-8" className="scroll-mt-20 mb-10">
+                <div className="mb-8">
                   <p className="text-xs font-light text-muted-foreground uppercase tracking-widest mb-4">Chapter VIII</p>
                   <h2 className="text-4xl font-light text-foreground mb-3 leading-relaxed tracking-tight">
                     Risks and Uncertainties
@@ -1221,8 +1221,8 @@ Low Dormancy → ██████████`}
                 Risk assessment is essential for allocation sizing and hedging. Bitcoin remains a high‑convexity macro asset, requiring disciplined risk management frameworks.
               </p>
 
-              <div id="chapter-10" className="scroll-mt-20 mb-12">
-                <div className="mb-10">
+              <div id="chapter-10" className="scroll-mt-20 mb-10">
+                <div className="mb-8">
                   <p className="text-xs font-light text-muted-foreground uppercase tracking-widest mb-4">Chapter X</p>
                   <h2 className="text-4xl font-light text-foreground mb-3 leading-relaxed tracking-tight">
                     Bitcoin 2026 Institutional Target Price Assessment
@@ -1450,8 +1450,8 @@ Low Dormancy → ██████████`}
                 </div>
               </div>
 
-              <div id="chapter-9" className="scroll-mt-20 mb-12">
-                <div className="mb-10">
+              <div id="chapter-9" className="scroll-mt-20 mb-10">
+                <div className="mb-8">
                   <p className="text-xs font-light text-muted-foreground uppercase tracking-widest mb-4">Chapter IX</p>
                   <h2 className="text-4xl font-light text-foreground mb-3 leading-relaxed tracking-tight">
                     Appendix
