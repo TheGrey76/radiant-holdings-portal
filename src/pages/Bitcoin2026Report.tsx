@@ -1,11 +1,27 @@
 import { Helmet } from "react-helmet";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ArrowUp } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 import btcPriceFig from "@/assets/bitcoin_2026_fig1_btc.png";
 import m2LiquidityFig from "@/assets/bitcoin_2026_fig2_m2.png";
 import realRatesFig from "@/assets/bitcoin_2026_fig3_real_rates.png";
 
 const Bitcoin2026Report = () => {
+  const [showBackToTop, setShowBackToTop] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowBackToTop(window.scrollY > 400);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <>
       <Helmet>
@@ -273,6 +289,17 @@ const Bitcoin2026Report = () => {
             </div>
           </div>
         </div>
+
+        {/* Back to Top Button */}
+        <button
+          onClick={scrollToTop}
+          className={`fixed bottom-8 right-8 p-3 bg-slate-900 dark:bg-slate-100 text-slate-100 dark:text-slate-900 rounded-full shadow-lg border border-slate-200 dark:border-slate-800 transition-all duration-300 hover:scale-110 hover:shadow-xl ${
+            showBackToTop ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
+          }`}
+          aria-label="Back to top"
+        >
+          <ArrowUp className="h-5 w-5" />
+        </button>
       </div>
     </>
   );
