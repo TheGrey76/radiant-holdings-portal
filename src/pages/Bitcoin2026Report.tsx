@@ -351,46 +351,46 @@ const Bitcoin2026Report = () => {
                 3. On-Chain Heatmap (Institutional-Grade)
               </h3>
 
-              <div className="my-8 overflow-x-auto">
-                <table className="w-full text-sm border border-slate-200 dark:border-slate-700">
+              <div className="my-10 overflow-x-auto">
+                <table className="w-full text-sm">
                   <thead>
-                    <tr className="bg-slate-100 dark:bg-slate-800">
-                      <th className="px-4 py-3 text-left font-serif font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700">Metric</th>
-                      <th className="px-4 py-3 text-left font-serif font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700">Accumulation Regime</th>
-                      <th className="px-4 py-3 text-left font-serif font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700">Neutral Regime</th>
-                      <th className="px-4 py-3 text-left font-serif font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700">Distribution Regime</th>
+                    <tr className="border-b-2 border-slate-300 dark:border-slate-700">
+                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Metric</th>
+                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Accumulation Regime</th>
+                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Neutral Regime</th>
+                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Distribution Regime</th>
                     </tr>
                   </thead>
                   <tbody className="text-slate-700 dark:text-slate-300">
-                    <tr className="border-b border-slate-200 dark:border-slate-700">
-                      <td className="px-4 py-3 font-medium">Exchange Reserves</td>
-                      <td className="px-4 py-3">↓ Structural</td>
-                      <td className="px-4 py-3">→ Stable</td>
-                      <td className="px-4 py-3">↑ Short-Term Clouds</td>
+                    <tr className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
+                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">Exchange Reserves</td>
+                      <td className="px-6 py-4">↓ Structural</td>
+                      <td className="px-6 py-4">→ Stable</td>
+                      <td className="px-6 py-4">↑ Short-Term Clouds</td>
                     </tr>
-                    <tr className="border-b border-slate-200 dark:border-slate-700">
-                      <td className="px-4 py-3 font-medium">Whale Net Positioning</td>
-                      <td className="px-4 py-3">↑ Strong</td>
-                      <td className="px-4 py-3">→ Mixed</td>
-                      <td className="px-4 py-3">↓ Weakening</td>
+                    <tr className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
+                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">Whale Net Positioning</td>
+                      <td className="px-6 py-4">↑ Strong</td>
+                      <td className="px-6 py-4">→ Mixed</td>
+                      <td className="px-6 py-4">↓ Weakening</td>
                     </tr>
-                    <tr className="border-b border-slate-200 dark:border-slate-700">
-                      <td className="px-4 py-3 font-medium">LTH Cost Basis</td>
-                      <td className="px-4 py-3">↑ Rising Floors</td>
-                      <td className="px-4 py-3">→ Stable</td>
-                      <td className="px-4 py-3">↓ Stress Event</td>
+                    <tr className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
+                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">LTH Cost Basis</td>
+                      <td className="px-6 py-4">↑ Rising Floors</td>
+                      <td className="px-6 py-4">→ Stable</td>
+                      <td className="px-6 py-4">↓ Stress Event</td>
                     </tr>
-                    <tr className="border-b border-slate-200 dark:border-slate-700">
-                      <td className="px-4 py-3 font-medium">Dormancy Flows</td>
-                      <td className="px-4 py-3">Low Dormancy</td>
-                      <td className="px-4 py-3">Neutral</td>
-                      <td className="px-4 py-3">High Revival</td>
+                    <tr className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
+                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">Dormancy Flows</td>
+                      <td className="px-6 py-4">Low Dormancy</td>
+                      <td className="px-6 py-4">Neutral</td>
+                      <td className="px-6 py-4">High Revival</td>
                     </tr>
-                    <tr>
-                      <td className="px-4 py-3 font-medium">On-chain Leverage</td>
-                      <td className="px-4 py-3">Low Leverage</td>
-                      <td className="px-4 py-3">Controlled</td>
-                      <td className="px-4 py-3">Elevated</td>
+                    <tr className="hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
+                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">On-chain Leverage</td>
+                      <td className="px-6 py-4">Low Leverage</td>
+                      <td className="px-6 py-4">Controlled</td>
+                      <td className="px-6 py-4">Elevated</td>
                     </tr>
                   </tbody>
                 </table>
@@ -432,30 +432,30 @@ const Bitcoin2026Report = () => {
                 The Global Bitcoin Liquidity Grid describes the 24-hour rotation between U.S., European and Asian market sessions:
               </p>
 
-              <div className="my-8 overflow-x-auto">
-                <table className="w-full text-sm border border-slate-200 dark:border-slate-700">
+              <div className="my-10 overflow-x-auto">
+                <table className="w-full text-sm">
                   <thead>
-                    <tr className="bg-slate-100 dark:bg-slate-800">
-                      <th className="px-4 py-3 text-left font-serif font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700">Region</th>
-                      <th className="px-4 py-3 text-left font-serif font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700">Liquidity Drivers</th>
-                      <th className="px-4 py-3 text-left font-serif font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700">Characteristics</th>
+                    <tr className="border-b-2 border-slate-300 dark:border-slate-700">
+                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Region</th>
+                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Liquidity Drivers</th>
+                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Characteristics</th>
                     </tr>
                   </thead>
                   <tbody className="text-slate-700 dark:text-slate-300">
-                    <tr className="border-b border-slate-200 dark:border-slate-700">
-                      <td className="px-4 py-3 font-medium">U.S.</td>
-                      <td className="px-4 py-3">ETF Creations, CME Futures</td>
-                      <td className="px-4 py-3">Deep liquidity, institutional flows</td>
+                    <tr className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
+                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">U.S.</td>
+                      <td className="px-6 py-4">ETF Creations, CME Futures</td>
+                      <td className="px-6 py-4">Deep liquidity, institutional flows</td>
                     </tr>
-                    <tr className="border-b border-slate-200 dark:border-slate-700">
-                      <td className="px-4 py-3 font-medium">Europe</td>
-                      <td className="px-4 py-3">ETP Markets, Cross-venue arbitrage</td>
-                      <td className="px-4 py-3">Secondary liquidity, price stabilisation</td>
+                    <tr className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
+                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">Europe</td>
+                      <td className="px-6 py-4">ETP Markets, Cross-venue arbitrage</td>
+                      <td className="px-6 py-4">Secondary liquidity, price stabilisation</td>
                     </tr>
-                    <tr>
-                      <td className="px-4 py-3 font-medium">Asia</td>
-                      <td className="px-4 py-3">Perpetual Swaps, Derivatives Funding</td>
-                      <td className="px-4 py-3">High leverage, volatility amplification</td>
+                    <tr className="hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
+                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">Asia</td>
+                      <td className="px-6 py-4">Perpetual Swaps, Derivatives Funding</td>
+                      <td className="px-6 py-4">High leverage, volatility amplification</td>
                     </tr>
                   </tbody>
                 </table>
@@ -495,40 +495,40 @@ const Bitcoin2026Report = () => {
 
               <p className="text-sm font-medium text-slate-900 dark:text-slate-100 mb-3">Treasury Positioning Matrix</p>
 
-              <div className="my-8 overflow-x-auto">
-                <table className="w-full text-sm border border-slate-200 dark:border-slate-700">
+              <div className="my-10 overflow-x-auto">
+                <table className="w-full text-sm">
                   <thead>
-                    <tr className="bg-slate-100 dark:bg-slate-800">
-                      <th className="px-4 py-3 text-left font-serif font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700">Segment</th>
-                      <th className="px-4 py-3 text-left font-serif font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700">Primary Driver</th>
-                      <th className="px-4 py-3 text-left font-serif font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700">Balance Sheet Impact</th>
-                      <th className="px-4 py-3 text-left font-serif font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700">2026 Outlook</th>
+                    <tr className="border-b-2 border-slate-300 dark:border-slate-700">
+                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Segment</th>
+                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Primary Driver</th>
+                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Balance Sheet Impact</th>
+                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">2026 Outlook</th>
                     </tr>
                   </thead>
                   <tbody className="text-slate-700 dark:text-slate-300">
-                    <tr className="border-b border-slate-200 dark:border-slate-700">
-                      <td className="px-4 py-3 font-medium">Public Companies</td>
-                      <td className="px-4 py-3">Inflation & Cash Dilution</td>
-                      <td className="px-4 py-3">Diversified reserves</td>
-                      <td className="px-4 py-3">Moderate growth</td>
+                    <tr className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
+                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">Public Companies</td>
+                      <td className="px-6 py-4">Inflation & Cash Dilution</td>
+                      <td className="px-6 py-4">Diversified reserves</td>
+                      <td className="px-6 py-4">Moderate growth</td>
                     </tr>
-                    <tr className="border-b border-slate-200 dark:border-slate-700">
-                      <td className="px-4 py-3 font-medium">Tech Firms</td>
-                      <td className="px-4 py-3">Global cash flows</td>
-                      <td className="px-4 py-3">FX-neutral hedge</td>
-                      <td className="px-4 py-3">Strong adoption</td>
+                    <tr className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
+                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">Tech Firms</td>
+                      <td className="px-6 py-4">Global cash flows</td>
+                      <td className="px-6 py-4">FX-neutral hedge</td>
+                      <td className="px-6 py-4">Strong adoption</td>
                     </tr>
-                    <tr className="border-b border-slate-200 dark:border-slate-700">
-                      <td className="px-4 py-3 font-medium">Multinationals</td>
-                      <td className="px-4 py-3">Cross-border liquidity</td>
-                      <td className="px-4 py-3">Portability premium</td>
-                      <td className="px-4 py-3">Expansion phase</td>
+                    <tr className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
+                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">Multinationals</td>
+                      <td className="px-6 py-4">Cross-border liquidity</td>
+                      <td className="px-6 py-4">Portability premium</td>
+                      <td className="px-6 py-4">Expansion phase</td>
                     </tr>
-                    <tr>
-                      <td className="px-4 py-3 font-medium">High-Growth SMEs</td>
-                      <td className="px-4 py-3">Capital optimisation</td>
-                      <td className="px-4 py-3">Treasury optionality</td>
-                      <td className="px-4 py-3">Selective uptake</td>
+                    <tr className="hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
+                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">High-Growth SMEs</td>
+                      <td className="px-6 py-4">Capital optimisation</td>
+                      <td className="px-6 py-4">Treasury optionality</td>
+                      <td className="px-6 py-4">Selective uptake</td>
                     </tr>
                   </tbody>
                 </table>
@@ -544,35 +544,35 @@ const Bitcoin2026Report = () => {
 
               <p className="text-sm font-medium text-slate-900 dark:text-slate-100 mb-3">Sovereign Optionality Spectrum</p>
 
-              <div className="my-8 overflow-x-auto">
-                <table className="w-full text-sm border border-slate-200 dark:border-slate-700">
+              <div className="my-10 overflow-x-auto">
+                <table className="w-full text-sm">
                   <thead>
-                    <tr className="bg-slate-100 dark:bg-slate-800">
-                      <th className="px-4 py-3 text-left font-serif font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700">Category</th>
-                      <th className="px-4 py-3 text-left font-serif font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700">Characteristics</th>
-                      <th className="px-4 py-3 text-left font-serif font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700">Role of Bitcoin</th>
+                    <tr className="border-b-2 border-slate-300 dark:border-slate-700">
+                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Category</th>
+                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Characteristics</th>
+                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Role of Bitcoin</th>
                     </tr>
                   </thead>
                   <tbody className="text-slate-700 dark:text-slate-300">
-                    <tr className="border-b border-slate-200 dark:border-slate-700">
-                      <td className="px-4 py-3 font-medium">FX-Unstable EM</td>
-                      <td className="px-4 py-3">High inflation, weak currency</td>
-                      <td className="px-4 py-3">Reserve diversification</td>
+                    <tr className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
+                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">FX-Unstable EM</td>
+                      <td className="px-6 py-4">High inflation, weak currency</td>
+                      <td className="px-6 py-4">Reserve diversification</td>
                     </tr>
-                    <tr className="border-b border-slate-200 dark:border-slate-700">
-                      <td className="px-4 py-3 font-medium">Resource-Rich States</td>
-                      <td className="px-4 py-3">Energy surplus</td>
-                      <td className="px-4 py-3">Mining-driven accumulation</td>
+                    <tr className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
+                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">Resource-Rich States</td>
+                      <td className="px-6 py-4">Energy surplus</td>
+                      <td className="px-6 py-4">Mining-driven accumulation</td>
                     </tr>
-                    <tr className="border-b border-slate-200 dark:border-slate-700">
-                      <td className="px-4 py-3 font-medium">Financial Hubs</td>
-                      <td className="px-4 py-3">Open capital flows</td>
-                      <td className="px-4 py-3">Strategic reserve hedge</td>
+                    <tr className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
+                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">Financial Hubs</td>
+                      <td className="px-6 py-4">Open capital flows</td>
+                      <td className="px-6 py-4">Strategic reserve hedge</td>
                     </tr>
-                    <tr>
-                      <td className="px-4 py-3 font-medium">Developed Markets</td>
-                      <td className="px-4 py-3">Strong institutions</td>
-                      <td className="px-4 py-3">Low direct adoption</td>
+                    <tr className="hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
+                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">Developed Markets</td>
+                      <td className="px-6 py-4">Strong institutions</td>
+                      <td className="px-6 py-4">Low direct adoption</td>
                     </tr>
                   </tbody>
                 </table>
@@ -623,40 +623,40 @@ const Bitcoin2026Report = () => {
 
               <p className="text-sm font-medium text-slate-900 dark:text-slate-100 mb-3">L2 Technology Comparison</p>
 
-              <div className="my-8 overflow-x-auto">
-                <table className="w-full text-sm border border-slate-200 dark:border-slate-700">
+              <div className="my-10 overflow-x-auto">
+                <table className="w-full text-sm">
                   <thead>
-                    <tr className="bg-slate-100 dark:bg-slate-800">
-                      <th className="px-4 py-3 text-left font-serif font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700">Feature</th>
-                      <th className="px-4 py-3 text-left font-serif font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700">Lightning</th>
-                      <th className="px-4 py-3 text-left font-serif font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700">Rollups on BTC</th>
-                      <th className="px-4 py-3 text-left font-serif font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700">Federated Mints</th>
+                    <tr className="border-b-2 border-slate-300 dark:border-slate-700">
+                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Feature</th>
+                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Lightning</th>
+                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Rollups on BTC</th>
+                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Federated Mints</th>
                     </tr>
                   </thead>
                   <tbody className="text-slate-700 dark:text-slate-300">
-                    <tr className="border-b border-slate-200 dark:border-slate-700">
-                      <td className="px-4 py-3 font-medium">Settlement</td>
-                      <td className="px-4 py-3">Off-chain</td>
-                      <td className="px-4 py-3">Anchored L1</td>
-                      <td className="px-4 py-3">Federated</td>
+                    <tr className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
+                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">Settlement</td>
+                      <td className="px-6 py-4">Off-chain</td>
+                      <td className="px-6 py-4">Anchored L1</td>
+                      <td className="px-6 py-4">Federated</td>
                     </tr>
-                    <tr className="border-b border-slate-200 dark:border-slate-700">
-                      <td className="px-4 py-3 font-medium">Speed</td>
-                      <td className="px-4 py-3">Instant</td>
-                      <td className="px-4 py-3">High throughput</td>
-                      <td className="px-4 py-3">High</td>
+                    <tr className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
+                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">Speed</td>
+                      <td className="px-6 py-4">Instant</td>
+                      <td className="px-6 py-4">High throughput</td>
+                      <td className="px-6 py-4">High</td>
                     </tr>
-                    <tr className="border-b border-slate-200 dark:border-slate-700">
-                      <td className="px-4 py-3 font-medium">Decentralisation</td>
-                      <td className="px-4 py-3">High</td>
-                      <td className="px-4 py-3">Variable</td>
-                      <td className="px-4 py-3">Medium</td>
+                    <tr className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
+                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">Decentralisation</td>
+                      <td className="px-6 py-4">High</td>
+                      <td className="px-6 py-4">Variable</td>
+                      <td className="px-6 py-4">Medium</td>
                     </tr>
-                    <tr>
-                      <td className="px-4 py-3 font-medium">Use Cases</td>
-                      <td className="px-4 py-3">Payments</td>
-                      <td className="px-4 py-3">Apps, DeFi, Compute</td>
-                      <td className="px-4 py-3">Private payments</td>
+                    <tr className="hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
+                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">Use Cases</td>
+                      <td className="px-6 py-4">Payments</td>
+                      <td className="px-6 py-4">Apps, DeFi, Compute</td>
+                      <td className="px-6 py-4">Private payments</td>
                     </tr>
                   </tbody>
                 </table>
@@ -741,35 +741,35 @@ const Bitcoin2026Report = () => {
                 3.5 Mining Elasticity Floor Model
               </h4>
 
-              <div className="my-8 overflow-x-auto">
-                <table className="w-full text-sm border border-slate-200 dark:border-slate-700">
+              <div className="my-10 overflow-x-auto">
+                <table className="w-full text-sm">
                   <thead>
-                    <tr className="bg-slate-100 dark:bg-slate-800">
-                      <th className="px-4 py-3 text-left font-serif font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700">Factor</th>
-                      <th className="px-4 py-3 text-left font-serif font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700">Dynamics</th>
-                      <th className="px-4 py-3 text-left font-serif font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700">Effect on Price Floor</th>
+                    <tr className="border-b-2 border-slate-300 dark:border-slate-700">
+                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Factor</th>
+                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Dynamics</th>
+                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Effect on Price Floor</th>
                     </tr>
                   </thead>
                   <tbody className="text-slate-700 dark:text-slate-300">
-                    <tr className="border-b border-slate-200 dark:border-slate-700">
-                      <td className="px-4 py-3 font-medium">Difficulty</td>
-                      <td className="px-4 py-3">Responsive to hash fluctuations</td>
-                      <td className="px-4 py-3">Stabilising</td>
+                    <tr className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
+                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">Difficulty</td>
+                      <td className="px-6 py-4">Responsive to hash fluctuations</td>
+                      <td className="px-6 py-4">Stabilising</td>
                     </tr>
-                    <tr className="border-b border-slate-200 dark:border-slate-700">
-                      <td className="px-4 py-3 font-medium">Energy Prices</td>
-                      <td className="px-4 py-3">Lower cost regions dominate</td>
-                      <td className="px-4 py-3">Lower floor sensitivity</td>
+                    <tr className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
+                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">Energy Prices</td>
+                      <td className="px-6 py-4">Lower cost regions dominate</td>
+                      <td className="px-6 py-4">Lower floor sensitivity</td>
                     </tr>
-                    <tr className="border-b border-slate-200 dark:border-slate-700">
-                      <td className="px-4 py-3 font-medium">Fee Market</td>
-                      <td className="px-4 py-3">Ordinals + settlement fees</td>
-                      <td className="px-4 py-3">Higher structural floor</td>
+                    <tr className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
+                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">Fee Market</td>
+                      <td className="px-6 py-4">Ordinals + settlement fees</td>
+                      <td className="px-6 py-4">Higher structural floor</td>
                     </tr>
-                    <tr>
-                      <td className="px-4 py-3 font-medium">Issuance</td>
-                      <td className="px-4 py-3">Reduced post-halving</td>
-                      <td className="px-4 py-3">Supply tightening</td>
+                    <tr className="hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
+                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">Issuance</td>
+                      <td className="px-6 py-4">Reduced post-halving</td>
+                      <td className="px-6 py-4">Supply tightening</td>
                     </tr>
                   </tbody>
                 </table>
