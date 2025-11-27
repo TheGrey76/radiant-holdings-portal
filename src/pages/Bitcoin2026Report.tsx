@@ -112,30 +112,40 @@ const Bitcoin2026Report = () => {
         </div>
       )}
 
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-background font-serif">
         <div className="container max-w-5xl mx-auto px-6 py-12">
           <div className="bg-background">
-            <div className="px-0 py-8 mb-12">
+            <div className="px-0 py-8 mb-12 border-b-2 border-report-gold/30">
               <div className="text-center mb-12">
-                <p className="text-xs font-light text-muted-foreground uppercase tracking-widest mb-6">Institutional Research Report</p>
-                <h1 className="text-5xl font-light text-foreground mb-3 tracking-tight">
+                <div className="mb-4 flex justify-center">
+                  <div className="h-px w-24 bg-report-gold"></div>
+                </div>
+                <p className="text-xs font-sans font-light text-report-navy uppercase tracking-widest mb-6 letterspacing-wider">Institutional Research Report</p>
+                <h1 className="text-6xl font-heading font-semibold text-report-navy-deep mb-3 tracking-tight">
                   Bitcoin 2026
                 </h1>
-                <p className="text-lg text-muted-foreground font-light tracking-wide">
+                <p className="text-xl text-muted-foreground font-light tracking-wide italic">
                   Macro-Liquidity Regime Analysis
                 </p>
+                <div className="mt-8 flex justify-center">
+                  <div className="h-px w-24 bg-report-gold"></div>
+                </div>
                 <div className="mt-6">
-                  <p className="text-sm font-light text-muted-foreground">ARIES76 Capital Intelligence</p>
+                  <p className="text-sm font-sans font-medium text-report-navy tracking-wide">ARIES76 Capital Intelligence</p>
                 </div>
               </div>
             </div>
 
             <div className="px-0 py-8 space-y-10">
               {/* Table of Contents */}
-              <div className="mb-12 pb-8 border-b border-border/20">
-                <h2 className="text-xl font-light text-foreground mb-6 tracking-wide">
-                  Table of Contents
-                </h2>
+              <div className="mb-12 pb-8">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="h-px flex-1 bg-report-gold/30"></div>
+                  <h2 className="text-2xl font-heading font-medium text-report-navy tracking-wide">
+                    Table of Contents
+                  </h2>
+                  <div className="h-px flex-1 bg-report-gold/30"></div>
+                </div>
                 <nav className="space-y-2">
                   <a 
                     href="#chapter-1" 
@@ -202,10 +212,14 @@ const Bitcoin2026Report = () => {
 
               <div id="chapter-1" className="scroll-mt-20 mb-10">
                 <div className="mb-8">
-                  <p className="text-xs font-light text-muted-foreground uppercase tracking-widest mb-4">Chapter I</p>
-                  <h2 className="text-4xl font-light text-foreground mb-3 leading-relaxed tracking-tight">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="h-8 w-1 bg-report-gold"></div>
+                    <p className="text-xs font-sans font-medium text-report-gold uppercase tracking-widest">Chapter I</p>
+                  </div>
+                  <h2 className="text-4xl font-heading font-semibold text-report-navy-deep mb-3 leading-relaxed">
                     Executive Summary & Macro–Liquidity Regime Analysis
                   </h2>
+                  <div className="h-px w-32 bg-report-gold/50 mt-4"></div>
                 </div>
               </div>
 
@@ -226,7 +240,7 @@ const Bitcoin2026Report = () => {
                 </figcaption>
               </figure>
 
-              <p className="text-base leading-relaxed text-foreground/80 mb-6">
+              <p className="text-lg leading-relaxed text-foreground/85 mb-6">
                 Figure 1 illustrates the synthetic price path of Bitcoin from 2013 to 2025. Although purely model-based, the series reproduces the core structural features of Bitcoin's historical behaviour: extended appreciation phases coinciding with abundant global liquidity, deep drawdowns during periods of tightening and quantitative tightening, and regime transitions triggered by policy inflection points and funding shocks. The main purpose of this synthetic series is not to replicate the exact historical path, but to capture the macro signature that will inform the equilibrium band analysis for 2026.
               </p>
 
@@ -292,7 +306,8 @@ const Bitcoin2026Report = () => {
                 For the 2025–2026 period, the combination of high sovereign debt loads, elevated refinancing needs and rising interest burdens makes it increasingly difficult for developed-market central banks to sustain a regime of structurally positive and rising real yields. As maturity walls approach and fiscal arithmetic becomes more challenging, the probability of a transition toward a lower real-rate environment increases. From Bitcoin's perspective, this constitutes a supportive macro backdrop, particularly when combined with gradual easing of quantitative tightening.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-8 mb-5 tracking-wide">
+              <h3 className="text-2xl font-heading font-medium text-report-navy mt-8 mb-5 tracking-wide flex items-center gap-3">
+                <span className="text-report-gold">I</span>
                 3. Shadow Liquidity, Stablecoins and Cross-Border Dollar Flow
               </h3>
 
