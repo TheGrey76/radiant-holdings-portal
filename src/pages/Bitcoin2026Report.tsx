@@ -1,8 +1,48 @@
 import { Helmet } from "react-helmet";
-import { ArrowUp, TrendingUp, BarChart3, Layers, Database, Activity, Coins, Network, Target, LineChart, Lightbulb } from "lucide-react";
+import { ArrowUp, TrendingUp, BarChart3, Layers, Database, Activity, Coins, Network, Target, LineChart, Lightbulb, HelpCircle } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { LineChart as RechartsLineChart, Line, AreaChart, Area, BarChart as RechartsBarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
+import { LineChart as RechartsLineChart, Line, AreaChart, Area, BarChart as RechartsBarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Legend } from "recharts";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+
+// Glossary definitions
+const glossary: Record<string, string> = {
+  "M2": "Aggregato monetario che include circolante, depositi bancari e strumenti finanziari a breve termine. Misura la quantità totale di denaro disponibile nell'economia.",
+  "real rates": "Tassi d'interesse reali, calcolati sottraendo l'inflazione dai tassi nominali. Tassi reali negativi rendono Bitcoin più attraente come riserva di valore.",
+  "ETF flows": "Flussi di capitale in entrata o uscita dagli ETF Bitcoin. Indicatore chiave della domanda istituzionale e del sentiment degli investitori professionali.",
+  "halving": "Evento programmatico che dimezza la ricompensa per il mining di Bitcoin ogni 210.000 blocchi (circa ogni 4 anni), riducendo l'offerta di nuovi Bitcoin.",
+  "store of value": "Asset che mantiene il suo valore nel tempo senza deprezzarsi. Bitcoin è sempre più considerato un 'oro digitale' con questa funzione.",
+  "hash rate": "Potenza computazionale totale della rete Bitcoin, misura della sicurezza e dell'adozione da parte dei miner.",
+  "on-chain": "Dati e metriche derivati direttamente dalla blockchain Bitcoin, come transazioni, indirizzi attivi e volume di scambi.",
+  "QE": "Quantitative Easing - politica monetaria espansiva in cui le banche centrali acquistano asset per aumentare la liquidità nel sistema finanziario.",
+  "Fed pivot": "Cambio di direzione della politica monetaria della Federal Reserve, tipicamente da restrittiva (tassi alti) a espansiva (tassi bassi).",
+  "risk-on": "Contesto di mercato in cui gli investitori sono propensi al rischio e allocano capitale su asset più volatili come azioni e criptovalute.",
+  "liquidity conditions": "Disponibilità di capitale nel sistema finanziario. Maggiore liquidità tende a favorire asset come Bitcoin.",
+  "ETF": "Exchange-Traded Fund - fondo d'investimento negoziato in borsa che replica un asset o indice sottostante, permettendo esposizione semplificata.",
+  "macro-liquidity": "Aggregato di liquidità globale determinato da politiche monetarie delle banche centrali, crescita M2, e condizioni di credito.",
+  "balance-sheet": "Prospetto contabile che mostra attività, passività e patrimonio netto di un'entità. Per le banche centrali, indica espansione o contrazione monetaria."
+};
+
+// Glossary Term Component
+const GlossaryTerm = ({ term, children }: { term: string; children: React.ReactNode }) => {
+  const definition = glossary[term];
+  
+  if (!definition) return <>{children}</>;
+  
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <span className="underline decoration-dotted decoration-primary/50 cursor-help hover:decoration-primary transition-colors inline-flex items-baseline gap-0.5">
+          {children}
+          <HelpCircle className="w-3 h-3 text-primary/60 inline" />
+        </span>
+      </TooltipTrigger>
+      <TooltipContent className="max-w-xs">
+        <p className="text-sm">{definition}</p>
+      </TooltipContent>
+    </Tooltip>
+  );
+};
 
 const Bitcoin2026Report = () => {
   const [showBackToTop, setShowBackToTop] = useState(false);
@@ -273,7 +313,7 @@ const Bitcoin2026Report = () => {
   ];
 
   return (
-    <>
+    <TooltipProvider>
       <Helmet>
         <title>Bitcoin 2026: Institutional Analysis | ARIES76</title>
         <meta 
@@ -367,7 +407,7 @@ const Bitcoin2026Report = () => {
             <div className="prose prose-lg max-w-none space-y-8">
               <div className="p-6 rounded-2xl bg-gradient-to-br from-primary/5 to-accent/5 border border-primary/10">
                 <p className="text-foreground/90 leading-relaxed m-0">
-                  Bitcoin's trajectory over the 2025–2026 horizon must be interpreted within a refined macro-liquidity framework rather than through the simplistic heuristics that characterised earlier cycles. Bitcoin has evolved into a liquidity-sensitive macro asset whose price formation is dominated by global M2 impulses, real-rate dynamics, cross-border dollar transmission, and the balance-sheet elasticity of shadow banking intermediaries and ETF market makers.
+                  Bitcoin's trajectory over the 2025–2026 horizon must be interpreted within a refined <GlossaryTerm term="macro-liquidity">macro-liquidity</GlossaryTerm> framework rather than through the simplistic heuristics that characterised earlier cycles. Bitcoin has evolved into a liquidity-sensitive macro asset whose price formation is dominated by global <GlossaryTerm term="M2">M2</GlossaryTerm> impulses, <GlossaryTerm term="real rates">real-rate</GlossaryTerm> dynamics, cross-border dollar transmission, and the <GlossaryTerm term="balance-sheet">balance-sheet</GlossaryTerm> elasticity of shadow banking intermediaries and <GlossaryTerm term="ETF">ETF</GlossaryTerm> market makers.
                 </p>
               </div>
 
@@ -385,7 +425,7 @@ const Bitcoin2026Report = () => {
                       style={{ fontSize: '12px' }}
                       label={{ value: 'BTC Price ($k)', angle: -90, position: 'insideLeft', style: { fill: 'hsl(var(--muted-foreground))' } }}
                     />
-                    <Tooltip 
+                    <RechartsTooltip 
                       contentStyle={{ 
                         backgroundColor: 'hsl(var(--card))', 
                         border: '2px solid hsl(var(--primary) / 0.2)',
@@ -421,7 +461,7 @@ const Bitcoin2026Report = () => {
                     Global Liquidity
                   </h4>
                   <p className="text-sm text-foreground/80 leading-relaxed">
-                    Global M2 remains the most important macro variable. What matters is the marginal liquidity impulse: accelerations produce convex responses in Bitcoin, while stagnation coincides with volatility spikes.
+                    Global <GlossaryTerm term="M2">M2</GlossaryTerm> remains the most important macro variable. What matters is the marginal <GlossaryTerm term="liquidity conditions">liquidity</GlossaryTerm> impulse: accelerations produce convex responses in Bitcoin, while stagnation coincides with volatility spikes.
                   </p>
                 </div>
 
@@ -431,7 +471,7 @@ const Bitcoin2026Report = () => {
                     Real Rates Impact
                   </h4>
                   <p className="text-sm text-foreground/80 leading-relaxed">
-                    Rising real yields increase opportunity cost of non-yielding assets. Declining real yields reduce that cost and incentivise search for convex, high-beta exposures like Bitcoin.
+                    Rising <GlossaryTerm term="real rates">real yields</GlossaryTerm> increase opportunity cost of non-yielding assets. Declining <GlossaryTerm term="real rates">real yields</GlossaryTerm> reduce that cost and incentivise search for convex, high-beta exposures like Bitcoin.
                   </p>
                 </div>
               </div>
@@ -456,7 +496,7 @@ const Bitcoin2026Report = () => {
                       style={{ fontSize: '12px' }}
                       label={{ value: 'Index (2013=100)', angle: -90, position: 'insideLeft', style: { fill: 'hsl(var(--muted-foreground))' } }}
                     />
-                    <Tooltip 
+                    <RechartsTooltip 
                       contentStyle={{ 
                         backgroundColor: 'hsl(var(--card))', 
                         border: '2px solid hsl(var(--accent) / 0.2)',
@@ -495,7 +535,7 @@ const Bitcoin2026Report = () => {
                       style={{ fontSize: '12px' }}
                       label={{ value: 'Real Rate (%)', angle: -90, position: 'insideLeft', style: { fill: 'hsl(var(--muted-foreground))' } }}
                     />
-                    <Tooltip 
+                    <RechartsTooltip 
                       contentStyle={{ 
                         backgroundColor: 'hsl(var(--card))', 
                         border: '2px solid hsl(var(--primary) / 0.2)',
@@ -532,15 +572,15 @@ const Bitcoin2026Report = () => {
               <div className="p-8 rounded-2xl bg-gradient-to-br from-primary/5 via-accent/5 to-background border-2 border-primary/10">
                 <h4 className="text-xl font-bold text-foreground mb-4">Key Synthesis</h4>
                 <p className="text-foreground/80 leading-relaxed">
-                  The combined evidence supports a clear macro identity for Bitcoin. It is a high-convexity, liquidity-sensitive asset whose price behaviour is governed less by "cycles" and more by the interplay between global M2 growth, real-rate trends, shadow liquidity and institutional flow channels.
+                  The combined evidence supports a clear macro identity for Bitcoin. It is a high-convexity, liquidity-sensitive asset whose price behaviour is governed less by "cycles" and more by the interplay between global <GlossaryTerm term="M2">M2</GlossaryTerm> growth, <GlossaryTerm term="real rates">real-rate</GlossaryTerm> trends, shadow <GlossaryTerm term="liquidity conditions">liquidity</GlossaryTerm> and institutional flow channels.
                 </p>
               </div>
 
               <KeyTakeaways insights={[
-                "Bitcoin has evolved into a macro liquidity-sensitive asset whose price is now dominated by global M2 impulses, real-rate dynamics, and institutional ETF flows rather than simplistic halving cycles.",
-                "Global M2 acceleration produces convex upside responses while stagnation triggers volatility spikes—the marginal liquidity impulse matters more than absolute levels.",
-                "Declining real yields reduce the opportunity cost of holding non-yielding assets like Bitcoin, creating powerful tailwinds when combined with monetary expansion.",
-                "Bitcoin's structural transformation into an institutional asset class means its price formation is increasingly governed by balance-sheet elasticity of shadow banks and ETF market makers."
+                "Bitcoin has evolved into a macro liquidity-sensitive asset whose price is now dominated by global <GlossaryTerm term='M2'>M2</GlossaryTerm> impulses, <GlossaryTerm term='real rates'>real-rate</GlossaryTerm> dynamics, and institutional <GlossaryTerm term='ETF flows'>ETF flows</GlossaryTerm> rather than simplistic <GlossaryTerm term='halving'>halving</GlossaryTerm> cycles.",
+                "Global <GlossaryTerm term='M2'>M2</GlossaryTerm> acceleration produces convex upside responses while stagnation triggers volatility spikes—the marginal <GlossaryTerm term='liquidity conditions'>liquidity</GlossaryTerm> impulse matters more than absolute levels.",
+                "Declining <GlossaryTerm term='real rates'>real yields</GlossaryTerm> reduce the opportunity cost of holding non-yielding assets like Bitcoin, creating powerful tailwinds when combined with monetary expansion.",
+                "Bitcoin's structural transformation into an institutional asset class means its price formation is increasingly governed by <GlossaryTerm term='balance-sheet'>balance-sheet</GlossaryTerm> elasticity of shadow banks and <GlossaryTerm term='ETF'>ETF</GlossaryTerm> market makers."
               ]} />
             </div>
           </ChapterSection>
@@ -607,7 +647,7 @@ const Bitcoin2026Report = () => {
                     <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
                     <XAxis dataKey="month" stroke="hsl(var(--muted-foreground))" />
                     <YAxis stroke="hsl(var(--muted-foreground))" label={{ value: '$k', angle: -90, position: 'insideLeft' }} />
-                    <Tooltip content={<CustomPriceTooltip />} />
+                    <RechartsTooltip content={<CustomPriceTooltip />} />
                     <Legend />
                     <Area type="monotone" dataKey="high" stroke="hsl(var(--accent))" fill="url(#colorHigh)" name="High Case" />
                     <Area type="monotone" dataKey="base" stroke="hsl(var(--primary))" fill="url(#colorBase)" name="Base Case" />
@@ -719,7 +759,7 @@ const Bitcoin2026Report = () => {
                     <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
                     <XAxis dataKey="week" stroke="hsl(var(--muted-foreground))" />
                     <YAxis stroke="hsl(var(--muted-foreground))" label={{ value: '$M', angle: -90, position: 'insideLeft' }} />
-                    <Tooltip content={<CustomETFTooltip />} />
+                    <RechartsTooltip content={<CustomETFTooltip />} />
                     <Legend />
                     <Bar dataKey="inflows" fill="hsl(var(--primary))" name="Inflows" radius={[8, 8, 0, 0]} />
                     <Bar dataKey="outflows" fill="hsl(var(--muted-foreground))" name="Outflows" radius={[8, 8, 0, 0]} />
@@ -928,7 +968,7 @@ const Bitcoin2026Report = () => {
                     <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
                     <XAxis dataKey="quarter" stroke="hsl(var(--muted-foreground))" />
                     <YAxis stroke="hsl(var(--muted-foreground))" label={{ value: '$k', angle: -90, position: 'insideLeft' }} />
-                    <Tooltip content={<CustomMiningTooltip />} />
+                    <RechartsTooltip content={<CustomMiningTooltip />} />
                     <Legend />
                     <Line type="monotone" dataKey="cost" stroke="hsl(var(--muted-foreground))" strokeWidth={3} name="Production Cost" strokeDasharray="5 5" />
                     <Line type="monotone" dataKey="price" stroke="hsl(var(--primary))" strokeWidth={3} name="Bitcoin Price" />
@@ -1244,7 +1284,7 @@ const Bitcoin2026Report = () => {
           background-size: 40px 40px;
         }
       `}</style>
-    </>
+    </TooltipProvider>
   );
 };
 
