@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet";
-import { ArrowUp, TrendingUp, BarChart3, Layers } from "lucide-react";
+import { ArrowUp, TrendingUp, BarChart3, Layers, Database, Activity, Coins, Network, Target, LineChart } from "lucide-react";
 import { useState, useEffect } from "react";
 import btcPriceFig from "@/assets/bitcoin_2026_fig1_btc.png";
 import m2LiquidityFig from "@/assets/bitcoin_2026_fig2_m2.png";
@@ -35,6 +35,13 @@ const Bitcoin2026Report = () => {
     { id: "chapter-1", number: "I", title: "Executive Summary & Macro Analysis", icon: TrendingUp },
     { id: "chapter-2", number: "II", title: "Advanced Price Framework", icon: BarChart3 },
     { id: "chapter-3", number: "III", title: "Quantitative Regime Models", icon: Layers },
+    { id: "chapter-4", number: "IV", title: "ETF Flow Dynamics & Market Microstructure", icon: Network },
+    { id: "chapter-5", number: "V", title: "On-Chain Analytics & Entity Behavior", icon: Database },
+    { id: "chapter-6", number: "VI", title: "Derivatives Markets & Positioning", icon: Activity },
+    { id: "chapter-7", number: "VII", title: "Mining Economics & Hashrate Analysis", icon: Coins },
+    { id: "chapter-8", number: "VIII", title: "Supply Dynamics & Long-Term Holders", icon: LineChart },
+    { id: "chapter-9", number: "IX", title: "Scenario Analysis & Risk Framework", icon: Target },
+    { id: "chapter-10", number: "X", title: "2026 Price Targets & Investment Implications", icon: TrendingUp },
   ];
 
   return (
@@ -78,7 +85,8 @@ const Bitcoin2026Report = () => {
 
         {/* Table of Contents */}
         <div className="container max-w-6xl mx-auto px-6 py-16">
-          <div className="grid md:grid-cols-3 gap-4">
+          <h2 className="text-2xl font-bold text-foreground mb-8">Table of Contents</h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             {chapters.map((chapter) => (
               <a
                 key={chapter.id}
@@ -285,6 +293,387 @@ const Bitcoin2026Report = () => {
                     <span className="text-lg font-bold text-muted-foreground">$45k–$60k</span>
                   </div>
                 </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Chapter IV */}
+          <section id="chapter-4" data-section="chapter-4" className="mb-24 scroll-mt-20">
+            <div className="mb-12">
+              <div className="inline-flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <Network className="w-5 h-5 text-primary" />
+                </div>
+                <span className="text-xs font-bold text-primary uppercase tracking-widest">Chapter IV</span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 leading-tight">
+                ETF Flow Dynamics & Market Microstructure
+              </h2>
+              <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent rounded-full"></div>
+            </div>
+
+            <div className="prose prose-lg max-w-none space-y-8">
+              <div className="p-6 rounded-2xl bg-gradient-to-br from-primary/5 to-accent/5 border border-primary/10">
+                <p className="text-foreground/90 leading-relaxed m-0">
+                  The introduction of spot Bitcoin ETFs has fundamentally altered market microstructure. Institutional flows now move through regulated vehicles, creating new arbitrage channels and liquidity patterns that differ markedly from the pre-ETF era.
+                </p>
+              </div>
+
+              <p className="text-foreground/80 leading-relaxed">
+                ETF authorized participants (APs) arbitrage NAV-spot price differentials, compressing spreads but also creating structural dependencies on dealer balance sheets. During periods of elevated volatility, AP capacity constraints can amplify price swings as creation-redemption mechanisms face friction.
+              </p>
+
+              <div className="grid md:grid-cols-2 gap-6 my-12">
+                <div className="p-6 rounded-2xl bg-card border border-border/40">
+                  <h4 className="text-lg font-bold text-foreground mb-3">ETF Inflows</h4>
+                  <p className="text-sm text-foreground/70 leading-relaxed">
+                    Sustained ETF inflows reduce free float and create quasi-inelastic supply channels. Institutional buyers through ETFs typically hold longer than retail spot buyers, reducing circulating supply elasticity.
+                  </p>
+                </div>
+                <div className="p-6 rounded-2xl bg-card border border-border/40">
+                  <h4 className="text-lg font-bold text-foreground mb-3">Market Depth</h4>
+                  <p className="text-sm text-foreground/70 leading-relaxed">
+                    ETF market makers hedge delta exposure through spot and futures, concentrating liquidity provision in fewer hands. This creates efficiency gains in normal markets but potential fragility during stress events.
+                  </p>
+                </div>
+              </div>
+
+              <p className="text-foreground/80 leading-relaxed">
+                The correlation between ETF net flows and Bitcoin price appreciation has been statistically significant. Large institutional allocators rebalance portfolios through ETFs, creating persistent demand that differs from speculative retail flows.
+              </p>
+            </div>
+          </section>
+
+          {/* Chapter V */}
+          <section id="chapter-5" data-section="chapter-5" className="mb-24 scroll-mt-20">
+            <div className="mb-12">
+              <div className="inline-flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <Database className="w-5 h-5 text-primary" />
+                </div>
+                <span className="text-xs font-bold text-primary uppercase tracking-widest">Chapter V</span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 leading-tight">
+                On-Chain Analytics & Entity Behavior
+              </h2>
+              <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent rounded-full"></div>
+            </div>
+
+            <div className="prose prose-lg max-w-none space-y-8">
+              <p className="text-foreground/80 leading-relaxed">
+                On-chain data provides direct visibility into supply distribution, holder behavior, and transaction patterns. Entity-adjusted metrics distinguish between genuine holders and custodial aggregation, revealing the true composition of Bitcoin ownership.
+              </p>
+
+              <div className="p-6 rounded-2xl bg-gradient-to-br from-primary/5 to-accent/5 border border-primary/10">
+                <h4 className="text-lg font-bold text-foreground mb-3">Long-Term Holder Dynamics</h4>
+                <p className="text-sm text-foreground/70 leading-relaxed m-0">
+                  Long-term holders (LTH)—defined as addresses holding for 155+ days—represent the most conviction-driven segment. LTH supply peaks typically precede market tops, while LTH accumulation during drawdowns signals bottom formation.
+                </p>
+              </div>
+
+              <p className="text-foreground/80 leading-relaxed">
+                Entity-adjusted metrics correct for exchange consolidation and custodial structures. Raw address counts overstate distribution; entity clustering reveals concentrated ownership but also identifies genuine retail participation growth through regulated custodians.
+              </p>
+
+              <div className="p-6 rounded-2xl bg-card border border-border/40">
+                <h4 className="text-lg font-bold text-foreground mb-4">Key On-Chain Signals</h4>
+                <ul className="space-y-3 text-sm text-foreground/70">
+                  <li className="flex items-start gap-3">
+                    <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2"></div>
+                    <span>Realized price—aggregate cost basis—acts as psychological support during corrections</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2"></div>
+                    <span>MVRV ratio (market cap / realized cap) signals overextension above 3.5 and capitulation below 1.0</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2"></div>
+                    <span>Exchange net flows reveal institutional accumulation (outflows) vs. retail distribution (inflows)</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          {/* Chapter VI */}
+          <section id="chapter-6" data-section="chapter-6" className="mb-24 scroll-mt-20">
+            <div className="mb-12">
+              <div className="inline-flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <Activity className="w-5 h-5 text-primary" />
+                </div>
+                <span className="text-xs font-bold text-primary uppercase tracking-widest">Chapter VI</span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 leading-tight">
+                Derivatives Markets & Positioning
+              </h2>
+              <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent rounded-full"></div>
+            </div>
+
+            <div className="prose prose-lg max-w-none space-y-8">
+              <p className="text-foreground/80 leading-relaxed">
+                Derivatives markets—futures, options, perpetual swaps—now determine price formation as much as spot markets. Open interest, funding rates, and implied volatility surfaces provide real-time signals of positioning and sentiment.
+              </p>
+
+              <div className="grid md:grid-cols-3 gap-4">
+                <div className="p-5 rounded-xl bg-card border border-border/40">
+                  <div className="text-2xl font-bold text-primary mb-2">Futures OI</div>
+                  <p className="text-xs text-muted-foreground">CME open interest reflects institutional positioning and hedging demand</p>
+                </div>
+                <div className="p-5 rounded-xl bg-card border border-border/40">
+                  <div className="text-2xl font-bold text-accent mb-2">Funding Rates</div>
+                  <p className="text-xs text-muted-foreground">Perpetual swap funding indicates leverage and directional bias in retail markets</p>
+                </div>
+                <div className="p-5 rounded-xl bg-card border border-border/40">
+                  <div className="text-2xl font-bold text-muted-foreground mb-2">Implied Vol</div>
+                  <p className="text-xs text-muted-foreground">Options skew and term structure signal tail-risk perception and hedging flows</p>
+                </div>
+              </div>
+
+              <p className="text-foreground/80 leading-relaxed">
+                Rising open interest during uptrends confirms conviction; rising OI during downtrends suggests forced liquidations. Funding rate extremes—both positive and negative—historically precede reversals as overleveraged positions unwind.
+              </p>
+
+              <div className="p-6 rounded-2xl bg-gradient-to-br from-primary/5 to-accent/5 border border-primary/10">
+                <p className="text-foreground/90 leading-relaxed m-0">
+                  Options markets reveal institutional hedging patterns. Put-call skew, volatility smiles, and gamma exposure indicate where large players are positioned and where reflexive price action may occur during sharp moves.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          {/* Chapter VII */}
+          <section id="chapter-7" data-section="chapter-7" className="mb-24 scroll-mt-20">
+            <div className="mb-12">
+              <div className="inline-flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <Coins className="w-5 h-5 text-primary" />
+                </div>
+                <span className="text-xs font-bold text-primary uppercase tracking-widest">Chapter VII</span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 leading-tight">
+                Mining Economics & Hashrate Analysis
+              </h2>
+              <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent rounded-full"></div>
+            </div>
+
+            <div className="prose prose-lg max-w-none space-y-8">
+              <p className="text-foreground/80 leading-relaxed">
+                Mining economics establish a dynamic production cost floor for Bitcoin. Hashrate growth, energy costs, and miner profitability metrics reveal the marginal cost of supply and potential capitulation thresholds during prolonged drawdowns.
+              </p>
+
+              <div className="grid md:grid-cols-2 gap-6 my-12">
+                <div className="p-6 rounded-2xl bg-card border border-border/40">
+                  <h4 className="text-lg font-bold text-foreground mb-3">Hashrate Security</h4>
+                  <p className="text-sm text-foreground/70 leading-relaxed">
+                    Rising hashrate reflects increasing capital investment in mining infrastructure, signaling long-term confidence despite short-term price volatility. Network security scales with computational power.
+                  </p>
+                </div>
+                <div className="p-6 rounded-2xl bg-card border border-border/40">
+                  <h4 className="text-lg font-bold text-foreground mb-3">Production Costs</h4>
+                  <p className="text-sm text-foreground/70 leading-relaxed">
+                    Aggregate production costs—electricity, hardware amortization, operational overhead—create a dynamic price floor. When Bitcoin trades below production cost, marginal miners capitulate.
+                  </p>
+                </div>
+              </div>
+
+              <p className="text-foreground/80 leading-relaxed">
+                Miner revenue composition shifts post-halving. Block subsidies decline while fee markets become more relevant. Transaction fee volatility during network congestion creates revenue uncertainty for miners but demonstrates organic demand for block space.
+              </p>
+
+              <div className="p-6 rounded-2xl bg-gradient-to-br from-primary/5 to-accent/5 border border-primary/10">
+                <p className="text-foreground/90 leading-relaxed m-0">
+                  Publicly-traded miners reveal operational efficiency through disclosed hashrate, energy costs, and treasury holdings. Miner selling pressure during bear markets represents predictable supply but also creates accumulation opportunities for long-term holders.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          {/* Chapter VIII */}
+          <section id="chapter-8" data-section="chapter-8" className="mb-24 scroll-mt-20">
+            <div className="mb-12">
+              <div className="inline-flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <LineChart className="w-5 h-5 text-primary" />
+                </div>
+                <span className="text-xs font-bold text-primary uppercase tracking-widest">Chapter VIII</span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 leading-tight">
+                Supply Dynamics & Long-Term Holders
+              </h2>
+              <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent rounded-full"></div>
+            </div>
+
+            <div className="prose prose-lg max-w-none space-y-8">
+              <p className="text-foreground/80 leading-relaxed">
+                Bitcoin supply is absolutely capped at 21 million coins, but circulating supply elasticity varies with holder behavior. Long-term holders remove supply from active circulation, while new issuance and miner selling inject marginal supply.
+              </p>
+
+              <div className="p-6 rounded-2xl bg-gradient-to-br from-primary/5 to-accent/5 border border-primary/10">
+                <h4 className="text-lg font-bold text-foreground mb-3">Illiquid Supply Growth</h4>
+                <p className="text-sm text-foreground/70 leading-relaxed m-0">
+                  Illiquid supply—coins held by entities unlikely to sell—has grown steadily through ETF accumulation, corporate treasuries, and long-term holder conviction. This reduces available float and amplifies upside convexity during demand shocks.
+                </p>
+              </div>
+
+              <p className="text-foreground/80 leading-relaxed">
+                The progression from liquid to illiquid supply follows predictable patterns. Coins move from speculative retail hands to long-term institutional custody during bull markets, then consolidate further during bear market capitulations as weak hands exit.
+              </p>
+
+              <div className="p-6 rounded-2xl bg-card border border-border/40">
+                <h4 className="text-lg font-bold text-foreground mb-4">Supply Distribution Metrics</h4>
+                <ul className="space-y-3 text-sm text-foreground/70">
+                  <li className="flex items-start gap-3">
+                    <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2"></div>
+                    <span>Highly liquid supply: coins held less than 3 months, typically retail and speculative</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2"></div>
+                    <span>Liquid supply: 3–12 months holding period, transitional ownership</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2"></div>
+                    <span>Illiquid supply: 12+ months, institutiona l and conviction-driven holders</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          {/* Chapter IX */}
+          <section id="chapter-9" data-section="chapter-9" className="mb-24 scroll-mt-20">
+            <div className="mb-12">
+              <div className="inline-flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <Target className="w-5 h-5 text-primary" />
+                </div>
+                <span className="text-xs font-bold text-primary uppercase tracking-widest">Chapter IX</span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 leading-tight">
+                Scenario Analysis & Risk Framework
+              </h2>
+              <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent rounded-full"></div>
+            </div>
+
+            <div className="prose prose-lg max-w-none space-y-8">
+              <p className="text-foreground/80 leading-relaxed">
+                Institutional allocators require probabilistic scenario frameworks rather than single-point forecasts. The following scenarios integrate macro-liquidity conditions, derivatives positioning, on-chain behavior, and mining economics into coherent narratives.
+              </p>
+
+              <div className="space-y-4">
+                <div className="p-6 rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-primary/20">
+                  <div className="flex items-center justify-between mb-3">
+                    <h4 className="text-xl font-bold text-foreground">Base Case Scenario (60% Probability)</h4>
+                    <span className="text-2xl font-bold text-primary">$96k–$132k</span>
+                  </div>
+                  <p className="text-sm text-foreground/70 leading-relaxed">
+                    Gradual liquidity expansion, stable ETF inflows, orderly mining transitions post-halving. Real rates decline modestly as central banks ease. Institutional adoption continues through regulated vehicles. Derivatives positioning remains balanced without extreme leverage.
+                  </p>
+                </div>
+
+                <div className="p-6 rounded-2xl bg-gradient-to-br from-accent/10 to-accent/5 border-2 border-accent/20">
+                  <div className="flex items-center justify-between mb-3">
+                    <h4 className="text-xl font-bold text-foreground">High Case Scenario (25% Probability)</h4>
+                    <span className="text-2xl font-bold text-accent">$180k–$260k</span>
+                  </div>
+                  <p className="text-sm text-foreground/70 leading-relaxed">
+                    Accelerated liquidity expansion, sovereign adoption or major sovereign wealth fund allocation, persistent ETF inflows exceeding new supply. Real rates turn negative. Reflexive positioning amplifies upside as gamma squeezes and short covering create convex price action.
+                  </p>
+                </div>
+
+                <div className="p-6 rounded-2xl bg-gradient-to-br from-muted/20 to-muted/10 border-2 border-border/40">
+                  <div className="flex items-center justify-between mb-3">
+                    <h4 className="text-xl font-bold text-foreground">Stress Case Scenario (15% Probability)</h4>
+                    <span className="text-2xl font-bold text-muted-foreground">$45k–$60k</span>
+                  </div>
+                  <p className="text-sm text-foreground/70 leading-relaxed">
+                    Liquidity contraction, regulatory disruption affecting ETFs or custody, miner capitulation as hashrate collapses. Real rates spike on renewed inflation or credit stress. Leveraged liquidation cascades through derivatives markets. Institutional outflows accelerate during risk-off environment.
+                  </p>
+                </div>
+              </div>
+
+              <div className="p-6 rounded-2xl bg-card border border-border/40">
+                <h4 className="text-lg font-bold text-foreground mb-4">Risk Factors & Mitigants</h4>
+                <ul className="space-y-3 text-sm text-foreground/70">
+                  <li className="flex items-start gap-3">
+                    <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2"></div>
+                    <span>Regulatory risk: ETF approval reversal, custody restrictions, mining bans</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2"></div>
+                    <span>Macro risk: credit crisis, sovereign debt defaults, unexpected monetary tightening</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2"></div>
+                    <span>Technical risk: protocol vulnerabilities, quantum computing threats, network splits</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          {/* Chapter X */}
+          <section id="chapter-10" data-section="chapter-10" className="mb-24 scroll-mt-20">
+            <div className="mb-12">
+              <div className="inline-flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <TrendingUp className="w-5 h-5 text-primary" />
+                </div>
+                <span className="text-xs font-bold text-primary uppercase tracking-widest">Chapter X</span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 leading-tight">
+                2026 Price Targets & Investment Implications
+              </h2>
+              <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent rounded-full"></div>
+            </div>
+
+            <div className="prose prose-lg max-w-none space-y-8">
+              <div className="p-8 rounded-2xl bg-gradient-to-br from-primary/10 via-accent/5 to-background border-2 border-primary/20">
+                <div className="text-center mb-6">
+                  <div className="text-sm uppercase tracking-wider text-primary font-bold mb-2">Institutional Weighted Target</div>
+                  <div className="text-5xl font-bold text-foreground mb-2">$138,000</div>
+                  <div className="text-sm text-muted-foreground">Scenario-weighted expected value for 2026</div>
+                </div>
+                <div className="grid grid-cols-3 gap-4 pt-6 border-t border-border/40">
+                  <div className="text-center">
+                    <div className="text-xs text-muted-foreground mb-1">Plausible Maximum</div>
+                    <div className="text-xl font-bold text-accent">$220,000</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-xs text-muted-foreground mb-1">Base Range</div>
+                    <div className="text-xl font-bold text-primary">$96k–$132k</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-xs text-muted-foreground mb-1">Stress Floor</div>
+                    <div className="text-xl font-bold text-muted-foreground">$50,000</div>
+                  </div>
+                </div>
+              </div>
+
+              <p className="text-foreground/80 leading-relaxed">
+                The institutional target of $138,000 represents a scenario-weighted expected value derived from the quantitative framework presented across this report. This figure integrates macro-liquidity impulses, supply dynamics, derivatives positioning, and historical regime behavior.
+              </p>
+
+              <div className="grid md:grid-cols-2 gap-6 my-12">
+                <div className="p-6 rounded-2xl bg-card border border-border/40">
+                  <h4 className="text-lg font-bold text-foreground mb-3">For Institutional Allocators</h4>
+                  <p className="text-sm text-foreground/70 leading-relaxed">
+                    Position Bitcoin as a convex macro hedge within multi-asset portfolios. Size allocations based on risk appetite and liquidity horizon. Consider dollar-cost averaging to smooth entry volatility.
+                  </p>
+                </div>
+                <div className="p-6 rounded-2xl bg-card border border-border/40">
+                  <h4 className="text-lg font-bold text-foreground mb-3">For Macro Desks</h4>
+                  <p className="text-sm text-foreground/70 leading-relaxed">
+                    Monitor M2 growth rates, real yield curves, and ETF flows for directional signals. Use derivatives for tactical positioning. Hedge tail risks through options during periods of low implied volatility.
+                  </p>
+                </div>
+              </div>
+
+              <div className="p-6 rounded-2xl bg-gradient-to-br from-primary/5 to-accent/5 border border-primary/10">
+                <h4 className="text-lg font-bold text-foreground mb-3">Conclusion</h4>
+                <p className="text-foreground/80 leading-relaxed m-0">
+                  Bitcoin in 2026 is no longer a speculative retail phenomenon. It is a macro liquidity instrument embedded in institutional portfolios, derivatives markets, and regulated investment vehicles. The valuation framework must evolve accordingly—from narrative-driven heuristics to quantitative regime models grounded in observable macro and microstructure data. The $138,000 target reflects this analytical rigor, offering institutional allocators a defensible framework for Bitcoin exposure within a diversified asset allocation strategy.
+                </p>
               </div>
             </div>
           </section>
