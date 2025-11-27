@@ -113,19 +113,19 @@ const Bitcoin2026Report = () => {
       )}
 
       <div className="min-h-screen bg-background">
-        <div className="container max-w-4xl mx-auto px-8 py-24">
+        <div className="container max-w-4xl mx-auto px-8 py-16">
           <div className="bg-background">
-            <div className="px-0 py-16 border-b border-border/40">
+            <div className="px-0 py-12 border-b border-border/40">
               <Link 
                 to="/" 
-                className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors mb-8 group"
+                className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors mb-6 group"
               >
                 <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
                 Back to Home
               </Link>
 
               <div className="text-center mb-6">
-                <p className="text-xs font-medium text-muted-foreground uppercase tracking-widest mb-8">Institutional Research Report</p>
+                <p className="text-xs font-medium text-muted-foreground uppercase tracking-widest mb-6">Institutional Research Report</p>
                 <h1 className="text-6xl font-light text-foreground mb-6 tracking-tight">
                   Bitcoin 2026
                 </h1>
@@ -140,10 +140,10 @@ const Bitcoin2026Report = () => {
               </div>
             </div>
 
-            <div className="px-0 py-20 space-y-16">
+            <div className="px-0 py-12 space-y-12">
               {/* Table of Contents */}
-              <div className="mb-20 pb-16 border-b border-border/40">
-                <h2 className="text-2xl font-light text-foreground mb-12 tracking-wide">
+              <div className="mb-16 pb-12 border-b border-border/40">
+                <h2 className="text-2xl font-light text-foreground mb-8 tracking-wide">
                   Table of Contents
                 </h2>
                 <nav className="space-y-3">
@@ -210,10 +210,10 @@ const Bitcoin2026Report = () => {
                 </nav>
               </div>
 
-              <div id="chapter-1" className="scroll-mt-20 mb-20">
-                <div className="mb-16">
-                  <p className="text-xs font-light text-muted-foreground uppercase tracking-widest mb-6">Chapter I</p>
-                  <h2 className="text-4xl font-light text-foreground mb-4 leading-relaxed tracking-tight">
+              <div id="chapter-1" className="scroll-mt-20 mb-12">
+                <div className="mb-10">
+                  <p className="text-xs font-light text-muted-foreground uppercase tracking-widest mb-4">Chapter I</p>
+                  <h2 className="text-4xl font-light text-foreground mb-3 leading-relaxed tracking-tight">
                     Executive Summary & Macro–Liquidity Regime Analysis
                   </h2>
                 </div>
@@ -223,7 +223,7 @@ const Bitcoin2026Report = () => {
                 Bitcoin's trajectory over the 2025–2026 horizon must be interpreted within a refined macro-liquidity framework rather than through the simplistic heuristics that characterised earlier cycles. Bitcoin has evolved into a liquidity-sensitive macro asset whose price formation is dominated by global M2 impulses, real-rate dynamics, cross-border dollar transmission, and the balance-sheet elasticity of shadow banking intermediaries and ETF market makers. The increasingly institutionalised microstructure—featuring CME futures, spot ETFs and professionalised delta-neutral liquidity provisioning—has fundamentally altered the conditions under which Bitcoin reacts to liquidity shocks and volatility clusters.
               </p>
 
-              <figure className="my-16 max-w-3xl mx-auto">
+              <figure className="my-12 max-w-3xl mx-auto">
                 <div className="border border-border/30 p-8">
                   <img 
                     src={btcPriceFig} 
@@ -244,7 +244,7 @@ const Bitcoin2026Report = () => {
                 The equilibrium trajectory for Bitcoin in 2026 is not the deterministic extension of past four-year cycles. It emerges from the interaction between liquidity-adjusted demand, derivatives-implied positioning and the progressive reduction in free float caused by treasury and ETF absorption. Institutional ownership through regulated funds creates a quasi-inelastic supply channel, amplifying upside convexity whenever liquidity expands, and exacerbating drawdowns in deleveraging regimes. In other words, Bitcoin increasingly trades as a global liquidity derivative rather than as a purely sentiment-driven speculative asset.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-12 mb-6 tracking-wide">
                 1. Global Liquidity as the Valuation Denominator
               </h3>
 
@@ -252,7 +252,7 @@ const Bitcoin2026Report = () => {
                 Global M2 remains the most important macro variable in understanding Bitcoin's medium-term dynamics. What matters for Bitcoin is not the level of money supply, but the marginal liquidity impulse: accelerations in M2 growth tend to produce convex responses in Bitcoin, while stagnation or contraction in liquidity often coincide with volatility spikes and price compression. This is because Bitcoin's supply is absolutely inelastic, while the free float available for trading is further constrained by long-term holders, custodial solutions and ETF structures.
               </p>
 
-              <figure className="my-16 max-w-3xl mx-auto">
+              <figure className="my-12 max-w-3xl mx-auto">
                 <div className="border border-border/30 p-8">
                   <img 
                     src={m2LiquidityFig} 
@@ -273,7 +273,7 @@ const Bitcoin2026Report = () => {
                 This behaviour justifies treating Bitcoin as a liquidity-sensitive macro instrument: a convex expression of the marginal dollar, rather than as a simple "digital commodity". As liquidity is withdrawn from the system, balance-sheet constraints tighten across dealers, banks and non-bank financial institutions, reducing their risk-taking capacity and suppressing demand for Bitcoin. When liquidity is injected or the pace of withdrawal slows, balance-sheet elasticity returns and Bitcoin becomes a natural recipient of that marginal risk capital.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-12 mb-6 tracking-wide">
                 2. Real Rates and the Opportunity Cost Channel
               </h3>
 
@@ -281,7 +281,7 @@ const Bitcoin2026Report = () => {
                 If global M2 defines the denominator for Bitcoin valuation, real interest rates shape the slope of the demand curve. Rising real yields increase the opportunity cost of holding non-yielding assets, encourage allocation into cash and high-quality duration, and force deleveraging across risk assets. Conversely, declining real yields reduce that opportunity cost and incentivise the search for convex, high-beta exposures to improving liquidity conditions. Bitcoin sits precisely in that slot.
               </p>
 
-              <figure className="my-16 max-w-3xl mx-auto">
+              <figure className="my-12 max-w-3xl mx-auto">
                 <div className="border border-border/30 p-8">
                   <img 
                     src={realRatesFig} 
@@ -302,7 +302,7 @@ const Bitcoin2026Report = () => {
                 For the 2025–2026 period, the combination of high sovereign debt loads, elevated refinancing needs and rising interest burdens makes it increasingly difficult for developed-market central banks to sustain a regime of structurally positive and rising real yields. As maturity walls approach and fiscal arithmetic becomes more challenging, the probability of a transition toward a lower real-rate environment increases. From Bitcoin's perspective, this constitutes a supportive macro backdrop, particularly when combined with gradual easing of quantitative tightening.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 3. Shadow Liquidity, Stablecoins and Cross-Border Dollar Flow
               </h3>
 
@@ -318,7 +318,7 @@ const Bitcoin2026Report = () => {
                 Bitcoin's integration into this shadow-liquidity complex reinforces its behaviour as a macro liquidity derivative. The asset no longer depends solely on "crypto-native" flows; instead, it is entangled with cross-border dollar dynamics, dealer risk budgets and the evolution of USD funding conditions globally. The framework used in this report therefore treats official M2, real rates and shadow liquidity as a single vector shaping Bitcoin's equilibrium range.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 4. ETF Flows and the Institutionalisation of Liquidity
               </h3>
 
@@ -330,7 +330,7 @@ const Bitcoin2026Report = () => {
                 The presence of ETFs means that Bitcoin is now embedded in multi-asset allocation frameworks and risk systems. Portfolio rebalancing decisions by large institutions—often driven by volatility-, drawdown- or VaR-based rules—can trigger structural inflows or outflows independent of crypto-native sentiment. As later chapters will show, ETF flows and CME open interest have become central state variables in models of Bitcoin's short- and medium-term price formation.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 5. Synthesis for the 2025–2026 Horizon
               </h3>
 
@@ -342,10 +342,10 @@ const Bitcoin2026Report = () => {
                 The remainder of this report builds on this macro foundation. Subsequent chapters will introduce quantitative regime models based on Hidden Markov Methods, liquidity-adjusted demand functions, derivatives-implied positioning, entity-adjusted on-chain analytics and mining-economics-based floor estimates. The goal is to translate the qualitative macro picture sketched in this first chapter into a fully fledged, probabilistic framework for Bitcoin pricing in 2026 that is usable by institutional allocators, CIOs and macro desks.
               </p>
 
-              <div id="chapter-2" className="mb-24 scroll-mt-24">
-                <div className="mb-16">
-                  <p className="text-xs font-light text-muted-foreground uppercase tracking-widest mb-6">Chapter II</p>
-                  <h2 className="text-4xl font-light text-foreground mb-4 leading-relaxed tracking-tight">
+              <div id="chapter-2" className="mb-12 scroll-mt-24">
+                <div className="mb-10">
+                  <p className="text-xs font-light text-muted-foreground uppercase tracking-widest mb-4">Chapter II</p>
+                  <h2 className="text-4xl font-light text-foreground mb-3 leading-relaxed tracking-tight">
                     Advanced Price Framework & Quantitative Modelling
                   </h2>
                 </div>
@@ -355,7 +355,7 @@ const Bitcoin2026Report = () => {
                 Bitcoin's valuation throughout the 2025–2026 horizon requires a structural departure from the narrative-driven models that dominated earlier phases of market development. The asset's behaviour is now determined by a multidimensional system of liquidity conditions, derivatives-implied flow constraints, treasury absorption, long-term holder dynamics and mining economics. This chapter introduces the Advanced Price Framework, the analytical backbone used to construct the equilibrium price range for Bitcoin in 2026. The framework integrates macro-liquidity vectors, regime theory, microstructure indicators and supply elasticity models into a coherent investment architecture.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 1. Liquidity-Adjusted Demand Model (LADM)
               </h3>
 
@@ -367,7 +367,7 @@ const Bitcoin2026Report = () => {
                 The key conclusion of LADM is that Bitcoin's valuation is a liquidity derivative. Its equilibrium price depends not on long-term adoption narratives, but on the interaction between macro-liquidity conditions and supply inelasticity. This insight is essential for constructing the 2026 equilibrium pricing band.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 2. Regime Analysis via Hidden Markov Models
               </h3>
 
@@ -379,7 +379,7 @@ const Bitcoin2026Report = () => {
                 Regime analysis matters because Bitcoin does not transition smoothly between volatility states. Expansion regimes tend to follow liquidity inflection points, rising stablecoin issuance, dealer gamma flips and ETF-driven net inflows. Deleveraging regimes typically coincide with spikes in real yields, funding squeezes, ETF outflows and contractions in shadow liquidity. Identifying regime transitions helps build forward-looking scenario structures and improves the fidelity of equilibrium range modelling.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 3. Derivatives-Implied Market Structure
               </h3>
 
@@ -407,7 +407,7 @@ const Bitcoin2026Report = () => {
                 CME futures serve as the anchor for global Bitcoin price discovery. The term structure, basis spreads and open interest levels provide information about institutional risk appetite, hedging flows and leverage conditions. Sustained contango regimes typically reflect confidence and liquidity expansion, while backwardation frequently coincides with funding stress or de-risking.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 4. Long-Term Holder Cost Basis & Realised Price Bands
               </h3>
 
@@ -415,7 +415,7 @@ const Bitcoin2026Report = () => {
                 Long-term holder (LTH) cost basis acts as a structural support level in Bitcoin's valuation. Bitcoin rarely trades sustainably below its LTH cost basis during liquidity expansions, and compressions toward it often signal capitulation in tightening regimes. Realised price bands, representing the aggregated cost basis of the entire network, reflect stress conditions and maturity of market structure. Tightening of these bands indicates reduced speculative churn and increased dominance of committed holders.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 5. Hash-Based Difficulty Elasticity Model
               </h3>
 
@@ -423,7 +423,7 @@ const Bitcoin2026Report = () => {
                 Mining economics define the elasticity of Bitcoin's supply. Difficulty adjusts dynamically to miner profitability, energy costs and issuance conditions. As miners move toward stranded energy exploitation and dynamic load management, difficulty responds more quickly to price changes. This increased elasticity reduces severe miner capitulation risk and contributes to a stabilising floor during downtrends. Post-halving issuance reduction further amplifies this effect.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 6. The Post-2024 Halving Structural Break
               </h3>
 
@@ -431,7 +431,7 @@ const Bitcoin2026Report = () => {
                 The 2024 halving introduced a structural break in Bitcoin's market behaviour. Earlier cycles were dominated by retail participation, speculative leverage and predictable supply shocks. The current environment is shaped by ETF flows, macro-liquidity conditions, derivatives hedging and institutional risk frameworks. Supply shocks still matter, but they no longer determine cycle timing. This justifies abandoning halving-based price models in favour of quantitative frameworks such as LADM, HMM clustering, derivatives positioning analysis and mining elasticity modelling.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 7. Synthesis for the Equilibrium Price Range
               </h3>
 
@@ -439,16 +439,16 @@ const Bitcoin2026Report = () => {
                 The Advanced Price Framework integrates all of the structural components described above into a unified modelling architecture. Bitcoin's 2026 equilibrium band is not a forecast, but a probabilistic range derived from liquidity conditions, supply constraints, volatility regime classification, derivatives-implied flows and mining economics. Later chapters will translate these components into explicit equilibrium pricing corridors, distribution curves and scenario-based outcomes suitable for institutional capital allocation decisions.
               </p>
 
-              <div id="chapter-3" className="scroll-mt-20 mb-20">
-                <div className="mb-16">
-                  <p className="text-xs font-light text-muted-foreground uppercase tracking-widest mb-6">Chapter III</p>
-                  <h2 className="text-4xl font-light text-foreground mb-4 leading-relaxed tracking-tight">
+              <div id="chapter-3" className="scroll-mt-20 mb-12">
+                <div className="mb-10">
+                  <p className="text-xs font-light text-muted-foreground uppercase tracking-widest mb-4">Chapter III</p>
+                  <h2 className="text-4xl font-light text-foreground mb-3 leading-relaxed tracking-tight">
                     Advanced On‑Chain Intelligence & Market Microstructure
                   </h2>
                 </div>
               </div>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 1. Introduction
               </h3>
 
@@ -460,7 +460,7 @@ const Bitcoin2026Report = () => {
                 This chapter provides a deeply expanded and fully institutional reinterpretation. It blends narrative analysis, entity‑adjusted indicators, microstructure schematics, liquidity‑flow tables and compact ASCII visualisations. The aim is to show Bitcoin's internal functioning as a macro‑sensitive liquidity system, not a retail-driven curiosity. The structure reflects the analytical style of large macro funds, volatility‑targeting allocators and ETF market‑making desks.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 2. Entity‑Adjusted On‑Chain Architecture
               </h3>
 
@@ -489,7 +489,7 @@ Distribution:   ██`}
                 <span className="font-semibold text-foreground">Interpretation:</span> A regime of <em>deep accumulation</em> by large entities historically precedes upward price repricing in the presence of improving liquidity conditions. Distribution spikes usually coincide with deleveraging episodes or ETF‑linked supply rotations.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 3. Exchange Reserve Dynamics
               </h3>
 
@@ -549,7 +549,7 @@ Distribution:   ██`}
                 This path has repeated historically at macro inflection points.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 4. Long‑Term Holder Cost Basis (LTH‑CB)
               </h3>
 
@@ -590,7 +590,7 @@ Distribution:   ██`}
                 The tightening of LTH‑CB around realised price bands suggests market maturity and reduced speculative churn. This is an essential contributor to the 2026 equilibrium floor estimation.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 5. Dormancy & Revival Dynamics
               </h3>
 
@@ -615,7 +615,7 @@ Low Dormancy → ██████████`}
                 <li><em>High revival</em> → supply unlocking, increasing probability of microstructure stress.</li>
               </ul>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 6. On‑Chain Leverage & Capital Efficiency
               </h3>
 
@@ -670,7 +670,7 @@ Low Dormancy → ██████████`}
                 High leverage regimes introduce nonlinear downside risk due to cascading liquidation thresholds.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 7. Market Microstructure: Global Multi‑Venue Liquidity Grid
               </h3>
 
@@ -733,7 +733,7 @@ Low Dormancy → ██████████`}
                 ETF flows in the U.S. now anchor global price discovery. Perpetual markets in Asia amplify volatility and propagate liquidations. Europe acts as the stabiliser.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 8. Slippage, Depth and Liquidity Fragmentation
               </h3>
 
@@ -786,7 +786,7 @@ Low Dormancy → ██████████`}
                 </table>
               </div>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 9. Synthesis for Price Formation
               </h3>
 
@@ -822,11 +822,11 @@ Low Dormancy → ██████████`}
                 This chapter is foundational for the <strong>2026 Equilibrium Price Model</strong> developed later.
               </p>
 
-              <h2 id="chapter-4" className="text-4xl font-light text-foreground mb-12 pb-8 border-b border-border/40 mt-24 scroll-mt-20 tracking-tight">
+              <h2 id="chapter-4" className="text-4xl font-light text-foreground mb-8 pb-6 border-b border-border/40 mt-16 scroll-mt-20 tracking-tight">
                 Chapter IV — Bitcoin Treasuries, Technology Outlook & Mining Economics
               </h2>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 1. Introduction
               </h3>
 
@@ -834,7 +834,7 @@ Low Dormancy → ██████████`}
                 Bitcoin's integration into corporate, sovereign and institutional treasuries marks one of the most profound structural shifts in the global macro landscape. Treasury behaviour no longer reflects episodic speculation but a steady migration toward non-sovereign reserves. At the same time, the technological foundations of Bitcoin—Layer 2 architectures, settlement frameworks and emerging programmability—are evolving to support institutional‑scale operations. Mining economics, once cyclical and precarious, now form part of a global energy‑driven arbitrage ecosystem. These three pillars—treasuries, technology and mining—jointly shape Bitcoin's long‑term equilibrium structure.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 2. Corporate & Sovereign Treasuries
               </h3>
 
@@ -864,7 +864,7 @@ Low Dormancy → ██████████`}
 
               <hr className="my-8 border-border" />
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 3. Technology Outlook to 2026
               </h3>
 
@@ -894,7 +894,7 @@ Low Dormancy → ██████████`}
 
               <hr className="my-8 border-border" />
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 4. Mining Economics: Post‑Halving Dynamics
               </h3>
 
@@ -932,7 +932,7 @@ Low Dormancy → ██████████`}
 
               <hr className="my-8 border-border" />
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 5. Synthesis
               </h3>
 
@@ -940,11 +940,11 @@ Low Dormancy → ██████████`}
                 Treasuries, technology and mining form a reinforcing feedback loop: treasury accumulation tightens free float, technological scaling broadens Bitcoin's addressable market and mining economics strengthen security while integrating Bitcoin into global energy markets. Together, these forces converge into a structural upward bias in Bitcoin's long‑term equilibrium state.
               </p>
 
-              <h2 id="chapter-5" className="text-4xl font-light text-foreground mb-12 pb-8 border-b border-border/40 mt-24 scroll-mt-20 tracking-tight">
+              <h2 id="chapter-5" className="text-4xl font-light text-foreground mb-8 pb-6 border-b border-border/40 mt-16 scroll-mt-20 tracking-tight">
                 Chapter V — Regulatory Outlook 2025–2026
               </h2>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 1. Introduction
               </h3>
 
@@ -952,7 +952,7 @@ Low Dormancy → ██████████`}
                 Bitcoin's regulatory environment in 2025–2026 is defined by the convergence of institutional adoption, cross-jurisdictional compliance requirements, and the global integration of digital asset markets. Regulatory frameworks increasingly shape liquidity access, investor participation, and the evolution of spot and derivatives products.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 2. United States: SEC, CFTC and Legislative Evolution
               </h3>
 
@@ -960,7 +960,7 @@ Low Dormancy → ██████████`}
                 The U.S. remains the global regulatory anchor due to the dominance of USD capital markets and CME futures. Spot ETFs have normalised exposure pathways for institutions, while ongoing legislative efforts aim to define commodity vs. security classification. The CFTC continues to reinforce its oversight of derivatives markets, while SEC supervision of custody and disclosures influences ETF behaviours and authorised participants.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 3. Europe: MiCA Implementation
               </h3>
 
@@ -968,7 +968,7 @@ Low Dormancy → ██████████`}
                 MiCA introduces harmonised regulation across the EU, integrating custody, exchange operations, stablecoin issuance and transparency requirements. For Bitcoin, MiCA enhances institutional certainty, facilitating passported services and compliant structured products.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 4. Asia and MENA: Divergent Models
               </h3>
 
@@ -976,7 +976,7 @@ Low Dormancy → ██████████`}
                 Asia exhibits heterogeneity. Japan maintains strict custody and exchange rules, Singapore focuses on risk-based frameworks, while Hong Kong positions itself as a regional institutional hub. MENA jurisdictions—especially the UAE—enhance licensing clarity to attract global asset managers.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 5. Stablecoin and Taxation Trends
               </h3>
 
@@ -984,7 +984,7 @@ Low Dormancy → ██████████`}
                 Stablecoin regulation intensifies globally, focusing on reserve quality, auditability and cross-border remittance oversight. Taxation frameworks move toward clarity on capital gains, staking, derivative income and corporate treasury treatment.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 6. Synthesis
               </h3>
 
@@ -992,7 +992,7 @@ Low Dormancy → ██████████`}
                 The regulatory trajectory supports growing institutional participation, deeper liquidity pools and the normalisation of Bitcoin as a cross-border macro asset.
               </p>
 
-              <h2 id="chapter-6" className="text-4xl font-light text-foreground mb-12 pb-8 border-b border-border/40 mt-24 scroll-mt-20 tracking-tight">
+              <h2 id="chapter-6" className="text-4xl font-light text-foreground mb-8 pb-6 border-b border-border/40 mt-16 scroll-mt-20 tracking-tight">
                 Chapter VI — Scenario Analysis for 2026
               </h2>
 
@@ -1000,7 +1000,7 @@ Low Dormancy → ██████████`}
                 Regulation defines accessibility, liquidity channels and institutional comfort. Bitcoin's regulatory environment is shifting from fragmented experimentation to structured integration. The trajectory across major jurisdictions indicates that Bitcoin is being normalised as a macro‑financial asset rather than treated as a speculative anomaly.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 1. United States
               </h3>
 
@@ -1008,7 +1008,7 @@ Low Dormancy → ██████████`}
                 The U.S. anchors global Bitcoin liquidity. The approval of spot ETFs triggered a regime shift by enabling regulated exposure through custodians, authorised participants and familiar wrappers. The SEC maintains strict oversight on custody, disclosures and market integrity, while the CFTC continues to regulate derivatives markets through CME. Legislative clarity on digital asset classification—commodity vs. security—is progressing slowly but directionally.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 2. Europe: MiCA
               </h3>
 
@@ -1016,7 +1016,7 @@ Low Dormancy → ██████████`}
                 MiCA introduces harmonised rules for exchanges, custodians and stablecoin issuers. For Bitcoin, MiCA reinforces operational certainty for institutions, enabling compliant structured products, ETPs and cross‑border distribution. It significantly lowers friction for asset managers seeking pan‑European Bitcoin exposure.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 3. Asia and MENA
               </h3>
 
@@ -1034,7 +1034,7 @@ Low Dormancy → ██████████`}
                 In MENA, the UAE accelerates licensing frameworks designed to attract global asset managers.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 4. Stablecoin, Custody and Taxation Trends
               </h3>
 
@@ -1042,7 +1042,7 @@ Low Dormancy → ██████████`}
                 Stablecoins face increasing regulatory scrutiny, particularly over reserve quality, auditability and cross‑border flows. Taxation frameworks aim to clarify capital gains treatment, staking income and corporate treasury holding rules. Custody regulations emphasise segregation of client assets and institutional‑grade operational standards.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 5. Synthesis
               </h3>
 
@@ -1058,7 +1058,7 @@ Low Dormancy → ██████████`}
                 Scenario analysis does not attempt to forecast deterministic outcomes. Instead, it evaluates the structure of possible states of the world and the liquidity configurations that accompany them.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 1. Base Case — Structural Expansion
               </h3>
 
@@ -1066,7 +1066,7 @@ Low Dormancy → ██████████`}
                 Global liquidity stabilises, real rates trend lower and ETF inflows remain steady. Treasury and long‑term holder absorption tighten supply. In this regime, Bitcoin experiences moderate but sustained upward repricing driven by structural supply inelasticity.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 2. High Case — Liquidity Reflation + Corporate/Sovereign Demand
               </h3>
 
@@ -1074,7 +1074,7 @@ Low Dormancy → ██████████`}
                 Should major central banks re‑expand balance sheets or corporates announce large treasury allocations, Bitcoin's price reacts convexly. ETF inflows accelerate and free‑float supply collapses. In such a scenario, upward repricing becomes nonlinear.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 3. Stress Case — Macro Deleveraging + ETF Outflows
               </h3>
 
@@ -1082,7 +1082,7 @@ Low Dormancy → ██████████`}
                 Rising real rates, liquidity contraction or regulatory fragmentation trigger risk‑off dynamics. ETF redemptions push sell‑pressure into spot markets. Orderbook depth evaporates. Bitcoin approaches structural floors defined by long‑term holder cost basis and mining elasticity.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 4. Interpretation
               </h3>
 
@@ -1090,11 +1090,11 @@ Low Dormancy → ██████████`}
                 Across all scenarios, the lower bound rises over time due to structural supply tightening. The upper bound becomes more convex due to decreasing free float and institutionalised liquidity demand.
               </p>
 
-              <h2 id="chapter-7" className="text-4xl font-light text-foreground mb-12 pb-8 border-b border-border/40 mt-24 scroll-mt-20 tracking-tight">
+              <h2 id="chapter-7" className="text-4xl font-light text-foreground mb-8 pb-6 border-b border-border/40 mt-16 scroll-mt-20 tracking-tight">
                 Chapter VII — Bitcoin 2026 Pricing Projection
               </h2>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 1. Introduction
               </h3>
 
@@ -1102,7 +1102,7 @@ Low Dormancy → ██████████`}
                 Bitcoin's valuation cannot be summarised in a single number. Instead, it emerges from interacting liquidity forces, supply inelasticity and regime‑dependent volatility. The pricing model for 2026 incorporates macro‑liquidity conditions, derivatives flows, on‑chain behaviour and institutional treasury absorption.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 2. Equilibrium Pricing Band
               </h3>
 
@@ -1121,7 +1121,7 @@ Low Dormancy → ██████████`}
                 Under median liquidity conditions, Bitcoin stabilises within a band corresponding to 0.9–1.3 standard deviations above LTH‑CB. In supportive regimes, convexity lifts the upper bound significantly.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 3. Probability Distribution
               </h3>
 
@@ -1129,7 +1129,7 @@ Low Dormancy → ██████████`}
                 Bitcoin's distribution is right‑skewed. The left tail is compressed by structural floors; the right tail expands under liquidity reflation. This asymmetry explains why Bitcoin's expected value tends to drift upward over long horizons despite periodic drawdowns.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 4. Institutional Conviction Score
               </h3>
 
@@ -1149,7 +1149,7 @@ Low Dormancy → ██████████`}
                 High conviction emerges when liquidity expands and supply tightens.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 5. Synthesis
               </h3>
 
@@ -1157,11 +1157,11 @@ Low Dormancy → ██████████`}
                 The pricing model highlights Bitcoin's asymmetric payoff structure: constrained downside, convex upside, and sensitivity to liquidity regimes. Its 2026 valuation is defined more by macro liquidity than by endogenous halving cycles.
               </p>
 
-              <h2 id="chapter-8" className="text-4xl font-light text-foreground mb-12 pb-8 border-b border-border/40 mt-24 scroll-mt-20 tracking-tight">
+              <h2 id="chapter-8" className="text-4xl font-light text-foreground mb-8 pb-6 border-b border-border/40 mt-16 scroll-mt-20 tracking-tight">
                 Chapter VIII — Risks and Uncertainties
               </h2>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 1. Liquidity Risk
               </h3>
 
@@ -1169,7 +1169,7 @@ Low Dormancy → ██████████`}
                 Bitcoin is acutely sensitive to liquidity conditions. Rapid increases in real rates, QT acceleration or shadow‑banking stress can suppress demand and trigger deleveraging.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 2. Regulatory Fragmentation
               </h3>
 
@@ -1177,7 +1177,7 @@ Low Dormancy → ██████████`}
                 Divergent global regulations may impede liquidity transmission. Sudden enforcement events can trigger exchange outflows, reduced market depth and elevated volatility.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 3. ETF Outflow Risk
               </h3>
 
@@ -1185,7 +1185,7 @@ Low Dormancy → ██████████`}
                 Large‑scale redemptions translate directly into sell‑pressure. Orderbook depth may not absorb these flows efficiently, especially during macro stress events.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 4. Technological Risks
               </h3>
 
@@ -1193,7 +1193,7 @@ Low Dormancy → ██████████`}
                 Bitcoin is robust, but tail risks remain: protocol‑level vulnerabilities, L2 security incidents, or critical custody failures could affect market confidence.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 5. Mining Centralisation
               </h3>
 
@@ -1201,7 +1201,7 @@ Low Dormancy → ██████████`}
                 As inefficient miners exit and capital‑heavy operations dominate, geographic concentration may increase. This introduces potential political and operational risk.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 6. Synthesis
               </h3>
 
@@ -1209,11 +1209,11 @@ Low Dormancy → ██████████`}
                 Risk assessment is essential for allocation sizing and hedging. Bitcoin remains a high‑convexity macro asset, requiring disciplined risk management frameworks.
               </p>
 
-              <h2 id="chapter-10" className="text-4xl font-light text-foreground mb-12 pb-8 border-b border-border/40 mt-24 scroll-mt-20 tracking-tight">
+              <h2 id="chapter-10" className="text-4xl font-light text-foreground mb-8 pb-6 border-b border-border/40 mt-16 scroll-mt-20 tracking-tight">
                 Chapter X — Bitcoin 2026 Institutional Target Price Assessment
               </h2>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 1. Framework Overview
               </h3>
 
@@ -1223,7 +1223,7 @@ Low Dormancy → ██████████`}
 
               <hr className="my-8 border-border" />
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 2. Structural Floor Estimate (Lower Bound)
               </h3>
 
@@ -1263,7 +1263,7 @@ Low Dormancy → ██████████`}
 
               <hr className="my-8 border-border" />
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 3. Equilibrium Pricing Band (Median Regime)
               </h3>
 
@@ -1283,7 +1283,7 @@ Low Dormancy → ██████████`}
 
               <hr className="my-8 border-border" />
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 4. High‑Convexity Regime (High Case)
               </h3>
 
@@ -1303,7 +1303,7 @@ Low Dormancy → ██████████`}
 
               <hr className="my-8 border-border" />
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 5. Stress Regime (Left Tail Scenario)
               </h3>
 
@@ -1319,7 +1319,7 @@ Low Dormancy → ██████████`}
 
               <hr className="my-8 border-border" />
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 6. Institutional Weighted Target (IWT) for 2026
               </h3>
 
@@ -1351,7 +1351,7 @@ Low Dormancy → ██████████`}
 
               <hr className="my-8 border-border" />
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 7. Final Target Summary
               </h3>
 
@@ -1404,7 +1404,7 @@ Low Dormancy → ██████████`}
                 </div>
               </div>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 8. Investment Implications & Conclusion
               </h3>
 
@@ -1433,11 +1433,11 @@ Low Dormancy → ██████████`}
                 </div>
               </div>
 
-              <h2 id="chapter-9" className="text-4xl font-light text-foreground mb-12 pb-8 border-b border-border/40 mt-24 scroll-mt-20 tracking-tight">
+              <h2 id="chapter-9" className="text-4xl font-light text-foreground mb-8 pb-6 border-b border-border/40 mt-16 scroll-mt-20 tracking-tight">
                 Chapter IX — Appendix
               </h2>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 1. Definitions
               </h3>
 
@@ -1448,7 +1448,7 @@ Low Dormancy → ██████████`}
                 <li><strong>Realised Price:</strong> Aggregate cost basis of all coins in circulation.</li>
               </ul>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 2. Methodological Notes
               </h3>
 
@@ -1456,7 +1456,7 @@ Low Dormancy → ██████████`}
                 Models incorporate nonlinear relationships, regime changes and supply‑elasticity dynamics. Projection methods include scenario analysis, stochastic modelling and cost‑basis stratification.
               </p>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 3. Glossary
               </h3>
 
@@ -1466,7 +1466,7 @@ Low Dormancy → ██████████`}
                 <li><strong>ETF APs:</strong> Authorised participants enabling ETF creations/redemptions.</li>
               </ul>
 
-              <h3 className="text-xl font-light text-foreground mt-16 mb-8 tracking-wide">
+              <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 4. Assumptions
               </h3>
 
