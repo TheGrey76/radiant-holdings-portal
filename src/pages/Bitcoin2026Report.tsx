@@ -577,10 +577,10 @@ const Bitcoin2026Report = () => {
               </div>
 
               <KeyTakeaways insights={[
-                "Bitcoin has evolved into a macro liquidity-sensitive asset whose price is now dominated by global <GlossaryTerm term='M2'>M2</GlossaryTerm> impulses, <GlossaryTerm term='real rates'>real-rate</GlossaryTerm> dynamics, and institutional <GlossaryTerm term='ETF flows'>ETF flows</GlossaryTerm> rather than simplistic <GlossaryTerm term='halving'>halving</GlossaryTerm> cycles.",
-                "Global <GlossaryTerm term='M2'>M2</GlossaryTerm> acceleration produces convex upside responses while stagnation triggers volatility spikes—the marginal <GlossaryTerm term='liquidity conditions'>liquidity</GlossaryTerm> impulse matters more than absolute levels.",
-                "Declining <GlossaryTerm term='real rates'>real yields</GlossaryTerm> reduce the opportunity cost of holding non-yielding assets like Bitcoin, creating powerful tailwinds when combined with monetary expansion.",
-                "Bitcoin's structural transformation into an institutional asset class means its price formation is increasingly governed by <GlossaryTerm term='balance-sheet'>balance-sheet</GlossaryTerm> elasticity of shadow banks and <GlossaryTerm term='ETF'>ETF</GlossaryTerm> market makers."
+                "Bitcoin has evolved into a macro liquidity-sensitive asset whose price is now dominated by global M2 impulses, real-rate dynamics, and institutional ETF flows rather than simplistic halving cycles.",
+                "Global M2 acceleration produces convex upside responses while stagnation triggers volatility spikes—the marginal liquidity impulse matters more than absolute levels.",
+                "Declining real yields reduce the opportunity cost of holding non-yielding assets like Bitcoin, creating powerful tailwinds when combined with monetary expansion.",
+                "Bitcoin's structural transformation into an institutional asset class means its price formation is increasingly governed by balance-sheet elasticity of shadow banks and ETF market makers."
               ]} />
             </div>
           </ChapterSection>
