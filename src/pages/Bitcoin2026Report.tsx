@@ -37,7 +37,28 @@ const Bitcoin2026Report = () => {
             </div>
 
             <div className="px-12 py-10 space-y-8">
-              <h2 className="text-2xl font-serif font-bold text-slate-900 dark:text-slate-100 mb-6 pb-3 border-b border-slate-200 dark:border-slate-800">
+              {/* Table of Contents */}
+              <div className="mb-12 pb-8 border-b border-slate-200 dark:border-slate-800">
+                <h2 className="text-xl font-serif font-bold text-slate-900 dark:text-slate-100 mb-6">
+                  Table of Contents
+                </h2>
+                <nav className="space-y-3">
+                  <a 
+                    href="#chapter-1" 
+                    className="block text-sm text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 transition-colors pl-4 border-l-2 border-transparent hover:border-slate-400 dark:hover:border-slate-600 py-1"
+                  >
+                    <span className="font-medium">Chapter I</span> — Executive Summary & Macro–Liquidity Regime Analysis
+                  </a>
+                  <a 
+                    href="#chapter-2" 
+                    className="block text-sm text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 transition-colors pl-4 border-l-2 border-transparent hover:border-slate-400 dark:hover:border-slate-600 py-1"
+                  >
+                    <span className="font-medium">Chapter II</span> — Advanced Price Framework & Quantitative Modelling
+                  </a>
+                </nav>
+              </div>
+
+              <h2 id="chapter-1" className="text-2xl font-serif font-bold text-slate-900 dark:text-slate-100 mb-6 pb-3 border-b border-slate-200 dark:border-slate-800 scroll-mt-20">
                 Chapter I — Executive Summary & Macro–Liquidity Regime Analysis
               </h2>
 
@@ -158,7 +179,7 @@ const Bitcoin2026Report = () => {
                 The remainder of this report builds on this macro foundation. Subsequent chapters will introduce quantitative regime models based on Hidden Markov Methods, liquidity-adjusted demand functions, derivatives-implied positioning, entity-adjusted on-chain analytics and mining-economics-based floor estimates. The goal is to translate the qualitative macro picture sketched in this first chapter into a fully fledged, probabilistic framework for Bitcoin pricing in 2026 that is usable by institutional allocators, CIOs and macro desks.
               </p>
 
-              <h2 className="text-2xl font-serif font-bold text-slate-900 dark:text-slate-100 mb-6 pb-3 border-b border-slate-200 dark:border-slate-800 mt-16">
+              <h2 id="chapter-2" className="text-2xl font-serif font-bold text-slate-900 dark:text-slate-100 mb-6 pb-3 border-b border-slate-200 dark:border-slate-800 mt-16 scroll-mt-20">
                 Chapter II — Advanced Price Framework & Quantitative Modelling
               </h2>
 
