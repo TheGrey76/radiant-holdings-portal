@@ -71,6 +71,12 @@ const Bitcoin2026Report = () => {
                   >
                     <span className="font-medium">Chapter II</span> — Advanced Price Framework & Quantitative Modelling
                   </a>
+                  <a 
+                    href="#chapter-3" 
+                    className="block text-sm text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 transition-colors pl-4 border-l-2 border-transparent hover:border-slate-400 dark:hover:border-slate-600 py-1"
+                  >
+                    <span className="font-medium">Chapter III</span> — Advanced On-Chain Intelligence & Market Microstructure
+                  </a>
                 </nav>
               </div>
 
@@ -285,6 +291,180 @@ const Bitcoin2026Report = () => {
 
               <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
                 The Advanced Price Framework integrates all of the structural components described above into a unified modelling architecture. Bitcoin's 2026 equilibrium band is not a forecast, but a probabilistic range derived from liquidity conditions, supply constraints, volatility regime classification, derivatives-implied flows and mining economics. Later chapters will translate these components into explicit equilibrium pricing corridors, distribution curves and scenario-based outcomes suitable for institutional capital allocation decisions.
+              </p>
+
+              <h2 id="chapter-3" className="text-2xl font-serif font-bold text-slate-900 dark:text-slate-100 mb-6 pb-3 border-b border-slate-200 dark:border-slate-800 mt-16 scroll-mt-20">
+                Chapter III — Advanced On-Chain Intelligence & Market Microstructure
+              </h2>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                1. Institutional On-Chain Framework
+              </h3>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Institutional on-chain analysis provides a structural, entity-adjusted view of Bitcoin's internal liquidity and supply dynamics. Retail-driven metrics are excluded in favour of large-entity behaviour, capital efficiency, cost-basis stratification and structural accumulation patterns. The objective is to map how long-horizon entities, corporate holders, ETF custodians and macro-driven actors shape Bitcoin's supply over 2025–2026.
+              </p>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                2. On-Chain Institutional Metrics
+              </h3>
+
+              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+                2.1 Whale Net Positioning (Entity-Adjusted)
+              </h4>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Institutional "whale" entities exhibit persistent net accumulation during liquidity expansions and orderly reduction during macro tightening. Tracking large-entity flows allows allocators to identify structural buyers, treasury accumulators and directional demand.
+              </p>
+
+              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+                2.2 Exchange Reserve Dynamics
+              </h4>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Exchange reserves reflect liquid supply. A persistent decline in reserves corresponds to structural absorption by ETFs, custodians, long-term holders and OTC desks. Rising reserves typically indicate leveraged inflows, risk-on sentiment or distribution phases.
+              </p>
+
+              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+                2.3 LTH Cost Basis & Realised Price Map
+              </h4>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                The Long-Term Holder Cost Basis acts as a structural floor under supportive liquidity conditions. The Realised Price Map compresses during market maturation and signals reduced speculative churn. These levels help identify capitulation points, equilibrium floors and recovery phases.
+              </p>
+
+              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+                2.4 Dormancy & Revival Analysis
+              </h4>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Dormancy flows measure the re-activation of long-inactive coins. Revival spikes often anticipate distribution waves, liquidity rotations or macro-driven deleveraging. Sustained dormancy indicates conviction and long-term cost-basis anchoring.
+              </p>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                3. On-Chain Heatmap (Institutional-Grade)
+              </h3>
+
+              <div className="my-8 overflow-x-auto">
+                <table className="w-full text-sm border border-slate-200 dark:border-slate-700">
+                  <thead>
+                    <tr className="bg-slate-100 dark:bg-slate-800">
+                      <th className="px-4 py-3 text-left font-serif font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700">Metric</th>
+                      <th className="px-4 py-3 text-left font-serif font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700">Accumulation Regime</th>
+                      <th className="px-4 py-3 text-left font-serif font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700">Neutral Regime</th>
+                      <th className="px-4 py-3 text-left font-serif font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700">Distribution Regime</th>
+                    </tr>
+                  </thead>
+                  <tbody className="text-slate-700 dark:text-slate-300">
+                    <tr className="border-b border-slate-200 dark:border-slate-700">
+                      <td className="px-4 py-3 font-medium">Exchange Reserves</td>
+                      <td className="px-4 py-3">↓ Structural</td>
+                      <td className="px-4 py-3">→ Stable</td>
+                      <td className="px-4 py-3">↑ Short-Term Clouds</td>
+                    </tr>
+                    <tr className="border-b border-slate-200 dark:border-slate-700">
+                      <td className="px-4 py-3 font-medium">Whale Net Positioning</td>
+                      <td className="px-4 py-3">↑ Strong</td>
+                      <td className="px-4 py-3">→ Mixed</td>
+                      <td className="px-4 py-3">↓ Weakening</td>
+                    </tr>
+                    <tr className="border-b border-slate-200 dark:border-slate-700">
+                      <td className="px-4 py-3 font-medium">LTH Cost Basis</td>
+                      <td className="px-4 py-3">↑ Rising Floors</td>
+                      <td className="px-4 py-3">→ Stable</td>
+                      <td className="px-4 py-3">↓ Stress Event</td>
+                    </tr>
+                    <tr className="border-b border-slate-200 dark:border-slate-700">
+                      <td className="px-4 py-3 font-medium">Dormancy Flows</td>
+                      <td className="px-4 py-3">Low Dormancy</td>
+                      <td className="px-4 py-3">Neutral</td>
+                      <td className="px-4 py-3">High Revival</td>
+                    </tr>
+                    <tr>
+                      <td className="px-4 py-3 font-medium">On-chain Leverage</td>
+                      <td className="px-4 py-3">Low Leverage</td>
+                      <td className="px-4 py-3">Controlled</td>
+                      <td className="px-4 py-3">Elevated</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                4. Market Microstructure
+              </h3>
+
+              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+                4.1 Exchange Microstructure & Liquidity Depth
+              </h4>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Bitcoin trades across fragmented liquidity venues: U.S. ETF windows, CME futures, European ETP platforms, Asian perpetual markets and OTC desks. Each venue contributes distinct microstructure signatures such as spread behaviour, depth elasticity, and order-flow imbalance.
+              </p>
+
+              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+                4.2 ETF Flow Transmission
+              </h4>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Spot ETFs impose a structural liquidity channel: creations absorb supply from exchanges or OTC desks, while redemptions inject supply. ETF authorised participants (APs) rebalance across CME futures, spot books and collateral pools.
+              </p>
+
+              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+                4.3 Liquidity Fragmentation & Slippage
+              </h4>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Liquidity fragmentation produces volatility clusters. Slippage increases sharply during macro events, funding squeezes or ETF outflow shocks. Institutional allocators must model slippage as a dynamic variable rather than a static cost assumption.
+              </p>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                5. Global Bitcoin Liquidity Grid (GBLG)
+              </h3>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                The Global Bitcoin Liquidity Grid describes the 24-hour rotation between U.S., European and Asian market sessions:
+              </p>
+
+              <div className="my-8 overflow-x-auto">
+                <table className="w-full text-sm border border-slate-200 dark:border-slate-700">
+                  <thead>
+                    <tr className="bg-slate-100 dark:bg-slate-800">
+                      <th className="px-4 py-3 text-left font-serif font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700">Region</th>
+                      <th className="px-4 py-3 text-left font-serif font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700">Liquidity Drivers</th>
+                      <th className="px-4 py-3 text-left font-serif font-semibold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700">Characteristics</th>
+                    </tr>
+                  </thead>
+                  <tbody className="text-slate-700 dark:text-slate-300">
+                    <tr className="border-b border-slate-200 dark:border-slate-700">
+                      <td className="px-4 py-3 font-medium">U.S.</td>
+                      <td className="px-4 py-3">ETF Creations, CME Futures</td>
+                      <td className="px-4 py-3">Deep liquidity, institutional flows</td>
+                    </tr>
+                    <tr className="border-b border-slate-200 dark:border-slate-700">
+                      <td className="px-4 py-3 font-medium">Europe</td>
+                      <td className="px-4 py-3">ETP Markets, Cross-venue arbitrage</td>
+                      <td className="px-4 py-3">Secondary liquidity, price stabilisation</td>
+                    </tr>
+                    <tr>
+                      <td className="px-4 py-3 font-medium">Asia</td>
+                      <td className="px-4 py-3">Perpetual Swaps, Derivatives Funding</td>
+                      <td className="px-4 py-3">High leverage, volatility amplification</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                This grid helps allocators identify vulnerability windows and liquidity pivot points.
+              </p>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                6. Synthesis for Allocators
+              </h3>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                On-chain intelligence and microstructure reveal structural tightening of circulating supply, growing institutional dominance and a macro-sensitive liquidity landscape. Together, these indicators provide actionable insights for building the 2026 equilibrium pricing model in the next chapters.
               </p>
             </div>
 
