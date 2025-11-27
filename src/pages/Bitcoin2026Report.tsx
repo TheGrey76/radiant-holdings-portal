@@ -822,9 +822,14 @@ Low Dormancy → ██████████`}
                 This chapter is foundational for the <strong>2026 Equilibrium Price Model</strong> developed later.
               </p>
 
-              <h2 id="chapter-4" className="text-4xl font-light text-foreground mb-8 pb-6 border-b border-border/40 mt-16 scroll-mt-20 tracking-tight">
-                Chapter IV — Bitcoin Treasuries, Technology Outlook & Mining Economics
-              </h2>
+              <div id="chapter-4" className="scroll-mt-20 mb-12">
+                <div className="mb-10">
+                  <p className="text-xs font-light text-muted-foreground uppercase tracking-widest mb-4">Chapter IV</p>
+                  <h2 className="text-4xl font-light text-foreground mb-3 leading-relaxed tracking-tight">
+                    Bitcoin Treasuries, Technology Outlook & Mining Economics
+                  </h2>
+                </div>
+              </div>
 
               <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 1. Introduction
@@ -940,9 +945,14 @@ Low Dormancy → ██████████`}
                 Treasuries, technology and mining form a reinforcing feedback loop: treasury accumulation tightens free float, technological scaling broadens Bitcoin's addressable market and mining economics strengthen security while integrating Bitcoin into global energy markets. Together, these forces converge into a structural upward bias in Bitcoin's long‑term equilibrium state.
               </p>
 
-              <h2 id="chapter-5" className="text-4xl font-light text-foreground mb-8 pb-6 border-b border-border/40 mt-16 scroll-mt-20 tracking-tight">
-                Chapter V — Regulatory Outlook 2025–2026
-              </h2>
+              <div id="chapter-5" className="scroll-mt-20 mb-12">
+                <div className="mb-10">
+                  <p className="text-xs font-light text-muted-foreground uppercase tracking-widest mb-4">Chapter V</p>
+                  <h2 className="text-4xl font-light text-foreground mb-3 leading-relaxed tracking-tight">
+                    Regulatory Outlook 2025–2026
+                  </h2>
+                </div>
+              </div>
 
               <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 1. Introduction
@@ -992,9 +1002,14 @@ Low Dormancy → ██████████`}
                 The regulatory trajectory supports growing institutional participation, deeper liquidity pools and the normalisation of Bitcoin as a cross-border macro asset.
               </p>
 
-              <h2 id="chapter-6" className="text-4xl font-light text-foreground mb-8 pb-6 border-b border-border/40 mt-16 scroll-mt-20 tracking-tight">
-                Chapter VI — Scenario Analysis for 2026
-              </h2>
+              <div id="chapter-6" className="scroll-mt-20 mb-12">
+                <div className="mb-10">
+                  <p className="text-xs font-light text-muted-foreground uppercase tracking-widest mb-4">Chapter VI</p>
+                  <h2 className="text-4xl font-light text-foreground mb-3 leading-relaxed tracking-tight">
+                    Scenario Analysis for 2026
+                  </h2>
+                </div>
+              </div>
 
               <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 Regulation defines accessibility, liquidity channels and institutional comfort. Bitcoin's regulatory environment is shifting from fragmented experimentation to structured integration. The trajectory across major jurisdictions indicates that Bitcoin is being normalised as a macro‑financial asset rather than treated as a speculative anomaly.
@@ -1050,9 +1065,6 @@ Low Dormancy → ██████████`}
                 Regulatory developments in 2025–2026 are structurally supportive. They expand the addressable market for institutional capital, reinforce consumer protections and strengthen liquidity pathways.
               </p>
 
-              <h2 id="chapter-6" className="text-4xl font-bold text-foreground mb-8 pb-4 border-b-2 border-primary/20 mt-20 scroll-mt-20">
-                Chapter VI — Scenario Analysis for 2026
-              </h2>
 
               <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 Scenario analysis does not attempt to forecast deterministic outcomes. Instead, it evaluates the structure of possible states of the world and the liquidity configurations that accompany them.
@@ -1090,9 +1102,14 @@ Low Dormancy → ██████████`}
                 Across all scenarios, the lower bound rises over time due to structural supply tightening. The upper bound becomes more convex due to decreasing free float and institutionalised liquidity demand.
               </p>
 
-              <h2 id="chapter-7" className="text-4xl font-light text-foreground mb-8 pb-6 border-b border-border/40 mt-16 scroll-mt-20 tracking-tight">
-                Chapter VII — Bitcoin 2026 Pricing Projection
-              </h2>
+              <div id="chapter-7" className="scroll-mt-20 mb-12">
+                <div className="mb-10">
+                  <p className="text-xs font-light text-muted-foreground uppercase tracking-widest mb-4">Chapter VII</p>
+                  <h2 className="text-4xl font-light text-foreground mb-3 leading-relaxed tracking-tight">
+                    Bitcoin 2026 Pricing Projection
+                  </h2>
+                </div>
+              </div>
 
               <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 1. Introduction
@@ -1157,9 +1174,14 @@ Low Dormancy → ██████████`}
                 The pricing model highlights Bitcoin's asymmetric payoff structure: constrained downside, convex upside, and sensitivity to liquidity regimes. Its 2026 valuation is defined more by macro liquidity than by endogenous halving cycles.
               </p>
 
-              <h2 id="chapter-8" className="text-4xl font-light text-foreground mb-8 pb-6 border-b border-border/40 mt-16 scroll-mt-20 tracking-tight">
-                Chapter VIII — Risks and Uncertainties
-              </h2>
+              <div id="chapter-8" className="scroll-mt-20 mb-12">
+                <div className="mb-10">
+                  <p className="text-xs font-light text-muted-foreground uppercase tracking-widest mb-4">Chapter VIII</p>
+                  <h2 className="text-4xl font-light text-foreground mb-3 leading-relaxed tracking-tight">
+                    Risks and Uncertainties
+                  </h2>
+                </div>
+              </div>
 
               <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 1. Liquidity Risk
@@ -1209,9 +1231,14 @@ Low Dormancy → ██████████`}
                 Risk assessment is essential for allocation sizing and hedging. Bitcoin remains a high‑convexity macro asset, requiring disciplined risk management frameworks.
               </p>
 
-              <h2 id="chapter-10" className="text-4xl font-light text-foreground mb-8 pb-6 border-b border-border/40 mt-16 scroll-mt-20 tracking-tight">
-                Chapter X — Bitcoin 2026 Institutional Target Price Assessment
-              </h2>
+              <div id="chapter-10" className="scroll-mt-20 mb-12">
+                <div className="mb-10">
+                  <p className="text-xs font-light text-muted-foreground uppercase tracking-widest mb-4">Chapter X</p>
+                  <h2 className="text-4xl font-light text-foreground mb-3 leading-relaxed tracking-tight">
+                    Bitcoin 2026 Institutional Target Price Assessment
+                  </h2>
+                </div>
+              </div>
 
               <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 1. Framework Overview
@@ -1433,9 +1460,14 @@ Low Dormancy → ██████████`}
                 </div>
               </div>
 
-              <h2 id="chapter-9" className="text-4xl font-light text-foreground mb-8 pb-6 border-b border-border/40 mt-16 scroll-mt-20 tracking-tight">
-                Chapter IX — Appendix
-              </h2>
+              <div id="chapter-9" className="scroll-mt-20 mb-12">
+                <div className="mb-10">
+                  <p className="text-xs font-light text-muted-foreground uppercase tracking-widest mb-4">Chapter IX</p>
+                  <h2 className="text-4xl font-light text-foreground mb-3 leading-relaxed tracking-tight">
+                    Appendix
+                  </h2>
+                </div>
+              </div>
 
               <h3 className="text-xl font-light text-foreground mt-10 mb-6 tracking-wide">
                 1. Definitions
