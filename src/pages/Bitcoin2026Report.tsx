@@ -10,6 +10,95 @@ const Bitcoin2026Report = () => {
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
 
+  // Custom Tooltip Components
+  const CustomPriceTooltip = ({ active, payload }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="bg-card border-2 border-primary/20 rounded-xl p-4 shadow-2xl animate-fade-in">
+          <p className="text-xs font-bold text-primary mb-3 uppercase tracking-wider">{payload[0].payload.month} 2026</p>
+          <div className="space-y-2">
+            <div className="flex items-center justify-between gap-8">
+              <span className="text-xs text-muted-foreground">High Case:</span>
+              <span className="text-sm font-bold text-accent">${payload[0].payload.high}k</span>
+            </div>
+            <div className="flex items-center justify-between gap-8">
+              <span className="text-xs text-muted-foreground">Base Case:</span>
+              <span className="text-sm font-bold text-primary">${payload[0].payload.base}k</span>
+            </div>
+            <div className="flex items-center justify-between gap-8">
+              <span className="text-xs text-muted-foreground">Stress Case:</span>
+              <span className="text-sm font-bold text-muted-foreground">${payload[0].payload.stress}k</span>
+            </div>
+          </div>
+          <div className="mt-3 pt-3 border-t border-border/40">
+            <p className="text-xs text-foreground/60">Range: ${payload[0].payload.stress}k - ${payload[0].payload.high}k</p>
+          </div>
+        </div>
+      );
+    }
+    return null;
+  };
+
+  const CustomETFTooltip = ({ active, payload }: any) => {
+    if (active && payload && payload.length) {
+      const netFlow = payload[0].payload.inflows - payload[0].payload.outflows;
+      return (
+        <div className="bg-card border-2 border-primary/20 rounded-xl p-4 shadow-2xl animate-fade-in">
+          <p className="text-xs font-bold text-primary mb-3 uppercase tracking-wider">{payload[0].payload.week}</p>
+          <div className="space-y-2">
+            <div className="flex items-center justify-between gap-8">
+              <span className="text-xs text-muted-foreground">Inflows:</span>
+              <span className="text-sm font-bold text-primary">${payload[0].payload.inflows}M</span>
+            </div>
+            <div className="flex items-center justify-between gap-8">
+              <span className="text-xs text-muted-foreground">Outflows:</span>
+              <span className="text-sm font-bold text-muted-foreground">${payload[0].payload.outflows}M</span>
+            </div>
+          </div>
+          <div className="mt-3 pt-3 border-t border-border/40">
+            <div className="flex items-center justify-between">
+              <span className="text-xs text-foreground/60">Net Flow:</span>
+              <span className={`text-sm font-bold ${netFlow > 0 ? 'text-primary' : 'text-destructive'}`}>
+                {netFlow > 0 ? '+' : ''}{netFlow}M
+              </span>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    return null;
+  };
+
+  const CustomMiningTooltip = ({ active, payload }: any) => {
+    if (active && payload && payload.length) {
+      const margin = ((payload[0].payload.price - payload[0].payload.cost) / payload[0].payload.cost * 100).toFixed(1);
+      return (
+        <div className="bg-card border-2 border-primary/20 rounded-xl p-4 shadow-2xl animate-fade-in">
+          <p className="text-xs font-bold text-primary mb-3 uppercase tracking-wider">{payload[0].payload.quarter} 2026</p>
+          <div className="space-y-2">
+            <div className="flex items-center justify-between gap-8">
+              <span className="text-xs text-muted-foreground">BTC Price:</span>
+              <span className="text-sm font-bold text-primary">${payload[0].payload.price}k</span>
+            </div>
+            <div className="flex items-center justify-between gap-8">
+              <span className="text-xs text-muted-foreground">Mining Cost:</span>
+              <span className="text-sm font-bold text-muted-foreground">${payload[0].payload.cost}k</span>
+            </div>
+          </div>
+          <div className="mt-3 pt-3 border-t border-border/40">
+            <div className="flex items-center justify-between">
+              <span className="text-xs text-foreground/60">Profit Margin:</span>
+              <span className={`text-sm font-bold ${parseFloat(margin) > 0 ? 'text-primary' : 'text-destructive'}`}>
+                {margin}%
+              </span>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    return null;
+  };
+
   // Sample data for charts
   const priceScenarioData = [
     { month: "Jan", base: 98, high: 185, stress: 52 },
@@ -307,13 +396,7 @@ const Bitcoin2026Report = () => {
                     <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
                     <XAxis dataKey="month" stroke="hsl(var(--muted-foreground))" />
                     <YAxis stroke="hsl(var(--muted-foreground))" label={{ value: '$k', angle: -90, position: 'insideLeft' }} />
-                    <Tooltip 
-                      contentStyle={{ 
-                        backgroundColor: 'hsl(var(--card))', 
-                        border: '1px solid hsl(var(--border))',
-                        borderRadius: '8px'
-                      }}
-                    />
+                    <Tooltip content={<CustomPriceTooltip />} />
                     <Legend />
                     <Area type="monotone" dataKey="high" stroke="hsl(var(--accent))" fill="url(#colorHigh)" name="High Case" />
                     <Area type="monotone" dataKey="base" stroke="hsl(var(--primary))" fill="url(#colorBase)" name="Base Case" />
@@ -417,13 +500,7 @@ const Bitcoin2026Report = () => {
                     <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
                     <XAxis dataKey="week" stroke="hsl(var(--muted-foreground))" />
                     <YAxis stroke="hsl(var(--muted-foreground))" label={{ value: '$M', angle: -90, position: 'insideLeft' }} />
-                    <Tooltip 
-                      contentStyle={{ 
-                        backgroundColor: 'hsl(var(--card))', 
-                        border: '1px solid hsl(var(--border))',
-                        borderRadius: '8px'
-                      }}
-                    />
+                    <Tooltip content={<CustomETFTooltip />} />
                     <Legend />
                     <Bar dataKey="inflows" fill="hsl(var(--primary))" name="Inflows" radius={[8, 8, 0, 0]} />
                     <Bar dataKey="outflows" fill="hsl(var(--muted-foreground))" name="Outflows" radius={[8, 8, 0, 0]} />
@@ -619,13 +696,7 @@ const Bitcoin2026Report = () => {
                     <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
                     <XAxis dataKey="quarter" stroke="hsl(var(--muted-foreground))" />
                     <YAxis stroke="hsl(var(--muted-foreground))" label={{ value: '$k', angle: -90, position: 'insideLeft' }} />
-                    <Tooltip 
-                      contentStyle={{ 
-                        backgroundColor: 'hsl(var(--card))', 
-                        border: '1px solid hsl(var(--border))',
-                        borderRadius: '8px'
-                      }}
-                    />
+                    <Tooltip content={<CustomMiningTooltip />} />
                     <Legend />
                     <Line type="monotone" dataKey="cost" stroke="hsl(var(--muted-foreground))" strokeWidth={3} name="Production Cost" strokeDasharray="5 5" />
                     <Line type="monotone" dataKey="price" stroke="hsl(var(--primary))" strokeWidth={3} name="Bitcoin Price" />
