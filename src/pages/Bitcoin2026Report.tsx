@@ -346,6 +346,7 @@ const Bitcoin2026Report = () => {
               <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 The remainder of this report builds on this macro foundation. Subsequent chapters will introduce quantitative regime models based on Hidden Markov Methods, liquidity-adjusted demand functions, derivatives-implied positioning, entity-adjusted on-chain analytics and mining-economics-based floor estimates. The goal is to translate the qualitative macro picture sketched in this first chapter into a fully fledged, probabilistic framework for Bitcoin pricing in 2026 that is usable by institutional allocators, CIOs and macro desks.
               </p>
+              </div>
 
               <div id="chapter-2" className="mb-12 scroll-mt-24">
                 <div className="mb-10">
@@ -1568,9 +1569,6 @@ Low Dormancy → ██████████`}
         >
           <ArrowUp className="h-5 w-5 transition-transform group-hover:-translate-y-1" />
         </button>
-            </div>
-          </div>
-        </div>
       </div>
     </>
   );
