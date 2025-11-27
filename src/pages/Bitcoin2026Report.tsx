@@ -69,23 +69,25 @@ const Bitcoin2026Report = () => {
       </Helmet>
 
       {/* Reading Progress Bar */}
-      <div className="fixed top-0 left-0 right-0 h-1 bg-slate-200 dark:bg-slate-800 z-50">
+      <div className="fixed top-0 left-0 right-0 h-1 bg-muted z-50">
         <div 
-          className="h-full bg-slate-900 dark:bg-slate-100 transition-all duration-300"
+          className="h-full bg-gradient-to-r from-primary to-accent transition-all duration-300"
           style={{ width: `${readingProgress}%` }}
         />
       </div>
 
       {/* Resume Reading Prompt */}
       {showResumePrompt && (
-        <div className="fixed top-20 right-8 z-40 bg-white dark:bg-slate-900 shadow-lg border border-slate-200 dark:border-slate-800 rounded-lg p-4 max-w-sm animate-fade-in">
+        <div className="fixed top-20 right-8 z-40 bg-card shadow-smooth-lg border-2 border-primary/20 rounded-xl p-5 max-w-sm animate-fade-in">
           <div className="flex items-start gap-3">
-            <BookOpen className="h-5 w-5 text-slate-600 dark:text-slate-400 mt-0.5" />
+            <div className="bg-primary/10 p-2 rounded-lg">
+              <BookOpen className="h-5 w-5 text-primary" />
+            </div>
             <div className="flex-1">
-              <h4 className="text-sm font-serif font-bold text-slate-900 dark:text-slate-100 mb-1">
+              <h4 className="text-sm font-bold text-foreground mb-1">
                 Continue Reading
               </h4>
-              <p className="text-xs text-slate-600 dark:text-slate-400 mb-3">
+              <p className="text-xs text-muted-foreground mb-4">
                 Pick up where you left off in your last session.
               </p>
               <div className="flex gap-2">
@@ -110,151 +112,175 @@ const Bitcoin2026Report = () => {
         </div>
       )}
 
-      <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
+      <div className="min-h-screen bg-gradient-to-b from-background via-muted/20 to-background">
         <div className="container max-w-5xl mx-auto px-6 py-16">
-          <div className="bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800">
-            <div className="px-12 py-10 border-b border-slate-200 dark:border-slate-800">
+          <div className="bg-card shadow-smooth-lg border-2 border-primary/10 rounded-xl overflow-hidden">
+            <div className="px-12 py-12 bg-gradient-to-br from-primary/5 via-background to-primary/5 border-b-2 border-primary/20">
               <Link 
                 to="/" 
-                className="inline-flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors mb-6"
+                className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors mb-8 group"
               >
-                <ArrowLeft className="h-4 w-4" />
+                <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
                 Back to Home
               </Link>
 
-              <h1 className="text-3xl font-serif font-bold text-slate-900 dark:text-slate-100 mb-2">
-                Bitcoin 2026: Macro-Liquidity Regime Analysis
-              </h1>
-              <p className="text-sm text-slate-600 dark:text-slate-400 font-medium">
-                ARIES76 Capital Intelligence | Institutional Research
-              </p>
+              <div className="text-center mb-6">
+                <div className="inline-block px-4 py-2 bg-primary/10 rounded-full mb-6">
+                  <p className="text-xs font-semibold text-primary uppercase tracking-wider">Institutional Research Report</p>
+                </div>
+                <h1 className="text-5xl font-bold text-foreground mb-4 tracking-tight">
+                  Bitcoin 2026
+                </h1>
+                <p className="text-xl text-muted-foreground mb-6 font-light">
+                  Macro-Liquidity Regime Analysis
+                </p>
+                <div className="flex flex-col items-center gap-3">
+                  <p className="text-sm font-medium text-foreground">ARIES76 Capital Intelligence</p>
+                  <div className="h-px w-16 bg-border"></div>
+                  <p className="text-sm text-muted-foreground">January 2025</p>
+                </div>
+              </div>
             </div>
 
-            <div className="px-12 py-10 space-y-8">
+            <div className="px-12 py-12 space-y-10">
               {/* Table of Contents */}
-              <div className="mb-12 pb-8 border-b border-slate-200 dark:border-slate-800">
-                <h2 className="text-xl font-serif font-bold text-slate-900 dark:text-slate-100 mb-6">
+              <div className="mb-16 pb-10 border-b-2 border-border bg-gradient-to-br from-primary/5 to-transparent rounded-xl p-8">
+                <h2 className="text-3xl font-bold text-foreground mb-8 pb-4 border-b-2 border-primary/20">
                   Table of Contents
                 </h2>
-                <nav className="space-y-3">
+                <nav className="space-y-4">
                   <a 
                     href="#chapter-1" 
-                    className="block text-sm text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 transition-colors pl-4 border-l-2 border-transparent hover:border-slate-400 dark:hover:border-slate-600 py-1"
+                    className="block text-foreground hover:text-primary transition-all duration-200 pl-6 py-3 border-l-3 border-transparent hover:border-primary hover:translate-x-2 rounded-r-lg hover:bg-primary/5"
                   >
-                    <span className="font-medium">Chapter I</span> — Executive Summary & Macro–Liquidity Regime Analysis
+                    <span className="font-semibold">Chapter I</span> — Executive Summary & Macro–Liquidity Regime Analysis
                   </a>
                   <a 
                     href="#chapter-2" 
-                    className="block text-sm text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 transition-colors pl-4 border-l-2 border-transparent hover:border-slate-400 dark:hover:border-slate-600 py-1"
+                    className="block text-foreground hover:text-primary transition-all duration-200 pl-6 py-3 border-l-3 border-transparent hover:border-primary hover:translate-x-2 rounded-r-lg hover:bg-primary/5"
                   >
-                    <span className="font-medium">Chapter II</span> — Advanced Price Framework & Quantitative Modelling
+                    <span className="font-semibold">Chapter II</span> — Advanced Price Framework & Quantitative Modelling
                   </a>
                   <a 
                     href="#chapter-3" 
-                    className="block text-sm text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 transition-colors pl-4 border-l-2 border-transparent hover:border-slate-400 dark:hover:border-slate-600 py-1"
+                    className="block text-foreground hover:text-primary transition-all duration-200 pl-6 py-3 border-l-3 border-transparent hover:border-primary hover:translate-x-2 rounded-r-lg hover:bg-primary/5"
                   >
-                    <span className="font-medium">Chapter III</span> — Advanced On-Chain Intelligence & Market Microstructure
+                    <span className="font-semibold">Chapter III</span> — Advanced On-Chain Intelligence & Market Microstructure
                   </a>
                   <a 
                     href="#chapter-4" 
-                    className="block text-sm text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 transition-colors pl-4 border-l-2 border-transparent hover:border-slate-400 dark:hover:border-slate-600 py-1"
+                    className="block text-foreground hover:text-primary transition-all duration-200 pl-6 py-3 border-l-3 border-transparent hover:border-primary hover:translate-x-2 rounded-r-lg hover:bg-primary/5"
                   >
-                    <span className="font-medium">Chapter IV</span> — Bitcoin Treasuries, Technology Outlook & Mining Economics
+                    <span className="font-semibold">Chapter IV</span> — Bitcoin Treasuries, Technology Outlook & Mining Economics
                   </a>
                   <a 
                     href="#chapter-5" 
-                    className="block text-sm text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 transition-colors pl-4 border-l-2 border-transparent hover:border-slate-400 dark:hover:border-slate-600 py-1"
+                    className="block text-foreground hover:text-primary transition-all duration-200 pl-6 py-3 border-l-3 border-transparent hover:border-primary hover:translate-x-2 rounded-r-lg hover:bg-primary/5"
                   >
-                    <span className="font-medium">Chapter V</span> — Regulatory Outlook 2025–2026
+                    <span className="font-semibold">Chapter V</span> — Regulatory Outlook 2025–2026
                   </a>
                   <a 
                     href="#chapter-6" 
-                    className="block text-sm text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 transition-colors pl-4 border-l-2 border-transparent hover:border-slate-400 dark:hover:border-slate-600 py-1"
+                    className="block text-foreground hover:text-primary transition-all duration-200 pl-6 py-3 border-l-3 border-transparent hover:border-primary hover:translate-x-2 rounded-r-lg hover:bg-primary/5"
                   >
-                    <span className="font-medium">Chapter VI</span> — Scenario Analysis for 2026
+                    <span className="font-semibold">Chapter VI</span> — Scenario Analysis for 2026
                   </a>
                   <a 
                     href="#chapter-7" 
-                    className="block text-sm text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 transition-colors pl-4 border-l-2 border-transparent hover:border-slate-400 dark:hover:border-slate-600 py-1"
+                    className="block text-foreground hover:text-primary transition-all duration-200 pl-6 py-3 border-l-3 border-transparent hover:border-primary hover:translate-x-2 rounded-r-lg hover:bg-primary/5"
                   >
-                    <span className="font-medium">Chapter VII</span> — Bitcoin 2026 Pricing Projection
+                    <span className="font-semibold">Chapter VII</span> — Bitcoin 2026 Pricing Projection
                   </a>
                   <a 
                     href="#chapter-8" 
-                    className="block text-sm text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 transition-colors pl-4 border-l-2 border-transparent hover:border-slate-400 dark:hover:border-slate-600 py-1"
+                    className="block text-foreground hover:text-primary transition-all duration-200 pl-6 py-3 border-l-3 border-transparent hover:border-primary hover:translate-x-2 rounded-r-lg hover:bg-primary/5"
                   >
-                    <span className="font-medium">Chapter VIII</span> — Risks and Uncertainties
+                    <span className="font-semibold">Chapter VIII</span> — Risks and Uncertainties
                   </a>
                   <a 
                     href="#chapter-10" 
-                    className="block text-sm text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 transition-colors pl-4 border-l-2 border-transparent hover:border-slate-400 dark:hover:border-slate-600 py-1"
+                    className="block text-foreground hover:text-primary transition-all duration-200 pl-6 py-3 border-l-3 border-transparent hover:border-primary hover:translate-x-2 rounded-r-lg hover:bg-primary/5"
                   >
-                    <span className="font-medium">Chapter X</span> — Bitcoin 2026 Target Price
+                    <span className="font-semibold">Chapter X</span> — Bitcoin 2026 Target Price
                   </a>
                   <a 
                     href="#chapter-9" 
-                    className="block text-sm text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 transition-colors pl-4 border-l-2 border-transparent hover:border-slate-400 dark:hover:border-slate-600 py-1"
+                    className="block text-foreground hover:text-primary transition-all duration-200 pl-6 py-3 border-l-3 border-transparent hover:border-primary hover:translate-x-2 rounded-r-lg hover:bg-primary/5"
                   >
-                    <span className="font-medium">Chapter IX</span> — Appendix
+                    <span className="font-semibold">Chapter IX</span> — Appendix
                   </a>
                 </nav>
               </div>
 
-              <h2 id="chapter-1" className="text-2xl font-serif font-bold text-slate-900 dark:text-slate-100 mb-6 pb-3 border-b border-slate-200 dark:border-slate-800 scroll-mt-20">
-                Chapter I — Executive Summary & Macro–Liquidity Regime Analysis
-              </h2>
+              <div id="chapter-1" className="scroll-mt-20 mb-16">
+                <div className="mb-10">
+                  <div className="inline-block px-3 py-1 bg-primary/10 rounded-md mb-4">
+                    <span className="text-xs font-semibold text-primary uppercase tracking-wider">Chapter I</span>
+                  </div>
+                  <h2 className="text-4xl font-bold text-foreground mb-4 leading-tight">
+                    Executive Summary & Macro–Liquidity Regime Analysis
+                  </h2>
+                  <div className="h-1 w-24 bg-gradient-to-r from-primary to-accent rounded-full"></div>
+                </div>
+              </div>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+              <p className="text-lg leading-relaxed text-foreground/90 mb-8 first-letter:text-5xl first-letter:font-bold first-letter:text-primary first-letter:mr-2 first-letter:float-left">
                 Bitcoin's trajectory over the 2025–2026 horizon must be interpreted within a refined macro-liquidity framework rather than through the simplistic heuristics that characterised earlier cycles. Bitcoin has evolved into a liquidity-sensitive macro asset whose price formation is dominated by global M2 impulses, real-rate dynamics, cross-border dollar transmission, and the balance-sheet elasticity of shadow banking intermediaries and ETF market makers. The increasingly institutionalised microstructure—featuring CME futures, spot ETFs and professionalised delta-neutral liquidity provisioning—has fundamentally altered the conditions under which Bitcoin reacts to liquidity shocks and volatility clusters.
               </p>
 
-              <figure className="my-10 max-w-3xl mx-auto">
-                <img 
-                  src={btcPriceFig} 
-                  alt="Figure 1 — Synthetic Bitcoin Price (2013–2025)" 
-                  className="w-full h-auto border border-slate-200 dark:border-slate-700"
-                />
-                <figcaption className="text-xs text-slate-500 dark:text-slate-500 mt-2 text-center font-medium">
+              <figure className="my-12 max-w-3xl mx-auto">
+                <div className="bg-muted/30 p-6 rounded-xl border-2 border-border/50 shadow-smooth hover:shadow-smooth-lg transition-shadow duration-300">
+                  <img 
+                    src={btcPriceFig} 
+                    alt="Figure 1 — Synthetic Bitcoin Price (2013–2025)" 
+                    className="w-full h-auto rounded-lg"
+                  />
+                </div>
+                <figcaption className="text-sm text-muted-foreground mt-4 text-center font-medium">
                   Figure 1 — Synthetic Bitcoin Price (2013–2025)
                 </figcaption>
               </figure>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+              <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 Figure 1 illustrates the synthetic price path of Bitcoin from 2013 to 2025. Although purely model-based, the series reproduces the core structural features of Bitcoin's historical behaviour: extended appreciation phases coinciding with abundant global liquidity, deep drawdowns during periods of tightening and quantitative tightening, and regime transitions triggered by policy inflection points and funding shocks. The main purpose of this synthetic series is not to replicate the exact historical path, but to capture the macro signature that will inform the equilibrium band analysis for 2026.
               </p>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+              <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 The equilibrium trajectory for Bitcoin in 2026 is not the deterministic extension of past four-year cycles. It emerges from the interaction between liquidity-adjusted demand, derivatives-implied positioning and the progressive reduction in free float caused by treasury and ETF absorption. Institutional ownership through regulated funds creates a quasi-inelastic supply channel, amplifying upside convexity whenever liquidity expands, and exacerbating drawdowns in deleveraging regimes. In other words, Bitcoin increasingly trades as a global liquidity derivative rather than as a purely sentiment-driven speculative asset.
               </p>
 
-              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+              <h3 className="text-2xl font-bold text-foreground mt-12 mb-6 flex items-center gap-3">
+                <div className="w-2 h-2 bg-primary rounded-full"></div>
                 1. Global Liquidity as the Valuation Denominator
               </h3>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+              <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 Global M2 remains the most important macro variable in understanding Bitcoin's medium-term dynamics. What matters for Bitcoin is not the level of money supply, but the marginal liquidity impulse: accelerations in M2 growth tend to produce convex responses in Bitcoin, while stagnation or contraction in liquidity often coincide with volatility spikes and price compression. This is because Bitcoin's supply is absolutely inelastic, while the free float available for trading is further constrained by long-term holders, custodial solutions and ETF structures.
               </p>
 
-              <figure className="my-10 max-w-3xl mx-auto">
-                <img 
-                  src={m2LiquidityFig} 
-                  alt="Figure 2 — Global M2 Liquidity Proxy (Synthetic, 2013–2025)" 
-                  className="w-full h-auto border border-slate-200 dark:border-slate-700"
-                />
-                <figcaption className="text-xs text-slate-500 dark:text-slate-500 mt-2 text-center font-medium">
+              <figure className="my-12 max-w-3xl mx-auto">
+                <div className="bg-muted/30 p-6 rounded-xl border-2 border-border/50 shadow-smooth hover:shadow-smooth-lg transition-shadow duration-300">
+                  <img 
+                    src={m2LiquidityFig} 
+                    alt="Figure 2 — Global M2 Liquidity Proxy (Synthetic, 2013–2025)" 
+                    className="w-full h-auto rounded-lg"
+                  />
+                </div>
+                <figcaption className="text-sm text-muted-foreground mt-4 text-center font-medium">
                   Figure 2 — Global M2 Liquidity Proxy (Synthetic, 2013–2025)
                 </figcaption>
               </figure>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+              <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 Figure 2 shows a synthetic proxy for global M2 from 2013 to 2025. The secular upward trend reflects the structural expansion of monetary aggregates in developed and emerging markets, interrupted by periods of stabilisation or modest contraction. These inflection points, rather than the overall trend, are what matter for Bitcoin. In phases where the slope of the M2 curve steepens, Bitcoin tends to transition into an expansionary regime; when the slope flattens or turns negative, Bitcoin shifts toward consolidation or drawdown regimes.
               </p>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+              <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 This behaviour justifies treating Bitcoin as a liquidity-sensitive macro instrument: a convex expression of the marginal dollar, rather than as a simple "digital commodity". As liquidity is withdrawn from the system, balance-sheet constraints tighten across dealers, banks and non-bank financial institutions, reducing their risk-taking capacity and suppressing demand for Bitcoin. When liquidity is injected or the pace of withdrawal slows, balance-sheet elasticity returns and Bitcoin becomes a natural recipient of that marginal risk capital.
               </p>
 
-              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+              <h3 className="text-2xl font-bold text-foreground mt-12 mb-6 flex items-center gap-3">
+                <div className="w-2 h-2 bg-primary rounded-full"></div>
                 2. Real Rates and the Opportunity Cost Channel
               </h3>
 
@@ -1447,38 +1473,39 @@ Low Dormancy → ██████████`}
             </div>
 
             {/* Report Footer */}
-            <div className="px-12 py-10 mt-16 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
-              <div className="space-y-8">
+            <div className="px-12 py-12 mt-20 border-t-2 border-primary/20 bg-gradient-to-br from-primary/5 to-muted/30">
+              <div className="space-y-10">
                 {/* Disclaimer */}
-                <div>
-                  <h3 className="text-sm font-serif font-bold text-slate-900 dark:text-slate-100 mb-3">
+                <div className="bg-card border border-border/50 rounded-xl p-8 shadow-smooth">
+                  <h3 className="text-xl font-bold text-foreground mb-6 flex items-center gap-3">
+                    <div className="w-1 h-6 bg-primary rounded-full"></div>
                     Important Disclaimer
                   </h3>
-                  <p className="text-xs leading-relaxed text-slate-600 dark:text-slate-400">
+                  <p className="text-sm leading-relaxed text-foreground/80">
                     This report is provided for informational and educational purposes only and does not constitute investment advice, financial advice, trading advice, or any other type of advice. The information contained herein is based on sources believed to be reliable but is not guaranteed for accuracy or completeness. Past performance is not indicative of future results. Bitcoin and digital assets are highly volatile and speculative instruments. Investors should conduct their own due diligence and consult with qualified financial advisors before making any investment decisions. ARIES76 and its affiliates assume no liability for any losses or damages arising from the use of this report.
                   </p>
                 </div>
 
                 {/* Publication Info & Copyright */}
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pt-6 border-t border-slate-200 dark:border-slate-800">
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 pt-8 border-t border-border">
                   <div>
-                    <p className="text-xs font-medium text-slate-900 dark:text-slate-100">
-                      Published: December 2025
+                    <p className="text-sm font-bold text-foreground mb-1">
+                      Published: January 2025
                     </p>
-                    <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                    <p className="text-sm text-muted-foreground">
                       © 2025 ARIES76 Capital Intelligence. All rights reserved.
                     </p>
                   </div>
-                  <div className="text-xs text-slate-600 dark:text-slate-400">
-                    <p className="font-medium text-slate-900 dark:text-slate-100 mb-1">Contact</p>
-                    <p>ARIES76 Capital Intelligence</p>
-                    <p className="mt-1">
-                      <a href="mailto:edoardo.grigione@aries76.com" className="hover:text-slate-900 dark:hover:text-slate-100 transition-colors">
+                  <div className="text-sm">
+                    <p className="font-bold text-foreground mb-2">Contact</p>
+                    <p className="text-muted-foreground">ARIES76 Capital Intelligence</p>
+                    <p className="mt-2">
+                      <a href="mailto:edoardo.grigione@aries76.com" className="text-primary hover:text-accent transition-colors font-medium">
                         edoardo.grigione@aries76.com
                       </a>
                     </p>
                     <p className="mt-1">
-                      <a href="https://www.aries76.com" className="hover:text-slate-900 dark:hover:text-slate-100 transition-colors">
+                      <a href="https://www.aries76.com" className="text-primary hover:text-accent transition-colors font-medium">
                         www.aries76.com
                       </a>
                     </p>
@@ -1492,12 +1519,12 @@ Low Dormancy → ██████████`}
         {/* Back to Top Button */}
         <button
           onClick={scrollToTop}
-          className={`fixed bottom-8 right-8 p-3 bg-slate-900 dark:bg-slate-100 text-slate-100 dark:text-slate-900 rounded-full shadow-lg border border-slate-200 dark:border-slate-800 transition-all duration-300 hover:scale-110 hover:shadow-xl ${
+          className={`fixed bottom-8 right-8 p-4 bg-primary text-primary-foreground rounded-full shadow-smooth-lg hover:shadow-smooth transition-all duration-300 hover:scale-110 group ${
             showBackToTop ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
           }`}
           aria-label="Back to top"
         >
-          <ArrowUp className="h-5 w-5" />
+          <ArrowUp className="h-5 w-5 transition-transform group-hover:-translate-y-1" />
         </button>
       </div>
     </>
