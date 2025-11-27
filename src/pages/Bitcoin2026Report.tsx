@@ -131,7 +131,7 @@ const Bitcoin2026Report = () => {
     { year: "2022", price: 16.5 },
     { year: "2023", price: 42.0 },
     { year: "2024", price: 73.0 },
-    { year: "2025", price: 105.0 },
+    { year: "2025", price: 108.0 },
   ];
 
   // Historical data for Figure 2 (Global M2 2013-2025)
