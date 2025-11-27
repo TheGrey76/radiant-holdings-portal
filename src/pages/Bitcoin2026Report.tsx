@@ -1017,10 +1017,6 @@ Low Dormancy → ██████████`}
                 Chapter VI — Scenario Analysis for 2026
               </h2>
 
-              <p className="text-sm italic text-slate-600 dark:text-slate-400 mb-8">
-                Expanded Discursive Edition
-              </p>
-
               <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
                 Scenario analysis does not attempt to forecast deterministic outcomes. Instead, it evaluates the structure of possible states of the world and the liquidity configurations that accompany them.
               </p>
@@ -1060,10 +1056,6 @@ Low Dormancy → ██████████`}
               <h2 id="chapter-7" className="text-2xl font-serif font-bold text-slate-900 dark:text-slate-100 mb-6 pb-3 border-b border-slate-200 dark:border-slate-800 mt-16 scroll-mt-20">
                 Chapter VII — Bitcoin 2026 Pricing Projection
               </h2>
-
-              <p className="text-sm italic text-slate-600 dark:text-slate-400 mb-8">
-                Expanded Discursive Edition
-              </p>
 
               <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
                 1. Introduction
@@ -1132,10 +1124,6 @@ Low Dormancy → ██████████`}
                 Chapter VIII — Risks and Uncertainties
               </h2>
 
-              <p className="text-sm italic text-slate-600 dark:text-slate-400 mb-8">
-                Expanded Discursive Edition
-              </p>
-
               <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
                 1. Liquidity Risk
               </h3>
@@ -1187,10 +1175,6 @@ Low Dormancy → ██████████`}
               <h2 id="chapter-9" className="text-2xl font-serif font-bold text-slate-900 dark:text-slate-100 mb-6 pb-3 border-b border-slate-200 dark:border-slate-800 mt-16 scroll-mt-20">
                 Chapter IX — Appendix
               </h2>
-
-              <p className="text-sm italic text-slate-600 dark:text-slate-400 mb-8">
-                Expanded Discursive Edition
-              </p>
 
               <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
                 1. Definitions
