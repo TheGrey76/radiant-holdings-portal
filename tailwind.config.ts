@@ -59,6 +59,13 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				report: {
+					gold: 'hsl(var(--report-gold))',
+					'gold-muted': 'hsl(var(--report-gold-muted))',
+					navy: 'hsl(var(--report-navy))',
+					'navy-deep': 'hsl(var(--report-navy-deep))',
+					accent: 'hsl(var(--report-accent))'
+				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',

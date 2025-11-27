@@ -32,6 +32,13 @@
     --chart-4: 210 20% 50%;
     --chart-5: 30 70% 45%;
 
+    /* Report-specific colors */
+    --report-gold: 40 75% 55%;
+    --report-gold-muted: 40 60% 85%;
+    --report-navy: 220 65% 18%;
+    --report-navy-deep: 220 75% 12%;
+    --report-accent: 35 80% 50%;
+
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
