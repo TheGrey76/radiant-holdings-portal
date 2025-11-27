@@ -115,87 +115,87 @@ const Bitcoin2026Report = () => {
       <div className="min-h-screen bg-background">
         <div className="container max-w-4xl mx-auto px-8 py-16">
           <div className="bg-background">
-            <div className="px-0 py-12 border-b border-border/40">
-              <div className="text-center mb-6">
-                <p className="text-xs font-medium text-muted-foreground uppercase tracking-widest mb-6">Institutional Research Report</p>
-                <h1 className="text-6xl font-light text-foreground mb-6 tracking-tight">
+            <div className="px-0 py-12 mb-8">
+              <div className="text-center mb-10">
+                <p className="text-xs font-light text-muted-foreground uppercase tracking-widest mb-8">Institutional Research Report</p>
+                <h1 className="text-5xl font-light text-foreground mb-4 tracking-tight">
                   Bitcoin 2026
                 </h1>
-                <p className="text-2xl text-muted-foreground mb-12 font-light tracking-wide">
+                <p className="text-lg text-muted-foreground font-light tracking-wide">
                   Macro-Liquidity Regime Analysis
                 </p>
-                <div className="flex flex-col items-center gap-4">
-                  <p className="text-sm font-light text-foreground">ARIES76 Capital Intelligence</p>
+                <div className="mt-8">
+                  <p className="text-sm font-light text-muted-foreground">ARIES76 Capital Intelligence</p>
                 </div>
               </div>
             </div>
 
             <div className="px-0 py-12 space-y-12">
               {/* Table of Contents */}
-              <div className="mb-16 pb-12 border-b border-border/40">
-                <h2 className="text-2xl font-light text-foreground mb-8 tracking-wide">
+              <div className="mb-16">
+                <h2 className="text-xl font-light text-foreground mb-8 tracking-wide">
                   Table of Contents
                 </h2>
-                <nav className="space-y-3">
+                <nav className="space-y-2">
                   <a 
                     href="#chapter-1" 
-                    className="block text-muted-foreground hover:text-foreground transition-colors duration-200 py-2 font-light"
+                    className="block text-foreground/70 hover:text-foreground transition-colors py-2 text-sm tracking-wide"
                   >
-                    <span className="font-normal">Chapter I</span> — Executive Summary & Macro–Liquidity Regime Analysis
+                    <span className="font-medium">Chapter I</span> — Executive Summary & Macro–Liquidity Regime Analysis
                   </a>
                   <a 
                     href="#chapter-2" 
-                    className="block text-foreground hover:text-primary transition-all duration-200 pl-6 py-3 border-l-3 border-transparent hover:border-primary hover:translate-x-2 rounded-r-lg hover:bg-primary/5"
+                    className="block text-foreground/70 hover:text-foreground transition-colors py-2 text-sm tracking-wide"
                   >
-                    <span className="font-semibold">Chapter II</span> — Advanced Price Framework & Quantitative Modelling
+                    <span className="font-medium">Chapter II</span> — Advanced Price Framework & Quantitative Modelling
                   </a>
                   <a 
                     href="#chapter-3" 
-                    className="block text-foreground hover:text-primary transition-all duration-200 pl-6 py-3 border-l-3 border-transparent hover:border-primary hover:translate-x-2 rounded-r-lg hover:bg-primary/5"
+                    className="block text-foreground/70 hover:text-foreground transition-colors py-2 text-sm tracking-wide"
                   >
-                    <span className="font-semibold">Chapter III</span> — Advanced On-Chain Intelligence & Market Microstructure
+                    <span className="font-medium">Chapter III</span> — Advanced On-Chain Intelligence & Market Microstructure
                   </a>
                   <a 
                     href="#chapter-4" 
-                    className="block text-foreground hover:text-primary transition-all duration-200 pl-6 py-3 border-l-3 border-transparent hover:border-primary hover:translate-x-2 rounded-r-lg hover:bg-primary/5"
+                    className="block text-foreground/70 hover:text-foreground transition-colors py-2 text-sm tracking-wide"
                   >
-                    <span className="font-semibold">Chapter IV</span> — Bitcoin Treasuries, Technology Outlook & Mining Economics
+                    <span className="font-medium">Chapter IV</span> — Bitcoin Treasuries, Technology Outlook & Mining Economics
                   </a>
                   <a 
                     href="#chapter-5" 
-                    className="block text-foreground hover:text-primary transition-all duration-200 pl-6 py-3 border-l-3 border-transparent hover:border-primary hover:translate-x-2 rounded-r-lg hover:bg-primary/5"
+                    className="block text-foreground/70 hover:text-foreground transition-colors py-2 text-sm tracking-wide"
                   >
-                    <span className="font-semibold">Chapter V</span> — Regulatory Outlook 2025–2026
+                    <span className="font-medium">Chapter V</span> — Regulatory Outlook 2025–2026
                   </a>
                   <a 
                     href="#chapter-6" 
-                    className="block text-foreground hover:text-primary transition-all duration-200 pl-6 py-3 border-l-3 border-transparent hover:border-primary hover:translate-x-2 rounded-r-lg hover:bg-primary/5"
+                    className="block text-foreground/70 hover:text-foreground transition-colors py-2 text-sm tracking-wide"
                   >
-                    <span className="font-semibold">Chapter VI</span> — Scenario Analysis for 2026
+                    <span className="font-medium">Chapter VI</span> — Scenario Analysis for 2026
                   </a>
                   <a 
                     href="#chapter-7" 
-                    className="block text-foreground hover:text-primary transition-all duration-200 pl-6 py-3 border-l-3 border-transparent hover:border-primary hover:translate-x-2 rounded-r-lg hover:bg-primary/5"
+                    className="block text-foreground/70 hover:text-foreground transition-colors py-2 text-sm tracking-wide"
                   >
-                    <span className="font-semibold">Chapter VII</span> — Bitcoin 2026 Pricing Projection
+                    <span className="font-medium">Chapter VII</span> — Bitcoin 2026 Pricing Projection
                   </a>
                   <a 
                     href="#chapter-8" 
-                    className="block text-foreground hover:text-primary transition-all duration-200 pl-6 py-3 border-l-3 border-transparent hover:border-primary hover:translate-x-2 rounded-r-lg hover:bg-primary/5"
+                    className="block text-foreground/70 hover:text-foreground transition-colors py-2 text-sm tracking-wide"
                   >
-                    <span className="font-semibold">Chapter VIII</span> — Risks and Uncertainties
+                    <span className="font-medium">Chapter VIII</span> — Risks and Uncertainties
                   </a>
                   <a 
                     href="#chapter-10" 
-                    className="block text-foreground hover:text-primary transition-all duration-200 pl-6 py-3 border-l-3 border-transparent hover:border-primary hover:translate-x-2 rounded-r-lg hover:bg-primary/5"
+                    className="block text-foreground/70 hover:text-foreground transition-colors py-2 text-sm tracking-wide"
                   >
-                    <span className="font-semibold">Chapter X</span> — Bitcoin 2026 Target Price
+                    <span className="font-medium">Chapter X</span> — Bitcoin 2026 Target Price
                   </a>
                   <a 
                     href="#chapter-9" 
-                    className="block text-foreground hover:text-primary transition-all duration-200 pl-6 py-3 border-l-3 border-transparent hover:border-primary hover:translate-x-2 rounded-r-lg hover:bg-primary/5"
+                    className="block text-foreground/70 hover:text-foreground transition-colors py-2 text-sm tracking-wide"
                   >
-                    <span className="font-semibold">Chapter IX</span> — Appendix
+                    <span className="font-medium">Chapter IX</span> — Appendix
                   </a>
                 </nav>
               </div>
