@@ -3,9 +3,6 @@ import { ArrowUp, TrendingUp, BarChart3, Layers, Database, Activity, Coins, Netw
 import { useState, useEffect, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { LineChart as RechartsLineChart, Line, AreaChart, Area, BarChart as RechartsBarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
-import btcPriceFig from "@/assets/bitcoin_2026_fig1_btc.png";
-import m2LiquidityFig from "@/assets/bitcoin_2026_fig2_m2.png";
-import realRatesFig from "@/assets/bitcoin_2026_fig3_real_rates.png";
 
 const Bitcoin2026Report = () => {
   const [showBackToTop, setShowBackToTop] = useState(false);
@@ -119,6 +116,57 @@ const Bitcoin2026Report = () => {
     }
     return null;
   };
+
+  // Historical data for Figure 1 (Bitcoin Price 2013-2025)
+  const btcHistoricalData = [
+    { year: "2013", price: 0.1 },
+    { year: "2014", price: 0.4 },
+    { year: "2015", price: 0.3 },
+    { year: "2016", price: 0.6 },
+    { year: "2017", price: 19.5 },
+    { year: "2018", price: 3.8 },
+    { year: "2019", price: 7.2 },
+    { year: "2020", price: 29.0 },
+    { year: "2021", price: 69.0 },
+    { year: "2022", price: 16.5 },
+    { year: "2023", price: 42.0 },
+    { year: "2024", price: 73.0 },
+    { year: "2025", price: 95.0 },
+  ];
+
+  // Historical data for Figure 2 (Global M2 2013-2025)
+  const m2LiquidityData = [
+    { year: "2013", m2: 100 },
+    { year: "2014", m2: 108 },
+    { year: "2015", m2: 115 },
+    { year: "2016", m2: 123 },
+    { year: "2017", m2: 135 },
+    { year: "2018", m2: 142 },
+    { year: "2019", m2: 148 },
+    { year: "2020", m2: 178 },
+    { year: "2021", m2: 198 },
+    { year: "2022", m2: 185 },
+    { year: "2023", m2: 192 },
+    { year: "2024", m2: 205 },
+    { year: "2025", m2: 218 },
+  ];
+
+  // Historical data for Figure 3 (Real Rates 2013-2025)
+  const realRatesData = [
+    { year: "2013", rate: -0.8 },
+    { year: "2014", rate: -0.5 },
+    { year: "2015", rate: 0.2 },
+    { year: "2016", rate: -0.3 },
+    { year: "2017", rate: 0.5 },
+    { year: "2018", rate: 1.2 },
+    { year: "2019", rate: 0.3 },
+    { year: "2020", rate: -1.5 },
+    { year: "2021", rate: -4.2 },
+    { year: "2022", rate: 1.8 },
+    { year: "2023", rate: 2.1 },
+    { year: "2024", rate: 1.5 },
+    { year: "2025", rate: 0.8 },
+  ];
 
   // Sample data for charts
   const priceScenarioData = [
@@ -288,11 +336,39 @@ const Bitcoin2026Report = () => {
               </div>
 
               <div className="my-12 p-8 rounded-2xl bg-card border-2 border-border/40 shadow-lg">
-                <img 
-                  src={btcPriceFig} 
-                  alt="Bitcoin Price Analysis" 
-                  className="w-full h-auto rounded-lg"
-                />
+                <ResponsiveContainer width="100%" height={400}>
+                  <RechartsLineChart data={btcHistoricalData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
+                    <XAxis 
+                      dataKey="year" 
+                      stroke="hsl(var(--muted-foreground))" 
+                      style={{ fontSize: '12px' }}
+                    />
+                    <YAxis 
+                      stroke="hsl(var(--muted-foreground))" 
+                      style={{ fontSize: '12px' }}
+                      label={{ value: 'BTC Price ($k)', angle: -90, position: 'insideLeft', style: { fill: 'hsl(var(--muted-foreground))' } }}
+                    />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: 'hsl(var(--card))', 
+                        border: '2px solid hsl(var(--primary) / 0.2)',
+                        borderRadius: '12px',
+                        boxShadow: '0 10px 40px rgba(0,0,0,0.2)'
+                      }}
+                      formatter={(value: number) => [`$${value.toFixed(1)}k`, 'BTC Price']}
+                      labelStyle={{ color: 'hsl(var(--primary))', fontWeight: 'bold', marginBottom: '8px' }}
+                    />
+                    <Line 
+                      type="monotone" 
+                      dataKey="price" 
+                      stroke="hsl(var(--primary))" 
+                      strokeWidth={3}
+                      dot={{ fill: 'hsl(var(--primary))', strokeWidth: 2, r: 4 }}
+                      activeDot={{ r: 6, stroke: 'hsl(var(--primary))', strokeWidth: 2 }}
+                    />
+                  </RechartsLineChart>
+                </ResponsiveContainer>
                 <p className="text-sm text-muted-foreground mt-4 text-center font-medium">
                   Figure 1 — Synthetic Bitcoin Price (2013–2025)
                 </p>
@@ -325,22 +401,93 @@ const Bitcoin2026Report = () => {
               </div>
 
               <div className="my-12 p-8 rounded-2xl bg-card border-2 border-border/40 shadow-lg">
-                <img 
-                  src={m2LiquidityFig} 
-                  alt="Global M2 Liquidity Proxy" 
-                  className="w-full h-auto rounded-lg"
-                />
+                <ResponsiveContainer width="100%" height={400}>
+                  <AreaChart data={m2LiquidityData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
+                    <defs>
+                      <linearGradient id="colorM2" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="hsl(var(--accent))" stopOpacity={0.8}/>
+                        <stop offset="95%" stopColor="hsl(var(--accent))" stopOpacity={0.1}/>
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
+                    <XAxis 
+                      dataKey="year" 
+                      stroke="hsl(var(--muted-foreground))" 
+                      style={{ fontSize: '12px' }}
+                    />
+                    <YAxis 
+                      stroke="hsl(var(--muted-foreground))" 
+                      style={{ fontSize: '12px' }}
+                      label={{ value: 'Index (2013=100)', angle: -90, position: 'insideLeft', style: { fill: 'hsl(var(--muted-foreground))' } }}
+                    />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: 'hsl(var(--card))', 
+                        border: '2px solid hsl(var(--accent) / 0.2)',
+                        borderRadius: '12px',
+                        boxShadow: '0 10px 40px rgba(0,0,0,0.2)'
+                      }}
+                      formatter={(value: number) => [value.toFixed(0), 'M2 Index']}
+                      labelStyle={{ color: 'hsl(var(--accent))', fontWeight: 'bold', marginBottom: '8px' }}
+                    />
+                    <Area 
+                      type="monotone" 
+                      dataKey="m2" 
+                      stroke="hsl(var(--accent))" 
+                      strokeWidth={3}
+                      fillOpacity={1} 
+                      fill="url(#colorM2)"
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
                 <p className="text-sm text-muted-foreground mt-4 text-center font-medium">
                   Figure 2 — Global M2 Liquidity Proxy (2013–2025)
                 </p>
               </div>
 
               <div className="my-12 p-8 rounded-2xl bg-card border-2 border-border/40 shadow-lg">
-                <img 
-                  src={realRatesFig} 
-                  alt="Real Rates Regime" 
-                  className="w-full h-auto rounded-lg"
-                />
+                <ResponsiveContainer width="100%" height={400}>
+                  <RechartsLineChart data={realRatesData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
+                    <XAxis 
+                      dataKey="year" 
+                      stroke="hsl(var(--muted-foreground))" 
+                      style={{ fontSize: '12px' }}
+                    />
+                    <YAxis 
+                      stroke="hsl(var(--muted-foreground))" 
+                      style={{ fontSize: '12px' }}
+                      label={{ value: 'Real Rate (%)', angle: -90, position: 'insideLeft', style: { fill: 'hsl(var(--muted-foreground))' } }}
+                    />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: 'hsl(var(--card))', 
+                        border: '2px solid hsl(var(--primary) / 0.2)',
+                        borderRadius: '12px',
+                        boxShadow: '0 10px 40px rgba(0,0,0,0.2)'
+                      }}
+                      formatter={(value: number) => [`${value.toFixed(1)}%`, 'Real Rate']}
+                      labelStyle={{ color: 'hsl(var(--primary))', fontWeight: 'bold', marginBottom: '8px' }}
+                    />
+                    <Line 
+                      type="monotone" 
+                      dataKey="rate" 
+                      stroke="hsl(var(--destructive))" 
+                      strokeWidth={3}
+                      dot={{ fill: 'hsl(var(--destructive))', strokeWidth: 2, r: 4 }}
+                      activeDot={{ r: 6, stroke: 'hsl(var(--destructive))', strokeWidth: 2 }}
+                    />
+                    {/* Zero line reference */}
+                    <Line 
+                      type="monotone" 
+                      dataKey={() => 0} 
+                      stroke="hsl(var(--muted-foreground))" 
+                      strokeWidth={1}
+                      strokeDasharray="5 5"
+                      dot={false}
+                    />
+                  </RechartsLineChart>
+                </ResponsiveContainer>
                 <p className="text-sm text-muted-foreground mt-4 text-center font-medium">
                   Figure 3 — Real Rates Regime (2013–2025)
                 </p>
