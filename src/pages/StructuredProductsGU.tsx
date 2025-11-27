@@ -95,13 +95,13 @@ const StructuredProductsGU = () => {
                       <Badge className="bg-slate-700 text-white">A</Badge>
                       <span className="text-sm text-slate-500 font-mono">DE000MS0H1P0</span>
                       <a 
-                        href="https://www.boerse-frankfurt.de/certificate/DE000MS0H1P0" 
+                        href="https://www.certificatiederivati.it/db_bs_scheda_certificato.asp?isin=DE000MS0H1P0" 
                         target="_blank" 
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 transition-colors"
                       >
                         <ExternalLink className="h-3 w-3" />
-                        Real-Time Price
+                        Prezzo
                       </a>
                     </div>
                     <CardTitle className="text-xl text-slate-900">Morgan Stanley Phoenix "Mixed Basket"</CardTitle>
@@ -152,13 +152,13 @@ const StructuredProductsGU = () => {
                       <Badge className="bg-blue-600">B</Badge>
                       <span className="text-sm text-slate-500 font-mono">DE000UQ23YT1</span>
                       <a 
-                        href="https://www.boerse-frankfurt.de/certificate/DE000UQ23YT1" 
+                        href="https://www.certificatiederivati.it/db_bs_scheda_certificato.asp?isin=DE000UQ23YT1" 
                         target="_blank" 
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 transition-colors"
                       >
                         <ExternalLink className="h-3 w-3" />
-                        Real-Time Price
+                        Prezzo
                       </a>
                     </div>
                     <CardTitle className="text-xl text-slate-900">UBS Phoenix "Healthcare Basket"</CardTitle>
@@ -209,13 +209,13 @@ const StructuredProductsGU = () => {
                       <Badge className="bg-emerald-600">C</Badge>
                       <span className="text-sm text-slate-500 font-mono">DE000UQ0LUM5</span>
                       <a 
-                        href="https://www.boerse-frankfurt.de/certificate/DE000UQ0LUM5" 
+                        href="https://www.certificatiederivati.it/db_bs_scheda_certificato.asp?isin=DE000UQ0LUM5" 
                         target="_blank" 
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 transition-colors"
                       >
                         <ExternalLink className="h-3 w-3" />
-                        Real-Time Price
+                        Prezzo
                       </a>
                     </div>
                     <CardTitle className="text-xl text-slate-900">UBS Memory Cash Collect (Monthly)</CardTitle>
@@ -266,13 +266,13 @@ const StructuredProductsGU = () => {
                       <Badge className="bg-amber-600">D</Badge>
                       <span className="text-sm text-slate-500 font-mono">XS3153270833</span>
                       <a 
-                        href="https://www.boerse-stuttgart.de/en/certificates/XS3153270833" 
+                        href="https://www.certificatiederivati.it/db_bs_scheda_certificato.asp?isin=XS3153270833" 
                         target="_blank" 
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 transition-colors"
                       >
                         <ExternalLink className="h-3 w-3" />
-                        Real-Time Price
+                        Prezzo
                       </a>
                     </div>
                     <CardTitle className="text-xl text-slate-900">Barclays Phoenix "Italy Consumer & Luxury"</CardTitle>
@@ -323,13 +323,13 @@ const StructuredProductsGU = () => {
                       <Badge className="bg-green-600">E</Badge>
                       <span className="text-sm text-slate-500 font-mono">XS3153397073</span>
                       <a 
-                        href="https://www.boerse-stuttgart.de/en/certificates/XS3153397073" 
+                        href="https://www.certificatiederivati.it/db_bs_scheda_certificato.asp?isin=XS3153397073" 
                         target="_blank" 
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 transition-colors"
                       >
                         <ExternalLink className="h-3 w-3" />
-                        Real-Time Price
+                        Prezzo
                       </a>
                     </div>
                     <CardTitle className="text-xl text-slate-900">Barclays Capital Protected "KG on Indices"</CardTitle>
