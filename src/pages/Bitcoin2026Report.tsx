@@ -1,17 +1,42 @@
 import { Helmet } from "react-helmet";
-import { ArrowLeft, ArrowUp } from "lucide-react";
+import { ArrowLeft, ArrowUp, BookOpen } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
 import btcPriceFig from "@/assets/bitcoin_2026_fig1_btc.png";
 import m2LiquidityFig from "@/assets/bitcoin_2026_fig2_m2.png";
 import realRatesFig from "@/assets/bitcoin_2026_fig3_real_rates.png";
 
 const Bitcoin2026Report = () => {
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const [readingProgress, setReadingProgress] = useState(0);
+  const [showResumePrompt, setShowResumePrompt] = useState(false);
+  const [savedPosition, setSavedPosition] = useState(0);
 
   useEffect(() => {
+    // Load saved reading position
+    const saved = localStorage.getItem("bitcoin2026-reading-position");
+    if (saved) {
+      const position = parseInt(saved);
+      setSavedPosition(position);
+      // Show resume prompt if user has scrolled significantly (> 500px)
+      if (position > 500) {
+        setShowResumePrompt(true);
+      }
+    }
+
     const handleScroll = () => {
-      setShowBackToTop(window.scrollY > 400);
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = (scrollTop / docHeight) * 100;
+      
+      setReadingProgress(progress);
+      setShowBackToTop(scrollTop > 400);
+      
+      // Save reading position every 1000px of scroll
+      if (scrollTop % 100 === 0) {
+        localStorage.setItem("bitcoin2026-reading-position", scrollTop.toString());
+      }
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -20,6 +45,17 @@ const Bitcoin2026Report = () => {
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
+    setShowResumePrompt(false);
+  };
+
+  const resumeReading = () => {
+    window.scrollTo({ top: savedPosition, behavior: "smooth" });
+    setShowResumePrompt(false);
+  };
+
+  const dismissResumePrompt = () => {
+    setShowResumePrompt(false);
+    localStorage.removeItem("bitcoin2026-reading-position");
   };
 
   return (
@@ -31,6 +67,48 @@ const Bitcoin2026Report = () => {
           content="Institutional analysis of Bitcoin's 2025-2026 trajectory through macro-liquidity framework, global M2 dynamics, and derivatives-implied positioning." 
         />
       </Helmet>
+
+      {/* Reading Progress Bar */}
+      <div className="fixed top-0 left-0 right-0 h-1 bg-slate-200 dark:bg-slate-800 z-50">
+        <div 
+          className="h-full bg-slate-900 dark:bg-slate-100 transition-all duration-300"
+          style={{ width: `${readingProgress}%` }}
+        />
+      </div>
+
+      {/* Resume Reading Prompt */}
+      {showResumePrompt && (
+        <div className="fixed top-20 right-8 z-40 bg-white dark:bg-slate-900 shadow-lg border border-slate-200 dark:border-slate-800 rounded-lg p-4 max-w-sm animate-fade-in">
+          <div className="flex items-start gap-3">
+            <BookOpen className="h-5 w-5 text-slate-600 dark:text-slate-400 mt-0.5" />
+            <div className="flex-1">
+              <h4 className="text-sm font-serif font-bold text-slate-900 dark:text-slate-100 mb-1">
+                Continue Reading
+              </h4>
+              <p className="text-xs text-slate-600 dark:text-slate-400 mb-3">
+                Pick up where you left off in your last session.
+              </p>
+              <div className="flex gap-2">
+                <Button
+                  onClick={resumeReading}
+                  size="sm"
+                  className="text-xs"
+                >
+                  Resume
+                </Button>
+                <Button
+                  onClick={dismissResumePrompt}
+                  variant="outline"
+                  size="sm"
+                  className="text-xs"
+                >
+                  Start Over
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
         <div className="container max-w-5xl mx-auto px-6 py-16">
