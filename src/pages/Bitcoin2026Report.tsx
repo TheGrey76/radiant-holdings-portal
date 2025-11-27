@@ -66,6 +66,9 @@ const Bitcoin2026Report = () => {
           name="description" 
           content="Institutional analysis of Bitcoin's 2025-2026 trajectory through macro-liquidity framework, global M2 dynamics, and derivatives-implied positioning." 
         />
+        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+        <meta http-equiv="Pragma" content="no-cache" />
+        <meta http-equiv="Expires" content="0" />
       </Helmet>
 
       {/* Reading Progress Bar */}
@@ -112,7 +115,7 @@ const Bitcoin2026Report = () => {
         </div>
       )}
 
-      <div className="min-h-screen bg-gradient-to-b from-background via-muted/20 to-background">
+      <div key="report-content-v2" className="min-h-screen bg-gradient-to-b from-background via-muted/20 to-background">
         <div className="container max-w-5xl mx-auto px-6 py-16">
           <div className="bg-card shadow-smooth-lg border-2 border-primary/10 rounded-xl overflow-hidden">
             <div className="px-12 py-12 bg-gradient-to-br from-primary/5 via-background to-primary/5 border-b-2 border-primary/20">
