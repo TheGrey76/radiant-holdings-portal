@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet";
-import { ArrowUp, TrendingUp, BarChart3, Layers, Database, Activity, Coins, Network, Target, LineChart } from "lucide-react";
+import { ArrowUp, TrendingUp, BarChart3, Layers, Database, Activity, Coins, Network, Target, LineChart, Lightbulb } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { LineChart as RechartsLineChart, Line, AreaChart, Area, BarChart as RechartsBarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
@@ -25,6 +25,42 @@ const Bitcoin2026Report = () => {
       >
         {children}
       </motion.section>
+    );
+  };
+
+  // Key Takeaways Component
+  const KeyTakeaways = ({ insights }: { insights: string[] }) => {
+    const colors = [
+      'from-primary/10 to-primary/5 border-primary/20',
+      'from-accent/10 to-accent/5 border-accent/20',
+      'from-blue-500/10 to-blue-500/5 border-blue-500/20',
+      'from-purple-500/10 to-purple-500/5 border-purple-500/20',
+    ];
+
+    return (
+      <div className="mt-12 p-8 rounded-2xl bg-gradient-to-br from-muted/30 to-background border-2 border-border/60">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+            <Lightbulb className="w-5 h-5 text-primary" />
+          </div>
+          <h3 className="text-2xl font-bold text-foreground">Key Takeaways</h3>
+        </div>
+        <div className="grid gap-4">
+          {insights.map((insight, index) => (
+            <div 
+              key={index}
+              className={`p-5 rounded-xl bg-gradient-to-br ${colors[index % colors.length]} border-2`}
+            >
+              <div className="flex items-start gap-3">
+                <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span className="text-xs font-bold text-primary">{index + 1}</span>
+                </div>
+                <p className="text-sm text-foreground/90 leading-relaxed">{insight}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     );
   };
 
@@ -499,6 +535,13 @@ const Bitcoin2026Report = () => {
                   The combined evidence supports a clear macro identity for Bitcoin. It is a high-convexity, liquidity-sensitive asset whose price behaviour is governed less by "cycles" and more by the interplay between global M2 growth, real-rate trends, shadow liquidity and institutional flow channels.
                 </p>
               </div>
+
+              <KeyTakeaways insights={[
+                "Bitcoin has evolved into a macro liquidity-sensitive asset whose price is now dominated by global M2 impulses, real-rate dynamics, and institutional ETF flows rather than simplistic halving cycles.",
+                "Global M2 acceleration produces convex upside responses while stagnation triggers volatility spikes—the marginal liquidity impulse matters more than absolute levels.",
+                "Declining real yields reduce the opportunity cost of holding non-yielding assets like Bitcoin, creating powerful tailwinds when combined with monetary expansion.",
+                "Bitcoin's structural transformation into an institutional asset class means its price formation is increasingly governed by balance-sheet elasticity of shadow banks and ETF market makers."
+              ]} />
             </div>
           </ChapterSection>
 
@@ -572,10 +615,14 @@ const Bitcoin2026Report = () => {
                   </AreaChart>
                 </ResponsiveContainer>
               </div>
+
+              <KeyTakeaways insights={[
+                "Bitcoin valuation requires structural departure from narrative models—price is now determined by multidimensional liquidity conditions, derivatives flows, and institutional balance-sheet dynamics.",
+                "Quantitative regime models using Hidden Markov frameworks outperform simplistic technical analysis by identifying distinct market states driven by macro-liquidity shifts.",
+                "Advanced price framework combines M2 growth rates, real-rate trends, ETF flow velocity, and on-chain metrics to generate probabilistic scenario distributions rather than single-point forecasts."
+              ]} />
             </div>
           </ChapterSection>
-
-          {/* Chapter III */}
           <ChapterSection id="chapter-3" dataSection="chapter-3">
             <div className="mb-12">
               <div className="inline-flex items-center gap-3 mb-4">
@@ -612,10 +659,14 @@ const Bitcoin2026Report = () => {
                   </div>
                 </div>
               </div>
+
+              <KeyTakeaways insights={[
+                "Hidden Markov Models identify three distinct market regimes—accumulation, expansion, and distribution—each with characteristic volatility, return profiles, and transition probabilities.",
+                "Institutional target of $138,000 represents probability-weighted expected value across Base ($96k-$132k, 60%), High ($180k-$260k, 25%), and Stress ($45k-$60k, 15%) scenarios.",
+                "Quantitative methodology integrates macro liquidity impulses, on-chain supply elasticity, and derivatives positioning into coherent valuation framework that outperforms heuristic cycle models."
+              ]} />
             </div>
           </ChapterSection>
-
-          {/* Chapter IV */}
           <ChapterSection id="chapter-4" dataSection="chapter-4">
             <div className="mb-12">
               <div className="inline-flex items-center gap-3 mb-4">
@@ -675,10 +726,15 @@ const Bitcoin2026Report = () => {
                   </RechartsBarChart>
                 </ResponsiveContainer>
               </div>
+
+              <KeyTakeaways insights={[
+                "Spot Bitcoin ETFs fundamentally altered market microstructure—institutional flows now channel through regulated vehicles creating new arbitrage dynamics and liquidity patterns distinct from pre-ETF era.",
+                "Sustained ETF inflows reduce circulating supply elasticity as institutional buyers demonstrate longer holding periods than retail spot buyers, creating quasi-inelastic supply channels.",
+                "ETF authorized participants arbitrage NAV-spot differentials but face capacity constraints during volatility spikes—this creates efficiency in normal markets but potential fragility during stress events.",
+                "Statistical correlation between ETF net flows and Bitcoin price appreciation confirms persistent institutional demand differs fundamentally from speculative retail flow patterns."
+              ]} />
             </div>
           </ChapterSection>
-
-          {/* Chapter V */}
           <ChapterSection id="chapter-5" dataSection="chapter-5">
             <div className="mb-12">
               <div className="inline-flex items-center gap-3 mb-4">
@@ -761,10 +817,14 @@ const Bitcoin2026Report = () => {
                   </table>
                 </div>
               </div>
+
+              <KeyTakeaways insights={[
+                "On-chain analytics reveal entity behavior patterns—realized price acts as aggregate cost basis and psychological support, while MVRV ratio signals overextension (>3.5) and capitulation (<1.0) phases.",
+                "Exchange net flows distinguish institutional accumulation (persistent outflows to cold storage) from retail distribution (inflows preceding selling), providing leading indicators of conviction.",
+                "Long-term holder supply (12+ months) creates supply inelasticity—as illiquid supply grows through ETF and corporate treasury accumulation, available float shrinks amplifying upside convexity during demand shocks."
+              ]} />
             </div>
           </ChapterSection>
-
-          {/* Chapter VI */}
           <ChapterSection id="chapter-6" dataSection="chapter-6">
             <div className="mb-12">
               <div className="inline-flex items-center gap-3 mb-4">
@@ -808,10 +868,14 @@ const Bitcoin2026Report = () => {
                   Options markets reveal institutional hedging patterns. Put-call skew, volatility smiles, and gamma exposure indicate where large players are positioned and where reflexive price action may occur during sharp moves.
                 </p>
               </div>
+
+              <KeyTakeaways insights={[
+                "Derivatives markets now determine price formation as much as spot—futures open interest, perpetual funding rates, and options implied volatility provide real-time positioning signals.",
+                "Rising open interest during uptrends confirms conviction; rising OI during downtrends suggests forced liquidations. Funding rate extremes precede reversals as overleveraged positions unwind.",
+                "Options markets reveal institutional hedging patterns through put-call skew and volatility surfaces, indicating where large players position and where reflexive gamma-driven price action may occur."
+              ]} />
             </div>
           </ChapterSection>
-
-          {/* Chapter VII */}
           <ChapterSection id="chapter-7" dataSection="chapter-7">
             <div className="mb-12">
               <div className="inline-flex items-center gap-3 mb-4">
@@ -871,10 +935,14 @@ const Bitcoin2026Report = () => {
                   </RechartsLineChart>
                 </ResponsiveContainer>
               </div>
+
+              <KeyTakeaways insights={[
+                "Post-halving mining economics create dynamic price floor—when Bitcoin trades below aggregate production costs (electricity, hardware, operations), marginal miners capitulate reducing network hashrate until equilibrium restores.",
+                "Miner revenue composition shifts as block subsidies decline—transaction fee markets become increasingly relevant, with fee volatility during congestion demonstrating organic block space demand.",
+                "Publicly-traded miner disclosures reveal operational efficiency through hashrate per watt, treasury holdings, and debt structures—miner selling pressure represents predictable supply but also accumulation opportunities for long-term holders."
+              ]} />
             </div>
           </ChapterSection>
-
-          {/* Chapter VIII */}
           <ChapterSection id="chapter-8" dataSection="chapter-8">
             <div className="mb-12">
               <div className="inline-flex items-center gap-3 mb-4">
@@ -922,10 +990,15 @@ const Bitcoin2026Report = () => {
                   </li>
                 </ul>
               </div>
+
+              <KeyTakeaways insights={[
+                "Bitcoin's 21 million cap is absolute, but circulating supply elasticity varies with holder behavior—long-term holders remove supply from active circulation while miner issuance injects marginal supply.",
+                "Illiquid supply growth through ETF accumulation, corporate treasuries, and conviction-driven holders reduces available float and amplifies upside convexity during institutional demand shocks.",
+                "Supply transitions follow predictable patterns—coins move from speculative retail to institutional custody during bull markets, then consolidate further as weak hands capitulate during bear phases.",
+                "65% of supply now held by long-term holders represents structural shift creating quasi-inelastic supply dynamics fundamentally different from earlier retail-dominated cycles."
+              ]} />
             </div>
           </ChapterSection>
-
-          {/* Chapter IX */}
           <ChapterSection id="chapter-9" dataSection="chapter-9">
             <div className="mb-12">
               <div className="inline-flex items-center gap-3 mb-4">
@@ -994,10 +1067,15 @@ const Bitcoin2026Report = () => {
                   </li>
                 </ul>
               </div>
+
+              <KeyTakeaways insights={[
+                "Probabilistic scenario framework integrates macro-liquidity, derivatives positioning, on-chain behavior, and mining economics into coherent narratives—Base Case ($96k-$132k, 60%), High Case ($180k-$260k, 25%), Stress Case ($45k-$60k, 15%).",
+                "Base scenario assumes gradual liquidity expansion, stable ETF flows, orderly mining transitions, and modest real-rate declines—institutional adoption continues through regulated vehicles without extreme leverage.",
+                "High case requires accelerated M2 expansion, sovereign adoption or major SWF allocation, and persistent ETF inflows exceeding new supply—negative real rates create reflexive gamma squeeze dynamics.",
+                "Stress scenario triggered by liquidity contraction, regulatory disruption, miner capitulation, real-rate spikes, or leveraged liquidation cascades—institutional outflows accelerate during risk-off environment."
+              ]} />
             </div>
           </ChapterSection>
-
-          {/* Chapter X */}
           <ChapterSection id="chapter-10" dataSection="chapter-10">
             <div className="mb-12">
               <div className="inline-flex items-center gap-3 mb-4">
@@ -1111,10 +1189,15 @@ const Bitcoin2026Report = () => {
                   Bitcoin in 2026 is no longer a speculative retail phenomenon. It is a macro liquidity instrument embedded in institutional portfolios, derivatives markets, and regulated investment vehicles. The valuation framework must evolve accordingly—from narrative-driven heuristics to quantitative regime models grounded in observable macro and microstructure data. The $138,000 target reflects this analytical rigor, offering institutional allocators a defensible framework for Bitcoin exposure within a diversified asset allocation strategy.
                 </p>
               </div>
+
+              <KeyTakeaways insights={[
+                "$138,000 institutional price target represents probability-weighted expected value combining quantitative regime models, macro-liquidity framework, and derivatives-implied positioning analysis.",
+                "For institutional allocators: Position Bitcoin as convex macro hedge within multi-asset portfolios, size allocations based on risk appetite and liquidity horizon, consider dollar-cost averaging to smooth volatility.",
+                "For macro desks: Monitor M2 growth rates, real yield curves, and ETF flows for directional signals—use derivatives for tactical positioning and hedge tail risks through options during low implied volatility.",
+                "Bitcoin has evolved from speculative retail asset to institutional macro instrument—valuation frameworks must shift from narrative heuristics to quantitative models grounded in observable liquidity and microstructure data."
+              ]} />
             </div>
           </ChapterSection>
-
-          {/* Footer */}
           <div className="mt-24 p-8 rounded-2xl bg-gradient-to-br from-muted/50 to-muted/30 border border-border/40">
             <div className="space-y-6">
               <div className="flex items-start gap-4">
