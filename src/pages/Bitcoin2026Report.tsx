@@ -314,47 +314,57 @@ const Bitcoin2026Report = () => {
                 3. Shadow Liquidity, Stablecoins and Cross-Border Dollar Flow
               </h3>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+              <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 The official monetary aggregates captured by M2 do not exhaust the definition of liquidity relevant for Bitcoin. A growing share of effective liquidity is created in the shadow banking system: through repo markets, derivatives margins, collateral transformations, eurodollar credit lines and, in the digital-asset space, through stablecoins. Stablecoins in particular function as offshore dollar transmission channels, allowing capital to move across jurisdictions and trading venues without touching the traditional correspondent banking infrastructure.
               </p>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+              <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 When stablecoin supply expands, it effectively increases the pool of risk capital that can be deployed into Bitcoin spot, futures and options. Market makers gain balance-sheet flexibility, funding costs decline at the margin and the liquidity multiplier in Bitcoin markets increases. Conversely, contractions in stablecoin aggregates, whether due to regulatory interventions, redemptions or risk aversion, act as a tightening of synthetic liquidity. The result is a deterioration in order-book depth, wider spreads and an increased likelihood of displacement events when large orders hit a thin market.
               </p>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+              <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 Bitcoin's integration into this shadow-liquidity complex reinforces its behaviour as a macro liquidity derivative. The asset no longer depends solely on "crypto-native" flows; instead, it is entangled with cross-border dollar dynamics, dealer risk budgets and the evolution of USD funding conditions globally. The framework used in this report therefore treats official M2, real rates and shadow liquidity as a single vector shaping Bitcoin's equilibrium range.
               </p>
 
-              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+              <h3 className="text-2xl font-bold text-foreground mt-12 mb-6 flex items-center gap-3">
+                <div className="w-2 h-2 bg-primary rounded-full"></div>
                 4. ETF Flows and the Institutionalisation of Liquidity
               </h3>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+              <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 Since the launch of spot Bitcoin ETFs, liquidity conditions in Bitcoin markets have become increasingly institutional. Authorized participants arbitrage differences between ETF net asset value, spot prices on centralised exchanges and CME futures. This intermediation compresses spreads in normal conditions, but it also creates a new transmission channel through which macro flows can rapidly affect Bitcoin. A change in risk appetite at large asset managers can translate into ETF creations or redemptions, which in turn force market makers to transact in spot and futures markets.
               </p>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+              <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 The presence of ETFs means that Bitcoin is now embedded in multi-asset allocation frameworks and risk systems. Portfolio rebalancing decisions by large institutions—often driven by volatility-, drawdown- or VaR-based rules—can trigger structural inflows or outflows independent of crypto-native sentiment. As later chapters will show, ETF flows and CME open interest have become central state variables in models of Bitcoin's short- and medium-term price formation.
               </p>
 
-              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+              <h3 className="text-2xl font-bold text-foreground mt-12 mb-6 flex items-center gap-3">
+                <div className="w-2 h-2 bg-primary rounded-full"></div>
                 5. Synthesis for the 2025–2026 Horizon
               </h3>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+              <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 The combined evidence from Figures 1, 2 and 3 supports a clear macro identity for Bitcoin. It is a high-convexity, liquidity-sensitive asset whose price behaviour is governed less by "cycles" and more by the interplay between global M2 growth, real-rate trends, shadow liquidity and institutional flow channels. In an environment where quantitative tightening reaches its practical limits, where real rates face downward pressure due to fiscal constraints and where ETF structures continue to absorb supply into sticky institutional hands, Bitcoin's medium-term equilibrium band shifts upward.
               </p>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+              <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 The remainder of this report builds on this macro foundation. Subsequent chapters will introduce quantitative regime models based on Hidden Markov Methods, liquidity-adjusted demand functions, derivatives-implied positioning, entity-adjusted on-chain analytics and mining-economics-based floor estimates. The goal is to translate the qualitative macro picture sketched in this first chapter into a fully fledged, probabilistic framework for Bitcoin pricing in 2026 that is usable by institutional allocators, CIOs and macro desks.
               </p>
 
-              <h2 id="chapter-2" className="text-2xl font-serif font-bold text-slate-900 dark:text-slate-100 mb-6 pb-3 border-b border-slate-200 dark:border-slate-800 mt-16 scroll-mt-20">
-                Chapter II — Advanced Price Framework & Quantitative Modelling
-              </h2>
+              <div id="chapter-2" className="mb-24 scroll-mt-24">
+                <div className="mb-10">
+                  <div className="inline-block px-3 py-1 bg-primary/10 rounded-md mb-4">
+                    <span className="text-xs font-semibold text-primary uppercase tracking-wider">Chapter II</span>
+                  </div>
+                  <h2 className="text-4xl font-bold text-foreground mb-4 leading-tight">
+                    Advanced Price Framework & Quantitative Modelling
+                  </h2>
+                  <div className="h-1 w-24 bg-gradient-to-r from-primary to-accent rounded-full"></div>
+                </div>
+              </div>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+              <p className="text-lg leading-relaxed text-foreground/90 mb-8">
                 Bitcoin's valuation throughout the 2025–2026 horizon requires a structural departure from the narrative-driven models that dominated earlier phases of market development. The asset's behaviour is now determined by a multidimensional system of liquidity conditions, derivatives-implied flow constraints, treasury absorption, long-term holder dynamics and mining economics. This chapter introduces the Advanced Price Framework, the analytical backbone used to construct the equilibrium price range for Bitcoin in 2026. The framework integrates macro-liquidity vectors, regime theory, microstructure indicators and supply elasticity models into a coherent investment architecture.
               </p>
 
