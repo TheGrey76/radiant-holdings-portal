@@ -95,7 +95,7 @@ const StructuredProductsGU = () => {
                       <Badge className="bg-slate-700 text-white">A</Badge>
                       <span className="text-sm text-slate-500 font-mono">DE000MS0H1P0</span>
                       <a 
-                        href="https://www.certificatiederivati.it/db_bs_scheda_certificato.asp?isin=DE000MS0H1P0" 
+                        href="https://www.borsaitaliana.it/borsa/certificates/scheda/DE000MS0H1P0.html" 
                         target="_blank" 
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 transition-colors"
@@ -152,7 +152,7 @@ const StructuredProductsGU = () => {
                       <Badge className="bg-blue-600">B</Badge>
                       <span className="text-sm text-slate-500 font-mono">DE000UQ23YT1</span>
                       <a 
-                        href="https://www.certificatiederivati.it/db_bs_scheda_certificato.asp?isin=DE000UQ23YT1" 
+                        href="https://www.borsaitaliana.it/borsa/certificates/scheda/DE000UQ23YT1.html" 
                         target="_blank" 
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 transition-colors"
@@ -209,7 +209,7 @@ const StructuredProductsGU = () => {
                       <Badge className="bg-emerald-600">C</Badge>
                       <span className="text-sm text-slate-500 font-mono">DE000UQ0LUM5</span>
                       <a 
-                        href="https://www.certificatiederivati.it/db_bs_scheda_certificato.asp?isin=DE000UQ0LUM5" 
+                        href="https://www.borsaitaliana.it/borsa/certificates/scheda/DE000UQ0LUM5.html" 
                         target="_blank" 
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 transition-colors"
@@ -266,7 +266,7 @@ const StructuredProductsGU = () => {
                       <Badge className="bg-amber-600">D</Badge>
                       <span className="text-sm text-slate-500 font-mono">XS3153270833</span>
                       <a 
-                        href="https://www.certificatiederivati.it/db_bs_scheda_certificato.asp?isin=XS3153270833" 
+                        href="https://www.borsaitaliana.it/borsa/certificates/scheda/XS3153270833.html" 
                         target="_blank" 
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 transition-colors"
@@ -323,7 +323,7 @@ const StructuredProductsGU = () => {
                       <Badge className="bg-green-600">E</Badge>
                       <span className="text-sm text-slate-500 font-mono">XS3153397073</span>
                       <a 
-                        href="https://www.certificatiederivati.it/db_bs_scheda_certificato.asp?isin=XS3153397073" 
+                        href="https://www.borsaitaliana.it/borsa/certificates/scheda/XS3153397073.html" 
                         target="_blank" 
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 transition-colors"
