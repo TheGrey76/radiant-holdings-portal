@@ -161,6 +161,36 @@ const Bitcoin2026Report = () => {
                   >
                     <span className="font-medium">Chapter IV</span> — Bitcoin Treasuries, Technology Outlook & Mining Economics
                   </a>
+                  <a 
+                    href="#chapter-5" 
+                    className="block text-sm text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 transition-colors pl-4 border-l-2 border-transparent hover:border-slate-400 dark:hover:border-slate-600 py-1"
+                  >
+                    <span className="font-medium">Chapter V</span> — Regulatory Outlook 2025–2026
+                  </a>
+                  <a 
+                    href="#chapter-6" 
+                    className="block text-sm text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 transition-colors pl-4 border-l-2 border-transparent hover:border-slate-400 dark:hover:border-slate-600 py-1"
+                  >
+                    <span className="font-medium">Chapter VI</span> — Scenario Analysis for 2026
+                  </a>
+                  <a 
+                    href="#chapter-7" 
+                    className="block text-sm text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 transition-colors pl-4 border-l-2 border-transparent hover:border-slate-400 dark:hover:border-slate-600 py-1"
+                  >
+                    <span className="font-medium">Chapter VII</span> — Bitcoin 2026 Pricing Projection
+                  </a>
+                  <a 
+                    href="#chapter-8" 
+                    className="block text-sm text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 transition-colors pl-4 border-l-2 border-transparent hover:border-slate-400 dark:hover:border-slate-600 py-1"
+                  >
+                    <span className="font-medium">Chapter VIII</span> — Risks and Uncertainties
+                  </a>
+                  <a 
+                    href="#chapter-9" 
+                    className="block text-sm text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 transition-colors pl-4 border-l-2 border-transparent hover:border-slate-400 dark:hover:border-slate-600 py-1"
+                  >
+                    <span className="font-medium">Chapter IX</span> — Appendix
+                  </a>
                 </nav>
               </div>
 
@@ -860,6 +890,333 @@ const Bitcoin2026Report = () => {
               <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
                 Bitcoin's treasury adoption, technological evolution and mining economics collectively reinforce its structural maturation. Corporate and sovereign entities tighten liquid supply, Layer-2 systems enhance scalability, and mining shifts toward efficient global energy arbitrage. These elements form the foundational pillars of the 2026 equilibrium pricing framework explored in the final chapters.
               </p>
+
+              <h2 id="chapter-5" className="text-2xl font-serif font-bold text-slate-900 dark:text-slate-100 mb-6 pb-3 border-b border-slate-200 dark:border-slate-800 mt-16 scroll-mt-20">
+                Chapter V — Regulatory Outlook 2025–2026
+              </h2>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                1. Introduction
+              </h3>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Bitcoin's regulatory environment in 2025–2026 is defined by the convergence of institutional adoption, cross-jurisdictional compliance requirements, and the global integration of digital asset markets. Regulatory frameworks increasingly shape liquidity access, investor participation, and the evolution of spot and derivatives products.
+              </p>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                2. United States: SEC, CFTC and Legislative Evolution
+              </h3>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                The U.S. remains the global regulatory anchor due to the dominance of USD capital markets and CME futures. Spot ETFs have normalised exposure pathways for institutions, while ongoing legislative efforts aim to define commodity vs. security classification. The CFTC continues to reinforce its oversight of derivatives markets, while SEC supervision of custody and disclosures influences ETF behaviours and authorised participants.
+              </p>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                3. Europe: MiCA Implementation
+              </h3>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                MiCA introduces harmonised regulation across the EU, integrating custody, exchange operations, stablecoin issuance and transparency requirements. For Bitcoin, MiCA enhances institutional certainty, facilitating passported services and compliant structured products.
+              </p>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                4. Asia and MENA: Divergent Models
+              </h3>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Asia exhibits heterogeneity. Japan maintains strict custody and exchange rules, Singapore focuses on risk-based frameworks, while Hong Kong positions itself as a regional institutional hub. MENA jurisdictions—especially the UAE—enhance licensing clarity to attract global asset managers.
+              </p>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                5. Stablecoin and Taxation Trends
+              </h3>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Stablecoin regulation intensifies globally, focusing on reserve quality, auditability and cross-border remittance oversight. Taxation frameworks move toward clarity on capital gains, staking, derivative income and corporate treasury treatment.
+              </p>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                6. Synthesis
+              </h3>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                The regulatory trajectory supports growing institutional participation, deeper liquidity pools and the normalisation of Bitcoin as a cross-border macro asset.
+              </p>
+
+              <h2 id="chapter-6" className="text-2xl font-serif font-bold text-slate-900 dark:text-slate-100 mb-6 pb-3 border-b border-slate-200 dark:border-slate-800 mt-16 scroll-mt-20">
+                Chapter VI — Scenario Analysis for 2026
+              </h2>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                1. Introduction
+              </h3>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Scenario analysis provides probabilistic perspectives under varying liquidity, regulatory and macroeconomic conditions. The objective is to classify outcomes into coherent paths with distinct price bands.
+              </p>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                2. Base Case: Structural Expansion
+              </h3>
+
+              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+                Characteristics
+              </h4>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Moderate global liquidity improvement, stable regulatory environment, steady ETF inflows, robust mining economics.
+              </p>
+
+              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+                Implication
+              </h4>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Bitcoin maintains upward momentum driven by institutional allocations and structural supply tightening.
+              </p>
+
+              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+                Price Band
+              </h4>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Higher-low structural floor with measured upside extension.
+              </p>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                3. High Case: Liquidity Reflation + Corporate Demand Shock
+              </h3>
+
+              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+                Characteristics
+              </h4>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Accelerated balance-sheet expansion, falling real rates, sovereign or corporate treasury accumulation.
+              </p>
+
+              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+                Implication
+              </h4>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Convex upside due to supply inelasticity and ETF demand amplification.
+              </p>
+
+              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+                Price Band
+              </h4>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Significantly higher upper boundary, convexity-led expansion.
+              </p>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                4. Stress Case: Risk-Off, Volatility Spike and ETF Outflows
+              </h3>
+
+              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+                Characteristics
+              </h4>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Macro deleveraging, regulatory fragmentation, liquidity contraction, rising real yields.
+              </p>
+
+              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+                Implication
+              </h4>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Price compression driven by forced selling and reduced market depth.
+              </p>
+
+              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+                Price Band
+              </h4>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Lower structural bound defined by LTH cost basis and mining elasticity.
+              </p>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                5. Synthesis
+              </h3>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Scenario frameworks allow allocators to assign probability weights to future liquidity regimes and evaluate risk-adjusted allocation decisions.
+              </p>
+
+              <h2 id="chapter-7" className="text-2xl font-serif font-bold text-slate-900 dark:text-slate-100 mb-6 pb-3 border-b border-slate-200 dark:border-slate-800 mt-16 scroll-mt-20">
+                Chapter VII — Bitcoin 2026 Pricing Projection
+              </h2>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                1. Introduction
+              </h3>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                This chapter integrates macro, derivatives, on-chain and supply-side models into a unified equilibrium pricing architecture for 2026.
+              </p>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                2. Equilibrium Range Construction
+              </h3>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                The equilibrium band is derived from:
+              </p>
+
+              <ul className="list-disc list-inside text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6 space-y-2">
+                <li>Liquidity-adjusted demand (LADM)</li>
+                <li>Volatility regime clustering</li>
+                <li>Derivatives-implied flows</li>
+                <li>Treasury absorption</li>
+                <li>Mining elasticity floors</li>
+              </ul>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                3. Distribution Curve
+              </h3>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Bitcoin's price distribution is right-skewed due to supply inelasticity. The curve reflects:
+              </p>
+
+              <ul className="list-disc list-inside text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6 space-y-2">
+                <li>Tight lower bound anchored in LTH cost basis</li>
+                <li>Expansive upper tail driven by liquidity convexity</li>
+                <li>Higher mean and median relative to prior cycles</li>
+              </ul>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                4. Institutional Conviction Score
+              </h3>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                The conviction score aggregates:
+              </p>
+
+              <ul className="list-disc list-inside text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6 space-y-2">
+                <li>Liquidity conditions</li>
+                <li>ETF flows</li>
+                <li>On-chain structural metrics</li>
+                <li>Regulatory environment</li>
+                <li>Mining fundamentals</li>
+              </ul>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                5. Synthesis
+              </h3>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                The projection does not target a single number but a probabilistic corridor indicating the most likely structural outcomes for 2026.
+              </p>
+
+              <h2 id="chapter-8" className="text-2xl font-serif font-bold text-slate-900 dark:text-slate-100 mb-6 pb-3 border-b border-slate-200 dark:border-slate-800 mt-16 scroll-mt-20">
+                Chapter VIII — Risks and Uncertainties
+              </h2>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                1. Liquidity and Macro Shocks
+              </h3>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Sudden liquidity withdrawal, rising real yields or shadow banking contractions pose systemic risks to Bitcoin's price formation.
+              </p>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                2. Regulatory Fragmentation
+              </h3>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Divergent regulatory approaches may disrupt global market access, ETF flows and liquidity transmission between regions.
+              </p>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                3. ETF Outflows and Market Structure
+              </h3>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Large-scale redemptions can overwhelm exchange liquidity and trigger forced selling through AP arbitrage.
+              </p>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                4. Technological and Security Risks
+              </h3>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                While improbable, adversarial events, protocol attacks or critical infrastructure failures remain tail risks.
+              </p>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                5. Mining Centralisation Risk
+              </h3>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Rising operational costs and geographic concentration could increase network vulnerability.
+              </p>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                6. Synthesis
+              </h3>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Risk assessment enables disciplined allocation and forward hedging strategies suitable for institutional portfolios.
+              </p>
+
+              <h2 id="chapter-9" className="text-2xl font-serif font-bold text-slate-900 dark:text-slate-100 mb-6 pb-3 border-b border-slate-200 dark:border-slate-800 mt-16 scroll-mt-20">
+                Chapter IX — Appendix
+              </h2>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                1. Definitions
+              </h3>
+
+              <ul className="list-disc list-inside text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6 space-y-2">
+                <li><span className="font-medium">LADM</span>: Liquidity-Adjusted Demand Model.</li>
+                <li><span className="font-medium">HMM</span>: Hidden Markov Model for regime detection.</li>
+                <li><span className="font-medium">LTH</span>: Long-Term Holders, defined as entities holding coins beyond 155 days.</li>
+              </ul>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                2. Methodological Notes
+              </h3>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Econometric methods include:
+              </p>
+
+              <ul className="list-disc list-inside text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6 space-y-2">
+                <li>Non-linear regression</li>
+                <li>Regime classification</li>
+                <li>Cost-basis stratification</li>
+                <li>Supply elasticity modelling</li>
+              </ul>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                3. Glossary for Allocators
+              </h3>
+
+              <ul className="list-disc list-inside text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6 space-y-2">
+                <li><span className="font-medium">Convexity</span>: Sensitivity of price to marginal liquidity.</li>
+                <li><span className="font-medium">Hashprice</span>: Revenue per unit of computational power.</li>
+                <li><span className="font-medium">APs</span>: Authorised Participants of ETFs.</li>
+              </ul>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                4. Model Assumptions
+              </h3>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Models assume:
+              </p>
+
+              <ul className="list-disc list-inside text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6 space-y-2">
+                <li>Stable supply issuance</li>
+                <li>Liquid ETF markets</li>
+                <li>No protocol-level disruptions</li>
+              </ul>
             </div>
 
             {/* Report Footer */}
