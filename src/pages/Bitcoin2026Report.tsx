@@ -459,41 +459,51 @@ const Bitcoin2026Report = () => {
                 The Advanced Price Framework integrates all of the structural components described above into a unified modelling architecture. Bitcoin's 2026 equilibrium band is not a forecast, but a probabilistic range derived from liquidity conditions, supply constraints, volatility regime classification, derivatives-implied flows and mining economics. Later chapters will translate these components into explicit equilibrium pricing corridors, distribution curves and scenario-based outcomes suitable for institutional capital allocation decisions.
               </p>
 
-              <h2 id="chapter-3" className="text-2xl font-serif font-bold text-slate-900 dark:text-slate-100 mb-6 pb-3 border-b border-slate-200 dark:border-slate-800 mt-16 scroll-mt-20">
-                Chapter III — Advanced On‑Chain Intelligence & Market Microstructure
-              </h2>
+              <div id="chapter-3" className="scroll-mt-20 mb-16">
+                <div className="mb-10">
+                  <div className="inline-block px-3 py-1 bg-primary/10 rounded-md mb-4">
+                    <span className="text-xs font-semibold text-primary uppercase tracking-wider">Chapter III</span>
+                  </div>
+                  <h2 className="text-4xl font-bold text-foreground mb-4 leading-tight">
+                    Advanced On‑Chain Intelligence & Market Microstructure
+                  </h2>
+                  <div className="h-1 w-24 bg-gradient-to-r from-primary to-accent rounded-full"></div>
+                </div>
+              </div>
 
-              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+              <h3 className="text-2xl font-bold text-foreground mt-12 mb-6 flex items-center gap-3">
+                <div className="w-2 h-2 bg-primary rounded-full"></div>
                 1. Introduction
               </h3>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+              <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 Bitcoin's on‑chain structure is the closest equivalent to a transparent, real‑time balance sheet for a globally traded macro asset. Unlike equities or commodities, Bitcoin exposes its internal liquidity, supply concentration, capital efficiency and investor behaviour directly on‑chain. For institutional allocators, this makes on‑chain intelligence not a speculative toy, but an empirical dataset capable of revealing structural shifts long before they appear in price.
               </p>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+              <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 This chapter provides a deeply expanded and fully institutional reinterpretation. It blends narrative analysis, entity‑adjusted indicators, microstructure schematics, liquidity‑flow tables and compact ASCII visualisations. The aim is to show Bitcoin's internal functioning as a macro‑sensitive liquidity system, not a retail-driven curiosity. The structure reflects the analytical style of large macro funds, volatility‑targeting allocators and ETF market‑making desks.
               </p>
 
-              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+              <h3 className="text-2xl font-bold text-foreground mt-12 mb-6 flex items-center gap-3">
+                <div className="w-2 h-2 bg-primary rounded-full"></div>
                 2. Entity‑Adjusted On‑Chain Architecture
               </h3>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+              <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 Entity‑adjusted metrics correct for address fragmentation, exchange hot‑wallet clustering and custodial aggregation. This produces a clearer picture of supply concentration and structural demand.
               </p>
 
-              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+              <h4 className="text-xl font-semibold text-foreground mt-8 mb-4">
                 2.1 Whale Net Positioning (Entity‑Adjusted)
               </h4>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+              <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 Large‑entity flows act as slow‑moving structural demand. Their behaviour is not cyclical but liquidity‑sensitive. When monetary aggregates expand, whales accumulate; when real rates rise, accumulation stalls or reverses.
               </p>
 
-              <div className="my-8 bg-slate-50 dark:bg-slate-900/30 border border-slate-200 dark:border-slate-800 rounded-lg p-6">
-                <p className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-3">ASCII Micro‑Chart: Whale Net Positioning (Conceptual)</p>
-                <pre className="text-xs font-mono text-slate-700 dark:text-slate-300 overflow-x-auto">
+              <div className="my-8 bg-muted/30 border border-border rounded-lg p-6">
+                <p className="text-sm font-semibold text-foreground mb-3">ASCII Micro‑Chart: Whale Net Positioning (Conceptual)</p>
+                <pre className="text-xs font-mono text-foreground/80 overflow-x-auto">
 {`Accumulation:   ███████████████
 Neutral:        ██████
 Distribution:   ██`}
