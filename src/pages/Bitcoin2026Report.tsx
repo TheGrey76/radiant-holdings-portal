@@ -287,6 +287,47 @@ const Bitcoin2026Report = () => {
                 The Advanced Price Framework integrates all of the structural components described above into a unified modelling architecture. Bitcoin's 2026 equilibrium band is not a forecast, but a probabilistic range derived from liquidity conditions, supply constraints, volatility regime classification, derivatives-implied flows and mining economics. Later chapters will translate these components into explicit equilibrium pricing corridors, distribution curves and scenario-based outcomes suitable for institutional capital allocation decisions.
               </p>
             </div>
+
+            {/* Report Footer */}
+            <div className="px-12 py-10 mt-16 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
+              <div className="space-y-8">
+                {/* Disclaimer */}
+                <div>
+                  <h3 className="text-sm font-serif font-bold text-slate-900 dark:text-slate-100 mb-3">
+                    Important Disclaimer
+                  </h3>
+                  <p className="text-xs leading-relaxed text-slate-600 dark:text-slate-400">
+                    This report is provided for informational and educational purposes only and does not constitute investment advice, financial advice, trading advice, or any other type of advice. The information contained herein is based on sources believed to be reliable but is not guaranteed for accuracy or completeness. Past performance is not indicative of future results. Bitcoin and digital assets are highly volatile and speculative instruments. Investors should conduct their own due diligence and consult with qualified financial advisors before making any investment decisions. ARIES76 and its affiliates assume no liability for any losses or damages arising from the use of this report.
+                  </p>
+                </div>
+
+                {/* Publication Info & Copyright */}
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pt-6 border-t border-slate-200 dark:border-slate-800">
+                  <div>
+                    <p className="text-xs font-medium text-slate-900 dark:text-slate-100">
+                      Published: December 2024
+                    </p>
+                    <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                      © 2024 ARIES76 Capital Intelligence. All rights reserved.
+                    </p>
+                  </div>
+                  <div className="text-xs text-slate-600 dark:text-slate-400">
+                    <p className="font-medium text-slate-900 dark:text-slate-100 mb-1">Contact</p>
+                    <p>ARIES76 Capital Intelligence</p>
+                    <p className="mt-1">
+                      <a href="mailto:edoardo.grigione@aries76.com" className="hover:text-slate-900 dark:hover:text-slate-100 transition-colors">
+                        edoardo.grigione@aries76.com
+                      </a>
+                    </p>
+                    <p className="mt-1">
+                      <a href="https://www.aries76.com" className="hover:text-slate-900 dark:hover:text-slate-100 transition-colors">
+                        www.aries76.com
+                      </a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
