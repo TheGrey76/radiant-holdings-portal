@@ -1,6 +1,7 @@
 import { Helmet } from "react-helmet";
 import { ArrowUp, TrendingUp, BarChart3, Layers, Database, Activity, Coins, Network, Target, LineChart } from "lucide-react";
 import { useState, useEffect } from "react";
+import { LineChart as RechartsLineChart, Line, AreaChart, Area, BarChart as RechartsBarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
 import btcPriceFig from "@/assets/bitcoin_2026_fig1_btc.png";
 import m2LiquidityFig from "@/assets/bitcoin_2026_fig2_m2.png";
 import realRatesFig from "@/assets/bitcoin_2026_fig3_real_rates.png";
@@ -8,6 +9,39 @@ import realRatesFig from "@/assets/bitcoin_2026_fig3_real_rates.png";
 const Bitcoin2026Report = () => {
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
+
+  // Sample data for charts
+  const priceScenarioData = [
+    { month: "Jan", base: 98, high: 185, stress: 52 },
+    { month: "Mar", base: 105, high: 198, stress: 48 },
+    { month: "May", base: 115, high: 215, stress: 50 },
+    { month: "Jul", base: 120, high: 230, stress: 55 },
+    { month: "Sep", base: 125, high: 245, stress: 52 },
+    { month: "Nov", base: 130, high: 258, stress: 58 },
+  ];
+
+  const etfFlowData = [
+    { week: "W1", inflows: 450, outflows: 120 },
+    { week: "W2", inflows: 520, outflows: 95 },
+    { week: "W3", inflows: 380, outflows: 150 },
+    { week: "W4", inflows: 610, outflows: 110 },
+    { week: "W5", inflows: 490, outflows: 130 },
+    { week: "W6", inflows: 580, outflows: 105 },
+  ];
+
+  const supplyDistributionData = [
+    { category: "Exchanges", percentage: 12, amount: 2520 },
+    { category: "Long-term Holders", percentage: 65, amount: 13650 },
+    { category: "Short-term Holders", percentage: 18, amount: 3780 },
+    { category: "Miners", percentage: 5, amount: 1050 },
+  ];
+
+  const miningCostData = [
+    { quarter: "Q1", cost: 42, price: 98 },
+    { quarter: "Q2", cost: 45, price: 115 },
+    { quarter: "Q3", cost: 48, price: 125 },
+    { quarter: "Q4", cost: 51, price: 130 },
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -254,6 +288,39 @@ const Bitcoin2026Report = () => {
               <p className="text-foreground/80 leading-relaxed">
                 The Advanced Price Framework integrates macro-liquidity vectors, regime theory, microstructure indicators and supply elasticity models into a coherent investment architecture. This multidimensional approach moves beyond simple cycle analysis to capture the complex dynamics of institutional Bitcoin markets.
               </p>
+
+              {/* Interactive Price Scenario Chart */}
+              <div className="my-12 p-8 rounded-2xl bg-card border-2 border-border/40 shadow-lg">
+                <h4 className="text-lg font-bold text-foreground mb-6">2026 Price Scenarios (Monthly Progression)</h4>
+                <ResponsiveContainer width="100%" height={300}>
+                  <AreaChart data={priceScenarioData}>
+                    <defs>
+                      <linearGradient id="colorHigh" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="hsl(var(--accent))" stopOpacity={0.3}/>
+                        <stop offset="95%" stopColor="hsl(var(--accent))" stopOpacity={0}/>
+                      </linearGradient>
+                      <linearGradient id="colorBase" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3}/>
+                        <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
+                    <XAxis dataKey="month" stroke="hsl(var(--muted-foreground))" />
+                    <YAxis stroke="hsl(var(--muted-foreground))" label={{ value: '$k', angle: -90, position: 'insideLeft' }} />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: 'hsl(var(--card))', 
+                        border: '1px solid hsl(var(--border))',
+                        borderRadius: '8px'
+                      }}
+                    />
+                    <Legend />
+                    <Area type="monotone" dataKey="high" stroke="hsl(var(--accent))" fill="url(#colorHigh)" name="High Case" />
+                    <Area type="monotone" dataKey="base" stroke="hsl(var(--primary))" fill="url(#colorBase)" name="Base Case" />
+                    <Area type="monotone" dataKey="stress" stroke="hsl(var(--muted-foreground))" fill="transparent" name="Stress Case" strokeDasharray="5 5" />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
             </div>
           </section>
 
@@ -341,6 +408,28 @@ const Bitcoin2026Report = () => {
               <p className="text-foreground/80 leading-relaxed">
                 The correlation between ETF net flows and Bitcoin price appreciation has been statistically significant. Large institutional allocators rebalance portfolios through ETFs, creating persistent demand that differs from speculative retail flows.
               </p>
+
+              {/* ETF Flow Chart */}
+              <div className="my-12 p-8 rounded-2xl bg-card border-2 border-border/40 shadow-lg">
+                <h4 className="text-lg font-bold text-foreground mb-6">Weekly ETF Flow Dynamics</h4>
+                <ResponsiveContainer width="100%" height={300}>
+                  <RechartsBarChart data={etfFlowData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
+                    <XAxis dataKey="week" stroke="hsl(var(--muted-foreground))" />
+                    <YAxis stroke="hsl(var(--muted-foreground))" label={{ value: '$M', angle: -90, position: 'insideLeft' }} />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: 'hsl(var(--card))', 
+                        border: '1px solid hsl(var(--border))',
+                        borderRadius: '8px'
+                      }}
+                    />
+                    <Legend />
+                    <Bar dataKey="inflows" fill="hsl(var(--primary))" name="Inflows" radius={[8, 8, 0, 0]} />
+                    <Bar dataKey="outflows" fill="hsl(var(--muted-foreground))" name="Outflows" radius={[8, 8, 0, 0]} />
+                  </RechartsBarChart>
+                </ResponsiveContainer>
+              </div>
             </div>
           </section>
 
@@ -391,6 +480,41 @@ const Bitcoin2026Report = () => {
                     <span>Exchange net flows reveal institutional accumulation (outflows) vs. retail distribution (inflows)</span>
                   </li>
                 </ul>
+              </div>
+
+              {/* Supply Distribution Table */}
+              <div className="my-12 p-8 rounded-2xl bg-card border-2 border-border/40 shadow-lg">
+                <h4 className="text-lg font-bold text-foreground mb-6">Bitcoin Supply Distribution Analysis</h4>
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="border-b-2 border-border">
+                        <th className="text-left py-4 px-4 text-sm font-bold text-foreground">Category</th>
+                        <th className="text-right py-4 px-4 text-sm font-bold text-foreground">Percentage</th>
+                        <th className="text-right py-4 px-4 text-sm font-bold text-foreground">Amount (k BTC)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {supplyDistributionData.map((row, idx) => (
+                        <tr key={idx} className="border-b border-border/40 hover:bg-muted/30 transition-colors">
+                          <td className="py-4 px-4 text-sm font-medium text-foreground">{row.category}</td>
+                          <td className="py-4 px-4 text-right text-sm text-foreground/80">
+                            <span className="inline-flex items-center gap-2">
+                              {row.percentage}%
+                              <div className="w-20 h-2 bg-muted rounded-full overflow-hidden">
+                                <div 
+                                  className="h-full bg-primary rounded-full transition-all duration-500"
+                                  style={{ width: `${row.percentage}%` }}
+                                ></div>
+                              </div>
+                            </span>
+                          </td>
+                          <td className="py-4 px-4 text-right text-sm font-semibold text-primary">{row.amount.toLocaleString()}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </section>
@@ -485,6 +609,28 @@ const Bitcoin2026Report = () => {
                 <p className="text-foreground/90 leading-relaxed m-0">
                   Publicly-traded miners reveal operational efficiency through disclosed hashrate, energy costs, and treasury holdings. Miner selling pressure during bear markets represents predictable supply but also creates accumulation opportunities for long-term holders.
                 </p>
+              </div>
+
+              {/* Mining Cost vs Price Chart */}
+              <div className="my-12 p-8 rounded-2xl bg-card border-2 border-border/40 shadow-lg">
+                <h4 className="text-lg font-bold text-foreground mb-6">Mining Cost vs Bitcoin Price (2026 Projection)</h4>
+                <ResponsiveContainer width="100%" height={300}>
+                  <RechartsLineChart data={miningCostData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
+                    <XAxis dataKey="quarter" stroke="hsl(var(--muted-foreground))" />
+                    <YAxis stroke="hsl(var(--muted-foreground))" label={{ value: '$k', angle: -90, position: 'insideLeft' }} />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: 'hsl(var(--card))', 
+                        border: '1px solid hsl(var(--border))',
+                        borderRadius: '8px'
+                      }}
+                    />
+                    <Legend />
+                    <Line type="monotone" dataKey="cost" stroke="hsl(var(--muted-foreground))" strokeWidth={3} name="Production Cost" strokeDasharray="5 5" />
+                    <Line type="monotone" dataKey="price" stroke="hsl(var(--primary))" strokeWidth={3} name="Bitcoin Price" />
+                  </RechartsLineChart>
+                </ResponsiveContainer>
               </div>
             </div>
           </section>
@@ -653,6 +799,57 @@ const Bitcoin2026Report = () => {
               <p className="text-foreground/80 leading-relaxed">
                 The institutional target of $138,000 represents a scenario-weighted expected value derived from the quantitative framework presented across this report. This figure integrates macro-liquidity impulses, supply dynamics, derivatives positioning, and historical regime behavior.
               </p>
+
+              {/* Scenario Probability Distribution */}
+              <div className="my-12 p-8 rounded-2xl bg-card border-2 border-border/40 shadow-lg">
+                <h4 className="text-lg font-bold text-foreground mb-6">Scenario Probability Distribution</h4>
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="font-medium text-foreground">Base Case ($96k-$132k)</span>
+                      <span className="font-bold text-primary">60%</span>
+                    </div>
+                    <div className="w-full h-8 bg-muted rounded-full overflow-hidden">
+                      <div 
+                        className="h-full bg-gradient-to-r from-primary to-primary/80 rounded-full transition-all duration-1000 ease-out animate-fade-in flex items-center justify-end pr-3"
+                        style={{ width: '60%' }}
+                      >
+                        <span className="text-xs font-bold text-primary-foreground">60%</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="font-medium text-foreground">High Case ($180k-$260k)</span>
+                      <span className="font-bold text-accent">25%</span>
+                    </div>
+                    <div className="w-full h-8 bg-muted rounded-full overflow-hidden">
+                      <div 
+                        className="h-full bg-gradient-to-r from-accent to-accent/80 rounded-full transition-all duration-1000 ease-out animate-fade-in flex items-center justify-end pr-3"
+                        style={{ width: '25%', animationDelay: '0.2s' }}
+                      >
+                        <span className="text-xs font-bold text-accent-foreground">25%</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="font-medium text-foreground">Stress Case ($45k-$60k)</span>
+                      <span className="font-bold text-muted-foreground">15%</span>
+                    </div>
+                    <div className="w-full h-8 bg-muted rounded-full overflow-hidden">
+                      <div 
+                        className="h-full bg-gradient-to-r from-muted-foreground to-muted-foreground/80 rounded-full transition-all duration-1000 ease-out animate-fade-in flex items-center justify-end pr-3"
+                        style={{ width: '15%', animationDelay: '0.4s' }}
+                      >
+                        <span className="text-xs font-bold text-background">15%</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
               <div className="grid md:grid-cols-2 gap-6 my-12">
                 <div className="p-6 rounded-2xl bg-card border border-border/40">
