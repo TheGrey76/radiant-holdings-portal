@@ -408,177 +408,385 @@ const Bitcoin2026Report = () => {
               </p>
 
               <h2 id="chapter-3" className="text-2xl font-serif font-bold text-slate-900 dark:text-slate-100 mb-6 pb-3 border-b border-slate-200 dark:border-slate-800 mt-16 scroll-mt-20">
-                Chapter III — Advanced On-Chain Intelligence & Market Microstructure
+                Chapter III — Advanced On‑Chain Intelligence & Market Microstructure
               </h2>
 
-              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
-                1. Institutional On-Chain Framework
-              </h3>
-
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
-                Institutional on-chain analysis provides a structural, entity-adjusted view of Bitcoin's internal liquidity and supply dynamics. Retail-driven metrics are excluded in favour of large-entity behaviour, capital efficiency, cost-basis stratification and structural accumulation patterns. The objective is to map how long-horizon entities, corporate holders, ETF custodians and macro-driven actors shape Bitcoin's supply over 2025–2026.
+              <p className="text-sm italic text-slate-600 dark:text-slate-400 mb-8">
+                Institutional Rewrite — Discursive + Tables + Schematics + ASCII Micro‑Charts
               </p>
 
               <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
-                2. On-Chain Institutional Metrics
+                1. Introduction
               </h3>
 
-              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
-                2.1 Whale Net Positioning (Entity-Adjusted)
-              </h4>
-
               <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
-                Institutional "whale" entities exhibit persistent net accumulation during liquidity expansions and orderly reduction during macro tightening. Tracking large-entity flows allows allocators to identify structural buyers, treasury accumulators and directional demand.
+                Bitcoin's on‑chain structure is the closest equivalent to a transparent, real‑time balance sheet for a globally traded macro asset. Unlike equities or commodities, Bitcoin exposes its internal liquidity, supply concentration, capital efficiency and investor behaviour directly on‑chain. For institutional allocators, this makes on‑chain intelligence not a speculative toy, but an empirical dataset capable of revealing structural shifts long before they appear in price.
               </p>
 
-              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
-                2.2 Exchange Reserve Dynamics
-              </h4>
-
               <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
-                Exchange reserves reflect liquid supply. A persistent decline in reserves corresponds to structural absorption by ETFs, custodians, long-term holders and OTC desks. Rising reserves typically indicate leveraged inflows, risk-on sentiment or distribution phases.
-              </p>
-
-              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
-                2.3 LTH Cost Basis & Realised Price Map
-              </h4>
-
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
-                The Long-Term Holder Cost Basis acts as a structural floor under supportive liquidity conditions. The Realised Price Map compresses during market maturation and signals reduced speculative churn. These levels help identify capitulation points, equilibrium floors and recovery phases.
-              </p>
-
-              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
-                2.4 Dormancy & Revival Analysis
-              </h4>
-
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
-                Dormancy flows measure the re-activation of long-inactive coins. Revival spikes often anticipate distribution waves, liquidity rotations or macro-driven deleveraging. Sustained dormancy indicates conviction and long-term cost-basis anchoring.
+                This chapter provides a deeply expanded and fully institutional reinterpretation. It blends narrative analysis, entity‑adjusted indicators, microstructure schematics, liquidity‑flow tables and compact ASCII visualisations. The aim is to show Bitcoin's internal functioning as a macro‑sensitive liquidity system, not a retail-driven curiosity. The structure reflects the analytical style of large macro funds, volatility‑targeting allocators and ETF market‑making desks.
               </p>
 
               <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
-                3. On-Chain Heatmap (Institutional-Grade)
+                2. Entity‑Adjusted On‑Chain Architecture
               </h3>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Entity‑adjusted metrics correct for address fragmentation, exchange hot‑wallet clustering and custodial aggregation. This produces a clearer picture of supply concentration and structural demand.
+              </p>
+
+              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+                2.1 Whale Net Positioning (Entity‑Adjusted)
+              </h4>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Large‑entity flows act as slow‑moving structural demand. Their behaviour is not cyclical but liquidity‑sensitive. When monetary aggregates expand, whales accumulate; when real rates rise, accumulation stalls or reverses.
+              </p>
+
+              <div className="my-8 bg-slate-50 dark:bg-slate-900/30 border border-slate-200 dark:border-slate-800 rounded-lg p-6">
+                <p className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-3">ASCII Micro‑Chart: Whale Net Positioning (Conceptual)</p>
+                <pre className="text-xs font-mono text-slate-700 dark:text-slate-300 overflow-x-auto">
+{`Accumulation:   ███████████████
+Neutral:        ██████
+Distribution:   ██`}
+                </pre>
+              </div>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                <span className="font-semibold text-slate-900 dark:text-slate-100">Interpretation:</span> A regime of <em>deep accumulation</em> by large entities historically precedes upward price repricing in the presence of improving liquidity conditions. Distribution spikes usually coincide with deleveraging episodes or ETF‑linked supply rotations.
+              </p>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                3. Exchange Reserve Dynamics
+              </h3>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Exchange reserves serve as a proxy for liquid supply. A structural decline reflects long‑term holder absorption, ETF custodian concentration and corporate treasury storage. Rising reserves indicate short‑term risk appetite or incoming leveraged buying.
+              </p>
+
+              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+                3.1 Reserve Regime Table
+              </h4>
 
               <div className="my-10 overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b-2 border-slate-300 dark:border-slate-700">
-                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Metric</th>
-                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Accumulation Regime</th>
-                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Neutral Regime</th>
-                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Distribution Regime</th>
+                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Reserve Trend</th>
+                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Interpretation</th>
+                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Market Signal</th>
                     </tr>
                   </thead>
                   <tbody className="text-slate-700 dark:text-slate-300">
                     <tr className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
-                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">Exchange Reserves</td>
-                      <td className="px-6 py-4">↓ Structural</td>
-                      <td className="px-6 py-4">→ Stable</td>
-                      <td className="px-6 py-4">↑ Short-Term Clouds</td>
+                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">↓ Persistent</td>
+                      <td className="px-6 py-4">Structural absorption (ETFs, LTH, OTC)</td>
+                      <td className="px-6 py-4">Bullish liquidity tightening</td>
                     </tr>
                     <tr className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
-                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">Whale Net Positioning</td>
-                      <td className="px-6 py-4">↑ Strong</td>
-                      <td className="px-6 py-4">→ Mixed</td>
-                      <td className="px-6 py-4">↓ Weakening</td>
-                    </tr>
-                    <tr className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
-                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">LTH Cost Basis</td>
-                      <td className="px-6 py-4">↑ Rising Floors</td>
-                      <td className="px-6 py-4">→ Stable</td>
-                      <td className="px-6 py-4">↓ Stress Event</td>
-                    </tr>
-                    <tr className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
-                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">Dormancy Flows</td>
-                      <td className="px-6 py-4">Low Dormancy</td>
+                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">→ Stable</td>
+                      <td className="px-6 py-4">Transitional / equilibrium regime</td>
                       <td className="px-6 py-4">Neutral</td>
-                      <td className="px-6 py-4">High Revival</td>
                     </tr>
                     <tr className="hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
-                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">On-chain Leverage</td>
-                      <td className="px-6 py-4">Low Leverage</td>
-                      <td className="px-6 py-4">Controlled</td>
-                      <td className="px-6 py-4">Elevated</td>
+                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">↑ Rising</td>
+                      <td className="px-6 py-4">Leverage entering, speculative flows</td>
+                      <td className="px-6 py-4">Volatility ahead</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
 
-              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
-                4. Market Microstructure
-              </h3>
-
               <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
-                4.1 Exchange Microstructure & Liquidity Depth
+                3.2 Liquidity Activation Sequence
               </h4>
 
               <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
-                Bitcoin trades across fragmented liquidity venues: U.S. ETF windows, CME futures, European ETP platforms, Asian perpetual markets and OTC desks. Each venue contributes distinct microstructure signatures such as spread behaviour, depth elasticity, and order-flow imbalance.
+                A typical liquidity activation path looks like this:
               </p>
 
-              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
-                4.2 ETF Flow Transmission
-              </h4>
+              <div className="my-8 bg-slate-50 dark:bg-slate-900/30 border border-slate-200 dark:border-slate-800 rounded-lg p-6">
+                <p className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-3">ASCII Diagram: Liquidity Reactivation</p>
+                <pre className="text-xs font-mono text-slate-700 dark:text-slate-300 overflow-x-auto">
+{`Stablecoins ↑ → Exchange Reserves ↓ → Futures OI ↑ → Spot Depth ↑ → Trend Expansion`}
+                </pre>
+              </div>
 
               <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
-                Spot ETFs impose a structural liquidity channel: creations absorb supply from exchanges or OTC desks, while redemptions inject supply. ETF authorised participants (APs) rebalance across CME futures, spot books and collateral pools.
-              </p>
-
-              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
-                4.3 Liquidity Fragmentation & Slippage
-              </h4>
-
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
-                Liquidity fragmentation produces volatility clusters. Slippage increases sharply during macro events, funding squeezes or ETF outflow shocks. Institutional allocators must model slippage as a dynamic variable rather than a static cost assumption.
+                This path has repeated historically at macro inflection points.
               </p>
 
               <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
-                5. Global Bitcoin Liquidity Grid (GBLG)
+                4. Long‑Term Holder Cost Basis (LTH‑CB)
               </h3>
 
               <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
-                The Global Bitcoin Liquidity Grid describes the 24-hour rotation between U.S., European and Asian market sessions:
+                The LTH Cost Basis acts as a structural gravitational centre for Bitcoin's pricing. When liquidity is supportive, price rarely sustains below LTH‑CB. When liquidity compresses, price approaches LTH‑CB during deleveraging or capitulation periods.
               </p>
+
+              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+                4.1 LTH‑CB Elasticity Model
+              </h4>
+
+              <div className="my-10 overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b-2 border-slate-300 dark:border-slate-700">
+                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Liquidity Regime</th>
+                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">LTH‑CB Role</th>
+                    </tr>
+                  </thead>
+                  <tbody className="text-slate-700 dark:text-slate-300">
+                    <tr className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
+                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">Expansion</td>
+                      <td className="px-6 py-4">Structural floor</td>
+                    </tr>
+                    <tr className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
+                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">Neutral</td>
+                      <td className="px-6 py-4">Magnetic anchor</td>
+                    </tr>
+                    <tr className="hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
+                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">Contraction</td>
+                      <td className="px-6 py-4">Stress‑test boundary</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                The tightening of LTH‑CB around realised price bands suggests market maturity and reduced speculative churn. This is an essential contributor to the 2026 equilibrium floor estimation.
+              </p>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                5. Dormancy & Revival Dynamics
+              </h3>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Dormancy captures the "age" of spent outputs. High dormancy indicates old supply re‑entering the market. Revival spikes often anticipate distribution phases or macro‑environmental shocks.
+              </p>
+
+              <div className="my-8 bg-slate-50 dark:bg-slate-900/30 border border-slate-200 dark:border-slate-800 rounded-lg p-6">
+                <p className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-3">ASCII Micro‑Chart: Dormancy Signals (Conceptual)</p>
+                <pre className="text-xs font-mono text-slate-700 dark:text-slate-300 overflow-x-auto">
+{`Dormant Coins Reactivated → ████░░░░  
+Low Dormancy → ██████████`}
+                </pre>
+              </div>
+
+              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+                Interpretation:
+              </h4>
+
+              <ul className="list-disc list-inside text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6 space-y-2">
+                <li>Sustained <em>low dormancy</em> → long‑term conviction, supply immobility, upward convexity.</li>
+                <li><em>High revival</em> → supply unlocking, increasing probability of microstructure stress.</li>
+              </ul>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                6. On‑Chain Leverage & Capital Efficiency
+              </h3>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Capital efficiency on‑chain is measured through derivatives collateralisation, stablecoin reserves, and funding structures.
+              </p>
+
+              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+                6.1 Leverage Heatmap (Institutional‑Grade)
+              </h4>
+
+              <div className="my-10 overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b-2 border-slate-300 dark:border-slate-700">
+                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Indicator</th>
+                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Low Regime</th>
+                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Neutral Regime</th>
+                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">High Regime</th>
+                    </tr>
+                  </thead>
+                  <tbody className="text-slate-700 dark:text-slate-300">
+                    <tr className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
+                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">Perp Funding Rates</td>
+                      <td className="px-6 py-4">↓</td>
+                      <td className="px-6 py-4">→</td>
+                      <td className="px-6 py-4">↑↑</td>
+                    </tr>
+                    <tr className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
+                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">On‑Chain Collateral (BTC)</td>
+                      <td className="px-6 py-4">Low</td>
+                      <td className="px-6 py-4">Medium</td>
+                      <td className="px-6 py-4">High</td>
+                    </tr>
+                    <tr className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
+                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">Open Interest (USD)</td>
+                      <td className="px-6 py-4">Modest</td>
+                      <td className="px-6 py-4">Stable</td>
+                      <td className="px-6 py-4">Elevated</td>
+                    </tr>
+                    <tr className="hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
+                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">Liquidation Sensitivity</td>
+                      <td className="px-6 py-4">Low</td>
+                      <td className="px-6 py-4">Moderate</td>
+                      <td className="px-6 py-4">High</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                High leverage regimes introduce nonlinear downside risk due to cascading liquidation thresholds.
+              </p>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                7. Market Microstructure: Global Multi‑Venue Liquidity Grid
+              </h3>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                Bitcoin trades in a three‑region, 24‑hour liquidity loop: U.S. → Europe → Asia. Each region has unique market structure.
+              </p>
+
+              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+                7.1 Global Bitcoin Liquidity Grid (GBLG)
+              </h4>
 
               <div className="my-10 overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b-2 border-slate-300 dark:border-slate-700">
                       <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Region</th>
-                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Liquidity Drivers</th>
+                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Liquidity Inputs</th>
                       <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Characteristics</th>
                     </tr>
                   </thead>
                   <tbody className="text-slate-700 dark:text-slate-300">
                     <tr className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
                       <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">U.S.</td>
-                      <td className="px-6 py-4">ETF Creations, CME Futures</td>
-                      <td className="px-6 py-4">Deep liquidity, institutional flows</td>
+                      <td className="px-6 py-4">ETF creations, CME futures, AP arbitrage</td>
+                      <td className="px-6 py-4">Deepest liquidity, directional flows</td>
                     </tr>
                     <tr className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
                       <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">Europe</td>
-                      <td className="px-6 py-4">ETP Markets, Cross-venue arbitrage</td>
-                      <td className="px-6 py-4">Secondary liquidity, price stabilisation</td>
+                      <td className="px-6 py-4">ETP flows, OTC desks, cross‑venue arbitrage</td>
+                      <td className="px-6 py-4">Stabilising, mid‑depth liquidity</td>
                     </tr>
                     <tr className="hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
                       <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">Asia</td>
-                      <td className="px-6 py-4">Perpetual Swaps, Derivatives Funding</td>
-                      <td className="px-6 py-4">High leverage, volatility amplification</td>
+                      <td className="px-6 py-4">Perpetual futures funding, leverage clusters</td>
+                      <td className="px-6 py-4">Volatility amplification, thin depth</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
 
               <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
-                This grid helps allocators identify vulnerability windows and liquidity pivot points.
+                This grid reveals the timing of vulnerability windows, especially during macro announcements.
+              </p>
+
+              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+                7.2 ASCII Microstructure Diagram
+              </h4>
+
+              <div className="my-8 bg-slate-50 dark:bg-slate-900/30 border border-slate-200 dark:border-slate-800 rounded-lg p-6">
+                <pre className="text-xs font-mono text-slate-700 dark:text-slate-300 overflow-x-auto">
+{`[U.S. ETFs] → Depth ↑ → Spread ↓  
+          ↘  
+           [CME OI ↑] → Price Discovery  
+          ↗  
+[Asia Perps] → Funding → Liquidations → Volatility ↑`}
+                </pre>
+              </div>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                ETF flows in the U.S. now anchor global price discovery. Perpetual markets in Asia amplify volatility and propagate liquidations. Europe acts as the stabiliser.
               </p>
 
               <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
-                6. Synthesis for Allocators
+                8. Slippage, Depth and Liquidity Fragmentation
               </h3>
 
               <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
-                On-chain intelligence and microstructure reveal structural tightening of circulating supply, growing institutional dominance and a macro-sensitive liquidity landscape. Together, these indicators provide actionable insights for building the 2026 equilibrium pricing model in the next chapters.
+                Liquidity fragmentation is structural and predictable. Orderbook depth correlates with:
+              </p>
+
+              <ul className="list-disc list-inside text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6 space-y-2">
+                <li>ETF flows</li>
+                <li>futures open interest</li>
+                <li>offshore stablecoin liquidity</li>
+                <li>AP arbitrage behaviour</li>
+              </ul>
+
+              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+                8.1 Depth Elasticity Table
+              </h4>
+
+              <div className="my-10 overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b-2 border-slate-300 dark:border-slate-700">
+                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Condition</th>
+                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Depth Behaviour</th>
+                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Market Impact</th>
+                    </tr>
+                  </thead>
+                  <tbody className="text-slate-700 dark:text-slate-300">
+                    <tr className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
+                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">ETF Inflows ↑</td>
+                      <td className="px-6 py-4">Depth Thickens</td>
+                      <td className="px-6 py-4">Lower volatility</td>
+                    </tr>
+                    <tr className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
+                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">Funding Spikes ↑</td>
+                      <td className="px-6 py-4">Depth Evaporates</td>
+                      <td className="px-6 py-4">Liquidation cascades</td>
+                    </tr>
+                    <tr className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
+                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">Stablecoin Supply ↑</td>
+                      <td className="px-6 py-4">Depth Restored</td>
+                      <td className="px-6 py-4">Trend continuation</td>
+                    </tr>
+                    <tr className="hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
+                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">Regulatory Shock</td>
+                      <td className="px-6 py-4">Depth Fragmented</td>
+                      <td className="px-6 py-4">Sharp dislocations</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+                9. Synthesis for Price Formation
+              </h3>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                The interaction between:
+              </p>
+
+              <ul className="list-disc list-inside text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6 space-y-2">
+                <li>entity‑adjusted accumulation,</li>
+                <li>reserve drain,</li>
+                <li>dormancy suppression,</li>
+                <li>capital efficiency,</li>
+                <li>global liquidity fragmentation,</li>
+                <li>ETF flow anchoring,</li>
+                <li>and derivatives funding regimes</li>
+              </ul>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                creates a <strong>structural tightening of circulating supply</strong>.
+              </p>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                This produces three key implications for Bitcoin's 2026 price behaviour:
+              </p>
+
+              <ol className="list-decimal list-inside text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6 space-y-3">
+                <li><strong>Structural Upward Drift:</strong> Circulating supply is shrinking as ETFs and long-horizon entities dominate absorption.</li>
+                <li><strong>Higher Floor:</strong> LTH‑CB + mining elasticity define a structurally rising price floor.</li>
+                <li><strong>Convex Upside:</strong> Liquidity expansions produce amplified upward repricing due to inelastic supply.</li>
+              </ol>
+
+              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+                This chapter is foundational for the <strong>2026 Equilibrium Price Model</strong> developed later.
               </p>
 
               <h2 id="chapter-4" className="text-2xl font-serif font-bold text-slate-900 dark:text-slate-100 mb-6 pb-3 border-b border-slate-200 dark:border-slate-800 mt-16 scroll-mt-20">
