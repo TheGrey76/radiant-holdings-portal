@@ -71,10 +71,6 @@ const Bitcoin2026Report = () => {
                   <div className="w-1 h-4 bg-primary rounded-full"></div>
                   <span className="font-medium">ARIES76 Capital Intelligence</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-1 h-4 bg-accent rounded-full"></div>
-                  <span>January 2025</span>
-                </div>
               </div>
             </div>
           </div>
@@ -308,7 +304,6 @@ const Bitcoin2026Report = () => {
 
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pt-6 border-t border-border/40">
                 <div>
-                  <p className="text-sm font-semibold text-foreground mb-1">Published: January 2025</p>
                   <p className="text-xs text-muted-foreground">© 2025 ARIES76 Capital Intelligence</p>
                 </div>
                 <div className="text-sm">
