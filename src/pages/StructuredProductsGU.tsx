@@ -152,7 +152,7 @@ const StructuredProductsGU = () => {
                       <Badge className="bg-blue-600">B</Badge>
                       <span className="text-sm text-slate-500 font-mono">DE000UQ23YT1</span>
                       <a 
-                        href="https://www.borsaitaliana.it/borsa/cw-e-certificates/eurotlx/scheda/DE000UQ23YT1.html?lang=it" 
+                        href="https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/DE000UQ23YT1.html?lang=it" 
                         target="_blank" 
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 transition-colors"
