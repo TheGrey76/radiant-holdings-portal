@@ -305,10 +305,10 @@ const Bitcoin2026Report = () => {
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pt-6 border-t border-slate-200 dark:border-slate-800">
                   <div>
                     <p className="text-xs font-medium text-slate-900 dark:text-slate-100">
-                      Published: December 2024
+                      Published: December 2025
                     </p>
                     <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
-                      © 2024 ARIES76 Capital Intelligence. All rights reserved.
+                      © 2025 ARIES76 Capital Intelligence. All rights reserved.
                     </p>
                   </div>
                   <div className="text-xs text-slate-600 dark:text-slate-400">
