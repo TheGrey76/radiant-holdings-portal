@@ -387,10 +387,13 @@ const Bitcoin2026Report = () => {
           </div>
         </div>
 
-        {/* Content */}
-        <div className="container max-w-4xl mx-auto px-6 pb-24">
-          {/* Chapter I */}
-          <ChapterSection id="chapter-1" dataSection="chapter-1">
+        {/* Content with Sidebar */}
+        <div className="container max-w-7xl mx-auto px-6 pb-24">
+          <div className="flex gap-12">
+            {/* Main Content */}
+            <div className="flex-1 max-w-4xl">
+              {/* Chapter I */}
+              <ChapterSection id="chapter-1" dataSection="chapter-1">
             <div className="mb-12">
               <div className="inline-flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
@@ -1237,27 +1240,69 @@ const Bitcoin2026Report = () => {
                 "Bitcoin has evolved from speculative retail asset to institutional macro instrument—valuation frameworks must shift from narrative heuristics to quantitative models grounded in observable liquidity and microstructure data."
               ]} />
             </div>
-          </ChapterSection>
-          <div className="mt-24 p-8 rounded-2xl bg-gradient-to-br from-muted/50 to-muted/30 border border-border/40">
-            <div className="space-y-6">
-              <div className="flex items-start gap-4">
-                <div className="w-1 h-full bg-primary rounded-full"></div>
-                <div>
-                  <h3 className="text-lg font-bold text-foreground mb-3">Disclaimer</h3>
-                  <p className="text-sm text-foreground/70 leading-relaxed">
-                    This report is provided for informational purposes only and does not constitute investment advice. Bitcoin and digital assets are highly volatile. Investors should conduct their own due diligence and consult qualified financial advisors.
-                  </p>
+              </ChapterSection>
+              
+              <div className="mt-24 p-8 rounded-2xl bg-gradient-to-br from-muted/50 to-muted/30 border border-border/40">
+                <div className="space-y-6">
+                  <div className="flex items-start gap-4">
+                    <div className="w-1 h-full bg-primary rounded-full"></div>
+                    <div>
+                      <h3 className="text-lg font-bold text-foreground mb-3">Disclaimer</h3>
+                      <p className="text-sm text-foreground/70 leading-relaxed">
+                        This report is provided for informational purposes only and does not constitute investment advice. Bitcoin and digital assets are highly volatile. Investors should conduct their own due diligence and consult qualified financial advisors.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pt-6 border-t border-border/40">
+                    <div>
+                      <p className="text-xs text-muted-foreground">© 2025 ARIES76 Capital Intelligence</p>
+                    </div>
+                    <div className="text-sm">
+                      <a href="mailto:edoardo.grigione@aries76.com" className="text-primary hover:text-accent transition-colors font-medium">
+                        edoardo.grigione@aries76.com
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </div>
+            </div>
 
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pt-6 border-t border-border/40">
-                <div>
-                  <p className="text-xs text-muted-foreground">© 2025 ARIES76 Capital Intelligence</p>
-                </div>
-                <div className="text-sm">
-                  <a href="mailto:edoardo.grigione@aries76.com" className="text-primary hover:text-accent transition-colors font-medium">
-                    edoardo.grigione@aries76.com
-                  </a>
+            {/* Sticky Sidebar Table of Contents */}
+            <div className="hidden xl:block w-72 flex-shrink-0">
+              <div className="sticky top-20">
+                <div className="bg-card/50 backdrop-blur-sm border border-border/40 rounded-2xl p-6">
+                  <h3 className="text-sm font-bold text-foreground mb-4 uppercase tracking-wider">Contents</h3>
+                  <nav className="space-y-2">
+                    {chapters.map((chapter) => (
+                      <a
+                        key={chapter.id}
+                        href={`#${chapter.id}`}
+                        className={`group flex items-start gap-3 p-3 rounded-xl transition-all duration-200 ${
+                          activeSection === chapter.id
+                            ? 'bg-primary/10 border-l-2 border-primary'
+                            : 'hover:bg-muted/50 border-l-2 border-transparent'
+                        }`}
+                      >
+                        <div className={`flex-shrink-0 w-6 h-6 rounded-lg flex items-center justify-center text-xs font-bold transition-colors ${
+                          activeSection === chapter.id
+                            ? 'bg-primary text-primary-foreground'
+                            : 'bg-muted text-muted-foreground group-hover:bg-primary/20 group-hover:text-primary'
+                        }`}>
+                          {chapter.number}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className={`text-xs leading-snug transition-colors ${
+                            activeSection === chapter.id
+                              ? 'text-foreground font-semibold'
+                              : 'text-muted-foreground group-hover:text-foreground'
+                          }`}>
+                            {chapter.title}
+                          </p>
+                        </div>
+                      </a>
+                    ))}
+                  </nav>
                 </div>
               </div>
             </div>
