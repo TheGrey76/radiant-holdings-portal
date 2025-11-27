@@ -1,6 +1,7 @@
 import { Helmet } from "react-helmet";
 import { ArrowUp, TrendingUp, BarChart3, Layers, Database, Activity, Coins, Network, Target, LineChart } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import { LineChart as RechartsLineChart, Line, AreaChart, Area, BarChart as RechartsBarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
 import btcPriceFig from "@/assets/bitcoin_2026_fig1_btc.png";
 import m2LiquidityFig from "@/assets/bitcoin_2026_fig2_m2.png";
@@ -9,6 +10,26 @@ import realRatesFig from "@/assets/bitcoin_2026_fig3_real_rates.png";
 const Bitcoin2026Report = () => {
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
+
+  // Animated Chapter Section Component
+  const ChapterSection = ({ children, id, dataSection }: { children: React.ReactNode; id: string; dataSection: string }) => {
+    const ref = useRef(null);
+    const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+    return (
+      <motion.section
+        ref={ref}
+        id={id}
+        data-section={dataSection}
+        className="mb-24 scroll-mt-20"
+        initial={{ opacity: 0, y: 50 }}
+        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
+        {children}
+      </motion.section>
+    );
+  };
 
   // Custom Tooltip Components
   const CustomPriceTooltip = ({ active, payload }: any) => {
@@ -245,7 +266,7 @@ const Bitcoin2026Report = () => {
         {/* Content */}
         <div className="container max-w-4xl mx-auto px-6 pb-24">
           {/* Chapter I */}
-          <section id="chapter-1" data-section="chapter-1" className="mb-24 scroll-mt-20">
+          <ChapterSection id="chapter-1" dataSection="chapter-1">
             <div className="mb-12">
               <div className="inline-flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
@@ -332,10 +353,10 @@ const Bitcoin2026Report = () => {
                 </p>
               </div>
             </div>
-          </section>
+          </ChapterSection>
 
           {/* Chapter II */}
-          <section id="chapter-2" data-section="chapter-2" className="mb-24 scroll-mt-20">
+          <ChapterSection id="chapter-2" dataSection="chapter-2">
             <div className="mb-12">
               <div className="inline-flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
@@ -405,10 +426,10 @@ const Bitcoin2026Report = () => {
                 </ResponsiveContainer>
               </div>
             </div>
-          </section>
+          </ChapterSection>
 
           {/* Chapter III */}
-          <section id="chapter-3" data-section="chapter-3" className="mb-24 scroll-mt-20">
+          <ChapterSection id="chapter-3" dataSection="chapter-3">
             <div className="mb-12">
               <div className="inline-flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
@@ -445,10 +466,10 @@ const Bitcoin2026Report = () => {
                 </div>
               </div>
             </div>
-          </section>
+          </ChapterSection>
 
           {/* Chapter IV */}
-          <section id="chapter-4" data-section="chapter-4" className="mb-24 scroll-mt-20">
+          <ChapterSection id="chapter-4" dataSection="chapter-4">
             <div className="mb-12">
               <div className="inline-flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
@@ -508,10 +529,10 @@ const Bitcoin2026Report = () => {
                 </ResponsiveContainer>
               </div>
             </div>
-          </section>
+          </ChapterSection>
 
           {/* Chapter V */}
-          <section id="chapter-5" data-section="chapter-5" className="mb-24 scroll-mt-20">
+          <ChapterSection id="chapter-5" dataSection="chapter-5">
             <div className="mb-12">
               <div className="inline-flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
@@ -594,10 +615,10 @@ const Bitcoin2026Report = () => {
                 </div>
               </div>
             </div>
-          </section>
+          </ChapterSection>
 
           {/* Chapter VI */}
-          <section id="chapter-6" data-section="chapter-6" className="mb-24 scroll-mt-20">
+          <ChapterSection id="chapter-6" dataSection="chapter-6">
             <div className="mb-12">
               <div className="inline-flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
@@ -641,10 +662,10 @@ const Bitcoin2026Report = () => {
                 </p>
               </div>
             </div>
-          </section>
+          </ChapterSection>
 
           {/* Chapter VII */}
-          <section id="chapter-7" data-section="chapter-7" className="mb-24 scroll-mt-20">
+          <ChapterSection id="chapter-7" dataSection="chapter-7">
             <div className="mb-12">
               <div className="inline-flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
@@ -704,10 +725,10 @@ const Bitcoin2026Report = () => {
                 </ResponsiveContainer>
               </div>
             </div>
-          </section>
+          </ChapterSection>
 
           {/* Chapter VIII */}
-          <section id="chapter-8" data-section="chapter-8" className="mb-24 scroll-mt-20">
+          <ChapterSection id="chapter-8" dataSection="chapter-8">
             <div className="mb-12">
               <div className="inline-flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
@@ -755,10 +776,10 @@ const Bitcoin2026Report = () => {
                 </ul>
               </div>
             </div>
-          </section>
+          </ChapterSection>
 
           {/* Chapter IX */}
-          <section id="chapter-9" data-section="chapter-9" className="mb-24 scroll-mt-20">
+          <ChapterSection id="chapter-9" dataSection="chapter-9">
             <div className="mb-12">
               <div className="inline-flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
@@ -827,10 +848,10 @@ const Bitcoin2026Report = () => {
                 </ul>
               </div>
             </div>
-          </section>
+          </ChapterSection>
 
           {/* Chapter X */}
-          <section id="chapter-10" data-section="chapter-10" className="mb-24 scroll-mt-20">
+          <ChapterSection id="chapter-10" dataSection="chapter-10">
             <div className="mb-12">
               <div className="inline-flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
@@ -944,7 +965,7 @@ const Bitcoin2026Report = () => {
                 </p>
               </div>
             </div>
-          </section>
+          </ChapterSection>
 
           {/* Footer */}
           <div className="mt-24 p-8 rounded-2xl bg-gradient-to-br from-muted/50 to-muted/30 border border-border/40">
