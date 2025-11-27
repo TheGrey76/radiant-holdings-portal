@@ -284,30 +284,33 @@ const Bitcoin2026Report = () => {
                 2. Real Rates and the Opportunity Cost Channel
               </h3>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+              <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 If global M2 defines the denominator for Bitcoin valuation, real interest rates shape the slope of the demand curve. Rising real yields increase the opportunity cost of holding non-yielding assets, encourage allocation into cash and high-quality duration, and force deleveraging across risk assets. Conversely, declining real yields reduce that opportunity cost and incentivise the search for convex, high-beta exposures to improving liquidity conditions. Bitcoin sits precisely in that slot.
               </p>
 
-              <figure className="my-10 max-w-3xl mx-auto">
-                <img 
-                  src={realRatesFig} 
-                  alt="Figure 3 — Real Rates Regime (Synthetic, 2013–2025)" 
-                  className="w-full h-auto border border-slate-200 dark:border-slate-700"
-                />
-                <figcaption className="text-xs text-slate-500 dark:text-slate-500 mt-2 text-center font-medium">
+              <figure className="my-12 max-w-3xl mx-auto">
+                <div className="bg-muted/30 p-6 rounded-xl border-2 border-border/50 shadow-smooth hover:shadow-smooth-lg transition-shadow duration-300">
+                  <img 
+                    src={realRatesFig} 
+                    alt="Figure 3 — Real Rates Regime (Synthetic, 2013–2025)" 
+                    className="w-full h-auto rounded-lg"
+                  />
+                </div>
+                <figcaption className="text-sm text-muted-foreground mt-4 text-center font-medium">
                   Figure 3 — Real Rates Regime (Synthetic, 2013–2025)
                 </figcaption>
               </figure>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+              <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 Figure 3 presents a synthetic real-rates series consistent with the tightening and easing phases observed over the past decade. The oscillatory pattern highlights how episodes of rising real yields coincide with periods of pressure on risk premia, while episodes of declining real yields create windows for renewed risk appetite. Bitcoin's negative correlation with real yields is not simply a consequence of investor sentiment; it reflects a structural interaction with balance-sheet capacity. When real rates are high and rising, the carry on safe assets becomes attractive, funding becomes more expensive and risk capital is rationed. When real rates compress, the carry on safe assets erodes and investors are forced to move out the risk curve.
               </p>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+              <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 For the 2025–2026 period, the combination of high sovereign debt loads, elevated refinancing needs and rising interest burdens makes it increasingly difficult for developed-market central banks to sustain a regime of structurally positive and rising real yields. As maturity walls approach and fiscal arithmetic becomes more challenging, the probability of a transition toward a lower real-rate environment increases. From Bitcoin's perspective, this constitutes a supportive macro backdrop, particularly when combined with gradual easing of quantitative tightening.
               </p>
 
-              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+              <h3 className="text-2xl font-bold text-foreground mt-12 mb-6 flex items-center gap-3">
+                <div className="w-2 h-2 bg-primary rounded-full"></div>
                 3. Shadow Liquidity, Stablecoins and Cross-Border Dollar Flow
               </h3>
 
