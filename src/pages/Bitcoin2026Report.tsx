@@ -513,7 +513,7 @@ Distribution:   ██`}
                 Exchange reserves serve as a proxy for liquid supply. A structural decline reflects long‑term holder absorption, ETF custodian concentration and corporate treasury storage. Rising reserves indicate short‑term risk appetite or incoming leveraged buying.
               </p>
 
-              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+              <h4 className="text-xl font-semibold text-foreground mt-8 mb-4">
                 3.1 Reserve Regime Table
               </h4>
 
@@ -574,7 +574,7 @@ Distribution:   ██`}
                 The LTH Cost Basis acts as a structural gravitational centre for Bitcoin's pricing. When liquidity is supportive, price rarely sustains below LTH‑CB. When liquidity compresses, price approaches LTH‑CB during deleveraging or capitulation periods.
               </p>
 
-              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+              <h4 className="text-xl font-semibold text-foreground mt-8 mb-4">
                 4.1 LTH‑CB Elasticity Model
               </h4>
 
@@ -642,7 +642,7 @@ Low Dormancy → ██████████`}
                 Capital efficiency on‑chain is measured through derivatives collateralisation, stablecoin reserves, and funding structures.
               </p>
 
-              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+              <h4 className="text-xl font-semibold text-foreground mt-8 mb-4">
                 6.1 Leverage Heatmap (Institutional‑Grade)
               </h4>
 
@@ -698,7 +698,7 @@ Low Dormancy → ██████████`}
                 Bitcoin trades in a three‑region, 24‑hour liquidity loop: U.S. → Europe → Asia. Each region has unique market structure.
               </p>
 
-              <h4 className="text-base font-serif font-semibold text-slate-900 dark:text-slate-100 mt-8 mb-3">
+              <h4 className="text-xl font-semibold text-foreground mt-8 mb-4">
                 7.1 Global Bitcoin Liquidity Grid (GBLG)
               </h4>
 
@@ -956,49 +956,54 @@ Low Dormancy → ██████████`}
                 Mining operates as a global buyer of last‑resort energy. It monetises curtailed wind, excess hydro, flare gas and stranded solar, transforming power systems and stabilising grids. For several regions, Bitcoin mining becomes an integral component of energy strategy.
               </p>
 
-              <hr className="my-8 border-slate-200 dark:border-slate-700" />
+              <hr className="my-8 border-border" />
 
-              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+              <h3 className="text-2xl font-bold text-foreground mt-12 mb-6 flex items-center gap-3">
+                <div className="w-2 h-2 bg-primary rounded-full"></div>
                 5. Synthesis
               </h3>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+              <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 Treasuries, technology and mining form a reinforcing feedback loop: treasury accumulation tightens free float, technological scaling broadens Bitcoin's addressable market and mining economics strengthen security while integrating Bitcoin into global energy markets. Together, these forces converge into a structural upward bias in Bitcoin's long‑term equilibrium state.
               </p>
 
-              <h2 id="chapter-5" className="text-2xl font-serif font-bold text-slate-900 dark:text-slate-100 mb-6 pb-3 border-b border-slate-200 dark:border-slate-800 mt-16 scroll-mt-20">
+              <h2 id="chapter-5" className="text-4xl font-bold text-foreground mb-8 pb-4 border-b-2 border-primary/20 mt-20 scroll-mt-20">
                 Chapter V — Regulatory Outlook 2025–2026
               </h2>
 
-              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+              <h3 className="text-2xl font-bold text-foreground mt-12 mb-6 flex items-center gap-3">
+                <div className="w-2 h-2 bg-primary rounded-full"></div>
                 1. Introduction
               </h3>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+              <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 Bitcoin's regulatory environment in 2025–2026 is defined by the convergence of institutional adoption, cross-jurisdictional compliance requirements, and the global integration of digital asset markets. Regulatory frameworks increasingly shape liquidity access, investor participation, and the evolution of spot and derivatives products.
               </p>
 
-              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+              <h3 className="text-2xl font-bold text-foreground mt-12 mb-6 flex items-center gap-3">
+                <div className="w-2 h-2 bg-primary rounded-full"></div>
                 2. United States: SEC, CFTC and Legislative Evolution
               </h3>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+              <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 The U.S. remains the global regulatory anchor due to the dominance of USD capital markets and CME futures. Spot ETFs have normalised exposure pathways for institutions, while ongoing legislative efforts aim to define commodity vs. security classification. The CFTC continues to reinforce its oversight of derivatives markets, while SEC supervision of custody and disclosures influences ETF behaviours and authorised participants.
               </p>
 
-              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+              <h3 className="text-2xl font-bold text-foreground mt-12 mb-6 flex items-center gap-3">
+                <div className="w-2 h-2 bg-primary rounded-full"></div>
                 3. Europe: MiCA Implementation
               </h3>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+              <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 MiCA introduces harmonised regulation across the EU, integrating custody, exchange operations, stablecoin issuance and transparency requirements. For Bitcoin, MiCA enhances institutional certainty, facilitating passported services and compliant structured products.
               </p>
 
-              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+              <h3 className="text-2xl font-bold text-foreground mt-12 mb-6 flex items-center gap-3">
+                <div className="w-2 h-2 bg-primary rounded-full"></div>
                 4. Asia and MENA: Divergent Models
               </h3>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+              <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 Asia exhibits heterogeneity. Japan maintains strict custody and exchange rules, Singapore focuses on risk-based frameworks, while Hong Kong positions itself as a regional institutional hub. MENA jurisdictions—especially the UAE—enhance licensing clarity to attract global asset managers.
               </p>
 
@@ -1328,71 +1333,74 @@ Low Dormancy → ██████████`}
                 </p>
               </div>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+              <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 This corridor represents the statistically central valuation range based on median liquidity projections.
               </p>
 
-              <hr className="my-8 border-slate-200 dark:border-slate-700" />
+              <hr className="my-8 border-border" />
 
-              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+              <h3 className="text-2xl font-bold text-foreground mt-12 mb-6 flex items-center gap-3">
+                <div className="w-2 h-2 bg-primary rounded-full"></div>
                 4. High‑Convexity Regime (High Case)
               </h3>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+              <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 Under conditions of global liquidity reflation, falling real rates and accelerated accumulation from ETFs, corporates or sovereign entities, Bitcoin enters a convex upward regime.
               </p>
 
-              <div className="my-8 p-6 bg-slate-100 dark:bg-slate-900/50 border-2 border-slate-900 dark:border-slate-100 rounded-lg">
-                <p className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 text-center">
+              <div className="my-8 p-6 bg-muted/50 border-2 border-foreground/20 rounded-lg">
+                <p className="text-lg font-bold text-foreground text-center">
                   → High Case 2026: <span className="text-xl">US$180,000 – US$260,000</span>
                 </p>
               </div>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+              <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 This range reflects Bitcoin's structurally nonlinear upside under expanding liquidity and tightening free float.
               </p>
 
-              <hr className="my-8 border-slate-200 dark:border-slate-700" />
+              <hr className="my-8 border-border" />
 
-              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+              <h3 className="text-2xl font-bold text-foreground mt-12 mb-6 flex items-center gap-3">
+                <div className="w-2 h-2 bg-primary rounded-full"></div>
                 5. Stress Regime (Left Tail Scenario)
               </h3>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+              <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 A liquidity shock, sharp rise in real yields or pronounced ETF outflows can temporarily compress Bitcoin's valuation toward the structural floor.
               </p>
 
-              <div className="my-8 p-6 bg-slate-100 dark:bg-slate-900/50 border-2 border-slate-900 dark:border-slate-100 rounded-lg">
-                <p className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 text-center">
+              <div className="my-8 p-6 bg-muted/50 border-2 border-foreground/20 rounded-lg">
+                <p className="text-lg font-bold text-foreground text-center">
                   → Stress Case 2026: <span className="text-xl">US$45,000 – US$60,000</span>
                 </p>
               </div>
 
-              <hr className="my-8 border-slate-200 dark:border-slate-700" />
+              <hr className="my-8 border-border" />
 
-              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+              <h3 className="text-2xl font-bold text-foreground mt-12 mb-6 flex items-center gap-3">
+                <div className="w-2 h-2 bg-primary rounded-full"></div>
                 6. Institutional Weighted Target (IWT) for 2026
               </h3>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+              <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 Applying scenario‑weighted probabilities:
               </p>
 
-              <ul className="list-disc pl-6 mb-6 text-slate-700 dark:text-slate-300 leading-relaxed space-y-2">
+              <ul className="list-disc pl-6 mb-8 text-foreground/80 leading-relaxed space-y-2">
                 <li><strong>Base Case</strong> → 60%</li>
                 <li><strong>High Case</strong> → 25%</li>
                 <li><strong>Stress Case</strong> → 15%</li>
               </ul>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+              <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 produces the <strong>Institutional Weighted Target</strong>:
               </p>
 
-              <div className="my-10 p-8 bg-gradient-to-r from-slate-900 to-slate-800 dark:from-slate-100 dark:to-slate-200 text-slate-100 dark:text-slate-900 border-4 border-slate-900 dark:border-slate-100 rounded-lg shadow-lg">
-                <p className="text-2xl font-serif font-bold text-center mb-2">
+              <div className="my-10 p-8 bg-gradient-to-r from-primary/90 to-primary/70 text-primary-foreground border-4 border-primary rounded-lg shadow-lg">
+                <p className="text-2xl font-bold text-center mb-2">
                   Institutional Weighted Target 2026
                 </p>
-                <p className="text-5xl font-serif font-bold text-center">
+                <p className="text-5xl font-bold text-center">
                   US$138,000
                 </p>
                 <p className="text-sm text-center mt-4 opacity-90">
@@ -1400,40 +1408,41 @@ Low Dormancy → ██████████`}
                 </p>
               </div>
 
-              <hr className="my-8 border-slate-200 dark:border-slate-700" />
+              <hr className="my-8 border-border" />
 
-              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+              <h3 className="text-2xl font-bold text-foreground mt-12 mb-6 flex items-center gap-3">
+                <div className="w-2 h-2 bg-primary rounded-full"></div>
                 7. Final Target Summary
               </h3>
 
               <div className="my-10 overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b-2 border-slate-300 dark:border-slate-700">
-                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Scenario</th>
-                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Price Range</th>
-                      <th className="px-6 py-4 text-left font-serif font-bold text-slate-900 dark:text-slate-100">Probability</th>
+                    <tr className="border-b-2 border-primary/20">
+                      <th className="px-6 py-4 text-left font-bold text-foreground">Scenario</th>
+                      <th className="px-6 py-4 text-left font-bold text-foreground">Price Range</th>
+                      <th className="px-6 py-4 text-left font-bold text-foreground">Probability</th>
                     </tr>
                   </thead>
-                  <tbody className="text-slate-700 dark:text-slate-300">
-                    <tr className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
-                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">High‑Convexity Regime</td>
-                      <td className="px-6 py-4 font-bold text-green-700 dark:text-green-400">$180,000 – $260,000</td>
+                  <tbody className="text-foreground/80">
+                    <tr className="border-b border-border hover:bg-muted/30 transition-colors">
+                      <td className="px-6 py-4 font-medium text-foreground">High‑Convexity Regime</td>
+                      <td className="px-6 py-4 font-bold text-green-600 dark:text-green-400">$180,000 – $260,000</td>
                       <td className="px-6 py-4">25%</td>
                     </tr>
-                    <tr className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors bg-slate-50 dark:bg-slate-900/20">
-                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">Equilibrium Band (Base Case)</td>
-                      <td className="px-6 py-4 font-bold text-slate-900 dark:text-slate-100">$96,000 – $132,000</td>
+                    <tr className="border-b border-border hover:bg-muted/30 transition-colors bg-muted/20">
+                      <td className="px-6 py-4 font-medium text-foreground">Equilibrium Band (Base Case)</td>
+                      <td className="px-6 py-4 font-bold text-foreground">$96,000 – $132,000</td>
                       <td className="px-6 py-4">60%</td>
                     </tr>
-                    <tr className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
-                      <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">Stress Regime</td>
-                      <td className="px-6 py-4 font-bold text-orange-700 dark:text-orange-400">$45,000 – $60,000</td>
+                    <tr className="border-b border-border hover:bg-muted/30 transition-colors">
+                      <td className="px-6 py-4 font-medium text-foreground">Stress Regime</td>
+                      <td className="px-6 py-4 font-bold text-orange-600 dark:text-orange-400">$45,000 – $60,000</td>
                       <td className="px-6 py-4">15%</td>
                     </tr>
-                    <tr className="border-t-2 border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors bg-slate-100 dark:bg-slate-900/40">
-                      <td className="px-6 py-4 font-bold text-slate-900 dark:text-slate-100">Institutional Weighted Target</td>
-                      <td className="px-6 py-4 font-bold text-xl text-slate-900 dark:text-slate-100">$138,000</td>
+                    <tr className="border-t-2 border-primary/20 hover:bg-muted/30 transition-colors bg-muted/40">
+                      <td className="px-6 py-4 font-bold text-foreground">Institutional Weighted Target</td>
+                      <td className="px-6 py-4 font-bold text-xl text-foreground">$138,000</td>
                       <td className="px-6 py-4 font-medium">—</td>
                     </tr>
                   </tbody>
@@ -1441,50 +1450,51 @@ Low Dormancy → ██████████`}
               </div>
 
               <div className="my-10 grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="p-6 bg-slate-100 dark:bg-slate-900/50 border-l-4 border-slate-900 dark:border-slate-100 rounded">
-                  <p className="text-sm font-medium text-slate-600 dark:text-slate-400 mb-2">Central Institutional Target 2026</p>
-                  <p className="text-3xl font-serif font-bold text-slate-900 dark:text-slate-100">$138,000</p>
+                <div className="p-6 bg-muted/30 border-l-4 border-foreground rounded">
+                  <p className="text-sm font-medium text-muted-foreground mb-2">Central Institutional Target 2026</p>
+                  <p className="text-3xl font-bold text-foreground">$138,000</p>
                 </div>
-                <div className="p-6 bg-slate-100 dark:bg-slate-900/50 border-l-4 border-green-700 dark:border-green-400 rounded">
-                  <p className="text-sm font-medium text-slate-600 dark:text-slate-400 mb-2">Plausible Maximum (High Liquidity Regime)</p>
-                  <p className="text-3xl font-serif font-bold text-green-700 dark:text-green-400">$220,000</p>
+                <div className="p-6 bg-muted/30 border-l-4 border-green-600 dark:border-green-400 rounded">
+                  <p className="text-sm font-medium text-muted-foreground mb-2">Plausible Maximum (High Liquidity Regime)</p>
+                  <p className="text-3xl font-bold text-green-600 dark:text-green-400">$220,000</p>
                 </div>
-                <div className="p-6 bg-slate-100 dark:bg-slate-900/50 border-l-4 border-orange-700 dark:border-orange-400 rounded">
-                  <p className="text-sm font-medium text-slate-600 dark:text-slate-400 mb-2">Structural Lower Bound</p>
-                  <p className="text-3xl font-serif font-bold text-orange-700 dark:text-orange-400">$50,000 – $60,000</p>
+                <div className="p-6 bg-muted/30 border-l-4 border-orange-600 dark:border-orange-400 rounded">
+                  <p className="text-sm font-medium text-muted-foreground mb-2">Structural Lower Bound</p>
+                  <p className="text-3xl font-bold text-orange-600 dark:text-orange-400">$50,000 – $60,000</p>
                 </div>
               </div>
 
-              <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
+              <h3 className="text-2xl font-bold text-foreground mt-12 mb-6 flex items-center gap-3">
+                <div className="w-2 h-2 bg-primary rounded-full"></div>
                 8. Investment Implications & Conclusion
               </h3>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+              <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 This institutional target price framework provides a disciplined, multi‑scenario valuation architecture for Bitcoin positioning in 2026. The <strong>central weighted target of $138,000</strong> reflects a probabilistic aggregation of structural, liquidity and supply dynamics rather than deterministic forecasting. Institutional allocators should calibrate position sizing to regime‑dependent volatility, asymmetric convexity and structural floor dynamics. The framework emphasises that Bitcoin's valuation is a function of global liquidity conditions, regulatory clarity, ETF absorption and mining economics—not narrative‑driven speculation.
               </p>
 
-              <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+              <p className="text-base leading-relaxed text-foreground/80 mb-8">
                 The equilibrium band of <strong>$96,000–$132,000</strong> represents the highest‑probability outcome zone under neutral‑to‑positive liquidity conditions, while the high‑convexity regime captures Bitcoin's structurally nonlinear upside under reflationary macro environments. The stress scenario anchors downside risk assessment to structural support levels consistent with on‑chain cost basis and mining profitability floors.
               </p>
 
-              <div className="my-12 p-8 bg-slate-100 dark:bg-slate-900/50 border-l-4 border-slate-900 dark:border-slate-100 rounded-lg">
-                <p className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mb-4">
+              <div className="my-12 p-8 bg-muted/30 border-l-4 border-foreground rounded-lg">
+                <p className="text-lg font-bold text-foreground mb-4">
                   Bitcoin 2026 Institutional Target Price Summary
                 </p>
-                <div className="space-y-3 text-base text-slate-700 dark:text-slate-300">
+                <div className="space-y-3 text-base text-foreground/80">
                   <p><strong>Institutional Weighted Target:</strong> $138,000</p>
                   <p><strong>Equilibrium Band (Base Case, 60%):</strong> $96,000 – $132,000</p>
                   <p><strong>High‑Convexity Regime (25%):</strong> $180,000 – $260,000</p>
                   <p><strong>Stress Regime (15%):</strong> $45,000 – $60,000</p>
                   <p><strong>Plausible Maximum:</strong> $220,000</p>
                   <p><strong>Structural Floor:</strong> $50,000 – $60,000</p>
-                  <p className="text-sm italic mt-4 pt-4 border-t border-slate-300 dark:border-slate-700">
+                  <p className="text-sm italic mt-4 pt-4 border-t border-border">
                     Projection methodology integrates macro‑liquidity analysis, LTH cost basis dynamics, mining elasticity, ETF absorption, realised price anchors and regime‑dependent volatility modelling. Targets reflect December 2026 institutional equilibrium estimates based on probabilistic scenario weighting.
                   </p>
                 </div>
               </div>
 
-              <h2 id="chapter-9" className="text-2xl font-serif font-bold text-slate-900 dark:text-slate-100 mb-6 pb-3 border-b border-slate-200 dark:border-slate-800 mt-16 scroll-mt-20">
+              <h2 id="chapter-9" className="text-4xl font-bold text-foreground mb-8 pb-4 border-b-2 border-primary/20 mt-20 scroll-mt-20">
                 Chapter IX — Appendix
               </h2>
 
