@@ -789,10 +789,6 @@ Low Dormancy → ██████████`}
                 Chapter IV — Bitcoin Treasuries, Technology Outlook & Mining Economics
               </h2>
 
-              <p className="text-sm italic text-slate-600 dark:text-slate-400 mb-8">
-                Expanded Institutional Narrative — Highly Discursive
-              </p>
-
               <h3 className="text-lg font-serif font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">
                 1. Introduction
               </h3>
