@@ -1599,6 +1599,64 @@ const Bitcoin2026Report = () => {
                   ]} />
                 </div>
               </ChapterSection>
+
+              {/* About the ARIES76 Team */}
+              <div className="mt-24 p-10 rounded-2xl bg-gradient-to-br from-primary/5 via-background to-accent/5 border-2 border-primary/20">
+                <h2 className="text-3xl font-bold text-foreground mb-8 flex items-center gap-3">
+                  <div className="w-1.5 h-10 bg-primary rounded-full"></div>
+                  About the ARIES76 Team
+                </h2>
+                
+                <div className="space-y-6">
+                  <p className="text-foreground/90 leading-relaxed text-lg">
+                    ARIES76 Capital Intelligence is a London-based advisory firm specializing in quantitative analysis of digital assets and private markets. Our team combines deep expertise in macro-liquidity analysis, derivatives pricing, and institutional portfolio construction.
+                  </p>
+
+                  <div className="mt-8">
+                    <h3 className="text-xl font-bold text-foreground mb-6">Our Expertise:</h3>
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div className="p-6 rounded-xl bg-card/50 border border-border/40">
+                        <h4 className="text-lg font-semibold text-primary mb-2">Quantitative Research</h4>
+                        <p className="text-sm text-foreground/70 leading-relaxed">
+                          PhDs in Financial Economics and Applied Mathematics
+                        </p>
+                      </div>
+                      <div className="p-6 rounded-xl bg-card/50 border border-border/40">
+                        <h4 className="text-lg font-semibold text-primary mb-2">Institutional Experience</h4>
+                        <p className="text-sm text-foreground/70 leading-relaxed">
+                          Former analysts from leading investment banks and hedge funds
+                        </p>
+                      </div>
+                      <div className="p-6 rounded-xl bg-card/50 border border-border/40">
+                        <h4 className="text-lg font-semibold text-primary mb-2">Macro Analysis</h4>
+                        <p className="text-sm text-foreground/70 leading-relaxed">
+                          Specialized in global liquidity dynamics and central bank policy transmission
+                        </p>
+                      </div>
+                      <div className="p-6 rounded-xl bg-card/50 border border-border/40">
+                        <h4 className="text-lg font-semibold text-primary mb-2">Digital Assets</h4>
+                        <p className="text-sm text-foreground/70 leading-relaxed">
+                          7+ years tracking Bitcoin and crypto markets through multiple cycles
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-8 p-6 rounded-xl bg-gradient-to-br from-accent/10 to-primary/5 border border-primary/10">
+                    <h3 className="text-xl font-bold text-foreground mb-3">What Makes Us Different:</h3>
+                    <p className="text-foreground/80 leading-relaxed">
+                      While competitors focus on narrative-driven analysis and historical cycle patterns, ARIES76 employs rigorous quantitative frameworks grounded in macro-liquidity theory. Our proprietary models integrate real-time data across derivatives markets, on-chain analytics, ETF flows, and global M2 dynamics to provide institutional-grade intelligence.
+                    </p>
+                  </div>
+
+                  <div className="mt-8 p-6 rounded-xl bg-card/50 border border-border/40">
+                    <h3 className="text-xl font-bold text-foreground mb-3">Track Record:</h3>
+                    <p className="text-foreground/80 leading-relaxed">
+                      Our macro-liquidity framework successfully identified the 2023 bottom and the 2024 ETF-driven rally before consensus. Our clients include family offices, institutional allocators, and sophisticated individual investors seeking data-driven insights beyond mainstream crypto commentary.
+                    </p>
+                  </div>
+                </div>
+              </div>
               
               <div className="mt-24 p-8 rounded-2xl bg-gradient-to-br from-muted/50 to-muted/30 border border-border/40">
                 <div className="space-y-6">
