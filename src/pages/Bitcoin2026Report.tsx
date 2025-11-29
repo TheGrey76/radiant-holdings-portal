@@ -1370,6 +1370,37 @@ const Bitcoin2026Report = () => {
                 "For macro desks: Monitor M2 growth rates, real yield curves, and ETF flows for directional signals—use derivatives for tactical positioning and hedge tail risks through options during low implied volatility.",
                 "Bitcoin has evolved from speculative retail asset to institutional macro instrument—valuation frameworks must shift from narrative heuristics to quantitative models grounded in observable liquidity and microstructure data."
               ]} />
+
+              {/* Investment Implications */}
+              <div className="mt-12 p-8 rounded-2xl bg-gradient-to-br from-accent/10 via-background to-primary/5 border-2 border-primary/20">
+                <h3 className="text-2xl font-bold text-foreground mb-6 flex items-center gap-3">
+                  <div className="w-1.5 h-8 bg-primary rounded-full"></div>
+                  Investment Implications
+                </h3>
+                
+                <div className="space-y-6">
+                  <div className="p-6 rounded-xl bg-card/50 border border-border/40">
+                    <h4 className="text-lg font-semibold text-primary mb-3">For Retail High-Net-Worth Investors</h4>
+                    <p className="text-foreground/80 leading-relaxed">
+                      The 2026 price targets provide a roadmap for profit-taking and rebalancing. Consider reducing exposure by 30-40% if Bitcoin reaches the upper end of the base case range ($132k). Full position exit is warranted if high convexity scenario materializes ($180k+) as risk-reward becomes unfavorable. Maintain core 2-3% allocation through cycles.
+                    </p>
+                  </div>
+
+                  <div className="p-6 rounded-xl bg-card/50 border border-border/40">
+                    <h4 className="text-lg font-semibold text-primary mb-3">For Family Offices & Institutional Allocators</h4>
+                    <p className="text-foreground/80 leading-relaxed">
+                      Institutional portfolios should establish clear rebalancing bands tied to scenario outcomes. If base case unfolds, maintain target allocation through periodic rebalancing. High convexity scenario warrants profit-taking to restore allocation discipline. Stress scenario ($45k-$60k) represents accumulation opportunity for long-term holders with conviction in the macro-liquidity thesis.
+                    </p>
+                  </div>
+
+                  <div className="p-6 rounded-xl bg-card/50 border border-border/40">
+                    <h4 className="text-lg font-semibold text-primary mb-3">For Quantitative Traders</h4>
+                    <p className="text-foreground/80 leading-relaxed">
+                      Price targets should be viewed as probability distributions rather than point forecasts. Volatility surface dynamics will shift as scenarios unfold. Monitor implied volatility term structure for regime change signals. Breakout above $140k increases probability of high convexity scenario and warrants momentum strategies. Breakdown below $90k signals potential regime shift to stress scenario.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
               </ChapterSection>
               
