@@ -654,6 +654,37 @@ const Bitcoin2026Report = () => {
                 "Declining real yields reduce the opportunity cost of holding non-yielding assets like Bitcoin, creating powerful tailwinds when combined with monetary expansion.",
                 "Bitcoin's structural transformation into an institutional asset class means its price formation is increasingly governed by balance-sheet elasticity of shadow banks and ETF market makers."
               ]} />
+
+              {/* Investment Implications */}
+              <div className="mt-12 p-8 rounded-2xl bg-gradient-to-br from-accent/10 via-background to-primary/5 border-2 border-primary/20">
+                <h3 className="text-2xl font-bold text-foreground mb-6 flex items-center gap-3">
+                  <div className="w-1.5 h-8 bg-primary rounded-full"></div>
+                  Investment Implications
+                </h3>
+                
+                <div className="space-y-6">
+                  <div className="p-6 rounded-xl bg-card/50 border border-border/40">
+                    <h4 className="text-lg font-semibold text-primary mb-3">For Retail High-Net-Worth Investors</h4>
+                    <p className="text-foreground/80 leading-relaxed">
+                      Consider a strategic allocation of 3-5% of liquid portfolio to Bitcoin with a 24-month horizon. The macro-liquidity framework suggests accumulation during M2 stagnation periods when volatility spikes create entry opportunities. Avoid chasing momentum during parabolic phases.
+                    </p>
+                  </div>
+
+                  <div className="p-6 rounded-xl bg-card/50 border border-border/40">
+                    <h4 className="text-lg font-semibold text-primary mb-3">For Family Offices & Institutional Allocators</h4>
+                    <p className="text-foreground/80 leading-relaxed">
+                      Bitcoin now functions as a liquidity-sensitive macro asset suitable for portfolio diversification. Our base case scenario supports allocations in the 2-4% range as part of alternative investments bucket. Focus on ETF vehicles for regulatory clarity and operational simplicity. Rebalancing triggers should be tied to regime transitions rather than fixed time periods.
+                    </p>
+                  </div>
+
+                  <div className="p-6 rounded-xl bg-card/50 border border-border/40">
+                    <h4 className="text-lg font-semibold text-primary mb-3">For Quantitative Traders</h4>
+                    <p className="text-foreground/80 leading-relaxed">
+                      The regime model provides actionable signals for tactical positioning. Transitions from accumulation to expansion regimes (identified via HMM) offer high-conviction long entries. Derivatives positioning metrics can identify overextension points for mean-reversion trades. Monitor ETF flow velocity as a leading indicator for institutional demand shifts.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </ChapterSection>
 
