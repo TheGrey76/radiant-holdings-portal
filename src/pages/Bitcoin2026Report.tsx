@@ -380,6 +380,46 @@ const Bitcoin2026Report = () => {
           </div>
         </div>
 
+        {/* Our Edge: The ARIES76 Methodology */}
+        <div className="container max-w-6xl mx-auto px-6 pb-8">
+          <div className="bg-gradient-to-br from-accent/10 via-background to-accent/5 rounded-lg p-10 border border-accent/20 shadow-xl">
+            <h2 className="text-3xl font-bold text-foreground mb-6">
+              Our Edge: <span className="text-primary">The ARIES76 Methodology</span>
+            </h2>
+            <p className="text-muted-foreground leading-relaxed mb-6">
+              What sets ARIES76 apart from competitors like ARK Invest, Messari Pro, and Glassnode is our proprietary macro-liquidity driven approach. While others rely on historical cycle patterns and simplistic technical analysis, we integrate real-time global M2 dynamics, shadow banking elasticity, and institutional flow mechanics into a coherent quantitative framework.
+            </p>
+            <div className="mb-4">
+              <h3 className="text-lg font-semibold text-foreground mb-4">Our methodology combines:</h3>
+              <div className="space-y-3">
+                <div className="flex items-start gap-3">
+                  <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0"></div>
+                  <p className="text-muted-foreground">Hidden Markov Models for regime identification</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0"></div>
+                  <p className="text-muted-foreground">Real-time macro-liquidity impulse tracking</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0"></div>
+                  <p className="text-muted-foreground">Derivatives-implied positioning analysis</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0"></div>
+                  <p className="text-muted-foreground">Entity-adjusted on-chain metrics</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0"></div>
+                  <p className="text-muted-foreground">ETF flow microstructure dynamics</p>
+                </div>
+              </div>
+            </div>
+            <p className="text-muted-foreground leading-relaxed mt-6 italic border-l-4 border-primary pl-4">
+              This multidimensional approach provides institutional-grade intelligence that narrative-driven models cannot capture.
+            </p>
+          </div>
+        </div>
+
         {/* Table of Contents */}
         <div className="container max-w-6xl mx-auto px-6 py-16">
           <h2 className="text-2xl font-bold text-foreground mb-8">Table of Contents</h2>
