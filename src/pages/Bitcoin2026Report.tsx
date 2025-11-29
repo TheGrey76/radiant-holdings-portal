@@ -351,6 +351,35 @@ const Bitcoin2026Report = () => {
           </div>
         </div>
 
+        {/* Executive Summary */}
+        <div className="container max-w-6xl mx-auto px-6 pt-16 pb-8">
+          <div className="bg-gradient-to-br from-primary/10 via-primary/5 to-transparent rounded-lg p-10 border border-primary/20 shadow-xl">
+            <h2 className="text-3xl font-bold text-foreground mb-8 flex items-center gap-3">
+              <span className="text-primary">Executive Summary</span>
+            </h2>
+            <div className="space-y-6">
+              <div className="flex gap-4">
+                <span className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">1</span>
+                <p className="text-muted-foreground leading-relaxed">
+                  Bitcoin's 2026 trajectory is NOT driven by halving cycles—it's governed by global M2 liquidity impulses and real-rate dynamics. Our proprietary macro-liquidity framework reveals that marginal M2 acceleration produces convex upside responses while stagnation triggers volatility spikes.
+                </p>
+              </div>
+              <div className="flex gap-4">
+                <span className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">2</span>
+                <p className="text-muted-foreground leading-relaxed">
+                  Institutional target: $138,000 (probability-weighted across three scenarios). Base case ($96k-$132k, 60% probability) assumes moderate liquidity expansion. High convexity scenario ($180k-$260k, 25%) requires sustained M2 growth + declining real yields. Stress regime ($45k-$60k, 15%) emerges only under aggressive monetary tightening.
+                </p>
+              </div>
+              <div className="flex gap-4">
+                <span className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">3</span>
+                <p className="text-muted-foreground leading-relaxed">
+                  The ARIES76 Edge: While competitors rely on simplistic cycle analysis, our quantitative framework integrates Hidden Markov regime models, ETF flow dynamics, derivatives positioning, and on-chain supply elasticity into a coherent valuation architecture. This multidimensional approach captures the complex institutional market dynamics that narrative-driven models miss.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Table of Contents */}
         <div className="container max-w-6xl mx-auto px-6 py-16">
           <h2 className="text-2xl font-bold text-foreground mb-8">Table of Contents</h2>
