@@ -1657,6 +1657,70 @@ const Bitcoin2026Report = () => {
                   </div>
                 </div>
               </div>
+
+              {/* What Our Clients Say */}
+              <div className="mt-16 p-10 rounded-2xl bg-gradient-to-br from-accent/5 via-background to-primary/5 border-2 border-accent/20">
+                <h2 className="text-3xl font-bold text-foreground mb-8 flex items-center gap-3">
+                  <div className="w-1.5 h-10 bg-accent rounded-full"></div>
+                  What Our Clients Say
+                </h2>
+                
+                <div className="space-y-6">
+                  <div className="p-6 rounded-xl bg-card/50 border border-border/40 relative">
+                    <div className="absolute -top-4 -left-4 w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
+                      <span className="text-3xl text-primary">"</span>
+                    </div>
+                    <p className="text-foreground/80 leading-relaxed mb-4 italic">
+                      ARIES76's macro-liquidity framework provided the conviction we needed to increase our Bitcoin allocation in early 2024. Their quantitative approach stands apart from the narrative-driven analysis flooding the market.
+                    </p>
+                    <div className="flex items-center gap-3 pt-4 border-t border-border/40">
+                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                        <span className="text-sm font-bold text-primary">CIO</span>
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-foreground">Chief Investment Officer</p>
+                        <p className="text-xs text-muted-foreground">European Family Office</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-6 rounded-xl bg-card/50 border border-border/40 relative">
+                    <div className="absolute -top-4 -left-4 w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
+                      <span className="text-3xl text-primary">"</span>
+                    </div>
+                    <p className="text-foreground/80 leading-relaxed mb-4 italic">
+                      The regime-based risk management framework has been invaluable for our institutional portfolio. Finally, a research provider that understands how Bitcoin fits into a diversified allocation.
+                    </p>
+                    <div className="flex items-center gap-3 pt-4 border-t border-border/40">
+                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                        <span className="text-sm font-bold text-primary">PM</span>
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-foreground">Portfolio Manager</p>
+                        <p className="text-xs text-muted-foreground">Multi-Strategy Fund</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-6 rounded-xl bg-card/50 border border-border/40 relative">
+                    <div className="absolute -top-4 -left-4 w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
+                      <span className="text-3xl text-primary">"</span>
+                    </div>
+                    <p className="text-foreground/80 leading-relaxed mb-4 italic">
+                      ARIES76's analysis goes far beyond simplistic cycle theory. Their integration of ETF flows, derivatives positioning, and on-chain metrics provides actionable intelligence we can't find elsewhere.
+                    </p>
+                    <div className="flex items-center gap-3 pt-4 border-t border-border/40">
+                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                        <span className="text-sm font-bold text-primary">P</span>
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-foreground">Principal</p>
+                        <p className="text-xs text-muted-foreground">Crypto-Focused Hedge Fund</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
               
               <div className="mt-24 p-8 rounded-2xl bg-gradient-to-br from-muted/50 to-muted/30 border border-border/40">
                 <div className="space-y-6">
