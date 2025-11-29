@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet";
-import { ArrowUp, TrendingUp, BarChart3, Layers, Database, Activity, Coins, Network, Target, LineChart, Lightbulb, HelpCircle } from "lucide-react";
+import { ArrowUp, TrendingUp, BarChart3, Layers, Database, Activity, Coins, Network, Target, LineChart, Lightbulb, HelpCircle, Shield } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { LineChart as RechartsLineChart, Line, AreaChart, Area, BarChart as RechartsBarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Legend } from "recharts";
@@ -310,6 +310,7 @@ const Bitcoin2026Report = () => {
     { id: "chapter-8", number: "VIII", title: "Supply Dynamics & Long-Term Holders", icon: LineChart },
     { id: "chapter-9", number: "IX", title: "Scenario Analysis & Risk Framework", icon: Target },
     { id: "chapter-10", number: "X", title: "2026 Price Targets & Investment Implications", icon: TrendingUp },
+    { id: "chapter-11", number: "XI", title: "Risk Management Framework", icon: Shield },
   ];
 
   return (
@@ -1402,6 +1403,201 @@ const Bitcoin2026Report = () => {
                 </div>
               </div>
             </div>
+              </ChapterSection>
+
+              {/* Chapter XI - Risk Management Framework */}
+              <ChapterSection id="chapter-11" dataSection="chapter-11">
+                <div className="mb-12">
+                  <div className="inline-flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                      <Shield className="w-5 h-5 text-primary" />
+                    </div>
+                    <span className="text-xs font-bold text-primary uppercase tracking-widest">Chapter XI</span>
+                  </div>
+                  <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 leading-tight">
+                    Risk Management Framework
+                  </h2>
+                  <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent rounded-full"></div>
+                </div>
+
+                <div className="prose prose-lg max-w-none space-y-8">
+                  <div className="p-6 rounded-2xl bg-gradient-to-br from-primary/5 to-accent/5 border border-primary/10">
+                    <p className="text-foreground/90 leading-relaxed m-0">
+                      Bitcoin's volatility and regime-dependent behavior require sophisticated risk management beyond simple stop-losses. This framework provides institutional-grade risk controls across different market conditions.
+                    </p>
+                  </div>
+
+                  {/* Position Sizing Guidelines */}
+                  <div className="space-y-4">
+                    <h3 className="text-2xl font-bold text-foreground flex items-center gap-3">
+                      <div className="w-1.5 h-8 bg-primary rounded-full"></div>
+                      Position Sizing Guidelines
+                    </h3>
+                    <p className="text-foreground/80 leading-relaxed">
+                      Maximum allocation should be determined by portfolio volatility tolerance and correlation assumptions. For diversified portfolios, Bitcoin allocation of 2-5% provides meaningful upside exposure while limiting drawdown impact. Conservative portfolios (retirees, capital preservation mandates) should cap allocation at 2%. Growth-oriented portfolios (young investors, high risk tolerance) can extend to 7.5% as Fidelity research suggests.
+                    </p>
+                    <div className="grid md:grid-cols-3 gap-4 mt-6">
+                      <div className="p-5 rounded-xl bg-card border border-border/40">
+                        <div className="text-lg font-bold text-muted-foreground mb-2">Conservative</div>
+                        <div className="text-3xl font-bold text-primary mb-2">2%</div>
+                        <p className="text-sm text-foreground/70">Capital preservation focus</p>
+                      </div>
+                      <div className="p-5 rounded-xl bg-card border border-border/40">
+                        <div className="text-lg font-bold text-foreground mb-2">Balanced</div>
+                        <div className="text-3xl font-bold text-primary mb-2">2-5%</div>
+                        <p className="text-sm text-foreground/70">Diversified portfolios</p>
+                      </div>
+                      <div className="p-5 rounded-xl bg-card border border-border/40">
+                        <div className="text-lg font-bold text-accent mb-2">Growth</div>
+                        <div className="text-3xl font-bold text-primary mb-2">5-7.5%</div>
+                        <p className="text-sm text-foreground/70">High risk tolerance</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Regime-Based Stop Losses */}
+                  <div className="space-y-4">
+                    <h3 className="text-2xl font-bold text-foreground flex items-center gap-3">
+                      <div className="w-1.5 h-8 bg-primary rounded-full"></div>
+                      Regime-Based Stop Losses
+                    </h3>
+                    <p className="text-foreground/80 leading-relaxed">
+                      Static stop-losses fail in regime-shifting markets. Our HMM framework identifies three regimes with distinct volatility profiles:
+                    </p>
+                    <div className="space-y-3">
+                      <div className="p-5 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20">
+                        <div className="flex items-center justify-between mb-2">
+                          <h4 className="text-lg font-bold text-foreground">Accumulation Regime</h4>
+                          <span className="text-xl font-bold text-primary">15%</span>
+                        </div>
+                        <p className="text-sm text-foreground/70">Trailing stop from local highs</p>
+                      </div>
+                      <div className="p-5 rounded-xl bg-gradient-to-br from-accent/10 to-accent/5 border border-accent/20">
+                        <div className="flex items-center justify-between mb-2">
+                          <h4 className="text-lg font-bold text-foreground">Expansion Regime</h4>
+                          <span className="text-xl font-bold text-accent">25%</span>
+                        </div>
+                        <p className="text-sm text-foreground/70">Higher volatility tolerance during bull phases</p>
+                      </div>
+                      <div className="p-5 rounded-xl bg-gradient-to-br from-destructive/10 to-destructive/5 border border-destructive/20">
+                        <div className="flex items-center justify-between mb-2">
+                          <h4 className="text-lg font-bold text-foreground">Distribution Regime</h4>
+                          <span className="text-xl font-bold text-destructive">10%</span>
+                        </div>
+                        <p className="text-sm text-foreground/70">Tight stop for capital preservation priority</p>
+                      </div>
+                    </div>
+                    <p className="text-sm text-muted-foreground italic mt-4">
+                      Regime transitions trigger stop-loss adjustments automatically.
+                    </p>
+                  </div>
+
+                  {/* Hedging Strategies */}
+                  <div className="space-y-4">
+                    <h3 className="text-2xl font-bold text-foreground flex items-center gap-3">
+                      <div className="w-1.5 h-8 bg-primary rounded-full"></div>
+                      Hedging Strategies
+                    </h3>
+                    <p className="text-foreground/80 leading-relaxed">
+                      For allocations exceeding 5%, consider protective strategies:
+                    </p>
+                    <div className="space-y-4">
+                      <div className="p-6 rounded-xl bg-card border border-border/40">
+                        <div className="flex items-start gap-4">
+                          <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">1</div>
+                          <div>
+                            <h4 className="text-lg font-semibold text-foreground mb-2">Protective Puts</h4>
+                            <p className="text-sm text-foreground/70 leading-relaxed">
+                              10-15% out-of-money puts with 3-6 month expiry provide tail risk protection
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="p-6 rounded-xl bg-card border border-border/40">
+                        <div className="flex items-start gap-4">
+                          <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">2</div>
+                          <div>
+                            <h4 className="text-lg font-semibold text-foreground mb-2">Collar Strategies</h4>
+                            <p className="text-sm text-foreground/70 leading-relaxed">
+                              Sell upside calls to finance protective puts for cost-neutral hedging
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="p-6 rounded-xl bg-card border border-border/40">
+                        <div className="flex items-start gap-4">
+                          <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">3</div>
+                          <div>
+                            <h4 className="text-lg font-semibold text-foreground mb-2">Dynamic Hedging</h4>
+                            <p className="text-sm text-foreground/70 leading-relaxed">
+                              Increase hedge ratio as volatility rises above 60% (VIX equivalent for Bitcoin)
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Stress Testing */}
+                  <div className="space-y-4">
+                    <h3 className="text-2xl font-bold text-foreground flex items-center gap-3">
+                      <div className="w-1.5 h-8 bg-primary rounded-full"></div>
+                      Stress Testing
+                    </h3>
+                    <p className="text-foreground/80 leading-relaxed">
+                      Portfolio stress tests should incorporate the three scenarios from our framework:
+                    </p>
+                    <div className="grid md:grid-cols-3 gap-4">
+                      <div className="p-5 rounded-xl bg-card border border-border/40">
+                        <h4 className="text-sm font-bold text-primary mb-3">Base Case</h4>
+                        <p className="text-sm text-foreground/70 mb-2">-20% to +40% range from current levels</p>
+                      </div>
+                      <div className="p-5 rounded-xl bg-card border border-border/40">
+                        <h4 className="text-sm font-bold text-accent mb-3">High Convexity</h4>
+                        <p className="text-sm text-foreground/70 mb-2">+100% to +180% upside</p>
+                      </div>
+                      <div className="p-5 rounded-xl bg-card border border-border/40">
+                        <h4 className="text-sm font-bold text-destructive mb-3">Stress Regime</h4>
+                        <p className="text-sm text-foreground/70 mb-2">-45% to -60% drawdown</p>
+                      </div>
+                    </div>
+                    <p className="text-sm text-muted-foreground italic mt-4">
+                      Monte Carlo simulations using regime-dependent return distributions provide robust risk metrics.
+                    </p>
+                  </div>
+
+                  {/* Rebalancing Discipline */}
+                  <div className="space-y-4">
+                    <h3 className="text-2xl font-bold text-foreground flex items-center gap-3">
+                      <div className="w-1.5 h-8 bg-primary rounded-full"></div>
+                      Rebalancing Discipline
+                    </h3>
+                    <p className="text-foreground/80 leading-relaxed">
+                      Systematic rebalancing prevents concentration risk:
+                    </p>
+                    <div className="space-y-3">
+                      <div className="flex items-start gap-3 p-4 rounded-xl bg-card/50">
+                        <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0"></div>
+                        <p className="text-foreground/80">Quarterly rebalancing if allocation drifts &gt;25% from target</p>
+                      </div>
+                      <div className="flex items-start gap-3 p-4 rounded-xl bg-card/50">
+                        <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0"></div>
+                        <p className="text-foreground/80">Opportunistic rebalancing during regime transitions</p>
+                      </div>
+                      <div className="flex items-start gap-3 p-4 rounded-xl bg-card/50">
+                        <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0"></div>
+                        <p className="text-foreground/80">Tax-loss harvesting during stress regimes for taxable accounts</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <KeyTakeaways insights={[
+                    "Position sizing should be determined by portfolio volatility tolerance—Conservative (2%), Balanced (2-5%), Growth (5-7.5%)—with allocations exceeding 5% requiring protective hedging strategies.",
+                    "Regime-based stop losses adapt to market conditions: 15% trailing stop in accumulation, 25% in expansion (higher volatility tolerance), 10% tight stop in distribution regime for capital preservation.",
+                    "Protective strategies for larger allocations include out-of-money puts (10-15%, 3-6 months), collar strategies (sell calls to finance puts), and dynamic hedging with increased hedge ratios when volatility exceeds 60%.",
+                    "Systematic rebalancing prevents concentration risk through quarterly adjustments if allocation drifts >25%, opportunistic rebalancing during regime transitions, and tax-loss harvesting in stress scenarios."
+                  ]} />
+                </div>
               </ChapterSection>
               
               <div className="mt-24 p-8 rounded-2xl bg-gradient-to-br from-muted/50 to-muted/30 border border-border/40">
