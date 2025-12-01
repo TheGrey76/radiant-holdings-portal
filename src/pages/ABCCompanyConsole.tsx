@@ -21,6 +21,7 @@ import { ABCActivityFeed } from "@/components/ABCActivityFeed";
 import { ABCInvestorKanban } from "@/components/ABCInvestorKanban";
 import { ImportABCInvestorsDialog } from "@/components/ImportABCInvestorsDialog";
 import { EditableFunnelStage } from "@/components/EditableFunnelStage";
+import { EditableOverallProgress } from "@/components/EditableOverallProgress";
 import { supabase } from "@/integrations/supabase/client";
 
 // Real investor data from Investitori_Alta_Priorita_ABC.xlsx
@@ -99,11 +100,21 @@ const ABCCompanyConsole = () => {
   const [showScheduleFollowUp, setShowScheduleFollowUp] = useState(false);
   const [upcomingFollowUps, setUpcomingFollowUps] = useState<any[]>([]);
   const [customFunnelData, setCustomFunnelData] = useState<any[] | null>(null);
+  const [progressData, setProgressData] = useState({
+    targetAmount: 10000000,
+    raisedAmount: 0,
+    deadline: "2026-06-30",
+  });
 
-  // Fetch investors from Supabase
+  // Fetch investors from Supabase and load saved data
   useEffect(() => {
     fetchInvestors();
     fetchUpcomingFollowUps();
+
+    const savedProgress = localStorage.getItem("abc-progress-data");
+    if (savedProgress) {
+      setProgressData(JSON.parse(savedProgress));
+    }
   }, []);
 
   const fetchUpcomingFollowUps = async () => {
@@ -215,6 +226,11 @@ const ABCCompanyConsole = () => {
     setCustomFunnelData(newStages);
     // Optionally save to localStorage or database
     localStorage.setItem('abc_funnel_data', JSON.stringify(newStages));
+  };
+
+  const handleProgressUpdate = (newProgress: typeof progressData) => {
+    setProgressData(newProgress);
+    localStorage.setItem("abc-progress-data", JSON.stringify(newProgress));
   };
 
   // Load custom funnel data from localStorage on mount
@@ -424,16 +440,11 @@ const ABCCompanyConsole = () => {
               <CardHeader>
                 <CardTitle>OVERALL PROGRESS</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground">Dec 2024</span>
-                    <span className="text-primary font-bold">35%</span>
-                    <span className="text-muted-foreground">Jun 2026</span>
-                  </div>
-                  <Progress value={35} className="h-3" />
-                </div>
-                <p className="text-sm text-foreground">Current Phase: <span className="font-semibold text-primary">Initial Meetings (Phase 2)</span></p>
+              <CardContent>
+                <EditableOverallProgress 
+                  data={progressData}
+                  onUpdate={handleProgressUpdate}
+                />
               </CardContent>
             </Card>
 
