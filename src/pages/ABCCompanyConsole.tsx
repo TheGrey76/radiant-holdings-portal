@@ -94,11 +94,37 @@ const ABCCompanyConsole = () => {
   const [newFollowUp, setNewFollowUp] = useState({ date: "", time: "", type: "", description: "" });
   const [investors, setInvestors] = useState<any[]>([]);
   const [loadingInvestors, setLoadingInvestors] = useState(true);
+  const [showAddNote, setShowAddNote] = useState(false);
+  const [showScheduleFollowUp, setShowScheduleFollowUp] = useState(false);
+  const [upcomingFollowUps, setUpcomingFollowUps] = useState<any[]>([]);
 
   // Fetch investors from Supabase
   useEffect(() => {
     fetchInvestors();
+    fetchUpcomingFollowUps();
   }, []);
+
+  const fetchUpcomingFollowUps = async () => {
+    try {
+      const today = new Date();
+      const nextWeek = new Date(today);
+      nextWeek.setDate(nextWeek.getDate() + 7);
+
+      const { data, error } = await supabase
+        .from('abc_investor_followups' as any)
+        .select('*')
+        .gte('follow_up_date', today.toISOString().split('T')[0])
+        .lte('follow_up_date', nextWeek.toISOString().split('T')[0])
+        .eq('status', 'scheduled')
+        .order('follow_up_date', { ascending: true })
+        .limit(10);
+
+      if (error) throw error;
+      setUpcomingFollowUps(data || []);
+    } catch (error) {
+      console.error('Error fetching follow-ups:', error);
+    }
+  };
 
   const fetchInvestors = async () => {
     try {
@@ -160,15 +186,6 @@ const ABCCompanyConsole = () => {
     { investor: "Carlotta de Courten (Fondo Italiano SGR)", action: 'Email sent: "ABC Company Opportunity"', time: "5 hours ago" },
     { investor: "Patrizia Polonia (Fideuram Private Banking)", action: 'Note added: "Very interested, wants financials"', time: "1 day ago" },
     { investor: "Andrea Reale (Fondo Italiano SGR)", action: "Status changed: Contacted → Meeting", time: "2 days ago" }
-  ];
-
-  // Upcoming Follow-ups - updated with real investor names
-  const upcomingFollowUps = [
-    { date: "Tomorrow", investor: "Andrea Reale (Fondo Italiano SGR)", action: "Follow-up call", time: "10:00 AM", overdue: false },
-    { date: "Dec 5, 2024", investor: "Patrizia Polonia (Fideuram)", action: "Send financial model", time: "All day", overdue: false },
-    { date: "Dec 8, 2024", investor: "Carlotta de Courten (Fondo Italiano SGR)", action: "Meeting", time: "2:00 PM", overdue: false },
-    { date: "Overdue", investor: "Stefano Mortarotti (Independent Investor)", action: "Follow-up email", time: "", overdue: true },
-    { date: "Overdue", investor: "Emanuele Marangoni (Banca IMI)", action: "Schedule meeting", time: "", overdue: true }
   ];
 
   // Conversion Funnel Data - calculated from real investor data
@@ -424,6 +441,163 @@ const ABCCompanyConsole = () => {
 
           {/* INVESTORS TAB */}
           <TabsContent value="investors" className="space-y-6">
+            {/* Investor Management KPIs */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+              >
+                <Card className="bg-gradient-to-br from-blue-500/10 to-blue-600/10 border-blue-500/20">
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-muted-foreground">To Contact</p>
+                        <p className="text-2xl font-bold text-foreground">
+                          {investors.filter(i => i.status === 'To Contact').length}
+                        </p>
+                      </div>
+                      <Users className="h-8 w-8 text-blue-500" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+              >
+                <Card className="bg-gradient-to-br from-orange-500/10 to-orange-600/10 border-orange-500/20">
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-muted-foreground">In Progress</p>
+                        <p className="text-2xl font-bold text-foreground">
+                          {investors.filter(i => ['Contacted', 'Interested', 'Meeting Scheduled'].includes(i.status)).length}
+                        </p>
+                      </div>
+                      <Clock className="h-8 w-8 text-orange-500" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+              >
+                <Card className="bg-gradient-to-br from-green-500/10 to-green-600/10 border-green-500/20">
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-muted-foreground">In Negotiation</p>
+                        <p className="text-2xl font-bold text-foreground">
+                          {investors.filter(i => i.status === 'In Negotiation').length}
+                        </p>
+                      </div>
+                      <TrendingUp className="h-8 w-8 text-green-500" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+              >
+                <Card className="bg-gradient-to-br from-primary/10 to-primary/20 border-primary/20">
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-muted-foreground">Closed</p>
+                        <p className="text-2xl font-bold text-foreground">
+                          {investors.filter(i => i.status === 'Closed').length}
+                        </p>
+                      </div>
+                      <CheckCircle className="h-8 w-8 text-primary" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </div>
+
+            {/* Quick Actions & Upcoming Follow-ups */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* Quick Actions */}
+              <Card className="lg:col-span-1">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Target className="h-5 w-5 text-primary" />
+                    Quick Actions
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <Button className="w-full justify-start" variant="outline" onClick={() => setShowAddNote(true)}>
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Note
+                  </Button>
+                  <Button className="w-full justify-start" variant="outline" onClick={() => setShowScheduleFollowUp(true)}>
+                    <Calendar className="h-4 w-4 mr-2" />
+                    Schedule Follow-up
+                  </Button>
+                  <Button className="w-full justify-start" variant="outline">
+                    <Mail className="h-4 w-4 mr-2" />
+                    Send Campaign
+                  </Button>
+                  <Button className="w-full justify-start" variant="outline">
+                    <Download className="h-4 w-4 mr-2" />
+                    Export Pipeline
+                  </Button>
+                </CardContent>
+              </Card>
+
+              {/* Upcoming Follow-ups */}
+              <Card className="lg:col-span-2">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Calendar className="h-5 w-5 text-primary" />
+                    Upcoming Follow-ups (Next 7 Days)
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3 max-h-[200px] overflow-y-auto">
+                    {upcomingFollowUps.length === 0 ? (
+                      <p className="text-sm text-muted-foreground text-center py-4">
+                        No follow-ups scheduled for the next 7 days
+                      </p>
+                    ) : (
+                      upcomingFollowUps.map((followUp, idx) => (
+                        <div
+                          key={idx}
+                          className="flex items-center justify-between p-3 bg-muted/50 rounded-lg hover:bg-muted transition-colors"
+                        >
+                          <div className="flex-1">
+                            <p className="font-medium text-sm text-foreground">{followUp.investor_name}</p>
+                            <p className="text-xs text-muted-foreground">{followUp.follow_up_type}</p>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-sm font-medium text-primary">
+                              {new Date(followUp.follow_up_date).toLocaleDateString('it-IT', { 
+                                month: 'short', 
+                                day: 'numeric' 
+                              })}
+                            </p>
+                            <Badge variant="outline" className="text-xs">
+                              {followUp.status}
+                            </Badge>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Search and Filters */}
             <div className="flex items-center justify-between gap-4 flex-wrap">
               <div className="relative flex-1 max-w-md">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
@@ -462,6 +636,7 @@ const ABCCompanyConsole = () => {
               </div>
             </div>
 
+            {/* Kanban Board */}
             {loadingInvestors ? (
               <Card>
                 <CardContent className="p-12 text-center">
