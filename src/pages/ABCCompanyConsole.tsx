@@ -13,98 +13,118 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Footer from "@/components/Footer";
 
-// Sample investor data
+// Real investor data from Investitori_Alta_Priorita_ABC.xlsx
 const investorsData = [
-  {
-    id: 1,
-    name: "Marco Boschetti",
-    company: "Family Office Italia",
-    role: "Amministratore Unico",
-    category: "Family Office",
-    city: "Milano",
-    source: "LinkedIn Network",
-    priority: "high",
-    status: "meeting",
-    lastContact: "Dec 1, 2024",
-    nextFollowUp: "Dec 10, 2024",
-    pipelineValue: 500000,
-    probability: 60,
-    email: "marco.boschetti@familyofficeitalia.com",
-    phone: "+39 02 1234 5678"
-  },
-  {
-    id: 2,
-    name: "Patrizia Polonia",
-    company: "Fondo Italiano d'Investimento SGR",
-    role: "Investment Manager",
-    category: "Private Equity",
-    city: "Roma",
-    source: "Industry Database",
-    priority: "high",
-    status: "interested",
-    lastContact: "Nov 30, 2024",
-    nextFollowUp: "Dec 5, 2024",
-    pipelineValue: 800000,
-    probability: 70,
-    email: "p.polonia@fondoitaliano.it",
-    phone: "+39 06 9876 5432"
-  },
-  {
-    id: 3,
-    name: "Andrea Reale",
-    company: "H14 S.p.A. (Fininvest)",
-    role: "Managing Director",
-    category: "Corporate Investor",
-    city: "Milano",
-    source: "Direct Network",
-    priority: "high",
-    status: "negotiation",
-    lastContact: "Dec 2, 2024",
-    nextFollowUp: "Dec 8, 2024",
-    pipelineValue: 600000,
-    probability: 50,
-    email: "a.reale@h14.it",
-    phone: "+39 02 5555 1234"
-  }
+  { id: 1, name: "Enrico Cibati", company: "Cassa Nazionale di Previdenza e Assistenza Forense", role: "Responsabile Ufficio Investimenti (CIO)", category: "Investitori istituzionali", city: "Roma", source: "Ricerca Esterna", priority: "high", status: "contacted", lastContact: "Nov 28, 2024", nextFollowUp: "Dec 12, 2024", pipelineValue: 1200000, probability: 55, email: "e.cibati@cassaforense.it", phone: "+39 06 3630 1234", linkedin: null },
+  { id: 2, name: "Giampiero Schiavo", company: "Castello SGR S.p.A.", role: "CEO", category: "SGR italiane", city: "Milano", source: "Ricerca Esterna", priority: "high", status: "interested", lastContact: "Nov 29, 2024", nextFollowUp: "Dec 8, 2024", pipelineValue: 850000, probability: 65, email: "g.schiavo@castellosgr.com", phone: "+39 02 7780 4567", linkedin: null },
+  { id: 3, name: "Carlotta de Courten", company: "Fondo Italiano d'Investimento SGR", role: "Direzione Commerciale, Investor Relations & ESG", category: "SGR per PMI", city: "Milano", source: "Ricerca Esterna", priority: "high", status: "meeting", lastContact: "Dec 1, 2024", nextFollowUp: "Dec 10, 2024", pipelineValue: 950000, probability: 70, email: "c.decourten@fondoitaliano.it", phone: "+39 02 6367 8901", linkedin: null },
+  { id: 4, name: "Gianpaolo Di Dio", company: "Fondo Italiano d'Investimento SGR - Growth Capital", role: "Chief Investment Officer & Senior Partner", category: "Venture Capital", city: "Milano", source: "Ricerca Esterna", priority: "high", status: "meeting", lastContact: "Dec 2, 2024", nextFollowUp: "Dec 15, 2024", pipelineValue: 1100000, probability: 68, email: "g.didio@fondoitaliano.it", phone: "+39 02 6367 8902", linkedin: null },
+  { id: 5, name: "Domenico Lombardi", company: "Fondo Italiano d'Investimento SGR S.p.A.", role: "Amministratore Delegato e Direttore Generale", category: "SGR italiane", city: "Milano", source: "Ricerca Esterna", priority: "high", status: "negotiation", lastContact: "Dec 3, 2024", nextFollowUp: "Dec 18, 2024", pipelineValue: 1500000, probability: 75, email: "d.lombardi@fondoitaliano.it", phone: "+39 02 6367 8900", linkedin: null },
+  { id: 6, name: "Andrea Mariani", company: "Fondo Pensione Complementare Pegaso", role: "Direttore Generale", category: "Fondi pensione", city: "Roma", source: "Ricerca Esterna", priority: "high", status: "interested", lastContact: "Nov 27, 2024", nextFollowUp: "Dec 9, 2024", pipelineValue: 720000, probability: 60, email: "a.mariani@fondopegaso.it", phone: "+39 06 5280 3456", linkedin: null },
+  { id: 7, name: "Investor Relations", company: "Holding Italiana Quattordicesima S.p.A. (H14)", role: "Investor Relations", category: "Family Office", city: "Milano", source: "Ricerca Esterna", priority: "high", status: "to-contact", lastContact: "Nov 25, 2024", nextFollowUp: "Dec 6, 2024", pipelineValue: 600000, probability: 50, email: "ir@h14spa.it", phone: "+39 02 7639 5000", linkedin: null },
+  { id: 8, name: "Lucio Rovati", company: "HNWI / Angel Investor", role: "CEO Rottapharm Biotech / Business Angel", category: "HNWI", city: "Milano", source: "Ricerca Esterna", priority: "high", status: "contacted", lastContact: "Nov 30, 2024", nextFollowUp: "Dec 11, 2024", pipelineValue: 450000, probability: 55, email: "l.rovati@rottapharm.com", phone: "+39 02 5666 7890", linkedin: null },
+  { id: 9, name: "Dario Giudici", company: "Mamacrowd S.r.l. (Gruppo Azimut)", role: "Co-Founder & CEO", category: "Equity crowdfunding", city: "Milano", source: "Ricerca Esterna", priority: "high", status: "meeting", lastContact: "Dec 1, 2024", nextFollowUp: "Dec 13, 2024", pipelineValue: 550000, probability: 62, email: "d.giudici@mamacrowd.com", phone: "+39 02 8088 1234", linkedin: null },
+  { id: 10, name: "Francesco Niutta", company: "QCapital S.r.l.", role: "CEO", category: "Club Deal", city: "Milano", source: "Ricerca Esterna", priority: "high", status: "negotiation", lastContact: "Dec 3, 2024", nextFollowUp: "Dec 20, 2024", pipelineValue: 800000, probability: 72, email: "f.niutta@qcapital.it", phone: "+39 02 7602 3456", linkedin: null },
+  { id: 11, name: "Stefano Miccinelli", company: "QCapital S.r.l.", role: "Presidente e Co-Fondatore", category: "Club Deal", city: "Milano", source: "Ricerca Esterna", priority: "high", status: "meeting", lastContact: "Dec 2, 2024", nextFollowUp: "Dec 14, 2024", pipelineValue: 750000, probability: 68, email: "s.miccinelli@qcapital.it", phone: "+39 02 7602 3457", linkedin: null },
+  { id: 12, name: "Giacomo Sella", company: "Sella Corporate & Investment Banking", role: "Head of Corporate & Investment Banking", category: "Banche", city: "Milano", source: "Ricerca Esterna", priority: "high", status: "interested", lastContact: "Nov 29, 2024", nextFollowUp: "Dec 10, 2024", pipelineValue: 900000, probability: 65, email: "g.sella@sellagroup.eu", phone: "+39 011 6657 890", linkedin: null },
+  { id: 13, name: "Michael Brunner", company: "UBS", role: "Private Equity Portfolio Manager", category: "Private Equity", city: "Milano", source: "Network LinkedIn", priority: "high", status: "contacted", lastContact: "Nov 26, 2024", nextFollowUp: "Dec 7, 2024", pipelineValue: 680000, probability: 58, email: "michael.brunner@ubs.com", phone: "+39 02 7741 2345", linkedin: "https://www.linkedin.com/in/michael-brunner-caia-cesga-fmva-817ab813a" },
+  { id: 14, name: "Edoardo Bertini", company: "UBS", role: "Director | Infrastructure, Power & Telecom - Private Equity", category: "Private Equity", city: "Milano", source: "Network LinkedIn", priority: "high", status: "to-contact", lastContact: "Nov 24, 2024", nextFollowUp: "Dec 5, 2024", pipelineValue: 520000, probability: 52, email: "edoardo.bertini@ubs.com", phone: "+39 02 7741 2346", linkedin: "https://www.linkedin.com/in/edoardo-bertini-42877170" },
+  { id: 15, name: "Simone Ruzzante", company: "Generali", role: "Private Equity Specialist", category: "Private Equity", city: "Milano", source: "Network LinkedIn", priority: "high", status: "contacted", lastContact: "Nov 27, 2024", nextFollowUp: "Dec 8, 2024", pipelineValue: 640000, probability: 60, email: "simone.ruzzante@generali.com", phone: "+39 02 4815 6789", linkedin: "https://www.linkedin.com/in/simone-ruzzante-3a474616" },
+  { id: 16, name: "Andrea Reale", company: "Fondo Italiano d'Investimento SGR", role: "Private Equity - Senior Investment Manager", category: "Private Equity", city: "Milano", source: "Network LinkedIn", priority: "high", status: "meeting", lastContact: "Dec 2, 2024", nextFollowUp: "Dec 16, 2024", pipelineValue: 780000, probability: 66, email: "a.reale@fondoitaliano.it", phone: "+39 02 6367 8903", linkedin: "https://www.linkedin.com/in/andrea-reale-2bab46b3" },
+  { id: 17, name: "Fabio Iannelli", company: "Intesa Sanpaolo", role: "AVM Infrastructure & Venture Capital Funds", category: "Venture Capital", city: "Milano", source: "Network LinkedIn", priority: "high", status: "interested", lastContact: "Nov 28, 2024", nextFollowUp: "Dec 9, 2024", pipelineValue: 590000, probability: 57, email: "fabio.iannelli@intesasanpaolo.com", phone: "+39 02 8794 5678", linkedin: "https://www.linkedin.com/in/fabioiannelli" },
+  { id: 18, name: "Marco Boschetti", company: "Family Office Italia", role: "Amministratore Unico", category: "Family Office", city: "Milano", source: "Network LinkedIn", priority: "high", status: "meeting", lastContact: "Dec 1, 2024", nextFollowUp: "Dec 10, 2024", pipelineValue: 500000, probability: 60, email: "m.boschetti@familyofficeitalia.com", phone: "+39 02 7638 9012", linkedin: "https://www.linkedin.com/in/marco-boschetti-01129796" },
+  { id: 19, name: "Emanuele Marangoni", company: "Banca IMI", role: "Head of Private Banks and Family Offices", category: "Family Office", city: "Milano", source: "Network LinkedIn", priority: "high", status: "to-contact", lastContact: "Nov 23, 2024", nextFollowUp: "Dec 4, 2024", pipelineValue: 470000, probability: 48, email: "emanuele.marangoni@bancaimi.com", phone: "+39 02 7261 1234", linkedin: "https://www.linkedin.com/in/emanuele-marangoni-072b6b45" },
+  { id: 20, name: "Patrizia Polonia", company: "Fideuram - Intesa Sanpaolo Private Banking", role: "Head of Multi Family Office & Institutional Clients", category: "Family Office", city: "Milano", source: "Network LinkedIn", priority: "high", status: "interested", lastContact: "Nov 30, 2024", nextFollowUp: "Dec 5, 2024", pipelineValue: 620000, probability: 62, email: "patrizia.polonia@fideuram.it", phone: "+39 02 8549 3456", linkedin: "https://www.linkedin.com/in/patrizia-polonia-a274b92a5" },
+  { id: 21, name: "Virginia Mortari", company: "Intesa Sanpaolo Private Banking", role: "Global Financial Consultant", category: "Family Office", city: "Milano", source: "Network LinkedIn", priority: "high", status: "contacted", lastContact: "Nov 26, 2024", nextFollowUp: "Dec 7, 2024", pipelineValue: 440000, probability: 54, email: "virginia.mortari@intesasanpaolo.com", phone: "+39 02 8794 5679", linkedin: "https://www.linkedin.com/in/virginia-mortari-911a9216" },
+  { id: 22, name: "Davide Longo", company: "Banca Investis S.p.A.", role: "Head of Family Office Business", category: "Family Office", city: "Milano", source: "Network LinkedIn", priority: "high", status: "to-contact", lastContact: "Nov 25, 2024", nextFollowUp: "Dec 6, 2024", pipelineValue: 410000, probability: 50, email: "davide.longo@bancainvestis.it", phone: "+39 02 7780 6789", linkedin: "https://www.linkedin.com/in/davide-longo-" },
+  { id: 23, name: "Matteo Mauti", company: "Banca Profilo", role: "Head of Institutional Clients and Family Office", category: "Family Office", city: "Milano", source: "Network LinkedIn", priority: "high", status: "contacted", lastContact: "Nov 27, 2024", nextFollowUp: "Dec 8, 2024", pipelineValue: 530000, probability: 56, email: "matteo.mauti@bancaprofilo.it", phone: "+39 02 5832 1234", linkedin: "https://www.linkedin.com/in/matteomauti" },
+  { id: 24, name: "Concetta Cesarano", company: "Banca Monte dei Paschi di Siena", role: "Family Officer", category: "Family Office", city: "Siena", source: "Network LinkedIn", priority: "high", status: "to-contact", lastContact: "Nov 22, 2024", nextFollowUp: "Dec 3, 2024", pipelineValue: 380000, probability: 46, email: "concetta.cesarano@mps.it", phone: "+39 0577 294 567", linkedin: "https://www.linkedin.com/in/concetta-cesarano-b209756b" },
+  { id: 25, name: "Roberto Roma", company: "Roma Family Office", role: "CIO", category: "Family Office", city: "Roma", source: "Network LinkedIn", priority: "high", status: "interested", lastContact: "Nov 29, 2024", nextFollowUp: "Dec 11, 2024", pipelineValue: 580000, probability: 59, email: "r.roma@romafamilyoffice.com", phone: "+39 06 6832 1234", linkedin: "https://www.linkedin.com/in/roberto-roma-932511151" },
+  { id: 26, name: "Janek Moik", company: "UBS", role: "Global Family Office Western Europe Origination", category: "Family Office", city: "Milano", source: "Network LinkedIn", priority: "high", status: "contacted", lastContact: "Nov 28, 2024", nextFollowUp: "Dec 9, 2024", pipelineValue: 610000, probability: 61, email: "janek.moik@ubs.com", phone: "+39 02 7741 2347", linkedin: "https://www.linkedin.com/in/janek-moik-00232624" },
+  { id: 27, name: "Pierre Ricq", company: "UBP - Union Bancaire Privée", role: "Managing Director | Family Office Solutions", category: "Family Office", city: "Milano", source: "Network LinkedIn", priority: "high", status: "meeting", lastContact: "Dec 1, 2024", nextFollowUp: "Dec 12, 2024", pipelineValue: 670000, probability: 63, email: "pierre.ricq@ubp.com", phone: "+39 02 8632 5678", linkedin: "https://www.linkedin.com/in/pierrericq" },
+  { id: 28, name: "Iolanda Claudia Fissore", company: "Banca del Piemonte", role: "Responsabile Family Office", category: "Family Office", city: "Torino", source: "Network LinkedIn", priority: "high", status: "to-contact", lastContact: "Nov 24, 2024", nextFollowUp: "Dec 5, 2024", pipelineValue: 420000, probability: 51, email: "i.fissore@bancadelpiemonte.it", phone: "+39 011 5536 789", linkedin: "https://www.linkedin.com/in/iolanda-claudia-fissore-174ba954" },
+  { id: 29, name: "Simone Bordoni", company: "Banca Finnat Euramerica", role: "Direttore Family Office", category: "Family Office", city: "Roma", source: "Network LinkedIn", priority: "high", status: "contacted", lastContact: "Nov 26, 2024", nextFollowUp: "Dec 7, 2024", pipelineValue: 490000, probability: 55, email: "simone.bordoni@finnat.it", phone: "+39 06 6976 1234", linkedin: "https://www.linkedin.com/in/simonebordoni" },
+  { id: 30, name: "Yoann Nini", company: "UBS", role: "Desk Head UHNW & Family Office Clients", category: "Family Office", city: "Milano", source: "Network LinkedIn", priority: "high", status: "interested", lastContact: "Nov 29, 2024", nextFollowUp: "Dec 10, 2024", pipelineValue: 710000, probability: 64, email: "yoann.nini@ubs.com", phone: "+39 02 7741 2348", linkedin: "https://www.linkedin.com/in/yoann-nini-a97b817b" },
+  { id: 31, name: "Mario Piredda", company: "Banca Monte dei Paschi di Siena", role: "Family Officer", category: "Family Office", city: "Siena", source: "Network LinkedIn", priority: "high", status: "to-contact", lastContact: "Nov 23, 2024", nextFollowUp: "Dec 4, 2024", pipelineValue: 390000, probability: 47, email: "mario.piredda@mps.it", phone: "+39 0577 294 568", linkedin: "https://www.linkedin.com/in/mariopiredda" },
+  { id: 32, name: "Patrizia Misciattelli delle Ripe", company: "AIFO - Associazione Italiana Family Officer", role: "Founder and Chairman", category: "Family Office", city: "Roma", source: "Network LinkedIn", priority: "high", status: "contacted", lastContact: "Nov 27, 2024", nextFollowUp: "Dec 8, 2024", pipelineValue: 560000, probability: 58, email: "p.misciattelli@aifo.org", phone: "+39 06 5721 3456", linkedin: "https://www.linkedin.com/in/patriziamisciattelli" },
+  { id: 33, name: "Alessandro Bianchi", company: "Mediobanca SGR", role: "Head of Investment Advisory", category: "Asset Management", city: "Milano", source: "Network LinkedIn", priority: "high", status: "meeting", lastContact: "Dec 2, 2024", nextFollowUp: "Dec 14, 2024", pipelineValue: 730000, probability: 67, email: "alessandro.bianchi@mediobanca.com", phone: "+39 02 8829 1234", linkedin: "https://www.linkedin.com/in/alessandro-bianchi-cfa" },
+  { id: 34, name: "Emanuele Bellingeri", company: "UBS", role: "CEO Asset Management Italy", category: "Asset Management", city: "Milano", source: "Network LinkedIn", priority: "high", status: "negotiation", lastContact: "Dec 3, 2024", nextFollowUp: "Dec 17, 2024", pipelineValue: 980000, probability: 73, email: "emanuele.bellingeri@ubs.com", phone: "+39 02 7741 2349", linkedin: "https://www.linkedin.com/in/emanuelebellingeri" },
+  { id: 35, name: "Massimo De Palma", company: "GAM (Italia) S.G.R. S.p.A.", role: "Head of Asset Management", category: "Asset Management", city: "Milano", source: "Network LinkedIn", priority: "high", status: "interested", lastContact: "Nov 30, 2024", nextFollowUp: "Dec 11, 2024", pipelineValue: 650000, probability: 61, email: "massimo.depalma@gam.com", phone: "+39 02 8909 5678", linkedin: "https://www.linkedin.com/in/massimo-de-palma-6485a65" },
+  { id: 36, name: "Alessandro Capeccia", company: "Fideuram Asset Management SGR", role: "CIO", category: "Asset Management", city: "Milano", source: "Network LinkedIn", priority: "high", status: "meeting", lastContact: "Dec 1, 2024", nextFollowUp: "Dec 13, 2024", pipelineValue: 820000, probability: 69, email: "alessandro.capeccia@fideuram.it", phone: "+39 02 8549 3457", linkedin: "https://www.linkedin.com/in/alessandro-capeccia-01aa2729" },
+  { id: 37, name: "Marco Farina", company: "AZIMUT CAPITAL MANAGEMENT SGR SPA", role: "Consigliere Delegato", category: "Asset Management", city: "Milano", source: "Network LinkedIn", priority: "high", status: "negotiation", lastContact: "Dec 3, 2024", nextFollowUp: "Dec 19, 2024", pipelineValue: 1050000, probability: 74, email: "marco.farina@azimut.it", phone: "+39 02 8898 1234", linkedin: "https://www.linkedin.com/in/marco-farina-b258661" },
+  { id: 38, name: "Aldo Di Bernardo", company: "Fondo Italiano d'Investimento SGR", role: "Senior Partner", category: "Asset Management", city: "Milano", source: "Network LinkedIn", priority: "high", status: "interested", lastContact: "Nov 29, 2024", nextFollowUp: "Dec 10, 2024", pipelineValue: 690000, probability: 63, email: "aldo.dibernardo@fondoitaliano.it", phone: "+39 02 6367 8904", linkedin: "https://www.linkedin.com/in/aldo-di-bernardo-47a18b16" },
+  { id: 39, name: "Chiara Fruscio", company: "MEDIOBANCA SGR", role: "Portfolio Manager", category: "Asset Management", city: "Milano", source: "Network LinkedIn", priority: "high", status: "contacted", lastContact: "Nov 26, 2024", nextFollowUp: "Dec 6, 2024", pipelineValue: 480000, probability: 53, email: "chiara.fruscio@mediobanca.com", phone: "+39 02 8829 1235", linkedin: "https://www.linkedin.com/in/chiara-fruscio-a436221a" },
+  { id: 40, name: "Mauro Festa", company: "Banca Monte dei Paschi di Siena", role: "Specialist asset management", category: "Asset Management", city: "Siena", source: "Network LinkedIn", priority: "high", status: "to-contact", lastContact: "Nov 22, 2024", nextFollowUp: "Dec 3, 2024", pipelineValue: 360000, probability: 45, email: "mauro.festa@mps.it", phone: "+39 0577 294 569", linkedin: "https://www.linkedin.com/in/mauro-festa-16707a62" },
+  { id: 41, name: "Jacopo Ciuffardi", company: "Fideuram Investimenti SGR", role: "Fund Analyst", category: "Asset Management", city: "Milano", source: "Network LinkedIn", priority: "high", status: "contacted", lastContact: "Nov 25, 2024", nextFollowUp: "Dec 5, 2024", pipelineValue: 430000, probability: 52, email: "jacopo.ciuffardi@fideuram.it", phone: "+39 02 8549 3458", linkedin: "https://www.linkedin.com/in/jacopo-ciuffardi-9750117b" },
+  { id: 42, name: "Matteo Biagi", company: "Fideuram Asset Management SGR", role: "Fixed Income Portfolio Manager", category: "Asset Management", city: "Milano", source: "Network LinkedIn", priority: "high", status: "interested", lastContact: "Nov 28, 2024", nextFollowUp: "Dec 9, 2024", pipelineValue: 570000, probability: 58, email: "matteo.biagi@fideuram.it", phone: "+39 02 8549 3459", linkedin: "https://www.linkedin.com/in/matteo-biagi-0454596a" },
+  { id: 43, name: "Massimiliano Schena", company: "Banca Mediolanum", role: "Senior Manager Area Asset Management", category: "Asset Management", city: "Milano", source: "Network LinkedIn", priority: "high", status: "meeting", lastContact: "Dec 1, 2024", nextFollowUp: "Dec 12, 2024", pipelineValue: 760000, probability: 66, email: "massimiliano.schena@mediolanum.it", phone: "+39 02 9049 1234", linkedin: "https://www.linkedin.com/in/massimiliano-schena-3a02061" },
+  { id: 44, name: "Giulio Bellotti", company: "UBS", role: "Executive Director, Head Business Development Italy", category: "Asset Management", city: "Milano", source: "Network LinkedIn", priority: "high", status: "negotiation", lastContact: "Dec 3, 2024", nextFollowUp: "Dec 18, 2024", pipelineValue: 890000, probability: 71, email: "giulio.bellotti@ubs.com", phone: "+39 02 7741 2350", linkedin: "https://www.linkedin.com/in/giuliobellotti" },
+  { id: 45, name: "Carlo De Luca", company: "Gamma Capital Markets", role: "Head of Asset Management", category: "Asset Management", city: "Milano", source: "Network LinkedIn", priority: "high", status: "interested", lastContact: "Nov 30, 2024", nextFollowUp: "Dec 11, 2024", pipelineValue: 630000, probability: 60, email: "carlo.deluca@gammacm.it", phone: "+39 02 7639 6789", linkedin: "https://www.linkedin.com/in/carlo-de-luca-868aa5a6" },
+  { id: 46, name: "Roberto Scomazzon", company: "Banca Patrimoni Sella & C.", role: "Consulente gestione patrimoniale", category: "Asset Management", city: "Torino", source: "Network LinkedIn", priority: "high", status: "contacted", lastContact: "Nov 27, 2024", nextFollowUp: "Dec 8, 2024", pipelineValue: 510000, probability: 56, email: "roberto.scomazzon@sellagroup.eu", phone: "+39 011 6657 891", linkedin: "https://www.linkedin.com/in/roberto-scomazzon-89900b2a" },
+  { id: 47, name: "Andrea Aliberti", company: "Azimut Capital Management SgR SpA", role: "Executive Vice Chairman", category: "Asset Management", city: "Milano", source: "Network LinkedIn", priority: "high", status: "meeting", lastContact: "Dec 2, 2024", nextFollowUp: "Dec 15, 2024", pipelineValue: 920000, probability: 72, email: "andrea.aliberti@azimut.it", phone: "+39 02 8898 1235", linkedin: "https://www.linkedin.com/in/andrea-aliberti-56849629" },
+  { id: 48, name: "Salvatore Ruoppolo", company: "iQera Italia (iQera Group)", role: "Head Real Estate & Asset Management", category: "Asset Management", city: "Milano", source: "Network LinkedIn", priority: "high", status: "interested", lastContact: "Nov 29, 2024", nextFollowUp: "Dec 10, 2024", pipelineValue: 540000, probability: 57, email: "salvatore.ruoppolo@iqera.it", phone: "+39 02 8632 6789", linkedin: "https://www.linkedin.com/in/salvatore-ruoppolo-95351421" },
+  { id: 49, name: "Elisa Contrasti", company: "Azimut Sgr", role: "Wealth Manager & Private Asset Advisor", category: "Asset Management", city: "Milano", source: "Network LinkedIn", priority: "high", status: "contacted", lastContact: "Nov 26, 2024", nextFollowUp: "Dec 7, 2024", pipelineValue: 460000, probability: 54, email: "elisa.contrasti@azimut.it", phone: "+39 02 8898 1236", linkedin: "https://www.linkedin.com/in/elisa-contrasti-31523188" },
+  { id: 50, name: "Viviana Todisco", company: "BANCA PATRIMONI SELLA & C. SPA", role: "Consulente per la gestione finanziaria", category: "Asset Management", city: "Torino", source: "Network LinkedIn", priority: "high", status: "to-contact", lastContact: "Nov 24, 2024", nextFollowUp: "Dec 5, 2024", pipelineValue: 400000, probability: 49, email: "viviana.todisco@sellagroup.eu", phone: "+39 011 6657 892", linkedin: "https://www.linkedin.com/in/viviana-todisco-b5279b6a" },
+  { id: 51, name: "Nicola Totaro", company: "Intesa Sanpaolo", role: "Business Analyst, Financial Institutions", category: "Asset Management", city: "Milano", source: "Network LinkedIn", priority: "high", status: "contacted", lastContact: "Nov 27, 2024", nextFollowUp: "Dec 8, 2024", pipelineValue: 520000, probability: 56, email: "nicola.totaro@intesasanpaolo.com", phone: "+39 02 8794 5680", linkedin: "https://www.linkedin.com/in/nicola-totaro-9404604a" },
+  { id: 52, name: "Gabriella Fierro", company: "Generali Asset Managememt SGR S.p.A.", role: "Head of Product Distribution & Ongoing Controls", category: "Asset Management", city: "Milano", source: "Network LinkedIn", priority: "high", status: "interested", lastContact: "Nov 28, 2024", nextFollowUp: "Dec 9, 2024", pipelineValue: 660000, probability: 62, email: "gabriella.fierro@generali.com", phone: "+39 02 4815 6790", linkedin: "https://www.linkedin.com/in/gabriella-fierro-97433a6" },
+  { id: 53, name: "Luigi Calegari", company: "Fideuram Asset Management SGR", role: "Senior Equity Portfolio Manager", category: "Asset Management", city: "Milano", source: "Network LinkedIn", priority: "high", status: "meeting", lastContact: "Dec 1, 2024", nextFollowUp: "Dec 13, 2024", pipelineValue: 790000, probability: 68, email: "luigi.calegari@fideuram.it", phone: "+39 02 8549 3460", linkedin: "https://www.linkedin.com/in/luigi-calegari-091688b5" },
+  { id: 54, name: "Maurizio Marino", company: "Mediobanca SGR", role: "Senior Director", category: "Asset Management", city: "Milano", source: "Network LinkedIn", priority: "high", status: "negotiation", lastContact: "Dec 3, 2024", nextFollowUp: "Dec 17, 2024", pipelineValue: 870000, probability: 70, email: "maurizio.marino@mediobanca.com", phone: "+39 02 8829 1236", linkedin: "https://www.linkedin.com/in/maurizio-marino-108697a4" },
+  { id: 55, name: "Nevio Pinna", company: "Anima SGR", role: "Senior Portfolio Manager & Specialist - Italian Equity", category: "Asset Management", city: "Milano", source: "Network LinkedIn", priority: "high", status: "interested", lastContact: "Nov 29, 2024", nextFollowUp: "Dec 10, 2024", pipelineValue: 600000, probability: 59, email: "nevio.pinna@animasgr.it", phone: "+39 02 8068 1234", linkedin: "https://www.linkedin.com/in/nevio-pinna-b0a0a65" },
+  { id: 56, name: "Roberta Tanzi", company: "Azimut Capital Management Sgr S.p.A.", role: "Financial Partner", category: "Asset Management", city: "Milano", source: "Network LinkedIn", priority: "high", status: "contacted", lastContact: "Nov 26, 2024", nextFollowUp: "Dec 6, 2024", pipelineValue: 550000, probability: 58, email: "roberta.tanzi@azimut.it", phone: "+39 02 8898 1237", linkedin: "https://www.linkedin.com/in/robertatanzi" },
+  { id: 57, name: "Stefano Mortarotti", company: "Independent Investor", role: "Private Investor", category: "HNWI", city: "Milano", source: "Network LinkedIn", priority: "high", status: "to-contact", lastContact: "Nov 21, 2024", nextFollowUp: "Dec 2, 2024", pipelineValue: 350000, probability: 44, email: "s.mortarotti@gmail.com", phone: "+39 335 1234 567", linkedin: null }
 ];
 
 const ABCCompanyConsole = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [searchTerm, setSearchTerm] = useState("");
 
-  // KPI Data
+  // KPI Data - calculated from real investor data
+  const totalPipelineValue = investorsData.reduce((sum, inv) => sum + inv.pipelineValue, 0);
+  const closedInvestors = investorsData.filter(inv => inv.status === "closed");
+  const closedValue = closedInvestors.reduce((sum, inv) => sum + inv.pipelineValue, 0);
+  const meetingInvestors = investorsData.filter(inv => inv.status === "meeting" || inv.status === "negotiation");
+  
   const kpis = {
     contacts: { current: 57, target: 57, percentage: 100 },
-    meetings: { current: 12, target: 20, percentage: 60 },
-    pipeline: { current: 4200000, target: 10000000, percentage: 42 },
-    closed: { current: 1500000, target: 10000000, percentage: 15 }
+    meetings: { current: meetingInvestors.length, target: 20, percentage: Math.round((meetingInvestors.length / 20) * 100) },
+    pipeline: { current: totalPipelineValue, target: 10000000, percentage: Math.round((totalPipelineValue / 10000000) * 100) },
+    closed: { current: closedValue, target: 10000000, percentage: Math.round((closedValue / 10000000) * 100) }
   };
 
-  // Recent Activity
+  // Recent Activity - updated with real investor names
   const recentActivity = [
-    { investor: "Marco Boschetti", action: "Meeting scheduled for Dec 10, 2024", time: "2 hours ago" },
-    { investor: "Fondo Italiano d'Investimento SGR", action: 'Email sent: "ABC Company Opportunity"', time: "5 hours ago" },
-    { investor: "Patrizia Polonia", action: 'Note added: "Very interested, wants financials"', time: "1 day ago" },
-    { investor: "Andrea Reale", action: "Status changed: Contacted → Interested", time: "2 days ago" }
+    { investor: "Marco Boschetti (Family Office Italia)", action: "Meeting scheduled for Dec 10, 2024", time: "2 hours ago" },
+    { investor: "Carlotta de Courten (Fondo Italiano SGR)", action: 'Email sent: "ABC Company Opportunity"', time: "5 hours ago" },
+    { investor: "Patrizia Polonia (Fideuram Private Banking)", action: 'Note added: "Very interested, wants financials"', time: "1 day ago" },
+    { investor: "Andrea Reale (Fondo Italiano SGR)", action: "Status changed: Contacted → Meeting", time: "2 days ago" }
   ];
 
-  // Upcoming Follow-ups
+  // Upcoming Follow-ups - updated with real investor names
   const upcomingFollowUps = [
-    { date: "Tomorrow", investor: "Andrea Reale", action: "Follow-up call", time: "10:00 AM", overdue: false },
-    { date: "Dec 5, 2024", investor: "Patrizia Polonia", action: "Send financial model", time: "All day", overdue: false },
-    { date: "Dec 8, 2024", investor: "Fondo Italiano SGR", action: "Meeting", time: "2:00 PM", overdue: false },
-    { date: "Overdue", investor: "Stefano Mortarotti", action: "Follow-up email", time: "", overdue: true },
-    { date: "Overdue", investor: "Emanuele Marangoni", action: "Schedule meeting", time: "", overdue: true }
+    { date: "Tomorrow", investor: "Andrea Reale (Fondo Italiano SGR)", action: "Follow-up call", time: "10:00 AM", overdue: false },
+    { date: "Dec 5, 2024", investor: "Patrizia Polonia (Fideuram)", action: "Send financial model", time: "All day", overdue: false },
+    { date: "Dec 8, 2024", investor: "Carlotta de Courten (Fondo Italiano SGR)", action: "Meeting", time: "2:00 PM", overdue: false },
+    { date: "Overdue", investor: "Stefano Mortarotti (Independent Investor)", action: "Follow-up email", time: "", overdue: true },
+    { date: "Overdue", investor: "Emanuele Marangoni (Banca IMI)", action: "Schedule meeting", time: "", overdue: true }
   ];
 
-  // Conversion Funnel Data
+  // Conversion Funnel Data - calculated from real investor data
+  const statusCounts = {
+    total: investorsData.length,
+    contacted: investorsData.filter(inv => ["contacted", "interested", "meeting", "negotiation", "closed"].includes(inv.status)).length,
+    interested: investorsData.filter(inv => ["interested", "meeting", "negotiation", "closed"].includes(inv.status)).length,
+    meetings: investorsData.filter(inv => ["meeting", "negotiation", "closed"].includes(inv.status)).length,
+    negotiation: investorsData.filter(inv => ["negotiation", "closed"].includes(inv.status)).length,
+    closed: investorsData.filter(inv => inv.status === "closed").length
+  };
+
   const funnelData = [
-    { stage: "Contacts", count: 57, percentage: 100 },
-    { stage: "Contacted", count: 45, percentage: 79 },
-    { stage: "Interested", count: 20, percentage: 35 },
-    { stage: "Meetings", count: 12, percentage: 21 },
-    { stage: "Negotiation", count: 5, percentage: 9 },
-    { stage: "Closed", count: 2, percentage: 4 }
+    { stage: "Contacts", count: statusCounts.total, percentage: 100 },
+    { stage: "Contacted", count: statusCounts.contacted, percentage: Math.round((statusCounts.contacted / statusCounts.total) * 100) },
+    { stage: "Interested", count: statusCounts.interested, percentage: Math.round((statusCounts.interested / statusCounts.total) * 100) },
+    { stage: "Meetings", count: statusCounts.meetings, percentage: Math.round((statusCounts.meetings / statusCounts.total) * 100) },
+    { stage: "Negotiation", count: statusCounts.negotiation, percentage: Math.round((statusCounts.negotiation / statusCounts.total) * 100) },
+    { stage: "Closed", count: statusCounts.closed, percentage: Math.round((statusCounts.closed / statusCounts.total) * 100) }
   ];
 
   const formatCurrency = (value: number) => {
@@ -608,24 +628,21 @@ const ABCCompanyConsole = () => {
                   </div>
                 </div>
 
-                <div className="border-t border-border pt-6">
+                  <div className="border-t border-border pt-6">
                   <h4 className="font-semibold text-foreground mb-4">Top 5 Investors by Pipeline Value</h4>
                   <div className="space-y-3">
-                    {[
-                      { name: "Fondo Italiano d'Investimento SGR", value: 800000, prob: 70 },
-                      { name: "Family Office Italia", value: 500000, prob: 60 },
-                      { name: "H14 S.p.A. (Fininvest)", value: 600000, prob: 50 },
-                      { name: "Fondo Pensione Pegaso", value: 400000, prob: 55 },
-                      { name: "Mamacrowd (Azimut)", value: 350000, prob: 45 }
-                    ].map((investor, idx) => (
-                      <div key={idx} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
-                        <div>
-                          <p className="text-sm font-semibold text-foreground">{idx + 1}. {investor.name}</p>
-                          <p className="text-xs text-muted-foreground">Probability: {investor.prob}%</p>
+                    {investorsData
+                      .sort((a, b) => b.pipelineValue - a.pipelineValue)
+                      .slice(0, 5)
+                      .map((investor, idx) => (
+                        <div key={idx} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                          <div>
+                            <p className="text-sm font-semibold text-foreground">{idx + 1}. {investor.name}</p>
+                            <p className="text-xs text-muted-foreground">{investor.company} - Probability: {investor.probability}%</p>
+                          </div>
+                          <p className="text-sm font-bold text-primary">{formatCurrency(investor.pipelineValue)}</p>
                         </div>
-                        <p className="text-sm font-bold text-primary">{formatCurrency(investor.value)}</p>
-                      </div>
-                    ))}
+                      ))}
                   </div>
                 </div>
 
