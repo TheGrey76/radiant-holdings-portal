@@ -22,6 +22,7 @@ import { ABCInvestorKanban } from "@/components/ABCInvestorKanban";
 import { ImportABCInvestorsDialog } from "@/components/ImportABCInvestorsDialog";
 import { EditableFunnelStage } from "@/components/EditableFunnelStage";
 import { EditableOverallProgress } from "@/components/EditableOverallProgress";
+import { EditableKPI } from "@/components/EditableKPI";
 import { supabase } from "@/integrations/supabase/client";
 
 // Real investor data from Investitori_Alta_Priorita_ABC.xlsx
@@ -105,6 +106,16 @@ const ABCCompanyConsole = () => {
     raisedAmount: 0,
     deadline: "2026-06-30",
   });
+  const [meetingsKPI, setMeetingsKPI] = useState({
+    current: 0,
+    target: 20,
+    percentage: 0,
+  });
+  const [closedKPI, setClosedKPI] = useState({
+    current: 0,
+    target: 10000000,
+    percentage: 0,
+  });
 
   // Fetch investors from Supabase and load saved data
   useEffect(() => {
@@ -114,6 +125,16 @@ const ABCCompanyConsole = () => {
     const savedProgress = localStorage.getItem("abc-progress-data");
     if (savedProgress) {
       setProgressData(JSON.parse(savedProgress));
+    }
+
+    const savedMeetings = localStorage.getItem("abc-meetings-kpi");
+    if (savedMeetings) {
+      setMeetingsKPI(JSON.parse(savedMeetings));
+    }
+
+    const savedClosed = localStorage.getItem("abc-closed-kpi");
+    if (savedClosed) {
+      setClosedKPI(JSON.parse(savedClosed));
     }
   }, []);
 
@@ -233,6 +254,20 @@ const ABCCompanyConsole = () => {
     localStorage.setItem("abc-progress-data", JSON.stringify(newProgress));
   };
 
+  const handleMeetingsUpdate = (newData: typeof meetingsKPI) => {
+    setMeetingsKPI(newData);
+    localStorage.setItem("abc-meetings-kpi", JSON.stringify(newData));
+  };
+
+  const handleClosedUpdate = (newData: typeof closedKPI) => {
+    setClosedKPI(newData);
+    localStorage.setItem("abc-closed-kpi", JSON.stringify(newData));
+  };
+
+  const formatCurrency = (value: number) => {
+    return `€${(value / 1000000).toFixed(1)}M`;
+  };
+
   // Load custom funnel data from localStorage on mount
   useEffect(() => {
     const saved = localStorage.getItem('abc_funnel_data');
@@ -244,10 +279,6 @@ const ABCCompanyConsole = () => {
       }
     }
   }, []);
-
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR', minimumFractionDigits: 0 }).format(value);
-  };
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
@@ -382,18 +413,12 @@ const ABCCompanyConsole = () => {
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.2 }}
               >
-                <Card>
-                  <CardHeader className="pb-3">
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-sm font-medium text-muted-foreground">MEETINGS</CardTitle>
-                      <Calendar className="h-4 w-4 text-muted-foreground" />
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-3xl font-bold text-foreground">{kpis.meetings.current}/{kpis.meetings.target}</div>
-                    <p className="text-sm text-primary font-semibold">{kpis.meetings.percentage}%</p>
-                  </CardContent>
-                </Card>
+                <EditableKPI
+                  title="Meetings"
+                  data={meetingsKPI}
+                  icon={Calendar}
+                  onUpdate={handleMeetingsUpdate}
+                />
               </motion.div>
 
               <motion.div
@@ -420,18 +445,13 @@ const ABCCompanyConsole = () => {
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.4 }}
               >
-                <Card>
-                  <CardHeader className="pb-3">
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-sm font-medium text-muted-foreground">CLOSED</CardTitle>
-                      <CheckCircle className="h-4 w-4 text-muted-foreground" />
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-3xl font-bold text-foreground">{formatCurrency(kpis.closed.current)}</div>
-                    <p className="text-sm text-primary font-semibold">{kpis.closed.percentage}%</p>
-                  </CardContent>
-                </Card>
+                <EditableKPI
+                  title="Closed"
+                  data={closedKPI}
+                  icon={CheckCircle}
+                  onUpdate={handleClosedUpdate}
+                  formatter={formatCurrency}
+                />
               </motion.div>
             </div>
 
