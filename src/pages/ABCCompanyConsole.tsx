@@ -20,6 +20,7 @@ import { toast } from "sonner";
 import { ABCActivityFeed } from "@/components/ABCActivityFeed";
 import { ABCInvestorKanban } from "@/components/ABCInvestorKanban";
 import { ImportABCInvestorsDialog } from "@/components/ImportABCInvestorsDialog";
+import { EditableFunnelStage } from "@/components/EditableFunnelStage";
 import { supabase } from "@/integrations/supabase/client";
 
 // Real investor data from Investitori_Alta_Priorita_ABC.xlsx
@@ -97,6 +98,7 @@ const ABCCompanyConsole = () => {
   const [showAddNote, setShowAddNote] = useState(false);
   const [showScheduleFollowUp, setShowScheduleFollowUp] = useState(false);
   const [upcomingFollowUps, setUpcomingFollowUps] = useState<any[]>([]);
+  const [customFunnelData, setCustomFunnelData] = useState<any[] | null>(null);
 
   // Fetch investors from Supabase
   useEffect(() => {
@@ -198,7 +200,7 @@ const ABCCompanyConsole = () => {
     closed: investorsData.filter(inv => inv.status === "closed").length
   };
 
-  const funnelData = [
+  const defaultFunnelData = [
     { stage: "Contacts", count: statusCounts.total, percentage: 100 },
     { stage: "Contacted", count: statusCounts.contacted, percentage: Math.round((statusCounts.contacted / statusCounts.total) * 100) },
     { stage: "Interested", count: statusCounts.interested, percentage: Math.round((statusCounts.interested / statusCounts.total) * 100) },
@@ -206,6 +208,26 @@ const ABCCompanyConsole = () => {
     { stage: "Negotiation", count: statusCounts.negotiation, percentage: Math.round((statusCounts.negotiation / statusCounts.total) * 100) },
     { stage: "Closed", count: statusCounts.closed, percentage: Math.round((statusCounts.closed / statusCounts.total) * 100) }
   ];
+
+  const funnelData = customFunnelData || defaultFunnelData;
+
+  const handleFunnelUpdate = (newStages: any[]) => {
+    setCustomFunnelData(newStages);
+    // Optionally save to localStorage or database
+    localStorage.setItem('abc_funnel_data', JSON.stringify(newStages));
+  };
+
+  // Load custom funnel data from localStorage on mount
+  useEffect(() => {
+    const saved = localStorage.getItem('abc_funnel_data');
+    if (saved) {
+      try {
+        setCustomFunnelData(JSON.parse(saved));
+      } catch (e) {
+        console.error('Failed to parse saved funnel data');
+      }
+    }
+  }, []);
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR', minimumFractionDigits: 0 }).format(value);
@@ -421,20 +443,26 @@ const ABCCompanyConsole = () => {
             {/* Conversion Funnel */}
             <Card>
               <CardHeader>
-                <CardTitle>CONVERSION FUNNEL</CardTitle>
+                <CardTitle className="flex items-center justify-between">
+                  CONVERSION FUNNEL
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      setCustomFunnelData(null);
+                      localStorage.removeItem('abc_funnel_data');
+                      toast.success("Funnel reset to default");
+                    }}
+                  >
+                    Reset to Default
+                  </Button>
+                </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-3">
-                  {funnelData.map((stage, idx) => (
-                    <div key={idx} className="space-y-1">
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="font-medium text-foreground">{stage.count} {stage.stage}</span>
-                        <span className="text-primary font-semibold">{stage.percentage}%</span>
-                      </div>
-                      <Progress value={stage.percentage} className="h-2" />
-                    </div>
-                  ))}
-                </div>
+                <EditableFunnelStage
+                  stages={funnelData}
+                  onUpdate={handleFunnelUpdate}
+                />
               </CardContent>
             </Card>
           </TabsContent>
