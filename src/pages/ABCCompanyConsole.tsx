@@ -286,6 +286,15 @@ const ABCCompanyConsole = () => {
           <Button onClick={() => setActiveTab("investors")} variant={activeTab === "investors" ? "default" : "outline"}>
             Investors
           </Button>
+          <Button onClick={() => setActiveTab("timeline")} variant={activeTab === "timeline" ? "default" : "outline"}>
+            Timeline
+          </Button>
+          <Button onClick={() => setActiveTab("reports")} variant={activeTab === "reports" ? "default" : "outline"}>
+            Reports
+          </Button>
+          <Button onClick={() => setActiveTab("settings")} variant={activeTab === "settings" ? "default" : "outline"}>
+            <Settings className="h-4 w-4" />
+          </Button>
         </div>
       </header>
 
@@ -421,6 +430,217 @@ const ABCCompanyConsole = () => {
                 ))}
               </tbody>
             </table>
+          </div>
+        </main>
+      )}
+
+      {activeTab === "timeline" && (
+        <main className="p-6">
+          <h2 className="text-2xl font-bold mb-6">Activity Timeline</h2>
+          <div className="relative border-l-2 border-[#ff6b35] pl-8 space-y-6">
+            {recentActivity.map((activity, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: idx * 0.1 }}
+                className="relative"
+              >
+                <div className="absolute -left-10 w-4 h-4 rounded-full bg-[#ff6b35] border-4 border-background" />
+                <Card>
+                  <CardContent className="pt-6">
+                    <div className="flex items-start justify-between">
+                      <div className="space-y-1">
+                        <p className="font-semibold text-lg">{activity.investor}</p>
+                        <p className="text-sm text-muted-foreground">{activity.action}</p>
+                      </div>
+                      <span className="text-xs text-muted-foreground">{activity.time}</span>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </main>
+      )}
+
+      {activeTab === "reports" && (
+        <main className="p-6 space-y-6">
+          <h2 className="text-2xl font-bold mb-6">Analytics & Reports</h2>
+          
+          {/* Conversion Funnel */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Conversion Funnel</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-medium">Total Contacts</span>
+                    <span className="text-sm font-bold">{investorsData.length}</span>
+                  </div>
+                  <Progress value={100} className="h-3" />
+                </div>
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-medium">Contacted</span>
+                    <span className="text-sm font-bold">
+                      {investorsData.filter(i => i.status !== "to-contact").length}
+                    </span>
+                  </div>
+                  <Progress 
+                    value={(investorsData.filter(i => i.status !== "to-contact").length / investorsData.length) * 100} 
+                    className="h-3" 
+                  />
+                </div>
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-medium">Meetings</span>
+                    <span className="text-sm font-bold">
+                      {investorsData.filter(i => i.status === "meeting" || i.status === "negotiation").length}
+                    </span>
+                  </div>
+                  <Progress 
+                    value={(investorsData.filter(i => i.status === "meeting" || i.status === "negotiation").length / investorsData.length) * 100} 
+                    className="h-3" 
+                  />
+                </div>
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-medium">Closed</span>
+                    <span className="text-sm font-bold">
+                      {investorsData.filter(i => i.status === "closed").length}
+                    </span>
+                  </div>
+                  <Progress 
+                    value={(investorsData.filter(i => i.status === "closed").length / investorsData.length) * 100} 
+                    className="h-3" 
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Top Investors by Value */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Top 10 Investors by Pipeline Value</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {investorsData
+                  .sort((a, b) => b.pipelineValue - a.pipelineValue)
+                  .slice(0, 10)
+                  .map((investor, idx) => (
+                    <div key={investor.id} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <div className="flex items-center justify-center w-8 h-8 rounded-full bg-[#ff6b35] text-white font-bold text-sm">
+                          {idx + 1}
+                        </div>
+                        <div>
+                          <p className="font-medium">{investor.name}</p>
+                          <p className="text-xs text-muted-foreground">{investor.company}</p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-bold">{formatCurrency(investor.pipelineValue)}</p>
+                        <p className="text-xs text-muted-foreground">{investor.probability}% probability</p>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Category Distribution */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Investors by Category</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                {Array.from(new Set(investorsData.map(i => i.category))).map(category => {
+                  const count = investorsData.filter(i => i.category === category).length;
+                  const percentage = (count / investorsData.length) * 100;
+                  return (
+                    <div key={category}>
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-sm font-medium">{category}</span>
+                        <span className="text-sm font-bold">{count}</span>
+                      </div>
+                      <Progress value={percentage} className="h-2" />
+                    </div>
+                  );
+                })}
+              </div>
+            </CardContent>
+          </Card>
+        </main>
+      )}
+
+      {activeTab === "settings" && (
+        <main className="p-6">
+          <h2 className="text-2xl font-bold mb-6">Settings</h2>
+          <div className="max-w-2xl space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>User Information</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <Label>Current User</Label>
+                  <Input value={currentUser} disabled />
+                </div>
+                <div>
+                  <Label>Role</Label>
+                  <Input value="Admin" disabled />
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Notifications</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-medium">Email Notifications</p>
+                    <p className="text-sm text-muted-foreground">Receive email alerts for important updates</p>
+                  </div>
+                  <input type="checkbox" defaultChecked className="toggle" />
+                </div>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-medium">Follow-up Reminders</p>
+                    <p className="text-sm text-muted-foreground">Get reminders for upcoming follow-ups</p>
+                  </div>
+                  <input type="checkbox" defaultChecked className="toggle" />
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Export Data</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <p className="text-sm text-muted-foreground">
+                  Export investor data and reports for external analysis
+                </p>
+                <div className="flex gap-3">
+                  <Button variant="outline">
+                    <Download className="h-4 w-4 mr-2" />
+                    Export to CSV
+                  </Button>
+                  <Button variant="outline">
+                    <FileText className="h-4 w-4 mr-2" />
+                    Generate PDF Report
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </main>
       )}
