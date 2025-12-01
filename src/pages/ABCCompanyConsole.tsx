@@ -17,6 +17,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
+import { ABCActivityFeed } from "@/components/ABCActivityFeed";
 
 // Real investor data from Investitori_Alta_Priorita_ABC.xlsx
 const investorsData = [
@@ -331,55 +332,8 @@ const ABCCompanyConsole = () => {
               </CardContent>
             </Card>
 
-            {/* Two Column Layout: Recent Activity & Upcoming Follow-ups */}
-            <div className="grid md:grid-cols-2 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Clock className="h-5 w-5" />
-                    RECENT ACTIVITY
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {recentActivity.map((activity, idx) => (
-                      <div key={idx} className="border-b border-border pb-3 last:border-0">
-                        <p className="font-semibold text-foreground text-sm">{activity.investor}</p>
-                        <p className="text-sm text-muted-foreground">{activity.action}</p>
-                        <p className="text-xs text-muted-foreground mt-1">{activity.time}</p>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <AlertCircle className="h-5 w-5" />
-                    UPCOMING FOLLOW-UPS
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {upcomingFollowUps.map((followUp, idx) => (
-                      <div key={idx} className={`border-b border-border pb-3 last:border-0 ${followUp.overdue ? 'bg-red-500/5 -mx-6 px-6 py-3' : ''}`}>
-                        <div className="flex items-start justify-between">
-                          <div>
-                            <p className={`text-xs font-semibold ${followUp.overdue ? 'text-red-600' : 'text-primary'}`}>
-                              {followUp.overdue ? '⚠️ OVERDUE' : followUp.date.toUpperCase()}
-                            </p>
-                            <p className="text-sm text-foreground font-semibold">{followUp.investor}</p>
-                            <p className="text-sm text-muted-foreground">{followUp.action}</p>
-                          </div>
-                          {followUp.time && <span className="text-xs text-muted-foreground">{followUp.time}</span>}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+            {/* Real-time Activity Feed */}
+            <ABCActivityFeed />
 
             {/* Conversion Funnel */}
             <Card>
