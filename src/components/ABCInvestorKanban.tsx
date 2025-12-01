@@ -1,0 +1,193 @@
+import { useState } from 'react';
+import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Building2, MapPin, Euro, Calendar } from "lucide-react";
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from "sonner";
+import { format } from "date-fns";
+
+interface Investor {
+  id: string;
+  nome: string;
+  azienda: string;
+  ruolo?: string;
+  categoria: string;
+  citta?: string;
+  fonte?: string;
+  status: string;
+  pipelineValue: number;
+  lastContactDate?: string;
+}
+
+interface ABCInvestorKanbanProps {
+  investors: Investor[];
+  onInvestorClick: (investor: Investor) => void;
+  onStatusChange: () => void;
+}
+
+const statusColumns = [
+  { id: 'To Contact', label: 'To Contact', color: 'bg-slate-100 border-slate-300' },
+  { id: 'Contacted', label: 'Contacted', color: 'bg-blue-50 border-blue-200' },
+  { id: 'Interested', label: 'Interested', color: 'bg-purple-50 border-purple-200' },
+  { id: 'Meeting Scheduled', label: 'Meeting Scheduled', color: 'bg-amber-50 border-amber-200' },
+  { id: 'In Negotiation', label: 'In Negotiation', color: 'bg-orange-50 border-orange-200' },
+  { id: 'Closed', label: 'Closed', color: 'bg-green-50 border-green-200' },
+  { id: 'Not Interested', label: 'Not Interested', color: 'bg-red-50 border-red-200' },
+];
+
+export const ABCInvestorKanban = ({ investors, onInvestorClick, onStatusChange }: ABCInvestorKanbanProps) => {
+  const [localInvestors, setLocalInvestors] = useState(investors);
+
+  const getInvestorsByStatus = (status: string) => {
+    return localInvestors.filter(inv => inv.status === status);
+  };
+
+  const handleDragEnd = async (result: DropResult) => {
+    if (!result.destination) return;
+
+    const sourceStatus = result.source.droppableId;
+    const destStatus = result.destination.droppableId;
+
+    if (sourceStatus === destStatus) return;
+
+    const investorId = result.draggableId;
+    const investor = localInvestors.find(inv => inv.id === investorId);
+
+    if (!investor) return;
+
+    // Optimistic update
+    const updatedInvestors = localInvestors.map(inv =>
+      inv.id === investorId ? { ...inv, status: destStatus } : inv
+    );
+    setLocalInvestors(updatedInvestors);
+
+    try {
+      // Update in Supabase - assuming there's an investors table
+      // If the table name is different, adjust accordingly
+      const { error } = await supabase
+        .from('abc_investors')
+        .update({ status: destStatus })
+        .eq('id', investorId);
+
+      if (error) throw error;
+
+      toast.success(`${investor.nome} moved to ${destStatus}`);
+      onStatusChange();
+    } catch (error) {
+      console.error('Error updating investor status:', error);
+      toast.error('Failed to update investor status');
+      // Revert optimistic update
+      setLocalInvestors(localInvestors);
+    }
+  };
+
+  return (
+    <DragDropContext onDragEnd={handleDragEnd}>
+      <div className="flex gap-4 overflow-x-auto pb-4 min-h-[600px]">
+        {statusColumns.map((column) => {
+          const columnInvestors = getInvestorsByStatus(column.id);
+          
+          return (
+            <div key={column.id} className="flex-shrink-0 w-80">
+              <div className={`rounded-lg border-2 ${column.color} h-full`}>
+                <div className="p-4 border-b border-border/50">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-semibold text-foreground">{column.label}</h3>
+                    <Badge variant="outline" className="bg-background">
+                      {columnInvestors.length}
+                    </Badge>
+                  </div>
+                </div>
+
+                <Droppable droppableId={column.id}>
+                  {(provided, snapshot) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.droppableProps}
+                      className={`p-3 space-y-3 min-h-[500px] transition-colors ${
+                        snapshot.isDraggingOver ? 'bg-accent/20' : ''
+                      }`}
+                    >
+                      {columnInvestors.map((investor, index) => (
+                        <Draggable
+                          key={investor.id}
+                          draggableId={investor.id}
+                          index={index}
+                        >
+                          {(provided, snapshot) => (
+                            <Card
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                              className={`cursor-pointer transition-all hover:shadow-md ${
+                                snapshot.isDragging ? 'shadow-lg ring-2 ring-primary' : ''
+                              }`}
+                              onClick={() => onInvestorClick(investor)}
+                            >
+                              <CardContent className="p-4 space-y-3">
+                                <div>
+                                  <h4 className="font-semibold text-foreground mb-1">
+                                    {investor.nome}
+                                  </h4>
+                                  {investor.ruolo && (
+                                    <p className="text-xs text-muted-foreground">
+                                      {investor.ruolo}
+                                    </p>
+                                  )}
+                                </div>
+
+                                <div className="flex items-start gap-2 text-sm">
+                                  <Building2 className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                                  <span className="text-muted-foreground line-clamp-2">
+                                    {investor.azienda}
+                                  </span>
+                                </div>
+
+                                {investor.citta && (
+                                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                    <MapPin className="h-4 w-4" />
+                                    <span>{investor.citta}</span>
+                                  </div>
+                                )}
+
+                                <div className="pt-2 border-t border-border/50 space-y-2">
+                                  <div className="flex items-center justify-between text-sm">
+                                    <div className="flex items-center gap-1.5">
+                                      <Euro className="h-4 w-4 text-primary" />
+                                      <span className="font-semibold text-primary">
+                                        €{investor.pipelineValue.toLocaleString()}
+                                      </span>
+                                    </div>
+                                  </div>
+
+                                  {investor.lastContactDate && (
+                                    <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                                      <Calendar className="h-3 w-3" />
+                                      <span>
+                                        {format(new Date(investor.lastContactDate), 'dd MMM yyyy')}
+                                      </span>
+                                    </div>
+                                  )}
+                                </div>
+
+                                <Badge variant="outline" className="text-xs">
+                                  {investor.categoria}
+                                </Badge>
+                              </CardContent>
+                            </Card>
+                          )}
+                        </Draggable>
+                      ))}
+                      {provided.placeholder}
+                    </div>
+                  )}
+                </Droppable>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </DragDropContext>
+  );
+};
