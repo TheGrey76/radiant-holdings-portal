@@ -118,6 +118,33 @@ const ABCCompanyConsole = () => {
     enabled: !!selectedInvestor,
   });
 
+  // Fetch all recent activities for timeline
+  const { data: allActivities = [] } = useQuery({
+    queryKey: ['abc-all-activities'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('abc_investor_activities')
+        .select('*')
+        .order('activity_date', { ascending: false })
+        .limit(20);
+      if (error) throw error;
+      return data || [];
+    },
+  });
+
+  // Fetch all upcoming follow-ups
+  const { data: allFollowUps = [] } = useQuery({
+    queryKey: ['abc-all-followups'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('abc_investor_followups')
+        .select('*')
+        .order('follow_up_date', { ascending: true });
+      if (error) throw error;
+      return data || [];
+    },
+  });
+
   // Add note mutation
   const addNoteMutation = useMutation({
     mutationFn: async (noteText: string) => {
@@ -213,22 +240,25 @@ const ABCCompanyConsole = () => {
     closed: { current: closedValue, target: 10000000, percentage: Math.round((closedValue / 10000000) * 100) }
   };
 
-  // Recent Activity - updated with real investor names
-  const recentActivity = [
-    { investor: "Marco Boschetti (Family Office Italia)", action: "Meeting scheduled for Dec 10, 2024", time: "2 hours ago" },
-    { investor: "Carlotta de Courten (Fondo Italiano SGR)", action: 'Email sent: "ABC Company Opportunity"', time: "5 hours ago" },
-    { investor: "Patrizia Polonia (Fideuram Private Banking)", action: 'Note added: "Very interested, wants financials"', time: "1 day ago" },
-    { investor: "Andrea Reale (Fondo Italiano SGR)", action: "Status changed: Contacted → Meeting", time: "2 days ago" }
-  ];
+  // Helper function to format time ago
+  const timeAgo = (date: string) => {
+    const now = new Date();
+    const activityDate = new Date(date);
+    const diffMs = now.getTime() - activityDate.getTime();
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    const diffDays = Math.floor(diffMs / 86400000);
 
-  // Upcoming Follow-ups - updated with real investor names
-  const upcomingFollowUps = [
-    { date: "Tomorrow", investor: "Andrea Reale (Fondo Italiano SGR)", action: "Follow-up call", time: "10:00 AM", overdue: false },
-    { date: "Dec 5, 2024", investor: "Patrizia Polonia (Fideuram)", action: "Send financial model", time: "All day", overdue: false },
-    { date: "Dec 8, 2024", investor: "Carlotta de Courten (Fondo Italiano SGR)", action: "Meeting", time: "2:00 PM", overdue: false },
-    { date: "Overdue", investor: "Stefano Mortarotti (Independent Investor)", action: "Follow-up email", time: "", overdue: true },
-    { date: "Overdue", investor: "Emanuele Marangoni (Banca IMI)", action: "Schedule meeting", time: "", overdue: true }
-  ];
+    if (diffMins < 60) return `${diffMins} minuti fa`;
+    if (diffHours < 24) return `${diffHours} ore fa`;
+    if (diffDays === 1) return "1 giorno fa";
+    return `${diffDays} giorni fa`;
+  };
+
+  // Check if follow-up is overdue
+  const isOverdue = (date: string) => {
+    return new Date(date) < new Date();
+  };
 
   // Helper functions
   const formatCurrency = (value: number) => {
@@ -346,29 +376,46 @@ const ABCCompanyConsole = () => {
           <section>
             <h2 className="text-xl font-semibold mb-4">Recent Activity</h2>
             <div className="space-y-3">
-              {recentActivity.map((activity, idx) => (
-                <div key={idx} className="p-4 bg-muted/50 rounded-lg">
-                  <p className="font-medium">{activity.investor}</p>
-                  <p className="text-sm text-muted-foreground">{activity.action}</p>
-                  <p className="text-xs text-muted-foreground">{activity.time}</p>
-                </div>
-              ))}
+              {allActivities.length === 0 ? (
+                <p className="text-center text-muted-foreground py-8">
+                  Nessuna attività registrata. Le attività verranno visualizzate quando inizierai a interagire con gli investitori.
+                </p>
+              ) : (
+                allActivities.slice(0, 5).map((activity) => (
+                  <div key={activity.id} className="p-4 bg-muted/50 rounded-lg">
+                    <p className="font-medium">{activity.investor_name}</p>
+                    <p className="text-sm text-muted-foreground">{activity.activity_description}</p>
+                    <p className="text-xs text-muted-foreground">{timeAgo(activity.activity_date)}</p>
+                  </div>
+                ))
+              )}
             </div>
           </section>
 
           <section>
             <h2 className="text-xl font-semibold mb-4">Upcoming Follow-ups</h2>
             <div className="space-y-3">
-              {upcomingFollowUps.map((fu, idx) => (
-                <div
-                  key={idx}
-                  className={`p-4 rounded-lg ${fu.overdue ? "bg-red-100 text-red-800" : "bg-muted/50"}`}
-                >
-                  <p className="font-medium">{fu.investor}</p>
-                  <p className="text-sm">{fu.action}</p>
-                  <p className="text-xs">{fu.date} {fu.time}</p>
-                </div>
-              ))}
+              {allFollowUps.length === 0 ? (
+                <p className="text-center text-muted-foreground py-8">
+                  Nessun follow-up programmato. Inizia a schedulare i tuoi follow-up con gli investitori.
+                </p>
+              ) : (
+                allFollowUps.slice(0, 5).map((fu) => {
+                  const overdue = isOverdue(fu.follow_up_date);
+                  return (
+                    <div
+                      key={fu.id}
+                      className={`p-4 rounded-lg ${overdue ? "bg-red-100 text-red-800" : "bg-muted/50"}`}
+                    >
+                      <p className="font-medium">{fu.investor_name}</p>
+                      <p className="text-sm">{fu.description}</p>
+                      <p className="text-xs">
+                        {overdue ? "Scaduto - " : ""}{new Date(fu.follow_up_date).toLocaleDateString('it-IT')} - {fu.follow_up_type}
+                      </p>
+                    </div>
+                  );
+                })
+              )}
             </div>
           </section>
         </main>
@@ -437,30 +484,44 @@ const ABCCompanyConsole = () => {
       {activeTab === "timeline" && (
         <main className="p-6">
           <h2 className="text-2xl font-bold mb-6">Activity Timeline</h2>
-          <div className="relative border-l-2 border-[#ff6b35] pl-8 space-y-6">
-            {recentActivity.map((activity, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: idx * 0.1 }}
-                className="relative"
-              >
-                <div className="absolute -left-10 w-4 h-4 rounded-full bg-[#ff6b35] border-4 border-background" />
-                <Card>
-                  <CardContent className="pt-6">
-                    <div className="flex items-start justify-between">
-                      <div className="space-y-1">
-                        <p className="font-semibold text-lg">{activity.investor}</p>
-                        <p className="text-sm text-muted-foreground">{activity.action}</p>
+          {allActivities.length === 0 ? (
+            <Card>
+              <CardContent className="py-12">
+                <p className="text-center text-muted-foreground">
+                  Nessuna attività registrata. Le attività verranno visualizzate quando inizierai a interagire con gli investitori.
+                </p>
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="relative border-l-2 border-[#ff6b35] pl-8 space-y-6">
+              {allActivities.map((activity, idx) => (
+                <motion.div
+                  key={activity.id}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: idx * 0.05 }}
+                  className="relative"
+                >
+                  <div className="absolute -left-10 w-4 h-4 rounded-full bg-[#ff6b35] border-4 border-background" />
+                  <Card>
+                    <CardContent className="pt-6">
+                      <div className="flex items-start justify-between">
+                        <div className="space-y-1">
+                          <p className="font-semibold text-lg">{activity.investor_name}</p>
+                          <Badge variant="outline" className="capitalize mb-2">{activity.activity_type}</Badge>
+                          <p className="text-sm text-muted-foreground">{activity.activity_description}</p>
+                          <p className="text-xs text-muted-foreground mt-2">by {activity.created_by}</p>
+                        </div>
+                        <span className="text-xs text-muted-foreground whitespace-nowrap">
+                          {timeAgo(activity.activity_date)}
+                        </span>
                       </div>
-                      <span className="text-xs text-muted-foreground">{activity.time}</span>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          )}
         </main>
       )}
 
