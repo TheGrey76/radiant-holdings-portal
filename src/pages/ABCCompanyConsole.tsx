@@ -187,7 +187,7 @@ const ABCCompanyConsole = () => {
   const meetingInvestors = investorsData.filter(inv => inv.status === "meeting" || inv.status === "negotiation");
   
   const kpis = {
-    contacts: { current: 57, target: 57, percentage: 100 },
+    contacts: { current: 57, target: 352, percentage: Math.round((57 / 352) * 100) },
     meetings: { current: meetingInvestors.length, target: 20, percentage: Math.round((meetingInvestors.length / 20) * 100) },
     pipeline: { current: totalPipelineValue, target: 10000000, percentage: Math.round((totalPipelineValue / 10000000) * 100) },
     closed: { current: closedValue, target: 10000000, percentage: Math.round((closedValue / 10000000) * 100) }
