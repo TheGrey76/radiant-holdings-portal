@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { 
   TrendingUp, Users, Calendar, CheckCircle, AlertCircle, 
@@ -18,6 +18,8 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { ABCActivityFeed } from "@/components/ABCActivityFeed";
+import { ABCInvestorKanban } from "@/components/ABCInvestorKanban";
+import { supabase } from "@/integrations/supabase/client";
 
 // Real investor data from Investitori_Alta_Priorita_ABC.xlsx
 const investorsData = [
@@ -82,11 +84,61 @@ const investorsData = [
 
 const ABCCompanyConsole = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
+  const [filterCategory, setFilterCategory] = useState("all");
+  const [filterSource, setFilterSource] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedInvestor, setSelectedInvestor] = useState<typeof investorsData[0] | null>(null);
+  const [selectedInvestor, setSelectedInvestor] = useState<any | null>(null);
   const [modalTab, setModalTab] = useState("overview");
   const [newNote, setNewNote] = useState("");
   const [newFollowUp, setNewFollowUp] = useState({ date: "", time: "", type: "", description: "" });
+  const [investors, setInvestors] = useState<any[]>([]);
+  const [loadingInvestors, setLoadingInvestors] = useState(true);
+
+  // Fetch investors from Supabase
+  useEffect(() => {
+    fetchInvestors();
+  }, []);
+
+  const fetchInvestors = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('abc_investors' as any)
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      
+      // Transform to match component interface
+      const transformedInvestors = (data || []).map((inv: any) => ({
+        id: inv.id,
+        nome: inv.nome,
+        azienda: inv.azienda,
+        ruolo: inv.ruolo,
+        categoria: inv.categoria,
+        citta: inv.citta,
+        fonte: inv.fonte,
+        linkedin: inv.linkedin,
+        email: inv.email,
+        phone: inv.phone,
+        priorita: inv.priorita,
+        status: inv.status,
+        pipelineValue: Number(inv.pipeline_value),
+        probability: inv.probability,
+        expectedClose: inv.expected_close,
+        relationshipOwner: inv.relationship_owner,
+        rilevanza: inv.rilevanza,
+        lastContactDate: inv.last_contact_date,
+        nextFollowUpDate: inv.next_follow_up_date,
+      }));
+
+      setInvestors(transformedInvestors);
+      setLoadingInvestors(false);
+    } catch (error) {
+      console.error('Error fetching investors:', error);
+      toast.error('Failed to load investors');
+      setLoadingInvestors(false);
+    }
+  };
 
   // KPI Data - calculated from real investor data
   const totalPipelineValue = investorsData.reduce((sum, inv) => sum + inv.pipelineValue, 0);
@@ -179,6 +231,18 @@ const ABCCompanyConsole = () => {
     }
     toast.success("Follow-up scheduled successfully");
     setNewFollowUp({ date: "", time: "", type: "", description: "" });
+  };
+
+  const getFilteredInvestors = () => {
+    return investors.filter(inv => {
+      const matchesSearch = 
+        inv.nome?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        inv.azienda?.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesCategory = filterCategory === "all" || inv.categoria === filterCategory;
+      const matchesSource = filterSource === "all" || inv.fonte === filterSource;
+      
+      return matchesSearch && matchesCategory && matchesSource;
+    });
   };
 
   // Mock data for investor detail
@@ -358,108 +422,67 @@ const ABCCompanyConsole = () => {
 
           {/* INVESTORS TAB */}
           <TabsContent value="investors" className="space-y-6">
-            {/* Filters */}
-            <Card>
-              <CardContent className="pt-6">
-                <div className="flex flex-col md:flex-row gap-4">
-                  <div className="relative flex-1">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-                    <Input
-                      placeholder="Search investors..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      className="pl-10"
-                    />
-                  </div>
-                  <Button variant="outline" className="gap-2">
-                    <Filter className="h-4 w-4" />
-                    Filter
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Investor Cards Grid */}
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {investorsData.filter(inv => 
-                inv.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                inv.company.toLowerCase().includes(searchTerm.toLowerCase())
-              ).map((investor) => {
-                const status = getStatusBadge(investor.status);
-                return (
-                  <motion.div
-                    key={investor.id}
-                    initial={{ y: 20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    whileHover={{ scale: 1.02 }}
-                    transition={{ duration: 0.2 }}
-                    onClick={() => setSelectedInvestor(investor)}
-                  >
-                    <Card className={`cursor-pointer hover:shadow-lg transition-all ${getPriorityColor(investor.priority)}`}>
-                      <CardHeader className="pb-3">
-                        <div className="flex items-start justify-between">
-                          <Badge className={status.color}>{status.label}</Badge>
-                          {investor.priority === "high" && (
-                            <Badge variant="destructive" className="bg-primary">🔥 HIGH PRIORITY</Badge>
-                          )}
-                        </div>
-                      </CardHeader>
-                      <CardContent className="space-y-3">
-                        <div>
-                          <h3 className="font-bold text-foreground text-lg">{investor.name}</h3>
-                          <p className="text-sm text-muted-foreground">{investor.company}</p>
-                          <p className="text-xs text-muted-foreground">{investor.role}</p>
-                        </div>
-                        <div className="space-y-1 text-sm">
-                          <div className="flex items-center gap-2 text-muted-foreground">
-                            <MapPin className="h-3 w-3" />
-                            <span>{investor.city}</span>
-                          </div>
-                          <div className="flex items-center gap-2 text-muted-foreground">
-                            <Building className="h-3 w-3" />
-                            <span>{investor.category}</span>
-                          </div>
-                        </div>
-                        <div className="pt-3 border-t border-border space-y-1">
-                          <p className="text-xs text-muted-foreground">Last Contact: {investor.lastContact}</p>
-                          <p className="text-xs text-muted-foreground">Next Follow-up: {investor.nextFollowUp}</p>
-                          <div className="flex items-center justify-between pt-2">
-                            <span className="text-sm font-semibold text-foreground">{formatCurrency(investor.pipelineValue)}</span>
-                            <span className="text-sm text-primary font-semibold">{investor.probability}%</span>
-                          </div>
-                        </div>
-                        <div className="flex gap-2 pt-2">
-                          <Button 
-                            size="sm" 
-                            variant="outline" 
-                            className="flex-1 gap-2"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              window.location.href = `mailto:${investor.email}`;
-                            }}
-                          >
-                            <Mail className="h-3 w-3" />
-                            Email
-                          </Button>
-                          <Button 
-                            size="sm" 
-                            variant="outline" 
-                            className="flex-1 gap-2"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              window.location.href = `tel:${investor.phone}`;
-                            }}
-                          >
-                            <Phone className="h-3 w-3" />
-                            Call
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                );
-              })}
+            <div className="flex items-center justify-between gap-4 flex-wrap">
+              <div className="relative flex-1 max-w-md">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                <Input
+                  placeholder="Search investors..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10"
+                />
+              </div>
+              <div className="flex gap-2">
+                <Select value={filterCategory} onValueChange={setFilterCategory}>
+                  <SelectTrigger className="w-[180px]">
+                    <Filter className="h-4 w-4 mr-2" />
+                    <SelectValue placeholder="Category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Categories</SelectItem>
+                    <SelectItem value="Family Office">Family Office</SelectItem>
+                    <SelectItem value="Istituzionale">Istituzionale</SelectItem>
+                    <SelectItem value="Corporate">Corporate</SelectItem>
+                    <SelectItem value="Private Equity">Private Equity</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Select value={filterSource} onValueChange={setFilterSource}>
+                  <SelectTrigger className="w-[180px]">
+                    <Filter className="h-4 w-4 mr-2" />
+                    <SelectValue placeholder="Source" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Sources</SelectItem>
+                    <SelectItem value="Ricerca Esterna">Direct</SelectItem>
+                    <SelectItem value="Network LinkedIn">Network</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
+
+            {loadingInvestors ? (
+              <Card>
+                <CardContent className="p-12 text-center">
+                  <div className="animate-pulse">
+                    <p className="text-muted-foreground">Loading investors...</p>
+                  </div>
+                </CardContent>
+              </Card>
+            ) : investors.length === 0 ? (
+              <Card>
+                <CardContent className="p-12 text-center">
+                  <AlertCircle className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+                  <p className="text-muted-foreground mb-2">No investors found</p>
+                  <p className="text-sm text-muted-foreground">Import investor data to get started</p>
+                </CardContent>
+              </Card>
+            ) : (
+              <ABCInvestorKanban
+                investors={getFilteredInvestors()}
+                onInvestorClick={(investor) => setSelectedInvestor(investor)}
+                onStatusChange={fetchInvestors}
+              />
+            )}
           </TabsContent>
 
           {/* TIMELINE TAB */}

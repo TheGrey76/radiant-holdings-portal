@@ -137,6 +137,78 @@ export type Database = {
         }
         Relationships: []
       }
+      abc_investors: {
+        Row: {
+          azienda: string
+          categoria: string
+          citta: string | null
+          created_at: string
+          email: string | null
+          expected_close: string | null
+          fonte: string | null
+          id: string
+          last_contact_date: string | null
+          linkedin: string | null
+          next_follow_up_date: string | null
+          nome: string
+          phone: string | null
+          pipeline_value: number
+          priorita: string | null
+          probability: number | null
+          relationship_owner: string | null
+          rilevanza: string | null
+          ruolo: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          azienda: string
+          categoria: string
+          citta?: string | null
+          created_at?: string
+          email?: string | null
+          expected_close?: string | null
+          fonte?: string | null
+          id?: string
+          last_contact_date?: string | null
+          linkedin?: string | null
+          next_follow_up_date?: string | null
+          nome: string
+          phone?: string | null
+          pipeline_value?: number
+          priorita?: string | null
+          probability?: number | null
+          relationship_owner?: string | null
+          rilevanza?: string | null
+          ruolo?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          azienda?: string
+          categoria?: string
+          citta?: string | null
+          created_at?: string
+          email?: string | null
+          expected_close?: string | null
+          fonte?: string | null
+          id?: string
+          last_contact_date?: string | null
+          linkedin?: string | null
+          next_follow_up_date?: string | null
+          nome?: string
+          phone?: string | null
+          pipeline_value?: number
+          priorita?: string | null
+          probability?: number | null
+          relationship_owner?: string | null
+          rilevanza?: string | null
+          ruolo?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       assessment_bookings: {
         Row: {
           client_type: string
