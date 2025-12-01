@@ -17,7 +17,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
-import Footer from "@/components/Footer";
 
 // Real investor data from Investitori_Alta_Priorita_ABC.xlsx
 const investorsData = [
@@ -1189,8 +1188,6 @@ const ABCCompanyConsole = () => {
           </Tabs>
         </DialogContent>
       </Dialog>
-
-      <Footer />
     </div>
   );
 };
