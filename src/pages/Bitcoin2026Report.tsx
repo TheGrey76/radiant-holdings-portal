@@ -766,36 +766,6 @@ const Bitcoin2026Report = () => {
                 "Advanced price framework combines M2 growth rates, real-rate trends, ETF flow velocity, and on-chain metrics to generate probabilistic scenario distributions rather than single-point forecasts."
               ]} />
 
-              {/* Investment Implications */}
-              <div className="mt-12 p-8 rounded-2xl bg-gradient-to-br from-accent/10 via-background to-primary/5 border-2 border-primary/20">
-                <h3 className="text-2xl font-bold text-foreground mb-6 flex items-center gap-3">
-                  <div className="w-1.5 h-8 bg-primary rounded-full"></div>
-                  Investment Implications
-                </h3>
-                
-                <div className="space-y-6">
-                  <div className="p-6 rounded-xl bg-card/50 border border-border/40">
-                    <h4 className="text-lg font-semibold text-primary mb-3">For Retail High-Net-Worth Investors</h4>
-                    <p className="text-foreground/80 leading-relaxed">
-                      The probabilistic scenario framework (Base 60%, High 25%, Stress 15%) provides a rational basis for position sizing. A 4% allocation with 60% probability of $96k-$132k range offers asymmetric risk-reward. Consider dollar-cost averaging during the first half of 2026 to smooth entry volatility.
-                    </p>
-                  </div>
-
-                  <div className="p-6 rounded-xl bg-card/50 border border-border/40">
-                    <h4 className="text-lg font-semibold text-primary mb-3">For Family Offices & Institutional Allocators</h4>
-                    <p className="text-foreground/80 leading-relaxed">
-                      The $138,000 institutional target represents probability-weighted expected value across all scenarios. Portfolio construction should account for tail risk (15% stress scenario). Consider protective put strategies or dynamic hedging if allocation exceeds 5% of total portfolio. The advanced price framework supports conviction in multi-year holding periods.
-                    </p>
-                  </div>
-
-                  <div className="p-6 rounded-xl bg-card/50 border border-border/40">
-                    <h4 className="text-lg font-semibold text-primary mb-3">For Quantitative Traders</h4>
-                    <p className="text-foreground/80 leading-relaxed">
-                      Scenario probabilities update dynamically based on macro-liquidity conditions. Monitor M2 growth rates and real-rate trends for regime shifts that alter scenario probabilities. High convexity scenario (25% probability) becomes more likely if M2 accelerates above trend while real yields decline. Use options strategies to capture convexity during regime transitions.
-                    </p>
-                  </div>
-                </div>
-              </div>
             </div>
           </ChapterSection>
           <ChapterSection id="chapter-3" dataSection="chapter-3">
