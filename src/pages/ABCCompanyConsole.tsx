@@ -276,7 +276,7 @@ const ABCCompanyConsole = () => {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-bold text-foreground">ABC COMPANY FUNDRAISING CONSOLE</h1>
-              <p className="text-sm text-muted-foreground">Target: €10,000,000 | Deadline: March 31, 2026</p>
+              <p className="text-sm text-muted-foreground">Target: €10,000,000 | Deadline: June 30, 2026</p>
             </div>
             <div className="flex items-center gap-4">
               <span className="text-sm text-muted-foreground">User: Edoardo Grigione</span>
@@ -388,7 +388,7 @@ const ABCCompanyConsole = () => {
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-muted-foreground">Dec 2024</span>
                     <span className="text-primary font-bold">35%</span>
-                    <span className="text-muted-foreground">Mar 2026</span>
+                    <span className="text-muted-foreground">Jun 2026</span>
                   </div>
                   <Progress value={35} className="h-3" />
                 </div>
@@ -490,7 +490,7 @@ const ABCCompanyConsole = () => {
             <Card>
               <CardHeader>
                 <CardTitle>ABC COMPANY FUNDRAISING TIMELINE</CardTitle>
-                <p className="text-sm text-muted-foreground">December 2024 → March 2026</p>
+                <p className="text-sm text-muted-foreground">December 2024 → June 2026</p>
               </CardHeader>
               <CardContent>
                 <div className="space-y-6">
@@ -566,13 +566,13 @@ const ABCCompanyConsole = () => {
                           <CardTitle className="text-lg">Phase 5: First Closing</CardTitle>
                           <Badge variant="outline">TARGET</Badge>
                         </div>
-                        <p className="text-sm text-muted-foreground">Oct 2025 - Mar 2026</p>
+                        <p className="text-sm text-muted-foreground">Oct 2025 - Jun 2026</p>
                       </CardHeader>
                       <CardContent className="space-y-3">
                         <p className="text-sm text-foreground">Target: €3-5M first closing</p>
                         <Progress value={30} className="h-2" />
                         <p className="text-sm font-semibold text-foreground">€1.5M / €5M (30%)</p>
-                        <p className="text-xs text-muted-foreground">Deadline: March 31, 2026</p>
+                        <p className="text-xs text-muted-foreground">Deadline: June 30, 2026</p>
                       </CardContent>
                     </Card>
 
@@ -790,7 +790,7 @@ const ABCCompanyConsole = () => {
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-muted-foreground">Deadline</label>
-                    <Input value="March 31, 2026" />
+                    <Input value="June 30, 2026" />
                   </div>
                 </div>
                 <Button>Update Configuration</Button>
