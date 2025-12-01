@@ -63,10 +63,9 @@ export const ABCInvestorKanban = ({ investors, onInvestorClick, onStatusChange }
     setLocalInvestors(updatedInvestors);
 
     try {
-      // Update in Supabase - assuming there's an investors table
-      // If the table name is different, adjust accordingly
+      // Update in Supabase
       const { error } = await supabase
-        .from('abc_investors')
+        .from('abc_investors' as any)
         .update({ status: destStatus })
         .eq('id', investorId);
 
