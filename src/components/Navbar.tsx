@@ -41,6 +41,7 @@ const Navbar = () => {
       { name: 'GP Capital Advisory', path: '/gp-capital-advisory' },
       { name: 'Family Office Advisory', path: '/family-office-advisory' },
       { name: 'Structured Products', path: '/structured-products' },
+      { name: 'ABC Company', path: '/abc-company' },
     ],
     lps: [
       { name: 'For Limited Partners', path: '/for-limited-partners' },
@@ -65,6 +66,7 @@ const Navbar = () => {
     { name: 'GP Capital Advisory', path: '/gp-capital-advisory', indent: true },
     { name: 'Family Office Advisory', path: '/family-office-advisory', indent: true },
     { name: 'Structured Products', path: '/structured-products', indent: true },
+    { name: 'ABC Company', path: '/abc-company', indent: true },
     { name: 'For LPs', path: '/for-limited-partners' },
     { name: 'Partnerships', path: '/strategic-partnerships' },
     { name: 'Insights', path: '#', section: 'insights' },
