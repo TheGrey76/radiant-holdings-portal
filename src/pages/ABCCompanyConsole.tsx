@@ -19,6 +19,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from "sonner";
 import { ABCActivityFeed } from "@/components/ABCActivityFeed";
 import { ABCInvestorKanban } from "@/components/ABCInvestorKanban";
+import { ImportABCInvestorsDialog } from "@/components/ImportABCInvestorsDialog";
 import { supabase } from "@/integrations/supabase/client";
 
 // Real investor data from Investitori_Alta_Priorita_ABC.xlsx
@@ -279,6 +280,7 @@ const ABCCompanyConsole = () => {
               <p className="text-sm text-muted-foreground">Target: €10,000,000 | Deadline: June 30, 2026</p>
             </div>
             <div className="flex items-center gap-4">
+              <ImportABCInvestorsDialog />
               <span className="text-sm text-muted-foreground">User: Edoardo Grigione</span>
               <Button variant="outline" size="sm">Logout</Button>
             </div>
