@@ -19,7 +19,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import Footer from "@/components/Footer";
 
 // Real investor data from Investitori_Alta_Priorita_ABC.xlsx
 const investorsData = [
@@ -646,7 +645,6 @@ const ABCCompanyConsole = () => {
           </DialogContent>
         </Dialog>
       )}
-      <Footer />
     </div>
   );
 };
