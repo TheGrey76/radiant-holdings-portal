@@ -23,6 +23,8 @@ import { ImportABCInvestorsDialog } from "@/components/ImportABCInvestorsDialog"
 import { EditableFunnelStage } from "@/components/EditableFunnelStage";
 import { EditableOverallProgress } from "@/components/EditableOverallProgress";
 import { EditableKPI } from "@/components/EditableKPI";
+import { ABCAnalyticsTab } from "@/components/ABCAnalyticsTab";
+import { useKPIHistory } from "@/hooks/useKPIHistory";
 import { supabase } from "@/integrations/supabase/client";
 
 // Real investor data from Investitori_Alta_Priorita_ABC.xlsx
@@ -88,6 +90,7 @@ const investorsData = [
 
 const ABCCompanyConsole = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
+  const { recordSnapshot } = useKPIHistory();
   const [filterCategory, setFilterCategory] = useState("all");
   const [filterSource, setFilterSource] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
@@ -137,6 +140,30 @@ const ABCCompanyConsole = () => {
       setClosedKPI(JSON.parse(savedClosed));
     }
   }, []);
+
+  // Record daily KPI snapshot automatically
+  useEffect(() => {
+    const recordDailySnapshot = () => {
+      const totalPipeline = investors.reduce((sum, inv) => sum + inv.pipelineValue, 0);
+      const closedInvestors = investors.filter(inv => inv.status === "Closed");
+      const closedValue = closedInvestors.reduce((sum, inv) => sum + inv.pipelineValue, 0);
+
+      recordSnapshot({
+        raisedAmount: progressData.raisedAmount,
+        targetAmount: progressData.targetAmount,
+        pipelineValue: totalPipeline,
+        closedDealsCount: closedKPI.current,
+        closedDealsValue: closedValue,
+        meetingsCount: meetingsKPI.current,
+        meetingsTarget: meetingsKPI.target,
+      });
+    };
+
+    // Record snapshot when data is available
+    if (investors.length > 0) {
+      recordDailySnapshot();
+    }
+  }, [investors, progressData, closedKPI, meetingsKPI, recordSnapshot]);
 
   const fetchUpcomingFollowUps = async () => {
     try {
@@ -377,9 +404,10 @@ const ABCCompanyConsole = () => {
       <main className="container mx-auto px-4 py-8">
         {/* Main Navigation Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-5 mb-8">
+          <TabsList className="grid w-full grid-cols-6 mb-8">
             <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
             <TabsTrigger value="investors">Investors</TabsTrigger>
+            <TabsTrigger value="analytics">Analytics</TabsTrigger>
             <TabsTrigger value="timeline">Timeline</TabsTrigger>
             <TabsTrigger value="reports">Reports</TabsTrigger>
             <TabsTrigger value="settings">Settings</TabsTrigger>
@@ -719,6 +747,11 @@ const ABCCompanyConsole = () => {
                 onStatusChange={fetchInvestors}
               />
             )}
+          </TabsContent>
+
+          {/* ANALYTICS TAB */}
+          <TabsContent value="analytics">
+            <ABCAnalyticsTab />
           </TabsContent>
 
           {/* TIMELINE TAB */}
