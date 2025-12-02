@@ -117,8 +117,12 @@ export const ABCInvestorKanban = ({ investors, onStatusChange }: ABCInvestorKanb
         .delete()
         .eq('id', investorToDelete.id);
       if (error) throw error;
+      
+      // Optimistic update - rimuovi immediatamente dalla UI locale
+      setLocalInvestors(prev => prev.filter(inv => inv.id !== investorToDelete.id));
+      
       toast.success(`${investorToDelete.nome} eliminato`);
-      onStatusChange();
+      onStatusChange(); // Refresh dal parent per sincronizzare
     } catch (error) {
       console.error('Error deleting investor:', error);
       toast.error('Errore durante l\'eliminazione');
