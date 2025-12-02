@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 
 export interface KPISnapshot {
   date: string; // ISO date string
@@ -15,6 +15,8 @@ const STORAGE_KEY = "abc_kpi_history";
 
 export function useKPIHistory() {
   const [history, setHistory] = useState<KPISnapshot[]>([]);
+  const historyRef = useRef<KPISnapshot[]>([]);
+  const hasRecordedToday = useRef(false);
 
   // Load history from localStorage on mount
   useEffect(() => {
@@ -23,23 +25,24 @@ export function useKPIHistory() {
       try {
         const parsed = JSON.parse(stored);
         setHistory(parsed);
+        historyRef.current = parsed;
       } catch (e) {
         console.error("Failed to parse KPI history:", e);
         setHistory([]);
+        historyRef.current = [];
       }
     }
   }, []);
 
-  // Save history to localStorage whenever it changes
-  const saveHistory = (newHistory: KPISnapshot[]) => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(newHistory));
-    setHistory(newHistory);
-  };
-
-  // Add or update today's snapshot
-  const recordSnapshot = (snapshot: Omit<KPISnapshot, "date">) => {
+  // Add or update today's snapshot (memoized to prevent infinite loops)
+  const recordSnapshot = useCallback((snapshot: Omit<KPISnapshot, "date">) => {
     const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
-    const newHistory = [...history];
+    
+    // Only record once per day to prevent loops
+    if (hasRecordedToday.current) return;
+    hasRecordedToday.current = true;
+    
+    const newHistory = [...historyRef.current];
     
     // Check if we already have a snapshot for today
     const todayIndex = newHistory.findIndex((s) => s.date === today);
@@ -60,8 +63,11 @@ export function useKPIHistory() {
     // Sort by date (oldest first)
     newHistory.sort((a, b) => a.date.localeCompare(b.date));
 
-    saveHistory(newHistory);
-  };
+    // Save to localStorage and update state
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(newHistory));
+    historyRef.current = newHistory;
+    setHistory(newHistory);
+  }, []);
 
   // Get snapshots for a specific time range
   const getSnapshotsForRange = (days: number): KPISnapshot[] => {
