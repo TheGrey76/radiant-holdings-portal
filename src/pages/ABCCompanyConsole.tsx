@@ -24,6 +24,7 @@ import { EditableFunnelStage } from "@/components/EditableFunnelStage";
 import { EditableOverallProgress } from "@/components/EditableOverallProgress";
 import { EditableKPI } from "@/components/EditableKPI";
 import { ABCAnalyticsTab } from "@/components/ABCAnalyticsTab";
+import { ABCInvestorDetailDialog } from "@/components/ABCInvestorDetailDialog";
 import { useKPIHistory } from "@/hooks/useKPIHistory";
 import { supabase } from "@/integrations/supabase/client";
 
