@@ -24,7 +24,6 @@ import { EditableFunnelStage } from "@/components/EditableFunnelStage";
 import { EditableOverallProgress } from "@/components/EditableOverallProgress";
 import { EditableKPI } from "@/components/EditableKPI";
 import { ABCAnalyticsTab } from "@/components/ABCAnalyticsTab";
-import { ABCInvestorDetailDialog } from "@/components/ABCInvestorDetailDialog";
 import { useKPIHistory } from "@/hooks/useKPIHistory";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -95,7 +94,6 @@ const ABCCompanyConsole = () => {
   const [filterCategory, setFilterCategory] = useState("all");
   const [filterSource, setFilterSource] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedInvestor, setSelectedInvestor] = useState<any | null>(null);
   const [investors, setInvestors] = useState<any[]>([]);
   const [loadingInvestors, setLoadingInvestors] = useState(true);
   const [upcomingFollowUps, setUpcomingFollowUps] = useState<any[]>([]);
@@ -698,7 +696,6 @@ const ABCCompanyConsole = () => {
             ) : (
               <ABCInvestorKanban
                 investors={getFilteredInvestors()}
-                onInvestorClick={(investor) => setSelectedInvestor(investor)}
                 onStatusChange={fetchInvestors}
               />
             )}
@@ -1023,31 +1020,6 @@ const ABCCompanyConsole = () => {
           </TabsContent>
         </Tabs>
       </main>
-
-      {/* Investor Detail Modal */}
-      <ABCInvestorDetailDialog
-        investor={selectedInvestor ? {
-          id: selectedInvestor.id,
-          nome: selectedInvestor.nome || selectedInvestor.name,
-          azienda: selectedInvestor.azienda || selectedInvestor.company,
-          ruolo: selectedInvestor.ruolo || selectedInvestor.role,
-          categoria: selectedInvestor.categoria || selectedInvestor.category,
-          citta: selectedInvestor.citta || selectedInvestor.city,
-          fonte: selectedInvestor.fonte || selectedInvestor.source,
-          status: selectedInvestor.status,
-          pipelineValue: selectedInvestor.pipelineValue,
-          probability: selectedInvestor.probability,
-          expectedClose: selectedInvestor.expectedClose,
-          relationshipOwner: selectedInvestor.relationshipOwner,
-          lastContactDate: selectedInvestor.lastContactDate,
-          linkedin: selectedInvestor.linkedin,
-          email: selectedInvestor.email,
-          phone: selectedInvestor.phone,
-        } : null}
-        open={!!selectedInvestor}
-        onOpenChange={(open) => !open && setSelectedInvestor(null)}
-        onUpdate={fetchInvestors}
-      />
     </div>
   );
 };
