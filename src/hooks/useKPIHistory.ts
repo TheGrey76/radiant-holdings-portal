@@ -87,10 +87,74 @@ export function useKPIHistory() {
     return { change: Math.abs(change), direction };
   };
 
+  // Linear regression for forecasting
+  const calculateLinearRegression = (data: { x: number; y: number }[]) => {
+    const n = data.length;
+    if (n < 2) return null;
+
+    const sumX = data.reduce((sum, p) => sum + p.x, 0);
+    const sumY = data.reduce((sum, p) => sum + p.y, 0);
+    const sumXY = data.reduce((sum, p) => sum + p.x * p.y, 0);
+    const sumX2 = data.reduce((sum, p) => sum + p.x * p.x, 0);
+
+    const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+    const intercept = (sumY - slope * sumX) / n;
+
+    return { slope, intercept };
+  };
+
+  // Forecast future value based on historical trend
+  const forecastValue = (snapshots: KPISnapshot[], getValue: (s: KPISnapshot) => number, daysAhead: number): number | null => {
+    if (snapshots.length < 2) return null;
+
+    const data = snapshots.map((s, i) => ({
+      x: i,
+      y: getValue(s),
+    }));
+
+    const regression = calculateLinearRegression(data);
+    if (!regression) return null;
+
+    const futureX = snapshots.length - 1 + daysAhead;
+    const forecastedValue = regression.slope * futureX + regression.intercept;
+
+    return Math.max(0, forecastedValue); // Don't allow negative forecasts
+  };
+
+  // Predict when a target will be reached
+  const predictTargetDate = (snapshots: KPISnapshot[], getValue: (s: KPISnapshot) => number, targetValue: number): string | null => {
+    if (snapshots.length < 2) return null;
+
+    const data = snapshots.map((s, i) => ({
+      x: i,
+      y: getValue(s),
+    }));
+
+    const regression = calculateLinearRegression(data);
+    if (!regression || regression.slope <= 0) return null; // Can't predict if no growth
+
+    const currentValue = getValue(snapshots[snapshots.length - 1]);
+    if (currentValue >= targetValue) return "Target reached";
+
+    // Solve for x when y = targetValue: targetValue = slope * x + intercept
+    const daysFromStart = (targetValue - regression.intercept) / regression.slope;
+    const daysAhead = daysFromStart - (snapshots.length - 1);
+
+    if (daysAhead < 0) return "Target reached";
+
+    const lastDate = new Date(snapshots[snapshots.length - 1].date);
+    const predictedDate = new Date(lastDate);
+    predictedDate.setDate(predictedDate.getDate() + Math.ceil(daysAhead));
+
+    return predictedDate.toISOString().split("T")[0];
+  };
+
   return {
     history,
     recordSnapshot,
     getSnapshotsForRange,
     calculateTrend,
+    forecastValue,
+    predictTargetDate,
   };
 }
