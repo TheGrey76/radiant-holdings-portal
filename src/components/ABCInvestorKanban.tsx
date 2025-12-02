@@ -3,7 +3,8 @@ import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Building2, MapPin, Euro, Calendar, Linkedin, Pencil } from "lucide-react";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import { Building2, MapPin, Euro, Calendar, Linkedin, Pencil, Trash2 } from "lucide-react";
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from "sonner";
 import { format } from "date-fns";
@@ -44,6 +45,7 @@ export const ABCInvestorKanban = ({ investors, onStatusChange }: ABCInvestorKanb
   const [localInvestors, setLocalInvestors] = useState(investors);
   const [editingInvestor, setEditingInvestor] = useState<Investor | null>(null);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [investorToDelete, setInvestorToDelete] = useState<Investor | null>(null);
 
   const getInvestorsByStatus = (status: string) => {
     return localInvestors.filter(inv => inv.status === status);
@@ -100,6 +102,28 @@ export const ABCInvestorKanban = ({ investors, onStatusChange }: ABCInvestorKanb
 
   const handleSaveInvestor = () => {
     onStatusChange(); // Refresh data from parent
+  };
+
+  const handleDeleteClick = (e: React.MouseEvent, investor: Investor) => {
+    e.stopPropagation();
+    setInvestorToDelete(investor);
+  };
+
+  const confirmDelete = async () => {
+    if (!investorToDelete) return;
+    try {
+      const { error } = await supabase
+        .from('abc_investors' as any)
+        .delete()
+        .eq('id', investorToDelete.id);
+      if (error) throw error;
+      toast.success(`${investorToDelete.nome} eliminato`);
+      onStatusChange();
+    } catch (error) {
+      console.error('Error deleting investor:', error);
+      toast.error('Errore durante l\'eliminazione');
+    }
+    setInvestorToDelete(null);
   };
 
   // Sync local state when investors prop changes
@@ -181,6 +205,16 @@ export const ABCInvestorKanban = ({ investors, onStatusChange }: ABCInvestorKanb
                                       >
                                         <Pencil className="h-4 w-4" />
                                       </Button>
+                                      {column.id === 'To Contact' && (
+                                        <Button
+                                          variant="ghost"
+                                          size="icon"
+                                          className="h-7 w-7 text-destructive hover:text-destructive"
+                                          onClick={(e) => handleDeleteClick(e, investor)}
+                                        >
+                                          <Trash2 className="h-4 w-4" />
+                                        </Button>
+                                      )}
                                     </div>
                                   </div>
 
@@ -243,6 +277,24 @@ export const ABCInvestorKanban = ({ investors, onStatusChange }: ABCInvestorKanb
         onOpenChange={setEditDialogOpen}
         onSave={handleSaveInvestor}
       />
+
+      <AlertDialog open={!!investorToDelete} onOpenChange={(open) => !open && setInvestorToDelete(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Conferma eliminazione</AlertDialogTitle>
+            <AlertDialogDescription>
+              Sei sicuro di voler eliminare <strong>{investorToDelete?.nome}</strong> ({investorToDelete?.azienda})?
+              Questa azione non può essere annullata.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Annulla</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Elimina
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 };
