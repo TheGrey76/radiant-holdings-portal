@@ -27,7 +27,6 @@ interface Investor {
 
 interface ABCInvestorKanbanProps {
   investors: Investor[];
-  onInvestorClick: (investor: Investor) => void;
   onStatusChange: () => void;
 }
 
@@ -41,7 +40,7 @@ const statusColumns = [
   { id: 'Not Interested', label: 'Not Interested', color: 'bg-red-50 border-red-200' },
 ];
 
-export const ABCInvestorKanban = ({ investors, onInvestorClick, onStatusChange }: ABCInvestorKanbanProps) => {
+export const ABCInvestorKanban = ({ investors, onStatusChange }: ABCInvestorKanbanProps) => {
   const [localInvestors, setLocalInvestors] = useState(investors);
   const [editingInvestor, setEditingInvestor] = useState<Investor | null>(null);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
@@ -147,10 +146,9 @@ export const ABCInvestorKanban = ({ investors, onInvestorClick, onStatusChange }
                                 ref={provided.innerRef}
                                 {...provided.draggableProps}
                                 {...provided.dragHandleProps}
-                                className={`cursor-pointer transition-all hover:shadow-md ${
-                                  snapshot.isDragging ? 'shadow-lg ring-2 ring-primary' : ''
+                                className={`cursor-grab transition-all hover:shadow-md ${
+                                  snapshot.isDragging ? 'shadow-lg ring-2 ring-primary cursor-grabbing' : ''
                                 }`}
-                                onClick={() => onInvestorClick(investor)}
                               >
                                 <CardContent className="p-4 space-y-3">
                                   <div className="flex items-start justify-between">
