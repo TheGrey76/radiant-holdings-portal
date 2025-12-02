@@ -96,13 +96,8 @@ const ABCCompanyConsole = () => {
   const [filterSource, setFilterSource] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedInvestor, setSelectedInvestor] = useState<any | null>(null);
-  const [modalTab, setModalTab] = useState("overview");
-  const [newNote, setNewNote] = useState("");
-  const [newFollowUp, setNewFollowUp] = useState({ date: "", time: "", type: "", description: "" });
   const [investors, setInvestors] = useState<any[]>([]);
   const [loadingInvestors, setLoadingInvestors] = useState(true);
-  const [showAddNote, setShowAddNote] = useState(false);
-  const [showScheduleFollowUp, setShowScheduleFollowUp] = useState(false);
   const [upcomingFollowUps, setUpcomingFollowUps] = useState<any[]>([]);
   const [customFunnelData, setCustomFunnelData] = useState<any[] | null>(null);
   const [progressData, setProgressData] = useState({
@@ -330,24 +325,6 @@ const ABCCompanyConsole = () => {
     return statusMap[status] || statusMap["to-contact"];
   };
 
-  const handleAddNote = () => {
-    if (!newNote.trim()) {
-      toast.error("Please enter a note");
-      return;
-    }
-    toast.success("Note added successfully");
-    setNewNote("");
-  };
-
-  const handleScheduleFollowUp = () => {
-    if (!newFollowUp.date || !newFollowUp.type || !newFollowUp.description) {
-      toast.error("Please fill in all required fields");
-      return;
-    }
-    toast.success("Follow-up scheduled successfully");
-    setNewFollowUp({ date: "", time: "", type: "", description: "" });
-  };
-
   const getFilteredInvestors = () => {
     return investors.filter(inv => {
       const matchesSearch = 
@@ -359,29 +336,6 @@ const ABCCompanyConsole = () => {
       return matchesSearch && matchesCategory && matchesSource;
     });
   };
-
-  // Mock data for investor detail
-  const getMockActivityHistory = () => [
-    { date: "Dec 10, 2024 at 10:00 AM", type: "In-Person Meeting", status: "Scheduled", details: "ABC Company pitch, Q&A, discuss terms", location: selectedInvestor?.company + " HQ" },
-    { date: "Dec 3, 2024 at 9:15 AM", type: "Email Reply Received", from: selectedInvestor?.name, subject: "Re: ABC Company Club Deal Opportunity", content: "Very interested. Let's schedule a meeting next week." },
-    { date: "Dec 1, 2024 at 2:30 PM", type: "Email Sent", to: selectedInvestor?.name, subject: "ABC Company Club Deal Opportunity", status: "Opened (Dec 2, 10:45 AM)", attachments: "Pitch Deck ABC Company.pdf" }
-  ];
-
-  const getMockNotes = () => [
-    { date: "Dec 5, 2024", author: "Edoardo Grigione", content: "Very interested in the Club Deal model. Has experience with Italian SME investments (5-10M€ revenue). Prefers ticket €300-500K. Wants to see detailed track record before meeting." },
-    { date: "Dec 1, 2024", author: "Edoardo Grigione", content: "First contact via LinkedIn. Warm connection, 15 mutual contacts. Quick response." }
-  ];
-
-  const getMockDocuments = () => [
-    { name: "Pitch Deck ABC Company.pdf", sent: "Dec 1, 2024", size: "2.3 MB", type: "sent" },
-    { name: "NDA - Signed.pdf", received: "Dec 5, 2024", size: "450 KB", type: "received" },
-    { name: "Financial Model ABC Company.xlsx", sent: "Dec 8, 2024", size: "1.8 MB", type: "sent" }
-  ];
-
-  const getMockFollowUps = () => [
-    { date: "Dec 10, 2024", time: "10:00 AM", type: "In-Person Meeting", status: "Confirmed", reminder: "1 day before" },
-    { date: "Dec 3, 2024", type: "Follow-up email", status: "Completed", outcome: "Positive response, meeting scheduled" }
-  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
@@ -623,11 +577,11 @@ const ABCCompanyConsole = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  <Button className="w-full justify-start" variant="outline" onClick={() => setShowAddNote(true)}>
+                  <Button className="w-full justify-start" variant="outline" onClick={() => toast.info("Select an investor to add notes")}>
                     <Plus className="h-4 w-4 mr-2" />
                     Add Note
                   </Button>
-                  <Button className="w-full justify-start" variant="outline" onClick={() => setShowScheduleFollowUp(true)}>
+                  <Button className="w-full justify-start" variant="outline" onClick={() => toast.info("Select an investor to schedule follow-up")}>
                     <Calendar className="h-4 w-4 mr-2" />
                     Schedule Follow-up
                   </Button>
@@ -1071,370 +1025,29 @@ const ABCCompanyConsole = () => {
       </main>
 
       {/* Investor Detail Modal */}
-      <Dialog open={!!selectedInvestor} onOpenChange={() => setSelectedInvestor(null)}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-card">
-          <DialogHeader>
-            <div className="flex items-start justify-between">
-              <div className="flex-1">
-                <DialogTitle className="text-2xl font-bold text-foreground">{selectedInvestor?.name}</DialogTitle>
-                <p className="text-sm text-muted-foreground mt-1">{selectedInvestor?.company}</p>
-              </div>
-              <Button variant="outline" size="sm" className="gap-2">
-                <Edit className="h-4 w-4" />
-                Edit
-              </Button>
-            </div>
-          </DialogHeader>
-
-          <Tabs value={modalTab} onValueChange={setModalTab} className="w-full mt-4">
-            <TabsList className="grid w-full grid-cols-5">
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="activity">Activity</TabsTrigger>
-              <TabsTrigger value="notes">Notes</TabsTrigger>
-              <TabsTrigger value="documents">Documents</TabsTrigger>
-              <TabsTrigger value="followups">Follow-ups</TabsTrigger>
-            </TabsList>
-
-            {/* OVERVIEW TAB */}
-            <TabsContent value="overview" className="space-y-6 mt-6">
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  <h3 className="font-semibold text-foreground">BASIC INFORMATION</h3>
-                  <div className="space-y-3 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Full Name:</span>
-                      <span className="text-foreground font-medium">{selectedInvestor?.name}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Company:</span>
-                      <span className="text-foreground font-medium">{selectedInvestor?.company}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Role:</span>
-                      <span className="text-foreground font-medium">{selectedInvestor?.role}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Category:</span>
-                      <span className="text-foreground font-medium">{selectedInvestor?.category}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">City:</span>
-                      <span className="text-foreground font-medium">{selectedInvestor?.city}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Source:</span>
-                      <span className="text-foreground font-medium">{selectedInvestor?.source}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Priority:</span>
-                      <Badge variant="destructive" className="bg-primary">HIGH</Badge>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-muted-foreground">Email:</span>
-                      <a href={`mailto:${selectedInvestor?.email}`} className="text-primary hover:underline">{selectedInvestor?.email}</a>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Phone:</span>
-                      <a href={`tel:${selectedInvestor?.phone}`} className="text-primary hover:underline">{selectedInvestor?.phone}</a>
-                    </div>
-                    {selectedInvestor?.linkedin && (
-                      <div className="flex justify-between items-center">
-                        <span className="text-muted-foreground">LinkedIn:</span>
-                        <a href={selectedInvestor.linkedin} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline flex items-center gap-1">
-                          View Profile <ExternalLink className="h-3 w-3" />
-                        </a>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                <div className="space-y-4">
-                  <h3 className="font-semibold text-foreground">RELATIONSHIP STATUS</h3>
-                  <div className="space-y-3 text-sm">
-                    <div className="flex justify-between items-center">
-                      <span className="text-muted-foreground">Current Status:</span>
-                      <Badge className={getStatusBadge(selectedInvestor?.status || "").color}>
-                        {getStatusBadge(selectedInvestor?.status || "").label}
-                      </Badge>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Pipeline Value:</span>
-                      <span className="text-foreground font-bold">{formatCurrency(selectedInvestor?.pipelineValue || 0)}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Probability:</span>
-                      <span className="text-primary font-bold">{selectedInvestor?.probability}%</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Expected Close:</span>
-                      <span className="text-foreground font-medium">February 2026</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Relationship Owner:</span>
-                      <span className="text-foreground font-medium">Edoardo Grigione</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">First Contact:</span>
-                      <span className="text-foreground font-medium">{selectedInvestor?.lastContact}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Last Contact:</span>
-                      <span className="text-foreground font-medium">{selectedInvestor?.lastContact}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Total Interactions:</span>
-                      <span className="text-foreground font-medium">3</span>
-                    </div>
-                  </div>
-
-                  <div className="pt-4 flex gap-2">
-                    <Select>
-                      <SelectTrigger className="bg-background">
-                        <SelectValue placeholder="Update Status" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-popover z-50">
-                        <SelectItem value="to-contact">To Contact</SelectItem>
-                        <SelectItem value="contacted">Contacted</SelectItem>
-                        <SelectItem value="interested">Interested</SelectItem>
-                        <SelectItem value="meeting">Meeting Scheduled</SelectItem>
-                        <SelectItem value="negotiation">In Negotiation</SelectItem>
-                        <SelectItem value="closed">Closed</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <Button variant="outline" size="sm">Edit Pipeline</Button>
-                  </div>
-                </div>
-              </div>
-            </TabsContent>
-
-            {/* ACTIVITY HISTORY TAB */}
-            <TabsContent value="activity" className="space-y-4 mt-6">
-              <h3 className="font-semibold text-foreground">CONTACT HISTORY</h3>
-              {getMockActivityHistory().map((activity, idx) => (
-                <Card key={idx} className="border-l-4 border-l-primary">
-                  <CardContent className="pt-6">
-                    <div className="space-y-3">
-                      <div className="flex items-start justify-between">
-                        <div>
-                          <p className="font-semibold text-foreground">{activity.type}</p>
-                          <p className="text-sm text-muted-foreground">{activity.date}</p>
-                        </div>
-                        {activity.status && (
-                          <Badge variant="outline">{activity.status}</Badge>
-                        )}
-                      </div>
-                      {activity.location && (
-                        <p className="text-sm text-muted-foreground">📍 Location: {activity.location}</p>
-                      )}
-                      {activity.details && (
-                        <p className="text-sm text-foreground">{activity.details}</p>
-                      )}
-                      {activity.content && (
-                        <p className="text-sm text-foreground italic">"{activity.content}"</p>
-                      )}
-                      {activity.attachments && (
-                        <p className="text-sm text-muted-foreground">📎 {activity.attachments}</p>
-                      )}
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-              <Button className="w-full gap-2">
-                <Plus className="h-4 w-4" />
-                Add New Interaction
-              </Button>
-            </TabsContent>
-
-            {/* NOTES TAB */}
-            <TabsContent value="notes" className="space-y-4 mt-6">
-              <h3 className="font-semibold text-foreground">PRIVATE NOTES</h3>
-              {getMockNotes().map((note, idx) => (
-                <Card key={idx}>
-                  <CardContent className="pt-6">
-                    <div className="flex items-start justify-between mb-2">
-                      <div>
-                        <p className="text-sm font-semibold text-foreground">{note.date} | {note.author}</p>
-                      </div>
-                      <div className="flex gap-1">
-                        <Button variant="ghost" size="sm">
-                          <Edit className="h-3 w-3" />
-                        </Button>
-                        <Button variant="ghost" size="sm">
-                          <Trash2 className="h-3 w-3" />
-                        </Button>
-                      </div>
-                    </div>
-                    <p className="text-sm text-foreground">{note.content}</p>
-                  </CardContent>
-                </Card>
-              ))}
-              
-              <Card className="border-2 border-dashed border-primary/20">
-                <CardContent className="pt-6 space-y-4">
-                  <Label htmlFor="new-note">Add New Note</Label>
-                  <Textarea
-                    id="new-note"
-                    placeholder="Enter your private note here..."
-                    value={newNote}
-                    onChange={(e) => setNewNote(e.target.value)}
-                    rows={4}
-                    className="bg-background"
-                  />
-                  <Button onClick={handleAddNote} className="w-full gap-2">
-                    <Plus className="h-4 w-4" />
-                    Add Note
-                  </Button>
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            {/* DOCUMENTS TAB */}
-            <TabsContent value="documents" className="space-y-4 mt-6">
-              <h3 className="font-semibold text-foreground">DOCUMENTS</h3>
-              {getMockDocuments().map((doc, idx) => (
-                <Card key={idx}>
-                  <CardContent className="pt-6">
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-start gap-3">
-                        <Paperclip className="h-5 w-5 text-primary mt-1" />
-                        <div>
-                          <p className="font-semibold text-foreground">{doc.name}</p>
-                          <p className="text-sm text-muted-foreground">
-                            {doc.type === "sent" ? `Sent: ${doc.sent}` : `Received: ${doc.received}`} • Size: {doc.size}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex gap-2">
-                        <Button variant="ghost" size="sm">
-                          <Download className="h-4 w-4" />
-                        </Button>
-                        {doc.type === "sent" && (
-                          <Button variant="ghost" size="sm">
-                            <Mail className="h-4 w-4" />
-                          </Button>
-                        )}
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-              <Button className="w-full gap-2">
-                <Plus className="h-4 w-4" />
-                Upload Document
-              </Button>
-            </TabsContent>
-
-            {/* FOLLOW-UPS TAB */}
-            <TabsContent value="followups" className="space-y-4 mt-6">
-              <h3 className="font-semibold text-foreground">SCHEDULED FOLLOW-UPS</h3>
-              
-              <div className="space-y-3">
-                <h4 className="text-sm font-semibold text-foreground">🔔 UPCOMING</h4>
-                {getMockFollowUps().filter(f => f.status !== "Completed").map((followUp, idx) => (
-                  <Card key={idx} className="border-l-4 border-l-primary">
-                    <CardContent className="pt-6">
-                      <div className="flex items-start justify-between mb-2">
-                        <div>
-                          <p className="font-semibold text-foreground">{followUp.type}</p>
-                          <p className="text-sm text-muted-foreground">{followUp.date} {followUp.time && `at ${followUp.time}`}</p>
-                          {followUp.reminder && (
-                            <p className="text-xs text-muted-foreground mt-1">Reminder: {followUp.reminder}</p>
-                          )}
-                        </div>
-                        <Badge variant="outline" className="bg-green-500/10 text-green-600">{followUp.status}</Badge>
-                      </div>
-                      <div className="flex gap-2 mt-3">
-                        <Button variant="outline" size="sm">Edit</Button>
-                        <Button variant="outline" size="sm">Cancel</Button>
-                        <Button size="sm">Mark as Done</Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-
-              <div className="space-y-3">
-                <h4 className="text-sm font-semibold text-foreground">✅ COMPLETED</h4>
-                {getMockFollowUps().filter(f => f.status === "Completed").map((followUp, idx) => (
-                  <Card key={idx} className="opacity-60">
-                    <CardContent className="pt-6">
-                      <div className="space-y-2">
-                        <div className="flex items-start justify-between">
-                          <div>
-                            <p className="font-semibold text-foreground">{followUp.type}</p>
-                            <p className="text-sm text-muted-foreground">{followUp.date}</p>
-                          </div>
-                          <Badge variant="outline">{followUp.status}</Badge>
-                        </div>
-                        {followUp.outcome && (
-                          <p className="text-sm text-foreground">Outcome: {followUp.outcome}</p>
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-
-              <Card className="border-2 border-dashed border-primary/20">
-                <CardContent className="pt-6 space-y-4">
-                  <h4 className="font-semibold text-foreground">Schedule New Follow-up</h4>
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="followup-date">Date *</Label>
-                      <Input
-                        id="followup-date"
-                        type="date"
-                        value={newFollowUp.date}
-                        onChange={(e) => setNewFollowUp({ ...newFollowUp, date: e.target.value })}
-                        className="bg-background"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="followup-time">Time</Label>
-                      <Input
-                        id="followup-time"
-                        type="time"
-                        value={newFollowUp.time}
-                        onChange={(e) => setNewFollowUp({ ...newFollowUp, time: e.target.value })}
-                        className="bg-background"
-                      />
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="followup-type">Type *</Label>
-                    <Select value={newFollowUp.type} onValueChange={(value) => setNewFollowUp({ ...newFollowUp, type: value })}>
-                      <SelectTrigger className="bg-background">
-                        <SelectValue placeholder="Select type" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-popover z-50">
-                        <SelectItem value="call">Phone Call</SelectItem>
-                        <SelectItem value="email">Email</SelectItem>
-                        <SelectItem value="meeting">In-Person Meeting</SelectItem>
-                        <SelectItem value="video">Video Call</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="followup-description">Description *</Label>
-                    <Textarea
-                      id="followup-description"
-                      placeholder="What needs to be discussed or done?"
-                      value={newFollowUp.description}
-                      onChange={(e) => setNewFollowUp({ ...newFollowUp, description: e.target.value })}
-                      rows={3}
-                      className="bg-background"
-                    />
-                  </div>
-                  <Button onClick={handleScheduleFollowUp} className="w-full gap-2">
-                    <Plus className="h-4 w-4" />
-                    Schedule Follow-up
-                  </Button>
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
-        </DialogContent>
-      </Dialog>
+      <ABCInvestorDetailDialog
+        investor={selectedInvestor ? {
+          id: selectedInvestor.id,
+          nome: selectedInvestor.nome || selectedInvestor.name,
+          azienda: selectedInvestor.azienda || selectedInvestor.company,
+          ruolo: selectedInvestor.ruolo || selectedInvestor.role,
+          categoria: selectedInvestor.categoria || selectedInvestor.category,
+          citta: selectedInvestor.citta || selectedInvestor.city,
+          fonte: selectedInvestor.fonte || selectedInvestor.source,
+          status: selectedInvestor.status,
+          pipelineValue: selectedInvestor.pipelineValue,
+          probability: selectedInvestor.probability,
+          expectedClose: selectedInvestor.expectedClose,
+          relationshipOwner: selectedInvestor.relationshipOwner,
+          lastContactDate: selectedInvestor.lastContactDate,
+          linkedin: selectedInvestor.linkedin,
+          email: selectedInvestor.email,
+          phone: selectedInvestor.phone,
+        } : null}
+        open={!!selectedInvestor}
+        onOpenChange={(open) => !open && setSelectedInvestor(null)}
+        onUpdate={fetchInvestors}
+      />
     </div>
   );
 };
