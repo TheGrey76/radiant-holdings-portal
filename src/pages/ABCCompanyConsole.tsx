@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { 
   TrendingUp, Users, Calendar, CheckCircle, AlertCircle, 
   Target, Clock, FileText, Settings, Search, Filter,
   Mail, Phone, Building, MapPin, Download, Share2, X, Plus,
-  ExternalLink, Paperclip, Edit, Trash2
+  ExternalLink, Paperclip, Edit, Trash2, LogOut
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -89,8 +90,14 @@ const investorsData = [
 ];
 
 const ABCCompanyConsole = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("dashboard");
   const { recordSnapshot } = useKPIHistory();
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate('/auth');
+  };
   const [filterCategory, setFilterCategory] = useState("all");
   const [filterSource, setFilterSource] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
@@ -348,7 +355,10 @@ const ABCCompanyConsole = () => {
             <div className="flex items-center gap-4">
               <ImportABCInvestorsDialog />
               <span className="text-sm text-muted-foreground">User: Edoardo Grigione</span>
-              <Button variant="outline" size="sm">Logout</Button>
+              <Button variant="outline" size="sm" onClick={handleLogout}>
+                <LogOut className="w-4 h-4 mr-2" />
+                Logout
+              </Button>
             </div>
           </div>
         </div>
