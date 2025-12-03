@@ -4,11 +4,14 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
-import { Building2, MapPin, Euro, Calendar, Linkedin, Pencil, Trash2, CheckCircle, Clock } from "lucide-react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Building2, MapPin, Euro, Calendar, Linkedin, Pencil, Trash2, CheckCircle, Clock, XCircle, ChevronDown } from "lucide-react";
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from "sonner";
 import { format } from "date-fns";
 import { EditABCInvestorDialog } from './EditABCInvestorDialog';
+
+type ApprovalStatus = 'pending' | 'approved' | 'not_approved';
 
 interface Investor {
   id: string;
@@ -24,7 +27,7 @@ interface Investor {
   linkedin?: string;
   email?: string;
   phone?: string;
-  approved?: boolean;
+  approvalStatus?: ApprovalStatus;
 }
 
 interface ABCInvestorKanbanProps {
@@ -42,6 +45,12 @@ const statusColumns = [
   { id: 'Not Interested', label: 'Not Interested', color: 'bg-red-50 border-red-200' },
 ];
 
+const approvalStatusConfig: Record<ApprovalStatus, { label: string; icon: typeof CheckCircle; className: string }> = {
+  pending: { label: 'Pending Approval', icon: Clock, className: 'bg-amber-500/10 text-amber-600 border-amber-200' },
+  approved: { label: 'Approved', icon: CheckCircle, className: 'bg-green-500/10 text-green-600 border-green-200' },
+  not_approved: { label: 'Not Approved', icon: XCircle, className: 'bg-red-500/10 text-red-600 border-red-200' },
+};
+
 export const ABCInvestorKanban = ({ investors, onStatusChange }: ABCInvestorKanbanProps) => {
   const [localInvestors, setLocalInvestors] = useState(investors);
   const [editingInvestor, setEditingInvestor] = useState<Investor | null>(null);
@@ -50,6 +59,10 @@ export const ABCInvestorKanban = ({ investors, onStatusChange }: ABCInvestorKanb
 
   const getInvestorsByStatus = (status: string) => {
     return localInvestors.filter(inv => inv.status === status);
+  };
+
+  const isWorkable = (investor: Investor) => {
+    return investor.approvalStatus !== 'not_approved';
   };
 
   const handleDragEnd = async (result: DropResult) => {
@@ -65,9 +78,9 @@ export const ABCInvestorKanban = ({ investors, onStatusChange }: ABCInvestorKanb
 
     if (!investor) return;
 
-    // Block drag for non-approved investors
-    if (!investor.approved) {
-      toast.error("Investitore non ancora approvato da ABC Company");
+    // Block drag for not_approved investors
+    if (investor.approvalStatus === 'not_approved') {
+      toast.error("Investitore non approvato da ABC Company");
       return;
     }
 
@@ -78,7 +91,6 @@ export const ABCInvestorKanban = ({ investors, onStatusChange }: ABCInvestorKanb
     setLocalInvestors(updatedInvestors);
 
     try {
-      // Update in Supabase
       const { error } = await supabase
         .from('abc_investors' as any)
         .update({ status: destStatus })
@@ -91,7 +103,6 @@ export const ABCInvestorKanban = ({ investors, onStatusChange }: ABCInvestorKanb
     } catch (error) {
       console.error('Error updating investor status:', error);
       toast.error('Failed to update investor status');
-      // Revert optimistic update
       setLocalInvestors(localInvestors);
     }
   };
@@ -108,37 +119,37 @@ export const ABCInvestorKanban = ({ investors, onStatusChange }: ABCInvestorKanb
   };
 
   const handleSaveInvestor = () => {
-    onStatusChange(); // Refresh data from parent
+    onStatusChange();
   };
 
-  const handleToggleApproval = async (e: React.MouseEvent, investor: Investor) => {
+  const handleChangeApprovalStatus = async (e: React.MouseEvent, investor: Investor, newStatus: ApprovalStatus) => {
     e.stopPropagation();
-    const newApprovalStatus = !investor.approved;
     
     // Optimistic update
     setLocalInvestors(prev => prev.map(inv => 
-      inv.id === investor.id ? { ...inv, approved: newApprovalStatus } : inv
+      inv.id === investor.id ? { ...inv, approvalStatus: newStatus } : inv
     ));
 
     try {
       const { error } = await supabase
         .from('abc_investors' as any)
-        .update({ approved: newApprovalStatus })
+        .update({ approval_status: newStatus })
         .eq('id', investor.id);
 
       if (error) throw error;
 
-      toast.success(newApprovalStatus 
-        ? `${investor.nome} approvato` 
-        : `Approvazione rimossa per ${investor.nome}`
-      );
+      const statusLabels: Record<ApprovalStatus, string> = {
+        pending: 'in attesa di approvazione',
+        approved: 'approvato',
+        not_approved: 'non approvato',
+      };
+      toast.success(`${investor.nome} ${statusLabels[newStatus]}`);
       onStatusChange();
     } catch (error) {
-      console.error('Error toggling approval:', error);
+      console.error('Error updating approval status:', error);
       toast.error('Errore durante l\'aggiornamento');
-      // Revert optimistic update
       setLocalInvestors(prev => prev.map(inv => 
-        inv.id === investor.id ? { ...inv, approved: investor.approved } : inv
+        inv.id === investor.id ? { ...inv, approvalStatus: investor.approvalStatus } : inv
       ));
     }
   };
@@ -157,11 +168,9 @@ export const ABCInvestorKanban = ({ investors, onStatusChange }: ABCInvestorKanb
         .eq('id', investorToDelete.id);
       if (error) throw error;
       
-      // Optimistic update - rimuovi immediatamente dalla UI locale
       setLocalInvestors(prev => prev.filter(inv => inv.id !== investorToDelete.id));
-      
       toast.success(`${investorToDelete.nome} eliminato`);
-      onStatusChange(); // Refresh dal parent per sincronizzare
+      onStatusChange();
     } catch (error) {
       console.error('Error deleting investor:', error);
       toast.error('Errore durante l\'eliminazione');
@@ -169,7 +178,6 @@ export const ABCInvestorKanban = ({ investors, onStatusChange }: ABCInvestorKanb
     setInvestorToDelete(null);
   };
 
-  // Sync local state when investors prop changes
   useEffect(() => {
     setLocalInvestors(investors);
   }, [investors]);
@@ -202,134 +210,148 @@ export const ABCInvestorKanban = ({ investors, onStatusChange }: ABCInvestorKanb
                           snapshot.isDraggingOver ? 'bg-accent/20' : ''
                         }`}
                       >
-                        {columnInvestors.map((investor, index) => (
-                          <Draggable
-                            key={investor.id}
-                            draggableId={investor.id}
-                            index={index}
-                            isDragDisabled={!investor.approved}
-                          >
-                            {(provided, snapshot) => (
-                              <Card
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                                className={`transition-all ${
-                                  investor.approved 
-                                    ? 'cursor-grab hover:shadow-md' 
-                                    : 'opacity-60 cursor-not-allowed'
-                                } ${
-                                  snapshot.isDragging ? 'shadow-lg ring-2 ring-primary cursor-grabbing' : ''
-                                }`}
-                              >
-                                <CardContent className="p-4 space-y-3">
-                                  {/* Approval Status Badge - Clickable to toggle */}
-                                  <div className="flex items-center justify-between">
-                                    <button 
-                                      onClick={(e) => handleToggleApproval(e, investor)}
-                                      className="focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded"
-                                    >
-                                      {investor.approved ? (
-                                        <Badge className="bg-green-500/10 text-green-600 border-green-200 text-xs cursor-pointer hover:bg-green-500/20 transition-colors">
-                                          <CheckCircle className="h-3 w-3 mr-1" />
-                                          Approved
-                                        </Badge>
-                                      ) : (
-                                        <Badge className="bg-amber-500/10 text-amber-600 border-amber-200 text-xs cursor-pointer hover:bg-amber-500/20 transition-colors">
-                                          <Clock className="h-3 w-3 mr-1" />
+                        {columnInvestors.map((investor, index) => {
+                          const approvalStatus = investor.approvalStatus || 'pending';
+                          const statusConfig = approvalStatusConfig[approvalStatus];
+                          const StatusIcon = statusConfig.icon;
+                          const workable = isWorkable(investor);
+
+                          return (
+                            <Draggable
+                              key={investor.id}
+                              draggableId={investor.id}
+                              index={index}
+                              isDragDisabled={!workable}
+                            >
+                              {(provided, snapshot) => (
+                                <Card
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  {...provided.dragHandleProps}
+                                  className={`transition-all ${
+                                    workable 
+                                      ? 'cursor-grab hover:shadow-md' 
+                                      : 'opacity-50 cursor-not-allowed grayscale'
+                                  } ${
+                                    snapshot.isDragging ? 'shadow-lg ring-2 ring-primary cursor-grabbing' : ''
+                                  }`}
+                                >
+                                  <CardContent className="p-4 space-y-3">
+                                    {/* Approval Status Dropdown */}
+                                    <DropdownMenu>
+                                      <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+                                        <button className="focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded">
+                                          <Badge className={`${statusConfig.className} text-xs cursor-pointer hover:opacity-80 transition-opacity flex items-center gap-1`}>
+                                            <StatusIcon className="h-3 w-3" />
+                                            {statusConfig.label}
+                                            <ChevronDown className="h-3 w-3 ml-1" />
+                                          </Badge>
+                                        </button>
+                                      </DropdownMenuTrigger>
+                                      <DropdownMenuContent align="start">
+                                        <DropdownMenuItem onClick={(e) => handleChangeApprovalStatus(e as any, investor, 'pending')}>
+                                          <Clock className="h-4 w-4 mr-2 text-amber-600" />
                                           Pending Approval
-                                        </Badge>
-                                      )}
-                                    </button>
-                                  </div>
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem onClick={(e) => handleChangeApprovalStatus(e as any, investor, 'approved')}>
+                                          <CheckCircle className="h-4 w-4 mr-2 text-green-600" />
+                                          Approved
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem onClick={(e) => handleChangeApprovalStatus(e as any, investor, 'not_approved')}>
+                                          <XCircle className="h-4 w-4 mr-2 text-red-600" />
+                                          Not Approved
+                                        </DropdownMenuItem>
+                                      </DropdownMenuContent>
+                                    </DropdownMenu>
 
-                                  <div className="flex items-start justify-between">
-                                    <div className="flex-1 min-w-0">
-                                      <h4 className={`font-semibold mb-1 truncate ${investor.approved ? 'text-foreground' : 'text-muted-foreground'}`}>
-                                        {investor.nome}
-                                      </h4>
-                                      {investor.ruolo && (
-                                        <p className="text-xs text-muted-foreground truncate">
-                                          {investor.ruolo}
-                                        </p>
-                                      )}
-                                    </div>
-                                    <div className="flex items-center gap-1 ml-2">
-                                      {investor.linkedin && (
-                                        <Button
-                                          variant="ghost"
-                                          size="icon"
-                                          className="h-7 w-7 text-[#0A66C2] hover:text-[#0A66C2]/80"
-                                          onClick={(e) => handleLinkedInClick(e, investor.linkedin!)}
-                                        >
-                                          <Linkedin className="h-4 w-4" />
-                                        </Button>
-                                      )}
-                                      {investor.approved && (
-                                        <Button
-                                          variant="ghost"
-                                          size="icon"
-                                          className="h-7 w-7"
-                                          onClick={(e) => handleEditClick(e, investor)}
-                                        >
-                                          <Pencil className="h-4 w-4" />
-                                        </Button>
-                                      )}
-                                      {column.id === 'To Contact' && (
-                                        <Button
-                                          variant="ghost"
-                                          size="icon"
-                                          className="h-7 w-7 text-destructive hover:text-destructive"
-                                          onClick={(e) => handleDeleteClick(e, investor)}
-                                        >
-                                          <Trash2 className="h-4 w-4" />
-                                        </Button>
-                                      )}
-                                    </div>
-                                  </div>
-
-                                  <div className="flex items-start gap-2 text-sm">
-                                    <Building2 className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
-                                    <span className="text-muted-foreground line-clamp-2">
-                                      {investor.azienda}
-                                    </span>
-                                  </div>
-
-                                  {investor.citta && (
-                                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                      <MapPin className="h-4 w-4" />
-                                      <span>{investor.citta}</span>
-                                    </div>
-                                  )}
-
-                                  <div className="pt-2 border-t border-border/50 space-y-2">
-                                    <div className="flex items-center justify-between text-sm">
-                                      <div className="flex items-center gap-1.5">
-                                        <Euro className="h-4 w-4 text-primary" />
-                                        <span className={`font-semibold ${investor.approved ? 'text-primary' : 'text-muted-foreground'}`}>
-                                          €{investor.pipelineValue.toLocaleString()}
-                                        </span>
+                                    <div className="flex items-start justify-between">
+                                      <div className="flex-1 min-w-0">
+                                        <h4 className={`font-semibold mb-1 truncate ${workable ? 'text-foreground' : 'text-muted-foreground'}`}>
+                                          {investor.nome}
+                                        </h4>
+                                        {investor.ruolo && (
+                                          <p className="text-xs text-muted-foreground truncate">
+                                            {investor.ruolo}
+                                          </p>
+                                        )}
+                                      </div>
+                                      <div className="flex items-center gap-1 ml-2">
+                                        {investor.linkedin && (
+                                          <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            className="h-7 w-7 text-[#0A66C2] hover:text-[#0A66C2]/80"
+                                            onClick={(e) => handleLinkedInClick(e, investor.linkedin!)}
+                                          >
+                                            <Linkedin className="h-4 w-4" />
+                                          </Button>
+                                        )}
+                                        {workable && (
+                                          <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            className="h-7 w-7"
+                                            onClick={(e) => handleEditClick(e, investor)}
+                                          >
+                                            <Pencil className="h-4 w-4" />
+                                          </Button>
+                                        )}
+                                        {column.id === 'To Contact' && (
+                                          <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            className="h-7 w-7 text-destructive hover:text-destructive"
+                                            onClick={(e) => handleDeleteClick(e, investor)}
+                                          >
+                                            <Trash2 className="h-4 w-4" />
+                                          </Button>
+                                        )}
                                       </div>
                                     </div>
 
-                                    {investor.lastContactDate && (
-                                      <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                                        <Calendar className="h-3 w-3" />
-                                        <span>
-                                          {format(new Date(investor.lastContactDate), 'dd MMM yyyy')}
-                                        </span>
+                                    <div className="flex items-start gap-2 text-sm">
+                                      <Building2 className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                                      <span className="text-muted-foreground line-clamp-2">
+                                        {investor.azienda}
+                                      </span>
+                                    </div>
+
+                                    {investor.citta && (
+                                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                        <MapPin className="h-4 w-4" />
+                                        <span>{investor.citta}</span>
                                       </div>
                                     )}
-                                  </div>
 
-                                  <Badge variant="outline" className="text-xs">
-                                    {investor.categoria}
-                                  </Badge>
-                                </CardContent>
-                              </Card>
-                            )}
-                          </Draggable>
-                        ))}
+                                    <div className="pt-2 border-t border-border/50 space-y-2">
+                                      <div className="flex items-center justify-between text-sm">
+                                        <div className="flex items-center gap-1.5">
+                                          <Euro className="h-4 w-4 text-primary" />
+                                          <span className={`font-semibold ${workable ? 'text-primary' : 'text-muted-foreground'}`}>
+                                            €{investor.pipelineValue.toLocaleString()}
+                                          </span>
+                                        </div>
+                                      </div>
+
+                                      {investor.lastContactDate && (
+                                        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                                          <Calendar className="h-3 w-3" />
+                                          <span>
+                                            {format(new Date(investor.lastContactDate), 'dd MMM yyyy')}
+                                          </span>
+                                        </div>
+                                      )}
+                                    </div>
+
+                                    <Badge variant="outline" className="text-xs">
+                                      {investor.categoria}
+                                    </Badge>
+                                  </CardContent>
+                                </Card>
+                              )}
+                            </Draggable>
+                          );
+                        })}
                         {provided.placeholder}
                       </div>
                     )}
