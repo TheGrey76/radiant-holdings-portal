@@ -89,6 +89,24 @@ const ABCCompanyConsole = () => {
     percentage: 0,
   });
 
+  // Settings state
+  const [notificationPrefs, setNotificationPrefs] = useState({
+    dailySummary: true,
+    followUpReminders: true,
+    milestoneAlerts: true,
+    overdueTasks: true,
+    biweeklyReport: true,
+    newInteractions: true,
+    statusChanges: true,
+    documentUploads: true,
+    meetingReminders: true,
+  });
+  const [customAuthorizedEmails, setCustomAuthorizedEmails] = useState<string[]>([]);
+  const [newAuthorizedEmail, setNewAuthorizedEmail] = useState("");
+  const [settingsTargetAmount, setSettingsTargetAmount] = useState("10000000");
+  const [settingsDeadline, setSettingsDeadline] = useState("2026-06-30");
+  const currentUserEmail = sessionStorage.getItem('abc_console_email') || '';
+
   // Fetch investors from Supabase and load saved data
   useEffect(() => {
     if (!isAuthenticated) return;
@@ -148,6 +166,72 @@ const ABCCompanyConsole = () => {
       }
     }
   }, []);
+
+  // Load settings from localStorage
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    
+    // Load notification preferences
+    const savedNotifPrefs = localStorage.getItem('abc_notification_prefs');
+    if (savedNotifPrefs) {
+      setNotificationPrefs(JSON.parse(savedNotifPrefs));
+    }
+    
+    // Load custom authorized emails
+    const savedEmails = localStorage.getItem('abc_console_custom_emails');
+    if (savedEmails) {
+      setCustomAuthorizedEmails(JSON.parse(savedEmails));
+    }
+    
+    // Load settings target/deadline from progressData
+    setSettingsTargetAmount(progressData.targetAmount.toString());
+    setSettingsDeadline(progressData.deadline);
+  }, [isAuthenticated, progressData.targetAmount, progressData.deadline]);
+
+  // Save notification preferences
+  const saveNotificationPrefs = () => {
+    localStorage.setItem('abc_notification_prefs', JSON.stringify(notificationPrefs));
+    toast.success("Notification preferences saved");
+  };
+
+  // Save configuration
+  const saveConfiguration = () => {
+    const newTarget = parseInt(settingsTargetAmount) || 10000000;
+    const newProgressData = {
+      ...progressData,
+      targetAmount: newTarget,
+      deadline: settingsDeadline,
+    };
+    setProgressData(newProgressData);
+    localStorage.setItem('abc-progress-data', JSON.stringify(newProgressData));
+    toast.success("Configuration updated");
+  };
+
+  // Add authorized email
+  const addAuthorizedEmail = () => {
+    const email = newAuthorizedEmail.toLowerCase().trim();
+    if (!email || !email.includes('@')) {
+      toast.error("Please enter a valid email");
+      return;
+    }
+    if (customAuthorizedEmails.includes(email)) {
+      toast.error("Email already in list");
+      return;
+    }
+    const newList = [...customAuthorizedEmails, email];
+    setCustomAuthorizedEmails(newList);
+    localStorage.setItem('abc_console_custom_emails', JSON.stringify(newList));
+    setNewAuthorizedEmail("");
+    toast.success("User added successfully");
+  };
+
+  // Remove authorized email
+  const removeAuthorizedEmail = (email: string) => {
+    const newList = customAuthorizedEmails.filter(e => e !== email);
+    setCustomAuthorizedEmails(newList);
+    localStorage.setItem('abc_console_custom_emails', JSON.stringify(newList));
+    toast.success("User removed");
+  };
 
   // Show loading while checking auth
   if (isCheckingAuth) {
@@ -1364,22 +1448,13 @@ const ABCCompanyConsole = () => {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-muted-foreground">Name</label>
-                    <Input value="Edoardo Grigione" disabled />
-                  </div>
-                  <div className="space-y-2">
                     <label className="text-sm font-medium text-muted-foreground">Email</label>
-                    <Input value="edoardo.grigione@aries76.com" disabled />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-muted-foreground">Company</label>
-                    <Input value="Aries76 Ltd" disabled />
+                    <Input value={currentUserEmail} disabled />
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-muted-foreground">Role</label>
-                    <Input value="Managing Director" disabled />
+                    <Input value="Console Admin" disabled />
                   </div>
-                  <Button className="w-full">Change Password</Button>
                 </CardContent>
               </Card>
 
@@ -1391,37 +1466,95 @@ const ABCCompanyConsole = () => {
                   <div className="space-y-3">
                     <h4 className="text-sm font-semibold text-foreground">Email Notifications</h4>
                     <div className="space-y-2">
-                      {[
-                        "Daily summary (8:00 AM)",
-                        "Follow-up reminders (1 day before)",
-                        "Milestone alerts",
-                        "Overdue tasks",
-                        "Biweekly report"
-                      ].map((notif, idx) => (
-                        <label key={idx} className="flex items-center gap-2 cursor-pointer">
-                          <input type="checkbox" defaultChecked className="rounded" />
-                          <span className="text-sm text-foreground">{notif}</span>
-                        </label>
-                      ))}
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input 
+                          type="checkbox" 
+                          checked={notificationPrefs.dailySummary}
+                          onChange={(e) => setNotificationPrefs(p => ({ ...p, dailySummary: e.target.checked }))}
+                          className="rounded" 
+                        />
+                        <span className="text-sm text-foreground">Daily summary (8:00 AM)</span>
+                      </label>
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input 
+                          type="checkbox" 
+                          checked={notificationPrefs.followUpReminders}
+                          onChange={(e) => setNotificationPrefs(p => ({ ...p, followUpReminders: e.target.checked }))}
+                          className="rounded" 
+                        />
+                        <span className="text-sm text-foreground">Follow-up reminders (1 day before)</span>
+                      </label>
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input 
+                          type="checkbox" 
+                          checked={notificationPrefs.milestoneAlerts}
+                          onChange={(e) => setNotificationPrefs(p => ({ ...p, milestoneAlerts: e.target.checked }))}
+                          className="rounded" 
+                        />
+                        <span className="text-sm text-foreground">Milestone alerts</span>
+                      </label>
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input 
+                          type="checkbox" 
+                          checked={notificationPrefs.overdueTasks}
+                          onChange={(e) => setNotificationPrefs(p => ({ ...p, overdueTasks: e.target.checked }))}
+                          className="rounded" 
+                        />
+                        <span className="text-sm text-foreground">Overdue tasks</span>
+                      </label>
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input 
+                          type="checkbox" 
+                          checked={notificationPrefs.biweeklyReport}
+                          onChange={(e) => setNotificationPrefs(p => ({ ...p, biweeklyReport: e.target.checked }))}
+                          className="rounded" 
+                        />
+                        <span className="text-sm text-foreground">Biweekly report</span>
+                      </label>
                     </div>
                   </div>
                   <div className="space-y-3 pt-4 border-t border-border">
                     <h4 className="text-sm font-semibold text-foreground">In-App Notifications</h4>
                     <div className="space-y-2">
-                      {[
-                        "New investor interactions",
-                        "Status changes",
-                        "Document uploads",
-                        "Meeting reminders"
-                      ].map((notif, idx) => (
-                        <label key={idx} className="flex items-center gap-2 cursor-pointer">
-                          <input type="checkbox" defaultChecked className="rounded" />
-                          <span className="text-sm text-foreground">{notif}</span>
-                        </label>
-                      ))}
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input 
+                          type="checkbox" 
+                          checked={notificationPrefs.newInteractions}
+                          onChange={(e) => setNotificationPrefs(p => ({ ...p, newInteractions: e.target.checked }))}
+                          className="rounded" 
+                        />
+                        <span className="text-sm text-foreground">New investor interactions</span>
+                      </label>
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input 
+                          type="checkbox" 
+                          checked={notificationPrefs.statusChanges}
+                          onChange={(e) => setNotificationPrefs(p => ({ ...p, statusChanges: e.target.checked }))}
+                          className="rounded" 
+                        />
+                        <span className="text-sm text-foreground">Status changes</span>
+                      </label>
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input 
+                          type="checkbox" 
+                          checked={notificationPrefs.documentUploads}
+                          onChange={(e) => setNotificationPrefs(p => ({ ...p, documentUploads: e.target.checked }))}
+                          className="rounded" 
+                        />
+                        <span className="text-sm text-foreground">Document uploads</span>
+                      </label>
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input 
+                          type="checkbox" 
+                          checked={notificationPrefs.meetingReminders}
+                          onChange={(e) => setNotificationPrefs(p => ({ ...p, meetingReminders: e.target.checked }))}
+                          className="rounded" 
+                        />
+                        <span className="text-sm text-foreground">Meeting reminders</span>
+                      </label>
                     </div>
                   </div>
-                  <Button className="w-full">Save Settings</Button>
+                  <Button className="w-full" onClick={saveNotificationPrefs}>Save Notification Preferences</Button>
                 </CardContent>
               </Card>
             </div>
@@ -1433,15 +1566,84 @@ const ABCCompanyConsole = () => {
               <CardContent className="space-y-4">
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-muted-foreground">Fundraising Target</label>
-                    <Input value="€10,000,000" />
+                    <label className="text-sm font-medium text-muted-foreground">Fundraising Target (€)</label>
+                    <Input 
+                      type="number"
+                      value={settingsTargetAmount}
+                      onChange={(e) => setSettingsTargetAmount(e.target.value)}
+                      placeholder="10000000"
+                    />
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-muted-foreground">Deadline</label>
-                    <Input value="June 30, 2026" />
+                    <Input 
+                      type="date"
+                      value={settingsDeadline}
+                      onChange={(e) => setSettingsDeadline(e.target.value)}
+                    />
                   </div>
                 </div>
-                <Button>Update Configuration</Button>
+                <Button onClick={saveConfiguration}>Update Configuration</Button>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Users className="h-5 w-5" />
+                  AUTHORIZED USERS
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <h4 className="text-sm font-semibold text-foreground">Default Users (cannot be removed)</h4>
+                  <div className="space-y-1">
+                    {["edoardo.grigione@aries76.com", "admin@aries76.com", "stefano.taioli@abccompany.it"].map(email => (
+                      <div key={email} className="flex items-center justify-between p-2 bg-muted/30 rounded text-sm">
+                        <span>{email}</span>
+                        <Badge variant="outline" className="text-xs">Default</Badge>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                
+                {customAuthorizedEmails.length > 0 && (
+                  <div className="space-y-2 pt-4 border-t border-border">
+                    <h4 className="text-sm font-semibold text-foreground">Custom Users</h4>
+                    <div className="space-y-1">
+                      {customAuthorizedEmails.map(email => (
+                        <div key={email} className="flex items-center justify-between p-2 bg-muted/30 rounded text-sm">
+                          <span>{email}</span>
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            className="h-6 text-red-500 hover:text-red-600 hover:bg-red-500/10"
+                            onClick={() => removeAuthorizedEmail(email)}
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <div className="pt-4 border-t border-border">
+                  <h4 className="text-sm font-semibold text-foreground mb-2">Add New User</h4>
+                  <div className="flex gap-2">
+                    <Input 
+                      type="email"
+                      placeholder="Enter email address"
+                      value={newAuthorizedEmail}
+                      onChange={(e) => setNewAuthorizedEmail(e.target.value)}
+                      onKeyDown={(e) => e.key === 'Enter' && addAuthorizedEmail()}
+                    />
+                    <Button onClick={addAuthorizedEmail}>
+                      <Plus className="h-4 w-4 mr-1" />
+                      Add
+                    </Button>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
