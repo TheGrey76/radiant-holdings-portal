@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from "sonner";
 import { format } from "date-fns";
-import { User, FileText, Calendar, Activity, File, Plus, Trash2, Check } from "lucide-react";
+import { User, FileText, Calendar, Activity, File, Plus, Trash2, Check, ExternalLink } from "lucide-react";
 
 interface Investor {
   id: string;
@@ -265,7 +265,19 @@ export const EditABCInvestorDialog = ({ investor, open, onOpenChange, onSave }: 
             <div className="border-t pt-4 mt-2">
               <h4 className="font-medium mb-3">Contact Information</h4>
               <div className="space-y-4">
-                <div className="space-y-2"><Label>LinkedIn URL</Label><Input placeholder="https://linkedin.com/in/..." value={formData.linkedin || ''} onChange={(e) => setFormData({ ...formData, linkedin: e.target.value })} /></div>
+                <div className="space-y-2">
+                  <Label>LinkedIn URL</Label>
+                  <div className="flex gap-2">
+                    <Input placeholder="https://linkedin.com/in/..." value={formData.linkedin || ''} onChange={(e) => setFormData({ ...formData, linkedin: e.target.value })} className="flex-1" />
+                    {formData.linkedin && (
+                      <Button variant="outline" size="icon" asChild>
+                        <a href={formData.linkedin} target="_blank" rel="noopener noreferrer">
+                          <ExternalLink className="h-4 w-4" />
+                        </a>
+                      </Button>
+                    )}
+                  </div>
+                </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2"><Label>Email</Label><Input type="email" value={formData.email || ''} onChange={(e) => setFormData({ ...formData, email: e.target.value })} /></div>
                   <div className="space-y-2"><Label>Phone</Label><Input value={formData.phone || ''} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} /></div>
