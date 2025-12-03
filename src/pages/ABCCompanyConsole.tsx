@@ -229,14 +229,14 @@ const ABCCompanyConsole = () => {
     }
   };
 
-  // KPI Data - calculated from real investor data
-  const totalPipelineValue = investorsData.reduce((sum, inv) => sum + inv.pipelineValue, 0);
-  const closedInvestors = investorsData.filter(inv => inv.status === "closed");
-  const closedValue = closedInvestors.reduce((sum, inv) => sum + inv.pipelineValue, 0);
-  const meetingInvestors = investorsData.filter(inv => inv.status === "meeting" || inv.status === "negotiation");
+  // KPI Data - calculated from real Supabase investor data
+  const totalPipelineValue = investors.reduce((sum, inv) => sum + (inv.pipelineValue || 0), 0);
+  const closedInvestors = investors.filter(inv => inv.status === "Closed");
+  const closedValue = closedInvestors.reduce((sum, inv) => sum + (inv.pipelineValue || 0), 0);
+  const meetingInvestors = investors.filter(inv => inv.status === "Meeting Scheduled" || inv.status === "In Negotiation");
   
   const kpis = {
-    contacts: { current: 57, target: 352, percentage: Math.round((57 / 352) * 100) },
+    contacts: { current: investors.length, target: 352, percentage: Math.round((investors.length / 352) * 100) },
     meetings: { current: meetingInvestors.length, target: 20, percentage: Math.round((meetingInvestors.length / 20) * 100) },
     pipeline: { current: totalPipelineValue, target: 10000000, percentage: Math.round((totalPipelineValue / 10000000) * 100) },
     closed: { current: closedValue, target: 10000000, percentage: Math.round((closedValue / 10000000) * 100) }
