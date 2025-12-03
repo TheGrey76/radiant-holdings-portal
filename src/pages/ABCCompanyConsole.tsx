@@ -785,16 +785,48 @@ const ABCCompanyConsole = () => {
 
           {/* REPORTS TAB */}
           <TabsContent value="reports" className="space-y-6">
+            {(() => {
+              // Fundraising period: Jan 1, 2026 - Jun 30, 2026
+              const campaignStart = new Date(2026, 0, 1); // Jan 1, 2026
+              const campaignEnd = new Date(2026, 5, 30); // Jun 30, 2026
+              const today = new Date();
+              
+              // Calculate current biweekly period (2-week intervals starting from campaign start)
+              const msPerDay = 24 * 60 * 60 * 1000;
+              const daysSinceStart = Math.floor((today.getTime() - campaignStart.getTime()) / msPerDay);
+              const currentPeriodIndex = Math.max(0, Math.floor(daysSinceStart / 14));
+              
+              const periodStart = new Date(campaignStart.getTime() + currentPeriodIndex * 14 * msPerDay);
+              const periodEnd = new Date(periodStart.getTime() + 13 * msPerDay);
+              
+              // Calculate next report date (Monday after current period ends)
+              const nextReportBase = new Date(periodEnd.getTime() + msPerDay);
+              const daysUntilMonday = (8 - nextReportBase.getDay()) % 7 || 7;
+              const nextReport = new Date(nextReportBase.getTime() + (daysUntilMonday - 1) * msPerDay);
+              
+              // Format dates
+              const formatDate = (d: Date) => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+              const currentPeriodLabel = `${formatDate(periodStart)} - ${formatDate(periodEnd)}`;
+              const nextReportLabel = formatDate(nextReport);
+              
+              // Calculate weeks remaining
+              const weeksRemaining = Math.ceil((campaignEnd.getTime() - today.getTime()) / (7 * msPerDay));
+              
+              return (
             <Card>
               <CardHeader>
                 <CardTitle>BIWEEKLY REPORT</CardTitle>
-                <p className="text-sm text-muted-foreground">Period: November 15 - November 30, 2024</p>
+                <p className="text-sm text-muted-foreground">Campaign: January 1, 2026 → June 30, 2026 ({weeksRemaining > 0 ? `${weeksRemaining} weeks remaining` : 'Campaign ended'})</p>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="space-y-4">
                     <h4 className="font-semibold text-foreground">Report Configuration</h4>
                     <div className="space-y-2 text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Current Period:</span>
+                        <span className="text-foreground">{currentPeriodLabel}</span>
+                      </div>
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">Frequency:</span>
                         <span className="text-foreground">Every 2 weeks (Monday)</span>
@@ -809,13 +841,13 @@ const ABCCompanyConsole = () => {
                       </div>
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">Next Report:</span>
-                        <span className="text-primary font-semibold">December 16, 2024</span>
+                        <span className="text-primary font-semibold">{nextReportLabel}</span>
                       </div>
                     </div>
                     <div className="flex gap-2 pt-4">
                       <Button className="gap-2" onClick={() => {
                         const reportData = {
-                          period: "November 15 - November 30, 2024",
+                          period: currentPeriodLabel,
                           totalInvestors: investors.length,
                           byStatus: statusCounts,
                           totalPipeline: totalPipelineValue,
@@ -938,6 +970,8 @@ const ABCCompanyConsole = () => {
                 </div>
               </CardContent>
             </Card>
+              );
+            })()}
           </TabsContent>
 
           {/* SETTINGS TAB */}
