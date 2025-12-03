@@ -77,21 +77,9 @@ const ABCCompanyConsole = () => {
     percentage: 0,
   });
 
-  // Show loading while checking auth
-  if (isCheckingAuth) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-[#1a2332] via-[#1a2332] to-[#2a3342] flex items-center justify-center">
-        <div className="text-white">Loading...</div>
-      </div>
-    );
-  }
-
-  if (!isAuthenticated) {
-    return null;
-  }
-
   // Fetch investors from Supabase and load saved data
   useEffect(() => {
+    if (!isAuthenticated) return;
     fetchInvestors();
     fetchUpcomingFollowUps();
 
@@ -109,10 +97,12 @@ const ABCCompanyConsole = () => {
     if (savedClosed) {
       setClosedKPI(JSON.parse(savedClosed));
     }
-  }, []);
+  }, [isAuthenticated]);
 
   // Record daily KPI snapshot automatically
   useEffect(() => {
+    if (!isAuthenticated) return;
+    
     const recordDailySnapshot = () => {
       const totalPipeline = investors.reduce((sum, inv) => sum + inv.pipelineValue, 0);
       const closedInvestors = investors.filter(inv => inv.status === "Closed");
@@ -133,7 +123,20 @@ const ABCCompanyConsole = () => {
     if (investors.length > 0) {
       recordDailySnapshot();
     }
-  }, [investors, progressData, closedKPI, meetingsKPI, recordSnapshot]);
+  }, [isAuthenticated, investors, progressData, closedKPI, meetingsKPI, recordSnapshot]);
+
+  // Show loading while checking auth
+  if (isCheckingAuth) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-[#1a2332] via-[#1a2332] to-[#2a3342] flex items-center justify-center">
+        <div className="text-white">Loading...</div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return null;
+  }
 
   const fetchUpcomingFollowUps = async () => {
     try {
