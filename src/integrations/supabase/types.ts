@@ -139,6 +139,7 @@ export type Database = {
       }
       abc_investors: {
         Row: {
+          approved: boolean
           azienda: string
           categoria: string
           citta: string | null
@@ -162,6 +163,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          approved?: boolean
           azienda: string
           categoria: string
           citta?: string | null
@@ -185,6 +187,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          approved?: boolean
           azienda?: string
           categoria?: string
           citta?: string | null
