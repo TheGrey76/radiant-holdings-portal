@@ -5,10 +5,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Building2, MapPin, Euro, Calendar, Linkedin, Pencil, Trash2, CheckCircle, Clock, XCircle, ChevronDown } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Building2, MapPin, Euro, Linkedin, Pencil, Trash2, CheckCircle, Clock, XCircle, ChevronDown } from "lucide-react";
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from "sonner";
-import { format } from "date-fns";
 import { EditABCInvestorDialog } from './EditABCInvestorDialog';
 
 type ApprovalStatus = 'pending' | 'approved' | 'not_approved';
@@ -290,9 +290,27 @@ export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvest
                                         <h4 className={`font-semibold text-sm truncate ${workable ? 'text-foreground' : 'text-muted-foreground'}`}>
                                           {investor.nome}
                                         </h4>
-                                        <p className="text-xs text-muted-foreground truncate">
-                                          {investor.azienda}
-                                        </p>
+                                        <TooltipProvider>
+                                          <Tooltip>
+                                            <TooltipTrigger asChild>
+                                              <p className="text-xs text-muted-foreground truncate cursor-default">
+                                                {investor.azienda}
+                                              </p>
+                                            </TooltipTrigger>
+                                            <TooltipContent side="bottom" className="max-w-[250px]">
+                                              <div className="space-y-1">
+                                                <p className="font-medium">{investor.azienda}</p>
+                                                {investor.ruolo && <p className="text-xs">{investor.ruolo}</p>}
+                                                {investor.citta && (
+                                                  <p className="text-xs flex items-center gap-1">
+                                                    <MapPin className="h-3 w-3" />
+                                                    {investor.citta}
+                                                  </p>
+                                                )}
+                                              </div>
+                                            </TooltipContent>
+                                          </Tooltip>
+                                        </TooltipProvider>
                                       </div>
                                       <div className="flex items-center gap-0.5 ml-1">
                                         {investor.linkedin && (
