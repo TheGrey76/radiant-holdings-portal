@@ -61,6 +61,7 @@ const ABCCompanyConsole = () => {
   const [loadingInvestors, setLoadingInvestors] = useState(true);
   const [upcomingFollowUps, setUpcomingFollowUps] = useState<any[]>([]);
   const [customFunnelData, setCustomFunnelData] = useState<any[] | null>(null);
+  const [editInvestorId, setEditInvestorId] = useState<string | null>(null);
   
   // Quick Actions state
   const [showAddNoteDialog, setShowAddNoteDialog] = useState(false);
@@ -772,6 +773,8 @@ const ABCCompanyConsole = () => {
               <ABCInvestorKanban
                 investors={getFilteredInvestors()}
                 onStatusChange={fetchInvestors}
+                initialEditInvestorId={editInvestorId}
+                onEditDialogClosed={() => setEditInvestorId(null)}
               />
             )}
           </TabsContent>
@@ -1202,8 +1205,8 @@ const ABCCompanyConsole = () => {
                           key={investor.id || idx} 
                           className="flex items-center justify-between p-3 bg-muted/50 rounded-lg cursor-pointer hover:bg-muted transition-colors group"
                           onClick={() => {
+                            setEditInvestorId(investor.id);
                             setActiveTab('investors');
-                            toast.info(`Vai alla scheda di ${investor.nome} nella sezione Investors`);
                           }}
                         >
                           <div className="flex-1">
