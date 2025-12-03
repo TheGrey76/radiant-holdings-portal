@@ -1598,7 +1598,7 @@ const ABCCompanyConsole = () => {
                 <div className="space-y-2">
                   <h4 className="text-sm font-semibold text-foreground">Default Users (cannot be removed)</h4>
                   <div className="space-y-1">
-                    {["edoardo.grigione@aries76.com", "admin@aries76.com", "stefano.taioli@abccompany.it"].map(email => (
+                    {["edoardo.grigione@aries76.com", "stefano.taioli@abccompany.it"].map(email => (
                       <div key={email} className="flex items-center justify-between p-2 bg-muted/30 rounded text-sm">
                         <span>{email}</span>
                         <Badge variant="outline" className="text-xs">Default</Badge>
