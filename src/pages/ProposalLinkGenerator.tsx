@@ -21,19 +21,19 @@ const PROPOSALS: Proposal[] = [
   {
     id: "vettafi",
     name: "VettaFi Proposal",
-    accessRoute: "/vettafi-access",
+    accessRoute: "/vettafi-proposal",
     proposalRoute: "/vettafi-proposal"
   },
   {
     id: "alkemia",
     name: "Alkemia Praesidium FRPA",
-    accessRoute: "/alkemia-praesidium-access",
+    accessRoute: "/alkemia-praesidium-proposal",
     proposalRoute: "/alkemia-praesidium-proposal"
   },
   {
     id: "abc",
     name: "ABC Company Capital Raise",
-    accessRoute: "/abc-company-access",
+    accessRoute: "/abc-company-proposal",
     proposalRoute: "/abc-company-proposal"
   },
   {
