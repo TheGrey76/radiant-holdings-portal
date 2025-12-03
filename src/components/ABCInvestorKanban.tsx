@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
-import { Building2, MapPin, Euro, Calendar, Linkedin, Pencil, Trash2 } from "lucide-react";
+import { Building2, MapPin, Euro, Calendar, Linkedin, Pencil, Trash2, CheckCircle, Clock } from "lucide-react";
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from "sonner";
 import { format } from "date-fns";
@@ -24,6 +24,7 @@ interface Investor {
   linkedin?: string;
   email?: string;
   phone?: string;
+  approved?: boolean;
 }
 
 interface ABCInvestorKanbanProps {
@@ -64,6 +65,12 @@ export const ABCInvestorKanban = ({ investors, onStatusChange }: ABCInvestorKanb
 
     if (!investor) return;
 
+    // Block drag for non-approved investors
+    if (!investor.approved) {
+      toast.error("Investitore non ancora approvato da ABC Company");
+      return;
+    }
+
     // Optimistic update
     const updatedInvestors = localInvestors.map(inv =>
       inv.id === investorId ? { ...inv, status: destStatus } : inv
@@ -102,6 +109,38 @@ export const ABCInvestorKanban = ({ investors, onStatusChange }: ABCInvestorKanb
 
   const handleSaveInvestor = () => {
     onStatusChange(); // Refresh data from parent
+  };
+
+  const handleToggleApproval = async (e: React.MouseEvent, investor: Investor) => {
+    e.stopPropagation();
+    const newApprovalStatus = !investor.approved;
+    
+    // Optimistic update
+    setLocalInvestors(prev => prev.map(inv => 
+      inv.id === investor.id ? { ...inv, approved: newApprovalStatus } : inv
+    ));
+
+    try {
+      const { error } = await supabase
+        .from('abc_investors' as any)
+        .update({ approved: newApprovalStatus })
+        .eq('id', investor.id);
+
+      if (error) throw error;
+
+      toast.success(newApprovalStatus 
+        ? `${investor.nome} approvato` 
+        : `Approvazione rimossa per ${investor.nome}`
+      );
+      onStatusChange();
+    } catch (error) {
+      console.error('Error toggling approval:', error);
+      toast.error('Errore durante l\'aggiornamento');
+      // Revert optimistic update
+      setLocalInvestors(prev => prev.map(inv => 
+        inv.id === investor.id ? { ...inv, approved: investor.approved } : inv
+      ));
+    }
   };
 
   const handleDeleteClick = (e: React.MouseEvent, investor: Investor) => {
@@ -168,20 +207,45 @@ export const ABCInvestorKanban = ({ investors, onStatusChange }: ABCInvestorKanb
                             key={investor.id}
                             draggableId={investor.id}
                             index={index}
+                            isDragDisabled={!investor.approved}
                           >
                             {(provided, snapshot) => (
                               <Card
                                 ref={provided.innerRef}
                                 {...provided.draggableProps}
                                 {...provided.dragHandleProps}
-                                className={`cursor-grab transition-all hover:shadow-md ${
+                                className={`transition-all ${
+                                  investor.approved 
+                                    ? 'cursor-grab hover:shadow-md' 
+                                    : 'opacity-60 cursor-not-allowed'
+                                } ${
                                   snapshot.isDragging ? 'shadow-lg ring-2 ring-primary cursor-grabbing' : ''
                                 }`}
                               >
                                 <CardContent className="p-4 space-y-3">
+                                  {/* Approval Status Badge - Clickable to toggle */}
+                                  <div className="flex items-center justify-between">
+                                    <button 
+                                      onClick={(e) => handleToggleApproval(e, investor)}
+                                      className="focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded"
+                                    >
+                                      {investor.approved ? (
+                                        <Badge className="bg-green-500/10 text-green-600 border-green-200 text-xs cursor-pointer hover:bg-green-500/20 transition-colors">
+                                          <CheckCircle className="h-3 w-3 mr-1" />
+                                          Approved
+                                        </Badge>
+                                      ) : (
+                                        <Badge className="bg-amber-500/10 text-amber-600 border-amber-200 text-xs cursor-pointer hover:bg-amber-500/20 transition-colors">
+                                          <Clock className="h-3 w-3 mr-1" />
+                                          Pending Approval
+                                        </Badge>
+                                      )}
+                                    </button>
+                                  </div>
+
                                   <div className="flex items-start justify-between">
                                     <div className="flex-1 min-w-0">
-                                      <h4 className="font-semibold text-foreground mb-1 truncate">
+                                      <h4 className={`font-semibold mb-1 truncate ${investor.approved ? 'text-foreground' : 'text-muted-foreground'}`}>
                                         {investor.nome}
                                       </h4>
                                       {investor.ruolo && (
@@ -201,14 +265,16 @@ export const ABCInvestorKanban = ({ investors, onStatusChange }: ABCInvestorKanb
                                           <Linkedin className="h-4 w-4" />
                                         </Button>
                                       )}
-                                      <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        className="h-7 w-7"
-                                        onClick={(e) => handleEditClick(e, investor)}
-                                      >
-                                        <Pencil className="h-4 w-4" />
-                                      </Button>
+                                      {investor.approved && (
+                                        <Button
+                                          variant="ghost"
+                                          size="icon"
+                                          className="h-7 w-7"
+                                          onClick={(e) => handleEditClick(e, investor)}
+                                        >
+                                          <Pencil className="h-4 w-4" />
+                                        </Button>
+                                      )}
                                       {column.id === 'To Contact' && (
                                         <Button
                                           variant="ghost"
@@ -240,7 +306,7 @@ export const ABCInvestorKanban = ({ investors, onStatusChange }: ABCInvestorKanb
                                     <div className="flex items-center justify-between text-sm">
                                       <div className="flex items-center gap-1.5">
                                         <Euro className="h-4 w-4 text-primary" />
-                                        <span className="font-semibold text-primary">
+                                        <span className={`font-semibold ${investor.approved ? 'text-primary' : 'text-muted-foreground'}`}>
                                           €{investor.pipelineValue.toLocaleString()}
                                         </span>
                                       </div>
