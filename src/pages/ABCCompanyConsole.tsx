@@ -1187,20 +1187,42 @@ const ABCCompanyConsole = () => {
                 </div>
 
                   <div className="border-t border-border pt-6">
-                  <h4 className="font-semibold text-foreground mb-4">Top 5 Investors by Pipeline Value</h4>
+                  <h4 className="font-semibold text-foreground mb-2">Top 5 Investors by Weighted Pipeline</h4>
+                  <p className="text-xs text-muted-foreground mb-4">Pipeline Value × Probability = Expected Value</p>
                   <div className="space-y-3">
                     {[...investors]
-                      .sort((a, b) => (b.pipelineValue || 0) - (a.pipelineValue || 0))
+                      .map(inv => ({
+                        ...inv,
+                        weightedValue: (inv.pipelineValue || 0) * ((inv.probability || 50) / 100)
+                      }))
+                      .sort((a, b) => b.weightedValue - a.weightedValue)
                       .slice(0, 5)
                       .map((investor, idx) => (
                         <div key={investor.id || idx} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
-                          <div>
+                          <div className="flex-1">
                             <p className="text-sm font-semibold text-foreground">{idx + 1}. {investor.nome}</p>
-                            <p className="text-xs text-muted-foreground">{investor.azienda} - Probability: {investor.probability || 50}%</p>
+                            <p className="text-xs text-muted-foreground">{investor.azienda}</p>
                           </div>
-                          <p className="text-sm font-bold text-primary">{formatCurrency(investor.pipelineValue || 0)}</p>
+                          <div className="text-right">
+                            <p className="text-sm font-bold text-primary">{formatCurrency(investor.weightedValue)}</p>
+                            <p className="text-xs text-muted-foreground">
+                              {formatCurrency(investor.pipelineValue || 0)} × {investor.probability || 50}%
+                            </p>
+                          </div>
                         </div>
                       ))}
+                  </div>
+                  <div className="mt-4 p-3 bg-primary/10 rounded-lg">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-semibold text-foreground">Total Weighted Pipeline</span>
+                      <span className="text-lg font-bold text-primary">
+                        {formatCurrency(
+                          investors.reduce((sum, inv) => 
+                            sum + ((inv.pipelineValue || 0) * ((inv.probability || 50) / 100)), 0
+                          )
+                        )}
+                      </span>
+                    </div>
                   </div>
                 </div>
 
