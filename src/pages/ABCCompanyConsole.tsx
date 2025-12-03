@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import jsPDF from "jspdf";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { 
@@ -959,11 +960,108 @@ const ABCCompanyConsole = () => {
                 </div>
 
                 <div className="flex gap-2">
-                  <Button variant="outline" className="gap-2">
+                  <Button variant="outline" className="gap-2" onClick={() => {
+                    const doc = new jsPDF();
+                    const pageWidth = doc.internal.pageSize.getWidth();
+                    
+                    // Header
+                    doc.setFontSize(20);
+                    doc.setTextColor(26, 35, 50);
+                    doc.text("ABC Company Capital Raise Report", pageWidth / 2, 20, { align: "center" });
+                    
+                    // Period
+                    doc.setFontSize(12);
+                    doc.setTextColor(100);
+                    doc.text(`Period: ${currentPeriodLabel}`, pageWidth / 2, 30, { align: "center" });
+                    doc.text(`Generated: ${new Date().toLocaleDateString('it-IT')}`, pageWidth / 2, 36, { align: "center" });
+                    
+                    // Orange line
+                    doc.setDrawColor(255, 107, 53);
+                    doc.setLineWidth(1);
+                    doc.line(20, 42, pageWidth - 20, 42);
+                    
+                    // Pipeline Summary
+                    doc.setFontSize(14);
+                    doc.setTextColor(26, 35, 50);
+                    doc.text("Pipeline Summary", 20, 55);
+                    
+                    doc.setFontSize(11);
+                    doc.setTextColor(60);
+                    let yPos = 65;
+                    const metrics = [
+                      ["Total Investors", `${investors.length}`],
+                      ["Total Pipeline Value", `€${(totalPipelineValue / 1000000).toFixed(2)}M`],
+                      ["Closed Value", `€${(closedValue / 1000000).toFixed(2)}M`],
+                    ];
+                    metrics.forEach(([label, value]) => {
+                      doc.text(label, 25, yPos);
+                      doc.setTextColor(255, 107, 53);
+                      doc.text(value, pageWidth - 25, yPos, { align: "right" });
+                      doc.setTextColor(60);
+                      yPos += 8;
+                    });
+                    
+                    // Status Breakdown
+                    yPos += 5;
+                    doc.setFontSize(14);
+                    doc.setTextColor(26, 35, 50);
+                    doc.text("Status Breakdown", 20, yPos);
+                    yPos += 10;
+                    
+                    doc.setFontSize(11);
+                    doc.setTextColor(60);
+                    const statuses = [
+                      ["Total Contacts", `${statusCounts.total}`],
+                      ["Contacted", `${statusCounts.contacted}`],
+                      ["Interested", `${statusCounts.interested}`],
+                      ["Meeting Scheduled", `${statusCounts.meetings}`],
+                      ["In Negotiation", `${statusCounts.negotiation}`],
+                      ["Closed", `${statusCounts.closed}`],
+                    ];
+                    statuses.forEach(([label, value]) => {
+                      doc.text(label, 25, yPos);
+                      doc.setTextColor(255, 107, 53);
+                      doc.text(value, pageWidth - 25, yPos, { align: "right" });
+                      doc.setTextColor(60);
+                      yPos += 8;
+                    });
+                    
+                    // Top Investors
+                    yPos += 5;
+                    doc.setFontSize(14);
+                    doc.setTextColor(26, 35, 50);
+                    doc.text("Top 5 Investors by Pipeline Value", 20, yPos);
+                    yPos += 10;
+                    
+                    doc.setFontSize(10);
+                    const topInvestors = [...investors]
+                      .sort((a, b) => (b.pipelineValue || 0) - (a.pipelineValue || 0))
+                      .slice(0, 5);
+                    topInvestors.forEach((inv, i) => {
+                      doc.setTextColor(26, 35, 50);
+                      doc.text(`${i + 1}. ${inv.nome}`, 25, yPos);
+                      doc.setTextColor(100);
+                      doc.text(`${inv.azienda}`, 25, yPos + 5);
+                      doc.setTextColor(255, 107, 53);
+                      doc.text(`€${((inv.pipelineValue || 0) / 1000).toFixed(0)}K`, pageWidth - 25, yPos, { align: "right" });
+                      yPos += 14;
+                    });
+                    
+                    // Footer
+                    doc.setFontSize(9);
+                    doc.setTextColor(150);
+                    doc.text("ARIES76 Capital Intelligence | ABC Company Fundraising Console", pageWidth / 2, 285, { align: "center" });
+                    
+                    doc.save(`ABC_Company_Report_${new Date().toISOString().split('T')[0]}.pdf`);
+                    toast.success("PDF downloaded successfully");
+                  }}>
                     <Download className="h-4 w-4" />
                     Download PDF
                   </Button>
-                  <Button variant="outline" className="gap-2">
+                  <Button variant="outline" className="gap-2" onClick={() => {
+                    navigator.clipboard.writeText(window.location.href);
+                    toast.success("Dashboard link copied to clipboard");
+                  }}>
                     <Share2 className="h-4 w-4" />
                     Share Dashboard Link
                   </Button>
