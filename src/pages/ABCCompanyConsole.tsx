@@ -813,7 +813,71 @@ const ABCCompanyConsole = () => {
                       </div>
                     </div>
                     <div className="flex gap-2 pt-4">
-                      <Button className="gap-2">
+                      <Button className="gap-2" onClick={() => {
+                        const reportData = {
+                          period: "November 15 - November 30, 2024",
+                          totalInvestors: investors.length,
+                          byStatus: statusCounts,
+                          totalPipeline: totalPipelineValue,
+                          closedValue: closedValue,
+                          topInvestors: [...investors]
+                            .sort((a, b) => (b.pipelineValue || 0) - (a.pipelineValue || 0))
+                            .slice(0, 5)
+                        };
+                        
+                        const printWindow = window.open('', '_blank');
+                        if (printWindow) {
+                          printWindow.document.write(`
+                            <html>
+                              <head>
+                                <title>ABC Company Fundraising Report</title>
+                                <style>
+                                  body { font-family: Arial, sans-serif; padding: 40px; max-width: 800px; margin: 0 auto; }
+                                  h1 { color: #1a2332; border-bottom: 2px solid #ff6b35; padding-bottom: 10px; }
+                                  h2 { color: #1a2332; margin-top: 30px; }
+                                  .metric { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; }
+                                  .metric-value { font-weight: bold; color: #ff6b35; }
+                                  .investor { padding: 10px; margin: 10px 0; background: #f5f5f5; border-radius: 8px; }
+                                  .footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid #ccc; font-size: 12px; color: #666; }
+                                </style>
+                              </head>
+                              <body>
+                                <h1>ABC Company Capital Raise Report</h1>
+                                <p>Period: ${reportData.period}</p>
+                                <p>Generated: ${new Date().toLocaleDateString('it-IT')}</p>
+                                
+                                <h2>Pipeline Summary</h2>
+                                <div class="metric"><span>Total Investors</span><span class="metric-value">${reportData.totalInvestors}</span></div>
+                                <div class="metric"><span>Total Pipeline Value</span><span class="metric-value">€${(reportData.totalPipeline / 1000000).toFixed(2)}M</span></div>
+                                <div class="metric"><span>Closed Value</span><span class="metric-value">€${(reportData.closedValue / 1000000).toFixed(2)}M</span></div>
+                                
+                                <h2>Status Breakdown</h2>
+                                <div class="metric"><span>Total Contacts</span><span class="metric-value">${reportData.byStatus.total}</span></div>
+                                <div class="metric"><span>Contacted</span><span class="metric-value">${reportData.byStatus.contacted}</span></div>
+                                <div class="metric"><span>Interested</span><span class="metric-value">${reportData.byStatus.interested}</span></div>
+                                <div class="metric"><span>Meeting Scheduled</span><span class="metric-value">${reportData.byStatus.meetings}</span></div>
+                                <div class="metric"><span>In Negotiation</span><span class="metric-value">${reportData.byStatus.negotiation}</span></div>
+                                <div class="metric"><span>Closed</span><span class="metric-value">${reportData.byStatus.closed}</span></div>
+                                
+                                <h2>Top 5 Investors by Pipeline Value</h2>
+                                ${reportData.topInvestors.map((inv, i) => `
+                                  <div class="investor">
+                                    <strong>${i + 1}. ${inv.nome}</strong><br/>
+                                    <span>${inv.azienda} - €${((inv.pipelineValue || 0) / 1000).toFixed(0)}K</span>
+                                  </div>
+                                `).join('')}
+                                
+                                <div class="footer">
+                                  <p>ARIES76 Capital Intelligence | ABC Company Fundraising Console</p>
+                                </div>
+                              </body>
+                            </html>
+                          `);
+                          printWindow.document.close();
+                          printWindow.print();
+                        }
+                        toast.success("Report generated successfully");
+                      }}>
                         <FileText className="h-4 w-4" />
                         Generate Report Now
                       </Button>
