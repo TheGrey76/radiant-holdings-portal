@@ -33,6 +33,8 @@ interface Investor {
 interface ABCInvestorKanbanProps {
   investors: Investor[];
   onStatusChange: () => void;
+  initialEditInvestorId?: string | null;
+  onEditDialogClosed?: () => void;
 }
 
 const statusColumns = [
@@ -51,11 +53,30 @@ const approvalStatusConfig: Record<ApprovalStatus, { label: string; icon: typeof
   not_approved: { label: 'Not Approved', icon: XCircle, className: 'bg-red-500/10 text-red-600 border-red-200' },
 };
 
-export const ABCInvestorKanban = ({ investors, onStatusChange }: ABCInvestorKanbanProps) => {
+export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvestorId, onEditDialogClosed }: ABCInvestorKanbanProps) => {
   const [localInvestors, setLocalInvestors] = useState(investors);
   const [editingInvestor, setEditingInvestor] = useState<Investor | null>(null);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [investorToDelete, setInvestorToDelete] = useState<Investor | null>(null);
+
+  // Auto-open edit dialog when initialEditInvestorId is provided
+  useEffect(() => {
+    if (initialEditInvestorId) {
+      const investor = localInvestors.find(inv => inv.id === initialEditInvestorId);
+      if (investor) {
+        setEditingInvestor(investor);
+        setEditDialogOpen(true);
+      }
+    }
+  }, [initialEditInvestorId, localInvestors]);
+
+  // Handle dialog close and notify parent
+  const handleEditDialogClose = (open: boolean) => {
+    setEditDialogOpen(open);
+    if (!open && onEditDialogClosed) {
+      onEditDialogClosed();
+    }
+  };
 
   const getInvestorsByStatus = (status: string) => {
     return localInvestors.filter(inv => inv.status === status);
@@ -366,7 +387,7 @@ export const ABCInvestorKanban = ({ investors, onStatusChange }: ABCInvestorKanb
       <EditABCInvestorDialog
         investor={editingInvestor}
         open={editDialogOpen}
-        onOpenChange={setEditDialogOpen}
+        onOpenChange={handleEditDialogClose}
         onSave={handleSaveInvestor}
       />
 
