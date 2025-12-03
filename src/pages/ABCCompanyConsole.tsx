@@ -38,48 +38,20 @@ const ABCCompanyConsole = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
-  // Check authentication on mount
+  // Check authentication on mount via sessionStorage
   useEffect(() => {
-    const checkAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session?.user) {
-        navigate('/abc-company-console-access');
-        return;
-      }
-
-      // Check if user has admin role
-      const { data: roleData } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', session.user.id)
-        .eq('role', 'admin')
-        .single();
-
-      if (!roleData) {
-        await supabase.auth.signOut();
-        navigate('/abc-company-console-access');
-        return;
-      }
-
-      setIsAuthenticated(true);
-      setIsCheckingAuth(false);
-    };
-
-    checkAuth();
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        if (event === 'SIGNED_OUT' || !session) {
-          navigate('/abc-company-console-access');
-        }
-      }
-    );
-
-    return () => subscription.unsubscribe();
+    const isAuthorized = sessionStorage.getItem('abc_console_authorized') === 'true';
+    if (!isAuthorized) {
+      navigate('/abc-company-console-access');
+      return;
+    }
+    setIsAuthenticated(true);
+    setIsCheckingAuth(false);
   }, [navigate]);
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
+  const handleLogout = () => {
+    sessionStorage.removeItem('abc_console_authorized');
+    sessionStorage.removeItem('abc_console_email');
     navigate('/abc-company-console-access');
   };
   const [filterCategory, setFilterCategory] = useState("all");
