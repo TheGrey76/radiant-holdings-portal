@@ -100,6 +100,7 @@ const App = () => (
           <Route path="/auth" element={<Auth />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/proposal-links" element={<ProposalLinkGenerator />} />
+          <Route path="/proposal-link-generator" element={<ProposalLinkGenerator />} />
           <Route path="/admin/newsletter" element={<NewsletterComposer />} />
           <Route path="/admin/distribution" element={<DistributionDashboard />} />
           <Route path="/admin/gp-lp-matching" element={<GPLPMatching />} />
