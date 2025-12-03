@@ -39,24 +39,30 @@ const matchColumn = (header: string, patterns: string[]): boolean => {
   });
 };
 
-// Field patterns for flexible matching
-const FIELD_PATTERNS: Record<string, string[]> = {
-  nome: ['nome', 'name', 'nominativo', 'contatto', 'full name', 'nome completo', 'nome e cognome', 'cognome e nome', 'referente', 'persona'],
-  azienda: ['azienda', 'company', 'società', 'societa', 'organizzazione', 'organization', 'ente', 'impresa', 'ditta', 'ragione sociale', 'denominazione'],
-  ruolo: ['ruolo', 'role', 'posizione', 'position', 'title', 'job title', 'carica', 'qualifica', 'mansione', 'funzione'],
-  categoria: ['categoria', 'category', 'tipo', 'type', 'segmento', 'segment', 'tipologia', 'classificazione', 'classe'],
-  citta: ['citta', 'città', 'city', 'località', 'localita', 'sede', 'luogo', 'comune', 'location'],
-  fonte: ['fonte', 'source', 'provenienza', 'origin', 'canale', 'origine'],
-  priorita: ['priorita', 'priorità', 'priority', 'importanza', 'rilevanza'],
-  email: ['email', 'e-mail', 'mail', 'indirizzo email', 'posta elettronica', 'e mail'],
-  phone: ['phone', 'telefono', 'tel', 'cellulare', 'mobile', 'numero', 'cell', 'recapito'],
-  linkedin: ['linkedin', 'linkedin url', 'profilo linkedin', 'link linkedin'],
-  pipeline_value: ['pipeline_value', 'pipeline value', 'valore pipeline', 'valore', 'value', 'importo', 'amount', 'ticket'],
-  probability: ['probability', 'probabilità', 'probabilita', 'prob', '%', 'percentuale'],
-};
-
+// Special handling for ambiguous columns
 const mapColumnToField = (header: string): string | null => {
   const normalized = header.toLowerCase().trim();
+  
+  // Exact matches first for ambiguous terms
+  if (normalized === 'title') return 'nome'; // "Title" alone = person name
+  if (normalized === 'job title') return 'ruolo';
+  if (normalized === 'url') return 'linkedin';
+  
+  // Field patterns for flexible matching
+  const FIELD_PATTERNS: Record<string, string[]> = {
+    nome: ['nome', 'name', 'nominativo', 'contatto', 'full name', 'nome completo', 'nome e cognome', 'cognome e nome', 'referente', 'persona', 'first name', 'last name'],
+    azienda: ['azienda', 'company', 'società', 'societa', 'organizzazione', 'organization', 'ente', 'impresa', 'ditta', 'ragione sociale', 'denominazione'],
+    ruolo: ['ruolo', 'role', 'posizione', 'position', 'job title', 'carica', 'qualifica', 'mansione', 'funzione'],
+    categoria: ['categoria', 'category', 'tipo', 'type', 'segmento', 'segment', 'tipologia', 'classificazione', 'classe', 'investor type', 'tipo investitore'],
+    citta: ['citta', 'città', 'city', 'località', 'localita', 'sede', 'luogo', 'comune', 'location', 'based in'],
+    fonte: ['fonte', 'source', 'provenienza', 'origin', 'canale', 'origine'],
+    priorita: ['priorita', 'priorità', 'priority', 'importanza', 'rilevanza'],
+    email: ['email', 'e-mail', 'mail', 'indirizzo email', 'posta elettronica', 'e mail'],
+    phone: ['phone', 'telefono', 'tel', 'cellulare', 'mobile', 'numero', 'cell', 'recapito'],
+    linkedin: ['linkedin', 'linkedin url', 'profilo linkedin', 'link linkedin', 'url', 'profile url'],
+    pipeline_value: ['pipeline_value', 'pipeline value', 'valore pipeline', 'valore', 'value', 'importo', 'amount', 'ticket'],
+    probability: ['probability', 'probabilità', 'probabilita', 'prob', 'percentuale'],
+  };
   
   for (const [field, patterns] of Object.entries(FIELD_PATTERNS)) {
     if (matchColumn(normalized, patterns)) {
@@ -119,14 +125,12 @@ export function ImportABCInvestorsDialog() {
       const mappedFields = Object.values(fieldMapping);
       const missingFields: string[] = [];
       
+      // Only nome and azienda are truly required
       if (!mappedFields.includes('nome')) {
         missingFields.push("Nome (nome del contatto)");
       }
       if (!mappedFields.includes('azienda')) {
         missingFields.push("Azienda");
-      }
-      if (!mappedFields.includes('categoria')) {
-        missingFields.push("Categoria");
       }
       
       if (missingFields.length > 0) {
@@ -136,6 +140,9 @@ export function ImportABCInvestorsDialog() {
         );
         return;
       }
+      
+      // Note if categoria is missing - we'll use a default
+      const hasCategoria = mappedFields.includes('categoria');
       
       // Parse data rows
       const investors: InvestorRow[] = [];
@@ -162,8 +169,13 @@ export function ImportABCInvestorsDialog() {
           }
         });
         
-        // Only add if has required fields
-        if (investor.nome && investor.azienda && investor.categoria) {
+        // Set default categoria if not present
+        if (!investor.categoria) {
+          investor.categoria = 'Club Deal Investor';
+        }
+        
+        // Only add if has required fields (nome and azienda)
+        if (investor.nome && investor.azienda) {
           investors.push(investor as InvestorRow);
         }
       }
