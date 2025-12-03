@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { FileText, Calendar, MessageSquare, Paperclip, Clock, ArrowRight, ShieldCheck, UserPlus } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -57,8 +58,35 @@ const ActivityTypeBadge = ({ type }: { type: ActivityItem['type'] }) => {
   );
 };
 
+const ACTIVITY_TYPES: ActivityItem['type'][] = ['note', 'followup', 'activity', 'document', 'status_change', 'approval_change', 'investor_added'];
+
 export const ABCActivityFeed = () => {
   const { activities, loading } = useABCActivityFeed();
+  const [activeFilters, setActiveFilters] = useState<Set<ActivityItem['type']>>(new Set(ACTIVITY_TYPES));
+
+  const toggleFilter = (type: ActivityItem['type']) => {
+    setActiveFilters(prev => {
+      const newFilters = new Set(prev);
+      if (newFilters.has(type)) {
+        newFilters.delete(type);
+      } else {
+        newFilters.add(type);
+      }
+      return newFilters;
+    });
+  };
+
+  const filteredActivities = activities.filter(a => activeFilters.has(a.type));
+
+  const filterLabels: Record<ActivityItem['type'], string> = {
+    note: "Note",
+    followup: "Follow-up",
+    activity: "Activity",
+    document: "Document",
+    status_change: "Status",
+    approval_change: "Approval",
+    investor_added: "New Investor",
+  };
 
   return (
     <Card className="border-border/50 bg-gradient-to-br from-background/50 to-background backdrop-blur-sm">
@@ -74,6 +102,21 @@ export const ABCActivityFeed = () => {
             </Badge>
           )}
         </div>
+        <div className="flex flex-wrap gap-1.5 pt-3">
+          {ACTIVITY_TYPES.map(type => (
+            <button
+              key={type}
+              onClick={() => toggleFilter(type)}
+              className={`px-2.5 py-1 text-xs rounded-full border transition-all ${
+                activeFilters.has(type)
+                  ? 'bg-accent/20 border-accent/40 text-accent'
+                  : 'bg-muted/30 border-border/50 text-muted-foreground opacity-50'
+              }`}
+            >
+              {filterLabels[type]}
+            </button>
+          ))}
+        </div>
       </CardHeader>
       <CardContent>
         {loading ? (
@@ -84,15 +127,15 @@ export const ABCActivityFeed = () => {
               </div>
             ))}
           </div>
-        ) : activities.length === 0 ? (
+        ) : filteredActivities.length === 0 ? (
           <div className="text-center py-8 text-muted-foreground">
             <Clock className="h-12 w-12 mx-auto mb-3 opacity-50" />
-            <p className="text-sm">No activities yet</p>
+            <p className="text-sm">{activities.length === 0 ? 'No activities yet' : 'No activities match filters'}</p>
           </div>
         ) : (
           <ScrollArea className="h-[500px] pr-4">
             <div className="space-y-2">
-              {activities.map((activity, index) => (
+              {filteredActivities.map((activity, index) => (
                 <motion.div
                   key={activity.id}
                   initial={{ opacity: 0, x: -20 }}
