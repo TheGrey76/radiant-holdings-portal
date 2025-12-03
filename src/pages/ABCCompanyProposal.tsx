@@ -1,25 +1,6 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { TrendingUp, Target, Users, Award, AlertCircle } from "lucide-react";
-import { toast } from "sonner";
-
-const AUTHORIZED_EMAILS = [
-  "edoardo.grigione@aries76.com",
-  "quinley.martini@aries76.com",
-  "stefano.taioli@abccompany.it",
-];
 
 const ABCCompanyProposal = () => {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const storedEmail = sessionStorage.getItem("abcCompanyAccessEmail");
-    if (!storedEmail || !AUTHORIZED_EMAILS.includes(storedEmail)) {
-      toast.error("Unauthorized access");
-      navigate("/abc-company-access");
-    }
-  }, [navigate]);
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
       {/* Header */}

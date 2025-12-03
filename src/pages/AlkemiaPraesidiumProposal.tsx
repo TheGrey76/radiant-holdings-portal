@@ -1,69 +1,9 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { ShieldAlert, CheckCircle, AlertTriangle, TrendingUp, Users, Briefcase, Target, Loader2 } from "lucide-react";
+import { CheckCircle, AlertTriangle, TrendingUp, Users, Briefcase, Target } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Navbar from "@/components/Navbar";
 
-const AUTHORIZED_EMAILS = [
-  "edoardo.grigione@aries76.com",
-  "quinley.martini@aries76.com",
-  "luca.duranti@alkemiacapital.com",
-  "domenico.massaro@alkemiacapital.com",
-];
-
 const AlkemiaPraesidiumProposal = () => {
-  const navigate = useNavigate();
-  const [isAuthorized, setIsAuthorized] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const accessEmail = sessionStorage.getItem("alkemiaAccessEmail");
-    
-    if (!accessEmail) {
-      navigate("/alkemia-praesidium-access");
-      return;
-    }
-
-    const authorized = AUTHORIZED_EMAILS.includes(accessEmail.toLowerCase());
-    setIsAuthorized(authorized);
-    setIsLoading(false);
-  }, [navigate]);
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    );
-  }
-
-  if (!isAuthorized) {
-    return (
-      <div className="min-h-screen flex flex-col">
-        <Navbar />
-        <main className="flex-grow flex items-center justify-center pt-28">
-          <Card className="max-w-md mx-4">
-            <CardHeader className="text-center">
-              <div className="flex justify-center mb-4">
-                <ShieldAlert className="h-16 w-16 text-destructive" />
-              </div>
-              <CardTitle className="text-2xl">Accesso Negato</CardTitle>
-            </CardHeader>
-            <CardContent className="text-center">
-              <p className="text-muted-foreground mb-4">
-                Questa pagina è riservata esclusivamente a utenti autorizzati.
-              </p>
-              <p className="text-sm text-muted-foreground">
-                Per informazioni, contattare info@aries76.com
-              </p>
-            </CardContent>
-          </Card>
-        </main>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-background via-background to-accent/5">
       <Navbar />

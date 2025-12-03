@@ -1,76 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
 import Navbar from '@/components/Navbar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2, ShieldAlert } from 'lucide-react';
-
-const AUTHORIZED_EMAILS = ['peter.dietrich@tmx.com', 'peter.diel@tmx.com', 'edoardo.grigione@aries76.com', 'quinley.martini@aries76.com'];
 
 const VettaFiProposal = () => {
-  const navigate = useNavigate();
-  const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const checkAccess = () => {
-      const accessEmail = sessionStorage.getItem("vettafiAccessEmail");
-      
-      if (!accessEmail) {
-        navigate("/vettafi-access");
-        setIsLoading(false);
-        return;
-      }
-
-      if (AUTHORIZED_EMAILS.includes(accessEmail.toLowerCase())) {
-        setIsAuthorized(true);
-      } else {
-        setIsAuthorized(false);
-      }
-      
-      setIsLoading(false);
-    };
-
-    checkAccess();
-  }, [navigate]);
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    );
-  }
-
-  if (!isAuthorized) {
-    return (
-      <div className="min-h-screen flex flex-col">
-        <Navbar />
-        <main className="flex-grow flex items-center justify-center pt-28">
-          <Card className="max-w-md mx-4">
-            <CardHeader className="text-center">
-              <div className="flex justify-center mb-4">
-                <ShieldAlert className="h-16 w-16 text-destructive" />
-              </div>
-              <CardTitle className="text-2xl">Accesso Negato</CardTitle>
-            </CardHeader>
-            <CardContent className="text-center">
-              <p className="text-muted-foreground mb-4">
-                Questa pagina è riservata esclusivamente a utenti autorizzati.
-              </p>
-              <p className="text-sm text-muted-foreground">
-                Per informazioni, contattare info@aries76.com
-              </p>
-            </CardContent>
-          </Card>
-        </main>
-      </div>
-    );
-  }
-
-  if (!isAuthorized) {
-    return null;
-  }
-
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-background via-background to-accent/5">
       <Navbar />
