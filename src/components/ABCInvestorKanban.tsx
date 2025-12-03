@@ -257,7 +257,7 @@ export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvest
                                     snapshot.isDragging ? 'shadow-lg ring-2 ring-primary cursor-grabbing' : ''
                                   }`}
                                 >
-                                  <CardContent className="p-4 space-y-3">
+                                  <CardContent className="p-3 space-y-2">
                                     {/* Approval Status Dropdown */}
                                     <DropdownMenu>
                                       <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
@@ -287,86 +287,58 @@ export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvest
 
                                     <div className="flex items-start justify-between">
                                       <div className="flex-1 min-w-0">
-                                        <h4 className={`font-semibold mb-1 truncate ${workable ? 'text-foreground' : 'text-muted-foreground'}`}>
+                                        <h4 className={`font-semibold text-sm truncate ${workable ? 'text-foreground' : 'text-muted-foreground'}`}>
                                           {investor.nome}
                                         </h4>
-                                        {investor.ruolo && (
-                                          <p className="text-xs text-muted-foreground truncate">
-                                            {investor.ruolo}
-                                          </p>
-                                        )}
+                                        <p className="text-xs text-muted-foreground truncate">
+                                          {investor.azienda}
+                                        </p>
                                       </div>
-                                      <div className="flex items-center gap-1 ml-2">
+                                      <div className="flex items-center gap-0.5 ml-1">
                                         {investor.linkedin && (
                                           <Button
                                             variant="ghost"
                                             size="icon"
-                                            className="h-7 w-7 text-[#0A66C2] hover:text-[#0A66C2]/80"
+                                            className="h-6 w-6 text-[#0A66C2] hover:text-[#0A66C2]/80"
                                             onClick={(e) => handleLinkedInClick(e, investor.linkedin!)}
                                           >
-                                            <Linkedin className="h-4 w-4" />
+                                            <Linkedin className="h-3.5 w-3.5" />
                                           </Button>
                                         )}
                                         {workable && (
                                           <Button
                                             variant="ghost"
                                             size="icon"
-                                            className="h-7 w-7"
+                                            className="h-6 w-6"
                                             onClick={(e) => handleEditClick(e, investor)}
                                           >
-                                            <Pencil className="h-4 w-4" />
+                                            <Pencil className="h-3.5 w-3.5" />
                                           </Button>
                                         )}
                                         {column.id === 'To Contact' && (
                                           <Button
                                             variant="ghost"
                                             size="icon"
-                                            className="h-7 w-7 text-destructive hover:text-destructive"
+                                            className="h-6 w-6 text-destructive hover:text-destructive"
                                             onClick={(e) => handleDeleteClick(e, investor)}
                                           >
-                                            <Trash2 className="h-4 w-4" />
+                                            <Trash2 className="h-3.5 w-3.5" />
                                           </Button>
                                         )}
                                       </div>
                                     </div>
 
-                                    <div className="flex items-start gap-2 text-sm">
-                                      <Building2 className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
-                                      <span className="text-muted-foreground line-clamp-2">
-                                        {investor.azienda}
-                                      </span>
-                                    </div>
-
-                                    {investor.citta && (
-                                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                        <MapPin className="h-4 w-4" />
-                                        <span>{investor.citta}</span>
+                                    <div className="flex items-center justify-between pt-1">
+                                      <div className="flex items-center gap-1">
+                                        <Euro className="h-3.5 w-3.5 text-primary" />
+                                        <span className={`text-sm font-semibold ${workable ? 'text-primary' : 'text-muted-foreground'}`}>
+                                          €{investor.pipelineValue.toLocaleString()}
+                                        </span>
                                       </div>
-                                    )}
-
-                                    <div className="pt-2 border-t border-border/50 space-y-2">
-                                      <div className="flex items-center justify-between text-sm">
-                                        <div className="flex items-center gap-1.5">
-                                          <Euro className="h-4 w-4 text-primary" />
-                                          <span className={`font-semibold ${workable ? 'text-primary' : 'text-muted-foreground'}`}>
-                                            €{investor.pipelineValue.toLocaleString()}
-                                          </span>
-                                        </div>
-                                      </div>
-
-                                      {investor.lastContactDate && (
-                                        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                                          <Calendar className="h-3 w-3" />
-                                          <span>
-                                            {format(new Date(investor.lastContactDate), 'dd MMM yyyy')}
-                                          </span>
-                                        </div>
-                                      )}
+                                      <Badge variant="outline" className="text-[10px] px-1.5 py-0">
+                                        {investor.categoria}
+                                      </Badge>
                                     </div>
-
-                                    <Badge variant="outline" className="text-xs">
-                                      {investor.categoria}
-                                    </Badge>
                                   </CardContent>
                                 </Card>
                               )}
