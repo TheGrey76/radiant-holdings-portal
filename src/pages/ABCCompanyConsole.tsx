@@ -353,7 +353,7 @@ const ABCCompanyConsole = () => {
               <p className="text-sm text-muted-foreground">Target: €10,000,000 | Deadline: June 30, 2026</p>
             </div>
             <div className="flex items-center gap-4">
-              <ImportABCInvestorsDialog />
+              <ImportABCInvestorsDialog onSuccess={fetchInvestors} />
               <span className="text-sm text-muted-foreground">User: Edoardo Grigione</span>
               <Button variant="outline" size="sm" onClick={handleLogout}>
                 <LogOut className="w-4 h-4 mr-2" />

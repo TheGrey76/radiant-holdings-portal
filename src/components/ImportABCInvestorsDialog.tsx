@@ -72,7 +72,11 @@ const mapColumnToField = (header: string): string | null => {
   return null;
 };
 
-export function ImportABCInvestorsDialog() {
+interface ImportABCInvestorsDialogProps {
+  onSuccess?: () => void;
+}
+
+export function ImportABCInvestorsDialog({ onSuccess }: ImportABCInvestorsDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -252,9 +256,12 @@ export function ImportABCInvestorsDialog() {
       setIsOpen(false);
       setSelectedFile(null);
       setParsedData([]);
+      setDetectedColumns([]);
       
-      // Refresh the page to show new data
-      setTimeout(() => window.location.reload(), 1000);
+      // Call the onSuccess callback to refresh the dashboard
+      if (onSuccess) {
+        onSuccess();
+      }
     } catch (error: any) {
       console.error('Import error:', error);
       toast.error(error.message || 'Errore durante l\'importazione');
