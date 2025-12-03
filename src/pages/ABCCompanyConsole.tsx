@@ -38,7 +38,7 @@ const ABCCompanyConsole = () => {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    navigate('/auth');
+    navigate('/abc-company-console-access');
   };
   const [filterCategory, setFilterCategory] = useState("all");
   const [filterSource, setFilterSource] = useState("all");
