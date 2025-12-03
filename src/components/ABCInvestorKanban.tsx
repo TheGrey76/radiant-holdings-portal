@@ -301,7 +301,7 @@ export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvest
                                               <div className="space-y-1">
                                                 <p className="font-medium">{investor.azienda}</p>
                                                 {investor.ruolo && <p className="text-xs">{investor.ruolo}</p>}
-                                                {investor.citta && (
+                                                {investor.citta && investor.citta.length < 50 && (
                                                   <p className="text-xs flex items-center gap-1">
                                                     <MapPin className="h-3 w-3" />
                                                     {investor.citta}
