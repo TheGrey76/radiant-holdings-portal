@@ -828,14 +828,14 @@ const ABCCompanyConsole = () => {
                       <CardHeader>
                         <div className="flex items-center justify-between">
                           <CardTitle className="text-lg">Phase 3: Due Diligence</CardTitle>
-                          <Badge variant="outline">UPCOMING</Badge>
+                          <Badge variant="outline">{investors.filter(i => i.status === 'Interested').length > 0 ? '⏳ IN PROGRESS' : 'UPCOMING'}</Badge>
                         </div>
                         <p className="text-sm text-muted-foreground">Apr 2025 - Jun 2025</p>
                       </CardHeader>
                       <CardContent className="space-y-3">
                         <p className="text-sm text-foreground">Target: 10 interested investors in DD process</p>
-                        <Progress value={50} className="h-2" />
-                        <p className="text-sm font-semibold text-foreground">5/10 in progress (50%)</p>
+                        <Progress value={Math.min(100, Math.round((investors.filter(i => i.status === 'Interested').length / 10) * 100))} className="h-2" />
+                        <p className="text-sm font-semibold text-foreground">{investors.filter(i => i.status === 'Interested').length}/10 in progress ({Math.round((investors.filter(i => i.status === 'Interested').length / 10) * 100)}%)</p>
                         <p className="text-xs text-muted-foreground">Deadline: June 30, 2025</p>
                       </CardContent>
                     </Card>
@@ -844,14 +844,14 @@ const ABCCompanyConsole = () => {
                       <CardHeader>
                         <div className="flex items-center justify-between">
                           <CardTitle className="text-lg">Phase 4: Negotiation</CardTitle>
-                          <Badge variant="outline">UPCOMING</Badge>
+                          <Badge variant="outline">{investors.filter(i => i.status === 'In Negotiation').length > 0 ? '⏳ IN PROGRESS' : 'UPCOMING'}</Badge>
                         </div>
                         <p className="text-sm text-muted-foreground">Jul 2025 - Sep 2025</p>
                       </CardHeader>
                       <CardContent className="space-y-3">
                         <p className="text-sm text-foreground">Target: 5 active negotiations</p>
-                        <Progress value={40} className="h-2" />
-                        <p className="text-sm font-semibold text-foreground">2/5 in negotiation (40%)</p>
+                        <Progress value={Math.min(100, Math.round((investors.filter(i => i.status === 'In Negotiation').length / 5) * 100))} className="h-2" />
+                        <p className="text-sm font-semibold text-foreground">{investors.filter(i => i.status === 'In Negotiation').length}/5 in negotiation ({Math.round((investors.filter(i => i.status === 'In Negotiation').length / 5) * 100)}%)</p>
                         <p className="text-xs text-muted-foreground">Deadline: September 30, 2025</p>
                       </CardContent>
                     </Card>
@@ -860,14 +860,14 @@ const ABCCompanyConsole = () => {
                       <CardHeader>
                         <div className="flex items-center justify-between">
                           <CardTitle className="text-lg">Phase 5: First Closing</CardTitle>
-                          <Badge variant="outline">TARGET</Badge>
+                          <Badge variant="outline">{investors.filter(i => i.status === 'Closed').length > 0 ? '⏳ IN PROGRESS' : 'TARGET'}</Badge>
                         </div>
                         <p className="text-sm text-muted-foreground">Oct 2025 - Jun 2026</p>
                       </CardHeader>
                       <CardContent className="space-y-3">
                         <p className="text-sm text-foreground">Target: €3-5M first closing</p>
-                        <Progress value={30} className="h-2" />
-                        <p className="text-sm font-semibold text-foreground">€1.5M / €5M (30%)</p>
+                        <Progress value={Math.min(100, Math.round((investors.filter(i => i.status === 'Closed').reduce((sum, inv) => sum + (inv.pipelineValue || 0), 0) / 5000000) * 100))} className="h-2" />
+                        <p className="text-sm font-semibold text-foreground">€{(investors.filter(i => i.status === 'Closed').reduce((sum, inv) => sum + (inv.pipelineValue || 0), 0) / 1000000).toFixed(1)}M / €5M ({Math.round((investors.filter(i => i.status === 'Closed').reduce((sum, inv) => sum + (inv.pipelineValue || 0), 0) / 5000000) * 100)}%)</p>
                         <p className="text-xs text-muted-foreground">Deadline: June 30, 2026</p>
                       </CardContent>
                     </Card>
