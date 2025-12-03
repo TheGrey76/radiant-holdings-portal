@@ -39,7 +39,7 @@ const PROPOSALS: Proposal[] = [
   {
     id: "abc-console",
     name: "ABC Company Console (CRM)",
-    accessRoute: "/abc-company-console",
+    accessRoute: "/abc-company-console-access",
     proposalRoute: "/abc-company-console"
   },
   {

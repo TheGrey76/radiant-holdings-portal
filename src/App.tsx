@@ -55,6 +55,7 @@ import AssetGUAccess from "./pages/AssetGUAccess";
 import ABCCompanyProposal from "./pages/ABCCompanyProposal";
 import ABCCompanyAccess from "./pages/ABCCompanyAccess";
 import ABCCompanyConsole from "./pages/ABCCompanyConsole";
+import ABCCompanyConsoleAccess from "./pages/ABCCompanyConsoleAccess";
 import GPLPMatching from "./pages/GPLPMatching";
 import GPPortal from "./pages/GPPortal";
 import LPPortal from "./pages/LPPortal";
@@ -120,6 +121,7 @@ const App = () => (
           <Route path="/abc-company-access" element={<ABCCompanyAccess />} />
           <Route path="/abc-company-proposal" element={<ABCCompanyProposal />} />
           <Route path="/abc-company-console" element={<ABCCompanyConsole />} />
+          <Route path="/abc-company-console-access" element={<ABCCompanyConsoleAccess />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/archive" element={<BlogArchive />} />
