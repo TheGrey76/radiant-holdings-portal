@@ -61,6 +61,17 @@ const ABCCompanyConsole = () => {
   const [loadingInvestors, setLoadingInvestors] = useState(true);
   const [upcomingFollowUps, setUpcomingFollowUps] = useState<any[]>([]);
   const [customFunnelData, setCustomFunnelData] = useState<any[] | null>(null);
+  
+  // Quick Actions state
+  const [showAddNoteDialog, setShowAddNoteDialog] = useState(false);
+  const [showFollowUpDialog, setShowFollowUpDialog] = useState(false);
+  const [selectedInvestorForAction, setSelectedInvestorForAction] = useState<any>(null);
+  const [noteText, setNoteText] = useState("");
+  const [followUpData, setFollowUpData] = useState({
+    date: "",
+    type: "call",
+    description: ""
+  });
   const [progressData, setProgressData] = useState({
     targetAmount: 10000000,
     raisedAmount: 0,
@@ -274,6 +285,87 @@ const ABCCompanyConsole = () => {
   const handleClosedUpdate = (newData: typeof closedKPI) => {
     setClosedKPI(newData);
     localStorage.setItem("abc-closed-kpi", JSON.stringify(newData));
+  };
+
+  // Quick Actions handlers
+  const handleAddNote = async () => {
+    if (!selectedInvestorForAction || !noteText.trim()) {
+      toast.error("Seleziona un investitore e inserisci una nota");
+      return;
+    }
+    
+    try {
+      const { error } = await supabase
+        .from('abc_investor_notes')
+        .insert({
+          investor_name: selectedInvestorForAction.nome,
+          note_text: noteText,
+          created_by: sessionStorage.getItem('abc_console_email') || 'Admin'
+        });
+      
+      if (error) throw error;
+      
+      toast.success(`Nota aggiunta per ${selectedInvestorForAction.nome}`);
+      setShowAddNoteDialog(false);
+      setNoteText("");
+      setSelectedInvestorForAction(null);
+    } catch (err) {
+      toast.error("Errore nell'aggiungere la nota");
+    }
+  };
+
+  const handleScheduleFollowUp = async () => {
+    if (!selectedInvestorForAction || !followUpData.date) {
+      toast.error("Seleziona un investitore e una data");
+      return;
+    }
+    
+    try {
+      const { error } = await supabase
+        .from('abc_investor_followups')
+        .insert({
+          investor_name: selectedInvestorForAction.nome,
+          follow_up_date: followUpData.date,
+          follow_up_type: followUpData.type,
+          description: followUpData.description,
+          created_by: sessionStorage.getItem('abc_console_email') || 'Admin'
+        });
+      
+      if (error) throw error;
+      
+      toast.success(`Follow-up pianificato per ${selectedInvestorForAction.nome}`);
+      setShowFollowUpDialog(false);
+      setFollowUpData({ date: "", type: "call", description: "" });
+      setSelectedInvestorForAction(null);
+      fetchUpcomingFollowUps();
+    } catch (err) {
+      toast.error("Errore nel pianificare il follow-up");
+    }
+  };
+
+  const handleExportPipeline = () => {
+    const csvContent = [
+      ["Nome", "Azienda", "Ruolo", "Categoria", "Status", "Pipeline Value", "Email", "Telefono", "Città", "Fonte"].join(","),
+      ...investors.map(inv => [
+        inv.nome,
+        inv.azienda,
+        inv.ruolo || "",
+        inv.categoria,
+        inv.status,
+        inv.pipeline_value,
+        inv.email || "",
+        inv.phone || "",
+        inv.citta || "",
+        inv.fonte || ""
+      ].map(field => `"${field}"`).join(","))
+    ].join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `abc_pipeline_${new Date().toISOString().split('T')[0]}.csv`;
+    link.click();
+    toast.success("Pipeline esportata con successo");
   };
 
   const formatCurrency = (value: number) => {
@@ -557,19 +649,19 @@ const ABCCompanyConsole = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  <Button className="w-full justify-start" variant="outline" onClick={() => toast.info("Select an investor to add notes")}>
+                  <Button className="w-full justify-start" variant="outline" onClick={() => setShowAddNoteDialog(true)}>
                     <Plus className="h-4 w-4 mr-2" />
                     Add Note
                   </Button>
-                  <Button className="w-full justify-start" variant="outline" onClick={() => toast.info("Select an investor to schedule follow-up")}>
+                  <Button className="w-full justify-start" variant="outline" onClick={() => setShowFollowUpDialog(true)}>
                     <Calendar className="h-4 w-4 mr-2" />
                     Schedule Follow-up
                   </Button>
-                  <Button className="w-full justify-start" variant="outline">
+                  <Button className="w-full justify-start" variant="outline" onClick={() => toast.info("Email campaign coming soon")}>
                     <Mail className="h-4 w-4 mr-2" />
                     Send Campaign
                   </Button>
-                  <Button className="w-full justify-start" variant="outline">
+                  <Button className="w-full justify-start" variant="outline" onClick={handleExportPipeline}>
                     <Download className="h-4 w-4 mr-2" />
                     Export Pipeline
                   </Button>
@@ -1197,6 +1289,113 @@ const ABCCompanyConsole = () => {
           </TabsContent>
         </Tabs>
       </main>
+
+      {/* Add Note Dialog */}
+      <Dialog open={showAddNoteDialog} onOpenChange={setShowAddNoteDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Aggiungi Nota</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <Label>Seleziona Investitore</Label>
+              <Select 
+                value={selectedInvestorForAction?.id || ""} 
+                onValueChange={(val) => setSelectedInvestorForAction(investors.find(i => i.id === val))}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Seleziona investitore..." />
+                </SelectTrigger>
+                <SelectContent>
+                  {investors.map((inv) => (
+                    <SelectItem key={inv.id} value={inv.id}>
+                      {inv.nome} - {inv.azienda}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label>Nota</Label>
+              <Textarea 
+                placeholder="Inserisci la nota..." 
+                value={noteText}
+                onChange={(e) => setNoteText(e.target.value)}
+                rows={4}
+              />
+            </div>
+            <Button onClick={handleAddNote} className="w-full">
+              Salva Nota
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Schedule Follow-up Dialog */}
+      <Dialog open={showFollowUpDialog} onOpenChange={setShowFollowUpDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Pianifica Follow-up</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <Label>Seleziona Investitore</Label>
+              <Select 
+                value={selectedInvestorForAction?.id || ""} 
+                onValueChange={(val) => setSelectedInvestorForAction(investors.find(i => i.id === val))}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Seleziona investitore..." />
+                </SelectTrigger>
+                <SelectContent>
+                  {investors.map((inv) => (
+                    <SelectItem key={inv.id} value={inv.id}>
+                      {inv.nome} - {inv.azienda}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label>Data</Label>
+              <Input 
+                type="date" 
+                value={followUpData.date}
+                onChange={(e) => setFollowUpData({...followUpData, date: e.target.value})}
+              />
+            </div>
+            <div>
+              <Label>Tipo</Label>
+              <Select 
+                value={followUpData.type} 
+                onValueChange={(val) => setFollowUpData({...followUpData, type: val})}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="call">Chiamata</SelectItem>
+                  <SelectItem value="email">Email</SelectItem>
+                  <SelectItem value="meeting">Meeting</SelectItem>
+                  <SelectItem value="presentation">Presentazione</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label>Descrizione (opzionale)</Label>
+              <Textarea 
+                placeholder="Note aggiuntive..." 
+                value={followUpData.description}
+                onChange={(e) => setFollowUpData({...followUpData, description: e.target.value})}
+                rows={2}
+              />
+            </div>
+            <Button onClick={handleScheduleFollowUp} className="w-full">
+              Pianifica Follow-up
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
