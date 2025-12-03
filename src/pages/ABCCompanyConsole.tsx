@@ -812,6 +812,47 @@ const ABCCompanyConsole = () => {
                         return <Badge variant="outline" className="text-xs bg-blue-500/10 text-blue-600 border-blue-500/30">{days}g rimanenti</Badge>;
                       };
 
+                      // Calcolo automatico Attention Required basato su performance vs target (soglia 80%)
+                      const phase1Progress = 100; // Completata
+                      const phase2Current = investors.filter(i => i.status === 'Meeting Scheduled' || i.status === 'In Negotiation' || i.status === 'Closed').length;
+                      const phase2Target = 20;
+                      const phase2Progress = (phase2Current / phase2Target) * 100;
+                      
+                      const phase3Current = investors.filter(i => i.status === 'Interested').length;
+                      const phase3Target = 10;
+                      const phase3Progress = (phase3Current / phase3Target) * 100;
+                      
+                      const phase4Current = investors.filter(i => i.status === 'In Negotiation').length;
+                      const phase4Target = 5;
+                      const phase4Progress = (phase4Current / phase4Target) * 100;
+                      
+                      const phase5Current = investors.filter(i => i.status === 'Closed').reduce((sum, inv) => sum + (inv.pipelineValue || 0), 0);
+                      const phase5Target = 5000000;
+                      const phase5Progress = (phase5Current / phase5Target) * 100;
+                      
+                      const phase6Current = investors.reduce((sum, inv) => sum + (inv.pipelineValue || 0), 0);
+                      const phase6Target = 10000000;
+                      const phase6Progress = (phase6Current / phase6Target) * 100;
+
+                      const getExpectedProgress = (deadline: Date) => {
+                        const start = new Date('2025-12-01');
+                        const totalDuration = deadline.getTime() - start.getTime();
+                        const elapsed = now.getTime() - start.getTime();
+                        return Math.min(100, Math.max(0, (elapsed / totalDuration) * 100));
+                      };
+
+                      const needsAttention = (progress: number, deadline: Date) => {
+                        const expected = getExpectedProgress(deadline);
+                        const daysRemaining = getDaysRemaining(deadline);
+                        // Alert se: sotto 80% del progresso atteso E non completata E deadline non passata
+                        return daysRemaining > 0 && progress < (expected * 0.8);
+                      };
+
+                      const AttentionBadge = ({ show }: { show: boolean }) => {
+                        if (!show) return null;
+                        return <Badge variant="outline" className="text-xs bg-red-500/10 text-red-600 border-red-500/30 animate-pulse">⚠️ Attenzione</Badge>;
+                      };
+
                       return (
                         <>
                           <Card className="border-2 border-green-500/20 bg-green-500/5">
@@ -833,11 +874,12 @@ const ABCCompanyConsole = () => {
                             </CardContent>
                           </Card>
 
-                          <Card className="border-2 border-primary/20 bg-primary/5">
+                          <Card className={`border-2 ${needsAttention(phase2Progress, phase2Deadline) ? 'border-red-500/40 bg-red-500/5' : 'border-primary/20 bg-primary/5'}`}>
                             <CardHeader>
                               <div className="flex items-center justify-between">
                                 <CardTitle className="text-lg">Phase 2: Initial Meetings</CardTitle>
                                 <div className="flex items-center gap-2">
+                                  <AttentionBadge show={needsAttention(phase2Progress, phase2Deadline)} />
                                   <CountdownBadge days={getDaysRemaining(phase2Deadline)} />
                                   <Badge className="bg-primary">⏳ IN PROGRESS</Badge>
                                 </div>
@@ -846,74 +888,78 @@ const ABCCompanyConsole = () => {
                             </CardHeader>
                             <CardContent className="space-y-3">
                               <p className="text-sm text-foreground">Target: Schedule 20 meetings with interested investors</p>
-                              <Progress value={Math.round((investors.filter(i => i.status === 'Meeting Scheduled' || i.status === 'In Negotiation' || i.status === 'Closed').length / 20) * 100)} className="h-2" />
-                              <p className="text-sm font-semibold text-primary">{investors.filter(i => i.status === 'Meeting Scheduled' || i.status === 'In Negotiation' || i.status === 'Closed').length}/20 meetings scheduled ({Math.round((investors.filter(i => i.status === 'Meeting Scheduled' || i.status === 'In Negotiation' || i.status === 'Closed').length / 20) * 100)}%)</p>
+                              <Progress value={Math.min(100, Math.round(phase2Progress))} className="h-2" />
+                              <p className="text-sm font-semibold text-primary">{phase2Current}/20 meetings scheduled ({Math.round(phase2Progress)}%)</p>
                               <p className="text-xs text-muted-foreground">Deadline: March 31, 2026</p>
                             </CardContent>
                           </Card>
 
-                          <Card className="border-2 border-muted">
+                          <Card className={`border-2 ${needsAttention(phase3Progress, phase3Deadline) ? 'border-red-500/40 bg-red-500/5' : 'border-muted'}`}>
                             <CardHeader>
                               <div className="flex items-center justify-between">
                                 <CardTitle className="text-lg">Phase 3: Due Diligence</CardTitle>
                                 <div className="flex items-center gap-2">
+                                  <AttentionBadge show={needsAttention(phase3Progress, phase3Deadline)} />
                                   <CountdownBadge days={getDaysRemaining(phase3Deadline)} />
-                                  <Badge variant="outline">{investors.filter(i => i.status === 'Interested').length > 0 ? '⏳ IN PROGRESS' : 'UPCOMING'}</Badge>
+                                  <Badge variant="outline">{phase3Current > 0 ? '⏳ IN PROGRESS' : 'UPCOMING'}</Badge>
                                 </div>
                               </div>
                               <p className="text-sm text-muted-foreground">Mar 2026 - Apr 2026</p>
                             </CardHeader>
                             <CardContent className="space-y-3">
                               <p className="text-sm text-foreground">Target: 10 interested investors in DD process</p>
-                              <Progress value={Math.min(100, Math.round((investors.filter(i => i.status === 'Interested').length / 10) * 100))} className="h-2" />
-                              <p className="text-sm font-semibold text-foreground">{investors.filter(i => i.status === 'Interested').length}/10 in progress ({Math.round((investors.filter(i => i.status === 'Interested').length / 10) * 100)}%)</p>
+                              <Progress value={Math.min(100, Math.round(phase3Progress))} className="h-2" />
+                              <p className="text-sm font-semibold text-foreground">{phase3Current}/10 in progress ({Math.round(phase3Progress)}%)</p>
                               <p className="text-xs text-muted-foreground">Deadline: April 30, 2026</p>
                             </CardContent>
                           </Card>
 
-                          <Card className="border-2 border-muted">
+                          <Card className={`border-2 ${needsAttention(phase4Progress, phase4Deadline) ? 'border-red-500/40 bg-red-500/5' : 'border-muted'}`}>
                             <CardHeader>
                               <div className="flex items-center justify-between">
                                 <CardTitle className="text-lg">Phase 4: Negotiation</CardTitle>
                                 <div className="flex items-center gap-2">
+                                  <AttentionBadge show={needsAttention(phase4Progress, phase4Deadline)} />
                                   <CountdownBadge days={getDaysRemaining(phase4Deadline)} />
-                                  <Badge variant="outline">{investors.filter(i => i.status === 'In Negotiation').length > 0 ? '⏳ IN PROGRESS' : 'UPCOMING'}</Badge>
+                                  <Badge variant="outline">{phase4Current > 0 ? '⏳ IN PROGRESS' : 'UPCOMING'}</Badge>
                                 </div>
                               </div>
                               <p className="text-sm text-muted-foreground">Apr 2026 - May 2026</p>
                             </CardHeader>
                             <CardContent className="space-y-3">
                               <p className="text-sm text-foreground">Target: 5 active negotiations</p>
-                              <Progress value={Math.min(100, Math.round((investors.filter(i => i.status === 'In Negotiation').length / 5) * 100))} className="h-2" />
-                              <p className="text-sm font-semibold text-foreground">{investors.filter(i => i.status === 'In Negotiation').length}/5 in negotiation ({Math.round((investors.filter(i => i.status === 'In Negotiation').length / 5) * 100)}%)</p>
+                              <Progress value={Math.min(100, Math.round(phase4Progress))} className="h-2" />
+                              <p className="text-sm font-semibold text-foreground">{phase4Current}/5 in negotiation ({Math.round(phase4Progress)}%)</p>
                               <p className="text-xs text-muted-foreground">Deadline: May 31, 2026</p>
                             </CardContent>
                           </Card>
 
-                          <Card className="border-2 border-muted">
+                          <Card className={`border-2 ${needsAttention(phase5Progress, phase5Deadline) ? 'border-red-500/40 bg-red-500/5' : 'border-muted'}`}>
                             <CardHeader>
                               <div className="flex items-center justify-between">
                                 <CardTitle className="text-lg">Phase 5: First Closing</CardTitle>
                                 <div className="flex items-center gap-2">
+                                  <AttentionBadge show={needsAttention(phase5Progress, phase5Deadline)} />
                                   <CountdownBadge days={getDaysRemaining(phase5Deadline)} />
-                                  <Badge variant="outline">{investors.filter(i => i.status === 'Closed').length > 0 ? '⏳ IN PROGRESS' : 'TARGET'}</Badge>
+                                  <Badge variant="outline">{phase5Current > 0 ? '⏳ IN PROGRESS' : 'TARGET'}</Badge>
                                 </div>
                               </div>
                               <p className="text-sm text-muted-foreground">May 2026 - Jun 2026</p>
                             </CardHeader>
                             <CardContent className="space-y-3">
                               <p className="text-sm text-foreground">Target: €3-5M first closing</p>
-                              <Progress value={Math.min(100, Math.round((investors.filter(i => i.status === 'Closed').reduce((sum, inv) => sum + (inv.pipelineValue || 0), 0) / 5000000) * 100))} className="h-2" />
-                              <p className="text-sm font-semibold text-foreground">€{(investors.filter(i => i.status === 'Closed').reduce((sum, inv) => sum + (inv.pipelineValue || 0), 0) / 1000000).toFixed(1)}M / €5M ({Math.round((investors.filter(i => i.status === 'Closed').reduce((sum, inv) => sum + (inv.pipelineValue || 0), 0) / 5000000) * 100)}%)</p>
+                              <Progress value={Math.min(100, Math.round(phase5Progress))} className="h-2" />
+                              <p className="text-sm font-semibold text-foreground">€{(phase5Current / 1000000).toFixed(1)}M / €5M ({Math.round(phase5Progress)}%)</p>
                               <p className="text-xs text-muted-foreground">Deadline: June 30, 2026</p>
                             </CardContent>
                           </Card>
 
-                          <Card className="border-2 border-accent/20 bg-accent/5">
+                          <Card className={`border-2 ${needsAttention(phase6Progress, phase6Deadline) ? 'border-red-500/40 bg-red-500/5' : 'border-accent/20 bg-accent/5'}`}>
                             <CardHeader>
                               <div className="flex items-center justify-between">
                                 <CardTitle className="text-lg">Phase 6: Final Closing</CardTitle>
                                 <div className="flex items-center gap-2">
+                                  <AttentionBadge show={needsAttention(phase6Progress, phase6Deadline)} />
                                   <CountdownBadge days={getDaysRemaining(phase6Deadline)} />
                                   <Badge variant="outline" className="bg-accent/20 text-accent border-accent/40">🎯 TARGET</Badge>
                                 </div>
@@ -922,8 +968,8 @@ const ABCCompanyConsole = () => {
                             </CardHeader>
                             <CardContent className="space-y-3">
                               <p className="text-sm text-foreground">Target: €10M total fundraise</p>
-                              <Progress value={Math.min(100, Math.round((investors.reduce((sum, inv) => sum + (inv.pipelineValue || 0), 0) / 10000000) * 100))} className="h-2" />
-                              <p className="text-sm font-semibold text-accent">€{(investors.reduce((sum, inv) => sum + (inv.pipelineValue || 0), 0) / 1000000).toFixed(2)}M / €10M ({Math.round((investors.reduce((sum, inv) => sum + (inv.pipelineValue || 0), 0) / 10000000) * 100)}%)</p>
+                              <Progress value={Math.min(100, Math.round(phase6Progress))} className="h-2" />
+                              <p className="text-sm font-semibold text-accent">€{(phase6Current / 1000000).toFixed(2)}M / €10M ({Math.round(phase6Progress)}%)</p>
                               <p className="text-xs text-muted-foreground">Final Deadline: June 30, 2026</p>
                               <div className="pt-2 border-t border-border/50 mt-2">
                                 <p className="text-xs text-muted-foreground">Pipeline Summary:</p>
