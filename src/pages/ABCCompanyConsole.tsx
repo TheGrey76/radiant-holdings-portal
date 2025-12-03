@@ -213,7 +213,7 @@ const ABCCompanyConsole = () => {
         rilevanza: inv.rilevanza,
         lastContactDate: inv.last_contact_date,
         nextFollowUpDate: inv.next_follow_up_date,
-        approved: inv.approved ?? false,
+        approvalStatus: inv.approval_status || 'pending',
       }));
 
       setInvestors(transformedInvestors);
