@@ -801,9 +801,9 @@ const ABCCompanyConsole = () => {
                         <p className="text-sm text-muted-foreground">Dec 2024 - Jan 2025</p>
                       </CardHeader>
                       <CardContent className="space-y-3">
-                        <p className="text-sm text-foreground">Target: Contact 57 high-priority investors</p>
+                        <p className="text-sm text-foreground">Target: Contact {investors.length} high-priority investors</p>
                         <Progress value={100} className="h-2" />
-                        <p className="text-sm font-semibold text-green-600">57/57 contacts reached (100%)</p>
+                        <p className="text-sm font-semibold text-green-600">{investors.length}/{investors.length} contacts reached (100%)</p>
                         <p className="text-xs text-muted-foreground">Deadline: January 31, 2025</p>
                       </CardContent>
                     </Card>
@@ -818,9 +818,9 @@ const ABCCompanyConsole = () => {
                       </CardHeader>
                       <CardContent className="space-y-3">
                         <p className="text-sm text-foreground">Target: Schedule 20 meetings with interested investors</p>
-                        <Progress value={60} className="h-2" />
-                        <p className="text-sm font-semibold text-primary">12/20 meetings scheduled (60%)</p>
-                        <p className="text-xs text-muted-foreground">Deadline: March 31, 2025 (120 days remaining)</p>
+                        <Progress value={Math.round((investors.filter(i => i.status === 'Meeting Scheduled' || i.status === 'In Negotiation' || i.status === 'Closed').length / 20) * 100)} className="h-2" />
+                        <p className="text-sm font-semibold text-primary">{investors.filter(i => i.status === 'Meeting Scheduled' || i.status === 'In Negotiation' || i.status === 'Closed').length}/20 meetings scheduled ({Math.round((investors.filter(i => i.status === 'Meeting Scheduled' || i.status === 'In Negotiation' || i.status === 'Closed').length / 20) * 100)}%)</p>
+                        <p className="text-xs text-muted-foreground">Deadline: March 31, 2025</p>
                       </CardContent>
                     </Card>
 
