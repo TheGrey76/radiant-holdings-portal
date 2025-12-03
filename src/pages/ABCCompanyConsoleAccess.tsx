@@ -5,12 +5,19 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { Shield, Mail } from "lucide-react";
 
-// Authorized admin emails
-const AUTHORIZED_EMAILS = [
+// Default authorized admin emails
+const DEFAULT_AUTHORIZED_EMAILS = [
   "edoardo.grigione@aries76.com",
   "admin@aries76.com",
   "stefano.taioli@abccompany.it"
 ];
+
+// Get all authorized emails (default + custom from localStorage)
+const getAuthorizedEmails = (): string[] => {
+  const customEmails = localStorage.getItem('abc_console_custom_emails');
+  const customList = customEmails ? JSON.parse(customEmails) : [];
+  return [...DEFAULT_AUTHORIZED_EMAILS, ...customList];
+};
 
 const ABCCompanyConsoleAccess = () => {
   const [email, setEmail] = useState("");
@@ -22,8 +29,9 @@ const ABCCompanyConsoleAccess = () => {
     setIsLoading(true);
 
     const normalizedEmail = email.toLowerCase().trim();
+    const authorizedEmails = getAuthorizedEmails();
 
-    if (AUTHORIZED_EMAILS.includes(normalizedEmail)) {
+    if (authorizedEmails.includes(normalizedEmail)) {
       sessionStorage.setItem('abc_console_authorized', 'true');
       sessionStorage.setItem('abc_console_email', normalizedEmail);
       toast.success("Access granted to ABC Company Console");
