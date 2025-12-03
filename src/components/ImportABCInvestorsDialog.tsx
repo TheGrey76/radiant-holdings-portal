@@ -28,94 +28,42 @@ interface InvestorRow {
   probability?: number;
 }
 
-// Column mapping from common Excel headers to database fields
-const COLUMN_MAPPINGS: Record<string, string> = {
-  // Name variations
-  'nome': 'nome',
-  'name': 'nome',
-  'nominativo': 'nome',
-  'contatto': 'nome',
-  'full name': 'nome',
-  'nome completo': 'nome',
+// Function to match column headers flexibly
+const matchColumn = (header: string, patterns: string[]): boolean => {
+  const normalized = header.toLowerCase().trim().replace(/[_\-\s]+/g, ' ');
+  return patterns.some(pattern => {
+    const normalizedPattern = pattern.toLowerCase().trim().replace(/[_\-\s]+/g, ' ');
+    return normalized === normalizedPattern || 
+           normalized.includes(normalizedPattern) || 
+           normalizedPattern.includes(normalized);
+  });
+};
+
+// Field patterns for flexible matching
+const FIELD_PATTERNS: Record<string, string[]> = {
+  nome: ['nome', 'name', 'nominativo', 'contatto', 'full name', 'nome completo', 'nome e cognome', 'cognome e nome', 'referente', 'persona'],
+  azienda: ['azienda', 'company', 'società', 'societa', 'organizzazione', 'organization', 'ente', 'impresa', 'ditta', 'ragione sociale', 'denominazione'],
+  ruolo: ['ruolo', 'role', 'posizione', 'position', 'title', 'job title', 'carica', 'qualifica', 'mansione', 'funzione'],
+  categoria: ['categoria', 'category', 'tipo', 'type', 'segmento', 'segment', 'tipologia', 'classificazione', 'classe'],
+  citta: ['citta', 'città', 'city', 'località', 'localita', 'sede', 'luogo', 'comune', 'location'],
+  fonte: ['fonte', 'source', 'provenienza', 'origin', 'canale', 'origine'],
+  priorita: ['priorita', 'priorità', 'priority', 'importanza', 'rilevanza'],
+  email: ['email', 'e-mail', 'mail', 'indirizzo email', 'posta elettronica', 'e mail'],
+  phone: ['phone', 'telefono', 'tel', 'cellulare', 'mobile', 'numero', 'cell', 'recapito'],
+  linkedin: ['linkedin', 'linkedin url', 'profilo linkedin', 'link linkedin'],
+  pipeline_value: ['pipeline_value', 'pipeline value', 'valore pipeline', 'valore', 'value', 'importo', 'amount', 'ticket'],
+  probability: ['probability', 'probabilità', 'probabilita', 'prob', '%', 'percentuale'],
+};
+
+const mapColumnToField = (header: string): string | null => {
+  const normalized = header.toLowerCase().trim();
   
-  // Company variations
-  'azienda': 'azienda',
-  'company': 'azienda',
-  'società': 'azienda',
-  'societa': 'azienda',
-  'organizzazione': 'azienda',
-  'organization': 'azienda',
-  'ente': 'azienda',
-  
-  // Role variations
-  'ruolo': 'ruolo',
-  'role': 'ruolo',
-  'posizione': 'ruolo',
-  'position': 'ruolo',
-  'title': 'ruolo',
-  'job title': 'ruolo',
-  'carica': 'ruolo',
-  
-  // Category variations
-  'categoria': 'categoria',
-  'category': 'categoria',
-  'tipo': 'categoria',
-  'type': 'categoria',
-  'segmento': 'categoria',
-  'segment': 'categoria',
-  
-  // City variations
-  'citta': 'citta',
-  'città': 'citta',
-  'city': 'citta',
-  'località': 'citta',
-  'localita': 'citta',
-  'sede': 'citta',
-  
-  // Source variations
-  'fonte': 'fonte',
-  'source': 'fonte',
-  'provenienza': 'fonte',
-  'origin': 'fonte',
-  
-  // Priority variations
-  'priorita': 'priorita',
-  'priorità': 'priorita',
-  'priority': 'priorita',
-  'importanza': 'priorita',
-  
-  // Email variations
-  'email': 'email',
-  'e-mail': 'email',
-  'mail': 'email',
-  'indirizzo email': 'email',
-  
-  // Phone variations
-  'phone': 'phone',
-  'telefono': 'phone',
-  'tel': 'phone',
-  'cellulare': 'phone',
-  'mobile': 'phone',
-  
-  // LinkedIn variations
-  'linkedin': 'linkedin',
-  'linkedin url': 'linkedin',
-  'profilo linkedin': 'linkedin',
-  
-  // Pipeline value variations
-  'pipeline_value': 'pipeline_value',
-  'pipeline value': 'pipeline_value',
-  'valore pipeline': 'pipeline_value',
-  'valore': 'pipeline_value',
-  'value': 'pipeline_value',
-  'importo': 'pipeline_value',
-  
-  // Probability variations
-  'probability': 'probability',
-  'probabilità': 'probability',
-  'probabilita': 'probability',
-  'prob': 'probability',
-  '%': 'probability',
+  for (const [field, patterns] of Object.entries(FIELD_PATTERNS)) {
+    if (matchColumn(normalized, patterns)) {
+      return field;
+    }
+  }
+  return null;
 };
 
 export function ImportABCInvestorsDialog() {
@@ -124,20 +72,13 @@ export function ImportABCInvestorsDialog() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [parsedData, setParsedData] = useState<InvestorRow[]>([]);
   const [parseError, setParseError] = useState<string | null>(null);
+  const [detectedColumns, setDetectedColumns] = useState<string[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const normalizeHeader = (header: string): string => {
-    return header.toLowerCase().trim();
-  };
-
-  const mapColumnToField = (header: string): string | null => {
-    const normalized = normalizeHeader(header);
-    return COLUMN_MAPPINGS[normalized] || null;
-  };
 
   const parseExcelFile = async (file: File) => {
     setParseError(null);
     setParsedData([]);
+    setDetectedColumns([]);
     
     try {
       const buffer = await file.arrayBuffer();
@@ -156,29 +97,43 @@ export function ImportABCInvestorsDialog() {
       }
       
       // First row is headers
-      const headers = (jsonData[0] as string[]).map(h => String(h || ''));
+      const headers = (jsonData[0] as string[]).map(h => String(h || '')).filter(h => h.trim() !== '');
+      setDetectedColumns(headers);
+      
+      console.log('Colonne rilevate nel file:', headers);
       
       // Map headers to fields
       const fieldMapping: Record<number, string> = {};
-      headers.forEach((header, index) => {
-        const field = mapColumnToField(header);
-        if (field) {
-          fieldMapping[index] = field;
+      const originalHeaders = (jsonData[0] as string[]).map(h => String(h || ''));
+      originalHeaders.forEach((header, index) => {
+        if (header.trim()) {
+          const field = mapColumnToField(header);
+          if (field) {
+            fieldMapping[index] = field;
+            console.log(`Colonna "${header}" mappata a campo "${field}"`);
+          }
         }
       });
       
-      // Check required fields
+      // Check required fields with better error messages
       const mappedFields = Object.values(fieldMapping);
+      const missingFields: string[] = [];
+      
       if (!mappedFields.includes('nome')) {
-        setParseError("Colonna 'Nome' non trovata. Assicurati che il file contenga una colonna con il nome del contatto.");
-        return;
+        missingFields.push("Nome (nome del contatto)");
       }
       if (!mappedFields.includes('azienda')) {
-        setParseError("Colonna 'Azienda' non trovata. Assicurati che il file contenga una colonna con il nome dell'azienda.");
-        return;
+        missingFields.push("Azienda");
       }
       if (!mappedFields.includes('categoria')) {
-        setParseError("Colonna 'Categoria' non trovata. Assicurati che il file contenga una colonna con la categoria dell'investitore.");
+        missingFields.push("Categoria");
+      }
+      
+      if (missingFields.length > 0) {
+        setParseError(
+          `Colonne mancanti: ${missingFields.join(', ')}.\n\n` +
+          `Colonne trovate nel file: ${headers.join(', ')}`
+        );
         return;
       }
       
@@ -214,7 +169,10 @@ export function ImportABCInvestorsDialog() {
       }
       
       if (investors.length === 0) {
-        setParseError("Nessun dato valido trovato nel file. Verifica che i campi richiesti (Nome, Azienda, Categoria) siano compilati.");
+        setParseError(
+          "Nessun dato valido trovato nel file. Verifica che le righe abbiano i campi richiesti (Nome, Azienda, Categoria) compilati.\n\n" +
+          `Colonne trovate: ${headers.join(', ')}`
+        );
         return;
       }
       
@@ -297,6 +255,7 @@ export function ImportABCInvestorsDialog() {
     setSelectedFile(null);
     setParsedData([]);
     setParseError(null);
+    setDetectedColumns([]);
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
@@ -364,8 +323,10 @@ export function ImportABCInvestorsDialog() {
           
           {/* Parse error */}
           {parseError && (
-            <div className="bg-destructive/10 text-destructive text-sm p-3 rounded-lg">
-              {parseError}
+            <div className="bg-destructive/10 text-destructive text-sm p-3 rounded-lg space-y-2">
+              {parseError.split('\n\n').map((line, i) => (
+                <p key={i} className={i > 0 ? 'text-xs opacity-80' : ''}>{line}</p>
+              ))}
             </div>
           )}
           
