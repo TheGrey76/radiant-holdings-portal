@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
@@ -47,13 +47,10 @@ import MazalInnovation from "./pages/MazalInnovation";
 import WhyChooseAries from "./pages/WhyChooseAries";
 import LeadershipTeam from "./pages/LeadershipTeam";
 import VettaFiProposal from "./pages/VettaFiProposal";
-import VettaFiAccess from "./pages/VettaFiAccess";
 import AlkemiaPraesidiumProposal from "./pages/AlkemiaPraesidiumProposal";
-import AlkemiaPraesidiumAccess from "./pages/AlkemiaPraesidiumAccess";
 import AssetGUProposal from "./pages/AssetGUProposal";
 import AssetGUAccess from "./pages/AssetGUAccess";
 import ABCCompanyProposal from "./pages/ABCCompanyProposal";
-import ABCCompanyAccess from "./pages/ABCCompanyAccess";
 import ABCCompanyConsole from "./pages/ABCCompanyConsole";
 import ABCCompanyConsoleAccess from "./pages/ABCCompanyConsoleAccess";
 import GPLPMatching from "./pages/GPLPMatching";
@@ -112,13 +109,13 @@ const App = () => (
           <Route path="/gp-registration" element={<GPRegistrationPage />} />
           <Route path="/lp-registration" element={<LPRegistrationPage />} />
           <Route path="/sneaker-report" element={<SneakerReport />} />
-          <Route path="/vettafi-access" element={<VettaFiAccess />} />
+          <Route path="/vettafi-access" element={<Navigate to="/vettafi-proposal" replace />} />
           <Route path="/vettafi-proposal" element={<VettaFiProposal />} />
-          <Route path="/alkemia-praesidium-access" element={<AlkemiaPraesidiumAccess />} />
+          <Route path="/alkemia-praesidium-access" element={<Navigate to="/alkemia-praesidium-proposal" replace />} />
           <Route path="/alkemia-praesidium-proposal" element={<AlkemiaPraesidiumProposal />} />
           <Route path="/asset-gu-access" element={<AssetGUAccess />} />
           <Route path="/asset-gu-proposal" element={<AssetGUProposal />} />
-          <Route path="/abc-company-access" element={<ABCCompanyAccess />} />
+          <Route path="/abc-company-access" element={<Navigate to="/abc-company-proposal" replace />} />
           <Route path="/abc-company-proposal" element={<ABCCompanyProposal />} />
           <Route path="/abc-company-console" element={<ABCCompanyConsole />} />
           <Route path="/abc-company-console-access" element={<ABCCompanyConsoleAccess />} />
