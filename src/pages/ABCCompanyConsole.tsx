@@ -792,107 +792,150 @@ const ABCCompanyConsole = () => {
                 <div className="space-y-6">
                   {/* Phase Cards */}
                   <div className="grid md:grid-cols-2 gap-6">
-                    <Card className="border-2 border-green-500/20 bg-green-500/5">
-                      <CardHeader>
-                        <div className="flex items-center justify-between">
-                          <CardTitle className="text-lg">Phase 1: Outreach</CardTitle>
-                          <Badge className="bg-green-500 text-white">✅ DONE</Badge>
-                        </div>
-                        <p className="text-sm text-muted-foreground">Dec 2025 - Jan 2026</p>
-                      </CardHeader>
-                      <CardContent className="space-y-3">
-                        <p className="text-sm text-foreground">Target: Contact {investors.length} high-priority investors</p>
-                        <Progress value={100} className="h-2" />
-                        <p className="text-sm font-semibold text-green-600">{investors.length}/{investors.length} contacts reached (100%)</p>
-                        <p className="text-xs text-muted-foreground">Deadline: January 31, 2026</p>
-                      </CardContent>
-                    </Card>
+                    {(() => {
+                      const now = new Date();
+                      const getDaysRemaining = (deadline: Date) => {
+                        const diff = deadline.getTime() - now.getTime();
+                        return Math.ceil(diff / (1000 * 60 * 60 * 24));
+                      };
+                      const phase1Deadline = new Date('2026-01-31');
+                      const phase2Deadline = new Date('2026-03-31');
+                      const phase3Deadline = new Date('2026-04-30');
+                      const phase4Deadline = new Date('2026-05-31');
+                      const phase5Deadline = new Date('2026-06-30');
+                      const phase6Deadline = new Date('2026-06-30');
 
-                    <Card className="border-2 border-primary/20 bg-primary/5">
-                      <CardHeader>
-                        <div className="flex items-center justify-between">
-                          <CardTitle className="text-lg">Phase 2: Initial Meetings</CardTitle>
-                          <Badge className="bg-primary">⏳ IN PROGRESS</Badge>
-                        </div>
-                        <p className="text-sm text-muted-foreground">Feb 2026 - Mar 2026</p>
-                      </CardHeader>
-                      <CardContent className="space-y-3">
-                        <p className="text-sm text-foreground">Target: Schedule 20 meetings with interested investors</p>
-                        <Progress value={Math.round((investors.filter(i => i.status === 'Meeting Scheduled' || i.status === 'In Negotiation' || i.status === 'Closed').length / 20) * 100)} className="h-2" />
-                        <p className="text-sm font-semibold text-primary">{investors.filter(i => i.status === 'Meeting Scheduled' || i.status === 'In Negotiation' || i.status === 'Closed').length}/20 meetings scheduled ({Math.round((investors.filter(i => i.status === 'Meeting Scheduled' || i.status === 'In Negotiation' || i.status === 'Closed').length / 20) * 100)}%)</p>
-                        <p className="text-xs text-muted-foreground">Deadline: March 31, 2026</p>
-                      </CardContent>
-                    </Card>
+                      const CountdownBadge = ({ days }: { days: number }) => {
+                        if (days < 0) return <Badge variant="outline" className="text-xs bg-green-500/10 text-green-600 border-green-500/30">Completata</Badge>;
+                        if (days <= 7) return <Badge variant="outline" className="text-xs bg-red-500/10 text-red-600 border-red-500/30 animate-pulse">{days}g rimanenti</Badge>;
+                        if (days <= 30) return <Badge variant="outline" className="text-xs bg-yellow-500/10 text-yellow-600 border-yellow-500/30">{days}g rimanenti</Badge>;
+                        return <Badge variant="outline" className="text-xs bg-blue-500/10 text-blue-600 border-blue-500/30">{days}g rimanenti</Badge>;
+                      };
 
-                    <Card className="border-2 border-muted">
-                      <CardHeader>
-                        <div className="flex items-center justify-between">
-                          <CardTitle className="text-lg">Phase 3: Due Diligence</CardTitle>
-                          <Badge variant="outline">{investors.filter(i => i.status === 'Interested').length > 0 ? '⏳ IN PROGRESS' : 'UPCOMING'}</Badge>
-                        </div>
-                        <p className="text-sm text-muted-foreground">Mar 2026 - Apr 2026</p>
-                      </CardHeader>
-                      <CardContent className="space-y-3">
-                        <p className="text-sm text-foreground">Target: 10 interested investors in DD process</p>
-                        <Progress value={Math.min(100, Math.round((investors.filter(i => i.status === 'Interested').length / 10) * 100))} className="h-2" />
-                        <p className="text-sm font-semibold text-foreground">{investors.filter(i => i.status === 'Interested').length}/10 in progress ({Math.round((investors.filter(i => i.status === 'Interested').length / 10) * 100)}%)</p>
-                        <p className="text-xs text-muted-foreground">Deadline: April 30, 2026</p>
-                      </CardContent>
-                    </Card>
+                      return (
+                        <>
+                          <Card className="border-2 border-green-500/20 bg-green-500/5">
+                            <CardHeader>
+                              <div className="flex items-center justify-between">
+                                <CardTitle className="text-lg">Phase 1: Outreach</CardTitle>
+                                <div className="flex items-center gap-2">
+                                  <CountdownBadge days={getDaysRemaining(phase1Deadline)} />
+                                  <Badge className="bg-green-500 text-white">✅ DONE</Badge>
+                                </div>
+                              </div>
+                              <p className="text-sm text-muted-foreground">Dec 2025 - Jan 2026</p>
+                            </CardHeader>
+                            <CardContent className="space-y-3">
+                              <p className="text-sm text-foreground">Target: Contact {investors.length} high-priority investors</p>
+                              <Progress value={100} className="h-2" />
+                              <p className="text-sm font-semibold text-green-600">{investors.length}/{investors.length} contacts reached (100%)</p>
+                              <p className="text-xs text-muted-foreground">Deadline: January 31, 2026</p>
+                            </CardContent>
+                          </Card>
 
-                    <Card className="border-2 border-muted">
-                      <CardHeader>
-                        <div className="flex items-center justify-between">
-                          <CardTitle className="text-lg">Phase 4: Negotiation</CardTitle>
-                          <Badge variant="outline">{investors.filter(i => i.status === 'In Negotiation').length > 0 ? '⏳ IN PROGRESS' : 'UPCOMING'}</Badge>
-                        </div>
-                        <p className="text-sm text-muted-foreground">Apr 2026 - May 2026</p>
-                      </CardHeader>
-                      <CardContent className="space-y-3">
-                        <p className="text-sm text-foreground">Target: 5 active negotiations</p>
-                        <Progress value={Math.min(100, Math.round((investors.filter(i => i.status === 'In Negotiation').length / 5) * 100))} className="h-2" />
-                        <p className="text-sm font-semibold text-foreground">{investors.filter(i => i.status === 'In Negotiation').length}/5 in negotiation ({Math.round((investors.filter(i => i.status === 'In Negotiation').length / 5) * 100)}%)</p>
-                        <p className="text-xs text-muted-foreground">Deadline: May 31, 2026</p>
-                      </CardContent>
-                    </Card>
+                          <Card className="border-2 border-primary/20 bg-primary/5">
+                            <CardHeader>
+                              <div className="flex items-center justify-between">
+                                <CardTitle className="text-lg">Phase 2: Initial Meetings</CardTitle>
+                                <div className="flex items-center gap-2">
+                                  <CountdownBadge days={getDaysRemaining(phase2Deadline)} />
+                                  <Badge className="bg-primary">⏳ IN PROGRESS</Badge>
+                                </div>
+                              </div>
+                              <p className="text-sm text-muted-foreground">Feb 2026 - Mar 2026</p>
+                            </CardHeader>
+                            <CardContent className="space-y-3">
+                              <p className="text-sm text-foreground">Target: Schedule 20 meetings with interested investors</p>
+                              <Progress value={Math.round((investors.filter(i => i.status === 'Meeting Scheduled' || i.status === 'In Negotiation' || i.status === 'Closed').length / 20) * 100)} className="h-2" />
+                              <p className="text-sm font-semibold text-primary">{investors.filter(i => i.status === 'Meeting Scheduled' || i.status === 'In Negotiation' || i.status === 'Closed').length}/20 meetings scheduled ({Math.round((investors.filter(i => i.status === 'Meeting Scheduled' || i.status === 'In Negotiation' || i.status === 'Closed').length / 20) * 100)}%)</p>
+                              <p className="text-xs text-muted-foreground">Deadline: March 31, 2026</p>
+                            </CardContent>
+                          </Card>
 
-                    <Card className="border-2 border-muted">
-                      <CardHeader>
-                        <div className="flex items-center justify-between">
-                          <CardTitle className="text-lg">Phase 5: First Closing</CardTitle>
-                          <Badge variant="outline">{investors.filter(i => i.status === 'Closed').length > 0 ? '⏳ IN PROGRESS' : 'TARGET'}</Badge>
-                        </div>
-                        <p className="text-sm text-muted-foreground">May 2026 - Jun 2026</p>
-                      </CardHeader>
-                      <CardContent className="space-y-3">
-                        <p className="text-sm text-foreground">Target: €3-5M first closing</p>
-                        <Progress value={Math.min(100, Math.round((investors.filter(i => i.status === 'Closed').reduce((sum, inv) => sum + (inv.pipelineValue || 0), 0) / 5000000) * 100))} className="h-2" />
-                        <p className="text-sm font-semibold text-foreground">€{(investors.filter(i => i.status === 'Closed').reduce((sum, inv) => sum + (inv.pipelineValue || 0), 0) / 1000000).toFixed(1)}M / €5M ({Math.round((investors.filter(i => i.status === 'Closed').reduce((sum, inv) => sum + (inv.pipelineValue || 0), 0) / 5000000) * 100)}%)</p>
-                        <p className="text-xs text-muted-foreground">Deadline: June 30, 2026</p>
-                      </CardContent>
-                    </Card>
+                          <Card className="border-2 border-muted">
+                            <CardHeader>
+                              <div className="flex items-center justify-between">
+                                <CardTitle className="text-lg">Phase 3: Due Diligence</CardTitle>
+                                <div className="flex items-center gap-2">
+                                  <CountdownBadge days={getDaysRemaining(phase3Deadline)} />
+                                  <Badge variant="outline">{investors.filter(i => i.status === 'Interested').length > 0 ? '⏳ IN PROGRESS' : 'UPCOMING'}</Badge>
+                                </div>
+                              </div>
+                              <p className="text-sm text-muted-foreground">Mar 2026 - Apr 2026</p>
+                            </CardHeader>
+                            <CardContent className="space-y-3">
+                              <p className="text-sm text-foreground">Target: 10 interested investors in DD process</p>
+                              <Progress value={Math.min(100, Math.round((investors.filter(i => i.status === 'Interested').length / 10) * 100))} className="h-2" />
+                              <p className="text-sm font-semibold text-foreground">{investors.filter(i => i.status === 'Interested').length}/10 in progress ({Math.round((investors.filter(i => i.status === 'Interested').length / 10) * 100)}%)</p>
+                              <p className="text-xs text-muted-foreground">Deadline: April 30, 2026</p>
+                            </CardContent>
+                          </Card>
 
-                    <Card className="border-2 border-accent/20 bg-accent/5">
-                      <CardHeader>
-                        <div className="flex items-center justify-between">
-                          <CardTitle className="text-lg">Phase 6: Final Closing</CardTitle>
-                          <Badge variant="outline" className="bg-accent/20 text-accent border-accent/40">🎯 TARGET</Badge>
-                        </div>
-                        <p className="text-sm text-muted-foreground">Apr 2026 - Jun 2026</p>
-                      </CardHeader>
-                      <CardContent className="space-y-3">
-                        <p className="text-sm text-foreground">Target: €10M total fundraise</p>
-                        <Progress value={Math.min(100, Math.round((investors.reduce((sum, inv) => sum + (inv.pipelineValue || 0), 0) / 10000000) * 100))} className="h-2" />
-                        <p className="text-sm font-semibold text-accent">€{(investors.reduce((sum, inv) => sum + (inv.pipelineValue || 0), 0) / 1000000).toFixed(2)}M / €10M ({Math.round((investors.reduce((sum, inv) => sum + (inv.pipelineValue || 0), 0) / 10000000) * 100)}%)</p>
-                        <p className="text-xs text-muted-foreground">Final Deadline: June 30, 2026</p>
-                        <div className="pt-2 border-t border-border/50 mt-2">
-                          <p className="text-xs text-muted-foreground">Pipeline Summary:</p>
-                          <p className="text-xs">• Closed: €{(investors.filter(i => i.status === 'Closed').reduce((sum, inv) => sum + (inv.pipelineValue || 0), 0) / 1000000).toFixed(2)}M</p>
-                          <p className="text-xs">• In Negotiation: €{(investors.filter(i => i.status === 'In Negotiation').reduce((sum, inv) => sum + (inv.pipelineValue || 0), 0) / 1000000).toFixed(2)}M</p>
-                          <p className="text-xs">• Interested: €{(investors.filter(i => i.status === 'Interested').reduce((sum, inv) => sum + (inv.pipelineValue || 0), 0) / 1000000).toFixed(2)}M</p>
-                        </div>
-                      </CardContent>
-                    </Card>
+                          <Card className="border-2 border-muted">
+                            <CardHeader>
+                              <div className="flex items-center justify-between">
+                                <CardTitle className="text-lg">Phase 4: Negotiation</CardTitle>
+                                <div className="flex items-center gap-2">
+                                  <CountdownBadge days={getDaysRemaining(phase4Deadline)} />
+                                  <Badge variant="outline">{investors.filter(i => i.status === 'In Negotiation').length > 0 ? '⏳ IN PROGRESS' : 'UPCOMING'}</Badge>
+                                </div>
+                              </div>
+                              <p className="text-sm text-muted-foreground">Apr 2026 - May 2026</p>
+                            </CardHeader>
+                            <CardContent className="space-y-3">
+                              <p className="text-sm text-foreground">Target: 5 active negotiations</p>
+                              <Progress value={Math.min(100, Math.round((investors.filter(i => i.status === 'In Negotiation').length / 5) * 100))} className="h-2" />
+                              <p className="text-sm font-semibold text-foreground">{investors.filter(i => i.status === 'In Negotiation').length}/5 in negotiation ({Math.round((investors.filter(i => i.status === 'In Negotiation').length / 5) * 100)}%)</p>
+                              <p className="text-xs text-muted-foreground">Deadline: May 31, 2026</p>
+                            </CardContent>
+                          </Card>
+
+                          <Card className="border-2 border-muted">
+                            <CardHeader>
+                              <div className="flex items-center justify-between">
+                                <CardTitle className="text-lg">Phase 5: First Closing</CardTitle>
+                                <div className="flex items-center gap-2">
+                                  <CountdownBadge days={getDaysRemaining(phase5Deadline)} />
+                                  <Badge variant="outline">{investors.filter(i => i.status === 'Closed').length > 0 ? '⏳ IN PROGRESS' : 'TARGET'}</Badge>
+                                </div>
+                              </div>
+                              <p className="text-sm text-muted-foreground">May 2026 - Jun 2026</p>
+                            </CardHeader>
+                            <CardContent className="space-y-3">
+                              <p className="text-sm text-foreground">Target: €3-5M first closing</p>
+                              <Progress value={Math.min(100, Math.round((investors.filter(i => i.status === 'Closed').reduce((sum, inv) => sum + (inv.pipelineValue || 0), 0) / 5000000) * 100))} className="h-2" />
+                              <p className="text-sm font-semibold text-foreground">€{(investors.filter(i => i.status === 'Closed').reduce((sum, inv) => sum + (inv.pipelineValue || 0), 0) / 1000000).toFixed(1)}M / €5M ({Math.round((investors.filter(i => i.status === 'Closed').reduce((sum, inv) => sum + (inv.pipelineValue || 0), 0) / 5000000) * 100)}%)</p>
+                              <p className="text-xs text-muted-foreground">Deadline: June 30, 2026</p>
+                            </CardContent>
+                          </Card>
+
+                          <Card className="border-2 border-accent/20 bg-accent/5">
+                            <CardHeader>
+                              <div className="flex items-center justify-between">
+                                <CardTitle className="text-lg">Phase 6: Final Closing</CardTitle>
+                                <div className="flex items-center gap-2">
+                                  <CountdownBadge days={getDaysRemaining(phase6Deadline)} />
+                                  <Badge variant="outline" className="bg-accent/20 text-accent border-accent/40">🎯 TARGET</Badge>
+                                </div>
+                              </div>
+                              <p className="text-sm text-muted-foreground">Apr 2026 - Jun 2026</p>
+                            </CardHeader>
+                            <CardContent className="space-y-3">
+                              <p className="text-sm text-foreground">Target: €10M total fundraise</p>
+                              <Progress value={Math.min(100, Math.round((investors.reduce((sum, inv) => sum + (inv.pipelineValue || 0), 0) / 10000000) * 100))} className="h-2" />
+                              <p className="text-sm font-semibold text-accent">€{(investors.reduce((sum, inv) => sum + (inv.pipelineValue || 0), 0) / 1000000).toFixed(2)}M / €10M ({Math.round((investors.reduce((sum, inv) => sum + (inv.pipelineValue || 0), 0) / 10000000) * 100)}%)</p>
+                              <p className="text-xs text-muted-foreground">Final Deadline: June 30, 2026</p>
+                              <div className="pt-2 border-t border-border/50 mt-2">
+                                <p className="text-xs text-muted-foreground">Pipeline Summary:</p>
+                                <p className="text-xs">• Closed: €{(investors.filter(i => i.status === 'Closed').reduce((sum, inv) => sum + (inv.pipelineValue || 0), 0) / 1000000).toFixed(2)}M</p>
+                                <p className="text-xs">• In Negotiation: €{(investors.filter(i => i.status === 'In Negotiation').reduce((sum, inv) => sum + (inv.pipelineValue || 0), 0) / 1000000).toFixed(2)}M</p>
+                                <p className="text-xs">• Interested: €{(investors.filter(i => i.status === 'Interested').reduce((sum, inv) => sum + (inv.pipelineValue || 0), 0) / 1000000).toFixed(2)}M</p>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        </>
+                      );
+                    })()}
                   </div>
 
                   {/* Alerts */}
