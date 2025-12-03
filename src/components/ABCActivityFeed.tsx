@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { FileText, Calendar, MessageSquare, Paperclip, Clock } from "lucide-react";
+import { FileText, Calendar, MessageSquare, Paperclip, Clock, ArrowRight, ShieldCheck, UserPlus } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -18,6 +18,12 @@ const ActivityIcon = ({ type }: { type: ActivityItem['type'] }) => {
       return <FileText {...iconProps} className="text-green-500" />;
     case 'document':
       return <Paperclip {...iconProps} className="text-orange-500" />;
+    case 'status_change':
+      return <ArrowRight {...iconProps} className="text-cyan-500" />;
+    case 'approval_change':
+      return <ShieldCheck {...iconProps} className="text-amber-500" />;
+    case 'investor_added':
+      return <UserPlus {...iconProps} className="text-emerald-500" />;
     default:
       return <FileText {...iconProps} />;
   }
@@ -29,6 +35,9 @@ const ActivityTypeBadge = ({ type }: { type: ActivityItem['type'] }) => {
     followup: "bg-purple-500/10 text-purple-600 border-purple-500/20",
     activity: "bg-green-500/10 text-green-600 border-green-500/20",
     document: "bg-orange-500/10 text-orange-600 border-orange-500/20",
+    status_change: "bg-cyan-500/10 text-cyan-600 border-cyan-500/20",
+    approval_change: "bg-amber-500/10 text-amber-600 border-amber-500/20",
+    investor_added: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20",
   };
 
   const labels: Record<ActivityItem['type'], string> = {
@@ -36,6 +45,9 @@ const ActivityTypeBadge = ({ type }: { type: ActivityItem['type'] }) => {
     followup: "Follow-up",
     activity: "Activity",
     document: "Document",
+    status_change: "Status Change",
+    approval_change: "Approval",
+    investor_added: "New Investor",
   };
 
   return (
