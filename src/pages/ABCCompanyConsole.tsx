@@ -1198,16 +1198,26 @@ const ABCCompanyConsole = () => {
                       .sort((a, b) => b.weightedValue - a.weightedValue)
                       .slice(0, 5)
                       .map((investor, idx) => (
-                        <div key={investor.id || idx} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                        <div 
+                          key={investor.id || idx} 
+                          className="flex items-center justify-between p-3 bg-muted/50 rounded-lg cursor-pointer hover:bg-muted transition-colors group"
+                          onClick={() => {
+                            setActiveTab('investors');
+                            toast.info(`Vai alla scheda di ${investor.nome} nella sezione Investors`);
+                          }}
+                        >
                           <div className="flex-1">
                             <p className="text-sm font-semibold text-foreground">{idx + 1}. {investor.nome}</p>
                             <p className="text-xs text-muted-foreground">{investor.azienda}</p>
                           </div>
-                          <div className="text-right">
-                            <p className="text-sm font-bold text-primary">{formatCurrency(investor.weightedValue)}</p>
-                            <p className="text-xs text-muted-foreground">
-                              {formatCurrency(investor.pipelineValue || 0)} × {investor.probability || 50}%
-                            </p>
+                          <div className="text-right flex items-center gap-2">
+                            <div>
+                              <p className="text-sm font-bold text-primary">{formatCurrency(investor.weightedValue)}</p>
+                              <p className="text-xs text-muted-foreground">
+                                {formatCurrency(investor.pipelineValue || 0)} × {investor.probability || 50}%
+                              </p>
+                            </div>
+                            <Edit className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
                           </div>
                         </div>
                       ))}
