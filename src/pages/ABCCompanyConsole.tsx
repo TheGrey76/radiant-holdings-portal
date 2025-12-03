@@ -798,13 +798,13 @@ const ABCCompanyConsole = () => {
                           <CardTitle className="text-lg">Phase 1: Outreach</CardTitle>
                           <Badge className="bg-green-500 text-white">✅ DONE</Badge>
                         </div>
-                        <p className="text-sm text-muted-foreground">Dec 2024 - Jan 2025</p>
+                        <p className="text-sm text-muted-foreground">Dec 2025 - Jan 2026</p>
                       </CardHeader>
                       <CardContent className="space-y-3">
                         <p className="text-sm text-foreground">Target: Contact {investors.length} high-priority investors</p>
                         <Progress value={100} className="h-2" />
                         <p className="text-sm font-semibold text-green-600">{investors.length}/{investors.length} contacts reached (100%)</p>
-                        <p className="text-xs text-muted-foreground">Deadline: January 31, 2025</p>
+                        <p className="text-xs text-muted-foreground">Deadline: January 31, 2026</p>
                       </CardContent>
                     </Card>
 
@@ -814,13 +814,13 @@ const ABCCompanyConsole = () => {
                           <CardTitle className="text-lg">Phase 2: Initial Meetings</CardTitle>
                           <Badge className="bg-primary">⏳ IN PROGRESS</Badge>
                         </div>
-                        <p className="text-sm text-muted-foreground">Jan 2025 - Mar 2025</p>
+                        <p className="text-sm text-muted-foreground">Feb 2026 - Mar 2026</p>
                       </CardHeader>
                       <CardContent className="space-y-3">
                         <p className="text-sm text-foreground">Target: Schedule 20 meetings with interested investors</p>
                         <Progress value={Math.round((investors.filter(i => i.status === 'Meeting Scheduled' || i.status === 'In Negotiation' || i.status === 'Closed').length / 20) * 100)} className="h-2" />
                         <p className="text-sm font-semibold text-primary">{investors.filter(i => i.status === 'Meeting Scheduled' || i.status === 'In Negotiation' || i.status === 'Closed').length}/20 meetings scheduled ({Math.round((investors.filter(i => i.status === 'Meeting Scheduled' || i.status === 'In Negotiation' || i.status === 'Closed').length / 20) * 100)}%)</p>
-                        <p className="text-xs text-muted-foreground">Deadline: March 31, 2025</p>
+                        <p className="text-xs text-muted-foreground">Deadline: March 31, 2026</p>
                       </CardContent>
                     </Card>
 
@@ -830,13 +830,13 @@ const ABCCompanyConsole = () => {
                           <CardTitle className="text-lg">Phase 3: Due Diligence</CardTitle>
                           <Badge variant="outline">{investors.filter(i => i.status === 'Interested').length > 0 ? '⏳ IN PROGRESS' : 'UPCOMING'}</Badge>
                         </div>
-                        <p className="text-sm text-muted-foreground">Apr 2025 - Jun 2025</p>
+                        <p className="text-sm text-muted-foreground">Mar 2026 - Apr 2026</p>
                       </CardHeader>
                       <CardContent className="space-y-3">
                         <p className="text-sm text-foreground">Target: 10 interested investors in DD process</p>
                         <Progress value={Math.min(100, Math.round((investors.filter(i => i.status === 'Interested').length / 10) * 100))} className="h-2" />
                         <p className="text-sm font-semibold text-foreground">{investors.filter(i => i.status === 'Interested').length}/10 in progress ({Math.round((investors.filter(i => i.status === 'Interested').length / 10) * 100)}%)</p>
-                        <p className="text-xs text-muted-foreground">Deadline: June 30, 2025</p>
+                        <p className="text-xs text-muted-foreground">Deadline: April 30, 2026</p>
                       </CardContent>
                     </Card>
 
@@ -846,13 +846,13 @@ const ABCCompanyConsole = () => {
                           <CardTitle className="text-lg">Phase 4: Negotiation</CardTitle>
                           <Badge variant="outline">{investors.filter(i => i.status === 'In Negotiation').length > 0 ? '⏳ IN PROGRESS' : 'UPCOMING'}</Badge>
                         </div>
-                        <p className="text-sm text-muted-foreground">Jul 2025 - Sep 2025</p>
+                        <p className="text-sm text-muted-foreground">Apr 2026 - May 2026</p>
                       </CardHeader>
                       <CardContent className="space-y-3">
                         <p className="text-sm text-foreground">Target: 5 active negotiations</p>
                         <Progress value={Math.min(100, Math.round((investors.filter(i => i.status === 'In Negotiation').length / 5) * 100))} className="h-2" />
                         <p className="text-sm font-semibold text-foreground">{investors.filter(i => i.status === 'In Negotiation').length}/5 in negotiation ({Math.round((investors.filter(i => i.status === 'In Negotiation').length / 5) * 100)}%)</p>
-                        <p className="text-xs text-muted-foreground">Deadline: September 30, 2025</p>
+                        <p className="text-xs text-muted-foreground">Deadline: May 31, 2026</p>
                       </CardContent>
                     </Card>
 
@@ -862,7 +862,7 @@ const ABCCompanyConsole = () => {
                           <CardTitle className="text-lg">Phase 5: First Closing</CardTitle>
                           <Badge variant="outline">{investors.filter(i => i.status === 'Closed').length > 0 ? '⏳ IN PROGRESS' : 'TARGET'}</Badge>
                         </div>
-                        <p className="text-sm text-muted-foreground">Oct 2025 - Jun 2026</p>
+                        <p className="text-sm text-muted-foreground">May 2026 - Jun 2026</p>
                       </CardHeader>
                       <CardContent className="space-y-3">
                         <p className="text-sm text-foreground">Target: €3-5M first closing</p>
