@@ -872,19 +872,25 @@ const ABCCompanyConsole = () => {
                       </CardContent>
                     </Card>
 
-                    <Card className="border-2 border-muted">
+                    <Card className="border-2 border-accent/20 bg-accent/5">
                       <CardHeader>
                         <div className="flex items-center justify-between">
-                          <CardTitle className="text-lg">Phase 6: Second Closing</CardTitle>
-                          <Badge variant="outline">TARGET</Badge>
+                          <CardTitle className="text-lg">Phase 6: Final Closing</CardTitle>
+                          <Badge variant="outline" className="bg-accent/20 text-accent border-accent/40">🎯 TARGET</Badge>
                         </div>
                         <p className="text-sm text-muted-foreground">Apr 2026 - Jun 2026</p>
                       </CardHeader>
                       <CardContent className="space-y-3">
-                        <p className="text-sm text-foreground">Target: €5-7M (total €10M)</p>
-                        <Progress value={0} className="h-2" />
-                        <p className="text-sm font-semibold text-foreground">€0 / €7M (0%)</p>
-                        <p className="text-xs text-muted-foreground">Deadline: June 30, 2026</p>
+                        <p className="text-sm text-foreground">Target: €10M total fundraise</p>
+                        <Progress value={Math.min(100, Math.round((investors.reduce((sum, inv) => sum + (inv.pipelineValue || 0), 0) / 10000000) * 100))} className="h-2" />
+                        <p className="text-sm font-semibold text-accent">€{(investors.reduce((sum, inv) => sum + (inv.pipelineValue || 0), 0) / 1000000).toFixed(2)}M / €10M ({Math.round((investors.reduce((sum, inv) => sum + (inv.pipelineValue || 0), 0) / 10000000) * 100)}%)</p>
+                        <p className="text-xs text-muted-foreground">Final Deadline: June 30, 2026</p>
+                        <div className="pt-2 border-t border-border/50 mt-2">
+                          <p className="text-xs text-muted-foreground">Pipeline Summary:</p>
+                          <p className="text-xs">• Closed: €{(investors.filter(i => i.status === 'Closed').reduce((sum, inv) => sum + (inv.pipelineValue || 0), 0) / 1000000).toFixed(2)}M</p>
+                          <p className="text-xs">• In Negotiation: €{(investors.filter(i => i.status === 'In Negotiation').reduce((sum, inv) => sum + (inv.pipelineValue || 0), 0) / 1000000).toFixed(2)}M</p>
+                          <p className="text-xs">• Interested: €{(investors.filter(i => i.status === 'Interested').reduce((sum, inv) => sum + (inv.pipelineValue || 0), 0) / 1000000).toFixed(2)}M</p>
+                        </div>
                       </CardContent>
                     </Card>
                   </div>
@@ -898,8 +904,9 @@ const ABCCompanyConsole = () => {
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-2">
-                      <p className="text-sm text-foreground">• 8 meetings still needed to reach Phase 2 target</p>
-                      <p className="text-sm text-foreground">• 5 investors not responding (follow-up needed)</p>
+                      <p className="text-sm text-foreground">• {Math.max(0, 20 - investors.filter(i => i.status === 'Meeting Scheduled' || i.status === 'In Negotiation' || i.status === 'Closed').length)} meetings still needed to reach Phase 2 target</p>
+                      <p className="text-sm text-foreground">• {investors.filter(i => i.status === 'To Contact' && i.approvalStatus === 'approved').length} approved investors to contact</p>
+                      <p className="text-sm text-foreground">• {investors.filter(i => i.approvalStatus === 'pending').length} investors pending approval</p>
                     </CardContent>
                   </Card>
                 </div>
