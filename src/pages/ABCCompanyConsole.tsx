@@ -1138,25 +1138,51 @@ const ABCCompanyConsole = () => {
                   </div>
 
                   <div className="space-y-4">
-                    <h4 className="font-semibold text-foreground">Key Achievements</h4>
+                    <h4 className="font-semibold text-foreground">Current Status (Live)</h4>
                     <ul className="space-y-2 text-sm">
                       <li className="flex items-start gap-2">
-                        <CheckCircle className="h-4 w-4 text-green-600 mt-0.5" />
-                        <span>12 new meetings scheduled</span>
+                        <CheckCircle className={`h-4 w-4 mt-0.5 ${statusCounts.meetings > 0 ? 'text-green-600' : 'text-muted-foreground'}`} />
+                        <span>{statusCounts.meetings} meeting{statusCounts.meetings !== 1 ? 's' : ''} scheduled</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <CheckCircle className="h-4 w-4 text-green-600 mt-0.5" />
-                        <span>3 investors moved to negotiation phase</span>
+                        <CheckCircle className={`h-4 w-4 mt-0.5 ${statusCounts.negotiation > 0 ? 'text-green-600' : 'text-muted-foreground'}`} />
+                        <span>{statusCounts.negotiation} investor{statusCounts.negotiation !== 1 ? 's' : ''} in negotiation phase</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <CheckCircle className="h-4 w-4 text-green-600 mt-0.5" />
-                        <span>€500,000 commitment from Family Office Italia</span>
+                        <CheckCircle className={`h-4 w-4 mt-0.5 ${closedValue > 0 ? 'text-green-600' : 'text-muted-foreground'}`} />
+                        <span>€{(closedValue / 1000).toFixed(0)}K total closed commitments</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <CheckCircle className="h-4 w-4 text-green-600 mt-0.5" />
-                        <span>8 pitch presentations completed</span>
+                        <CheckCircle className={`h-4 w-4 mt-0.5 ${statusCounts.interested > 0 ? 'text-green-600' : 'text-muted-foreground'}`} />
+                        <span>{statusCounts.interested} interested investor{statusCounts.interested !== 1 ? 's' : ''} in DD</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className={`h-4 w-4 mt-0.5 ${statusCounts.contacted > 0 ? 'text-green-600' : 'text-muted-foreground'}`} />
+                        <span>{statusCounts.contacted} investor{statusCounts.contacted !== 1 ? 's' : ''} contacted</span>
                       </li>
                     </ul>
+                    
+                    <div className="pt-4 border-t border-border/50">
+                      <h5 className="text-xs font-semibold text-muted-foreground mb-2">CONVERSION FUNNEL</h5>
+                      <div className="space-y-1 text-xs">
+                        <div className="flex justify-between">
+                          <span>To Contact → Contacted:</span>
+                          <span className="font-semibold">{statusCounts.total > 0 ? Math.round((statusCounts.contacted / statusCounts.total) * 100) : 0}%</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Contacted → Interested:</span>
+                          <span className="font-semibold">{statusCounts.contacted > 0 ? Math.round((statusCounts.interested / statusCounts.contacted) * 100) : 0}%</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Interested → Negotiation:</span>
+                          <span className="font-semibold">{statusCounts.interested > 0 ? Math.round((statusCounts.negotiation / statusCounts.interested) * 100) : 0}%</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Negotiation → Closed:</span>
+                          <span className="font-semibold">{statusCounts.negotiation > 0 ? Math.round((statusCounts.closed / statusCounts.negotiation) * 100) : 0}%</span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
