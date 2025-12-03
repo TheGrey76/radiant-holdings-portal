@@ -8,7 +8,8 @@ import { Shield, Mail } from "lucide-react";
 // Authorized admin emails
 const AUTHORIZED_EMAILS = [
   "edoardo.grigione@aries76.com",
-  "admin@aries76.com"
+  "admin@aries76.com",
+  "stefano.taioli@abccompany.it"
 ];
 
 const ABCCompanyConsoleAccess = () => {
