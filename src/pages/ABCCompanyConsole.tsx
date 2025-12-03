@@ -125,6 +125,18 @@ const ABCCompanyConsole = () => {
     }
   }, [isAuthenticated, investors, progressData, closedKPI, meetingsKPI, recordSnapshot]);
 
+  // Load custom funnel data from localStorage on mount
+  useEffect(() => {
+    const saved = localStorage.getItem('abc_funnel_data');
+    if (saved) {
+      try {
+        setCustomFunnelData(JSON.parse(saved));
+      } catch (e) {
+        console.error('Failed to parse saved funnel data');
+      }
+    }
+  }, []);
+
   // Show loading while checking auth
   if (isCheckingAuth) {
     return (
@@ -267,18 +279,6 @@ const ABCCompanyConsole = () => {
   const formatCurrency = (value: number) => {
     return `€${(value / 1000000).toFixed(1)}M`;
   };
-
-  // Load custom funnel data from localStorage on mount
-  useEffect(() => {
-    const saved = localStorage.getItem('abc_funnel_data');
-    if (saved) {
-      try {
-        setCustomFunnelData(JSON.parse(saved));
-      } catch (e) {
-        console.error('Failed to parse saved funnel data');
-      }
-    }
-  }, []);
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
