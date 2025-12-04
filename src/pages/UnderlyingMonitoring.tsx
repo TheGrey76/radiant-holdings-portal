@@ -194,7 +194,7 @@ const UnderlyingMonitoring = () => {
   // Fetch all prices from Finnhub API
   const fetchAllPrices = async () => {
     setIsLoadingPrices(true);
-    const loadingToast = toast.loading('Recupero prezzi da Finnhub...');
+    const loadingToast = toast.loading('Recupero prezzi da Yahoo Finance...');
     
     try {
       const tickers = underlyings.map(u => u.ticker);
@@ -205,20 +205,24 @@ const UnderlyingMonitoring = () => {
 
       if (error) throw error;
 
+      console.log('API Response:', data);
+      
       const today = new Date().toISOString().split('T')[0];
-      let successCount = 0;
-      let failCount = 0;
+      const results = data?.results || [];
+      
+      // Count successes first
+      const successCount = results.filter((r: any) => r.price && r.price > 0).length;
+      const failCount = results.filter((r: any) => !r.price || r.price <= 0).length;
+
+      console.log(`Success: ${successCount}, Failed: ${failCount}`);
 
       setUnderlyings(prev => {
         const updated = prev.map(u => {
-          const result = data.results?.find((r: any) => r.ticker === u.ticker);
+          const result = results.find((r: any) => r.ticker === u.ticker);
           if (result?.price && result.price > 0) {
-            successCount++;
             return { ...u, currentPrice: result.price, lastUpdate: today };
-          } else {
-            failCount++;
-            return u;
           }
+          return u;
         });
         localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
         return updated;
@@ -227,7 +231,7 @@ const UnderlyingMonitoring = () => {
       // Update history
       setPriceHistory(prev => {
         const newPrices: Record<string, number> = {};
-        data.results?.forEach((r: any) => {
+        results.forEach((r: any) => {
           if (r.price && r.price > 0) {
             const underlying = underlyings.find(u => u.ticker === r.ticker);
             if (underlying) {
