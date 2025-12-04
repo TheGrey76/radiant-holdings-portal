@@ -18,7 +18,7 @@ import {
   Lock
 } from 'lucide-react';
 
-const Bitcoin2026ReportPreview = () => {
+const Bitcoin2026ReportPreview: React.FC = () => {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
