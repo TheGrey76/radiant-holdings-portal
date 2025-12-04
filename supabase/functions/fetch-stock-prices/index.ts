@@ -33,28 +33,17 @@ serve(async (req) => {
 
     for (const ticker of tickers) {
       try {
-        // Check if it's a European stock (ends with .MI, .DE, etc.)
-        const isEuropean = ticker.includes('.MI') || ticker.includes('.DE');
-        
         let price: number | null = null;
         let source = '';
 
-        if (isEuropean) {
-          // Use Yahoo Finance for European stocks
-          price = await fetchYahooPrice(ticker);
-          source = 'Yahoo';
-        } else {
-          // Try Finnhub for US stocks first
-          if (FINNHUB_API_KEY) {
-            price = await fetchFinnhubPrice(ticker, FINNHUB_API_KEY);
-            source = 'Finnhub';
-          }
-          
-          // Fallback to Yahoo if Finnhub fails
-          if (!price) {
-            price = await fetchYahooPrice(ticker);
-            source = 'Yahoo';
-          }
+        // Try Yahoo Finance first for all stocks
+        price = await fetchYahooPrice(ticker);
+        source = 'Yahoo';
+        
+        // Fallback to Finnhub for US stocks if Yahoo fails
+        if (!price && FINNHUB_API_KEY && !ticker.includes('.')) {
+          price = await fetchFinnhubPrice(ticker, FINNHUB_API_KEY);
+          source = 'Finnhub';
         }
 
         if (price && price > 0) {
