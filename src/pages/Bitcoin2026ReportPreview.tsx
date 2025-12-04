@@ -1,3 +1,4 @@
+// Bitcoin 2026 Report Preview Page
 import { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Button } from '@/components/ui/button';
