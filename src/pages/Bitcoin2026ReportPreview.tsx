@@ -31,6 +31,7 @@ const Bitcoin2026ReportPreview = () => {
 
     setIsLoading(true);
     try {
+      console.log('Starting checkout...');
       const { data, error } = await supabase.functions.invoke('create-bitcoin-report-checkout', {
         body: { 
           email,
@@ -39,17 +40,24 @@ const Bitcoin2026ReportPreview = () => {
         }
       });
 
+      console.log('Checkout response:', { data, error });
+
       if (error) throw error;
       
       if (data?.url) {
-        window.location.href = data.url;
+        console.log('Redirecting to:', data.url);
+        // Try window.open first, fallback to location.href
+        const newWindow = window.open(data.url, '_self');
+        if (!newWindow) {
+          // If blocked, try direct assignment
+          window.location.assign(data.url);
+        }
       } else {
         throw new Error('No checkout URL received');
       }
     } catch (error) {
       console.error('Checkout error:', error);
       toast.error('Errore durante il checkout. Riprova.');
-    } finally {
       setIsLoading(false);
     }
   };
