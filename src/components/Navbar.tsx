@@ -1,19 +1,12 @@
-
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Menu, X, ChevronDown } from 'lucide-react';
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from '@/components/ui/navigation-menu';
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
   
   useEffect(() => {
     const handleScroll = () => {
@@ -41,16 +34,10 @@ const Navbar = () => {
       { name: 'Family Office Advisory', path: '/family-office-advisory' },
       { name: 'Structured Products', path: '/structured-products' },
     ],
-    lps: [
-      { name: 'For Limited Partners', path: '/for-limited-partners' },
-    ],
     insights: [
       { name: 'Articles & Analysis', path: '/blog' },
       { name: 'Case Studies', path: '/press' },
     ],
-    contact: [
-      { name: 'Get in Touch', path: '/contact' },
-    ]
   };
 
   const mobileLinks = [
@@ -91,98 +78,123 @@ const Navbar = () => {
           </span>
         </Link>
         
-        {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center">
-          <NavigationMenu>
-            <NavigationMenuList className="space-x-2">
-              <NavigationMenuItem>
-                <Link to="/" className="text-xs uppercase tracking-widest text-foreground/70 hover:text-accent transition-colors font-light px-4 py-2 inline-block">
-                  Home
-                </Link>
-              </NavigationMenuItem>
+        {/* Desktop Navigation - Custom Dropdowns */}
+        <nav className="hidden lg:flex items-center space-x-1">
+          {/* Home */}
+          <Link 
+            to="/" 
+            className="text-xs uppercase tracking-widest text-foreground/70 hover:text-accent transition-colors font-light px-4 py-2"
+          >
+            Home
+          </Link>
 
-              <NavigationMenuItem>
-                <NavigationMenuTrigger className="text-xs uppercase tracking-widest text-foreground/70 hover:text-accent transition-colors font-light bg-transparent">
-                  About
-                </NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <ul className="w-64 p-4 bg-background border border-border shadow-lg">
-                    {menuStructure.about.map((item) => (
-                      <li key={item.path}>
-                        <Link
-                          to={item.path}
-                          className="block px-4 py-3 text-sm text-foreground/80 hover:text-accent hover:bg-muted/50 transition-colors rounded font-light"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          {item.name}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
+          {/* About Dropdown */}
+          <div 
+            className="relative"
+            onMouseEnter={() => setOpenMenu('about')}
+            onMouseLeave={() => setOpenMenu(null)}
+          >
+            <button className="flex items-center gap-1 text-xs uppercase tracking-widest text-foreground/70 hover:text-accent transition-colors font-light px-4 py-2">
+              About
+              <ChevronDown className={`h-3 w-3 transition-transform ${openMenu === 'about' ? 'rotate-180' : ''}`} />
+            </button>
+            {openMenu === 'about' && (
+              <div className="absolute top-full left-0 w-64 p-4 bg-background border border-border shadow-lg z-50">
+                <ul>
+                  {menuStructure.about.map((item) => (
+                    <li key={item.path + item.name}>
+                      <Link
+                        to={item.path}
+                        className="block px-4 py-3 text-sm text-foreground/80 hover:text-accent hover:bg-muted/50 transition-colors rounded font-light"
+                      >
+                        {item.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
 
-              <NavigationMenuItem>
-                <NavigationMenuTrigger className="text-xs uppercase tracking-widest text-foreground/70 hover:text-accent transition-colors font-light bg-transparent">
-                  Advisory Services
-                </NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <ul className="w-64 p-4 bg-background border border-border shadow-lg">
-                    {menuStructure.advisory.map((item) => (
-                      <li key={item.path}>
-                        <Link
-                          to={item.path}
-                          className="block px-4 py-3 text-sm text-foreground/80 hover:text-accent hover:bg-muted/50 transition-colors rounded font-light"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          {item.name}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </NavigationMenuContent>
-            </NavigationMenuItem>
+          {/* Advisory Services Dropdown */}
+          <div 
+            className="relative"
+            onMouseEnter={() => setOpenMenu('advisory')}
+            onMouseLeave={() => setOpenMenu(null)}
+          >
+            <button className="flex items-center gap-1 text-xs uppercase tracking-widest text-foreground/70 hover:text-accent transition-colors font-light px-4 py-2">
+              Advisory Services
+              <ChevronDown className={`h-3 w-3 transition-transform ${openMenu === 'advisory' ? 'rotate-180' : ''}`} />
+            </button>
+            {openMenu === 'advisory' && (
+              <div className="absolute top-full left-0 w-64 p-4 bg-background border border-border shadow-lg z-50">
+                <ul>
+                  {menuStructure.advisory.map((item) => (
+                    <li key={item.path}>
+                      <Link
+                        to={item.path}
+                        className="block px-4 py-3 text-sm text-foreground/80 hover:text-accent hover:bg-muted/50 transition-colors rounded font-light"
+                      >
+                        {item.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
 
-            <NavigationMenuItem>
-              <Link to="/for-limited-partners" className="text-xs tracking-widest text-foreground/70 hover:text-accent transition-colors font-light px-4 py-2 inline-block">
-                FOR LP<span className="lowercase">s</span>
-              </Link>
-            </NavigationMenuItem>
+          {/* For LPs */}
+          <Link 
+            to="/for-limited-partners" 
+            className="text-xs tracking-widest text-foreground/70 hover:text-accent transition-colors font-light px-4 py-2"
+          >
+            FOR LP<span className="lowercase">s</span>
+          </Link>
 
-            <NavigationMenuItem>
-              <Link to="/strategic-partnerships" className="text-xs uppercase tracking-widest text-foreground/70 hover:text-accent transition-colors font-light px-4 py-2 inline-block">
-                Partnerships
-              </Link>
-            </NavigationMenuItem>
+          {/* Partnerships */}
+          <Link 
+            to="/strategic-partnerships" 
+            className="text-xs uppercase tracking-widest text-foreground/70 hover:text-accent transition-colors font-light px-4 py-2"
+          >
+            Partnerships
+          </Link>
 
-            <NavigationMenuItem>
-                <NavigationMenuTrigger className="text-xs uppercase tracking-widest text-foreground/70 hover:text-accent transition-colors font-light bg-transparent">
-                  Insights
-                </NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <ul className="w-64 p-4 bg-background border border-border shadow-lg">
-                    {menuStructure.insights.map((item) => (
-                      <li key={item.path}>
-                        <Link
-                          to={item.path}
-                          className="block px-4 py-3 text-sm text-foreground/80 hover:text-accent hover:bg-muted/50 transition-colors rounded font-light"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          {item.name}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
+          {/* Insights Dropdown */}
+          <div 
+            className="relative"
+            onMouseEnter={() => setOpenMenu('insights')}
+            onMouseLeave={() => setOpenMenu(null)}
+          >
+            <button className="flex items-center gap-1 text-xs uppercase tracking-widest text-foreground/70 hover:text-accent transition-colors font-light px-4 py-2">
+              Insights
+              <ChevronDown className={`h-3 w-3 transition-transform ${openMenu === 'insights' ? 'rotate-180' : ''}`} />
+            </button>
+            {openMenu === 'insights' && (
+              <div className="absolute top-full left-0 w-64 p-4 bg-background border border-border shadow-lg z-50">
+                <ul>
+                  {menuStructure.insights.map((item) => (
+                    <li key={item.path}>
+                      <Link
+                        to={item.path}
+                        className="block px-4 py-3 text-sm text-foreground/80 hover:text-accent hover:bg-muted/50 transition-colors rounded font-light"
+                      >
+                        {item.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
 
-              <NavigationMenuItem>
-                <Link to="/contact" className="text-xs uppercase tracking-widest text-foreground/70 hover:text-accent transition-colors font-light px-4 py-2 inline-block">
-                  Contact
-                </Link>
-              </NavigationMenuItem>
-            </NavigationMenuList>
-          </NavigationMenu>
+          {/* Contact */}
+          <Link 
+            to="/contact" 
+            className="text-xs uppercase tracking-widest text-foreground/70 hover:text-accent transition-colors font-light px-4 py-2"
+          >
+            Contact
+          </Link>
         </nav>
         
         {/* Mobile Menu Button */}
