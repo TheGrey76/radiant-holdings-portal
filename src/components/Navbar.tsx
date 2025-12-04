@@ -7,7 +7,6 @@ import {
   NavigationMenu,
   NavigationMenuContent,
   NavigationMenuItem,
-  NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
@@ -110,14 +109,12 @@ const Navbar = () => {
                   <ul className="w-64 p-4 bg-background border border-border shadow-lg">
                     {menuStructure.about.map((item) => (
                       <li key={item.path}>
-                        <NavigationMenuLink asChild>
-                          <Link
-                            to={item.path}
-                            className="block px-4 py-3 text-sm text-foreground/80 hover:text-accent hover:bg-muted/50 transition-colors rounded font-light"
-                          >
-                            {item.name}
-                          </Link>
-                        </NavigationMenuLink>
+                        <Link
+                          to={item.path}
+                          className="block px-4 py-3 text-sm text-foreground/80 hover:text-accent hover:bg-muted/50 transition-colors rounded font-light"
+                        >
+                          {item.name}
+                        </Link>
                       </li>
                     ))}
                   </ul>
@@ -132,18 +129,16 @@ const Navbar = () => {
                   <ul className="w-64 p-4 bg-background border border-border shadow-lg">
                     {menuStructure.advisory.map((item) => (
                       <li key={item.path}>
-                        <NavigationMenuLink asChild>
-                          <Link
-                            to={item.path}
-                            className="block px-4 py-3 text-sm text-foreground/80 hover:text-accent hover:bg-muted/50 transition-colors rounded font-light"
-                          >
-                            {item.name}
-                          </Link>
-                        </NavigationMenuLink>
+                        <Link
+                          to={item.path}
+                          className="block px-4 py-3 text-sm text-foreground/80 hover:text-accent hover:bg-muted/50 transition-colors rounded font-light"
+                        >
+                          {item.name}
+                        </Link>
                       </li>
                     ))}
                   </ul>
-            </NavigationMenuContent>
+                </NavigationMenuContent>
             </NavigationMenuItem>
 
             <NavigationMenuItem>
@@ -166,14 +161,12 @@ const Navbar = () => {
                   <ul className="w-64 p-4 bg-background border border-border shadow-lg">
                     {menuStructure.insights.map((item) => (
                       <li key={item.path}>
-                        <NavigationMenuLink asChild>
-                          <Link
-                            to={item.path}
-                            className="block px-4 py-3 text-sm text-foreground/80 hover:text-accent hover:bg-muted/50 transition-colors rounded font-light"
-                          >
-                            {item.name}
-                          </Link>
-                        </NavigationMenuLink>
+                        <Link
+                          to={item.path}
+                          className="block px-4 py-3 text-sm text-foreground/80 hover:text-accent hover:bg-muted/50 transition-colors rounded font-light"
+                        >
+                          {item.name}
+                        </Link>
                       </li>
                     ))}
                   </ul>
