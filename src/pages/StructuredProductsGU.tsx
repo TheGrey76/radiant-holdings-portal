@@ -1,7 +1,9 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Building2, TrendingUp, Shield, BarChart3, DollarSign, Target, Calendar, Percent, ExternalLink } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Building2, TrendingUp, Shield, BarChart3, DollarSign, Target, Calendar, Percent, ExternalLink, Activity } from "lucide-react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { GUPortfolioAccessGate } from "@/components/GUPortfolioAccessGate";
 
 const StructuredProductsGU = () => {
@@ -28,6 +30,12 @@ const StructuredProductsGU = () => {
               Client G.U. — Allocation on EUR 400,000
             </p>
             <div className="h-0.5 w-20 mx-auto bg-gradient-to-r from-transparent via-slate-400 to-transparent" />
+            <Link to="/underlying-monitoring">
+              <Button variant="outline" className="mt-6 border-slate-400 text-slate-300 hover:bg-slate-700 hover:text-white">
+                <Activity className="h-4 w-4 mr-2" />
+                Monitoring Sottostanti
+              </Button>
+            </Link>
           </motion.div>
         </div>
       </section>
