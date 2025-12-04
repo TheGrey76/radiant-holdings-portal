@@ -195,8 +195,8 @@ const Bitcoin2026ReportPreview = () => {
                     </div>
 
                     <div className="text-center py-4 border-y border-zinc-700">
-                      <div className="text-4xl font-bold text-white">€99</div>
-                      <p className="text-zinc-500 text-sm mt-1">One-time purchase</p>
+                      <div className="text-4xl font-bold text-white">€1</div>
+                      <p className="text-zinc-500 text-sm mt-1">Test price (normally €99)</p>
                     </div>
 
                     <div className="space-y-3">
