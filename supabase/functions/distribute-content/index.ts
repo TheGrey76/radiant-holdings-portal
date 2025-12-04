@@ -23,9 +23,44 @@ Deno.serve(async (req) => {
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
+    // Verify admin authentication
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      console.error('No authorization header provided');
+      return new Response(
+        JSON.stringify({ error: 'Authorization required' }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 401 }
+      );
+    }
+
+    const token = authHeader.replace('Bearer ', '');
+    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+    
+    if (authError || !user) {
+      console.error('Auth error:', authError);
+      return new Response(
+        JSON.stringify({ error: 'Invalid authentication' }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 401 }
+      );
+    }
+
+    // Check if user has admin role
+    const { data: isAdmin } = await supabase.rpc('has_role', { 
+      _user_id: user.id, 
+      _role: 'admin' 
+    });
+
+    if (!isAdmin) {
+      console.error('User is not an admin:', user.id);
+      return new Response(
+        JSON.stringify({ error: 'Admin access required' }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 403 }
+      );
+    }
+
     const { title, url, excerpt, platform }: DistributionRequest = await req.json();
 
-    console.log('Distributing content:', { title, url, platform });
+    console.log('Distributing content:', { title, url, platform, userId: user.id });
 
     // Get active webhook for the platform
     const { data: distributions, error: fetchError } = await supabase
@@ -77,7 +112,8 @@ Deno.serve(async (req) => {
         status,
         metadata: {
           webhook_status: webhookResponse.status,
-          response: webhookResponse.ok ? 'success' : await webhookResponse.text()
+          response: webhookResponse.ok ? 'success' : await webhookResponse.text(),
+          triggered_by: user.id
         }
       });
 
