@@ -9,6 +9,14 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    title: "Family Office Asset Allocation in 2026: The New Paradigm",
+    excerpt: "How family offices are reshaping their portfolios for 2026. From private markets expansion to AI-driven strategies, discover the allocation trends defining wealth preservation and growth.",
+    category: "Family Offices",
+    date: "2025-12-04",
+    readTime: "9 min read",
+    slug: "family-office-allocation-2026"
+  },
+  {
     title: "Investment Certificates in 2025: Navigating the New Era of Structured Solutions",
     excerpt: "How investment certificates are evolving to meet sophisticated investor demands in a high-volatility environment. From capital protection to yield enhancement, exploring the strategic role of certificates in modern portfolios.",
     category: "Structured Products",
