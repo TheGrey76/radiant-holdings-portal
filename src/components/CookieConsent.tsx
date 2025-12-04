@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { X, Cookie } from 'lucide-react';
+import { Cookie } from 'lucide-react';
 
 export const CookieConsent = () => {
   const [showBanner, setShowBanner] = useState(false);
@@ -46,9 +47,9 @@ export const CookieConsent = () => {
                 This site uses technical and third-party cookies (Google Analytics, LinkedIn Insight) 
                 to improve user experience and analyze traffic. 
                 By continuing to browse, you accept the use of cookies in accordance with our{' '}
-                <a href="/legal" className="text-primary hover:underline">
+                <Link to="/legal" className="text-primary hover:underline">
                   Privacy Policy
-                </a>
+                </Link>
                 .
               </p>
             </div>
