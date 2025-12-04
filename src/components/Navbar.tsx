@@ -3,7 +3,14 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Menu, X, ChevronDown } from 'lucide-react';
 
+// Build timestamp for deployment verification - REMOVE AFTER TESTING
+const BUILD_VERSION = "v2024120401";
+
 const Navbar = () => {
+  // Log version on mount to verify deployment
+  useEffect(() => {
+    console.log(`[Aries76 Navbar] Build: ${BUILD_VERSION}`);
+  }, []);
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
