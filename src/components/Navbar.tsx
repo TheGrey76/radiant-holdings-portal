@@ -1,19 +1,13 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X, ChevronDown } from 'lucide-react';
 
-// Build timestamp for deployment verification - REMOVE AFTER TESTING
-const BUILD_VERSION = "v2024120401";
-
 const Navbar = () => {
-  // Log version on mount to verify deployment
-  useEffect(() => {
-    console.log(`[Aries76 Navbar] Build: ${BUILD_VERSION}`);
-  }, []);
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const navigate = useNavigate();
   
   useEffect(() => {
     const handleScroll = () => {
@@ -28,6 +22,12 @@ const Navbar = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, [scrolled]);
+
+  const handleNavigation = (path: string) => {
+    setOpenMenu(null);
+    setMobileMenuOpen(false);
+    navigate(path);
+  };
 
   const menuStructure = {
     about: [
@@ -76,24 +76,24 @@ const Navbar = () => {
       transition={{ duration: 0.5, ease: 'easeOut' }}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <Link to="/" className="flex flex-col">
+        <button onClick={() => handleNavigation('/')} className="flex flex-col text-left">
           <span className="text-3xl font-light tracking-wider text-foreground uppercase">
             ARIES<span className="text-accent">76</span>
           </span>
           <span className="text-[0.65rem] font-extralight tracking-[0.3em] text-accent uppercase -mt-0.5">
             Capital Intelligence
           </span>
-        </Link>
+        </button>
         
         {/* Desktop Navigation - Custom Dropdowns */}
         <nav className="hidden lg:flex items-center space-x-1">
           {/* Home */}
-          <Link 
-            to="/" 
+          <button 
+            onClick={() => handleNavigation('/')}
             className="text-xs uppercase tracking-widest text-foreground/70 hover:text-accent transition-colors font-light px-4 py-2"
           >
             Home
-          </Link>
+          </button>
 
           {/* About Dropdown */}
           <div 
@@ -110,12 +110,12 @@ const Navbar = () => {
                 <ul>
                   {menuStructure.about.map((item) => (
                     <li key={item.path + item.name}>
-                      <Link
-                        to={item.path}
-                        className="block px-4 py-3 text-sm text-foreground/80 hover:text-accent hover:bg-muted/50 transition-colors rounded font-light"
+                      <button
+                        onClick={() => handleNavigation(item.path)}
+                        className="block w-full text-left px-4 py-3 text-sm text-foreground/80 hover:text-accent hover:bg-muted/50 transition-colors rounded font-light"
                       >
                         {item.name}
-                      </Link>
+                      </button>
                     </li>
                   ))}
                 </ul>
@@ -138,12 +138,12 @@ const Navbar = () => {
                 <ul>
                   {menuStructure.advisory.map((item) => (
                     <li key={item.path}>
-                      <Link
-                        to={item.path}
-                        className="block px-4 py-3 text-sm text-foreground/80 hover:text-accent hover:bg-muted/50 transition-colors rounded font-light"
+                      <button
+                        onClick={() => handleNavigation(item.path)}
+                        className="block w-full text-left px-4 py-3 text-sm text-foreground/80 hover:text-accent hover:bg-muted/50 transition-colors rounded font-light"
                       >
                         {item.name}
-                      </Link>
+                      </button>
                     </li>
                   ))}
                 </ul>
@@ -152,20 +152,20 @@ const Navbar = () => {
           </div>
 
           {/* For LPs */}
-          <Link 
-            to="/for-limited-partners" 
+          <button 
+            onClick={() => handleNavigation('/for-limited-partners')}
             className="text-xs tracking-widest text-foreground/70 hover:text-accent transition-colors font-light px-4 py-2"
           >
             FOR LP<span className="lowercase">s</span>
-          </Link>
+          </button>
 
           {/* Partnerships */}
-          <Link 
-            to="/strategic-partnerships" 
+          <button 
+            onClick={() => handleNavigation('/strategic-partnerships')}
             className="text-xs uppercase tracking-widest text-foreground/70 hover:text-accent transition-colors font-light px-4 py-2"
           >
             Partnerships
-          </Link>
+          </button>
 
           {/* Insights Dropdown */}
           <div 
@@ -182,12 +182,12 @@ const Navbar = () => {
                 <ul>
                   {menuStructure.insights.map((item) => (
                     <li key={item.path}>
-                      <Link
-                        to={item.path}
-                        className="block px-4 py-3 text-sm text-foreground/80 hover:text-accent hover:bg-muted/50 transition-colors rounded font-light"
+                      <button
+                        onClick={() => handleNavigation(item.path)}
+                        className="block w-full text-left px-4 py-3 text-sm text-foreground/80 hover:text-accent hover:bg-muted/50 transition-colors rounded font-light"
                       >
                         {item.name}
-                      </Link>
+                      </button>
                     </li>
                   ))}
                 </ul>
@@ -196,12 +196,12 @@ const Navbar = () => {
           </div>
 
           {/* Contact */}
-          <Link 
-            to="/contact" 
+          <button 
+            onClick={() => handleNavigation('/contact')}
             className="text-xs uppercase tracking-widest text-foreground/70 hover:text-accent transition-colors font-light px-4 py-2"
           >
             Contact
-          </Link>
+          </button>
         </nav>
         
         {/* Mobile Menu Button */}
@@ -222,26 +222,23 @@ const Navbar = () => {
           exit={{ opacity: 0, height: 0 }}
         >
           {mobileLinks.map((link, index) => (
-            <Link
+            <button
               key={`${link.path}-${index}`}
-              to={link.path === '#' ? '#' : link.path}
-              className={`block text-xs uppercase tracking-widest transition-colors font-light ${
+              onClick={() => {
+                if (link.path !== '#') {
+                  handleNavigation(link.path);
+                }
+              }}
+              className={`block w-full text-left text-xs uppercase tracking-widest transition-colors font-light ${
                 link.section 
-                  ? 'text-foreground font-normal pt-3' 
+                  ? 'text-foreground font-normal pt-3 cursor-default' 
                   : link.indent 
                     ? 'text-foreground/60 hover:text-accent pl-4' 
                     : 'text-foreground/70 hover:text-accent'
               }`}
-              onClick={(e) => {
-                if (link.path === '#') {
-                  e.preventDefault();
-                } else {
-                  setMobileMenuOpen(false);
-                }
-              }}
             >
               {link.name}
-            </Link>
+            </button>
           ))}
         </motion.nav>
       )}
