@@ -4,10 +4,11 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { AlertTriangle, TrendingUp, TrendingDown, Save, RefreshCw, Calendar, ArrowLeft } from 'lucide-react';
+import { AlertTriangle, TrendingUp, TrendingDown, Save, RefreshCw, Calendar, ArrowLeft, Download, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Link, Navigate } from 'react-router-dom';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
 
 interface Underlying {
   id: string;
@@ -64,6 +65,7 @@ const UnderlyingMonitoring = () => {
   const [priceHistory, setPriceHistory] = useState<PriceHistory[]>([]);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [tempPrice, setTempPrice] = useState<string>('');
+  const [isLoadingPrices, setIsLoadingPrices] = useState(false);
 
   // Check authorization on mount
   useEffect(() => {
@@ -189,6 +191,83 @@ const UnderlyingMonitoring = () => {
     });
   };
 
+  // Fetch all prices from Finnhub API
+  const fetchAllPrices = async () => {
+    setIsLoadingPrices(true);
+    const loadingToast = toast.loading('Recupero prezzi da Finnhub...');
+    
+    try {
+      const tickers = underlyings.map(u => u.ticker);
+      
+      const { data, error } = await supabase.functions.invoke('fetch-stock-prices', {
+        body: { tickers }
+      });
+
+      if (error) throw error;
+
+      const today = new Date().toISOString().split('T')[0];
+      let successCount = 0;
+      let failCount = 0;
+
+      setUnderlyings(prev => {
+        const updated = prev.map(u => {
+          const result = data.results?.find((r: any) => r.ticker === u.ticker);
+          if (result?.price && result.price > 0) {
+            successCount++;
+            return { ...u, currentPrice: result.price, lastUpdate: today };
+          } else {
+            failCount++;
+            return u;
+          }
+        });
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+        return updated;
+      });
+
+      // Update history
+      setPriceHistory(prev => {
+        const newPrices: Record<string, number> = {};
+        data.results?.forEach((r: any) => {
+          if (r.price && r.price > 0) {
+            const underlying = underlyings.find(u => u.ticker === r.ticker);
+            if (underlying) {
+              newPrices[underlying.id] = r.price;
+            }
+          }
+        });
+
+        const existingToday = prev.find(h => h.date === today);
+        let newHistory: PriceHistory[];
+        
+        if (existingToday) {
+          newHistory = prev.map(h => 
+            h.date === today ? { ...h, prices: { ...h.prices, ...newPrices } } : h
+          );
+        } else {
+          newHistory = [...prev, { date: today, prices: newPrices }].slice(-30);
+        }
+        
+        localStorage.setItem(HISTORY_KEY, JSON.stringify(newHistory));
+        return newHistory;
+      });
+
+      toast.dismiss(loadingToast);
+      
+      if (successCount > 0) {
+        toast.success(`${successCount} prezzi aggiornati${failCount > 0 ? `, ${failCount} non disponibili` : ''}`);
+      } else {
+        toast.error('Nessun prezzo recuperato. Verifica la connessione API.');
+      }
+      
+    } catch (error) {
+      console.error('Error fetching prices:', error);
+      toast.dismiss(loadingToast);
+      toast.error('Errore nel recupero prezzi. Riprova più tardi.');
+    } finally {
+      setIsLoadingPrices(false);
+    }
+  };
+
   const certificates = [...new Set(underlyings.map(u => u.certificateId))];
 
   if (isAuthorized === null) {
@@ -236,9 +315,28 @@ const UnderlyingMonitoring = () => {
               <h1 className="text-3xl font-bold text-white">Monitoring Sottostanti</h1>
               <p className="text-slate-300 mt-2">Portafoglio Structured Products — Client G.U.</p>
             </div>
-            <div className="text-right">
-              <p className="text-slate-400 text-sm">Ultimo aggiornamento</p>
-              <p className="text-white font-mono">{new Date().toLocaleDateString('it-IT')}</p>
+            <div className="text-right flex flex-col items-end gap-3">
+              <Button 
+                onClick={fetchAllPrices} 
+                disabled={isLoadingPrices}
+                className="bg-emerald-600 hover:bg-emerald-700 text-white"
+              >
+                {isLoadingPrices ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Caricamento...
+                  </>
+                ) : (
+                  <>
+                    <Download className="h-4 w-4 mr-2" />
+                    Aggiorna Tutti i Prezzi
+                  </>
+                )}
+              </Button>
+              <div>
+                <p className="text-slate-400 text-sm">Ultimo aggiornamento</p>
+                <p className="text-white font-mono">{new Date().toLocaleDateString('it-IT')}</p>
+              </div>
             </div>
           </div>
         </div>
