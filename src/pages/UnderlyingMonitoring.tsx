@@ -77,12 +77,24 @@ const UnderlyingMonitoring = () => {
     }
   }, []);
 
-  // Load saved data
+  // Load saved data and migrate old tickers
   useEffect(() => {
     if (isAuthorized) {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
-        const savedData = JSON.parse(saved) as Underlying[];
+        let savedData = JSON.parse(saved) as Underlying[];
+        
+        // Migrate old STM.MI ticker to STM
+        savedData = savedData.map(u => {
+          if (u.ticker === 'STM.MI') {
+            return { ...u, ticker: 'STM' };
+          }
+          return u;
+        });
+        
+        // Save migrated data
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(savedData));
+        
         setUnderlyings(prev => prev.map(u => {
           const savedU = savedData.find(s => s.id === u.id);
           return savedU ? { ...u, currentPrice: savedU.currentPrice, lastUpdate: savedU.lastUpdate, strikePrice: savedU.strikePrice } : u;
