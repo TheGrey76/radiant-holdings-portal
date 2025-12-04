@@ -67,6 +67,7 @@ import StrategicPartnerships from "./pages/StrategicPartnerships";
 import StructuredProductsGU from "./pages/StructuredProductsGU";
 import Bitcoin2026Report from "./pages/Bitcoin2026Report";
 import Bitcoin2026ReportCover from "./pages/Bitcoin2026ReportCover";
+import Bitcoin2026ReportPreview from "./pages/Bitcoin2026ReportPreview";
 
 const queryClient = new QueryClient();
 
@@ -139,6 +140,7 @@ const App = () => (
           <Route path="/blog/family-office-allocation-2026" element={<FamilyOfficeAllocation2026 />} />
           <Route path="/bitcoin-2026-report" element={<Bitcoin2026Report />} />
           <Route path="/bitcoin-2026-report-cover" element={<Bitcoin2026ReportCover />} />
+          <Route path="/bitcoin-2026-report-preview" element={<Bitcoin2026ReportPreview />} />
           
           <Route path="/mazal-innovation" element={<MazalInnovation />} />
           <Route path="/press" element={<Press />} />
