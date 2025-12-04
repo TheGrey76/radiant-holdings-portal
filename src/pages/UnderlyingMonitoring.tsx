@@ -41,7 +41,7 @@ const INITIAL_UNDERLYINGS: Underlying[] = [
   // Certificate C - UBS Memory Cash Collect (Italian Large Caps)
   { id: 'isp', name: 'Intesa Sanpaolo', ticker: 'ISP.MI', certificate: 'C - UBS Memory Cash Collect', certificateId: 'DE000UQ0LUM5', barrier: 65, strikePrice: 3.80, currentPrice: 0, lastUpdate: '' },
   { id: 'eni', name: 'Eni', ticker: 'ENI.MI', certificate: 'C - UBS Memory Cash Collect', certificateId: 'DE000UQ0LUM5', barrier: 65, strikePrice: 14.00, currentPrice: 0, lastUpdate: '' },
-  { id: 'stm', name: 'STMicroelectronics', ticker: 'STM.MI', certificate: 'C - UBS Memory Cash Collect', certificateId: 'DE000UQ0LUM5', barrier: 65, strikePrice: 24.00, currentPrice: 0, lastUpdate: '' },
+  { id: 'stm', name: 'STMicroelectronics', ticker: 'STM', certificate: 'C - UBS Memory Cash Collect', certificateId: 'DE000UQ0LUM5', barrier: 65, strikePrice: 24.00, currentPrice: 0, lastUpdate: '' },
   
   // Certificate D - Barclays Phoenix Italy Consumer & Luxury
   { id: 'race', name: 'Ferrari', ticker: 'RACE.MI', certificate: 'D - Barclays Phoenix Luxury', certificateId: 'XS3153270833', barrier: 65, strikePrice: 420.00, currentPrice: 0, lastUpdate: '' },
