@@ -68,6 +68,7 @@ import StructuredProductsGU from "./pages/StructuredProductsGU";
 import Bitcoin2026Report from "./pages/Bitcoin2026Report";
 import Bitcoin2026ReportCover from "./pages/Bitcoin2026ReportCover";
 import Bitcoin2026ReportPreview from "./pages/Bitcoin2026ReportPreview";
+import UnderlyingMonitoring from "./pages/UnderlyingMonitoring";
 
 const queryClient = new QueryClient();
 
@@ -95,6 +96,7 @@ const App = () => (
           <Route path="/partners" element={<Partners />} />
           <Route path="/strategic-partnerships" element={<StrategicPartnerships />} />
           <Route path="/structured-products-gu" element={<StructuredProductsGU />} />
+          <Route path="/underlying-monitoring" element={<UnderlyingMonitoring />} />
           <Route path="/structured-products" element={<StructuredProducts />} />
           <Route path="/for-limited-partners" element={<ForLimitedPartners />} />
           <Route path="/contact" element={<ContactPage />} />
