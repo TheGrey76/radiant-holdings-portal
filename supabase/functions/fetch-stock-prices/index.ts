@@ -5,32 +5,10 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Mapping of our ticker symbols to Finnhub symbols
-const TICKER_MAPPING: Record<string, string> = {
-  // Certificate A - Morgan Stanley Phoenix
-  'ENEL.MI': 'ENEL.MI',
-  'GOOGL': 'GOOGL',
-  'UCG.MI': 'UCG.MI',
-  
-  // Certificate B - UBS Phoenix Healthcare
-  'NVO': 'NVO',
-  'MRK.DE': 'MRK.DE',
-  'CVS': 'CVS',
-  
-  // Certificate C - UBS Memory Cash Collect (Italian Large Caps)
-  'ISP.MI': 'ISP.MI',
-  'ENI.MI': 'ENI.MI',
-  'STM.MI': 'STMMI.MI',
-  
-  // Certificate D - Barclays Phoenix Italy Consumer & Luxury
-  'RACE.MI': 'RACE.MI',
-  'BC.MI': 'BC.MI',
-  'CPR.MI': 'CPR.MI',
-};
-
 interface PriceResult {
   ticker: string;
   price: number | null;
+  source?: string;
   error?: string;
 }
 
@@ -42,10 +20,7 @@ serve(async (req) => {
 
   try {
     const FINNHUB_API_KEY = Deno.env.get('FINNHUB_API_KEY');
-    if (!FINNHUB_API_KEY) {
-      throw new Error('FINNHUB_API_KEY is not set');
-    }
-
+    
     const { tickers } = await req.json();
     
     if (!tickers || !Array.isArray(tickers)) {
@@ -56,46 +31,51 @@ serve(async (req) => {
 
     const results: PriceResult[] = [];
 
-    // Fetch prices for each ticker
     for (const ticker of tickers) {
       try {
-        const finnhubTicker = TICKER_MAPPING[ticker] || ticker;
+        // Check if it's a European stock (ends with .MI, .DE, etc.)
+        const isEuropean = ticker.includes('.MI') || ticker.includes('.DE');
         
-        const response = await fetch(
-          `https://finnhub.io/api/v1/quote?symbol=${encodeURIComponent(finnhubTicker)}&token=${FINNHUB_API_KEY}`
-        );
+        let price: number | null = null;
+        let source = '';
 
-        if (!response.ok) {
-          console.error(`Finnhub error for ${ticker}: ${response.status}`);
-          results.push({ ticker, price: null, error: `HTTP ${response.status}` });
-          continue;
-        }
-
-        const data = await response.json();
-        
-        // Finnhub returns { c: currentPrice, h: high, l: low, o: open, pc: previousClose, t: timestamp }
-        if (data.c && data.c > 0) {
-          results.push({ ticker, price: data.c });
-          console.log(`${ticker}: ${data.c}`);
+        if (isEuropean) {
+          // Use Yahoo Finance for European stocks
+          price = await fetchYahooPrice(ticker);
+          source = 'Yahoo';
         } else {
-          // Try Yahoo Finance as fallback for European stocks
-          const yahooPrice = await fetchYahooPrice(ticker);
-          if (yahooPrice) {
-            results.push({ ticker, price: yahooPrice });
-            console.log(`${ticker} (Yahoo): ${yahooPrice}`);
-          } else {
-            results.push({ ticker, price: null, error: 'No price data' });
+          // Try Finnhub for US stocks first
+          if (FINNHUB_API_KEY) {
+            price = await fetchFinnhubPrice(ticker, FINNHUB_API_KEY);
+            source = 'Finnhub';
+          }
+          
+          // Fallback to Yahoo if Finnhub fails
+          if (!price) {
+            price = await fetchYahooPrice(ticker);
+            source = 'Yahoo';
           }
         }
 
+        if (price && price > 0) {
+          results.push({ ticker, price, source });
+          console.log(`${ticker} (${source}): ${price}`);
+        } else {
+          results.push({ ticker, price: null, error: 'No price data' });
+          console.log(`${ticker}: No price data`);
+        }
+
         // Small delay to respect rate limits
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise(resolve => setTimeout(resolve, 150));
         
       } catch (error) {
-        console.error(`Error fetching ${ticker}:`, error);
+        console.error(`Error fetching ${ticker}:`, error.message);
         results.push({ ticker, price: null, error: error.message });
       }
     }
+
+    const successCount = results.filter(r => r.price !== null).length;
+    console.log(`Successfully fetched ${successCount}/${tickers.length} prices`);
 
     return new Response(JSON.stringify({ results }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -110,28 +90,63 @@ serve(async (req) => {
   }
 });
 
-// Fallback to Yahoo Finance for European stocks
-async function fetchYahooPrice(ticker: string): Promise<number | null> {
+// Fetch price from Finnhub (US stocks)
+async function fetchFinnhubPrice(ticker: string, apiKey: string): Promise<number | null> {
   try {
-    // Yahoo uses different suffixes
-    let yahooTicker = ticker;
-    if (ticker.endsWith('.MI')) {
-      yahooTicker = ticker; // Yahoo uses .MI for Milan
-    } else if (ticker.endsWith('.DE')) {
-      yahooTicker = ticker; // Yahoo uses .DE for Xetra
-    }
-
     const response = await fetch(
-      `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(yahooTicker)}?interval=1d&range=1d`
+      `https://finnhub.io/api/v1/quote?symbol=${encodeURIComponent(ticker)}&token=${apiKey}`
     );
 
-    if (!response.ok) return null;
+    if (!response.ok) {
+      console.log(`Finnhub error for ${ticker}: ${response.status}`);
+      return null;
+    }
 
     const data = await response.json();
+    return data.c && data.c > 0 ? data.c : null;
+  } catch (error) {
+    console.error(`Finnhub fetch error for ${ticker}:`, error.message);
+    return null;
+  }
+}
+
+// Fetch price from Yahoo Finance (works for all markets)
+async function fetchYahooPrice(ticker: string): Promise<number | null> {
+  try {
+    // Yahoo Finance uses the same ticker format for European stocks
+    const response = await fetch(
+      `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(ticker)}?interval=1d&range=1d`,
+      {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+        }
+      }
+    );
+
+    if (!response.ok) {
+      console.log(`Yahoo error for ${ticker}: ${response.status}`);
+      return null;
+    }
+
+    const data = await response.json();
+    
+    // Try to get current market price
     const price = data?.chart?.result?.[0]?.meta?.regularMarketPrice;
     
-    return price && price > 0 ? price : null;
-  } catch {
+    if (price && price > 0) {
+      return price;
+    }
+
+    // Fallback to last close price
+    const closePrice = data?.chart?.result?.[0]?.indicators?.quote?.[0]?.close;
+    if (closePrice && Array.isArray(closePrice)) {
+      const lastPrice = closePrice.filter((p: number | null) => p !== null).pop();
+      return lastPrice && lastPrice > 0 ? lastPrice : null;
+    }
+
+    return null;
+  } catch (error) {
+    console.error(`Yahoo fetch error for ${ticker}:`, error.message);
     return null;
   }
 }
