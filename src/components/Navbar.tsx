@@ -112,6 +112,7 @@ const Navbar = () => {
                         <Link
                           to={item.path}
                           className="block px-4 py-3 text-sm text-foreground/80 hover:text-accent hover:bg-muted/50 transition-colors rounded font-light"
+                          onClick={(e) => e.stopPropagation()}
                         >
                           {item.name}
                         </Link>
@@ -132,6 +133,7 @@ const Navbar = () => {
                         <Link
                           to={item.path}
                           className="block px-4 py-3 text-sm text-foreground/80 hover:text-accent hover:bg-muted/50 transition-colors rounded font-light"
+                          onClick={(e) => e.stopPropagation()}
                         >
                           {item.name}
                         </Link>
@@ -164,6 +166,7 @@ const Navbar = () => {
                         <Link
                           to={item.path}
                           className="block px-4 py-3 text-sm text-foreground/80 hover:text-accent hover:bg-muted/50 transition-colors rounded font-light"
+                          onClick={(e) => e.stopPropagation()}
                         >
                           {item.name}
                         </Link>
