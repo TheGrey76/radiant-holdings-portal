@@ -345,8 +345,8 @@ const UnderlyingMonitoring = () => {
       {/* Certificates Summary */}
       <section className="py-8 px-4">
         <div className="container mx-auto max-w-7xl">
-          <h2 className="text-xl font-semibold text-slate-900 mb-4">Riepilogo per Certificato</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <h2 className="text-xl font-semibold text-slate-900 mb-4">Riepilogo per Certificato (5 Certificati)</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
             {certificates.map(certId => {
               const worst = getWorstPerformer(certId);
               const certName = underlyings.find(u => u.certificateId === certId)?.certificate || certId;
@@ -380,6 +380,24 @@ const UnderlyingMonitoring = () => {
                 </motion.div>
               );
             })}
+            
+            {/* Certificate E - Capital Protected (no underlyings to monitor) */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <Card className="border-l-4 border-l-emerald-600">
+                <CardContent className="pt-4">
+                  <p className="text-xs text-slate-500 font-mono">XS3153397073</p>
+                  <p className="font-semibold text-slate-900 text-sm mt-1">E - Barclays Capital Protected</p>
+                  <div className="mt-3 p-2 bg-emerald-50 rounded">
+                    <Badge className="bg-emerald-100 text-emerald-800">100% Protected</Badge>
+                    <p className="text-xs text-slate-600 mt-2">Nessuna barriera da monitorare</p>
+                    <p className="text-xs text-slate-500">Capitale garantito a scadenza</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
           </div>
         </div>
       </section>
