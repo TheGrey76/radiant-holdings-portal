@@ -41,7 +41,7 @@ serve(async (req) => {
               description: "Institutional Research Report: A Macro-Liquidity Framework for Institutional Positioning",
               images: ["https://dvwmyljnssspwfpwocof.supabase.co/storage/v1/object/public/reports/bitcoin-2026-cover.png"],
             },
-            unit_amount: 9900, // €99.00 in cents
+            unit_amount: 100, // €1.00 for testing (change back to 9900 for €99.00)
           },
           quantity: 1,
         },
