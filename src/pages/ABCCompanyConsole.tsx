@@ -26,6 +26,8 @@ import { EditableFunnelStage } from "@/components/EditableFunnelStage";
 import { EditableOverallProgress } from "@/components/EditableOverallProgress";
 import { EditableKPI } from "@/components/EditableKPI";
 import { ABCAnalyticsTab } from "@/components/ABCAnalyticsTab";
+import { ABCCommitmentTracker } from "@/components/ABCCommitmentTracker";
+import { ABCEmailCampaignManager } from "@/components/ABCEmailCampaignManager";
 import { useKPIHistory } from "@/hooks/useKPIHistory";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -517,9 +519,11 @@ const ABCCompanyConsole = () => {
       <main className="container mx-auto px-4 py-8">
         {/* Main Navigation Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-6 mb-8">
+          <TabsList className="grid w-full grid-cols-8 mb-8">
             <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
             <TabsTrigger value="investors">Investors</TabsTrigger>
+            <TabsTrigger value="commitments">Commitments</TabsTrigger>
+            <TabsTrigger value="campaigns">Campaigns</TabsTrigger>
             <TabsTrigger value="analytics">Analytics</TabsTrigger>
             <TabsTrigger value="timeline">Timeline</TabsTrigger>
             <TabsTrigger value="reports">Reports</TabsTrigger>
@@ -861,6 +865,23 @@ const ABCCompanyConsole = () => {
                 onEditDialogClosed={() => setEditInvestorId(null)}
               />
             )}
+          </TabsContent>
+
+          {/* COMMITMENTS TAB */}
+          <TabsContent value="commitments" className="space-y-6">
+            <ABCCommitmentTracker investors={investors.map(i => ({ id: i.id, nome: i.nome, azienda: i.azienda }))} />
+          </TabsContent>
+
+          {/* CAMPAIGNS TAB */}
+          <TabsContent value="campaigns" className="space-y-6">
+            <ABCEmailCampaignManager investors={investors.map(i => ({ 
+              id: i.id, 
+              nome: i.nome, 
+              azienda: i.azienda, 
+              email: i.email, 
+              categoria: i.categoria, 
+              status: i.status 
+            }))} />
           </TabsContent>
 
           {/* ANALYTICS TAB */}

@@ -44,6 +44,62 @@ export type Database = {
         }
         Relationships: []
       }
+      abc_investor_commitments: {
+        Row: {
+          amount: number
+          commitment_date: string
+          commitment_type: string
+          created_at: string
+          created_by: string
+          currency: string
+          expected_closing_date: string | null
+          id: string
+          investor_id: string | null
+          investor_name: string
+          notes: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          amount?: number
+          commitment_date?: string
+          commitment_type?: string
+          created_at?: string
+          created_by: string
+          currency?: string
+          expected_closing_date?: string | null
+          id?: string
+          investor_id?: string | null
+          investor_name: string
+          notes?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          commitment_date?: string
+          commitment_type?: string
+          created_at?: string
+          created_by?: string
+          currency?: string
+          expected_closing_date?: string | null
+          id?: string
+          investor_id?: string | null
+          investor_name?: string
+          notes?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "abc_investor_commitments_investor_id_fkey"
+            columns: ["investor_id"]
+            isOneToOne: false
+            referencedRelation: "abc_investors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       abc_investor_documents: {
         Row: {
           document_name: string
