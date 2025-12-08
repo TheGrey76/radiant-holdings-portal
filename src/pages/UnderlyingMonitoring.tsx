@@ -67,6 +67,7 @@ const AUTH_KEY = 'aries76_monitoring_auth';
 const AUTHORIZED_EMAILS = [
   'edoardo.grigione@aries76.com',
   'admin@aries76.com',
+  'alessandro.catullo@aries76.com',
 ];
 
 const UnderlyingMonitoring = () => {
