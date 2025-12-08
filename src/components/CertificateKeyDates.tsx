@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Calendar, Bell, Clock, AlertTriangle, CheckCircle } from 'lucide-react';
-import { differenceInDays, format, isPast, isFuture, isToday, addDays } from 'date-fns';
+import { differenceInDays, format, isPast, isFuture, isToday, addDays, addMonths, addQuarters, addYears } from 'date-fns';
 import { it } from 'date-fns/locale';
 
 interface KeyDate {
@@ -13,44 +13,99 @@ interface KeyDate {
   dateType: 'maturity' | 'observation' | 'autocall' | 'coupon';
   date: string;
   description: string;
-  amount?: number; // For coupon amounts
+  amount?: number;
 }
 
-const CERTIFICATE_KEY_DATES: KeyDate[] = [
-  // Certificate A - Morgan Stanley Phoenix Mixed Basket
-  { id: 'a-mat', certificateId: 'DE000MS0H1P0', certificateName: 'A - Morgan Stanley Phoenix', dateType: 'maturity', date: '2027-03-15', description: 'Scadenza finale' },
-  { id: 'a-obs1', certificateId: 'DE000MS0H1P0', certificateName: 'A - Morgan Stanley Phoenix', dateType: 'observation', date: '2025-03-15', description: 'Osservazione Q1 2025' },
-  { id: 'a-obs2', certificateId: 'DE000MS0H1P0', certificateName: 'A - Morgan Stanley Phoenix', dateType: 'observation', date: '2025-06-15', description: 'Osservazione Q2 2025' },
-  { id: 'a-obs3', certificateId: 'DE000MS0H1P0', certificateName: 'A - Morgan Stanley Phoenix', dateType: 'observation', date: '2025-09-15', description: 'Osservazione Q3 2025' },
-  { id: 'a-obs4', certificateId: 'DE000MS0H1P0', certificateName: 'A - Morgan Stanley Phoenix', dateType: 'observation', date: '2025-12-15', description: 'Osservazione Q4 2025' },
-  
-  // Certificate B - UBS Phoenix Healthcare
-  { id: 'b-mat', certificateId: 'DE000UQ23YT1', certificateName: 'B - UBS Phoenix Healthcare', dateType: 'maturity', date: '2028-11-13', description: 'Scadenza finale' },
-  { id: 'b-obs1', certificateId: 'DE000UQ23YT1', certificateName: 'B - UBS Phoenix Healthcare', dateType: 'observation', date: '2025-02-13', description: 'Osservazione Q1 2025' },
-  { id: 'b-obs2', certificateId: 'DE000UQ23YT1', certificateName: 'B - UBS Phoenix Healthcare', dateType: 'observation', date: '2025-05-13', description: 'Osservazione Q2 2025' },
-  { id: 'b-obs3', certificateId: 'DE000UQ23YT1', certificateName: 'B - UBS Phoenix Healthcare', dateType: 'observation', date: '2025-08-13', description: 'Osservazione Q3 2025' },
-  { id: 'b-obs4', certificateId: 'DE000UQ23YT1', certificateName: 'B - UBS Phoenix Healthcare', dateType: 'observation', date: '2025-11-13', description: 'Osservazione Q4 2025' },
-  
-  // Certificate C - UBS Memory Cash Collect
-  { id: 'c-mat', certificateId: 'DE000UQ0LUM5', certificateName: 'C - UBS Memory Cash Collect', dateType: 'maturity', date: '2027-06-20', description: 'Scadenza finale' },
-  { id: 'c-obs1', certificateId: 'DE000UQ0LUM5', certificateName: 'C - UBS Memory Cash Collect', dateType: 'coupon', date: '2025-01-20', description: 'Cedola Gennaio 2025', amount: 800 },
-  { id: 'c-obs2', certificateId: 'DE000UQ0LUM5', certificateName: 'C - UBS Memory Cash Collect', dateType: 'coupon', date: '2025-02-20', description: 'Cedola Febbraio 2025', amount: 800 },
-  { id: 'c-obs3', certificateId: 'DE000UQ0LUM5', certificateName: 'C - UBS Memory Cash Collect', dateType: 'coupon', date: '2025-03-20', description: 'Cedola Marzo 2025', amount: 800 },
-  
-  // Certificate D - Barclays Phoenix Italy Consumer & Luxury
-  { id: 'd-mat', certificateId: 'XS3153270833', certificateName: 'D - Barclays Phoenix Luxury', dateType: 'maturity', date: '2028-02-10', description: 'Scadenza finale' },
-  { id: 'd-obs1', certificateId: 'XS3153270833', certificateName: 'D - Barclays Phoenix Luxury', dateType: 'observation', date: '2025-02-10', description: 'Osservazione Q1 2025' },
-  { id: 'd-obs2', certificateId: 'XS3153270833', certificateName: 'D - Barclays Phoenix Luxury', dateType: 'observation', date: '2025-05-10', description: 'Osservazione Q2 2025' },
-  
-  // Certificate E - Barclays Capital Protected
-  { id: 'e-mat', certificateId: 'XS3153397073', certificateName: 'E - Barclays Capital Protected', dateType: 'maturity', date: '2030-01-15', description: 'Scadenza finale (100% Protected)' },
+interface CertificateConfig {
+  id: string;
+  name: string;
+  maturityMonths: number; // Months from portfolio start to maturity
+  observationFrequency: 'monthly' | 'quarterly';
+  couponFrequency?: 'monthly' | 'quarterly';
+  couponAmount?: number;
+}
+
+const CERTIFICATE_CONFIGS: CertificateConfig[] = [
+  { id: 'DE000MS0H1P0', name: 'A - Morgan Stanley Phoenix', maturityMonths: 24, observationFrequency: 'quarterly' },
+  { id: 'DE000UQ23YT1', name: 'B - UBS Phoenix Healthcare', maturityMonths: 36, observationFrequency: 'quarterly' },
+  { id: 'DE000UQ0LUM5', name: 'C - UBS Memory Cash Collect', maturityMonths: 30, observationFrequency: 'monthly', couponFrequency: 'monthly', couponAmount: 800 },
+  { id: 'XS3153270833', name: 'D - Barclays Phoenix Luxury', maturityMonths: 36, observationFrequency: 'quarterly' },
+  { id: 'XS3153397073', name: 'E - Barclays Capital Protected', maturityMonths: 60, observationFrequency: 'quarterly' },
 ];
+
+interface Props {
+  portfolioStartDate?: Date;
+}
 
 const STORAGE_KEY = 'aries76_key_dates_alerts';
 
-export const CertificateKeyDates = () => {
+const generateKeyDates = (startDate: Date): KeyDate[] => {
+  const dates: KeyDate[] = [];
+  
+  CERTIFICATE_CONFIGS.forEach(config => {
+    // Maturity date
+    const maturityDate = addMonths(startDate, config.maturityMonths);
+    dates.push({
+      id: `${config.id}-mat`,
+      certificateId: config.id,
+      certificateName: config.name,
+      dateType: 'maturity',
+      date: maturityDate.toISOString().split('T')[0],
+      description: 'Scadenza finale',
+    });
+
+    // Observation dates (first 2 years from start)
+    const observationMonths = config.observationFrequency === 'quarterly' ? 3 : 1;
+    for (let i = 1; i <= Math.min(24 / observationMonths, config.maturityMonths / observationMonths); i++) {
+      const obsDate = addMonths(startDate, i * observationMonths);
+      if (obsDate < maturityDate) {
+        const quarter = Math.ceil((obsDate.getMonth() + 1) / 3);
+        const year = obsDate.getFullYear();
+        dates.push({
+          id: `${config.id}-obs-${i}`,
+          certificateId: config.id,
+          certificateName: config.name,
+          dateType: 'observation',
+          date: obsDate.toISOString().split('T')[0],
+          description: config.observationFrequency === 'quarterly' 
+            ? `Osservazione Q${quarter} ${year}`
+            : `Osservazione ${format(obsDate, 'MMMM yyyy', { locale: it })}`,
+        });
+      }
+    }
+
+    // Coupon dates (if applicable, first 12 months)
+    if (config.couponFrequency && config.couponAmount) {
+      const couponMonths = config.couponFrequency === 'quarterly' ? 3 : 1;
+      for (let i = 1; i <= 12 / couponMonths; i++) {
+        const couponDate = addMonths(startDate, i * couponMonths);
+        if (couponDate < maturityDate) {
+          dates.push({
+            id: `${config.id}-coupon-${i}`,
+            certificateId: config.id,
+            certificateName: config.name,
+            dateType: 'coupon',
+            date: couponDate.toISOString().split('T')[0],
+            description: `Cedola ${format(couponDate, 'MMMM yyyy', { locale: it })}`,
+            amount: config.couponAmount,
+          });
+        }
+      }
+    }
+  });
+
+  return dates.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+};
+
+export const CertificateKeyDates = ({ portfolioStartDate }: Props) => {
   const [dismissedAlerts, setDismissedAlerts] = useState<string[]>([]);
   const [filter, setFilter] = useState<'all' | 'upcoming' | 'past'>('upcoming');
+
+  // Generate dates based on portfolio start date
+  const keyDates = useMemo(() => {
+    if (!portfolioStartDate) return [];
+    return generateKeyDates(portfolioStartDate);
+  }, [portfolioStartDate]);
 
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
@@ -64,6 +119,21 @@ export const CertificateKeyDates = () => {
     setDismissedAlerts(updated);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
   };
+
+  // If no start date, show configuration message
+  if (!portfolioStartDate) {
+    return (
+      <Card className="border-amber-200 bg-amber-50">
+        <CardContent className="pt-6 text-center">
+          <Calendar className="h-12 w-12 text-amber-500 mx-auto mb-4" />
+          <h3 className="text-lg font-semibold text-amber-800">Data Composizione Non Configurata</h3>
+          <p className="text-amber-600 mt-2">
+            Configura la data di composizione del portafoglio nell'header per generare il calendario eventi.
+          </p>
+        </CardContent>
+      </Card>
+    );
+  }
 
   const getDateTypeColor = (type: KeyDate['dateType']) => {
     switch (type) {
@@ -102,7 +172,7 @@ export const CertificateKeyDates = () => {
     return <Badge variant="outline">{daysUntil}g</Badge>;
   };
 
-  const filteredDates = CERTIFICATE_KEY_DATES
+  const filteredDates = keyDates
     .filter(d => {
       if (filter === 'upcoming') return isFuture(new Date(d.date)) || isToday(new Date(d.date));
       if (filter === 'past') return isPast(new Date(d.date)) && !isToday(new Date(d.date));
@@ -110,7 +180,7 @@ export const CertificateKeyDates = () => {
     })
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
-  const urgentDates = CERTIFICATE_KEY_DATES.filter(d => {
+  const urgentDates = keyDates.filter(d => {
     const daysUntil = differenceInDays(new Date(d.date), new Date());
     return daysUntil >= 0 && daysUntil <= 14 && !dismissedAlerts.includes(d.id);
   });

@@ -1,13 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Progress } from '@/components/ui/progress';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Coins, Plus, TrendingUp, Calendar, CheckCircle2 } from 'lucide-react';
-import { format, isPast, isFuture } from 'date-fns';
+import { Coins, TrendingUp, Calendar, CheckCircle2 } from 'lucide-react';
+import { format, isPast, isFuture, addMonths } from 'date-fns';
 import { it } from 'date-fns/locale';
 
 interface CouponPayment {
@@ -30,53 +28,102 @@ interface CouponSummary {
   investment: number;
 }
 
-const INITIAL_COUPONS: CouponPayment[] = [
-  // Certificate A - Morgan Stanley Phoenix (9.32% annual, quarterly = €2,790/year = €697.50/quarter)
-  { id: 'a-q1-25', certificateId: 'DE000MS0H1P0', certificateName: 'A - Morgan Stanley Phoenix', expectedDate: '2025-03-15', expectedAmount: 2790, status: 'pending' },
-  { id: 'a-q2-25', certificateId: 'DE000MS0H1P0', certificateName: 'A - Morgan Stanley Phoenix', expectedDate: '2025-06-15', expectedAmount: 2790, status: 'pending' },
-  { id: 'a-q3-25', certificateId: 'DE000MS0H1P0', certificateName: 'A - Morgan Stanley Phoenix', expectedDate: '2025-09-15', expectedAmount: 2790, status: 'pending' },
-  { id: 'a-q4-25', certificateId: 'DE000MS0H1P0', certificateName: 'A - Morgan Stanley Phoenix', expectedDate: '2025-12-15', expectedAmount: 2790, status: 'pending' },
-  
-  // Certificate B - UBS Phoenix Healthcare (10% annual, quarterly = €2,000/year = €500/quarter)
-  { id: 'b-q1-25', certificateId: 'DE000UQ23YT1', certificateName: 'B - UBS Phoenix Healthcare', expectedDate: '2025-02-13', expectedAmount: 2000, status: 'pending' },
-  { id: 'b-q2-25', certificateId: 'DE000UQ23YT1', certificateName: 'B - UBS Phoenix Healthcare', expectedDate: '2025-05-13', expectedAmount: 2000, status: 'pending' },
-  { id: 'b-q3-25', certificateId: 'DE000UQ23YT1', certificateName: 'B - UBS Phoenix Healthcare', expectedDate: '2025-08-13', expectedAmount: 2000, status: 'pending' },
-  { id: 'b-q4-25', certificateId: 'DE000UQ23YT1', certificateName: 'B - UBS Phoenix Healthcare', expectedDate: '2025-11-13', expectedAmount: 2000, status: 'pending' },
-  
-  // Certificate C - UBS Memory Cash Collect (12% annual, monthly = €800/month)
-  { id: 'c-jan-25', certificateId: 'DE000UQ0LUM5', certificateName: 'C - UBS Memory Cash Collect', expectedDate: '2025-01-20', expectedAmount: 800, status: 'pending' },
-  { id: 'c-feb-25', certificateId: 'DE000UQ0LUM5', certificateName: 'C - UBS Memory Cash Collect', expectedDate: '2025-02-20', expectedAmount: 800, status: 'pending' },
-  { id: 'c-mar-25', certificateId: 'DE000UQ0LUM5', certificateName: 'C - UBS Memory Cash Collect', expectedDate: '2025-03-20', expectedAmount: 800, status: 'pending' },
-  { id: 'c-apr-25', certificateId: 'DE000UQ0LUM5', certificateName: 'C - UBS Memory Cash Collect', expectedDate: '2025-04-20', expectedAmount: 800, status: 'pending' },
-  { id: 'c-may-25', certificateId: 'DE000UQ0LUM5', certificateName: 'C - UBS Memory Cash Collect', expectedDate: '2025-05-20', expectedAmount: 800, status: 'pending' },
-  { id: 'c-jun-25', certificateId: 'DE000UQ0LUM5', certificateName: 'C - UBS Memory Cash Collect', expectedDate: '2025-06-20', expectedAmount: 800, status: 'pending' },
-  
-  // Certificate D - Barclays Phoenix Luxury (8% annual, quarterly = €1,200/year = €300/quarter)
-  { id: 'd-q1-25', certificateId: 'XS3153270833', certificateName: 'D - Barclays Phoenix Luxury', expectedDate: '2025-02-10', expectedAmount: 1200, status: 'pending' },
-  { id: 'd-q2-25', certificateId: 'XS3153270833', certificateName: 'D - Barclays Phoenix Luxury', expectedDate: '2025-05-10', expectedAmount: 1200, status: 'pending' },
-  { id: 'd-q3-25', certificateId: 'XS3153270833', certificateName: 'D - Barclays Phoenix Luxury', expectedDate: '2025-08-10', expectedAmount: 1200, status: 'pending' },
-  { id: 'd-q4-25', certificateId: 'XS3153270833', certificateName: 'D - Barclays Phoenix Luxury', expectedDate: '2025-11-10', expectedAmount: 1200, status: 'pending' },
+interface CertificateCouponConfig {
+  id: string;
+  name: string;
+  investment: number;
+  annualYieldPercent: number;
+  frequency: 'monthly' | 'quarterly';
+  maturityMonths: number;
+}
+
+const CERTIFICATE_COUPON_CONFIGS: CertificateCouponConfig[] = [
+  { id: 'DE000MS0H1P0', name: 'A - Morgan Stanley Phoenix', investment: 120000, annualYieldPercent: 9.32, frequency: 'quarterly', maturityMonths: 24 },
+  { id: 'DE000UQ23YT1', name: 'B - UBS Phoenix Healthcare', investment: 80000, annualYieldPercent: 10, frequency: 'quarterly', maturityMonths: 36 },
+  { id: 'DE000UQ0LUM5', name: 'C - UBS Memory Cash Collect', investment: 80000, annualYieldPercent: 12, frequency: 'monthly', maturityMonths: 30 },
+  { id: 'XS3153270833', name: 'D - Barclays Phoenix Luxury', investment: 60000, annualYieldPercent: 8, frequency: 'quarterly', maturityMonths: 36 },
 ];
 
 const CERTIFICATE_INVESTMENTS: Record<string, number> = {
-  'DE000MS0H1P0': 120000, // Certificate A
-  'DE000UQ23YT1': 80000,  // Certificate B
-  'DE000UQ0LUM5': 80000,  // Certificate C
-  'XS3153270833': 60000,  // Certificate D
-  'XS3153397073': 60000,  // Certificate E (no coupons)
+  'DE000MS0H1P0': 120000,
+  'DE000UQ23YT1': 80000,
+  'DE000UQ0LUM5': 80000,
+  'XS3153270833': 60000,
+  'XS3153397073': 60000,
+};
+
+interface Props {
+  portfolioStartDate?: Date;
+}
+
+const generateCoupons = (startDate: Date): CouponPayment[] => {
+  const coupons: CouponPayment[] = [];
+  
+  CERTIFICATE_COUPON_CONFIGS.forEach(config => {
+    const annualCoupon = config.investment * (config.annualYieldPercent / 100);
+    const couponMonths = config.frequency === 'quarterly' ? 3 : 1;
+    const couponPerPayment = annualCoupon / (12 / couponMonths);
+    const numPayments = Math.min(12 / couponMonths, Math.floor(config.maturityMonths / couponMonths));
+    
+    for (let i = 1; i <= numPayments; i++) {
+      const couponDate = addMonths(startDate, i * couponMonths);
+      coupons.push({
+        id: `${config.id}-coupon-${i}`,
+        certificateId: config.id,
+        certificateName: config.name,
+        expectedDate: couponDate.toISOString().split('T')[0],
+        expectedAmount: Math.round(couponPerPayment),
+        status: 'pending',
+      });
+    }
+  });
+  
+  return coupons.sort((a, b) => new Date(a.expectedDate).getTime() - new Date(b.expectedDate).getTime());
 };
 
 const STORAGE_KEY = 'aries76_coupon_tracker';
 
-export const CouponTracker = () => {
-  const [coupons, setCoupons] = useState<CouponPayment[]>(INITIAL_COUPONS);
+export const CouponTracker = ({ portfolioStartDate }: Props) => {
+  // Generate coupons based on portfolio start date
+  const generatedCoupons = useMemo(() => {
+    if (!portfolioStartDate) return [];
+    return generateCoupons(portfolioStartDate);
+  }, [portfolioStartDate]);
+
+  const [coupons, setCoupons] = useState<CouponPayment[]>([]);
 
   useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      setCoupons(JSON.parse(saved));
+    if (generatedCoupons.length > 0) {
+      // Load saved status from localStorage
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const savedCoupons = JSON.parse(saved) as CouponPayment[];
+        // Merge saved status with generated coupons
+        const merged = generatedCoupons.map(gc => {
+          const savedCoupon = savedCoupons.find(sc => sc.id === gc.id);
+          return savedCoupon ? { ...gc, status: savedCoupon.status, receivedAmount: savedCoupon.receivedAmount, receivedDate: savedCoupon.receivedDate } : gc;
+        });
+        setCoupons(merged);
+      } else {
+        setCoupons(generatedCoupons);
+      }
     }
-  }, []);
+  }, [generatedCoupons]);
+
+  // If no start date, show configuration message
+  if (!portfolioStartDate) {
+    return (
+      <Card className="border-amber-200 bg-amber-50">
+        <CardContent className="pt-6 text-center">
+          <Coins className="h-12 w-12 text-amber-500 mx-auto mb-4" />
+          <h3 className="text-lg font-semibold text-amber-800">Data Composizione Non Configurata</h3>
+          <p className="text-amber-600 mt-2">
+            Configura la data di composizione del portafoglio nell'header per generare il calendario cedole.
+          </p>
+        </CardContent>
+      </Card>
+    );
+  }
 
   const saveCoupons = (updated: CouponPayment[]) => {
     setCoupons(updated);
