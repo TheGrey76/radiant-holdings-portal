@@ -4,11 +4,16 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { AlertTriangle, TrendingUp, TrendingDown, Save, RefreshCw, Calendar, ArrowLeft, Download, Loader2 } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { AlertTriangle, TrendingUp, TrendingDown, Save, RefreshCw, Calendar, ArrowLeft, Download, Loader2, Coins, Bell, BarChart3 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Link, Navigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
+import { CertificateKeyDates } from '@/components/CertificateKeyDates';
+import { CouponTracker } from '@/components/CouponTracker';
+import { BarrierAlerts } from '@/components/BarrierAlerts';
+import { PerformanceHistory } from '@/components/PerformanceHistory';
 
 interface Underlying {
   id: string;
@@ -358,65 +363,91 @@ const UnderlyingMonitoring = () => {
         </div>
       </section>
 
-      {/* Certificates Summary */}
-      <section className="py-8 px-4">
+      {/* Tabs Navigation */}
+      <section className="py-4 px-4">
         <div className="container mx-auto max-w-7xl">
-          <h2 className="text-xl font-semibold text-slate-900 mb-4">Riepilogo per Certificato (5 Certificati)</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-            {certificates.map(certId => {
-              const worst = getWorstPerformer(certId);
-              const certName = underlyings.find(u => u.certificateId === certId)?.certificate || certId;
-              
-              return (
-                <motion.div
-                  key={certId}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                >
-                  <Card className="border-l-4 border-l-slate-700">
-                    <CardContent className="pt-4">
-                      <p className="text-xs text-slate-500 font-mono">{certId}</p>
-                      <p className="font-semibold text-slate-900 text-sm mt-1">{certName}</p>
-                      {worst ? (
-                        <div className="mt-3 p-2 bg-slate-50 rounded">
-                          <p className="text-xs text-slate-500">Worst Performer</p>
-                          <div className="flex items-center justify-between mt-1">
-                            <span className="font-medium text-slate-900">{worst.name}</span>
-                            {getDistanceBadge(calculateDistanceFromBarrier(worst.currentPrice, worst.strikePrice, worst.barrier))}
-                          </div>
-                          <p className={`text-sm font-semibold mt-1 ${getDistanceColor(calculateDistanceFromBarrier(worst.currentPrice, worst.strikePrice, worst.barrier))}`}>
-                            {calculateDistanceFromBarrier(worst.currentPrice, worst.strikePrice, worst.barrier).toFixed(1)}% dalla barriera
-                          </p>
+          <Tabs defaultValue="monitoring" className="w-full">
+            <TabsList className="grid w-full grid-cols-5 mb-6">
+              <TabsTrigger value="monitoring" className="flex items-center gap-2">
+                <TrendingUp className="h-4 w-4" />
+                Monitoring
+              </TabsTrigger>
+              <TabsTrigger value="calendar" className="flex items-center gap-2">
+                <Calendar className="h-4 w-4" />
+                Scadenze
+              </TabsTrigger>
+              <TabsTrigger value="coupons" className="flex items-center gap-2">
+                <Coins className="h-4 w-4" />
+                Cedole
+              </TabsTrigger>
+              <TabsTrigger value="alerts" className="flex items-center gap-2">
+                <Bell className="h-4 w-4" />
+                Alert
+              </TabsTrigger>
+              <TabsTrigger value="performance" className="flex items-center gap-2">
+                <BarChart3 className="h-4 w-4" />
+                Performance
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="monitoring">
+              {/* Certificates Summary */}
+              <div className="mb-8">
+                <h2 className="text-xl font-semibold text-slate-900 mb-4">Riepilogo per Certificato (5 Certificati)</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                  {certificates.map(certId => {
+                    const worst = getWorstPerformer(certId);
+                    const certName = underlyings.find(u => u.certificateId === certId)?.certificate || certId;
+                    
+                    return (
+                      <motion.div
+                        key={certId}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                      >
+                        <Card className="border-l-4 border-l-slate-700">
+                          <CardContent className="pt-4">
+                            <p className="text-xs text-slate-500 font-mono">{certId}</p>
+                            <p className="font-semibold text-slate-900 text-sm mt-1">{certName}</p>
+                            {worst ? (
+                              <div className="mt-3 p-2 bg-slate-50 rounded">
+                                <p className="text-xs text-slate-500">Worst Performer</p>
+                                <div className="flex items-center justify-between mt-1">
+                                  <span className="font-medium text-slate-900">{worst.name}</span>
+                                  {getDistanceBadge(calculateDistanceFromBarrier(worst.currentPrice, worst.strikePrice, worst.barrier))}
+                                </div>
+                                <p className={`text-sm font-semibold mt-1 ${getDistanceColor(calculateDistanceFromBarrier(worst.currentPrice, worst.strikePrice, worst.barrier))}`}>
+                                  {calculateDistanceFromBarrier(worst.currentPrice, worst.strikePrice, worst.barrier).toFixed(1)}% dalla barriera
+                                </p>
+                              </div>
+                            ) : (
+                              <p className="text-slate-400 text-sm mt-3">Nessun prezzo inserito</p>
+                            )}
+                          </CardContent>
+                        </Card>
+                      </motion.div>
+                    );
+                  })}
+                  
+                  {/* Certificate E - Capital Protected */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                  >
+                    <Card className="border-l-4 border-l-emerald-600">
+                      <CardContent className="pt-4">
+                        <p className="text-xs text-slate-500 font-mono">XS3153397073</p>
+                        <p className="font-semibold text-slate-900 text-sm mt-1">E - Barclays Capital Protected</p>
+                        <div className="mt-3 p-2 bg-emerald-50 rounded">
+                          <Badge className="bg-emerald-100 text-emerald-800">100% Protected</Badge>
+                          <p className="text-xs text-slate-600 mt-2">Nessuna barriera da monitorare</p>
+                          <p className="text-xs text-slate-500">Capitale garantito a scadenza</p>
                         </div>
-                      ) : (
-                        <p className="text-slate-400 text-sm mt-3">Nessun prezzo inserito</p>
-                      )}
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              );
-            })}
-            
-            {/* Certificate E - Capital Protected (no underlyings to monitor) */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-            >
-              <Card className="border-l-4 border-l-emerald-600">
-                <CardContent className="pt-4">
-                  <p className="text-xs text-slate-500 font-mono">XS3153397073</p>
-                  <p className="font-semibold text-slate-900 text-sm mt-1">E - Barclays Capital Protected</p>
-                  <div className="mt-3 p-2 bg-emerald-50 rounded">
-                    <Badge className="bg-emerald-100 text-emerald-800">100% Protected</Badge>
-                    <p className="text-xs text-slate-600 mt-2">Nessuna barriera da monitorare</p>
-                    <p className="text-xs text-slate-500">Capitale garantito a scadenza</p>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          </div>
-        </div>
-      </section>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                </div>
+              </div>
 
       {/* Full Table */}
       <section className="py-8 px-4">
@@ -535,50 +566,66 @@ const UnderlyingMonitoring = () => {
         </div>
       </section>
 
-      {/* Alert Section */}
-      <section className="py-8 px-4 pb-16">
-        <div className="container mx-auto max-w-7xl">
-          <Card className="border-amber-200 bg-amber-50/50">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-amber-800">
-                <AlertTriangle className="h-5 w-5" />
-                Sottostanti in Attenzione
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {underlyings.filter(u => {
-                if (u.currentPrice === 0) return false;
-                const distance = calculateDistanceFromBarrier(u.currentPrice, u.strikePrice, u.barrier);
-                return distance < 15;
-              }).length > 0 ? (
-                <div className="space-y-2">
+              {/* Alert Section */}
+              <Card className="border-amber-200 bg-amber-50/50">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-amber-800">
+                    <AlertTriangle className="h-5 w-5" />
+                    Sottostanti in Attenzione
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
                   {underlyings.filter(u => {
                     if (u.currentPrice === 0) return false;
                     const distance = calculateDistanceFromBarrier(u.currentPrice, u.strikePrice, u.barrier);
                     return distance < 15;
-                  }).map(u => {
-                    const distance = calculateDistanceFromBarrier(u.currentPrice, u.strikePrice, u.barrier);
-                    return (
-                      <div key={u.id} className="flex items-center justify-between p-3 bg-white rounded-lg border border-amber-200">
-                        <div>
-                          <span className="font-semibold">{u.name}</span>
-                          <span className="text-slate-500 text-sm ml-2">({u.certificate})</span>
-                        </div>
-                        <div className="flex items-center gap-3">
-                          <span className={`font-bold ${getDistanceColor(distance)}`}>
-                            {distance.toFixed(1)}% dalla barriera
-                          </span>
-                          {getDistanceBadge(distance)}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              ) : (
-                <p className="text-slate-600">Nessun sottostante richiede attenzione al momento.</p>
-              )}
-            </CardContent>
-          </Card>
+                  }).length > 0 ? (
+                    <div className="space-y-2">
+                      {underlyings.filter(u => {
+                        if (u.currentPrice === 0) return false;
+                        const distance = calculateDistanceFromBarrier(u.currentPrice, u.strikePrice, u.barrier);
+                        return distance < 15;
+                      }).map(u => {
+                        const distance = calculateDistanceFromBarrier(u.currentPrice, u.strikePrice, u.barrier);
+                        return (
+                          <div key={u.id} className="flex items-center justify-between p-3 bg-white rounded-lg border border-amber-200">
+                            <div>
+                              <span className="font-semibold">{u.name}</span>
+                              <span className="text-slate-500 text-sm ml-2">({u.certificate})</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <span className={`font-bold ${getDistanceColor(distance)}`}>
+                                {distance.toFixed(1)}% dalla barriera
+                              </span>
+                              {getDistanceBadge(distance)}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <p className="text-slate-600">Nessun sottostante richiede attenzione al momento.</p>
+                  )}
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="calendar">
+              <CertificateKeyDates />
+            </TabsContent>
+
+            <TabsContent value="coupons">
+              <CouponTracker />
+            </TabsContent>
+
+            <TabsContent value="alerts">
+              <BarrierAlerts underlyings={underlyings} />
+            </TabsContent>
+
+            <TabsContent value="performance">
+              <PerformanceHistory underlyings={underlyings} priceHistory={priceHistory} />
+            </TabsContent>
+          </Tabs>
         </div>
       </section>
     </div>
