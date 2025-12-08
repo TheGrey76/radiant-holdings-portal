@@ -5,7 +5,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { AlertTriangle, TrendingUp, TrendingDown, Save, RefreshCw, Calendar, ArrowLeft, Download, Loader2, Coins, Bell, BarChart3 } from 'lucide-react';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Calendar as CalendarComponent } from '@/components/ui/calendar';
+import { AlertTriangle, TrendingUp, TrendingDown, Save, RefreshCw, Calendar, ArrowLeft, Download, Loader2, Coins, Bell, BarChart3, CalendarIcon, Settings } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Link, Navigate } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -14,6 +16,9 @@ import { CertificateKeyDates } from '@/components/CertificateKeyDates';
 import { CouponTracker } from '@/components/CouponTracker';
 import { BarrierAlerts } from '@/components/BarrierAlerts';
 import { PerformanceHistory } from '@/components/PerformanceHistory';
+import { format } from 'date-fns';
+import { it } from 'date-fns/locale';
+import { cn } from '@/lib/utils';
 
 interface Underlying {
   id: string;
@@ -56,6 +61,7 @@ const INITIAL_UNDERLYINGS: Underlying[] = [
 
 const STORAGE_KEY = 'aries76_underlying_prices';
 const HISTORY_KEY = 'aries76_price_history';
+const PORTFOLIO_DATE_KEY = 'aries76_portfolio_start_date';
 const AUTH_KEY = 'aries76_monitoring_auth';
 
 const AUTHORIZED_EMAILS = [
@@ -71,6 +77,25 @@ const UnderlyingMonitoring = () => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [tempPrice, setTempPrice] = useState<string>('');
   const [isLoadingPrices, setIsLoadingPrices] = useState(false);
+  const [portfolioStartDate, setPortfolioStartDate] = useState<Date | undefined>(undefined);
+
+  // Load portfolio start date
+  useEffect(() => {
+    const saved = localStorage.getItem(PORTFOLIO_DATE_KEY);
+    if (saved) {
+      setPortfolioStartDate(new Date(saved));
+    }
+  }, []);
+
+  const handlePortfolioDateChange = (date: Date | undefined) => {
+    setPortfolioStartDate(date);
+    if (date) {
+      localStorage.setItem(PORTFOLIO_DATE_KEY, date.toISOString());
+      toast.success(`Data composizione portafoglio: ${format(date, 'dd MMMM yyyy', { locale: it })}`);
+    } else {
+      localStorage.removeItem(PORTFOLIO_DATE_KEY);
+    }
+  };
 
   // Check authorization on mount
   useEffect(() => {
@@ -335,6 +360,49 @@ const UnderlyingMonitoring = () => {
               </Link>
               <h1 className="text-3xl font-bold text-white">Monitoring Sottostanti</h1>
               <p className="text-slate-300 mt-2">Portafoglio Structured Products — Client G.U.</p>
+              
+              {/* Portfolio Start Date Picker */}
+              <div className="mt-4 flex items-center gap-3">
+                <Settings className="h-4 w-4 text-slate-400" />
+                <span className="text-slate-400 text-sm">Data Composizione:</span>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className={cn(
+                        "justify-start text-left font-normal bg-slate-800 border-slate-600 hover:bg-slate-700",
+                        !portfolioStartDate && "text-slate-400"
+                      )}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {portfolioStartDate ? (
+                        format(portfolioStartDate, "dd MMMM yyyy", { locale: it })
+                      ) : (
+                        <span>Seleziona data...</span>
+                      )}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <CalendarComponent
+                      mode="single"
+                      selected={portfolioStartDate}
+                      onSelect={handlePortfolioDateChange}
+                      initialFocus
+                      className={cn("p-3 pointer-events-auto")}
+                    />
+                  </PopoverContent>
+                </Popover>
+                {portfolioStartDate && (
+                  <Badge className="bg-emerald-600 text-white">
+                    Configurato
+                  </Badge>
+                )}
+                {!portfolioStartDate && (
+                  <Badge variant="outline" className="text-amber-400 border-amber-400">
+                    Da configurare
+                  </Badge>
+                )}
+              </div>
             </div>
             <div className="text-right flex flex-col items-end gap-3">
               <Button 
@@ -611,11 +679,11 @@ const UnderlyingMonitoring = () => {
             </TabsContent>
 
             <TabsContent value="calendar">
-              <CertificateKeyDates />
+              <CertificateKeyDates portfolioStartDate={portfolioStartDate} />
             </TabsContent>
 
             <TabsContent value="coupons">
-              <CouponTracker />
+              <CouponTracker portfolioStartDate={portfolioStartDate} />
             </TabsContent>
 
             <TabsContent value="alerts">
