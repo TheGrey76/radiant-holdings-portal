@@ -268,6 +268,47 @@ export type Database = {
         }
         Relationships: []
       }
+      abc_notifications: {
+        Row: {
+          created_at: string
+          from_user: string
+          id: string
+          investor_name: string
+          is_read: boolean
+          message: string
+          note_id: string | null
+          user_email: string
+        }
+        Insert: {
+          created_at?: string
+          from_user: string
+          id?: string
+          investor_name: string
+          is_read?: boolean
+          message: string
+          note_id?: string | null
+          user_email: string
+        }
+        Update: {
+          created_at?: string
+          from_user?: string
+          id?: string
+          investor_name?: string
+          is_read?: boolean
+          message?: string
+          note_id?: string | null
+          user_email?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "abc_notifications_note_id_fkey"
+            columns: ["note_id"]
+            isOneToOne: false
+            referencedRelation: "abc_investor_notes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       assessment_bookings: {
         Row: {
           client_type: string
