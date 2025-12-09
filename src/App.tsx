@@ -52,6 +52,7 @@ import AlkemiaPraesidiumProposal from "./pages/AlkemiaPraesidiumProposal";
 import AssetGUProposal from "./pages/AssetGUProposal";
 import AssetGUAccess from "./pages/AssetGUAccess";
 import ABCCompanyProposal from "./pages/ABCCompanyProposal";
+import ABCCompanyInvestor from "./pages/ABCCompanyInvestor";
 import ABCCompanyConsole from "./pages/ABCCompanyConsole";
 import ABCCompanyConsoleAccess from "./pages/ABCCompanyConsoleAccess";
 import GPLPMatching from "./pages/GPLPMatching";
@@ -122,6 +123,7 @@ const App = () => (
           <Route path="/asset-gu-proposal" element={<AssetGUProposal />} />
           <Route path="/abc-company-access" element={<Navigate to="/abc-company-proposal" replace />} />
           <Route path="/abc-company-proposal" element={<ABCCompanyProposal />} />
+          <Route path="/abc-company-investor" element={<ABCCompanyInvestor />} />
           <Route path="/abc-company-console" element={<ABCCompanyConsole />} />
           <Route path="/abc-company-console-access" element={<ABCCompanyConsoleAccess />} />
           <Route path="/faq" element={<FAQ />} />
