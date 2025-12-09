@@ -134,7 +134,7 @@ const App = () => (
           <Route path="/blog/valuing-management-companies" element={<ValuingManagementCompanies />} />
           <Route path="/blog/digital-infrastructure-ai-core-allocation" element={<DigitalInfrastructureAI />} />
           <Route path="/blog/cross-border-fund-structuring" element={<CrossBorderFundStructuring />} />
-          <Route path="/blog/aires-ai-transforming-investor-targeting" element={<AIRESTransformingInvestorTargeting />} />
+          <Route path="/blog/aires-transforming-investor-targeting" element={<AIRESTransformingInvestorTargeting />} />
           <Route path="/blog/ai-driven-due-diligence-private-markets" element={<AIDrivenDueDiligence />} />
           <Route path="/blog/italy-structured-products-record-q3-2025" element={<ItalyStructuredProductsRecord />} />
           <Route path="/blog/structured-products-digital-revolution-2025" element={<StructuredProductsDigitalRevolution />} />
