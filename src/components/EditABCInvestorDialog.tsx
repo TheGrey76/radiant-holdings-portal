@@ -157,9 +157,17 @@ export const EditABCInvestorDialog = ({ investor, open, onOpenChange, onSave }: 
     onOpenChange(false);
   };
 
+  const getCurrentUser = () => {
+    const email = sessionStorage.getItem('abc_user_email') || '';
+    // Extract name from email (e.g., "edoardo.grigione@aries76.com" -> "Edoardo Grigione")
+    const namePart = email.split('@')[0] || 'Unknown';
+    return namePart.split('.').map(part => part.charAt(0).toUpperCase() + part.slice(1)).join(' ');
+  };
+
   const addNote = async () => {
     if (!investor || !newNote.trim()) return;
-    await supabase.from('abc_investor_notes').insert({ investor_name: investor.nome, note_text: newNote.trim(), created_by: 'Team' });
+    const currentUser = getCurrentUser();
+    await supabase.from('abc_investor_notes').insert({ investor_name: investor.nome, note_text: newNote.trim(), created_by: currentUser });
     toast.success('Note added');
     setNewNote('');
     fetchNotes();
@@ -173,9 +181,10 @@ export const EditABCInvestorDialog = ({ investor, open, onOpenChange, onSave }: 
 
   const addFollowUp = async () => {
     if (!investor || !newFollowUp.date) return;
+    const currentUser = getCurrentUser();
     await supabase.from('abc_investor_followups').insert({
       investor_name: investor.nome, follow_up_date: newFollowUp.date, follow_up_type: newFollowUp.type,
-      description: newFollowUp.description || null, created_by: 'Team',
+      description: newFollowUp.description || null, created_by: currentUser,
     });
     toast.success('Follow-up scheduled');
     setNewFollowUp({ date: '', type: 'Call', description: '' });
@@ -196,9 +205,10 @@ export const EditABCInvestorDialog = ({ investor, open, onOpenChange, onSave }: 
 
   const addActivity = async () => {
     if (!investor || !newActivity.description.trim()) return;
+    const currentUser = getCurrentUser();
     await supabase.from('abc_investor_activities').insert({
       investor_name: investor.nome, activity_type: newActivity.type,
-      activity_description: newActivity.description.trim(), created_by: 'Team',
+      activity_description: newActivity.description.trim(), created_by: currentUser,
     });
     toast.success('Activity logged');
     setNewActivity({ type: 'Call', description: '' });
@@ -213,9 +223,10 @@ export const EditABCInvestorDialog = ({ investor, open, onOpenChange, onSave }: 
 
   const addDocument = async () => {
     if (!investor || !newDocument.name.trim()) return;
+    const currentUser = getCurrentUser();
     await supabase.from('abc_investor_documents').insert({
       investor_name: investor.nome, document_name: newDocument.name.trim(),
-      document_type: newDocument.type, document_url: newDocument.url || null, uploaded_by: 'Team',
+      document_type: newDocument.type, document_url: newDocument.url || null, uploaded_by: currentUser,
     });
     toast.success('Document added');
     setNewDocument({ name: '', type: 'NDA', url: '' });
