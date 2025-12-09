@@ -5,11 +5,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { useABCActivityFeed, ActivityItem } from "@/hooks/useABCActivityFeed";
 import { formatDistanceToNow } from "date-fns";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { MentionInput, TEAM_MEMBERS } from "./MentionInput";
 
 const ActivityIcon = ({ type }: { type: ActivityItem['type'] }) => {
   const iconProps = { className: "h-4 w-4" };
@@ -99,24 +99,45 @@ export const ABCActivityFeed = () => {
     return sessionStorage.getItem('abc_console_user') || 'Unknown';
   };
 
+  const [mentionedEmails, setMentionedEmails] = useState<string[]>([]);
+
   const handleReply = async () => {
     if (!replyingTo || !replyText.trim()) return;
     
     setIsSubmitting(true);
     try {
+      const currentUser = getCurrentUser();
       const replyNote = `↩️ Re: "${replyingTo.description.substring(0, 50)}${replyingTo.description.length > 50 ? '...' : ''}"\n\n${replyText.trim()}`;
       
-      const { error } = await supabase.from('abc_investor_notes').insert({
+      const { data: noteData, error } = await supabase.from('abc_investor_notes').insert({
         investor_name: replyingTo.investorName,
         note_text: replyNote,
-        created_by: getCurrentUser(),
-      });
+        created_by: currentUser,
+      }).select().single();
 
       if (error) throw error;
+
+      // Create notifications for mentioned users
+      if (mentionedEmails.length > 0) {
+        const notifications = mentionedEmails
+          .filter(email => email !== currentUser) // Don't notify yourself
+          .map(email => ({
+            user_email: email,
+            from_user: currentUser,
+            investor_name: replyingTo.investorName,
+            note_id: noteData?.id,
+            message: replyText.trim().substring(0, 200),
+          }));
+
+        if (notifications.length > 0) {
+          await supabase.from('abc_notifications').insert(notifications);
+        }
+      }
 
       toast.success("Risposta aggiunta alla scheda investitore");
       setReplyingTo(null);
       setReplyText("");
+      setMentionedEmails([]);
     } catch (error) {
       console.error('Error adding reply:', error);
       toast.error("Errore nell'aggiunta della risposta");
@@ -182,13 +203,27 @@ export const ABCActivityFeed = () => {
             <p className="text-xs text-muted-foreground mb-2 line-clamp-2 italic">
               "{replyingTo.description}"
             </p>
-            <Textarea
-              placeholder="Scrivi la tua risposta..."
+            <MentionInput
               value={replyText}
-              onChange={(e) => setReplyText(e.target.value)}
+              onChange={setReplyText}
+              onMentions={setMentionedEmails}
+              placeholder="Scrivi la tua risposta... usa @nome per menzionare"
               className="min-h-[80px] text-sm mb-2"
               autoFocus
             />
+            {mentionedEmails.length > 0 && (
+              <div className="flex items-center gap-1 mb-2 text-xs text-muted-foreground">
+                <span>Menzioni:</span>
+                {mentionedEmails.map(email => {
+                  const member = TEAM_MEMBERS.find(m => m.email === email);
+                  return (
+                    <Badge key={email} variant="secondary" className="text-xs">
+                      @{member?.name.split(' ')[0] || email}
+                    </Badge>
+                  );
+                })}
+              </div>
+            )}
             <div className="flex justify-end gap-2">
               <Button variant="outline" size="sm" onClick={cancelReply}>
                 Annulla
