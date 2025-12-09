@@ -7,7 +7,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Building2, MapPin, Euro, Linkedin, Pencil, Trash2, CheckCircle, Clock, XCircle, ChevronDown, X } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Building2, MapPin, Euro, Linkedin, Pencil, Trash2, CheckCircle, Clock, XCircle, ChevronDown, X, Filter } from "lucide-react";
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from "sonner";
 import { EditABCInvestorDialog } from './EditABCInvestorDialog';
@@ -61,6 +62,7 @@ export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvest
   const [investorToDelete, setInvestorToDelete] = useState<Investor | null>(null);
   const [selectedInvestors, setSelectedInvestors] = useState<Set<string>>(new Set());
   const [isBulkUpdating, setIsBulkUpdating] = useState(false);
+  const [approvalFilter, setApprovalFilter] = useState<'all' | ApprovalStatus>('all');
 
   // Auto-open edit dialog when initialEditInvestorId is provided
   useEffect(() => {
@@ -81,8 +83,13 @@ export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvest
     }
   };
 
+  // Filter investors by approval status
+  const filteredInvestors = approvalFilter === 'all' 
+    ? localInvestors 
+    : localInvestors.filter(inv => (inv.approvalStatus || 'pending') === approvalFilter);
+
   const getInvestorsByStatus = (status: string) => {
-    return localInvestors.filter(inv => inv.status === status);
+    return filteredInvestors.filter(inv => inv.status === status);
   };
 
   const isWorkable = (investor: Investor) => {
@@ -268,6 +275,45 @@ export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvest
 
   return (
     <>
+      {/* Approval Status Filter */}
+      <div className="mb-4 flex items-center gap-3">
+        <Filter className="h-4 w-4 text-muted-foreground" />
+        <span className="text-sm text-muted-foreground">Filtra per approvazione:</span>
+        <Select value={approvalFilter} onValueChange={(value) => setApprovalFilter(value as 'all' | ApprovalStatus)}>
+          <SelectTrigger className="w-48">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">
+              <span className="flex items-center gap-2">Tutti ({localInvestors.length})</span>
+            </SelectItem>
+            <SelectItem value="pending">
+              <span className="flex items-center gap-2">
+                <Clock className="h-3.5 w-3.5 text-amber-600" />
+                Pending ({localInvestors.filter(i => (i.approvalStatus || 'pending') === 'pending').length})
+              </span>
+            </SelectItem>
+            <SelectItem value="approved">
+              <span className="flex items-center gap-2">
+                <CheckCircle className="h-3.5 w-3.5 text-green-600" />
+                Approved ({localInvestors.filter(i => i.approvalStatus === 'approved').length})
+              </span>
+            </SelectItem>
+            <SelectItem value="not_approved">
+              <span className="flex items-center gap-2">
+                <XCircle className="h-3.5 w-3.5 text-red-600" />
+                Not Approved ({localInvestors.filter(i => i.approvalStatus === 'not_approved').length})
+              </span>
+            </SelectItem>
+          </SelectContent>
+        </Select>
+        {approvalFilter !== 'all' && (
+          <Button variant="ghost" size="sm" onClick={() => setApprovalFilter('all')}>
+            <X className="h-4 w-4 mr-1" /> Rimuovi filtro
+          </Button>
+        )}
+      </div>
+
       {/* Bulk Actions Toolbar */}
       {selectedInvestors.size > 0 && (
         <div className="mb-4 p-3 bg-primary/10 border border-primary/20 rounded-lg flex items-center justify-between animate-in slide-in-from-top-2 duration-200">
