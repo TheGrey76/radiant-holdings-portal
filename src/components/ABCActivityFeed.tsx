@@ -96,7 +96,10 @@ export const ABCActivityFeed = () => {
   };
 
   const getCurrentUser = () => {
-    return sessionStorage.getItem('abc_console_user') || 'Unknown';
+    const email = sessionStorage.getItem('abc_user_email') || '';
+    // Extract name from email (e.g., "edoardo.grigione@aries76.com" -> "Edoardo Grigione")
+    const namePart = email.split('@')[0] || 'Unknown';
+    return namePart.split('.').map(part => part.charAt(0).toUpperCase() + part.slice(1)).join(' ');
   };
 
   const [mentionedEmails, setMentionedEmails] = useState<string[]>([]);
