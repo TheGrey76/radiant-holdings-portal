@@ -506,7 +506,7 @@ const ABCCompanyConsole = () => {
             </div>
             <div className="flex items-center gap-4">
               <ImportABCInvestorsDialog onSuccess={fetchInvestors} />
-              <span className="text-sm text-muted-foreground">User: Edoardo Grigione</span>
+              <span className="text-sm text-muted-foreground">User: {currentUserEmail}</span>
               <Button variant="outline" size="sm" onClick={handleLogout}>
                 <LogOut className="w-4 h-4 mr-2" />
                 Logout
