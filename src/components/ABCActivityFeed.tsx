@@ -1,11 +1,15 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { FileText, Calendar, MessageSquare, Paperclip, Clock, ArrowRight, ShieldCheck, UserPlus } from "lucide-react";
+import { FileText, Calendar, MessageSquare, Paperclip, Clock, ArrowRight, ShieldCheck, UserPlus, Reply, Send, X } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import { useABCActivityFeed, ActivityItem } from "@/hooks/useABCActivityFeed";
 import { formatDistanceToNow } from "date-fns";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 const ActivityIcon = ({ type }: { type: ActivityItem['type'] }) => {
   const iconProps = { className: "h-4 w-4" };
@@ -63,6 +67,9 @@ const ACTIVITY_TYPES: ActivityItem['type'][] = ['note', 'followup', 'activity', 
 export const ABCActivityFeed = () => {
   const { activities, loading } = useABCActivityFeed();
   const [activeFilters, setActiveFilters] = useState<Set<ActivityItem['type']>>(new Set(ACTIVITY_TYPES));
+  const [replyingTo, setReplyingTo] = useState<ActivityItem | null>(null);
+  const [replyText, setReplyText] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const toggleFilter = (type: ActivityItem['type']) => {
     setActiveFilters(prev => {
@@ -86,6 +93,41 @@ export const ABCActivityFeed = () => {
     status_change: "Status",
     approval_change: "Approval",
     investor_added: "New Investor",
+  };
+
+  const getCurrentUser = () => {
+    return sessionStorage.getItem('abc_console_user') || 'Unknown';
+  };
+
+  const handleReply = async () => {
+    if (!replyingTo || !replyText.trim()) return;
+    
+    setIsSubmitting(true);
+    try {
+      const replyNote = `↩️ Re: "${replyingTo.description.substring(0, 50)}${replyingTo.description.length > 50 ? '...' : ''}"\n\n${replyText.trim()}`;
+      
+      const { error } = await supabase.from('abc_investor_notes').insert({
+        investor_name: replyingTo.investorName,
+        note_text: replyNote,
+        created_by: getCurrentUser(),
+      });
+
+      if (error) throw error;
+
+      toast.success("Risposta aggiunta alla scheda investitore");
+      setReplyingTo(null);
+      setReplyText("");
+    } catch (error) {
+      console.error('Error adding reply:', error);
+      toast.error("Errore nell'aggiunta della risposta");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const cancelReply = () => {
+    setReplyingTo(null);
+    setReplyText("");
   };
 
   return (
@@ -119,6 +161,51 @@ export const ABCActivityFeed = () => {
         </div>
       </CardHeader>
       <CardContent>
+        {/* Reply Input Panel */}
+        {replyingTo && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="mb-4 p-3 rounded-lg border border-blue-500/30 bg-blue-500/5"
+          >
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2 text-sm">
+                <Reply className="h-4 w-4 text-blue-500" />
+                <span className="text-muted-foreground">Rispondi a nota di</span>
+                <span className="font-medium text-foreground">{replyingTo.investorName}</span>
+              </div>
+              <Button variant="ghost" size="sm" onClick={cancelReply} className="h-6 w-6 p-0">
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+            <p className="text-xs text-muted-foreground mb-2 line-clamp-2 italic">
+              "{replyingTo.description}"
+            </p>
+            <Textarea
+              placeholder="Scrivi la tua risposta..."
+              value={replyText}
+              onChange={(e) => setReplyText(e.target.value)}
+              className="min-h-[80px] text-sm mb-2"
+              autoFocus
+            />
+            <div className="flex justify-end gap-2">
+              <Button variant="outline" size="sm" onClick={cancelReply}>
+                Annulla
+              </Button>
+              <Button 
+                size="sm" 
+                onClick={handleReply} 
+                disabled={!replyText.trim() || isSubmitting}
+                className="gap-1"
+              >
+                <Send className="h-3.5 w-3.5" />
+                Invia risposta
+              </Button>
+            </div>
+          </motion.div>
+        )}
+
         {loading ? (
           <div className="space-y-3">
             {[...Array(5)].map((_, i) => (
@@ -142,7 +229,7 @@ export const ABCActivityFeed = () => {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.05 }}
                 >
-                  <div className="p-4 rounded-lg border border-border/50 bg-card/50 hover:bg-card transition-all duration-200 hover:shadow-sm">
+                  <div className="p-4 rounded-lg border border-border/50 bg-card/50 hover:bg-card transition-all duration-200 hover:shadow-sm group">
                     <div className="flex items-start gap-3">
                       <div className="mt-1">
                         <ActivityIcon type={activity.type} />
@@ -157,25 +244,39 @@ export const ABCActivityFeed = () => {
                         <p className="text-sm text-muted-foreground line-clamp-2 mb-2">
                           {activity.description}
                         </p>
-                        <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                          <span className="flex items-center gap-1">
-                            <span className="font-medium">{activity.createdBy}</span>
-                          </span>
-                          <span>•</span>
-                          <span className="flex items-center gap-1">
-                            <Clock className="h-3 w-3" />
-                            {formatDistanceToNow(new Date(activity.createdAt), { addSuffix: true })}
-                          </span>
-                          {activity.metadata?.status && (
-                            <>
-                              <span>•</span>
-                              <Badge 
-                                variant="outline" 
-                                className="text-xs px-1.5 py-0 h-5"
-                              >
-                                {activity.metadata.status}
-                              </Badge>
-                            </>
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                            <span className="flex items-center gap-1">
+                              <span className="font-medium">{activity.createdBy}</span>
+                            </span>
+                            <span>•</span>
+                            <span className="flex items-center gap-1">
+                              <Clock className="h-3 w-3" />
+                              {formatDistanceToNow(new Date(activity.createdAt), { addSuffix: true })}
+                            </span>
+                            {activity.metadata?.status && (
+                              <>
+                                <span>•</span>
+                                <Badge 
+                                  variant="outline" 
+                                  className="text-xs px-1.5 py-0 h-5"
+                                >
+                                  {activity.metadata.status}
+                                </Badge>
+                              </>
+                            )}
+                          </div>
+                          {/* Reply button for notes only */}
+                          {activity.type === 'note' && (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-7 px-2 opacity-0 group-hover:opacity-100 transition-opacity text-blue-500 hover:text-blue-600 hover:bg-blue-500/10"
+                              onClick={() => setReplyingTo(activity)}
+                            >
+                              <Reply className="h-3.5 w-3.5 mr-1" />
+                              Rispondi
+                            </Button>
                           )}
                         </div>
                       </div>
