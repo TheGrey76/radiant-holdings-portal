@@ -158,9 +158,10 @@ export const EditABCInvestorDialog = ({ investor, open, onOpenChange, onSave }: 
   };
 
   const getCurrentUser = () => {
-    const email = sessionStorage.getItem('abc_user_email') || '';
+    // FIXED: use correct sessionStorage key 'abc_console_email' (not 'abc_user_email')
+    const email = sessionStorage.getItem('abc_console_email') || '';
     // Extract name from email (e.g., "edoardo.grigione@aries76.com" -> "Edoardo Grigione")
-    const namePart = email.split('@')[0] || 'Unknown';
+    const namePart = email.split('@')[0] || 'Team';
     return namePart.split('.').map(part => part.charAt(0).toUpperCase() + part.slice(1)).join(' ');
   };
 
@@ -311,9 +312,11 @@ export const EditABCInvestorDialog = ({ investor, open, onOpenChange, onSave }: 
               ) : (
                 [...notes].reverse().map((note, index, arr) => {
                   const isReply = note.note_text.startsWith('↩️ Re:');
-                  const currentUser = sessionStorage.getItem('abc_user_email') || '';
-                  const isOwnMessage = note.created_by === currentUser || 
-                    note.created_by.toLowerCase().includes(currentUser.split('@')[0]?.toLowerCase() || '---');
+                const currentUserEmail = sessionStorage.getItem('abc_console_email') || '';
+                  const currentUserName = currentUserEmail.split('@')[0]?.split('.').map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(' ') || '';
+                  const isOwnMessage = note.created_by === currentUserEmail || 
+                    note.created_by === currentUserName ||
+                    (currentUserName && note.created_by.toLowerCase().includes(currentUserName.toLowerCase()));
                   
                   // Extract quoted text and reply content for replies
                   let quotedText = '';
