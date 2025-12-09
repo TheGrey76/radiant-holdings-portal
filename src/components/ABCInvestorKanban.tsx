@@ -146,10 +146,19 @@ export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvest
   const handleChangeApprovalStatus = async (e: React.MouseEvent, investor: Investor, newStatus: ApprovalStatus) => {
     e.stopPropagation();
     
-    // Optimistic update
+    const previousStatus = investor.approvalStatus;
+    
+    // Optimistic update - instant visual feedback
     setLocalInvestors(prev => prev.map(inv => 
       inv.id === investor.id ? { ...inv, approvalStatus: newStatus } : inv
     ));
+
+    const statusLabels: Record<ApprovalStatus, string> = {
+      pending: 'in attesa di approvazione',
+      approved: 'approvato',
+      not_approved: 'non approvato',
+    };
+    toast.success(`${investor.nome} ${statusLabels[newStatus]}`);
 
     try {
       const { error } = await supabase
@@ -159,18 +168,14 @@ export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvest
 
       if (error) throw error;
 
-      const statusLabels: Record<ApprovalStatus, string> = {
-        pending: 'in attesa di approvazione',
-        approved: 'approvato',
-        not_approved: 'non approvato',
-      };
-      toast.success(`${investor.nome} ${statusLabels[newStatus]}`);
+      // Only trigger parent refresh for KPI updates, not for visual state
       onStatusChange();
     } catch (error) {
       console.error('Error updating approval status:', error);
       toast.error('Errore durante l\'aggiornamento');
+      // Rollback on error
       setLocalInvestors(prev => prev.map(inv => 
-        inv.id === investor.id ? { ...inv, approvalStatus: investor.approvalStatus } : inv
+        inv.id === investor.id ? { ...inv, approvalStatus: previousStatus } : inv
       ));
     }
   };
