@@ -291,14 +291,119 @@ export const EditABCInvestorDialog = ({ investor, open, onOpenChange, onSave }: 
           </TabsContent>
 
           <TabsContent value="notes" className="space-y-4 mt-4">
-            <div className="space-y-3">
-              <Textarea placeholder="Add a note..." value={newNote} onChange={(e) => setNewNote(e.target.value)} rows={3} />
-              <Button onClick={addNote} disabled={!newNote.trim()} size="sm"><Plus className="h-4 w-4 mr-1" /> Add Note</Button>
+            {/* Chat-style thread display */}
+            <div className="space-y-2 max-h-[280px] overflow-y-auto border rounded-lg p-3 bg-muted/20">
+              {loadingNotes ? (
+                <p className="text-sm text-muted-foreground text-center py-4">Loading...</p>
+              ) : notes.length === 0 ? (
+                <p className="text-sm text-muted-foreground text-center py-4">No messages yet. Start the conversation!</p>
+              ) : (
+                [...notes].reverse().map((note, index, arr) => {
+                  const isReply = note.note_text.startsWith('↩️ Re:');
+                  const currentUser = sessionStorage.getItem('abc_user_email') || '';
+                  const isOwnMessage = note.created_by === currentUser || 
+                    note.created_by.toLowerCase().includes(currentUser.split('@')[0]?.toLowerCase() || '---');
+                  
+                  // Extract quoted text and reply content for replies
+                  let quotedText = '';
+                  let replyContent = note.note_text;
+                  if (isReply) {
+                    const match = note.note_text.match(/↩️ Re: "([^"]+)"\n\n(.+)/s);
+                    if (match) {
+                      quotedText = match[1];
+                      replyContent = match[2];
+                    }
+                  }
+                  
+                  return (
+                    <div 
+                      key={note.id} 
+                      className={`flex flex-col ${isOwnMessage ? 'items-end' : 'items-start'} group`}
+                    >
+                      {/* Author name */}
+                      <span className={`text-[10px] font-medium mb-0.5 px-2 ${
+                        isOwnMessage ? 'text-primary' : 'text-orange-600'
+                      }`}>
+                        {note.created_by}
+                      </span>
+                      
+                      <div className={`max-w-[85%] rounded-2xl px-3 py-2 relative ${
+                        isOwnMessage 
+                          ? 'bg-primary text-primary-foreground rounded-tr-sm' 
+                          : 'bg-muted rounded-tl-sm'
+                      }`}>
+                        {/* Quoted text for replies */}
+                        {isReply && quotedText && (
+                          <div className={`text-xs mb-1.5 pb-1.5 border-b ${
+                            isOwnMessage ? 'border-primary-foreground/30 opacity-80' : 'border-border'
+                          }`}>
+                            <span className="opacity-70">↩️ </span>
+                            <span className="italic">"{quotedText.substring(0, 50)}{quotedText.length > 50 ? '...' : ''}"</span>
+                          </div>
+                        )}
+                        
+                        {/* Message content */}
+                        <p className="text-sm whitespace-pre-wrap">
+                          {isReply ? replyContent : note.note_text}
+                        </p>
+                        
+                        {/* Timestamp */}
+                        <p className={`text-[10px] mt-1 ${
+                          isOwnMessage ? 'text-primary-foreground/70' : 'text-muted-foreground'
+                        }`}>
+                          {format(new Date(note.created_at), 'dd MMM HH:mm')}
+                        </p>
+                        
+                        {/* Delete button on hover */}
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          className={`absolute -top-1 ${isOwnMessage ? '-left-8' : '-right-8'} h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity`}
+                          onClick={() => deleteNote(note.id)}
+                        >
+                          <Trash2 className="h-3 w-3 text-destructive" />
+                        </Button>
+                      </div>
+                    </div>
+                  );
+                })
+              )}
             </div>
-            <div className="space-y-3 max-h-[300px] overflow-y-auto">
-              {loadingNotes ? <p className="text-sm text-muted-foreground">Loading...</p> : notes.length === 0 ? <p className="text-sm text-muted-foreground">No notes yet</p> : notes.map((note) => (
-                <Card key={note.id}><CardContent className="p-3"><div className="flex justify-between items-start gap-2"><div className="flex-1"><p className="text-sm">{note.note_text}</p><p className="text-xs text-muted-foreground mt-1">{note.created_by} • {format(new Date(note.created_at), 'dd MMM yyyy HH:mm')}</p></div><Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => deleteNote(note.id)}><Trash2 className="h-4 w-4 text-destructive" /></Button></div></CardContent></Card>
-              ))}
+            
+            {/* Reply to last message button */}
+            {notes.length > 0 && (
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="text-xs h-7"
+                onClick={() => {
+                  const lastNote = notes[0];
+                  const preview = lastNote.note_text.substring(0, 40);
+                  setNewNote(`↩️ Re: "${preview}${lastNote.note_text.length > 40 ? '...' : ''}"\n\n`);
+                }}
+              >
+                ↩️ Reply to last message
+              </Button>
+            )}
+            
+            {/* Input area */}
+            <div className="flex gap-2 items-end">
+              <Textarea 
+                placeholder="Write a message..." 
+                value={newNote} 
+                onChange={(e) => setNewNote(e.target.value)} 
+                rows={2}
+                className="flex-1 resize-none"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey && newNote.trim()) {
+                    e.preventDefault();
+                    addNote();
+                  }
+                }}
+              />
+              <Button onClick={addNote} disabled={!newNote.trim()} size="icon" className="h-10 w-10">
+                <Plus className="h-4 w-4" />
+              </Button>
             </div>
           </TabsContent>
 
