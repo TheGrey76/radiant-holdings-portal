@@ -3,10 +3,11 @@ import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Building2, MapPin, Euro, Linkedin, Pencil, Trash2, CheckCircle, Clock, XCircle, ChevronDown } from "lucide-react";
+import { Building2, MapPin, Euro, Linkedin, Pencil, Trash2, CheckCircle, Clock, XCircle, ChevronDown, X } from "lucide-react";
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from "sonner";
 import { EditABCInvestorDialog } from './EditABCInvestorDialog';
@@ -58,6 +59,8 @@ export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvest
   const [editingInvestor, setEditingInvestor] = useState<Investor | null>(null);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [investorToDelete, setInvestorToDelete] = useState<Investor | null>(null);
+  const [selectedInvestors, setSelectedInvestors] = useState<Set<string>>(new Set());
+  const [isBulkUpdating, setIsBulkUpdating] = useState(false);
 
   // Auto-open edit dialog when initialEditInvestorId is provided
   useEffect(() => {
@@ -204,12 +207,119 @@ export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvest
     setInvestorToDelete(null);
   };
 
+  // Bulk selection handlers
+  const toggleInvestorSelection = (e: React.MouseEvent, investorId: string) => {
+    e.stopPropagation();
+    setSelectedInvestors(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(investorId)) {
+        newSet.delete(investorId);
+      } else {
+        newSet.add(investorId);
+      }
+      return newSet;
+    });
+  };
+
+  const clearSelection = () => {
+    setSelectedInvestors(new Set());
+  };
+
+  const handleBulkApprovalChange = async (newStatus: ApprovalStatus) => {
+    if (selectedInvestors.size === 0) return;
+    
+    setIsBulkUpdating(true);
+    const selectedIds = Array.from(selectedInvestors);
+    
+    // Optimistic update
+    setLocalInvestors(prev => prev.map(inv => 
+      selectedIds.includes(inv.id) ? { ...inv, approvalStatus: newStatus } : inv
+    ));
+
+    const statusLabels: Record<ApprovalStatus, string> = {
+      pending: 'in attesa',
+      approved: 'approvati',
+      not_approved: 'non approvati',
+    };
+    toast.success(`${selectedIds.length} investitori ${statusLabels[newStatus]}`);
+    clearSelection();
+
+    try {
+      const { error } = await supabase
+        .from('abc_investors' as any)
+        .update({ approval_status: newStatus })
+        .in('id', selectedIds);
+
+      if (error) throw error;
+      onStatusChange();
+    } catch (error) {
+      console.error('Error bulk updating approval status:', error);
+      toast.error('Errore durante l\'aggiornamento');
+      // Refresh to get correct state
+      onStatusChange();
+    } finally {
+      setIsBulkUpdating(false);
+    }
+  };
+
   useEffect(() => {
     setLocalInvestors(investors);
   }, [investors]);
 
   return (
     <>
+      {/* Bulk Actions Toolbar */}
+      {selectedInvestors.size > 0 && (
+        <div className="mb-4 p-3 bg-primary/10 border border-primary/20 rounded-lg flex items-center justify-between animate-in slide-in-from-top-2 duration-200">
+          <div className="flex items-center gap-3">
+            <Badge variant="secondary" className="font-semibold">
+              {selectedInvestors.size} selezionati
+            </Badge>
+            <span className="text-sm text-muted-foreground">Azioni bulk:</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => handleBulkApprovalChange('pending')}
+              disabled={isBulkUpdating}
+              className="gap-1.5"
+            >
+              <Clock className="h-3.5 w-3.5 text-amber-600" />
+              Pending
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => handleBulkApprovalChange('approved')}
+              disabled={isBulkUpdating}
+              className="gap-1.5"
+            >
+              <CheckCircle className="h-3.5 w-3.5 text-green-600" />
+              Approva
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => handleBulkApprovalChange('not_approved')}
+              disabled={isBulkUpdating}
+              className="gap-1.5"
+            >
+              <XCircle className="h-3.5 w-3.5 text-red-600" />
+              Non Approvare
+            </Button>
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={clearSelection}
+              className="ml-2"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+      )}
+
       <DragDropContext onDragEnd={handleDragEnd}>
         <div className="flex gap-4 overflow-x-auto pb-4 min-h-[600px]">
           {statusColumns.map((column) => {
@@ -260,36 +370,47 @@ export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvest
                                       : 'opacity-50 cursor-not-allowed grayscale'
                                   } ${
                                     snapshot.isDragging ? 'shadow-lg ring-2 ring-primary cursor-grabbing' : ''
+                                  } ${
+                                    selectedInvestors.has(investor.id) ? 'ring-2 ring-primary bg-primary/5' : ''
                                   }`}
                                 >
                                   <CardContent className="p-3 space-y-2">
-                                    {/* Approval Status Dropdown */}
-                                    <DropdownMenu>
-                                      <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-                                        <button className="focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded">
-                                          <Badge className={`${statusConfig.className} text-xs cursor-pointer hover:opacity-80 transition-opacity flex items-center gap-1`}>
-                                            <StatusIcon className="h-3 w-3" />
-                                            {statusConfig.label}
-                                            <ChevronDown className="h-3 w-3 ml-1" />
-                                          </Badge>
-                                        </button>
-                                      </DropdownMenuTrigger>
-                                      <DropdownMenuContent align="start">
-                                        <DropdownMenuItem onClick={(e) => handleChangeApprovalStatus(e as any, investor, 'pending')}>
-                                          <Clock className="h-4 w-4 mr-2 text-amber-600" />
-                                          Pending Approval
-                                        </DropdownMenuItem>
-                                        <DropdownMenuItem onClick={(e) => handleChangeApprovalStatus(e as any, investor, 'approved')}>
-                                          <CheckCircle className="h-4 w-4 mr-2 text-green-600" />
-                                          Approved
-                                        </DropdownMenuItem>
-                                        <DropdownMenuItem onClick={(e) => handleChangeApprovalStatus(e as any, investor, 'not_approved')}>
-                                          <XCircle className="h-4 w-4 mr-2 text-red-600" />
-                                          Not Approved
-                                        </DropdownMenuItem>
-                                      </DropdownMenuContent>
-                                    </DropdownMenu>
-
+                                    {/* Selection checkbox and Approval Status */}
+                                    <div className="flex items-center justify-between">
+                                      <div className="flex items-center gap-2">
+                                        <Checkbox
+                                          checked={selectedInvestors.has(investor.id)}
+                                          onCheckedChange={() => {}}
+                                          onClick={(e) => toggleInvestorSelection(e, investor.id)}
+                                          className="h-4 w-4"
+                                        />
+                                        <DropdownMenu>
+                                          <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+                                            <button className="focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded">
+                                              <Badge className={`${statusConfig.className} text-xs cursor-pointer hover:opacity-80 transition-opacity flex items-center gap-1`}>
+                                                <StatusIcon className="h-3 w-3" />
+                                                {statusConfig.label}
+                                                <ChevronDown className="h-3 w-3 ml-1" />
+                                              </Badge>
+                                            </button>
+                                          </DropdownMenuTrigger>
+                                          <DropdownMenuContent align="start">
+                                            <DropdownMenuItem onClick={(e) => handleChangeApprovalStatus(e as any, investor, 'pending')}>
+                                              <Clock className="h-4 w-4 mr-2 text-amber-600" />
+                                              Pending Approval
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem onClick={(e) => handleChangeApprovalStatus(e as any, investor, 'approved')}>
+                                              <CheckCircle className="h-4 w-4 mr-2 text-green-600" />
+                                              Approved
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem onClick={(e) => handleChangeApprovalStatus(e as any, investor, 'not_approved')}>
+                                              <XCircle className="h-4 w-4 mr-2 text-red-600" />
+                                              Not Approved
+                                            </DropdownMenuItem>
+                                          </DropdownMenuContent>
+                                        </DropdownMenu>
+                                      </div>
+                                    </div>
                                     <div className="flex items-start justify-between">
                                       <div className="flex-1 min-w-0">
                                         <h4 className={`font-semibold text-sm truncate ${workable ? 'text-foreground' : 'text-muted-foreground'}`}>
