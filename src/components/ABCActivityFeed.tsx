@@ -95,11 +95,21 @@ export const ABCActivityFeed = () => {
     investor_added: "New Investor",
   };
 
+  // Convert email or raw value to formatted name
+  const formatUserName = (value: string): string => {
+    if (!value || value === 'Team' || value === 'System') return value || 'Team';
+    // If it's an email, extract and format the name part
+    if (value.includes('@')) {
+      const namePart = value.split('@')[0] || 'Unknown';
+      return namePart.split('.').map(part => part.charAt(0).toUpperCase() + part.slice(1)).join(' ');
+    }
+    // Already a name, return as-is
+    return value;
+  };
+
   const getCurrentUser = () => {
     const email = sessionStorage.getItem('abc_user_email') || '';
-    // Extract name from email (e.g., "edoardo.grigione@aries76.com" -> "Edoardo Grigione")
-    const namePart = email.split('@')[0] || 'Unknown';
-    return namePart.split('.').map(part => part.charAt(0).toUpperCase() + part.slice(1)).join(' ');
+    return formatUserName(email);
   };
 
   const [mentionedEmails, setMentionedEmails] = useState<string[]>([]);
@@ -287,7 +297,7 @@ export const ABCActivityFeed = () => {
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3 text-xs text-muted-foreground">
                             <span className="flex items-center gap-1">
-                              <span className="font-medium">{activity.createdBy}</span>
+                              <span className="font-medium">{formatUserName(activity.createdBy)}</span>
                             </span>
                             <span>•</span>
                             <span className="flex items-center gap-1">
