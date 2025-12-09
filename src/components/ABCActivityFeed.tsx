@@ -97,7 +97,17 @@ export const ABCActivityFeed = () => {
 
   // Convert email or raw value to formatted name
   const formatUserName = (value: string): string => {
-    if (!value || value === 'Team' || value === 'System') return value || 'Team';
+    if (!value || value === 'Team' || value === 'System' || value === 'Unknown') {
+      // Try to get current user from sessionStorage as fallback for display
+      const storedEmail = sessionStorage.getItem('abc_user_email');
+      if (storedEmail && storedEmail.includes('@')) {
+        const namePart = storedEmail.split('@')[0] || '';
+        if (namePart) {
+          return namePart.split('.').map(part => part.charAt(0).toUpperCase() + part.slice(1)).join(' ');
+        }
+      }
+      return value || 'Team';
+    }
     // If it's an email, extract and format the name part
     if (value.includes('@')) {
       const namePart = value.split('@')[0] || 'Unknown';
@@ -109,6 +119,10 @@ export const ABCActivityFeed = () => {
 
   const getCurrentUser = () => {
     const email = sessionStorage.getItem('abc_user_email') || '';
+    console.log('getCurrentUser email from sessionStorage:', email);
+    if (!email) {
+      return 'Team';
+    }
     return formatUserName(email);
   };
 
