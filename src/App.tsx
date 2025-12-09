@@ -14,7 +14,7 @@ import Services from "./pages/Services";
 import Legal from "./pages/Legal";
 import ContactPage from "./pages/ContactPage";
 import Auth from "./pages/Auth";
-import SneakerReport from "./pages/SneakerReport";
+
 import AiresData from "./pages/AiresData";
 import PrivateEquityFunds from "./pages/PrivateEquityFunds";
 import GPCapitalAdvisory from "./pages/GPCapitalAdvisory";
@@ -114,7 +114,7 @@ const App = () => (
           <Route path="/financial-advisers" element={<FinancialAdvisersPortal />} />
           <Route path="/gp-registration" element={<GPRegistrationPage />} />
           <Route path="/lp-registration" element={<LPRegistrationPage />} />
-          <Route path="/sneaker-report" element={<SneakerReport />} />
+          
           <Route path="/vettafi-access" element={<Navigate to="/vettafi-proposal" replace />} />
           <Route path="/vettafi-proposal" element={<VettaFiProposal />} />
           <Route path="/alkemia-praesidium-access" element={<Navigate to="/alkemia-praesidium-proposal" replace />} />
