@@ -8,7 +8,10 @@ import { Shield, Mail } from "lucide-react";
 // Default authorized admin emails
 const DEFAULT_AUTHORIZED_EMAILS = [
   "edoardo.grigione@aries76.com",
-  "stefano.taioli@abccompany.it"
+  "stefano.taioli@abccompany.it",
+  "alessandro.catullo@aries76.com",
+  "enrico.sobacchi@abccompany.it",
+  "lorenzo.delforno@abccompany.it"
 ];
 
 // Get all authorized emails (default + custom from localStorage)
