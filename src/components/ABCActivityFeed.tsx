@@ -65,7 +65,7 @@ const ActivityTypeBadge = ({ type }: { type: ActivityItem['type'] }) => {
 const ACTIVITY_TYPES: ActivityItem['type'][] = ['note', 'followup', 'activity', 'document', 'status_change', 'approval_change', 'investor_added'];
 
 export const ABCActivityFeed = () => {
-  const { activities, loading } = useABCActivityFeed();
+  const { activities, loading, refetch } = useABCActivityFeed();
   const [activeFilters, setActiveFilters] = useState<Set<ActivityItem['type']>>(new Set(ACTIVITY_TYPES));
   const [replyingTo, setReplyingTo] = useState<ActivityItem | null>(null);
   const [replyText, setReplyText] = useState("");
@@ -141,6 +141,8 @@ export const ABCActivityFeed = () => {
       setReplyingTo(null);
       setReplyText("");
       setMentionedEmails([]);
+      // Refetch to update the activity feed with new reply
+      refetch();
     } catch (error) {
       console.error('Error adding reply:', error);
       toast.error("Errore nell'aggiunta della risposta");
