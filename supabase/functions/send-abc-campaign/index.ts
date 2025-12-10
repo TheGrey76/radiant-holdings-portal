@@ -82,7 +82,7 @@ ${personalizedContent}
         `;
 
         await resend.emails.send({
-          from: "ABC Company <onboarding@resend.dev>",
+          from: "Edoardo Grigione - Aries76 <edoardo.grigione@aries76.com>",
           to: [recipient.email],
           subject: personalizedSubject,
           html: emailHtml,
