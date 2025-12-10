@@ -66,49 +66,58 @@ const handler = async (req: Request): Promise<Response> => {
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
           </head>
-          <body style="margin: 0; padding: 0; background-color: #ffffff; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
-            <div style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
+          <body style="margin: 0; padding: 0; background-color: #f8f9fa; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+            
+            <!-- Main Container -->
+            <div style="max-width: 640px; margin: 0 auto; padding: 30px 15px;">
               
-              <!-- Logo Header -->
-              <div style="text-align: center; margin-bottom: 40px;">
-                <img src="https://aries76.lovable.app/aries76-og-logo.png" alt="ARIES76" style="height: 32px;" />
-              </div>
-              
-              <!-- Email Body -->
-              <div style="font-size: 15px; line-height: 1.7; color: #333333; white-space: pre-wrap;">
+              <!-- Email Card -->
+              <div style="background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); overflow: hidden;">
+                
+                <!-- Header with Logo -->
+                <div style="background: linear-gradient(135deg, #1a2332 0%, #2d3748 100%); padding: 35px 40px; text-align: center;">
+                  <img src="https://aries76.lovable.app/aries76-og-logo.png" alt="ARIES76" style="height: 50px;" />
+                  <p style="color: #c77c4d; font-size: 11px; letter-spacing: 3px; margin: 12px 0 0 0; text-transform: uppercase;">Capital Intelligence</p>
+                </div>
+                
+                <!-- Email Body -->
+                <div style="padding: 40px;">
+                  <div style="font-size: 15px; line-height: 1.8; color: #333333; white-space: pre-wrap;">
 ${personalizedContent}
-              </div>
-              
-              <!-- Signature Block -->
-              <div style="margin-top: 40px; padding-top: 30px; border-top: 1px solid #e5e5e5;">
-                <table cellpadding="0" cellspacing="0" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
-                  <tr>
-                    <td style="vertical-align: top; padding-right: 20px;">
-                      <img src="https://aries76.lovable.app/aries76-og-logo.png" alt="ARIES76" style="height: 28px; margin-top: 5px;" />
-                    </td>
-                    <td style="vertical-align: top;">
-                      <div style="font-size: 14px; font-weight: 600; color: #1a2332;">Edoardo GRIGIONE</div>
-                      <div style="font-size: 12px; color: #c77c4d; margin-top: 2px;">CEO | Founder</div>
-                      <div style="font-size: 12px; margin-top: 4px;">
-                        <a href="https://www.aries76.com" style="color: #2563eb; text-decoration: none;">www.aries76.com</a>
-                      </div>
-                      <div style="font-size: 11px; color: #666666; margin-top: 4px;">27, Old Gloucester Street, London WC1N 3AX, UK</div>
-                    </td>
-                  </tr>
-                </table>
+                  </div>
+                </div>
+                
+                <!-- Signature Block -->
+                <div style="padding: 0 40px 40px 40px;">
+                  <div style="border-top: 2px solid #c77c4d; padding-top: 25px;">
+                    <table cellpadding="0" cellspacing="0" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+                      <tr>
+                        <td style="vertical-align: top; padding-right: 25px; border-right: 1px solid #e5e5e5;">
+                          <img src="https://aries76.lovable.app/aries76-og-logo.png" alt="ARIES76" style="height: 40px;" />
+                        </td>
+                        <td style="vertical-align: top; padding-left: 25px;">
+                          <div style="font-size: 16px; font-weight: 700; color: #1a2332; letter-spacing: 0.5px;">Edoardo GRIGIONE</div>
+                          <div style="font-size: 13px; color: #c77c4d; margin-top: 4px; font-weight: 500;">CEO | Founder</div>
+                          <div style="font-size: 13px; margin-top: 8px;">
+                            <a href="https://www.aries76.com" style="color: #2563eb; text-decoration: none; font-weight: 500;">www.aries76.com</a>
+                          </div>
+                          <div style="font-size: 12px; color: #666666; margin-top: 6px;">27, Old Gloucester Street, London WC1N 3AX, UK</div>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+                
               </div>
               
               <!-- Confidentiality Disclaimer -->
-              <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e5e5;">
-                <p style="font-size: 9px; color: #999999; line-height: 1.5; margin: 0;">
+              <div style="padding: 25px 20px; text-align: center;">
+                <p style="font-size: 10px; color: #888888; line-height: 1.6; margin: 0;">
                   The information transmitted is intended only for the person or entity to which it is addressed and may contain confidential and/or privileged material. Any review, retransmission, dissemination, or other use of, or taking of any action in reliance upon, this information by persons or entities other than the intended recipient is prohibited. If you received this in error, please contact the sender and delete the material from any computer.
                 </p>
-              </div>
-              
-              <!-- Footer -->
-              <div style="margin-top: 30px; text-align: center;">
-                <p style="font-size: 11px; color: #999999; margin: 0;">Aries76 Capital Advisory</p>
-                <p style="font-size: 11px; color: #999999; margin: 5px 0 0 0;">London, United Kingdom</p>
+                <p style="font-size: 11px; color: #999999; margin: 15px 0 0 0;">
+                  Aries76 Capital Advisory · London, United Kingdom
+                </p>
               </div>
               
             </div>
