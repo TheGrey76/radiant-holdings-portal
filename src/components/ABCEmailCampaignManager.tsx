@@ -263,6 +263,12 @@ export function ABCEmailCampaignManager({ investors, onInvestorsUpdated }: ABCEm
 
   // Preview email for first selected investor
   const handlePreview = () => {
+    console.log("handlePreview called", { 
+      hasContent: !!emailForm.content, 
+      selectedCount: selectedInvestors.length,
+      investorsCount: investors.length 
+    });
+    
     if (!emailForm.content) {
       toast({
         title: "Contenuto mancante",
@@ -283,10 +289,13 @@ export function ABCEmailCampaignManager({ investors, onInvestorsUpdated }: ABCEm
     
     // Find investor from all investors (not just filtered)
     const firstInvestor = investors.find(i => selectedInvestors.includes(i.id));
+    console.log("First investor found:", firstInvestor);
+    
     if (firstInvestor) {
       const previewSubject = replacePlaceholders(emailForm.subject, firstInvestor);
       const previewBody = replacePlaceholders(emailForm.content, firstInvestor);
       setPreviewContent(`**Oggetto:** ${previewSubject}\n\n---\n\n${previewBody}`);
+      console.log("Preview content set");
     } else {
       toast({
         title: "Investitore non trovato",
