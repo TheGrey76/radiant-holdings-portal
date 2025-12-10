@@ -660,6 +660,17 @@ const ABCCompanyConsole = () => {
 
           {/* INVESTORS TAB */}
           <TabsContent value="investors" className="space-y-6">
+            {/* Live Data Indicator */}
+            <div className="flex justify-end">
+              <div className="flex items-center gap-2 text-xs text-muted-foreground bg-muted/50 px-3 py-1.5 rounded-full">
+                <div className="h-2 w-2 bg-green-500 rounded-full animate-pulse" />
+                <span>Dati live</span>
+                <span className="text-foreground font-medium">
+                  {lastDataUpdate ? lastDataUpdate.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : '--:--:--'}
+                </span>
+              </div>
+            </div>
+
             {/* Investor Management KPIs */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <motion.div
