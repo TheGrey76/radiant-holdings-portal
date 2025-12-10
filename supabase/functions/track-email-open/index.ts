@@ -10,6 +10,20 @@ const corsHeaders = {
 // 1x1 transparent GIF pixel
 const TRACKING_PIXEL = Uint8Array.from(atob("R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"), c => c.charCodeAt(0));
 
+// Known email proxy/prefetch user agents to ignore
+const PROXY_USER_AGENTS = [
+  "GoogleImageProxy",
+  "YahooMailProxy", 
+  "Outlook-iOS",
+  "Microsoft Office",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36", // Generic bot pattern
+];
+
+const isProxyRequest = (userAgent: string): boolean => {
+  const ua = userAgent.toLowerCase();
+  return PROXY_USER_AGENTS.some(proxy => ua.includes(proxy.toLowerCase()));
+};
+
 const handler = async (req: Request): Promise<Response> => {
   // Handle CORS preflight
   if (req.method === "OPTIONS") {
@@ -22,18 +36,31 @@ const handler = async (req: Request): Promise<Response> => {
     const email = url.searchParams.get("e");
     const name = url.searchParams.get("n");
 
-    console.log(`Email open tracked: campaign=${campaignId}, email=${email}`);
+    // Get user agent and IP for analytics
+    const userAgent = req.headers.get("user-agent") || "unknown";
+    const forwardedFor = req.headers.get("x-forwarded-for");
+    const ipAddress = forwardedFor ? forwardedFor.split(",")[0].trim() : "unknown";
+
+    console.log(`Email open request: campaign=${campaignId}, email=${email}, ua=${userAgent}`);
+
+    // Skip proxy/prefetch requests
+    if (isProxyRequest(userAgent)) {
+      console.log(`⏭️ Skipping proxy request from: ${userAgent}`);
+      return new Response(TRACKING_PIXEL, {
+        status: 200,
+        headers: {
+          ...corsHeaders,
+          "Content-Type": "image/gif",
+          "Content-Length": TRACKING_PIXEL.length.toString(),
+        },
+      });
+    }
 
     // Only log if we have campaign and email
     if (campaignId && email) {
       const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
       const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
       const supabase = createClient(supabaseUrl, supabaseKey);
-
-      // Get user agent and IP for analytics
-      const userAgent = req.headers.get("user-agent") || "unknown";
-      const forwardedFor = req.headers.get("x-forwarded-for");
-      const ipAddress = forwardedFor ? forwardedFor.split(",")[0].trim() : "unknown";
 
       // Check if this open was already tracked (avoid duplicates from image caching)
       const { data: existing } = await supabase
@@ -58,7 +85,7 @@ const handler = async (req: Request): Promise<Response> => {
         if (error) {
           console.error("Error logging email open:", error);
         } else {
-          console.log(`✓ First open logged for ${email}`);
+          console.log(`✓ Real open logged for ${email}`);
         }
       } else {
         console.log(`Already tracked open for ${email}`);
