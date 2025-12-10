@@ -15,7 +15,7 @@ import { useToast } from "@/hooks/use-toast";
 import { 
   Mail, Send, Users, Filter, CheckCircle, Clock, AlertCircle, 
   Save, FileText, History, Trash2, Plus, Eye, AlertTriangle, Edit2,
-  Paperclip, X
+  Paperclip, X, MailOpen
 } from "lucide-react";
 import { format } from "date-fns";
 import { it } from "date-fns/locale";
@@ -54,6 +54,7 @@ interface CampaignHistory {
   sent_by: string;
   sent_at: string;
   recipients: any;
+  opens_count?: number;
 }
 
 interface ABCEmailCampaignManagerProps {
@@ -166,7 +167,17 @@ export function ABCEmailCampaignManager({ investors, onInvestorsUpdated }: ABCEm
       .limit(50);
     
     if (!error && data) {
-      setCampaignHistory(data);
+      // Fetch open counts for each campaign
+      const campaignsWithOpens = await Promise.all(
+        data.map(async (campaign) => {
+          const { count } = await supabase
+            .from('abc_email_opens')
+            .select('*', { count: 'exact', head: true })
+            .eq('campaign_id', campaign.id);
+          return { ...campaign, opens_count: count || 0 };
+        })
+      );
+      setCampaignHistory(campaignsWithOpens);
     }
   };
 
@@ -441,7 +452,30 @@ export function ABCEmailCampaignManager({ investors, onInvestorsUpdated }: ABCEm
           personalizedSubject: replacePlaceholders(emailForm.subject, i),
         }));
 
-      // Call edge function to send emails
+      // First, create campaign record to get the ID for tracking
+      const { data: campaignData, error: campaignError } = await supabase
+        .from('abc_email_campaign_history')
+        .insert({
+          campaign_name: emailForm.campaignName || `Campagna ${format(new Date(), 'dd/MM/yyyy HH:mm')}`,
+          subject: emailForm.subject,
+          content: emailForm.content,
+          recipient_count: selectedRecipients.length,
+          successful_sends: 0,
+          failed_sends: 0,
+          filter_status: filterStatus !== 'all' ? filterStatus : null,
+          filter_category: filterCategory !== 'all' ? filterCategory : null,
+          sent_by: currentUserEmail,
+          recipients: selectedRecipients.map(r => ({ email: r.email, name: r.name, company: r.company })),
+        })
+        .select('id')
+        .single();
+
+      if (campaignError) throw campaignError;
+
+      const campaignId = campaignData.id;
+      console.log('Campaign created with ID:', campaignId);
+
+      // Call edge function to send emails with campaign ID for tracking
       const { data, error } = await supabase.functions.invoke('send-abc-campaign', {
         body: {
           recipients: selectedRecipients,
@@ -449,6 +483,7 @@ export function ABCEmailCampaignManager({ investors, onInvestorsUpdated }: ABCEm
           content: emailForm.content,
           senderEmail: currentUserEmail,
           attachments: attachments,
+          campaignId: campaignId,
         },
       });
 
@@ -457,23 +492,18 @@ export function ABCEmailCampaignManager({ investors, onInvestorsUpdated }: ABCEm
       const successCount = data?.successful || selectedRecipients.length;
       const failCount = data?.failed || 0;
 
-      // Log campaign to history
-      await supabase.from('abc_email_campaign_history').insert({
-        campaign_name: emailForm.campaignName || `Campagna ${format(new Date(), 'dd/MM/yyyy HH:mm')}`,
-        subject: emailForm.subject,
-        content: emailForm.content,
-        recipient_count: selectedRecipients.length,
-        successful_sends: successCount,
-        failed_sends: failCount,
-        filter_status: filterStatus !== 'all' ? filterStatus : null,
-        filter_category: filterCategory !== 'all' ? filterCategory : null,
-        sent_by: currentUserEmail,
-        recipients: selectedRecipients.map(r => ({ email: r.email, name: r.name, company: r.company })),
-      });
+      // Update campaign with actual send results
+      await supabase
+        .from('abc_email_campaign_history')
+        .update({
+          successful_sends: successCount,
+          failed_sends: failCount,
+        })
+        .eq('id', campaignId);
 
       toast({
         title: "Campagna inviata",
-        description: `Email inviata a ${successCount} investitori${failCount > 0 ? `, ${failCount} fallite` : ''}`,
+        description: `Email inviata a ${successCount} investitori${failCount > 0 ? `, ${failCount} fallite` : ''}. Tracking aperture attivo.`,
       });
 
       // Log activity and update status for each investor
@@ -1033,6 +1063,7 @@ Team Aries76"
                     <TableHead>Campagna</TableHead>
                     <TableHead>Oggetto</TableHead>
                     <TableHead>Destinatari</TableHead>
+                    <TableHead>Aperture</TableHead>
                     <TableHead>Risultato</TableHead>
                     <TableHead>Inviata da</TableHead>
                     <TableHead>Data</TableHead>
@@ -1045,6 +1076,20 @@ Team Aries76"
                       <TableCell className="max-w-[200px] truncate">{campaign.subject}</TableCell>
                       <TableCell>
                         <Badge variant="secondary">{campaign.recipient_count}</Badge>
+                      </TableCell>
+                      <TableCell>
+                        <Badge 
+                          variant="outline" 
+                          className={campaign.opens_count && campaign.opens_count > 0 ? "text-blue-600 border-blue-200 bg-blue-50" : ""}
+                        >
+                          <MailOpen className="h-3 w-3 mr-1" />
+                          {campaign.opens_count || 0}
+                          {campaign.recipient_count > 0 && (
+                            <span className="ml-1 text-muted-foreground">
+                              ({Math.round((campaign.opens_count || 0) / campaign.recipient_count * 100)}%)
+                            </span>
+                          )}
+                        </Badge>
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center gap-2">
