@@ -65,6 +65,7 @@ const ABCCompanyConsole = () => {
   const [upcomingFollowUps, setUpcomingFollowUps] = useState<any[]>([]);
   const [customFunnelData, setCustomFunnelData] = useState<any[] | null>(null);
   const [editInvestorId, setEditInvestorId] = useState<string | null>(null);
+  const [lastDataUpdate, setLastDataUpdate] = useState<Date | null>(null);
   
   // Quick Actions state
   const [showAddNoteDialog, setShowAddNoteDialog] = useState(false);
@@ -305,6 +306,7 @@ const ABCCompanyConsole = () => {
       }));
 
       setInvestors(transformedInvestors);
+      setLastDataUpdate(new Date());
       setLoadingInvestors(false);
     } catch (error) {
       console.error('Error fetching investors:', error);
@@ -1151,8 +1153,19 @@ const ABCCompanyConsole = () => {
               return (
             <Card>
               <CardHeader>
-                <CardTitle>BIWEEKLY REPORT</CardTitle>
-                <p className="text-sm text-muted-foreground">Campaign: January 1, 2026 → June 30, 2026 ({weeksRemaining > 0 ? `${weeksRemaining} weeks remaining` : 'Campaign ended'})</p>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle>BIWEEKLY REPORT</CardTitle>
+                    <p className="text-sm text-muted-foreground">Campaign: January 1, 2026 → June 30, 2026 ({weeksRemaining > 0 ? `${weeksRemaining} weeks remaining` : 'Campaign ended'})</p>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground bg-muted/50 px-3 py-1.5 rounded-full">
+                    <div className="h-2 w-2 bg-green-500 rounded-full animate-pulse" />
+                    <span>Dati live</span>
+                    <span className="text-foreground font-medium">
+                      {lastDataUpdate ? lastDataUpdate.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : '--:--:--'}
+                    </span>
+                  </div>
+                </div>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
