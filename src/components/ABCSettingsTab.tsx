@@ -7,11 +7,13 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
-  Building2, Target, Users, Mail, Settings, Plus, X, Save, 
-  Upload, Euro, Calendar, Briefcase, Globe, Phone, MapPin,
-  UserCog, Shield, Bell
+  Building2, Target, Users, Mail, Plus, X, Save, 
+  Euro, Calendar, Briefcase, Globe, Phone, MapPin,
+  UserCog, Shield, Bell, Loader2, RefreshCw
 } from "lucide-react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
+import type { Json } from "@/integrations/supabase/types";
 
 interface TeamMember {
   email: string;
@@ -60,6 +62,34 @@ interface NotificationPrefs {
   meetingReminders: boolean;
 }
 
+const DEFAULT_COMPANY: CompanySettings = {
+  companyName: "ABC Company",
+  companyDescription: "Club Deal per investimenti in PMI italiane con track record consolidato di 207 operazioni e €32M di capitale investito.",
+  sector: "Private Equity",
+  website: "www.abccompany.it",
+  phone: "+39 02 1234567",
+  address: "Milano, Italia",
+  logoUrl: ""
+};
+
+const DEFAULT_FUNDRAISING: FundraisingSettings = {
+  targetAmount: 12000000,
+  deadline: "2026-06-30",
+  valuation: 48000000,
+  sharePrice: 4.00,
+  minInvestment: 50000,
+  dealStructure: "Club Deal",
+  investmentType: "Equity"
+};
+
+const DEFAULT_EMAIL: EmailSettings = {
+  senderName: "ABC Company - Capital Raise",
+  senderEmail: "edoardo.grigione@aries76.com",
+  replyTo: "stefano.taioli@abccompany.it",
+  signature: `Best regards,\n\nEdoardo Grigione\nCEO, ARIES76\n\n---\nABC Company Capital Raise\nPowered by ARIES76`,
+  defaultSubject: "ABC Company - Opportunità di Investimento"
+};
+
 const DEFAULT_TEAM: TeamMember[] = [
   { email: "edoardo.grigione@aries76.com", name: "Edoardo Grigione", role: "admin", isDefault: true },
   { email: "admin@aries76.com", name: "Admin ARIES76", role: "admin", isDefault: true },
@@ -68,6 +98,18 @@ const DEFAULT_TEAM: TeamMember[] = [
   { email: "lorenzo.delforno@abccompany.it", name: "Lorenzo Del Forno", role: "manager", isDefault: true },
   { email: "alessandro.catullo@aries76.com", name: "Alessandro Catullo", role: "manager", isDefault: true },
 ];
+
+const DEFAULT_NOTIFICATIONS: NotificationPrefs = {
+  dailySummary: true,
+  followUpReminders: true,
+  milestoneAlerts: true,
+  overdueTasks: true,
+  biweeklyReport: true,
+  newInteractions: true,
+  statusChanges: true,
+  documentUploads: false,
+  meetingReminders: true
+};
 
 const SECTORS = [
   "Private Equity", "Venture Capital", "Real Estate", "Infrastructure",
@@ -85,95 +127,94 @@ const INVESTMENT_TYPES = [
 export const ABCSettingsTab = () => {
   const currentUserEmail = sessionStorage.getItem('abc_console_email') || '';
   
-  // Company Settings
-  const [companySettings, setCompanySettings] = useState<CompanySettings>(() => {
-    const saved = localStorage.getItem('abc_company_settings');
-    return saved ? JSON.parse(saved) : {
-      companyName: "ABC Company",
-      companyDescription: "Club Deal per investimenti in PMI italiane con track record consolidato di 207 operazioni e €32M di capitale investito.",
-      sector: "Private Equity",
-      website: "www.abccompany.it",
-      phone: "+39 02 1234567",
-      address: "Milano, Italia",
-      logoUrl: ""
-    };
-  });
-
-  // Fundraising Settings
-  const [fundraisingSettings, setFundraisingSettings] = useState<FundraisingSettings>(() => {
-    const saved = localStorage.getItem('abc_fundraising_settings');
-    return saved ? JSON.parse(saved) : {
-      targetAmount: 12000000,
-      deadline: "2026-06-30",
-      valuation: 48000000,
-      sharePrice: 4.00,
-      minInvestment: 50000,
-      dealStructure: "Club Deal",
-      investmentType: "Equity"
-    };
-  });
-
-  // Email Settings
-  const [emailSettings, setEmailSettings] = useState<EmailSettings>(() => {
-    const saved = localStorage.getItem('abc_email_settings');
-    return saved ? JSON.parse(saved) : {
-      senderName: "ABC Company - Capital Raise",
-      senderEmail: "edoardo.grigione@aries76.com",
-      replyTo: "stefano.taioli@abccompany.it",
-      signature: `Best regards,\n\nEdoardo Grigione\nCEO, ARIES76\n\n---\nABC Company Capital Raise\nPowered by ARIES76`,
-      defaultSubject: "ABC Company - Opportunità di Investimento"
-    };
-  });
-
-  // Team Members
-  const [teamMembers, setTeamMembers] = useState<TeamMember[]>(() => {
-    const saved = localStorage.getItem('abc_team_members');
-    const custom = saved ? JSON.parse(saved) : [];
-    return [...DEFAULT_TEAM, ...custom];
-  });
-
-  // Notification Preferences
-  const [notificationPrefs, setNotificationPrefs] = useState<NotificationPrefs>(() => {
-    const saved = localStorage.getItem('abc_notification_prefs');
-    return saved ? JSON.parse(saved) : {
-      dailySummary: true,
-      followUpReminders: true,
-      milestoneAlerts: true,
-      overdueTasks: true,
-      biweeklyReport: true,
-      newInteractions: true,
-      statusChanges: true,
-      documentUploads: false,
-      meetingReminders: true
-    };
-  });
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState<string | null>(null);
+  
+  // Settings state
+  const [companySettings, setCompanySettings] = useState<CompanySettings>(DEFAULT_COMPANY);
+  const [fundraisingSettings, setFundraisingSettings] = useState<FundraisingSettings>(DEFAULT_FUNDRAISING);
+  const [emailSettings, setEmailSettings] = useState<EmailSettings>(DEFAULT_EMAIL);
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>(DEFAULT_TEAM);
+  const [notificationPrefs, setNotificationPrefs] = useState<NotificationPrefs>(DEFAULT_NOTIFICATIONS);
 
   const [newMemberEmail, setNewMemberEmail] = useState("");
   const [newMemberName, setNewMemberName] = useState("");
   const [newMemberRole, setNewMemberRole] = useState<'admin' | 'manager' | 'viewer'>('viewer');
 
+  // Fetch settings from Supabase
+  const fetchSettings = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('abc_company_settings')
+        .select('setting_key, setting_value');
+
+      if (error) throw error;
+
+      data?.forEach(row => {
+        const value = row.setting_value as Record<string, unknown>;
+        switch (row.setting_key) {
+          case 'company':
+            setCompanySettings(value as unknown as CompanySettings);
+            break;
+          case 'fundraising':
+            setFundraisingSettings(value as unknown as FundraisingSettings);
+            break;
+          case 'email':
+            setEmailSettings(value as unknown as EmailSettings);
+            break;
+          case 'team':
+            const teamData = value as { members?: TeamMember[] };
+            if (teamData.members) {
+              setTeamMembers(teamData.members);
+            }
+            break;
+          case 'notifications':
+            setNotificationPrefs(value as unknown as NotificationPrefs);
+            break;
+        }
+      });
+    } catch (error) {
+      console.error('Error fetching settings:', error);
+      toast.error("Errore nel caricamento impostazioni");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Save setting to Supabase
+  const saveSetting = async (key: string, value: unknown) => {
+    setSaving(key);
+    try {
+      const { error } = await supabase
+        .from('abc_company_settings')
+        .update({ 
+          setting_value: value as Json,
+          updated_at: new Date().toISOString(),
+          updated_by: currentUserEmail
+        })
+        .eq('setting_key', key);
+
+      if (error) throw error;
+      toast.success("Impostazioni salvate");
+    } catch (error) {
+      console.error('Error saving settings:', error);
+      toast.error("Errore nel salvataggio");
+    } finally {
+      setSaving(null);
+    }
+  };
+
   // Save handlers
-  const saveCompanySettings = () => {
-    localStorage.setItem('abc_company_settings', JSON.stringify(companySettings));
-    toast.success("Impostazioni azienda salvate");
+  const saveCompanySettings = () => saveSetting('company', companySettings);
+  const saveFundraisingSettings = () => saveSetting('fundraising', fundraisingSettings);
+  const saveEmailSettings = () => saveSetting('email', emailSettings);
+  const saveNotificationPrefs = () => saveSetting('notifications', notificationPrefs);
+
+  const saveTeamMembers = async (members: TeamMember[]) => {
+    await saveSetting('team', { members });
   };
 
-  const saveFundraisingSettings = () => {
-    localStorage.setItem('abc_fundraising_settings', JSON.stringify(fundraisingSettings));
-    toast.success("Impostazioni fundraising salvate");
-  };
-
-  const saveEmailSettings = () => {
-    localStorage.setItem('abc_email_settings', JSON.stringify(emailSettings));
-    toast.success("Impostazioni email salvate");
-  };
-
-  const saveNotificationPrefs = () => {
-    localStorage.setItem('abc_notification_prefs', JSON.stringify(notificationPrefs));
-    toast.success("Preferenze notifiche salvate");
-  };
-
-  const addTeamMember = () => {
+  const addTeamMember = async () => {
     if (!newMemberEmail.trim() || !newMemberEmail.includes('@')) {
       toast.error("Inserisci un email valido");
       return;
@@ -191,18 +232,14 @@ export const ABCSettingsTab = () => {
 
     const updatedTeam = [...teamMembers, newMember];
     setTeamMembers(updatedTeam);
-    
-    // Save only custom members
-    const customMembers = updatedTeam.filter(m => !m.isDefault);
-    localStorage.setItem('abc_team_members', JSON.stringify(customMembers));
+    await saveTeamMembers(updatedTeam);
     
     setNewMemberEmail("");
     setNewMemberName("");
     setNewMemberRole('viewer');
-    toast.success("Membro aggiunto al team");
   };
 
-  const removeTeamMember = (email: string) => {
+  const removeTeamMember = async (email: string) => {
     const member = teamMembers.find(m => m.email === email);
     if (member?.isDefault) {
       toast.error("Non puoi rimuovere i membri default");
@@ -211,13 +248,10 @@ export const ABCSettingsTab = () => {
 
     const updatedTeam = teamMembers.filter(m => m.email !== email);
     setTeamMembers(updatedTeam);
-    
-    const customMembers = updatedTeam.filter(m => !m.isDefault);
-    localStorage.setItem('abc_team_members', JSON.stringify(customMembers));
-    toast.success("Membro rimosso dal team");
+    await saveTeamMembers(updatedTeam);
   };
 
-  const updateMemberRole = (email: string, role: 'admin' | 'manager' | 'viewer') => {
+  const updateMemberRole = async (email: string, role: 'admin' | 'manager' | 'viewer') => {
     const member = teamMembers.find(m => m.email === email);
     if (member?.isDefault) {
       toast.error("Non puoi modificare i ruoli dei membri default");
@@ -228,10 +262,7 @@ export const ABCSettingsTab = () => {
       m.email === email ? { ...m, role } : m
     );
     setTeamMembers(updatedTeam);
-    
-    const customMembers = updatedTeam.filter(m => !m.isDefault);
-    localStorage.setItem('abc_team_members', JSON.stringify(customMembers));
-    toast.success("Ruolo aggiornato");
+    await saveTeamMembers(updatedTeam);
   };
 
   const getRoleBadgeColor = (role: string) => {
@@ -242,25 +273,79 @@ export const ABCSettingsTab = () => {
     }
   };
 
+  // Initial fetch
+  useEffect(() => {
+    fetchSettings();
+  }, []);
+
+  // Realtime subscription
+  useEffect(() => {
+    const channel = supabase
+      .channel('settings-changes')
+      .on(
+        'postgres_changes',
+        { event: 'UPDATE', schema: 'public', table: 'abc_company_settings' },
+        (payload) => {
+          const { setting_key, setting_value } = payload.new as { setting_key: string; setting_value: Record<string, unknown> };
+          switch (setting_key) {
+            case 'company':
+              setCompanySettings(setting_value as unknown as CompanySettings);
+              break;
+            case 'fundraising':
+              setFundraisingSettings(setting_value as unknown as FundraisingSettings);
+              break;
+            case 'email':
+              setEmailSettings(setting_value as unknown as EmailSettings);
+              break;
+            case 'team':
+              const teamData = setting_value as { members?: TeamMember[] };
+              if (teamData.members) setTeamMembers(teamData.members);
+              break;
+            case 'notifications':
+              setNotificationPrefs(setting_value as unknown as NotificationPrefs);
+              break;
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
+
   return (
     <Tabs defaultValue="company" className="space-y-6">
-      <TabsList className="grid grid-cols-5 w-full max-w-3xl">
-        <TabsTrigger value="company" className="text-xs gap-1">
-          <Building2 className="h-3.5 w-3.5" /> Azienda
-        </TabsTrigger>
-        <TabsTrigger value="fundraising" className="text-xs gap-1">
-          <Target className="h-3.5 w-3.5" /> Fundraising
-        </TabsTrigger>
-        <TabsTrigger value="team" className="text-xs gap-1">
-          <Users className="h-3.5 w-3.5" /> Team
-        </TabsTrigger>
-        <TabsTrigger value="email" className="text-xs gap-1">
-          <Mail className="h-3.5 w-3.5" /> Email
-        </TabsTrigger>
-        <TabsTrigger value="notifications" className="text-xs gap-1">
-          <Bell className="h-3.5 w-3.5" /> Notifiche
-        </TabsTrigger>
-      </TabsList>
+      <div className="flex items-center justify-between">
+        <TabsList className="grid grid-cols-5 w-full max-w-3xl">
+          <TabsTrigger value="company" className="text-xs gap-1">
+            <Building2 className="h-3.5 w-3.5" /> Azienda
+          </TabsTrigger>
+          <TabsTrigger value="fundraising" className="text-xs gap-1">
+            <Target className="h-3.5 w-3.5" /> Fundraising
+          </TabsTrigger>
+          <TabsTrigger value="team" className="text-xs gap-1">
+            <Users className="h-3.5 w-3.5" /> Team
+          </TabsTrigger>
+          <TabsTrigger value="email" className="text-xs gap-1">
+            <Mail className="h-3.5 w-3.5" /> Email
+          </TabsTrigger>
+          <TabsTrigger value="notifications" className="text-xs gap-1">
+            <Bell className="h-3.5 w-3.5" /> Notifiche
+          </TabsTrigger>
+        </TabsList>
+        <Button variant="ghost" size="sm" onClick={fetchSettings}>
+          <RefreshCw className="h-4 w-4" />
+        </Button>
+      </div>
 
       {/* COMPANY TAB */}
       <TabsContent value="company" className="space-y-6">
@@ -337,8 +422,9 @@ export const ABCSettingsTab = () => {
               </div>
             </div>
 
-            <Button onClick={saveCompanySettings} className="w-full md:w-auto">
-              <Save className="h-4 w-4 mr-2" /> Salva Impostazioni
+            <Button onClick={saveCompanySettings} disabled={saving === 'company'} className="w-full md:w-auto">
+              {saving === 'company' ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Save className="h-4 w-4 mr-2" />}
+              Salva Impostazioni
             </Button>
           </CardContent>
         </Card>
@@ -465,8 +551,9 @@ export const ABCSettingsTab = () => {
               </div>
             </div>
 
-            <Button onClick={saveFundraisingSettings} className="w-full md:w-auto">
-              <Save className="h-4 w-4 mr-2" /> Salva Impostazioni
+            <Button onClick={saveFundraisingSettings} disabled={saving === 'fundraising'} className="w-full md:w-auto">
+              {saving === 'fundraising' ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Save className="h-4 w-4 mr-2" />}
+              Salva Impostazioni
             </Button>
           </CardContent>
         </Card>
@@ -508,7 +595,7 @@ export const ABCSettingsTab = () => {
                     ) : (
                       <Select 
                         value={member.role}
-                        onValueChange={(v) => updateMemberRole(member.email, v as any)}
+                        onValueChange={(v) => updateMemberRole(member.email, v as 'admin' | 'manager' | 'viewer')}
                       >
                         <SelectTrigger className="w-28 h-8">
                           <SelectValue />
@@ -550,7 +637,7 @@ export const ABCSettingsTab = () => {
                   value={newMemberEmail}
                   onChange={(e) => setNewMemberEmail(e.target.value)}
                 />
-                <Select value={newMemberRole} onValueChange={(v) => setNewMemberRole(v as any)}>
+                <Select value={newMemberRole} onValueChange={(v) => setNewMemberRole(v as 'admin' | 'manager' | 'viewer')}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
@@ -560,8 +647,9 @@ export const ABCSettingsTab = () => {
                     <SelectItem value="viewer">Viewer</SelectItem>
                   </SelectContent>
                 </Select>
-                <Button onClick={addTeamMember}>
-                  <Plus className="h-4 w-4 mr-1" /> Aggiungi
+                <Button onClick={addTeamMember} disabled={saving === 'team'}>
+                  {saving === 'team' ? <Loader2 className="h-4 w-4 mr-1 animate-spin" /> : <Plus className="h-4 w-4 mr-1" />}
+                  Aggiungi
                 </Button>
               </div>
             </div>
@@ -644,8 +732,9 @@ export const ABCSettingsTab = () => {
               />
             </div>
 
-            <Button onClick={saveEmailSettings} className="w-full md:w-auto">
-              <Save className="h-4 w-4 mr-2" /> Salva Configurazione
+            <Button onClick={saveEmailSettings} disabled={saving === 'email'} className="w-full md:w-auto">
+              {saving === 'email' ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Save className="h-4 w-4 mr-2" />}
+              Salva Configurazione
             </Button>
           </CardContent>
         </Card>
@@ -706,8 +795,9 @@ export const ABCSettingsTab = () => {
               </div>
             </div>
 
-            <Button onClick={saveNotificationPrefs} className="w-full md:w-auto">
-              <Save className="h-4 w-4 mr-2" /> Salva Preferenze
+            <Button onClick={saveNotificationPrefs} disabled={saving === 'notifications'} className="w-full md:w-auto">
+              {saving === 'notifications' ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Save className="h-4 w-4 mr-2" />}
+              Salva Preferenze
             </Button>
           </CardContent>
         </Card>
@@ -728,7 +818,7 @@ export const ABCSettingsTab = () => {
               </div>
               <div className="space-y-2">
                 <label className="text-sm text-muted-foreground">Role</label>
-                <Input value="Console Admin" disabled />
+                <Input value={teamMembers.find(m => m.email === currentUserEmail)?.role || 'viewer'} disabled />
               </div>
             </div>
           </CardContent>
