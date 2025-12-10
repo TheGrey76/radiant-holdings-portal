@@ -149,6 +149,15 @@ export function ABCEmailCampaignManager({ investors }: ABCEmailCampaignManagerPr
 
   // Preview email for first selected investor
   const handlePreview = () => {
+    if (!emailForm.content) {
+      toast({
+        title: "Contenuto mancante",
+        description: "Scrivi il contenuto dell'email prima di vedere l'anteprima",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     if (selectedInvestors.length === 0) {
       toast({
         title: "Seleziona un investitore",
@@ -157,10 +166,19 @@ export function ABCEmailCampaignManager({ investors }: ABCEmailCampaignManagerPr
       });
       return;
     }
-    const firstInvestor = filteredInvestors.find(i => selectedInvestors.includes(i.id));
+    
+    // Find investor from all investors (not just filtered)
+    const firstInvestor = investors.find(i => selectedInvestors.includes(i.id));
     if (firstInvestor) {
-      const preview = replacePlaceholders(emailForm.content, firstInvestor);
-      setPreviewContent(preview);
+      const previewSubject = replacePlaceholders(emailForm.subject, firstInvestor);
+      const previewBody = replacePlaceholders(emailForm.content, firstInvestor);
+      setPreviewContent(`**Oggetto:** ${previewSubject}\n\n---\n\n${previewBody}`);
+    } else {
+      toast({
+        title: "Investitore non trovato",
+        description: "Seleziona un investitore dalla lista",
+        variant: "destructive",
+      });
     }
   };
 
@@ -422,7 +440,6 @@ Team Aries76"
                   <Button 
                     variant="outline"
                     onClick={handlePreview}
-                    disabled={selectedInvestors.length === 0}
                   >
                     <Eye className="h-4 w-4 mr-2" />
                     Anteprima
