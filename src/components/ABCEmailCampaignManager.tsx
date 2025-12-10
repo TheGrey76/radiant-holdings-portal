@@ -14,7 +14,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { 
   Mail, Send, Users, Filter, CheckCircle, Clock, AlertCircle, 
-  Save, FileText, History, Trash2, Plus, Eye 
+  Save, FileText, History, Trash2, Plus, Eye, AlertTriangle, Edit2
 } from "lucide-react";
 import { format } from "date-fns";
 import { it } from "date-fns/locale";
@@ -28,6 +28,7 @@ interface Investor {
   status: string;
   ruolo?: string | null;
   citta?: string | null;
+  approval_status?: string;
 }
 
 interface EmailTemplate {
@@ -70,6 +71,9 @@ export function ABCEmailCampaignManager({ investors }: ABCEmailCampaignManagerPr
   const [templateName, setTemplateName] = useState("");
   const [showSaveDialog, setShowSaveDialog] = useState(false);
   const [previewContent, setPreviewContent] = useState<string | null>(null);
+  const [editingEmailId, setEditingEmailId] = useState<string | null>(null);
+  const [editingEmailValue, setEditingEmailValue] = useState("");
+  const [isSavingEmail, setIsSavingEmail] = useState(false);
   
   const TEST_EMAIL = "egrigione@gmail.com";
   const { toast } = useToast();
@@ -81,6 +85,15 @@ export function ABCEmailCampaignManager({ investors }: ABCEmailCampaignManagerPr
   });
 
   const currentUserEmail = sessionStorage.getItem('abc_authorized_email') || 'admin@aries76.com';
+
+  // Filter only approved investors
+  const approvedInvestors = investors.filter(inv => inv.approval_status === 'approved');
+  
+  // Approved investors with email
+  const approvedWithEmail = approvedInvestors.filter(inv => inv.email);
+  
+  // Approved investors missing email
+  const approvedMissingEmail = approvedInvestors.filter(inv => !inv.email);
 
   // Fetch templates and history on mount
   useEffect(() => {
@@ -111,17 +124,58 @@ export function ABCEmailCampaignManager({ investors }: ABCEmailCampaignManagerPr
     }
   };
 
-  // Get unique categories
-  const categories = [...new Set(investors.map(i => i.categoria))];
+  // Get unique categories from approved investors
+  const categories = [...new Set(approvedInvestors.map(i => i.categoria))];
   const statuses = ['To Contact', 'Contacted', 'Interested', 'Meeting Scheduled', 'In Negotiation', 'Closed'];
 
-  // Filter investors based on criteria
-  const filteredInvestors = investors.filter(inv => {
-    if (!inv.email) return false;
+  // Filter approved investors with email based on criteria
+  const filteredInvestors = approvedWithEmail.filter(inv => {
     if (filterStatus !== "all" && inv.status !== filterStatus) return false;
     if (filterCategory !== "all" && inv.categoria !== filterCategory) return false;
     return true;
   });
+
+  // Save email for investor missing email
+  const handleSaveEmail = async (investorId: string) => {
+    if (!editingEmailValue || !editingEmailValue.includes('@')) {
+      toast({
+        title: "Email non valida",
+        description: "Inserisci un indirizzo email valido",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsSavingEmail(true);
+    try {
+      const { error } = await supabase
+        .from('abc_investors')
+        .update({ email: editingEmailValue })
+        .eq('id', investorId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Email salvata",
+        description: "L'indirizzo email è stato aggiunto con successo",
+      });
+
+      setEditingEmailId(null);
+      setEditingEmailValue("");
+      
+      // Trigger a refresh of the investors list
+      window.location.reload();
+    } catch (error: any) {
+      console.error('Error saving email:', error);
+      toast({
+        title: "Errore",
+        description: "Errore nel salvataggio dell'email",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSavingEmail(false);
+    }
+  };
 
   const handleSelectAll = () => {
     if (selectedInvestors.length === filteredInvestors.length) {
@@ -597,6 +651,9 @@ Team Aries76"
                   <Filter className="h-4 w-4 mr-2" />
                   Filtri
                 </CardTitle>
+                <CardDescription className="text-xs">
+                  Solo investitori <Badge variant="default" className="bg-green-500 text-xs ml-1">Approved</Badge>
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
                 <div>
@@ -635,7 +692,7 @@ Team Aries76"
                 <CardTitle className="flex items-center justify-between text-sm">
                   <span className="flex items-center">
                     <Users className="h-4 w-4 mr-2" />
-                    Destinatari
+                    Destinatari Approved
                   </span>
                   <Badge variant="secondary">{filteredInvestors.length}</Badge>
                 </CardTitle>
@@ -655,11 +712,11 @@ Team Aries76"
                     </span>
                   </div>
 
-                  <div className="max-h-[400px] overflow-y-auto space-y-1">
+                  <div className="max-h-[300px] overflow-y-auto space-y-1">
                     {filteredInvestors.length === 0 ? (
                       <div className="text-center py-4">
                         <AlertCircle className="h-8 w-8 mx-auto text-muted-foreground mb-2" />
-                        <p className="text-sm text-muted-foreground">Nessun investitore con email</p>
+                        <p className="text-sm text-muted-foreground">Nessun investitore approved con email</p>
                       </div>
                     ) : (
                       filteredInvestors.map(investor => (
@@ -685,6 +742,88 @@ Team Aries76"
                 </div>
               </CardContent>
             </Card>
+
+            {/* Missing Email Section */}
+            {approvedMissingEmail.length > 0 && (
+              <Card className="border-amber-500/50">
+                <CardHeader className="pb-3">
+                  <CardTitle className="flex items-center justify-between text-sm text-amber-600">
+                    <span className="flex items-center">
+                      <AlertTriangle className="h-4 w-4 mr-2" />
+                      Email Mancanti
+                    </span>
+                    <Badge variant="outline" className="border-amber-500 text-amber-600">
+                      {approvedMissingEmail.length}
+                    </Badge>
+                  </CardTitle>
+                  <CardDescription className="text-xs">
+                    Investitori approved senza email
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="max-h-[200px] overflow-y-auto space-y-2">
+                    {approvedMissingEmail.map(investor => (
+                      <div 
+                        key={investor.id} 
+                        className="p-2 bg-amber-50 dark:bg-amber-950/20 rounded border border-amber-200 dark:border-amber-800"
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium truncate">{investor.nome}</p>
+                            <p className="text-xs text-muted-foreground truncate">{investor.azienda}</p>
+                          </div>
+                          {editingEmailId !== investor.id && (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-7 text-xs"
+                              onClick={() => {
+                                setEditingEmailId(investor.id);
+                                setEditingEmailValue("");
+                              }}
+                            >
+                              <Edit2 className="h-3 w-3 mr-1" />
+                              Aggiungi
+                            </Button>
+                          )}
+                        </div>
+                        
+                        {editingEmailId === investor.id && (
+                          <div className="flex gap-2">
+                            <Input
+                              type="email"
+                              placeholder="email@esempio.com"
+                              value={editingEmailValue}
+                              onChange={(e) => setEditingEmailValue(e.target.value)}
+                              className="h-8 text-xs flex-1"
+                            />
+                            <Button
+                              size="sm"
+                              className="h-8 text-xs"
+                              onClick={() => handleSaveEmail(investor.id)}
+                              disabled={isSavingEmail}
+                            >
+                              {isSavingEmail ? <Clock className="h-3 w-3 animate-spin" /> : "Salva"}
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="h-8 text-xs"
+                              onClick={() => {
+                                setEditingEmailId(null);
+                                setEditingEmailValue("");
+                              }}
+                            >
+                              Annulla
+                            </Button>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
           </div>
         </div>
       </TabsContent>
