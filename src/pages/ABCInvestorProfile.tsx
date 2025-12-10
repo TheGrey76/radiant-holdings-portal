@@ -138,9 +138,14 @@ const ABCInvestorProfile = () => {
   const currentUserEmail = sessionStorage.getItem('abc_console_email') || '';
 
   useEffect(() => {
-    if (id) {
-      fetchInvestorData();
+    // Validate UUID format before fetching
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if (!id || !uuidRegex.test(id)) {
+      toast.error("ID investitore non valido");
+      navigate('/abc-company-console');
+      return;
     }
+    fetchInvestorData();
   }, [id]);
 
   const fetchInvestorData = async () => {
