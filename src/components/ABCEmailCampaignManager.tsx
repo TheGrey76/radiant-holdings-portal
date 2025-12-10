@@ -320,22 +320,58 @@ export function ABCEmailCampaignManager({ investors, onInvestorsUpdated }: ABCEm
         category: "Family Office",
       };
 
-      const { error } = await supabase.functions.invoke('send-abc-campaign', {
+      // Create a test campaign record for tracking
+      const { data: campaignData, error: campaignError } = await supabase
+        .from('abc_email_campaign_history')
+        .insert({
+          campaign_name: `[TEST] ${emailForm.campaignName || format(new Date(), 'dd/MM/yyyy HH:mm')}`,
+          subject: emailForm.subject,
+          content: emailForm.content,
+          recipient_count: 1,
+          successful_sends: 0,
+          failed_sends: 0,
+          filter_status: null,
+          filter_category: null,
+          sent_by: currentUserEmail,
+          recipients: [{ email: TEST_EMAIL, name: "Test Investitore", company: "Test Company" }],
+        })
+        .select('id')
+        .single();
+
+      if (campaignError) throw campaignError;
+
+      const campaignId = campaignData.id;
+      console.log('Test campaign created with ID:', campaignId);
+
+      const { data, error } = await supabase.functions.invoke('send-abc-campaign', {
         body: {
           recipients: [testRecipient],
           subject: emailForm.subject,
           content: emailForm.content,
           senderEmail: currentUserEmail,
           attachments: attachments,
+          campaignId: campaignId,
         },
       });
 
       if (error) throw error;
 
+      // Update campaign with send result
+      await supabase
+        .from('abc_email_campaign_history')
+        .update({
+          successful_sends: 1,
+          failed_sends: 0,
+        })
+        .eq('id', campaignId);
+
       toast({
         title: "Email test inviata",
         description: `Email di test inviata a ${TEST_EMAIL}${attachments.length > 0 ? ` con ${attachments.length} allegato/i` : ''}`,
       });
+
+      // Refresh campaign history
+      fetchCampaignHistory();
 
     } catch (error: any) {
       console.error('Error sending test email:', error);
