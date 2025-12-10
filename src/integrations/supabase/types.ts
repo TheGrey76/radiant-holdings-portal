@@ -62,6 +62,47 @@ export type Database = {
         }
         Relationships: []
       }
+      abc_email_opens: {
+        Row: {
+          campaign_id: string | null
+          created_at: string
+          id: string
+          ip_address: string | null
+          opened_at: string
+          recipient_email: string
+          recipient_name: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          campaign_id?: string | null
+          created_at?: string
+          id?: string
+          ip_address?: string | null
+          opened_at?: string
+          recipient_email: string
+          recipient_name?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          campaign_id?: string | null
+          created_at?: string
+          id?: string
+          ip_address?: string | null
+          opened_at?: string
+          recipient_email?: string
+          recipient_name?: string | null
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "abc_email_opens_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "abc_email_campaign_history"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       abc_email_templates: {
         Row: {
           content: string

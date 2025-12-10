@@ -32,6 +32,7 @@ interface CampaignRequest {
   content: string;
   senderEmail: string;
   attachments?: Attachment[];
+  campaignId?: string;
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -41,11 +42,14 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const { recipients, subject, content, senderEmail, attachments }: CampaignRequest = await req.json();
+    const { recipients, subject, content, senderEmail, attachments, campaignId }: CampaignRequest = await req.json();
     
     console.log(`Starting ABC campaign: "${subject}" to ${recipients.length} recipients`);
     if (attachments && attachments.length > 0) {
       console.log(`Campaign includes ${attachments.length} attachment(s): ${attachments.map(a => a.name).join(', ')}`);
+    }
+    if (campaignId) {
+      console.log(`Campaign ID for tracking: ${campaignId}`);
     }
     
     const results = {
@@ -59,6 +63,9 @@ const handler = async (req: Request): Promise<Response> => {
       filename: att.name,
       content: att.content,
     })) || [];
+
+    // Base URL for tracking pixel
+    const trackingBaseUrl = "https://dvwmyljnssspwfpwocof.supabase.co/functions/v1/track-email-open";
 
     for (const recipient of recipients) {
       try {
@@ -74,6 +81,11 @@ const handler = async (req: Request): Promise<Response> => {
         const personalizedSubject = subject
           .replace(/\{nome\}/g, recipient.name || '')
           .replace(/\{azienda\}/g, recipient.company || '');
+
+        // Build tracking pixel URL with campaign and recipient info
+        const trackingPixelUrl = campaignId 
+          ? `${trackingBaseUrl}?cid=${campaignId}&e=${encodeURIComponent(recipient.email)}&n=${encodeURIComponent(recipient.name || '')}`
+          : '';
 
         const emailHtml = `
           <!DOCTYPE html>
@@ -137,6 +149,7 @@ ${personalizedContent}
               </div>
               
             </div>
+            ${trackingPixelUrl ? `<!-- Tracking Pixel --><img src="${trackingPixelUrl}" width="1" height="1" alt="" style="display:none;border:0;" />` : ''}
           </body>
           </html>
         `;
