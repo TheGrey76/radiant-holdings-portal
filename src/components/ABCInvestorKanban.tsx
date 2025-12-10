@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -8,7 +9,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Building2, MapPin, Euro, Linkedin, Pencil, Trash2, CheckCircle, Clock, XCircle, ChevronDown, X, Filter } from "lucide-react";
+import { Building2, MapPin, Euro, Linkedin, Pencil, Trash2, CheckCircle, Clock, XCircle, ChevronDown, X, Filter, Eye } from "lucide-react";
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from "sonner";
 import { EditABCInvestorDialog } from './EditABCInvestorDialog';
@@ -56,6 +57,7 @@ const approvalStatusConfig: Record<ApprovalStatus, { label: string; icon: typeof
 };
 
 export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvestorId, onEditDialogClosed }: ABCInvestorKanbanProps) => {
+  const navigate = useNavigate();
   const [localInvestors, setLocalInvestors] = useState(investors);
   const [editingInvestor, setEditingInvestor] = useState<Investor | null>(null);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
@@ -63,6 +65,11 @@ export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvest
   const [selectedInvestors, setSelectedInvestors] = useState<Set<string>>(new Set());
   const [isBulkUpdating, setIsBulkUpdating] = useState(false);
   const [approvalFilter, setApprovalFilter] = useState<'all' | ApprovalStatus>('all');
+
+  const handleViewProfile = (e: React.MouseEvent, investorId: string) => {
+    e.stopPropagation();
+    navigate(`/abc-company-console/investor/${investorId}`);
+  };
 
   // Auto-open edit dialog when initialEditInvestorId is provided
   useEffect(() => {
@@ -495,6 +502,15 @@ export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvest
                                             <Linkedin className="h-3.5 w-3.5" />
                                           </Button>
                                         )}
+                                        <Button
+                                          variant="ghost"
+                                          size="icon"
+                                          className="h-6 w-6"
+                                          onClick={(e) => handleViewProfile(e, investor.id)}
+                                          title="Vedi profilo completo"
+                                        >
+                                          <Eye className="h-3.5 w-3.5" />
+                                        </Button>
                                         {workable && (
                                           <Button
                                             variant="ghost"
