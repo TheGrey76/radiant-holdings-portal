@@ -58,6 +58,7 @@ interface CampaignHistory {
 
 interface ABCEmailCampaignManagerProps {
   investors: Investor[];
+  onInvestorsUpdated?: () => void;
 }
 
 interface Attachment {
@@ -66,7 +67,7 @@ interface Attachment {
   type: string;
 }
 
-export function ABCEmailCampaignManager({ investors }: ABCEmailCampaignManagerProps) {
+export function ABCEmailCampaignManager({ investors, onInvestorsUpdated }: ABCEmailCampaignManagerProps) {
   const [selectedInvestors, setSelectedInvestors] = useState<string[]>([]);
   const [filterStatus, setFilterStatus] = useState<string>("all");
   const [filterCategory, setFilterCategory] = useState<string>("all");
@@ -475,7 +476,11 @@ export function ABCEmailCampaignManager({ investors }: ABCEmailCampaignManagerPr
         description: `Email inviata a ${successCount} investitori${failCount > 0 ? `, ${failCount} fallite` : ''}`,
       });
 
-      // Log activity for each investor
+      // Log activity and update status for each investor
+      const investorIdsToUpdate = filteredInvestors
+        .filter(i => selectedInvestors.includes(i.id) && i.email)
+        .map(i => i.id);
+
       for (const investor of selectedRecipients) {
         await supabase.from('abc_investor_activities').insert({
           investor_name: `${investor.name} - ${investor.company}`,
@@ -485,11 +490,30 @@ export function ABCEmailCampaignManager({ investors }: ABCEmailCampaignManagerPr
         });
       }
 
+      // Update investor status from "To Contact" to "Contacted" and set last_contact_date
+      const { error: updateError } = await supabase
+        .from('abc_investors')
+        .update({ 
+          status: 'Contacted',
+          last_contact_date: new Date().toISOString()
+        })
+        .in('id', investorIdsToUpdate)
+        .eq('status', 'To Contact'); // Only update if currently "To Contact"
+
+      if (updateError) {
+        console.error('Error updating investor status:', updateError);
+      }
+
       // Reset form
       setEmailForm({ subject: "", content: "", campaignName: "" });
       setSelectedInvestors([]);
       setAttachments([]);
       fetchCampaignHistory();
+
+      // Notify parent to refresh investors
+      if (onInvestorsUpdated) {
+        onInvestorsUpdated();
+      }
 
     } catch (error: any) {
       console.error('Error sending campaign:', error);
