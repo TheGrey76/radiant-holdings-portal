@@ -14,6 +14,84 @@ export type Database = {
   }
   public: {
     Tables: {
+      abc_email_campaign_history: {
+        Row: {
+          campaign_name: string
+          content: string
+          created_at: string
+          failed_sends: number
+          filter_category: string | null
+          filter_status: string | null
+          id: string
+          recipient_count: number
+          recipients: Json | null
+          sent_at: string
+          sent_by: string
+          subject: string
+          successful_sends: number
+        }
+        Insert: {
+          campaign_name: string
+          content: string
+          created_at?: string
+          failed_sends?: number
+          filter_category?: string | null
+          filter_status?: string | null
+          id?: string
+          recipient_count?: number
+          recipients?: Json | null
+          sent_at?: string
+          sent_by: string
+          subject: string
+          successful_sends?: number
+        }
+        Update: {
+          campaign_name?: string
+          content?: string
+          created_at?: string
+          failed_sends?: number
+          filter_category?: string | null
+          filter_status?: string | null
+          id?: string
+          recipient_count?: number
+          recipients?: Json | null
+          sent_at?: string
+          sent_by?: string
+          subject?: string
+          successful_sends?: number
+        }
+        Relationships: []
+      }
+      abc_email_templates: {
+        Row: {
+          content: string
+          created_at: string
+          created_by: string
+          id: string
+          name: string
+          subject: string
+          updated_at: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          created_by: string
+          id?: string
+          name: string
+          subject: string
+          updated_at?: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          created_by?: string
+          id?: string
+          name?: string
+          subject?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       abc_investor_activities: {
         Row: {
           activity_date: string

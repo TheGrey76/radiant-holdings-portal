@@ -13,6 +13,11 @@ interface Recipient {
   email: string;
   name: string;
   company: string;
+  role?: string;
+  city?: string;
+  category?: string;
+  personalizedContent?: string;
+  personalizedSubject?: string;
 }
 
 interface CampaignRequest {
@@ -41,10 +46,18 @@ const handler = async (req: Request): Promise<Response> => {
 
     for (const recipient of recipients) {
       try {
-        // Personalize content
+        // Personalize content with all placeholders
         const personalizedContent = content
-          .replace(/\{nome\}/g, recipient.name)
-          .replace(/\{azienda\}/g, recipient.company);
+          .replace(/\{nome\}/g, recipient.name || '')
+          .replace(/\{azienda\}/g, recipient.company || '')
+          .replace(/\{ruolo\}/g, recipient.role || '')
+          .replace(/\{citta\}/g, recipient.city || '')
+          .replace(/\{categoria\}/g, recipient.category || '')
+          .replace(/\{email\}/g, recipient.email || '');
+        
+        const personalizedSubject = subject
+          .replace(/\{nome\}/g, recipient.name || '')
+          .replace(/\{azienda\}/g, recipient.company || '');
 
         const emailHtml = `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
@@ -71,7 +84,7 @@ ${personalizedContent}
         await resend.emails.send({
           from: "ABC Company <onboarding@resend.dev>",
           to: [recipient.email],
-          subject: subject,
+          subject: personalizedSubject,
           html: emailHtml,
         });
 
