@@ -15,7 +15,7 @@ import { useToast } from "@/hooks/use-toast";
 import { 
   Mail, Send, Users, Filter, CheckCircle, Clock, AlertCircle, 
   Save, FileText, History, Trash2, Plus, Eye, AlertTriangle, Edit2,
-  Paperclip, X, MailOpen
+  Paperclip, X, MailOpen, RefreshCw
 } from "lucide-react";
 import { format } from "date-fns";
 import { it } from "date-fns/locale";
@@ -1078,10 +1078,21 @@ Team Aries76"
       <TabsContent value="history">
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center">
-              <History className="h-5 w-5 mr-2" />
-              Storico Campagne
-            </CardTitle>
+            <div className="flex items-center justify-between">
+              <CardTitle className="flex items-center">
+                <History className="h-5 w-5 mr-2" />
+                Storico Campagne
+              </CardTitle>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => fetchCampaignHistory()}
+                className="h-8"
+              >
+                <RefreshCw className="h-4 w-4 mr-1" />
+                Aggiorna
+              </Button>
+            </div>
             <CardDescription>
               Visualizza le campagne email inviate in precedenza
             </CardDescription>
