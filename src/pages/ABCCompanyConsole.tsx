@@ -876,17 +876,20 @@ const ABCCompanyConsole = () => {
 
           {/* CAMPAIGNS TAB */}
           <TabsContent value="campaigns" className="space-y-6">
-            <ABCEmailCampaignManager investors={investors.map(i => ({ 
-              id: i.id, 
-              nome: i.nome, 
-              azienda: i.azienda, 
-              email: i.email, 
-              categoria: i.categoria, 
-              status: i.status,
-              approval_status: i.approvalStatus,
-              ruolo: i.ruolo,
-              citta: i.citta
-            }))} />
+            <ABCEmailCampaignManager 
+              investors={investors.map(i => ({ 
+                id: i.id, 
+                nome: i.nome, 
+                azienda: i.azienda, 
+                email: i.email, 
+                categoria: i.categoria, 
+                status: i.status,
+                approval_status: i.approvalStatus,
+                ruolo: i.ruolo,
+                citta: i.citta
+              }))} 
+              onInvestorsUpdated={fetchInvestors}
+            />
           </TabsContent>
 
           {/* ANALYTICS TAB */}
