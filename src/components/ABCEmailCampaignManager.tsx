@@ -14,7 +14,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { 
   Mail, Send, Users, Filter, CheckCircle, Clock, AlertCircle, 
-  Save, FileText, History, Trash2, Plus, Eye, AlertTriangle, Edit2
+  Save, FileText, History, Trash2, Plus, Eye, AlertTriangle, Edit2,
+  Paperclip, X
 } from "lucide-react";
 import { format } from "date-fns";
 import { it } from "date-fns/locale";
@@ -59,6 +60,12 @@ interface ABCEmailCampaignManagerProps {
   investors: Investor[];
 }
 
+interface Attachment {
+  name: string;
+  content: string; // base64
+  type: string;
+}
+
 export function ABCEmailCampaignManager({ investors }: ABCEmailCampaignManagerProps) {
   const [selectedInvestors, setSelectedInvestors] = useState<string[]>([]);
   const [filterStatus, setFilterStatus] = useState<string>("all");
@@ -74,6 +81,7 @@ export function ABCEmailCampaignManager({ investors }: ABCEmailCampaignManagerPr
   const [editingEmailId, setEditingEmailId] = useState<string | null>(null);
   const [editingEmailValue, setEditingEmailValue] = useState("");
   const [isSavingEmail, setIsSavingEmail] = useState(false);
+  const [attachments, setAttachments] = useState<Attachment[]>([]);
   
   const TEST_EMAIL = "egrigione@gmail.com";
   const { toast } = useToast();
@@ -83,6 +91,43 @@ export function ABCEmailCampaignManager({ investors }: ABCEmailCampaignManagerPr
     content: "",
     campaignName: "",
   });
+
+  // Handle file attachment
+  const handleFileAttachment = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
+
+    const maxSize = 10 * 1024 * 1024; // 10MB limit
+    
+    for (const file of Array.from(files)) {
+      if (file.size > maxSize) {
+        toast({
+          title: "File troppo grande",
+          description: `${file.name} supera il limite di 10MB`,
+          variant: "destructive",
+        });
+        continue;
+      }
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64 = (reader.result as string).split(',')[1];
+        setAttachments(prev => [...prev, {
+          name: file.name,
+          content: base64,
+          type: file.type,
+        }]);
+      };
+      reader.readAsDataURL(file);
+    }
+    
+    // Reset input
+    e.target.value = '';
+  };
+
+  const removeAttachment = (index: number) => {
+    setAttachments(prev => prev.filter((_, i) => i !== index));
+  };
 
   const currentUserEmail = sessionStorage.getItem('abc_authorized_email') || 'admin@aries76.com';
 
@@ -269,6 +314,7 @@ export function ABCEmailCampaignManager({ investors }: ABCEmailCampaignManagerPr
           subject: emailForm.subject,
           content: emailForm.content,
           senderEmail: currentUserEmail,
+          attachments: attachments,
         },
       });
 
@@ -276,7 +322,7 @@ export function ABCEmailCampaignManager({ investors }: ABCEmailCampaignManagerPr
 
       toast({
         title: "Email test inviata",
-        description: `Email di test inviata a ${TEST_EMAIL}`,
+        description: `Email di test inviata a ${TEST_EMAIL}${attachments.length > 0 ? ` con ${attachments.length} allegato/i` : ''}`,
       });
 
     } catch (error: any) {
@@ -401,6 +447,7 @@ export function ABCEmailCampaignManager({ investors }: ABCEmailCampaignManagerPr
           subject: emailForm.subject,
           content: emailForm.content,
           senderEmail: currentUserEmail,
+          attachments: attachments,
         },
       });
 
@@ -441,6 +488,7 @@ export function ABCEmailCampaignManager({ investors }: ABCEmailCampaignManagerPr
       // Reset form
       setEmailForm({ subject: "", content: "", campaignName: "" });
       setSelectedInvestors([]);
+      setAttachments([]);
       fetchCampaignHistory();
 
     } catch (error: any) {
@@ -543,6 +591,49 @@ Team Aries76"
                     <Badge variant="outline" className="text-xs">{'{categoria}'}</Badge>
                     <Badge variant="outline" className="text-xs">{'{email}'}</Badge>
                   </div>
+                </div>
+
+                {/* Attachments Section */}
+                <div>
+                  <Label>Allegati</Label>
+                  <div className="flex items-center gap-2 mt-2">
+                    <label className="cursor-pointer">
+                      <Input
+                        type="file"
+                        multiple
+                        className="hidden"
+                        onChange={handleFileAttachment}
+                        accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.gif"
+                      />
+                      <Button type="button" variant="outline" size="sm" asChild>
+                        <span>
+                          <Paperclip className="h-4 w-4 mr-2" />
+                          Aggiungi allegato
+                        </span>
+                      </Button>
+                    </label>
+                    <span className="text-xs text-muted-foreground">Max 10MB per file</span>
+                  </div>
+                  {attachments.length > 0 && (
+                    <div className="mt-3 space-y-2">
+                      {attachments.map((att, index) => (
+                        <div key={index} className="flex items-center justify-between bg-muted p-2 rounded-md">
+                          <div className="flex items-center gap-2">
+                            <FileText className="h-4 w-4 text-muted-foreground" />
+                            <span className="text-sm">{att.name}</span>
+                          </div>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => removeAttachment(index)}
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 <div className="flex flex-wrap gap-2">

@@ -20,11 +20,18 @@ interface Recipient {
   personalizedSubject?: string;
 }
 
+interface Attachment {
+  name: string;
+  content: string; // base64
+  type: string;
+}
+
 interface CampaignRequest {
   recipients: Recipient[];
   subject: string;
   content: string;
   senderEmail: string;
+  attachments?: Attachment[];
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -34,15 +41,24 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const { recipients, subject, content, senderEmail }: CampaignRequest = await req.json();
+    const { recipients, subject, content, senderEmail, attachments }: CampaignRequest = await req.json();
     
     console.log(`Starting ABC campaign: "${subject}" to ${recipients.length} recipients`);
+    if (attachments && attachments.length > 0) {
+      console.log(`Campaign includes ${attachments.length} attachment(s): ${attachments.map(a => a.name).join(', ')}`);
+    }
     
     const results = {
       successful: 0,
       failed: 0,
       errors: [] as string[],
     };
+
+    // Prepare attachments for Resend format
+    const resendAttachments = attachments?.map(att => ({
+      filename: att.name,
+      content: att.content,
+    })) || [];
 
     for (const recipient of recipients) {
       try {
@@ -125,12 +141,19 @@ ${personalizedContent}
           </html>
         `;
 
-        await resend.emails.send({
+        const emailPayload: any = {
           from: "Edoardo Grigione - Aries76 <edoardo.grigione@aries76.com>",
           to: [recipient.email],
           subject: personalizedSubject,
           html: emailHtml,
-        });
+        };
+
+        // Add attachments if present
+        if (resendAttachments.length > 0) {
+          emailPayload.attachments = resendAttachments;
+        }
+
+        await resend.emails.send(emailPayload);
 
         results.successful++;
         console.log(`✓ Email sent to ${recipient.email}`);
