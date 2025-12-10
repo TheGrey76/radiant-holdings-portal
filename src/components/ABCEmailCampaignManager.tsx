@@ -63,12 +63,15 @@ export function ABCEmailCampaignManager({ investors }: ABCEmailCampaignManagerPr
   const [filterStatus, setFilterStatus] = useState<string>("all");
   const [filterCategory, setFilterCategory] = useState<string>("all");
   const [isSending, setIsSending] = useState(false);
+  const [isSendingTest, setIsSendingTest] = useState(false);
   const [templates, setTemplates] = useState<EmailTemplate[]>([]);
   const [campaignHistory, setCampaignHistory] = useState<CampaignHistory[]>([]);
   const [selectedTemplate, setSelectedTemplate] = useState<string>("");
   const [templateName, setTemplateName] = useState("");
   const [showSaveDialog, setShowSaveDialog] = useState(false);
   const [previewContent, setPreviewContent] = useState<string | null>(null);
+  
+  const TEST_EMAIL = "egrigione@gmail.com";
   const { toast } = useToast();
 
   const [emailForm, setEmailForm] = useState({
@@ -179,6 +182,58 @@ export function ABCEmailCampaignManager({ investors }: ABCEmailCampaignManagerPr
         description: "Seleziona un investitore dalla lista",
         variant: "destructive",
       });
+    }
+  };
+
+  // Send test email to personal address
+  const handleSendTest = async () => {
+    if (!emailForm.subject || !emailForm.content) {
+      toast({
+        title: "Compila tutti i campi",
+        description: "Oggetto e contenuto sono obbligatori per il test",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsSendingTest(true);
+
+    try {
+      // Use sample data for placeholders in test
+      const testRecipient = {
+        email: TEST_EMAIL,
+        name: "Test Investitore",
+        company: "Test Company",
+        role: "CEO",
+        city: "Milano",
+        category: "Family Office",
+      };
+
+      const { error } = await supabase.functions.invoke('send-abc-campaign', {
+        body: {
+          recipients: [testRecipient],
+          subject: emailForm.subject,
+          content: emailForm.content,
+          senderEmail: currentUserEmail,
+        },
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Email test inviata",
+        description: `Email di test inviata a ${TEST_EMAIL}`,
+      });
+
+    } catch (error: any) {
+      console.error('Error sending test email:', error);
+      toast({
+        title: "Errore",
+        description: error.message || "Errore nell'invio dell'email di test",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSendingTest(false);
     }
   };
 
@@ -436,13 +491,31 @@ Team Aries76"
                   </div>
                 </div>
 
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-2">
                   <Button 
                     variant="outline"
                     onClick={handlePreview}
                   >
                     <Eye className="h-4 w-4 mr-2" />
                     Anteprima
+                  </Button>
+                  
+                  <Button 
+                    variant="outline"
+                    onClick={handleSendTest}
+                    disabled={isSendingTest}
+                  >
+                    {isSendingTest ? (
+                      <>
+                        <Clock className="h-4 w-4 mr-2 animate-spin" />
+                        Invio test...
+                      </>
+                    ) : (
+                      <>
+                        <Mail className="h-4 w-4 mr-2" />
+                        Test ({TEST_EMAIL})
+                      </>
+                    )}
                   </Button>
                   
                   <Dialog open={showSaveDialog} onOpenChange={setShowSaveDialog}>
