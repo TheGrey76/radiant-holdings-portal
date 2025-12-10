@@ -883,7 +883,7 @@ const ABCCompanyConsole = () => {
               email: i.email, 
               categoria: i.categoria, 
               status: i.status,
-              approval_status: i.approval_status,
+              approval_status: i.approvalStatus,
               ruolo: i.ruolo,
               citta: i.citta
             }))} />
