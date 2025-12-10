@@ -14,6 +14,7 @@ import {
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import type { Json } from "@/integrations/supabase/types";
+import { useOnlineUsers } from "@/hooks/useOnlineUsers";
 
 interface TeamMember {
   email: string;
@@ -126,6 +127,7 @@ const INVESTMENT_TYPES = [
 
 export const ABCSettingsTab = () => {
   const currentUserEmail = sessionStorage.getItem('abc_console_email') || '';
+  const { isUserOnline } = useOnlineUsers();
   
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState<string | null>(null);
@@ -647,13 +649,25 @@ export const ABCSettingsTab = () => {
                     // View Mode
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center">
-                          <span className="text-sm font-semibold text-primary">
-                            {member.name.split(' ').map(n => n[0]).join('').toUpperCase()}
-                          </span>
+                        <div className="relative">
+                          <div className="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center">
+                            <span className="text-sm font-semibold text-primary">
+                              {member.name.split(' ').map(n => n[0]).join('').toUpperCase()}
+                            </span>
+                          </div>
+                          {isUserOnline(member.email) && (
+                            <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-green-500 border-2 border-background"></span>
+                          )}
                         </div>
                         <div>
-                          <p className="font-medium">{member.name}</p>
+                          <div className="flex items-center gap-2">
+                            <p className="font-medium">{member.name}</p>
+                            {isUserOnline(member.email) && (
+                              <Badge variant="outline" className="text-xs bg-green-500/10 text-green-600 border-green-500/30">
+                                Online
+                              </Badge>
+                            )}
+                          </div>
                           <p className="text-xs text-muted-foreground">{member.email}</p>
                         </div>
                       </div>

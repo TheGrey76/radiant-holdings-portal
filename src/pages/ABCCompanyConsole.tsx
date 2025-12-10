@@ -29,6 +29,7 @@ import { ABCAnalyticsTab } from "@/components/ABCAnalyticsTab";
 import { ABCCommitmentTracker } from "@/components/ABCCommitmentTracker";
 import { ABCEmailCampaignManager } from "@/components/ABCEmailCampaignManager";
 import { NotificationBell } from "@/components/NotificationBell";
+import { OnlineUsersIndicator } from "@/components/OnlineUsersIndicator";
 import { ABCSettingsTab } from "@/components/ABCSettingsTab";
 import { useKPIHistory } from "@/hooks/useKPIHistory";
 import { supabase } from "@/integrations/supabase/client";
@@ -510,6 +511,7 @@ const ABCCompanyConsole = () => {
             </div>
             <div className="flex items-center gap-4">
               <ImportABCInvestorsDialog onSuccess={fetchInvestors} />
+              <OnlineUsersIndicator />
               <NotificationBell />
               <span className="text-sm text-muted-foreground">User: {currentUserEmail}</span>
               <Button variant="outline" size="sm" onClick={handleLogout}>
