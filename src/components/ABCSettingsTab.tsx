@@ -62,7 +62,11 @@ interface NotificationPrefs {
 
 const DEFAULT_TEAM: TeamMember[] = [
   { email: "edoardo.grigione@aries76.com", name: "Edoardo Grigione", role: "admin", isDefault: true },
+  { email: "admin@aries76.com", name: "Admin ARIES76", role: "admin", isDefault: true },
   { email: "stefano.taioli@abccompany.it", name: "Stefano Taioli", role: "admin", isDefault: true },
+  { email: "enrico.sobacchi@abccompany.it", name: "Enrico Sobacchi", role: "manager", isDefault: true },
+  { email: "lorenzo.delforno@abccompany.it", name: "Lorenzo Del Forno", role: "manager", isDefault: true },
+  { email: "alessandro.catullo@aries76.com", name: "Alessandro Catullo", role: "manager", isDefault: true },
 ];
 
 const SECTORS = [
