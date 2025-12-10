@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Building2, Target, Users, Mail, Plus, X, Save, 
   Euro, Calendar, Briefcase, Globe, Phone, MapPin,
-  UserCog, Shield, Bell, Loader2, RefreshCw
+  UserCog, Shield, Bell, Loader2, RefreshCw, Pencil, Check
 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -140,6 +140,12 @@ export const ABCSettingsTab = () => {
   const [newMemberEmail, setNewMemberEmail] = useState("");
   const [newMemberName, setNewMemberName] = useState("");
   const [newMemberRole, setNewMemberRole] = useState<'admin' | 'manager' | 'viewer'>('viewer');
+  
+  // Edit member state
+  const [editingMember, setEditingMember] = useState<string | null>(null);
+  const [editName, setEditName] = useState("");
+  const [editEmail, setEditEmail] = useState("");
+  const [editRole, setEditRole] = useState<'admin' | 'manager' | 'viewer'>('viewer');
 
   // Fetch settings from Supabase
   const fetchSettings = async () => {
@@ -240,29 +246,54 @@ export const ABCSettingsTab = () => {
   };
 
   const removeTeamMember = async (email: string) => {
-    const member = teamMembers.find(m => m.email === email);
-    if (member?.isDefault) {
-      toast.error("Non puoi rimuovere i membri default");
-      return;
-    }
-
     const updatedTeam = teamMembers.filter(m => m.email !== email);
     setTeamMembers(updatedTeam);
     await saveTeamMembers(updatedTeam);
   };
 
   const updateMemberRole = async (email: string, role: 'admin' | 'manager' | 'viewer') => {
-    const member = teamMembers.find(m => m.email === email);
-    if (member?.isDefault) {
-      toast.error("Non puoi modificare i ruoli dei membri default");
-      return;
-    }
-
     const updatedTeam = teamMembers.map(m => 
       m.email === email ? { ...m, role } : m
     );
     setTeamMembers(updatedTeam);
     await saveTeamMembers(updatedTeam);
+  };
+
+  const startEditMember = (member: TeamMember) => {
+    setEditingMember(member.email);
+    setEditName(member.name);
+    setEditEmail(member.email);
+    setEditRole(member.role);
+  };
+
+  const cancelEditMember = () => {
+    setEditingMember(null);
+    setEditName("");
+    setEditEmail("");
+    setEditRole('viewer');
+  };
+
+  const saveEditMember = async () => {
+    if (!editEmail.trim() || !editEmail.includes('@')) {
+      toast.error("Inserisci un email valido");
+      return;
+    }
+    
+    // Check if new email already exists (except current member)
+    if (editEmail !== editingMember && teamMembers.some(m => m.email === editEmail)) {
+      toast.error("Email già presente nel team");
+      return;
+    }
+
+    const updatedTeam = teamMembers.map(m => 
+      m.email === editingMember 
+        ? { ...m, name: editName.trim() || editEmail.split('@')[0], email: editEmail.trim(), role: editRole }
+        : m
+    );
+    setTeamMembers(updatedTeam);
+    await saveTeamMembers(updatedTeam);
+    cancelEditMember();
+    toast.success("Membro aggiornato");
   };
 
   const getRoleBadgeColor = (role: string) => {
@@ -574,50 +605,81 @@ export const ABCSettingsTab = () => {
               {teamMembers.map((member) => (
                 <div 
                   key={member.email} 
-                  className="flex items-center justify-between p-3 bg-muted/30 rounded-lg"
+                  className="p-3 bg-muted/30 rounded-lg"
                 >
-                  <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center">
-                      <span className="text-sm font-semibold text-primary">
-                        {member.name.split(' ').map(n => n[0]).join('').toUpperCase()}
-                      </span>
+                  {editingMember === member.email ? (
+                    // Edit Mode
+                    <div className="space-y-3">
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <Input 
+                          placeholder="Nome"
+                          value={editName}
+                          onChange={(e) => setEditName(e.target.value)}
+                        />
+                        <Input 
+                          type="email"
+                          placeholder="Email"
+                          value={editEmail}
+                          onChange={(e) => setEditEmail(e.target.value)}
+                        />
+                        <Select value={editRole} onValueChange={(v) => setEditRole(v as 'admin' | 'manager' | 'viewer')}>
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="admin">Admin</SelectItem>
+                            <SelectItem value="manager">Manager</SelectItem>
+                            <SelectItem value="viewer">Viewer</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button size="sm" onClick={saveEditMember} disabled={saving === 'team'}>
+                          {saving === 'team' ? <Loader2 className="h-4 w-4 mr-1 animate-spin" /> : <Check className="h-4 w-4 mr-1" />}
+                          Salva
+                        </Button>
+                        <Button size="sm" variant="outline" onClick={cancelEditMember}>
+                          Annulla
+                        </Button>
+                      </div>
                     </div>
-                    <div>
-                      <p className="font-medium">{member.name}</p>
-                      <p className="text-xs text-muted-foreground">{member.email}</p>
+                  ) : (
+                    // View Mode
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center">
+                          <span className="text-sm font-semibold text-primary">
+                            {member.name.split(' ').map(n => n[0]).join('').toUpperCase()}
+                          </span>
+                        </div>
+                        <div>
+                          <p className="font-medium">{member.name}</p>
+                          <p className="text-xs text-muted-foreground">{member.email}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Badge className={getRoleBadgeColor(member.role)}>
+                          {member.role}
+                        </Badge>
+                        <Button 
+                          variant="ghost" 
+                          size="icon"
+                          className="h-8 w-8"
+                          onClick={() => startEditMember(member)}
+                        >
+                          <Pencil className="h-4 w-4" />
+                        </Button>
+                        <Button 
+                          variant="ghost" 
+                          size="icon"
+                          className="h-8 w-8 text-destructive hover:text-destructive"
+                          onClick={() => removeTeamMember(member.email)}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    {member.isDefault ? (
-                      <Badge className={getRoleBadgeColor(member.role)}>
-                        {member.role} <Shield className="h-3 w-3 ml-1" />
-                      </Badge>
-                    ) : (
-                      <Select 
-                        value={member.role}
-                        onValueChange={(v) => updateMemberRole(member.email, v as 'admin' | 'manager' | 'viewer')}
-                      >
-                        <SelectTrigger className="w-28 h-8">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="admin">Admin</SelectItem>
-                          <SelectItem value="manager">Manager</SelectItem>
-                          <SelectItem value="viewer">Viewer</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    )}
-                    {!member.isDefault && (
-                      <Button 
-                        variant="ghost" 
-                        size="icon"
-                        className="h-8 w-8 text-destructive hover:text-destructive"
-                        onClick={() => removeTeamMember(member.email)}
-                      >
-                        <X className="h-4 w-4" />
-                      </Button>
-                    )}
-                  </div>
+                  )}
                 </div>
               ))}
             </div>
