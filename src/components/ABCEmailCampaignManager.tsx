@@ -15,7 +15,7 @@ import { useToast } from "@/hooks/use-toast";
 import { 
   Mail, Send, Users, Filter, CheckCircle, Clock, AlertCircle, 
   Save, FileText, History, Trash2, Plus, Eye, AlertTriangle, Edit2,
-  Paperclip, X, MailOpen, RefreshCw
+  Paperclip, X, MailOpen, RefreshCw, Sparkles, MessageSquare, Reply
 } from "lucide-react";
 import { format } from "date-fns";
 import { it } from "date-fns/locale";
@@ -30,6 +30,11 @@ interface Investor {
   ruolo?: string | null;
   citta?: string | null;
   approval_status?: string;
+  pipeline_value?: number;
+  last_contact_date?: string | null;
+  engagement_score?: number;
+  linkedin?: string | null;
+  fonte?: string | null;
 }
 
 interface EmailTemplate {
@@ -55,6 +60,7 @@ interface CampaignHistory {
   sent_at: string;
   recipients: any;
   opens_count?: number;
+  responses_count?: number;
 }
 
 interface ABCEmailCampaignManagerProps {
@@ -67,6 +73,8 @@ interface Attachment {
   content: string; // base64
   type: string;
 }
+
+type EmailType = 'first_contact' | 'follow_up' | 'meeting_request' | 'proposal' | 'custom';
 
 export function ABCEmailCampaignManager({ investors, onInvestorsUpdated }: ABCEmailCampaignManagerProps) {
   const [selectedInvestors, setSelectedInvestors] = useState<string[]>([]);
@@ -84,6 +92,13 @@ export function ABCEmailCampaignManager({ investors, onInvestorsUpdated }: ABCEm
   const [editingEmailValue, setEditingEmailValue] = useState("");
   const [isSavingEmail, setIsSavingEmail] = useState(false);
   const [attachments, setAttachments] = useState<Attachment[]>([]);
+  const [isGeneratingAI, setIsGeneratingAI] = useState(false);
+  const [aiEmailType, setAiEmailType] = useState<EmailType>('first_contact');
+  const [showAIDialog, setShowAIDialog] = useState(false);
+  const [responseDialogOpen, setResponseDialogOpen] = useState(false);
+  const [selectedCampaignForResponse, setSelectedCampaignForResponse] = useState<string | null>(null);
+  const [responseNote, setResponseNote] = useState("");
+  const [responseInvestorEmail, setResponseInvestorEmail] = useState("");
   
   const TEST_EMAIL = "egrigione@gmail.com";
   const { toast } = useToast();
@@ -167,17 +182,27 @@ export function ABCEmailCampaignManager({ investors, onInvestorsUpdated }: ABCEm
       .limit(50);
     
     if (!error && data) {
-      // Fetch open counts for each campaign
-      const campaignsWithOpens = await Promise.all(
+      // Fetch open and response counts for each campaign
+      const campaignsWithMetrics = await Promise.all(
         data.map(async (campaign) => {
-          const { count } = await supabase
+          const { count: opensCount } = await supabase
             .from('abc_email_opens')
             .select('*', { count: 'exact', head: true })
             .eq('campaign_id', campaign.id);
-          return { ...campaign, opens_count: count || 0 };
+          
+          const { count: responsesCount } = await supabase
+            .from('abc_email_responses')
+            .select('*', { count: 'exact', head: true })
+            .eq('campaign_id', campaign.id);
+          
+          return { 
+            ...campaign, 
+            opens_count: opensCount || 0,
+            responses_count: responsesCount || 0 
+          };
         })
       );
-      setCampaignHistory(campaignsWithOpens);
+      setCampaignHistory(campaignsWithMetrics);
     }
   };
 
@@ -250,7 +275,7 @@ export function ABCEmailCampaignManager({ investors, onInvestorsUpdated }: ABCEm
     );
   };
 
-  // Replace placeholders with actual values
+  // Replace placeholders with actual values - Extended merge tags
   const replacePlaceholders = (text: string, investor: Investor): string => {
     return text
       .replace(/\{nome\}/g, investor.nome || '')
@@ -258,7 +283,127 @@ export function ABCEmailCampaignManager({ investors, onInvestorsUpdated }: ABCEm
       .replace(/\{ruolo\}/g, investor.ruolo || '')
       .replace(/\{citta\}/g, investor.citta || '')
       .replace(/\{categoria\}/g, investor.categoria || '')
-      .replace(/\{email\}/g, investor.email || '');
+      .replace(/\{email\}/g, investor.email || '')
+      .replace(/\{pipeline_value\}/g, investor.pipeline_value ? `€${investor.pipeline_value.toLocaleString()}` : '')
+      .replace(/\{last_contact\}/g, investor.last_contact_date ? format(new Date(investor.last_contact_date), 'dd/MM/yyyy') : 'mai')
+      .replace(/\{engagement_score\}/g, String(investor.engagement_score || 0))
+      .replace(/\{linkedin\}/g, investor.linkedin || '')
+      .replace(/\{fonte\}/g, investor.fonte || '')
+      .replace(/\{status\}/g, investor.status || '');
+  };
+
+  // AI Email Draft Generation
+  const handleGenerateAIDraft = async () => {
+    if (selectedInvestors.length === 0) {
+      toast({
+        title: "Seleziona un investitore",
+        description: "Seleziona almeno un investitore per generare l'email",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsGeneratingAI(true);
+    const firstInvestor = investors.find(i => selectedInvestors.includes(i.id));
+    
+    if (!firstInvestor) {
+      setIsGeneratingAI(false);
+      return;
+    }
+
+    try {
+      const { data, error } = await supabase.functions.invoke('generate-email-draft', {
+        body: {
+          investor: {
+            nome: firstInvestor.nome,
+            azienda: firstInvestor.azienda,
+            ruolo: firstInvestor.ruolo,
+            citta: firstInvestor.citta,
+            categoria: firstInvestor.categoria,
+            email: firstInvestor.email,
+            status: firstInvestor.status,
+            pipeline_value: firstInvestor.pipeline_value,
+            last_contact_date: firstInvestor.last_contact_date,
+            engagement_score: firstInvestor.engagement_score,
+          },
+          emailType: aiEmailType,
+          language: 'it',
+        },
+      });
+
+      if (error) throw error;
+
+      if (data?.draft) {
+        setEmailForm(prev => ({
+          ...prev,
+          subject: data.draft.subject || prev.subject,
+          content: data.draft.content || prev.content,
+        }));
+        
+        toast({
+          title: "Bozza generata con AI",
+          description: "L'email è stata generata. Puoi modificarla prima di inviarla.",
+        });
+        setShowAIDialog(false);
+      }
+    } catch (error: any) {
+      console.error('Error generating AI draft:', error);
+      toast({
+        title: "Errore",
+        description: error.message || "Errore nella generazione della bozza AI",
+        variant: "destructive",
+      });
+    } finally {
+      setIsGeneratingAI(false);
+    }
+  };
+
+  // Track email response
+  const handleTrackResponse = async () => {
+    if (!selectedCampaignForResponse || !responseInvestorEmail) {
+      toast({
+        title: "Dati mancanti",
+        description: "Seleziona una campagna e inserisci l'email dell'investitore",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      // Find investor by email
+      const investor = investors.find(i => i.email === responseInvestorEmail);
+
+      const { error } = await supabase.from('abc_email_responses').insert({
+        campaign_id: selectedCampaignForResponse,
+        investor_id: investor?.id,
+        investor_email: responseInvestorEmail,
+        investor_name: investor?.nome,
+        response_type: 'reply',
+        notes: responseNote,
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Risposta registrata",
+        description: "La risposta è stata tracciata con successo",
+      });
+
+      setResponseDialogOpen(false);
+      setSelectedCampaignForResponse(null);
+      setResponseInvestorEmail("");
+      setResponseNote("");
+      
+      // Refresh campaign history
+      fetchCampaignHistory();
+    } catch (error: any) {
+      console.error('Error tracking response:', error);
+      toast({
+        title: "Errore",
+        description: "Errore nel tracciamento della risposta",
+        variant: "destructive",
+      });
+    }
   };
 
   // Generate HTML email preview matching the actual email template
@@ -744,12 +889,19 @@ Team Aries76"
                     className="font-mono text-sm"
                   />
                   <div className="flex flex-wrap gap-2 mt-2">
+                    <span className="text-xs text-muted-foreground mr-2">Merge tags:</span>
                     <Badge variant="outline" className="text-xs">{'{nome}'}</Badge>
                     <Badge variant="outline" className="text-xs">{'{azienda}'}</Badge>
                     <Badge variant="outline" className="text-xs">{'{ruolo}'}</Badge>
                     <Badge variant="outline" className="text-xs">{'{citta}'}</Badge>
                     <Badge variant="outline" className="text-xs">{'{categoria}'}</Badge>
                     <Badge variant="outline" className="text-xs">{'{email}'}</Badge>
+                    <Badge variant="outline" className="text-xs bg-primary/5">{'{pipeline_value}'}</Badge>
+                    <Badge variant="outline" className="text-xs bg-primary/5">{'{last_contact}'}</Badge>
+                    <Badge variant="outline" className="text-xs bg-primary/5">{'{engagement_score}'}</Badge>
+                    <Badge variant="outline" className="text-xs bg-primary/5">{'{linkedin}'}</Badge>
+                    <Badge variant="outline" className="text-xs bg-primary/5">{'{fonte}'}</Badge>
+                    <Badge variant="outline" className="text-xs bg-primary/5">{'{status}'}</Badge>
                   </div>
                 </div>
 
@@ -797,6 +949,73 @@ Team Aries76"
                 </div>
 
                 <div className="flex flex-wrap gap-2">
+                  {/* AI Draft Generation Button */}
+                  <Dialog open={showAIDialog} onOpenChange={setShowAIDialog}>
+                    <DialogTrigger asChild>
+                      <Button variant="outline" className="bg-gradient-to-r from-purple-500/10 to-blue-500/10 border-purple-300">
+                        <Sparkles className="h-4 w-4 mr-2 text-purple-500" />
+                        Genera con AI
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle className="flex items-center gap-2">
+                          <Sparkles className="h-5 w-5 text-purple-500" />
+                          Genera Email con AI
+                        </DialogTitle>
+                      </DialogHeader>
+                      <div className="space-y-4 py-4">
+                        <p className="text-sm text-muted-foreground">
+                          Seleziona il tipo di email da generare. L'AI creerà una bozza personalizzata 
+                          basata sul profilo dell'investitore selezionato.
+                        </p>
+                        <div>
+                          <Label>Tipo di Email</Label>
+                          <Select value={aiEmailType} onValueChange={(v) => setAiEmailType(v as EmailType)}>
+                            <SelectTrigger className="mt-2">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="first_contact">Primo Contatto</SelectItem>
+                              <SelectItem value="follow_up">Follow-up</SelectItem>
+                              <SelectItem value="meeting_request">Richiesta Meeting</SelectItem>
+                              <SelectItem value="proposal">Invio Proposta</SelectItem>
+                              <SelectItem value="custom">Personalizzato</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        {selectedInvestors.length === 0 && (
+                          <p className="text-sm text-amber-600 flex items-center gap-2">
+                            <AlertTriangle className="h-4 w-4" />
+                            Seleziona almeno un investitore dalla lista
+                          </p>
+                        )}
+                      </div>
+                      <DialogFooter>
+                        <DialogClose asChild>
+                          <Button variant="outline">Annulla</Button>
+                        </DialogClose>
+                        <Button 
+                          onClick={handleGenerateAIDraft}
+                          disabled={isGeneratingAI || selectedInvestors.length === 0}
+                          className="bg-gradient-to-r from-purple-500 to-blue-500"
+                        >
+                          {isGeneratingAI ? (
+                            <>
+                              <Clock className="h-4 w-4 mr-2 animate-spin" />
+                              Generazione...
+                            </>
+                          ) : (
+                            <>
+                              <Sparkles className="h-4 w-4 mr-2" />
+                              Genera Bozza
+                            </>
+                          )}
+                        </Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
+
                   <Button 
                     variant="outline"
                     onClick={handlePreview}
@@ -1188,16 +1407,17 @@ Team Aries76"
                     <TableHead>Oggetto</TableHead>
                     <TableHead>Destinatari</TableHead>
                     <TableHead>Aperture</TableHead>
+                    <TableHead>Risposte</TableHead>
                     <TableHead>Risultato</TableHead>
-                    <TableHead>Inviata da</TableHead>
                     <TableHead>Data</TableHead>
+                    <TableHead className="text-right">Azioni</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {campaignHistory.map(campaign => (
                     <TableRow key={campaign.id}>
                       <TableCell className="font-medium">{campaign.campaign_name}</TableCell>
-                      <TableCell className="max-w-[200px] truncate">{campaign.subject}</TableCell>
+                      <TableCell className="max-w-[150px] truncate">{campaign.subject}</TableCell>
                       <TableCell>
                         <Badge variant="secondary">{campaign.recipient_count}</Badge>
                       </TableCell>
@@ -1216,20 +1436,41 @@ Team Aries76"
                         </Badge>
                       </TableCell>
                       <TableCell>
-                        <div className="flex items-center gap-2">
-                          <Badge variant="outline" className="text-green-600">
-                            {campaign.successful_sends} OK
+                        <Badge 
+                          variant="outline" 
+                          className={campaign.responses_count && campaign.responses_count > 0 ? "text-green-600 border-green-200 bg-green-50" : ""}
+                        >
+                          <Reply className="h-3 w-3 mr-1" />
+                          {campaign.responses_count || 0}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-1">
+                          <Badge variant="outline" className="text-green-600 text-xs">
+                            {campaign.successful_sends}
                           </Badge>
                           {campaign.failed_sends > 0 && (
-                            <Badge variant="outline" className="text-red-600">
-                              {campaign.failed_sends} fallite
+                            <Badge variant="outline" className="text-red-600 text-xs">
+                              {campaign.failed_sends}
                             </Badge>
                           )}
                         </div>
                       </TableCell>
-                      <TableCell className="text-sm">{campaign.sent_by}</TableCell>
-                      <TableCell className="text-sm">
-                        {format(new Date(campaign.sent_at), 'dd/MM/yyyy HH:mm', { locale: it })}
+                      <TableCell className="text-xs">
+                        {format(new Date(campaign.sent_at), 'dd/MM HH:mm', { locale: it })}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => {
+                            setSelectedCampaignForResponse(campaign.id);
+                            setResponseDialogOpen(true);
+                          }}
+                          title="Registra risposta"
+                        >
+                          <MessageSquare className="h-4 w-4" />
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -1239,6 +1480,52 @@ Team Aries76"
           </CardContent>
         </Card>
       </TabsContent>
+
+      {/* Response Tracking Dialog */}
+      <Dialog open={responseDialogOpen} onOpenChange={setResponseDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <MessageSquare className="h-5 w-5 text-green-500" />
+              Registra Risposta Email
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <p className="text-sm text-muted-foreground">
+              Registra quando un investitore risponde a una campagna email per tracciare l'engagement.
+            </p>
+            <div>
+              <Label>Email Investitore</Label>
+              <Input
+                type="email"
+                value={responseInvestorEmail}
+                onChange={(e) => setResponseInvestorEmail(e.target.value)}
+                placeholder="investitore@azienda.com"
+                className="mt-2"
+              />
+            </div>
+            <div>
+              <Label>Note (opzionale)</Label>
+              <Textarea
+                value={responseNote}
+                onChange={(e) => setResponseNote(e.target.value)}
+                placeholder="Es: Interessato, chiede meeting settimana prossima..."
+                rows={3}
+                className="mt-2"
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button variant="outline">Annulla</Button>
+            </DialogClose>
+            <Button onClick={handleTrackResponse}>
+              <CheckCircle className="h-4 w-4 mr-2" />
+              Registra Risposta
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </Tabs>
   );
 }
