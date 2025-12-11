@@ -9,6 +9,14 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    title: "Big Tech's $50 Billion AI Bet on India: What It Means for Global Investors",
+    excerpt: "Microsoft, Amazon, and Google commit over $50 billion to AI infrastructure in India in under 24 hours. We analyze the strategic implications for institutional investors and the emerging AI infrastructure opportunity.",
+    category: "AI & Technology",
+    date: "2025-12-11",
+    readTime: "7 min read",
+    slug: "big-tech-ai-investment-india-2025"
+  },
+  {
     title: "Family Office Asset Allocation in 2026: The New Paradigm",
     excerpt: "How family offices are reshaping their portfolios for 2026. From private markets expansion to AI-driven strategies, discover the allocation trends defining wealth preservation and growth.",
     category: "Family Offices",
