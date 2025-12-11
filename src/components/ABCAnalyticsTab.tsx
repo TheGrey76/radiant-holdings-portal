@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { LineChart, Line, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, ReferenceLine } from "recharts";
 import { TrendingUp, TrendingDown, Minus, Target, Calendar, TrendingUpIcon } from "lucide-react";
 import { KPISnapshot, useKPIHistory } from "@/hooks/useKPIHistory";
-import { ABCNetworkGraph } from "@/components/ABCNetworkGraph";
+
 
 type TimeRange = "7d" | "30d" | "90d" | "all";
 
@@ -423,10 +423,6 @@ export function ABCAnalyticsTab({ investors = [] }: ABCAnalyticsTabProps) {
         </Card>
       </div>
 
-      {/* Network Graph */}
-      {investors.length > 0 && (
-        <ABCNetworkGraph investors={investors} />
-      )}
     </div>
   );
 }
