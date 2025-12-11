@@ -6,7 +6,7 @@ import {
   TrendingUp, Users, Calendar, CheckCircle, AlertCircle, 
   Target, Clock, FileText, Settings, Search, Filter,
   Mail, Phone, Building, MapPin, Download, Share2, X, Plus,
-  ExternalLink, Paperclip, Edit, Trash2, LogOut
+  ExternalLink, Paperclip, Edit, Trash2, LogOut, Send, Eye
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -96,6 +96,14 @@ const ABCCompanyConsole = () => {
     percentage: 0,
   });
 
+  // Campaign stats state
+  const [campaignStats, setCampaignStats] = useState({
+    totalCampaigns: 0,
+    totalEmailsSent: 0,
+    totalOpens: 0,
+    successRate: 0,
+  });
+
   // Settings state
   const [notificationPrefs, setNotificationPrefs] = useState({
     dailySummary: true,
@@ -119,6 +127,7 @@ const ABCCompanyConsole = () => {
     if (!isAuthenticated) return;
     fetchInvestors();
     fetchUpcomingFollowUps();
+    fetchCampaignStats();
 
     const savedProgress = localStorage.getItem("abc-progress-data");
     if (savedProgress) {
@@ -315,6 +324,41 @@ const ABCCompanyConsole = () => {
       console.error('Error fetching investors:', error);
       toast.error('Failed to load investors');
       setLoadingInvestors(false);
+    }
+  };
+
+  const fetchCampaignStats = async () => {
+    try {
+      // Fetch campaign history
+      const { data: campaigns, error: campaignsError } = await supabase
+        .from('abc_email_campaign_history' as any)
+        .select('*');
+
+      if (campaignsError) throw campaignsError;
+
+      // Fetch email opens
+      const { data: opens, error: opensError } = await supabase
+        .from('abc_email_opens' as any)
+        .select('*');
+
+      if (opensError) throw opensError;
+
+      const totalCampaigns = campaigns?.length || 0;
+      const totalEmailsSent = campaigns?.reduce((sum: number, c: any) => sum + (c.successful_sends || 0), 0) || 0;
+      const totalOpens = opens?.length || 0;
+      const successRate = totalCampaigns > 0 
+        ? Math.round((campaigns?.reduce((sum: number, c: any) => sum + (c.successful_sends || 0), 0) / 
+                     campaigns?.reduce((sum: number, c: any) => sum + (c.recipient_count || 0), 0)) * 100) || 0
+        : 0;
+
+      setCampaignStats({
+        totalCampaigns,
+        totalEmailsSent,
+        totalOpens,
+        successRate: isNaN(successRate) ? 0 : successRate,
+      });
+    } catch (error) {
+      console.error('Error fetching campaign stats:', error);
     }
   };
 
@@ -904,6 +948,62 @@ const ABCCompanyConsole = () => {
 
           {/* CAMPAIGNS TAB */}
           <TabsContent value="campaigns" className="space-y-6">
+            {/* Campaign Stats Cards */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <Card className="bg-card/50 border-border/50">
+                <CardContent className="pt-4 pb-3">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-lg bg-primary/10">
+                      <Mail className="h-4 w-4 text-primary" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-muted-foreground">Campagne Inviate</p>
+                      <p className="text-xl font-bold">{campaignStats.totalCampaigns}</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              <Card className="bg-card/50 border-border/50">
+                <CardContent className="pt-4 pb-3">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-lg bg-blue-500/10">
+                      <Send className="h-4 w-4 text-blue-500" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-muted-foreground">Email Inviate</p>
+                      <p className="text-xl font-bold">{campaignStats.totalEmailsSent}</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              <Card className="bg-card/50 border-border/50">
+                <CardContent className="pt-4 pb-3">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-lg bg-green-500/10">
+                      <Eye className="h-4 w-4 text-green-500" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-muted-foreground">Aperture Totali</p>
+                      <p className="text-xl font-bold">{campaignStats.totalOpens}</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              <Card className="bg-card/50 border-border/50">
+                <CardContent className="pt-4 pb-3">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-lg bg-orange-500/10">
+                      <CheckCircle className="h-4 w-4 text-orange-500" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-muted-foreground">Tasso Successo</p>
+                      <p className="text-xl font-bold">{campaignStats.successRate}%</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
             <ABCEmailCampaignManager 
               investors={investors.map(i => ({ 
                 id: i.id, 
