@@ -72,6 +72,7 @@ import Bitcoin2026Report from "./pages/Bitcoin2026Report";
 import Bitcoin2026ReportCover from "./pages/Bitcoin2026ReportCover";
 import Bitcoin2026ReportPreview from "./pages/Bitcoin2026ReportPreview";
 import UnderlyingMonitoring from "./pages/UnderlyingMonitoring";
+import CrossPostingAssistant from "./pages/CrossPostingAssistant";
 
 const queryClient = new QueryClient();
 
@@ -109,6 +110,7 @@ const App = () => (
           <Route path="/proposal-link-generator" element={<ProposalLinkGenerator />} />
           <Route path="/admin/newsletter" element={<NewsletterComposer />} />
           <Route path="/admin/distribution" element={<DistributionDashboard />} />
+          <Route path="/admin/cross-posting" element={<CrossPostingAssistant />} />
           <Route path="/admin/gp-lp-matching" element={<GPLPMatching />} />
           <Route path="/admin/gp-lp-dashboard" element={<GPLPDashboard />} />
           <Route path="/gp-portal" element={<GPPortal />} />
