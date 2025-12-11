@@ -1,5 +1,3 @@
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
-
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
@@ -24,81 +22,11 @@ Deno.serve(async (req) => {
     
     console.log('Generating cross-post content for:', title);
 
-    const openaiApiKey = Deno.env.get('OPENAI_API_KEY');
+    // Always use template for now - fast and reliable
+    // AI generation can be enabled later with Lovable AI Gateway
+    const generatedContent = generateTemplateContent(title, excerpt, category, slug, readTime, fullUrl);
     
-    if (!openaiApiKey) {
-      // Fallback to template-based generation
-      console.log('No OpenAI key, using templates');
-      return new Response(
-        JSON.stringify(generateTemplateContent(title, excerpt, category, slug, readTime, fullUrl)),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
-    }
-
-    // Generate AI-powered content for each platform
-    const systemPrompt = `Sei un esperto di content marketing per servizi finanziari B2B. 
-Genera contenuti ottimizzati per diverse piattaforme social a partire da un articolo di blog.
-Il tono deve essere professionale ma accessibile, autorevole ma non arrogante.
-L'azienda è ARIES76, una boutique di advisory specializzata in private markets.
-Rispondi SOLO con il JSON richiesto, senza markdown code blocks.`;
-
-    const userPrompt = `Genera contenuti ottimizzati per la distribuzione cross-platform di questo articolo:
-
-TITOLO: ${title}
-CATEGORIA: ${category}
-EXCERPT: ${excerpt}
-URL: ${fullUrl}
-TEMPO DI LETTURA: ${readTime}
-
-Genera un JSON con questi campi:
-1. "linkedin": Post breve (max 2500 caratteri) con emoji appropriate, hook iniziale forte, e 3-5 hashtag rilevanti
-2. "linkedinNewsletter": Versione newsletter completa (1500+ parole) con struttura: intro, punti chiave, analisi, conclusioni
-3. "medium": Articolo SEO-ottimizzato in Markdown con H2/H3, intro accattivante, e nota canonical URL
-4. "substack": Newsletter personale e conversazionale con saluto, contenuto principale, takeaways numerati, e firma personale
-
-Usa tono italiano professionale. Include sempre il link all'articolo originale.`;
-
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${openaiApiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'gpt-4o-mini',
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: userPrompt }
-        ],
-        temperature: 0.7,
-        max_tokens: 4000,
-      }),
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('OpenAI API error:', errorText);
-      throw new Error('OpenAI API error');
-    }
-
-    const aiResponse = await response.json();
-    const content = aiResponse.choices[0]?.message?.content;
-    
-    if (!content) {
-      throw new Error('No content generated');
-    }
-
-    // Parse the JSON response
-    let generatedContent;
-    try {
-      // Clean up potential markdown code blocks
-      const cleanedContent = content.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-      generatedContent = JSON.parse(cleanedContent);
-    } catch (parseError) {
-      console.error('Failed to parse AI response:', content);
-      // Fallback to template
-      generatedContent = generateTemplateContent(title, excerpt, category, slug, readTime, fullUrl);
-    }
+    console.log('Generated content successfully');
 
     return new Response(
       JSON.stringify(generatedContent),
