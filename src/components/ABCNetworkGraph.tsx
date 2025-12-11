@@ -133,93 +133,72 @@ export function ABCNetworkGraph({ investors }: ABCNetworkGraphProps) {
     return { initialNodes: nodeList, links: linkList };
   }, [filteredInvestors, dimensions]);
 
-  // Initialize nodes
+  // Simple static layout - no continuous animation
   useEffect(() => {
-    setNodes(initialNodes);
-  }, [initialNodes]);
+    if (initialNodes.length === 0) return;
 
-  // Force simulation
-  useEffect(() => {
-    if (nodes.length === 0) return;
+    // Calculate active links for simulation
+    const simulationLinks = links.filter(link => 
+      (link.type === "company" && linkFilters.company) ||
+      (link.type === "category" && linkFilters.category) ||
+      (link.type === "city" && linkFilters.city)
+    );
 
-    const simulate = () => {
-      setNodes(prevNodes => {
-        const newNodes = prevNodes.map(node => ({ ...node }));
+    // Run simulation only once at start
+    const iterations = 50;
+    const simulatedNodes = initialNodes.map(node => ({ ...node }));
+    
+    for (let iter = 0; iter < iterations; iter++) {
+      for (let i = 0; i < simulatedNodes.length; i++) {
+        const node = simulatedNodes[i];
+        let fx = 0, fy = 0;
         
-        // Apply forces
-        for (let i = 0; i < newNodes.length; i++) {
-          const node = newNodes[i];
+        // Gentle center gravity
+        fx += (dimensions.width / 2 - node.x) * 0.002;
+        fy += (dimensions.height / 2 - node.y) * 0.002;
+        
+        // Repulsion between nodes
+        for (let j = 0; j < simulatedNodes.length; j++) {
+          if (i === j) continue;
+          const other = simulatedNodes[j];
+          const dx = node.x - other.x;
+          const dy = node.y - other.y;
+          const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+          const minDist = node.radius + other.radius + 30;
           
-          // Center gravity
-          const dx = dimensions.width / 2 - node.x;
-          const dy = dimensions.height / 2 - node.y;
-          node.vx += dx * 0.001;
-          node.vy += dy * 0.001;
-          
-          // Repulsion between nodes
-          for (let j = 0; j < newNodes.length; j++) {
-            if (i === j) continue;
-            const other = newNodes[j];
-            const ddx = node.x - other.x;
-            const ddy = node.y - other.y;
-            const dist = Math.sqrt(ddx * ddx + ddy * ddy) || 1;
-            const minDist = node.radius + other.radius + 20;
-            
-            if (dist < minDist * 2) {
-              const force = (minDist - dist) / dist * 0.05;
-              node.vx += ddx * force;
-              node.vy += ddy * force;
-            }
+          if (dist < minDist * 1.5) {
+            const force = (minDist - dist) / dist * 0.1;
+            fx += dx * force;
+            fy += dy * force;
           }
-          
-          // Link attraction
-          links.forEach(link => {
-            const isActiveLink = 
-              (link.type === "company" && linkFilters.company) ||
-              (link.type === "category" && linkFilters.category) ||
-              (link.type === "city" && linkFilters.city);
-            
-            if (!isActiveLink) return;
-            
-            if (link.source === node.id || link.target === node.id) {
-              const otherId = link.source === node.id ? link.target : link.source;
-              const other = newNodes.find(n => n.id === otherId);
-              if (other) {
-                const ddx = other.x - node.x;
-                const ddy = other.y - node.y;
-                const dist = Math.sqrt(ddx * ddx + ddy * ddy) || 1;
-                const force = link.strength * 0.01;
-                node.vx += ddx * force;
-                node.vy += ddy * force;
-              }
-            }
-          });
-          
-          // Apply velocity with damping
-          node.vx *= 0.9;
-          node.vy *= 0.9;
-          node.x += node.vx;
-          node.y += node.vy;
-          
-          // Keep within bounds
-          node.x = Math.max(node.radius, Math.min(dimensions.width - node.radius, node.x));
-          node.y = Math.max(node.radius, Math.min(dimensions.height - node.radius, node.y));
         }
         
-        return newNodes;
-      });
-      
-      animationRef.current = requestAnimationFrame(simulate);
-    };
-
-    animationRef.current = requestAnimationFrame(simulate);
-    
-    return () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
+        // Link attraction (gentle)
+        simulationLinks.forEach(link => {
+          if (link.source === node.id || link.target === node.id) {
+            const otherId = link.source === node.id ? link.target : link.source;
+            const other = simulatedNodes.find(n => n.id === otherId);
+            if (other) {
+              const dx = other.x - node.x;
+              const dy = other.y - node.y;
+              fx += dx * 0.002 * link.strength;
+              fy += dy * 0.002 * link.strength;
+            }
+          }
+        });
+        
+        // Apply forces
+        node.x += fx;
+        node.y += fy;
+        
+        // Keep within bounds
+        node.x = Math.max(node.radius + 10, Math.min(dimensions.width - node.radius - 10, node.x));
+        node.y = Math.max(node.radius + 10, Math.min(dimensions.height - node.radius - 10, node.y));
       }
-    };
-  }, [nodes.length, links, linkFilters, dimensions]);
+    }
+    
+    setNodes(simulatedNodes);
+  }, [initialNodes, links, linkFilters, dimensions]);
 
   // Handle resize
   useEffect(() => {
