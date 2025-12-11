@@ -44,3 +44,9 @@ verify_jwt = false
 
 [functions.track-email-open]
 verify_jwt = false
+
+[functions.generate-email-draft]
+verify_jwt = false
+
+[functions.generate-cross-post-content]
+verify_jwt = false

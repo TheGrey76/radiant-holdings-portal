@@ -127,6 +127,57 @@ export type Database = {
           },
         ]
       }
+      abc_email_responses: {
+        Row: {
+          campaign_id: string | null
+          created_at: string
+          id: string
+          investor_email: string
+          investor_id: string | null
+          investor_name: string | null
+          notes: string | null
+          response_date: string
+          response_type: string
+        }
+        Insert: {
+          campaign_id?: string | null
+          created_at?: string
+          id?: string
+          investor_email: string
+          investor_id?: string | null
+          investor_name?: string | null
+          notes?: string | null
+          response_date?: string
+          response_type?: string
+        }
+        Update: {
+          campaign_id?: string | null
+          created_at?: string
+          id?: string
+          investor_email?: string
+          investor_id?: string | null
+          investor_name?: string | null
+          notes?: string | null
+          response_date?: string
+          response_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "abc_email_responses_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "abc_email_campaign_history"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "abc_email_responses_investor_id_fkey"
+            columns: ["investor_id"]
+            isOneToOne: false
+            referencedRelation: "abc_investors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       abc_email_templates: {
         Row: {
           content: string
@@ -344,13 +395,18 @@ export type Database = {
           citta: string | null
           created_at: string
           email: string | null
+          email_opens_count: number | null
+          email_responses_count: number | null
+          engagement_score: number | null
           expected_close: string | null
           fonte: string | null
           id: string
           last_contact_date: string | null
           linkedin: string | null
+          meetings_count: number | null
           next_follow_up_date: string | null
           nome: string
+          notes_count: number | null
           phone: string | null
           pipeline_value: number
           priorita: string | null
@@ -368,13 +424,18 @@ export type Database = {
           citta?: string | null
           created_at?: string
           email?: string | null
+          email_opens_count?: number | null
+          email_responses_count?: number | null
+          engagement_score?: number | null
           expected_close?: string | null
           fonte?: string | null
           id?: string
           last_contact_date?: string | null
           linkedin?: string | null
+          meetings_count?: number | null
           next_follow_up_date?: string | null
           nome: string
+          notes_count?: number | null
           phone?: string | null
           pipeline_value?: number
           priorita?: string | null
@@ -392,13 +453,18 @@ export type Database = {
           citta?: string | null
           created_at?: string
           email?: string | null
+          email_opens_count?: number | null
+          email_responses_count?: number | null
+          engagement_score?: number | null
           expected_close?: string | null
           fonte?: string | null
           id?: string
           last_contact_date?: string | null
           linkedin?: string | null
+          meetings_count?: number | null
           next_follow_up_date?: string | null
           nome?: string
+          notes_count?: number | null
           phone?: string | null
           pipeline_value?: number
           priorita?: string | null
@@ -1297,6 +1363,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      calculate_investor_engagement_score: {
+        Args: { investor_id_param: string }
+        Returns: number
+      }
       get_current_user_role: { Args: never; Returns: string }
       has_role: {
         Args: {
@@ -1305,6 +1375,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      update_all_engagement_scores: { Args: never; Returns: undefined }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"

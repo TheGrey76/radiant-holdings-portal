@@ -28,6 +28,7 @@ import { EditableKPI } from "@/components/EditableKPI";
 import { ABCAnalyticsTab } from "@/components/ABCAnalyticsTab";
 import { ABCCommitmentTracker } from "@/components/ABCCommitmentTracker";
 import { ABCEmailCampaignManager } from "@/components/ABCEmailCampaignManager";
+import { ABCEngagementScore } from "@/components/ABCEngagementScore";
 import { NotificationBell } from "@/components/NotificationBell";
 import { OnlineUsersIndicator } from "@/components/OnlineUsersIndicator";
 import { ABCSettingsTab } from "@/components/ABCSettingsTab";
@@ -903,20 +904,48 @@ const ABCCompanyConsole = () => {
 
           {/* CAMPAIGNS TAB */}
           <TabsContent value="campaigns" className="space-y-6">
-            <ABCEmailCampaignManager 
-              investors={investors.map(i => ({ 
-                id: i.id, 
-                nome: i.nome, 
-                azienda: i.azienda, 
-                email: i.email, 
-                categoria: i.categoria, 
-                status: i.status,
-                approval_status: i.approvalStatus,
-                ruolo: i.ruolo,
-                citta: i.citta
-              }))} 
-              onInvestorsUpdated={fetchInvestors}
-            />
+            <div className="grid lg:grid-cols-3 gap-6">
+              <div className="lg:col-span-2">
+                <ABCEmailCampaignManager 
+                  investors={investors.map(i => ({ 
+                    id: i.id, 
+                    nome: i.nome, 
+                    azienda: i.azienda, 
+                    email: i.email, 
+                    categoria: i.categoria, 
+                    status: i.status,
+                    approval_status: i.approvalStatus,
+                    ruolo: i.ruolo,
+                    citta: i.citta,
+                    pipeline_value: i.pipelineValue,
+                    last_contact_date: i.lastContactDate,
+                    engagement_score: i.engagementScore,
+                    linkedin: i.linkedin,
+                    fonte: i.fonte
+                  }))} 
+                  onInvestorsUpdated={fetchInvestors}
+                />
+              </div>
+              <div>
+                <ABCEngagementScore 
+                  investors={investors.map(i => ({
+                    id: i.id,
+                    nome: i.nome,
+                    azienda: i.azienda,
+                    email: i.email,
+                    engagement_score: i.engagementScore,
+                    email_opens_count: i.emailOpensCount,
+                    email_responses_count: i.emailResponsesCount,
+                    meetings_count: i.meetingsCount,
+                    notes_count: i.notesCount,
+                  }))}
+                  onSelectInvestor={(id) => {
+                    setEditInvestorId(id);
+                    setActiveTab("investors");
+                  }}
+                />
+              </div>
+            </div>
           </TabsContent>
 
           {/* ANALYTICS TAB */}
