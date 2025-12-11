@@ -913,21 +913,74 @@ Team Aries76"
                     rows={12}
                     className="font-mono text-sm"
                   />
-                  <div className="flex flex-wrap gap-2 mt-2">
-                    <span className="text-xs text-muted-foreground mr-2">Merge tags:</span>
-                    <Badge variant="outline" className="text-xs">{'{nome}'}</Badge>
-                    <Badge variant="outline" className="text-xs">{'{azienda}'}</Badge>
-                    <Badge variant="outline" className="text-xs">{'{ruolo}'}</Badge>
-                    <Badge variant="outline" className="text-xs">{'{citta}'}</Badge>
-                    <Badge variant="outline" className="text-xs">{'{categoria}'}</Badge>
-                    <Badge variant="outline" className="text-xs">{'{email}'}</Badge>
-                    <Badge variant="outline" className="text-xs bg-primary/5">{'{pipeline_value}'}</Badge>
-                    <Badge variant="outline" className="text-xs bg-primary/5">{'{last_contact}'}</Badge>
-                    <Badge variant="outline" className="text-xs bg-primary/5">{'{engagement_score}'}</Badge>
-                    <Badge variant="outline" className="text-xs bg-primary/5">{'{linkedin}'}</Badge>
-                    <Badge variant="outline" className="text-xs bg-primary/5">{'{fonte}'}</Badge>
-                    <Badge variant="outline" className="text-xs bg-primary/5">{'{status}'}</Badge>
-                  </div>
+                  {/* Merge Tags with usage indicator */}
+                  {(() => {
+                    const allTags = [
+                      { tag: '{nome}', label: 'nome' },
+                      { tag: '{azienda}', label: 'azienda' },
+                      { tag: '{ruolo}', label: 'ruolo' },
+                      { tag: '{citta}', label: 'città' },
+                      { tag: '{categoria}', label: 'categoria' },
+                      { tag: '{email}', label: 'email' },
+                      { tag: '{pipeline_value}', label: 'pipeline_value', advanced: true },
+                      { tag: '{last_contact}', label: 'last_contact', advanced: true },
+                      { tag: '{engagement_score}', label: 'engagement_score', advanced: true },
+                      { tag: '{linkedin}', label: 'linkedin', advanced: true },
+                      { tag: '{fonte}', label: 'fonte', advanced: true },
+                      { tag: '{status}', label: 'status', advanced: true },
+                    ];
+                    const usedTags = allTags.filter(t => emailForm.content.includes(t.tag) || emailForm.subject.includes(t.tag));
+                    const unusedTags = allTags.filter(t => !emailForm.content.includes(t.tag) && !emailForm.subject.includes(t.tag));
+                    
+                    return (
+                      <div className="space-y-2 mt-2">
+                        {usedTags.length > 0 && (
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="text-xs text-green-600 font-medium flex items-center">
+                              <CheckCircle className="h-3 w-3 mr-1" />
+                              In uso:
+                            </span>
+                            {usedTags.map(t => (
+                              <Badge 
+                                key={t.tag} 
+                                className="text-xs bg-green-100 text-green-700 border-green-300 hover:bg-green-200"
+                              >
+                                {t.tag}
+                              </Badge>
+                            ))}
+                          </div>
+                        )}
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="text-xs text-muted-foreground">
+                            {usedTags.length > 0 ? 'Disponibili:' : 'Merge tags:'}
+                          </span>
+                          {unusedTags.map(t => (
+                            <Badge 
+                              key={t.tag} 
+                              variant="outline" 
+                              className={`text-xs cursor-pointer hover:bg-primary/10 ${t.advanced ? 'bg-primary/5' : ''}`}
+                              onClick={() => {
+                                const textarea = document.getElementById('content') as HTMLTextAreaElement;
+                                if (textarea) {
+                                  const start = textarea.selectionStart;
+                                  const end = textarea.selectionEnd;
+                                  const newContent = emailForm.content.substring(0, start) + t.tag + emailForm.content.substring(end);
+                                  setEmailForm(prev => ({ ...prev, content: newContent }));
+                                }
+                              }}
+                            >
+                              {t.tag}
+                            </Badge>
+                          ))}
+                        </div>
+                        {usedTags.length > 0 && (
+                          <p className="text-xs text-muted-foreground italic">
+                            Ogni email sarà personalizzata con i dati specifici di ciascun investitore
+                          </p>
+                        )}
+                      </div>
+                    );
+                  })()}
                 </div>
 
                 {/* Attachments Section */}
