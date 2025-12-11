@@ -44,15 +44,22 @@ const CrossPostingAssistant = () => {
 
       if (error) throw error;
 
+      // Check if response contains valid content or an error
+      if (data?.error || !data?.linkedin) {
+        console.error('Invalid response from edge function:', data);
+        throw new Error(data?.error || 'Invalid response');
+      }
+
       setGeneratedContent(data);
       toast({
-        title: "Contenuti generati",
+        title: "Contenuti generati con AI",
         description: "I contenuti ottimizzati sono pronti per ogni piattaforma"
       });
     } catch (error: any) {
       console.error('Generation error:', error);
       // Fallback to template-based generation
-      setGeneratedContent(generateTemplateContent(post));
+      const templateContent = generateTemplateContent(post);
+      setGeneratedContent(templateContent);
       toast({
         title: "Contenuti generati (template)",
         description: "Generati con template predefiniti"
