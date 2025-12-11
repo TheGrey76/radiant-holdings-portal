@@ -15,7 +15,8 @@ import { useToast } from "@/hooks/use-toast";
 import { 
   Mail, Send, Users, Filter, CheckCircle, Clock, AlertCircle, 
   Save, FileText, History, Trash2, Plus, Eye, AlertTriangle, Edit2,
-  Paperclip, X, MailOpen, RefreshCw, Sparkles, MessageSquare, Reply
+  Paperclip, X, MailOpen, RefreshCw, Sparkles, MessageSquare, Reply,
+  ChevronLeft, ChevronRight
 } from "lucide-react";
 import { format } from "date-fns";
 import { it } from "date-fns/locale";
@@ -88,6 +89,7 @@ export function ABCEmailCampaignManager({ investors, onInvestorsUpdated }: ABCEm
   const [templateName, setTemplateName] = useState("");
   const [showSaveDialog, setShowSaveDialog] = useState(false);
   const [previewContent, setPreviewContent] = useState<string | null>(null);
+  const [previewInvestorIndex, setPreviewInvestorIndex] = useState(0);
   const [editingEmailId, setEditingEmailId] = useState<string | null>(null);
   const [editingEmailValue, setEditingEmailValue] = useState("");
   const [isSavingEmail, setIsSavingEmail] = useState(false);
@@ -476,8 +478,13 @@ export function ABCEmailCampaignManager({ investors, onInvestorsUpdated }: ABCEm
     `;
   };
 
-  // Preview email for first selected investor
-  const handlePreview = () => {
+  // Get selected investors with email for preview
+  const getSelectedInvestorsForPreview = () => {
+    return investors.filter(i => selectedInvestors.includes(i.id) && i.email);
+  };
+
+  // Preview email for selected investor at index
+  const handlePreview = (index: number = 0) => {
     if (!emailForm.content) {
       toast({
         title: "Contenuto mancante",
@@ -487,28 +494,32 @@ export function ABCEmailCampaignManager({ investors, onInvestorsUpdated }: ABCEm
       return;
     }
     
-    if (selectedInvestors.length === 0) {
+    const selectedForPreview = getSelectedInvestorsForPreview();
+    
+    if (selectedForPreview.length === 0) {
       toast({
         title: "Seleziona un investitore",
-        description: "Seleziona almeno un investitore per vedere l'anteprima",
+        description: "Seleziona almeno un investitore con email per vedere l'anteprima",
         variant: "destructive",
       });
       return;
     }
     
-    // Find investor from all investors (not just filtered)
-    const firstInvestor = investors.find(i => selectedInvestors.includes(i.id));
+    const safeIndex = Math.max(0, Math.min(index, selectedForPreview.length - 1));
+    setPreviewInvestorIndex(safeIndex);
     
-    if (firstInvestor) {
-      const htmlContent = generateEmailHtml(firstInvestor);
-      setPreviewContent(htmlContent);
-    } else {
-      toast({
-        title: "Investitore non trovato",
-        description: "Seleziona un investitore dalla lista",
-        variant: "destructive",
-      });
-    }
+    const investor = selectedForPreview[safeIndex];
+    const htmlContent = generateEmailHtml(investor);
+    setPreviewContent(htmlContent);
+  };
+
+  // Navigate to next/previous investor in preview
+  const navigatePreview = (direction: 'prev' | 'next') => {
+    const selectedForPreview = getSelectedInvestorsForPreview();
+    const newIndex = direction === 'next' 
+      ? Math.min(previewInvestorIndex + 1, selectedForPreview.length - 1)
+      : Math.max(previewInvestorIndex - 1, 0);
+    handlePreview(newIndex);
   };
 
   // Send test email to personal address
@@ -1032,7 +1043,7 @@ Team Aries76"
 
                   <Button 
                     variant="outline"
-                    onClick={handlePreview}
+                    onClick={() => handlePreview(0)}
                   >
                     <Eye className="h-4 w-4 mr-2" />
                     Anteprima
@@ -1108,30 +1119,66 @@ Team Aries76"
             </Card>
 
             {/* Preview Dialog */}
-            {previewContent && (
-              <Card>
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-sm flex items-center justify-between">
-                    <span className="flex items-center">
-                      <Eye className="h-4 w-4 mr-2" />
-                      Anteprima Email Reale
-                    </span>
-                    <Button variant="ghost" size="sm" onClick={() => setPreviewContent(null)}>
-                      <X className="h-4 w-4" />
-                    </Button>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="border rounded-md overflow-hidden bg-gray-100">
-                    <iframe 
-                      srcDoc={previewContent}
-                      className="w-full h-[600px] border-0"
-                      title="Email Preview"
-                    />
-                  </div>
-                </CardContent>
-              </Card>
-            )}
+            {previewContent && (() => {
+              const selectedForPreview = getSelectedInvestorsForPreview();
+              const currentInvestor = selectedForPreview[previewInvestorIndex];
+              return (
+                <Card>
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-sm flex items-center justify-between">
+                      <span className="flex items-center">
+                        <Eye className="h-4 w-4 mr-2" />
+                        Anteprima Email Personalizzata
+                      </span>
+                      <Button variant="ghost" size="sm" onClick={() => setPreviewContent(null)}>
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </CardTitle>
+                    {selectedForPreview.length > 1 && (
+                      <div className="flex items-center justify-between bg-muted/50 rounded-md px-3 py-2 mt-2">
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          onClick={() => navigatePreview('prev')}
+                          disabled={previewInvestorIndex === 0}
+                        >
+                          <ChevronLeft className="h-4 w-4" />
+                        </Button>
+                        <div className="text-center">
+                          <div className="text-sm font-medium">{currentInvestor?.nome}</div>
+                          <div className="text-xs text-muted-foreground">{currentInvestor?.azienda}</div>
+                          <div className="text-xs text-muted-foreground mt-1">
+                            {previewInvestorIndex + 1} di {selectedForPreview.length} destinatari
+                          </div>
+                        </div>
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          onClick={() => navigatePreview('next')}
+                          disabled={previewInvestorIndex === selectedForPreview.length - 1}
+                        >
+                          <ChevronRight className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    )}
+                    {selectedForPreview.length === 1 && currentInvestor && (
+                      <div className="text-xs text-muted-foreground mt-1">
+                        Email per: <span className="font-medium">{currentInvestor.nome}</span> ({currentInvestor.azienda})
+                      </div>
+                    )}
+                  </CardHeader>
+                  <CardContent>
+                    <div className="border rounded-md overflow-hidden bg-gray-100">
+                      <iframe 
+                        srcDoc={previewContent}
+                        className="w-full h-[600px] border-0"
+                        title="Email Preview"
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })()}
           </div>
 
           {/* Recipients Selector */}
