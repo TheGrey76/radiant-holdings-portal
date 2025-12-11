@@ -572,11 +572,12 @@ const ABCCompanyConsole = () => {
       <main className="container mx-auto px-4 py-8">
         {/* Main Navigation Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-8 mb-8">
+          <TabsList className="grid w-full grid-cols-9 mb-8">
             <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
             <TabsTrigger value="investors">Investors</TabsTrigger>
             <TabsTrigger value="commitments">Commitments</TabsTrigger>
             <TabsTrigger value="campaigns">Campaigns</TabsTrigger>
+            <TabsTrigger value="prospecting">Prospecting</TabsTrigger>
             <TabsTrigger value="analytics">Analytics</TabsTrigger>
             <TabsTrigger value="timeline">Timeline</TabsTrigger>
             <TabsTrigger value="reports">Reports</TabsTrigger>
@@ -1005,31 +1006,48 @@ const ABCCompanyConsole = () => {
               </Card>
             </div>
 
-            <div className="grid lg:grid-cols-3 gap-6">
-              <div className="lg:col-span-2">
-                <ABCEmailCampaignManager 
-                  investors={investors.map(i => ({ 
-                    id: i.id, 
-                    nome: i.nome, 
-                    azienda: i.azienda, 
-                    email: i.email, 
-                    categoria: i.categoria, 
-                    status: i.status,
-                    approval_status: i.approvalStatus,
-                    ruolo: i.ruolo,
-                    citta: i.citta,
-                    pipeline_value: i.pipelineValue,
-                    last_contact_date: i.lastContactDate,
-                    engagement_score: i.engagementScore,
-                    linkedin: i.linkedin,
-                    fonte: i.fonte
-                  }))} 
-                  onInvestorsUpdated={fetchInvestors}
-                />
-              </div>
-              <div>
-                <ABCEmailEnrichment onEmailUpdated={fetchInvestors} />
-              </div>
+            <ABCEmailCampaignManager 
+              investors={investors.map(i => ({ 
+                id: i.id, 
+                nome: i.nome, 
+                azienda: i.azienda, 
+                email: i.email, 
+                categoria: i.categoria, 
+                status: i.status,
+                approval_status: i.approvalStatus,
+                ruolo: i.ruolo,
+                citta: i.citta,
+                pipeline_value: i.pipelineValue,
+                last_contact_date: i.lastContactDate,
+                engagement_score: i.engagementScore,
+                linkedin: i.linkedin,
+                fonte: i.fonte
+              }))} 
+              onInvestorsUpdated={fetchInvestors}
+            />
+          </TabsContent>
+
+          {/* PROSPECTING TAB */}
+          <TabsContent value="prospecting" className="space-y-6">
+            <div className="grid lg:grid-cols-2 gap-6">
+              <ABCEngagementScore 
+                investors={investors.map(i => ({
+                  id: i.id,
+                  nome: i.nome,
+                  azienda: i.azienda,
+                  email: i.email,
+                  engagement_score: i.engagementScore,
+                  email_opens_count: i.emailOpensCount,
+                  email_responses_count: i.emailResponsesCount,
+                  meetings_count: i.meetingsCount,
+                  notes_count: i.notesCount,
+                }))}
+                onSelectInvestor={(id) => {
+                  setEditInvestorId(id);
+                  setActiveTab("investors");
+                }}
+              />
+              <ABCEmailEnrichment onEmailUpdated={fetchInvestors} />
             </div>
           </TabsContent>
 
@@ -1046,30 +1064,7 @@ const ABCCompanyConsole = () => {
               </div>
             </div>
 
-            <div className="grid lg:grid-cols-3 gap-6">
-              <div className="lg:col-span-2">
-                <ABCAnalyticsTab />
-              </div>
-              <div>
-                <ABCEngagementScore 
-                  investors={investors.map(i => ({
-                    id: i.id,
-                    nome: i.nome,
-                    azienda: i.azienda,
-                    email: i.email,
-                    engagement_score: i.engagementScore,
-                    email_opens_count: i.emailOpensCount,
-                    email_responses_count: i.emailResponsesCount,
-                    meetings_count: i.meetingsCount,
-                    notes_count: i.notesCount,
-                  }))}
-                  onSelectInvestor={(id) => {
-                    setEditInvestorId(id);
-                    setActiveTab("investors");
-                  }}
-                />
-              </div>
-            </div>
+            <ABCAnalyticsTab />
           </TabsContent>
 
           {/* TIMELINE TAB */}
