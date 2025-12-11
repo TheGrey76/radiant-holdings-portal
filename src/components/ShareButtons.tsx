@@ -2,7 +2,7 @@ import { Share2, Linkedin, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface ShareButtonsProps {
   title: string;
@@ -12,18 +12,31 @@ interface ShareButtonsProps {
 const ShareButtons = ({ title, url }: ShareButtonsProps) => {
   const { toast } = useToast();
   const [isDistributing, setIsDistributing] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   
   // Ensure we have a full URL for sharing
   const fullUrl = url.startsWith('http') ? url : `${window.location.origin}${url}`;
+
+  useEffect(() => {
+    const checkAdminStatus = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        const { data } = await supabase.rpc('has_role', { 
+          _user_id: session.user.id, 
+          _role: 'admin' 
+        });
+        setIsAdmin(!!data);
+      }
+    };
+    checkAdminStatus();
+  }, []);
   
   const handleShare = (platform: 'linkedin' | 'twitter') => {
     let shareUrl = '';
     
     if (platform === 'linkedin') {
-      // LinkedIn share - use non-encoded URL for better compatibility
       shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(fullUrl)}`;
     } else {
-      // Twitter/X share
       shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(fullUrl)}&text=${encodeURIComponent(title)}`;
     }
     
@@ -31,6 +44,15 @@ const ShareButtons = ({ title, url }: ShareButtonsProps) => {
   };
 
   const handleDistribute = async () => {
+    if (!isAdmin) {
+      toast({
+        title: "Accesso negato",
+        description: "Devi essere un amministratore per usare Auto-Distribute. Effettua il login.",
+        variant: "destructive"
+      });
+      return;
+    }
+
     setIsDistributing(true);
     try {
       const { data, error } = await supabase.functions.invoke('distribute-content', {
@@ -44,18 +66,31 @@ const ShareButtons = ({ title, url }: ShareButtonsProps) => {
 
       if (error) throw error;
 
+      if (data?.error) {
+        toast({
+          title: "Errore",
+          description: data.error === 'No active webhook configured for this platform' 
+            ? "Nessun webhook configurato. Vai alla Distribution Dashboard per configurarlo."
+            : data.error,
+          variant: "destructive"
+        });
+        return;
+      }
+
       toast({
         title: "Content Distributed",
         description: data.success 
-          ? "Successfully sent to LinkedIn via Zapier" 
-          : "Failed to distribute content. Check your webhook configuration.",
+          ? "Inviato con successo a LinkedIn via Zapier" 
+          : "Distribuzione fallita. Controlla la configurazione del webhook.",
         variant: data.success ? "default" : "destructive"
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Distribution error:', error);
       toast({
-        title: "Error",
-        description: "Failed to distribute content. Make sure your Zapier webhook is configured.",
+        title: "Errore",
+        description: error.message?.includes('Authorization') 
+          ? "Devi essere un amministratore per distribuire contenuti."
+          : "Distribuzione fallita. Assicurati che il webhook Zapier sia configurato.",
         variant: "destructive"
       });
     } finally {
