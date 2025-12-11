@@ -6,7 +6,7 @@ import {
   TrendingUp, Users, Calendar, CheckCircle, AlertCircle, 
   Target, Clock, FileText, Settings, Search, Filter,
   Mail, Phone, Building, MapPin, Download, Share2, X, Plus,
-  ExternalLink, Paperclip, Edit, Trash2, LogOut, Send, Eye
+  ExternalLink, Paperclip, Edit, Trash2, LogOut, Send, Eye, Heart
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -33,6 +33,7 @@ import { NotificationBell } from "@/components/NotificationBell";
 import { OnlineUsersIndicator } from "@/components/OnlineUsersIndicator";
 import { ABCSettingsTab } from "@/components/ABCSettingsTab";
 import ABCEmailEnrichment from "@/components/ABCEmailEnrichment";
+import { ABCRelationshipIntelligence } from "@/components/ABCRelationshipIntelligence";
 import { useKPIHistory } from "@/hooks/useKPIHistory";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -579,9 +580,10 @@ const ABCCompanyConsole = () => {
       <main className="container mx-auto px-4 py-8">
         {/* Main Navigation Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-9 mb-8">
+          <TabsList className="grid w-full grid-cols-10 mb-8">
             <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
             <TabsTrigger value="investors">Investors</TabsTrigger>
+            <TabsTrigger value="relationships">Relationships</TabsTrigger>
             <TabsTrigger value="commitments">Commitments</TabsTrigger>
             <TabsTrigger value="campaigns">Campaigns</TabsTrigger>
             <TabsTrigger value="prospecting">Prospecting</TabsTrigger>
@@ -950,7 +952,30 @@ const ABCCompanyConsole = () => {
             )}
           </TabsContent>
 
-          {/* COMMITMENTS TAB */}
+          {/* RELATIONSHIPS TAB - Affinity-style Relationship Intelligence */}
+          <TabsContent value="relationships" className="space-y-6">
+            <ABCRelationshipIntelligence 
+              investors={investors.map(i => ({
+                id: i.id,
+                nome: i.nome,
+                azienda: i.azienda,
+                email: i.email,
+                status: i.status,
+                lastContactDate: i.lastContactDate,
+                engagementScore: i.engagementScore,
+                emailOpensCount: i.emailOpensCount,
+                emailResponsesCount: i.emailResponsesCount,
+                meetingsCount: i.meetingsCount,
+                notesCount: i.notesCount,
+                relationshipOwner: i.relationshipOwner,
+                createdAt: i.createdAt,
+                pipelineValue: i.pipelineValue,
+                approvalStatus: i.approvalStatus,
+              }))}
+              onInvestorSelect={(id) => setEditInvestorId(id)}
+            />
+          </TabsContent>
+
           <TabsContent value="commitments" className="space-y-6">
             <ABCCommitmentTracker investors={investors.map(i => ({ id: i.id, nome: i.nome, azienda: i.azienda }))} />
           </TabsContent>
