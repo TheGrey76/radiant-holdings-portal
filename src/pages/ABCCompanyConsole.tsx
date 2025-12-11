@@ -32,6 +32,7 @@ import { ABCEngagementScore } from "@/components/ABCEngagementScore";
 import { NotificationBell } from "@/components/NotificationBell";
 import { OnlineUsersIndicator } from "@/components/OnlineUsersIndicator";
 import { ABCSettingsTab } from "@/components/ABCSettingsTab";
+import ABCEmailEnrichment from "@/components/ABCEmailEnrichment";
 import { useKPIHistory } from "@/hooks/useKPIHistory";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -1004,25 +1005,32 @@ const ABCCompanyConsole = () => {
               </Card>
             </div>
 
-            <ABCEmailCampaignManager 
-              investors={investors.map(i => ({ 
-                id: i.id, 
-                nome: i.nome, 
-                azienda: i.azienda, 
-                email: i.email, 
-                categoria: i.categoria, 
-                status: i.status,
-                approval_status: i.approvalStatus,
-                ruolo: i.ruolo,
-                citta: i.citta,
-                pipeline_value: i.pipelineValue,
-                last_contact_date: i.lastContactDate,
-                engagement_score: i.engagementScore,
-                linkedin: i.linkedin,
-                fonte: i.fonte
-              }))} 
-              onInvestorsUpdated={fetchInvestors}
-            />
+            <div className="grid lg:grid-cols-3 gap-6">
+              <div className="lg:col-span-2">
+                <ABCEmailCampaignManager 
+                  investors={investors.map(i => ({ 
+                    id: i.id, 
+                    nome: i.nome, 
+                    azienda: i.azienda, 
+                    email: i.email, 
+                    categoria: i.categoria, 
+                    status: i.status,
+                    approval_status: i.approvalStatus,
+                    ruolo: i.ruolo,
+                    citta: i.citta,
+                    pipeline_value: i.pipelineValue,
+                    last_contact_date: i.lastContactDate,
+                    engagement_score: i.engagementScore,
+                    linkedin: i.linkedin,
+                    fonte: i.fonte
+                  }))} 
+                  onInvestorsUpdated={fetchInvestors}
+                />
+              </div>
+              <div>
+                <ABCEmailEnrichment onEmailUpdated={fetchInvestors} />
+              </div>
+            </div>
           </TabsContent>
 
           {/* ANALYTICS TAB */}
