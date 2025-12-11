@@ -77,7 +77,7 @@ const CrossPostingAssistant = () => {
 
 ${post.excerpt}
 
-L'analisi completa è disponibile sul nostro blog.
+Read the full analysis on our blog.
 
 👉 ${fullUrl}
 
@@ -89,31 +89,31 @@ ${post.excerpt}
 
 ---
 
-## Punti chiave
+## Key Takeaways
 
-In questo articolo analizziamo:
+In this article, we analyze:
 
-• Le tendenze emergenti nel settore
-• Le implicazioni per gli investitori istituzionali  
-• Le strategie operative consigliate
-
----
-
-## Analisi approfondita
-
-[Inserisci qui il contenuto principale dell'articolo, mantenendo paragrafi brevi e inserendo sottotitoli ogni 2-3 paragrafi]
+• Emerging trends in the sector
+• Implications for institutional investors  
+• Recommended operational strategies
 
 ---
 
-## Conclusioni
+## In-Depth Analysis
 
-[Riassumi i takeaway principali]
+[Insert the main content of the article here, keeping paragraphs short and adding subheadings every 2-3 paragraphs]
 
 ---
 
-📖 Leggi l'articolo completo: ${fullUrl}
+## Conclusions
 
-💼 Per approfondimenti: edoardo.grigione@aries76.com
+[Summarize the key takeaways]
+
+---
+
+📖 Read the full article: ${fullUrl}
+
+💼 For more insights: edoardo.grigione@aries76.com
 
 ---
 
@@ -130,31 +130,31 @@ ${post.excerpt}
 
 ---
 
-## Introduzione
+## Introduction
 
-[Espandi l'introduzione con contesto di mercato e rilevanza per il lettore]
+[Expand the introduction with market context and relevance for the reader]
 
-## Analisi
+## Analysis
 
-[Corpo principale dell'articolo con sottosezioni]
+[Main body of the article with subsections]
 
-### [Sottotitolo 1]
+### [Subheading 1]
 
-[Contenuto dettagliato]
+[Detailed content]
 
-### [Sottotitolo 2]
+### [Subheading 2]
 
-[Contenuto dettagliato]
+[Detailed content]
 
-## Implicazioni per gli investitori
+## Implications for Investors
 
-[Conclusioni operative e raccomandazioni]
+[Operational conclusions and recommendations]
 
 ---
 
-*Questo articolo è stato originariamente pubblicato su [ARIES76](${fullUrl})*
+*This article was originally published on [ARIES76](${fullUrl})*
 
-*Per ricevere analisi esclusive sui private markets, iscriviti alla nostra newsletter.*
+*Subscribe to our newsletter for exclusive private markets insights.*
 
 ---
 
@@ -162,44 +162,44 @@ Tags: ${post.category}, Private Markets, Investment Strategy, Wealth Management`
 
       substack: `# ${post.title}
 
-*Ciao,*
+*Hello,*
 
-*Questa settimana analizziamo un tema cruciale per chi opera nei mercati privati.*
+*This week we analyze a crucial topic for those operating in private markets.*
 
 ---
 
-## Il contesto
+## The Context
 
 ${post.excerpt}
 
-## Cosa significa per te
+## What This Means for You
 
-[Personalizza con implicazioni pratiche per il lettore]
+[Customize with practical implications for the reader]
 
-## I nostri takeaway
+## Our Key Takeaways
 
-1. **[Punto chiave 1]** - [Spiegazione]
-2. **[Punto chiave 2]** - [Spiegazione]
-3. **[Punto chiave 3]** - [Spiegazione]
-
----
-
-## Per approfondire
-
-L'analisi completa con tutti i dati e le fonti è disponibile sul nostro sito:
-
-👉 [Leggi l'articolo completo](${fullUrl})
+1. **[Key Point 1]** - [Explanation]
+2. **[Key Point 2]** - [Explanation]
+3. **[Key Point 3]** - [Explanation]
 
 ---
 
-*A presto,*
+## Learn More
+
+The full analysis with all data and sources is available on our website:
+
+👉 [Read the full article](${fullUrl})
+
+---
+
+*Best regards,*
 
 *Edoardo Grigione*
 *Founder, ARIES76*
 
 ---
 
-📩 Hai domande? Rispondi a questa email.
+📩 Questions? Reply to this email.
 🔗 [LinkedIn](https://www.linkedin.com/company/aries76) | [Website](https://www.aries76.com)`
     };
   };
