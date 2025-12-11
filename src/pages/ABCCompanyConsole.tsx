@@ -926,6 +926,26 @@ const ABCCompanyConsole = () => {
                   onInvestorsUpdated={fetchInvestors}
                 />
               </div>
+            </div>
+          </TabsContent>
+
+          {/* ANALYTICS TAB */}
+          <TabsContent value="analytics" className="space-y-6">
+            {/* Live Data Indicator */}
+            <div className="flex justify-end">
+              <div className="flex items-center gap-2 text-xs text-muted-foreground bg-muted/50 px-3 py-1.5 rounded-full">
+                <div className="h-2 w-2 bg-green-500 rounded-full animate-pulse" />
+                <span>Dati live</span>
+                <span className="text-foreground font-medium">
+                  {lastDataUpdate ? lastDataUpdate.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : '--:--:--'}
+                </span>
+              </div>
+            </div>
+
+            <div className="grid lg:grid-cols-3 gap-6">
+              <div className="lg:col-span-2">
+                <ABCAnalyticsTab />
+              </div>
               <div>
                 <ABCEngagementScore 
                   investors={investors.map(i => ({
@@ -946,22 +966,6 @@ const ABCCompanyConsole = () => {
                 />
               </div>
             </div>
-          </TabsContent>
-
-          {/* ANALYTICS TAB */}
-          <TabsContent value="analytics" className="space-y-6">
-            {/* Live Data Indicator */}
-            <div className="flex justify-end">
-              <div className="flex items-center gap-2 text-xs text-muted-foreground bg-muted/50 px-3 py-1.5 rounded-full">
-                <div className="h-2 w-2 bg-green-500 rounded-full animate-pulse" />
-                <span>Dati live</span>
-                <span className="text-foreground font-medium">
-                  {lastDataUpdate ? lastDataUpdate.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : '--:--:--'}
-                </span>
-              </div>
-            </div>
-
-            <ABCAnalyticsTab />
           </TabsContent>
 
           {/* TIMELINE TAB */}
