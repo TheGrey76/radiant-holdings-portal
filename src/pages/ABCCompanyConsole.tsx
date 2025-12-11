@@ -1096,7 +1096,7 @@ const ABCCompanyConsole = () => {
               </div>
             </div>
 
-            <ABCAnalyticsTab />
+            <ABCAnalyticsTab investors={investors} />
           </TabsContent>
 
           {/* TIMELINE TAB */}
