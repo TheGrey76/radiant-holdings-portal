@@ -4,6 +4,7 @@ import { useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Calendar, User, ArrowLeft, ArrowRight } from 'lucide-react';
+import DOMPurify from 'dompurify';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
@@ -186,7 +187,13 @@ const BlogPost = () => {
                 color: '#374151'
               }}
               dangerouslySetInnerHTML={{ 
-                __html: post.content.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                __html: DOMPurify.sanitize(
+                  post.content.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'),
+                  {
+                    ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'u', 'a', 'ul', 'ol', 'li', 'h1', 'h2', 'h3', 'h4', 'div', 'span', 'blockquote'],
+                    ALLOWED_ATTR: ['href', 'target', 'class']
+                  }
+                )
               }}
             />
           </div>

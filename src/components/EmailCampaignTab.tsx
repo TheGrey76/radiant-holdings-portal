@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import DOMPurify from "dompurify";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -614,7 +615,12 @@ export default function EmailCampaignTab({
                   <p className="text-lg font-normal text-white mb-6">Gentile [Nome Adviser],</p>
                   <div 
                     className="text-gray-300 leading-relaxed prose prose-invert max-w-none email-preview-content"
-                    dangerouslySetInnerHTML={{ __html: content }} 
+                    dangerouslySetInnerHTML={{ 
+                      __html: DOMPurify.sanitize(content, {
+                        ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'u', 'a', 'ul', 'ol', 'li', 'h1', 'h2', 'h3', 'h4', 'div', 'span', 'table', 'tr', 'td', 'th', 'thead', 'tbody', 'img'],
+                        ALLOWED_ATTR: ['href', 'target', 'class', 'style', 'src', 'alt', 'width', 'height']
+                      }) 
+                    }} 
                   />
                   <div className="mt-10 pt-8 border-t border-blue-500/20">
                     <p className="font-semibold text-white mb-1">Il Team ARIES76</p>
