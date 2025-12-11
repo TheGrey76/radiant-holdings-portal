@@ -5,10 +5,26 @@ import { Badge } from "@/components/ui/badge";
 import { LineChart, Line, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, ReferenceLine } from "recharts";
 import { TrendingUp, TrendingDown, Minus, Target, Calendar, TrendingUpIcon } from "lucide-react";
 import { KPISnapshot, useKPIHistory } from "@/hooks/useKPIHistory";
+import { ABCNetworkGraph } from "@/components/ABCNetworkGraph";
 
 type TimeRange = "7d" | "30d" | "90d" | "all";
 
-export function ABCAnalyticsTab() {
+interface Investor {
+  id: string;
+  nome: string;
+  azienda: string;
+  categoria: string;
+  citta?: string;
+  status: string;
+  pipelineValue: number;
+  approvalStatus: string;
+}
+
+interface ABCAnalyticsTabProps {
+  investors?: Investor[];
+}
+
+export function ABCAnalyticsTab({ investors = [] }: ABCAnalyticsTabProps) {
   const { history, getSnapshotsForRange, calculateTrend, forecastValue, predictTargetDate } = useKPIHistory();
   const [timeRange, setTimeRange] = useState<TimeRange>("30d");
 
@@ -406,6 +422,11 @@ export function ABCAnalyticsTab() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Network Graph */}
+      {investors.length > 0 && (
+        <ABCNetworkGraph investors={investors} />
+      )}
     </div>
   );
 }
