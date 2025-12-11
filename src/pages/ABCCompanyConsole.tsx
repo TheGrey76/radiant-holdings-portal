@@ -33,7 +33,6 @@ import { NotificationBell } from "@/components/NotificationBell";
 import { OnlineUsersIndicator } from "@/components/OnlineUsersIndicator";
 import { ABCSettingsTab } from "@/components/ABCSettingsTab";
 import ABCEmailEnrichment from "@/components/ABCEmailEnrichment";
-import ABCProspectingMetrics from "@/components/ABCProspectingMetrics";
 import { useKPIHistory } from "@/hooks/useKPIHistory";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -1037,18 +1036,6 @@ const ABCCompanyConsole = () => {
 
           {/* PROSPECTING TAB */}
           <TabsContent value="prospecting" className="space-y-6">
-            {/* Prospecting Metrics */}
-            <ABCProspectingMetrics 
-              investors={investors.map(i => ({
-                id: i.id,
-                status: i.status,
-                created_at: i.createdAt,
-                updated_at: i.updatedAt,
-                last_contact_date: i.lastContactDate,
-              }))}
-            />
-
-            {/* Engagement & Enrichment Tools */}
             <div className="grid lg:grid-cols-2 gap-6">
               <ABCEngagementScore 
                 investors={investors.map(i => ({
