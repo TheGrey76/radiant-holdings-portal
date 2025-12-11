@@ -1,8 +1,5 @@
-import { Share2, Linkedin, Zap } from 'lucide-react';
+import { Share2, Linkedin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
-import { useState, useEffect } from 'react';
 
 interface ShareButtonsProps {
   title: string;
@@ -10,26 +7,8 @@ interface ShareButtonsProps {
 }
 
 const ShareButtons = ({ title, url }: ShareButtonsProps) => {
-  const { toast } = useToast();
-  const [isDistributing, setIsDistributing] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
-  
   // Ensure we have a full URL for sharing
   const fullUrl = url.startsWith('http') ? url : `${window.location.origin}${url}`;
-
-  useEffect(() => {
-    const checkAdminStatus = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session?.user) {
-        const { data } = await supabase.rpc('has_role', { 
-          _user_id: session.user.id, 
-          _role: 'admin' 
-        });
-        setIsAdmin(!!data);
-      }
-    };
-    checkAdminStatus();
-  }, []);
   
   const handleShare = (platform: 'linkedin' | 'twitter') => {
     let shareUrl = '';
@@ -41,61 +20,6 @@ const ShareButtons = ({ title, url }: ShareButtonsProps) => {
     }
     
     window.open(shareUrl, '_blank', 'noopener,noreferrer,width=600,height=600');
-  };
-
-  const handleDistribute = async () => {
-    if (!isAdmin) {
-      toast({
-        title: "Accesso negato",
-        description: "Devi essere un amministratore per usare Auto-Distribute. Effettua il login.",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    setIsDistributing(true);
-    try {
-      const { data, error } = await supabase.functions.invoke('distribute-content', {
-        body: {
-          title,
-          url: fullUrl,
-          excerpt: title,
-          platform: 'linkedin'
-        }
-      });
-
-      if (error) throw error;
-
-      if (data?.error) {
-        toast({
-          title: "Errore",
-          description: data.error === 'No active webhook configured for this platform' 
-            ? "Nessun webhook configurato. Vai alla Distribution Dashboard per configurarlo."
-            : data.error,
-          variant: "destructive"
-        });
-        return;
-      }
-
-      toast({
-        title: "Content Distributed",
-        description: data.success 
-          ? "Inviato con successo a LinkedIn via Zapier" 
-          : "Distribuzione fallita. Controlla la configurazione del webhook.",
-        variant: data.success ? "default" : "destructive"
-      });
-    } catch (error: any) {
-      console.error('Distribution error:', error);
-      toast({
-        title: "Errore",
-        description: error.message?.includes('Authorization') 
-          ? "Devi essere un amministratore per distribuire contenuti."
-          : "Distribuzione fallita. Assicurati che il webhook Zapier sia configurato.",
-        variant: "destructive"
-      });
-    } finally {
-      setIsDistributing(false);
-    }
   };
 
   return (
@@ -123,16 +47,6 @@ const ShareButtons = ({ title, url }: ShareButtonsProps) => {
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
             </svg>
             X
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleDistribute}
-            disabled={isDistributing}
-            className="gap-2"
-          >
-            <Zap className={`w-4 h-4 ${isDistributing ? 'animate-pulse' : ''}`} />
-            {isDistributing ? 'Distributing...' : 'Auto-Distribute'}
           </Button>
         </div>
       </div>
