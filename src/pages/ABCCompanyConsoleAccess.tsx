@@ -4,22 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { Shield, Mail } from "lucide-react";
-
-// Default authorized admin emails
-const DEFAULT_AUTHORIZED_EMAILS = [
-  "edoardo.grigione@aries76.com",
-  "stefano.taioli@abccompany.it",
-  "alessandro.catullo@aries76.com",
-  "enrico.sobacchi@abccompany.it",
-  "lorenzo.delforno@abccompany.it"
-];
-
-// Get all authorized emails (default + custom from localStorage)
-const getAuthorizedEmails = (): string[] => {
-  const customEmails = localStorage.getItem('abc_console_custom_emails');
-  const customList = customEmails ? JSON.parse(customEmails) : [];
-  return [...DEFAULT_AUTHORIZED_EMAILS, ...customList];
-};
+import { supabase } from "@/integrations/supabase/client";
 
 const ABCCompanyConsoleAccess = () => {
   const [email, setEmail] = useState("");
@@ -31,15 +16,33 @@ const ABCCompanyConsoleAccess = () => {
     setIsLoading(true);
 
     const normalizedEmail = email.toLowerCase().trim();
-    const authorizedEmails = getAuthorizedEmails();
 
-    if (authorizedEmails.includes(normalizedEmail)) {
-      sessionStorage.setItem('abc_console_authorized', 'true');
-      sessionStorage.setItem('abc_console_email', normalizedEmail);
-      toast.success("Access granted to ABC Company Console");
-      navigate('/abc-company-console');
-    } else {
-      toast.error("Access denied. This email is not authorized.");
+    try {
+      // Verify email against database instead of hardcoded list
+      const { data, error } = await supabase
+        .from('abc_console_access')
+        .select('email')
+        .eq('email', normalizedEmail)
+        .maybeSingle();
+
+      if (error) {
+        console.error('Access verification error:', error);
+        toast.error("Verification failed. Please try again.");
+        setIsLoading(false);
+        return;
+      }
+
+      if (data) {
+        sessionStorage.setItem('abc_console_authorized', 'true');
+        sessionStorage.setItem('abc_console_email', normalizedEmail);
+        toast.success("Access granted to ABC Company Console");
+        navigate('/abc-company-console');
+      } else {
+        toast.error("Access denied. This email is not authorized.");
+      }
+    } catch (err) {
+      console.error('Unexpected error:', err);
+      toast.error("An unexpected error occurred.");
     }
 
     setIsLoading(false);

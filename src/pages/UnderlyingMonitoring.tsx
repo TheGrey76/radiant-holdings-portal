@@ -64,12 +64,6 @@ const HISTORY_KEY = 'aries76_price_history';
 const PORTFOLIO_DATE_KEY = 'aries76_portfolio_start_date';
 const AUTH_KEY = 'aries76_monitoring_auth';
 
-const AUTHORIZED_EMAILS = [
-  'edoardo.grigione@aries76.com',
-  'admin@aries76.com',
-  'alessandro.catullo@aries76.com',
-];
-
 const UnderlyingMonitoring = () => {
   const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
   const [email, setEmail] = useState('');
@@ -98,14 +92,31 @@ const UnderlyingMonitoring = () => {
     }
   };
 
-  // Check authorization on mount
+  // Check authorization on mount - verify against database
   useEffect(() => {
-    const auth = sessionStorage.getItem(AUTH_KEY);
-    if (auth && AUTHORIZED_EMAILS.includes(auth)) {
-      setIsAuthorized(true);
-    } else {
-      setIsAuthorized(false);
-    }
+    const checkAuth = async () => {
+      const auth = sessionStorage.getItem(AUTH_KEY);
+      if (!auth) {
+        setIsAuthorized(false);
+        return;
+      }
+      
+      // Verify email against database instead of hardcoded list
+      const { data, error } = await supabase
+        .from('monitoring_access')
+        .select('email')
+        .eq('email', auth.toLowerCase())
+        .maybeSingle();
+      
+      if (error || !data) {
+        sessionStorage.removeItem(AUTH_KEY);
+        setIsAuthorized(false);
+      } else {
+        setIsAuthorized(true);
+      }
+    };
+    
+    checkAuth();
   }, []);
 
   // Load saved data and migrate old tickers
@@ -139,10 +150,23 @@ const UnderlyingMonitoring = () => {
     }
   }, [isAuthorized]);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     const normalizedEmail = email.toLowerCase().trim();
-    if (AUTHORIZED_EMAILS.includes(normalizedEmail)) {
+    
+    // Verify email against database instead of hardcoded list
+    const { data, error } = await supabase
+      .from('monitoring_access')
+      .select('email')
+      .eq('email', normalizedEmail)
+      .maybeSingle();
+    
+    if (error) {
+      toast.error('Errore di verifica');
+      return;
+    }
+    
+    if (data) {
       sessionStorage.setItem(AUTH_KEY, normalizedEmail);
       setIsAuthorized(true);
       toast.success('Accesso autorizzato');
