@@ -33,6 +33,7 @@ import { NotificationBell } from "@/components/NotificationBell";
 import { OnlineUsersIndicator } from "@/components/OnlineUsersIndicator";
 import { ABCSettingsTab } from "@/components/ABCSettingsTab";
 import ABCEmailEnrichment from "@/components/ABCEmailEnrichment";
+import ABCProspectingMetrics from "@/components/ABCProspectingMetrics";
 import { useKPIHistory } from "@/hooks/useKPIHistory";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -316,6 +317,13 @@ const ABCCompanyConsole = () => {
         lastContactDate: inv.last_contact_date,
         nextFollowUpDate: inv.next_follow_up_date,
         approvalStatus: inv.approval_status || 'pending',
+        createdAt: inv.created_at,
+        updatedAt: inv.updated_at,
+        engagementScore: inv.engagement_score || 0,
+        emailOpensCount: inv.email_opens_count || 0,
+        emailResponsesCount: inv.email_responses_count || 0,
+        meetingsCount: inv.meetings_count || 0,
+        notesCount: inv.notes_count || 0,
       }));
 
       setInvestors(transformedInvestors);
@@ -1029,6 +1037,18 @@ const ABCCompanyConsole = () => {
 
           {/* PROSPECTING TAB */}
           <TabsContent value="prospecting" className="space-y-6">
+            {/* Prospecting Metrics */}
+            <ABCProspectingMetrics 
+              investors={investors.map(i => ({
+                id: i.id,
+                status: i.status,
+                created_at: i.createdAt,
+                updated_at: i.updatedAt,
+                last_contact_date: i.lastContactDate,
+              }))}
+            />
+
+            {/* Engagement & Enrichment Tools */}
             <div className="grid lg:grid-cols-2 gap-6">
               <ABCEngagementScore 
                 investors={investors.map(i => ({
