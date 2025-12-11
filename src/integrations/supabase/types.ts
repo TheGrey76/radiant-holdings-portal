@@ -38,6 +38,27 @@ export type Database = {
         }
         Relationships: []
       }
+      abc_console_access: {
+        Row: {
+          access_granted_at: string
+          created_at: string
+          email: string
+          id: string
+        }
+        Insert: {
+          access_granted_at?: string
+          created_at?: string
+          email: string
+          id?: string
+        }
+        Update: {
+          access_granted_at?: string
+          created_at?: string
+          email?: string
+          id?: string
+        }
+        Relationships: []
+      }
       abc_email_campaign_history: {
         Row: {
           campaign_name: string
@@ -569,6 +590,27 @@ export type Database = {
         }
         Relationships: []
       }
+      asset_gu_access: {
+        Row: {
+          access_granted_at: string
+          created_at: string
+          email: string
+          id: string
+        }
+        Insert: {
+          access_granted_at?: string
+          created_at?: string
+          email: string
+          id?: string
+        }
+        Update: {
+          access_granted_at?: string
+          created_at?: string
+          email?: string
+          id?: string
+        }
+        Relationships: []
+      }
       brochure_downloads: {
         Row: {
           company: string | null
@@ -1076,6 +1118,27 @@ export type Database = {
           id?: string
           name?: string | null
           organization?: string | null
+        }
+        Relationships: []
+      }
+      monitoring_access: {
+        Row: {
+          access_granted_at: string
+          created_at: string
+          email: string
+          id: string
+        }
+        Insert: {
+          access_granted_at?: string
+          created_at?: string
+          email: string
+          id?: string
+        }
+        Update: {
+          access_granted_at?: string
+          created_at?: string
+          email?: string
+          id?: string
         }
         Relationships: []
       }

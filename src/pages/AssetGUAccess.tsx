@@ -5,12 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { Lock } from "lucide-react";
-
-const AUTHORIZED_EMAILS = [
-  "edoardo.grigione@aries76.com",
-  "gp@aries76.com",
-  "alessandro.catullo@aries76.com"
-];
+import { supabase } from "@/integrations/supabase/client";
 
 const AssetGUAccess = () => {
   const [email, setEmail] = useState("");
@@ -18,13 +13,33 @@ const AssetGUAccess = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
-    setTimeout(() => {
-      if (AUTHORIZED_EMAILS.includes(email.toLowerCase().trim())) {
-        sessionStorage.setItem("assetgu_authorized_email", email);
+    const normalizedEmail = email.toLowerCase().trim();
+
+    try {
+      // Verify email against database instead of hardcoded list
+      const { data, error } = await supabase
+        .from('asset_gu_access')
+        .select('email')
+        .eq('email', normalizedEmail)
+        .maybeSingle();
+
+      if (error) {
+        console.error('Access verification error:', error);
+        toast({
+          title: "Verification Failed",
+          description: "Please try again.",
+          variant: "destructive",
+        });
+        setIsLoading(false);
+        return;
+      }
+
+      if (data) {
+        sessionStorage.setItem("assetgu_authorized_email", normalizedEmail);
         toast({
           title: "Access Granted",
           description: "Redirecting to proposal...",
@@ -37,8 +52,16 @@ const AssetGUAccess = () => {
           variant: "destructive",
         });
       }
-      setIsLoading(false);
-    }, 1000);
+    } catch (err) {
+      console.error('Unexpected error:', err);
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred.",
+        variant: "destructive",
+      });
+    }
+
+    setIsLoading(false);
   };
 
   return (

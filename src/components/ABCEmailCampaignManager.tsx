@@ -102,7 +102,8 @@ export function ABCEmailCampaignManager({ investors, onInvestorsUpdated }: ABCEm
   const [responseNote, setResponseNote] = useState("");
   const [responseInvestorEmail, setResponseInvestorEmail] = useState("");
   
-  const TEST_EMAIL = "egrigione@gmail.com";
+  // Test email uses company domain for security
+  const TEST_EMAIL = "test@aries76.com";
   const { toast } = useToast();
 
   const [emailForm, setEmailForm] = useState({
