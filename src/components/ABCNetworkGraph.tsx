@@ -76,11 +76,11 @@ const CustomTooltip = ({ active, payload }: any) => {
 const CustomizedContent = (props: any) => {
   const { x, y, width, height, name, depth, value, investorName, color } = props;
   
-  if (width < 4 || height < 4) return null;
+  if (!width || !height || width < 4 || height < 4) return null;
   
-  const displayName = depth === 1 ? name : investorName || name;
+  const displayName = String(depth === 1 ? (name || "") : (investorName || name || ""));
   const fontSize = depth === 1 ? 11 : 9;
-  const showLabel = width > 35 && height > 18;
+  const showLabel = width > 35 && height > 18 && displayName;
   
   return (
     <g>
@@ -95,7 +95,7 @@ const CustomizedContent = (props: any) => {
         rx={depth === 1 ? 4 : 2}
         className="transition-opacity hover:opacity-80"
       />
-      {showLabel && (
+      {showLabel && displayName && (
         <text
           x={x + width / 2}
           y={y + height / 2}
@@ -106,9 +106,9 @@ const CustomizedContent = (props: any) => {
           fontWeight={depth === 1 ? 600 : 400}
           style={{ pointerEvents: "none" }}
         >
-          {displayName.length > width / 6 
+          {displayName && displayName.length > width / 6 
             ? displayName.substring(0, Math.floor(width / 6)) + "…" 
-            : displayName}
+            : displayName || ""}
         </text>
       )}
       {depth === 1 && width > 55 && height > 35 && (
