@@ -874,7 +874,21 @@ export function ABCEmailCampaignManager({ investors, onInvestorsUpdated }: ABCEm
                   />
                 </div>
                 <div>
-                  <Label htmlFor="content">Contenuto</Label>
+                  <div className="flex items-center justify-between mb-1">
+                    <Label htmlFor="content">Contenuto</Label>
+                    {emailForm.content && (
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        className="h-6 px-2 text-xs text-muted-foreground hover:text-destructive"
+                        onClick={() => setEmailForm(prev => ({ ...prev, content: "" }))}
+                      >
+                        <X className="h-3 w-3 mr-1" />
+                        Cancella
+                      </Button>
+                    )}
+                  </div>
                   <Textarea
                     id="content"
                     value={emailForm.content}
