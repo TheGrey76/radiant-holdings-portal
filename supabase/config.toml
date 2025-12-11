@@ -50,3 +50,6 @@ verify_jwt = false
 
 [functions.generate-cross-post-content]
 verify_jwt = false
+
+[functions.search-email]
+verify_jwt = false
