@@ -92,6 +92,12 @@ L'email deve:
 
     const systemPrompt = `Sei un esperto di fundraising e investor relations per ABC Company, un veicolo di investimento che supporta PMI italiane. 
 Scrivi email professionali, persuasive ma non aggressive, in ${language === 'it' ? 'italiano' : 'inglese'}.
+
+IMPORTANTE - Formato della firma:
+- NON includere firma completa, titolo, azienda, indirizzo o contatti
+- Termina SEMPRE e SOLO con "Edoardo" oppure "Cordiali saluti,\\nEdoardo"
+- Il template email aggiunge automaticamente la firma completa con logo, titolo e dettagli aziendali
+
 Le email devono essere:
 - Personalizzate per il destinatario
 - Concise (max 200 parole per il corpo)
@@ -102,7 +108,7 @@ Le email devono essere:
 Rispondi SOLO con il JSON nel formato:
 {
   "subject": "Oggetto dell'email",
-  "content": "Corpo dell'email con placeholder"
+  "content": "Corpo dell'email con placeholder, termina con Edoardo"
 }`;
 
     const userPrompt = `${investorContext}${previousInteractionsContext}
