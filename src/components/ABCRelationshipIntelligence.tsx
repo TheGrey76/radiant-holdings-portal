@@ -1,9 +1,9 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { 
   Users, TrendingUp, Clock, Mail, Calendar, MessageSquare, 
   Phone, Zap, Network, UserCheck, AlertTriangle, ArrowUpRight,
   Activity, Target, Heart, Star, Eye, X, ChevronRight, Sparkles,
-  Link2, BarChart3
+  Link2, BarChart3, Bell, Settings2
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -15,10 +15,15 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Slider } from "@/components/ui/slider";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { supabase } from "@/integrations/supabase/client";
 import { format, differenceInDays, parseISO } from "date-fns";
 import { it } from "date-fns/locale";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 interface Investor {
   id: string;
@@ -70,6 +75,12 @@ interface ABCRelationshipIntelligenceProps {
   onInvestorSelect?: (investorId: string) => void;
 }
 
+interface AlertSettings {
+  enabled: boolean;
+  threshold: number;
+  notifiedInvestors: string[];
+}
+
 // Team members for the console
 const TEAM_MEMBERS = [
   { name: "Edoardo Grigione", email: "edoardo.grigione@aries76.com" },
@@ -78,6 +89,12 @@ const TEAM_MEMBERS = [
   { name: "Lorenzo Del Forno", email: "lorenzo.delforno@abccompany.it" },
   { name: "Alessandro Catullo", email: "alessandro.catullo@aries76.com" },
 ];
+
+const DEFAULT_ALERT_SETTINGS: AlertSettings = {
+  enabled: true,
+  threshold: 30,
+  notifiedInvestors: [],
+};
 
 // Calculate relationship strength (0-100)
 const calculateRelationshipStrength = (
@@ -101,7 +118,17 @@ export const ABCRelationshipIntelligence = ({ investors, onInvestorSelect }: ABC
   const [searchTerm, setSearchTerm] = useState("");
   const [activities, setActivities] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [alertSettings, setAlertSettings] = useState<AlertSettings>(() => {
+    const saved = localStorage.getItem('abc_relationship_alert_settings');
+    return saved ? JSON.parse(saved) : DEFAULT_ALERT_SETTINGS;
+  });
   const currentUserEmail = sessionStorage.getItem('abc_console_email') || '';
+
+  // Save alert settings to localStorage
+  const saveAlertSettings = useCallback((newSettings: AlertSettings) => {
+    setAlertSettings(newSettings);
+    localStorage.setItem('abc_relationship_alert_settings', JSON.stringify(newSettings));
+  }, []);
 
   // Fetch all activities to calculate team connections
   useEffect(() => {
@@ -208,6 +235,70 @@ export const ABCRelationshipIntelligence = ({ investors, onInvestorSelect }: ABC
       .sort((a, b) => b.relationshipStrength - a.relationshipStrength);
   }, [investors, activities, currentUserEmail]);
 
+  // Check for low relationship scores and create notifications
+  useEffect(() => {
+    if (!alertSettings.enabled || loading || relationshipProfiles.length === 0) return;
+
+    const checkAndNotify = async () => {
+      const atRiskProfiles = relationshipProfiles.filter(
+        p => p.relationshipStrength < alertSettings.threshold && 
+             !alertSettings.notifiedInvestors.includes(p.investorId)
+      );
+
+      if (atRiskProfiles.length === 0) return;
+
+      const newNotifiedIds: string[] = [];
+
+      for (const profile of atRiskProfiles) {
+        try {
+          await supabase.from('abc_notifications' as any).insert({
+            user_email: currentUserEmail,
+            from_user: 'Sistema Relationship Intelligence',
+            investor_name: `${profile.investorName} - ${profile.company}`,
+            message: `⚠️ Relationship score sotto soglia (${profile.relationshipStrength}/${alertSettings.threshold}). Ultimo contatto: ${profile.daysSinceLastContact} giorni fa. Pipeline: €${(profile.pipelineValue / 1000).toFixed(0)}k`,
+            is_read: false,
+          });
+          newNotifiedIds.push(profile.investorId);
+        } catch (error) {
+          console.error('Error creating notification:', error);
+        }
+      }
+
+      if (newNotifiedIds.length > 0) {
+        const updatedSettings = {
+          ...alertSettings,
+          notifiedInvestors: [...alertSettings.notifiedInvestors, ...newNotifiedIds],
+        };
+        saveAlertSettings(updatedSettings);
+        toast.warning(`${newNotifiedIds.length} relazioni sotto soglia rilevate`, {
+          description: 'Controlla le notifiche per i dettagli',
+        });
+      }
+    };
+
+    checkAndNotify();
+  }, [relationshipProfiles, alertSettings, loading, currentUserEmail, saveAlertSettings]);
+
+  // Reset notified investors when score goes back above threshold
+  useEffect(() => {
+    if (loading || relationshipProfiles.length === 0) return;
+
+    const recoveredInvestors = alertSettings.notifiedInvestors.filter(id => {
+      const profile = relationshipProfiles.find(p => p.investorId === id);
+      return profile && profile.relationshipStrength >= alertSettings.threshold;
+    });
+
+    if (recoveredInvestors.length > 0) {
+      const updatedSettings = {
+        ...alertSettings,
+        notifiedInvestors: alertSettings.notifiedInvestors.filter(
+          id => !recoveredInvestors.includes(id)
+        ),
+      };
+      saveAlertSettings(updatedSettings);
+    }
+  }, [relationshipProfiles, alertSettings, loading, saveAlertSettings]);
+
   // Filter profiles
   const filteredProfiles = relationshipProfiles.filter(p => 
     p.investorName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -277,6 +368,65 @@ export const ABCRelationshipIntelligence = ({ investors, onInvestorSelect }: ABC
           </h2>
           <p className="text-muted-foreground">Unlock the power of your firm's network</p>
         </div>
+        
+        {/* Alert Settings */}
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button variant="outline" size="sm" className="gap-2">
+              <Bell className={`h-4 w-4 ${alertSettings.enabled ? 'text-primary' : 'text-muted-foreground'}`} />
+              <Settings2 className="h-4 w-4" />
+              Alert Triggers
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-80" align="end">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h4 className="font-medium text-foreground">Alert Automatici</h4>
+                  <p className="text-xs text-muted-foreground">Notifica quando score scende sotto soglia</p>
+                </div>
+                <Switch
+                  checked={alertSettings.enabled}
+                  onCheckedChange={(checked) => saveAlertSettings({ ...alertSettings, enabled: checked })}
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <Label className="text-sm">Soglia Minima</Label>
+                  <span className="text-sm font-bold text-primary">{alertSettings.threshold}</span>
+                </div>
+                <Slider
+                  value={[alertSettings.threshold]}
+                  onValueChange={([value]) => saveAlertSettings({ ...alertSettings, threshold: value })}
+                  min={10}
+                  max={70}
+                  step={5}
+                  disabled={!alertSettings.enabled}
+                />
+                <p className="text-xs text-muted-foreground">
+                  Riceverai una notifica quando il relationship score di un investitore scende sotto {alertSettings.threshold}
+                </p>
+              </div>
+
+              {alertSettings.notifiedInvestors.length > 0 && (
+                <div className="pt-2 border-t">
+                  <p className="text-xs text-muted-foreground">
+                    {alertSettings.notifiedInvestors.length} investitori già notificati
+                  </p>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="mt-1 text-xs h-7"
+                    onClick={() => saveAlertSettings({ ...alertSettings, notifiedInvestors: [] })}
+                  >
+                    Reset notifiche
+                  </Button>
+                </div>
+              )}
+            </div>
+          </PopoverContent>
+        </Popover>
       </div>
 
       {/* KPI Cards - Affinity Style */}
