@@ -1,12 +1,9 @@
 import { Helmet } from "react-helmet";
-import { ArrowUp, TrendingUp, BarChart3, Layers, Database, Activity, Coins, Network, Target, LineChart, Lightbulb, HelpCircle, Shield, Globe, Scale, Calendar, Zap, AlertTriangle, GitBranch, LogOut, Download, Loader2 } from "lucide-react";
+import { ArrowUp, TrendingUp, BarChart3, Layers, Database, Activity, Coins, Network, Target, LineChart, Lightbulb, HelpCircle, Shield, Globe, Scale, Calendar, Zap, AlertTriangle, GitBranch, LogOut } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { LineChart as RechartsLineChart, Line, AreaChart, Area, BarChart as RechartsBarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Legend } from "recharts";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Button } from "@/components/ui/button";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
 
 // Glossary definitions
 const glossary: Record<string, string> = {
@@ -50,131 +47,6 @@ const GlossaryTerm = ({ term, children }: { term: string; children: React.ReactN
 const Bitcoin2026Report = () => {
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
-  const [isExporting, setIsExporting] = useState(false);
-  const reportRef = useRef<HTMLDivElement>(null);
-
-  // Export PDF function
-  const exportToPDF = async () => {
-    if (!reportRef.current) return;
-    
-    setIsExporting(true);
-    
-    try {
-      const element = reportRef.current;
-      
-      // Create canvas from the element with higher quality
-      const canvas = await html2canvas(element, {
-        scale: 1.5,
-        useCORS: true,
-        allowTaint: true,
-        backgroundColor: '#ffffff',
-        logging: true,
-        windowWidth: 1000,
-        scrollY: -window.scrollY,
-        onclone: (clonedDoc) => {
-          const clonedElement = clonedDoc.querySelector('[data-report-container]') as HTMLElement;
-          if (clonedElement) {
-            clonedElement.style.background = '#ffffff';
-          }
-          
-          // Force white background on body and main container
-          clonedDoc.body.style.background = '#ffffff';
-          clonedDoc.body.style.backgroundColor = '#ffffff';
-          
-          // Force all elements visible
-          clonedDoc.querySelectorAll('*').forEach((el) => {
-            const htmlEl = el as HTMLElement;
-            htmlEl.style.opacity = '1';
-            htmlEl.style.transform = 'none';
-            htmlEl.style.visibility = 'visible';
-            
-            // Remove dark gradients
-            const computedStyle = window.getComputedStyle(htmlEl);
-            if (computedStyle.background.includes('gradient')) {
-              htmlEl.style.background = '#ffffff';
-            }
-          });
-          
-          // Set main container background to white
-          clonedDoc.querySelectorAll('.min-h-screen, .bg-gradient-to-br').forEach((el) => {
-            (el as HTMLElement).style.background = '#ffffff';
-            (el as HTMLElement).style.backgroundColor = '#ffffff';
-          });
-          
-          // Hide non-print elements
-          clonedDoc.querySelectorAll('.hidden.xl\\:block, button[aria-label="Back to top"], .no-print, nav, footer').forEach((el) => {
-            (el as HTMLElement).style.display = 'none';
-          });
-          
-          // Adjust containers
-          clonedDoc.querySelectorAll('.container').forEach((el) => {
-            (el as HTMLElement).style.maxWidth = '100%';
-            (el as HTMLElement).style.padding = '0 24px';
-          });
-        }
-      });
-      
-      const imgData = canvas.toDataURL('image/jpeg', 0.92);
-      
-      // A4 dimensions in mm
-      const pageWidth = 210;
-      const pageHeight = 297;
-      const margin = 8;
-      const usableWidth = pageWidth - (margin * 2);
-      const usableHeight = pageHeight - (margin * 2) - 10; // 10mm for footer
-      
-      // Calculate scaled image dimensions
-      const imgWidth = usableWidth;
-      const imgHeight = (canvas.height * usableWidth) / canvas.width;
-      
-      // Create PDF
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      
-      // Calculate number of pages needed
-      const totalPages = Math.ceil(imgHeight / usableHeight);
-      
-      for (let page = 0; page < totalPages; page++) {
-        if (page > 0) {
-          pdf.addPage();
-        }
-        
-        // Calculate y position for this page slice
-        const yOffset = -(page * usableHeight) + margin;
-        
-        // Add the full image, positioned so the correct portion shows
-        pdf.addImage(imgData, 'JPEG', margin, yOffset, imgWidth, imgHeight);
-        
-        // Add footer
-        pdf.setFontSize(8);
-        pdf.setTextColor(128, 128, 128);
-        pdf.text(
-          `Page ${page + 1} of ${totalPages}`,
-          pageWidth / 2,
-          pageHeight - 5,
-          { align: 'center' }
-        );
-        pdf.text(
-          'ARIES76 Capital Intelligence',
-          margin,
-          pageHeight - 5
-        );
-        pdf.text(
-          'Bitcoin 2026 Report',
-          pageWidth - margin,
-          pageHeight - 5,
-          { align: 'right' }
-        );
-      }
-      
-      // Save the PDF
-      pdf.save('Bitcoin_2026_Report_ARIES76.pdf');
-      
-    } catch (error) {
-      console.error('Error generating PDF:', error);
-    } finally {
-      setIsExporting(false);
-    }
-  };
 
   // Animated Chapter Section Component
   const ChapterSection = ({ children, id, dataSection }: { children: React.ReactNode; id: string; dataSection: string }) => {
@@ -460,27 +332,7 @@ const Bitcoin2026Report = () => {
         />
       </Helmet>
 
-      <div ref={reportRef} data-report-container className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
-        {/* Export PDF Button */}
-        <div className="fixed top-24 right-4 z-50 no-print">
-          <Button
-            onClick={exportToPDF}
-            disabled={isExporting}
-            className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg"
-          >
-            {isExporting ? (
-              <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Generating...
-              </>
-            ) : (
-              <>
-                <Download className="w-4 h-4 mr-2" />
-                Export PDF
-              </>
-            )}
-          </Button>
-        </div>
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
 
         {/* Hero Header */}
         <div className="relative overflow-hidden border-b border-border/40 bg-gradient-to-br from-primary/5 via-background to-accent/5">
