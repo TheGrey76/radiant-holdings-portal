@@ -2826,9 +2826,9 @@ const Bitcoin2026Report = () => {
 
             {/* Sticky Sidebar Table of Contents */}
             <div className="hidden xl:block w-72 flex-shrink-0">
-              <div className="sticky top-20">
-                <div className="bg-card/50 backdrop-blur-sm border border-border/40 rounded-2xl p-6">
-                  <h3 className="text-sm font-bold text-foreground mb-4 uppercase tracking-wider">Contents</h3>
+              <div className="sticky top-20 max-h-[calc(100vh-6rem)]">
+                <div className="bg-card/50 backdrop-blur-sm border border-border/40 rounded-2xl p-6 max-h-[calc(100vh-8rem)] overflow-y-auto">
+                  <h3 className="text-sm font-bold text-foreground mb-4 uppercase tracking-wider sticky top-0 bg-card/90 backdrop-blur-sm py-2 -mt-2">Contents</h3>
                   <nav className="space-y-2">
                     {chapters.map((chapter) => (
                       <button
