@@ -93,45 +93,39 @@ const Bitcoin2026Report = () => {
       
       const imgData = canvas.toDataURL('image/jpeg', 0.92);
       
-      // A4 dimensions in mm with margins
+      // A4 dimensions in mm
       const pageWidth = 210;
       const pageHeight = 297;
-      const margin = 10;
-      const contentWidth = pageWidth - (margin * 2);
-      const contentHeight = pageHeight - (margin * 2);
+      const margin = 8;
+      const usableWidth = pageWidth - (margin * 2);
+      const usableHeight = pageHeight - (margin * 2) - 10; // 10mm for footer
       
-      // Calculate image dimensions to fit within margins
-      const imgWidth = contentWidth;
-      const imgHeight = (canvas.height * contentWidth) / canvas.width;
+      // Calculate scaled image dimensions
+      const imgWidth = usableWidth;
+      const imgHeight = (canvas.height * usableWidth) / canvas.width;
       
       // Create PDF
       const pdf = new jsPDF('p', 'mm', 'a4');
       
-      let heightLeft = imgHeight;
-      let position = margin;
-      let pageNum = 0;
+      // Calculate number of pages needed
+      const totalPages = Math.ceil(imgHeight / usableHeight);
       
-      // Add first page with margins
-      pdf.addImage(imgData, 'JPEG', margin, position, imgWidth, imgHeight);
-      heightLeft -= contentHeight;
-      
-      // Add additional pages if needed
-      while (heightLeft > 0) {
-        pageNum++;
-        position = margin - (contentHeight * pageNum);
-        pdf.addPage();
-        pdf.addImage(imgData, 'JPEG', margin, position, imgWidth, imgHeight);
-        heightLeft -= contentHeight;
-      }
-      
-      // Add page numbers
-      const totalPages = pdf.getNumberOfPages();
-      for (let i = 1; i <= totalPages; i++) {
-        pdf.setPage(i);
-        pdf.setFontSize(9);
+      for (let page = 0; page < totalPages; page++) {
+        if (page > 0) {
+          pdf.addPage();
+        }
+        
+        // Calculate y position for this page slice
+        const yOffset = -(page * usableHeight) + margin;
+        
+        // Add the full image, positioned so the correct portion shows
+        pdf.addImage(imgData, 'JPEG', margin, yOffset, imgWidth, imgHeight);
+        
+        // Add footer
+        pdf.setFontSize(8);
         pdf.setTextColor(128, 128, 128);
         pdf.text(
-          `Page ${i} of ${totalPages}`,
+          `Page ${page + 1} of ${totalPages}`,
           pageWidth / 2,
           pageHeight - 5,
           { align: 'center' }
