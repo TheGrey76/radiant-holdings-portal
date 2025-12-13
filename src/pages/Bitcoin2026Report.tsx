@@ -434,10 +434,15 @@ const Bitcoin2026Report = () => {
           <h2 className="text-2xl font-bold text-foreground mb-8">Table of Contents</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             {chapters.map((chapter) => (
-              <a
+              <button
                 key={chapter.id}
-                href={`#${chapter.id}`}
-                className={`group relative p-6 rounded-2xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl ${
+                onClick={() => {
+                  const element = document.getElementById(chapter.id);
+                  if (element) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }
+                }}
+                className={`group relative text-left p-6 rounded-2xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl ${
                   activeSection === chapter.id
                     ? 'border-primary bg-primary/5 shadow-lg'
                     : 'border-border/40 bg-card hover:border-primary/50'
@@ -460,7 +465,7 @@ const Bitcoin2026Report = () => {
                     </h3>
                   </div>
                 </div>
-              </a>
+              </button>
             ))}
           </div>
         </div>
@@ -2826,10 +2831,15 @@ const Bitcoin2026Report = () => {
                   <h3 className="text-sm font-bold text-foreground mb-4 uppercase tracking-wider">Contents</h3>
                   <nav className="space-y-2">
                     {chapters.map((chapter) => (
-                      <a
+                      <button
                         key={chapter.id}
-                        href={`#${chapter.id}`}
-                        className={`group flex items-start gap-3 p-3 rounded-xl transition-all duration-200 ${
+                        onClick={() => {
+                          const element = document.getElementById(chapter.id);
+                          if (element) {
+                            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                          }
+                        }}
+                        className={`group w-full text-left flex items-start gap-3 p-3 rounded-xl transition-all duration-200 ${
                           activeSection === chapter.id
                             ? 'bg-primary/10 border-l-2 border-primary'
                             : 'hover:bg-muted/50 border-l-2 border-transparent'
@@ -2851,7 +2861,7 @@ const Bitcoin2026Report = () => {
                             {chapter.title}
                           </p>
                         </div>
-                      </a>
+                      </button>
                     ))}
                   </nav>
                 </div>
