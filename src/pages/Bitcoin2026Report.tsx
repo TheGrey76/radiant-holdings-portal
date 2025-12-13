@@ -2613,25 +2613,27 @@ const Bitcoin2026Report = () => {
                     </h3>
                     <div className="grid md:grid-cols-2 gap-6">
                       <div className="p-6 rounded-xl bg-card border border-border/40">
-                        <h4 className="text-lg font-bold text-foreground mb-3">El Salvador & National Adoption</h4>
+                        <h4 className="text-lg font-bold text-foreground mb-3">Sovereign & Institutional Adoption</h4>
                         <p className="text-foreground/80 text-sm leading-relaxed mb-3">
-                          Chivo Wallet infrastructure proves Lightning viability at national scale. Despite adoption challenges, provides template for other emerging markets.
+                          El Salvador continues Bitcoin accumulation (6,000+ BTC treasury). US Strategic Bitcoin Reserve proposal signals potential G7 adoption. MicroStrategy leads corporate treasury adoption.
                         </p>
                         <ul className="space-y-1 text-sm text-foreground/70">
-                          <li>• 4M+ registered wallets</li>
-                          <li>• Remittance use case validated</li>
-                          <li>• Other countries exploring (Argentina, Paraguay)</li>
+                          <li>• El Salvador: 6,000+ BTC national reserve</li>
+                          <li>• US Strategic Reserve bill under consideration</li>
+                          <li>• MicroStrategy: 400,000+ BTC ($40B+)</li>
+                          <li>• Bhutan, Argentina exploring national strategies</li>
                         </ul>
                       </div>
                       <div className="p-6 rounded-xl bg-card border border-border/40">
-                        <h4 className="text-lg font-bold text-foreground mb-3">Institutional Integration</h4>
+                        <h4 className="text-lg font-bold text-foreground mb-3">ETF & Exchange Integration</h4>
                         <p className="text-foreground/80 text-sm leading-relaxed mb-3">
-                          Major exchanges (Coinbase, Kraken, Binance) adding Lightning support. Cash App, Strike enabling instant settlement.
+                          US Spot ETFs exceeded $100B AUM in 2024. Major exchanges (Coinbase, Kraken, OKX) fully integrated Lightning. Strike, Cash App driving retail adoption.
                         </p>
                         <ul className="space-y-1 text-sm text-foreground/70">
-                          <li>• Reduced withdrawal fees</li>
-                          <li>• Instant settlement capability</li>
-                          <li>• Micropayments enabled</li>
+                          <li>• Spot ETF AUM: $100B+ (BlackRock, Fidelity lead)</li>
+                          <li>• ETF options launched Nov 2024</li>
+                          <li>• Lightning adoption on all major exchanges</li>
+                          <li>• Institutional custody solutions mature</li>
                         </ul>
                       </div>
                     </div>
