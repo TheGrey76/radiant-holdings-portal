@@ -62,14 +62,14 @@ const Bitcoin2026Report = () => {
     try {
       const element = reportRef.current;
       
-      // Create canvas from the element
+      // Create canvas from the element with higher quality
       const canvas = await html2canvas(element, {
-        scale: 1.5,
+        scale: 2,
         useCORS: true,
         allowTaint: true,
         backgroundColor: '#ffffff',
         logging: false,
-        windowWidth: 1200,
+        windowWidth: 900,
         onclone: (clonedDoc) => {
           // Force all elements visible in cloned document
           const clonedElement = clonedDoc.body;
@@ -79,41 +79,74 @@ const Bitcoin2026Report = () => {
             htmlEl.style.transform = 'none';
             htmlEl.style.visibility = 'visible';
           });
-          // Hide sidebar and back to top button
-          clonedDoc.querySelectorAll('.hidden.xl\\:block, button[aria-label="Back to top"]').forEach((el) => {
+          // Hide sidebar, back to top button, and export button
+          clonedDoc.querySelectorAll('.hidden.xl\\:block, button[aria-label="Back to top"], .no-print').forEach((el) => {
             (el as HTMLElement).style.display = 'none';
+          });
+          // Adjust container widths for better PDF layout
+          clonedDoc.querySelectorAll('.container').forEach((el) => {
+            (el as HTMLElement).style.maxWidth = '100%';
+            (el as HTMLElement).style.padding = '0 20px';
           });
         }
       });
       
-      const imgData = canvas.toDataURL('image/jpeg', 0.95);
+      const imgData = canvas.toDataURL('image/jpeg', 0.92);
       
-      // A4 dimensions in mm
-      const pdfWidth = 210;
-      const pdfHeight = 297;
+      // A4 dimensions in mm with margins
+      const pageWidth = 210;
+      const pageHeight = 297;
+      const margin = 10;
+      const contentWidth = pageWidth - (margin * 2);
+      const contentHeight = pageHeight - (margin * 2);
       
-      // Calculate dimensions
-      const imgWidth = pdfWidth;
-      const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+      // Calculate image dimensions to fit within margins
+      const imgWidth = contentWidth;
+      const imgHeight = (canvas.height * contentWidth) / canvas.width;
       
       // Create PDF
       const pdf = new jsPDF('p', 'mm', 'a4');
       
       let heightLeft = imgHeight;
-      let position = 0;
-      let page = 1;
+      let position = margin;
+      let pageNum = 0;
       
-      // Add first page
-      pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
-      heightLeft -= pdfHeight;
+      // Add first page with margins
+      pdf.addImage(imgData, 'JPEG', margin, position, imgWidth, imgHeight);
+      heightLeft -= contentHeight;
       
       // Add additional pages if needed
       while (heightLeft > 0) {
-        position = -pdfHeight * page;
+        pageNum++;
+        position = margin - (contentHeight * pageNum);
         pdf.addPage();
-        pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
-        heightLeft -= pdfHeight;
-        page++;
+        pdf.addImage(imgData, 'JPEG', margin, position, imgWidth, imgHeight);
+        heightLeft -= contentHeight;
+      }
+      
+      // Add page numbers
+      const totalPages = pdf.getNumberOfPages();
+      for (let i = 1; i <= totalPages; i++) {
+        pdf.setPage(i);
+        pdf.setFontSize(9);
+        pdf.setTextColor(128, 128, 128);
+        pdf.text(
+          `Page ${i} of ${totalPages}`,
+          pageWidth / 2,
+          pageHeight - 5,
+          { align: 'center' }
+        );
+        pdf.text(
+          'ARIES76 Capital Intelligence',
+          margin,
+          pageHeight - 5
+        );
+        pdf.text(
+          'Bitcoin 2026 Report',
+          pageWidth - margin,
+          pageHeight - 5,
+          { align: 'right' }
+        );
       }
       
       // Save the PDF
