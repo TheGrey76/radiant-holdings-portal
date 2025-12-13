@@ -1,9 +1,12 @@
 import { Helmet } from "react-helmet";
-import { ArrowUp, TrendingUp, BarChart3, Layers, Database, Activity, Coins, Network, Target, LineChart, Lightbulb, HelpCircle, Shield, Globe, Scale, Calendar, Zap, AlertTriangle, GitBranch, LogOut } from "lucide-react";
+import { ArrowUp, TrendingUp, BarChart3, Layers, Database, Activity, Coins, Network, Target, LineChart, Lightbulb, HelpCircle, Shield, Globe, Scale, Calendar, Zap, AlertTriangle, GitBranch, LogOut, Download, Loader2 } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { LineChart as RechartsLineChart, Line, AreaChart, Area, BarChart as RechartsBarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Legend } from "recharts";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Button } from "@/components/ui/button";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 // Glossary definitions
 const glossary: Record<string, string> = {
@@ -47,6 +50,81 @@ const GlossaryTerm = ({ term, children }: { term: string; children: React.ReactN
 const Bitcoin2026Report = () => {
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
+  const [isExporting, setIsExporting] = useState(false);
+  const reportRef = useRef<HTMLDivElement>(null);
+
+  // Export PDF function
+  const exportToPDF = async () => {
+    if (!reportRef.current) return;
+    
+    setIsExporting(true);
+    
+    try {
+      const element = reportRef.current;
+      
+      // Create canvas from the element
+      const canvas = await html2canvas(element, {
+        scale: 1.5,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: '#ffffff',
+        logging: false,
+        windowWidth: 1200,
+        onclone: (clonedDoc) => {
+          // Force all elements visible in cloned document
+          const clonedElement = clonedDoc.body;
+          clonedElement.querySelectorAll('*').forEach((el) => {
+            const htmlEl = el as HTMLElement;
+            htmlEl.style.opacity = '1';
+            htmlEl.style.transform = 'none';
+            htmlEl.style.visibility = 'visible';
+          });
+          // Hide sidebar and back to top button
+          clonedDoc.querySelectorAll('.hidden.xl\\:block, button[aria-label="Back to top"]').forEach((el) => {
+            (el as HTMLElement).style.display = 'none';
+          });
+        }
+      });
+      
+      const imgData = canvas.toDataURL('image/jpeg', 0.95);
+      
+      // A4 dimensions in mm
+      const pdfWidth = 210;
+      const pdfHeight = 297;
+      
+      // Calculate dimensions
+      const imgWidth = pdfWidth;
+      const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+      
+      // Create PDF
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      
+      let heightLeft = imgHeight;
+      let position = 0;
+      let page = 1;
+      
+      // Add first page
+      pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pdfHeight;
+      
+      // Add additional pages if needed
+      while (heightLeft > 0) {
+        position = -pdfHeight * page;
+        pdf.addPage();
+        pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pdfHeight;
+        page++;
+      }
+      
+      // Save the PDF
+      pdf.save('Bitcoin_2026_Report_ARIES76.pdf');
+      
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+    } finally {
+      setIsExporting(false);
+    }
+  };
 
   // Animated Chapter Section Component
   const ChapterSection = ({ children, id, dataSection }: { children: React.ReactNode; id: string; dataSection: string }) => {
@@ -332,7 +410,28 @@ const Bitcoin2026Report = () => {
         />
       </Helmet>
 
-      <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
+      <div ref={reportRef} className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
+        {/* Export PDF Button */}
+        <div className="fixed top-24 right-4 z-50 no-print">
+          <Button
+            onClick={exportToPDF}
+            disabled={isExporting}
+            className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg"
+          >
+            {isExporting ? (
+              <>
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                Generating...
+              </>
+            ) : (
+              <>
+                <Download className="w-4 h-4 mr-2" />
+                Export PDF
+              </>
+            )}
+          </Button>
+        </div>
+
         {/* Hero Header */}
         <div className="relative overflow-hidden border-b border-border/40 bg-gradient-to-br from-primary/5 via-background to-accent/5">
           <div className="absolute inset-0 bg-grid-pattern opacity-[0.03]"></div>
