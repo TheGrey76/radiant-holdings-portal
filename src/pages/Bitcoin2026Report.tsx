@@ -64,29 +64,52 @@ const Bitcoin2026Report = () => {
       
       // Create canvas from the element with higher quality
       const canvas = await html2canvas(element, {
-        scale: 2,
+        scale: 1.5,
         useCORS: true,
         allowTaint: true,
         backgroundColor: '#ffffff',
-        logging: false,
-        windowWidth: 900,
+        logging: true,
+        windowWidth: 1000,
+        scrollY: -window.scrollY,
         onclone: (clonedDoc) => {
-          // Force all elements visible in cloned document
-          const clonedElement = clonedDoc.body;
-          clonedElement.querySelectorAll('*').forEach((el) => {
+          const clonedElement = clonedDoc.querySelector('[data-report-container]') as HTMLElement;
+          if (clonedElement) {
+            clonedElement.style.background = '#ffffff';
+          }
+          
+          // Force white background on body and main container
+          clonedDoc.body.style.background = '#ffffff';
+          clonedDoc.body.style.backgroundColor = '#ffffff';
+          
+          // Force all elements visible
+          clonedDoc.querySelectorAll('*').forEach((el) => {
             const htmlEl = el as HTMLElement;
             htmlEl.style.opacity = '1';
             htmlEl.style.transform = 'none';
             htmlEl.style.visibility = 'visible';
+            
+            // Remove dark gradients
+            const computedStyle = window.getComputedStyle(htmlEl);
+            if (computedStyle.background.includes('gradient')) {
+              htmlEl.style.background = '#ffffff';
+            }
           });
-          // Hide sidebar, back to top button, and export button
-          clonedDoc.querySelectorAll('.hidden.xl\\:block, button[aria-label="Back to top"], .no-print').forEach((el) => {
+          
+          // Set main container background to white
+          clonedDoc.querySelectorAll('.min-h-screen, .bg-gradient-to-br').forEach((el) => {
+            (el as HTMLElement).style.background = '#ffffff';
+            (el as HTMLElement).style.backgroundColor = '#ffffff';
+          });
+          
+          // Hide non-print elements
+          clonedDoc.querySelectorAll('.hidden.xl\\:block, button[aria-label="Back to top"], .no-print, nav, footer').forEach((el) => {
             (el as HTMLElement).style.display = 'none';
           });
-          // Adjust container widths for better PDF layout
+          
+          // Adjust containers
           clonedDoc.querySelectorAll('.container').forEach((el) => {
             (el as HTMLElement).style.maxWidth = '100%';
-            (el as HTMLElement).style.padding = '0 20px';
+            (el as HTMLElement).style.padding = '0 24px';
           });
         }
       });
@@ -437,7 +460,7 @@ const Bitcoin2026Report = () => {
         />
       </Helmet>
 
-      <div ref={reportRef} className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
+      <div ref={reportRef} data-report-container className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
         {/* Export PDF Button */}
         <div className="fixed top-24 right-4 z-50 no-print">
           <Button
