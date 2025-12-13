@@ -2613,15 +2613,15 @@ const Bitcoin2026Report = () => {
                     </h3>
                     <div className="grid md:grid-cols-2 gap-6">
                       <div className="p-6 rounded-xl bg-card border border-border/40">
-                        <h4 className="text-lg font-bold text-foreground mb-3">Sovereign & Institutional Adoption</h4>
+                        <h4 className="text-lg font-bold text-foreground mb-3">US Strategic Reserve & Corporate Treasury</h4>
                         <p className="text-foreground/80 text-sm leading-relaxed mb-3">
-                          El Salvador continues Bitcoin accumulation (6,000+ BTC treasury). US Strategic Bitcoin Reserve proposal signals potential G7 adoption. MicroStrategy leads corporate treasury adoption.
+                          Trump administration's Strategic Bitcoin Reserve proposal represents potential paradigm shift. MicroStrategy pioneered corporate treasury strategy now replicated by dozens of companies.
                         </p>
                         <ul className="space-y-1 text-sm text-foreground/70">
-                          <li>• El Salvador: 6,000+ BTC national reserve</li>
-                          <li>• US Strategic Reserve bill under consideration</li>
-                          <li>• MicroStrategy: 400,000+ BTC ($40B+)</li>
-                          <li>• Bhutan, Argentina exploring national strategies</li>
+                          <li>• US Strategic Reserve bill under Congressional review</li>
+                          <li>• MicroStrategy: 400,000+ BTC ($42B+)</li>
+                          <li>• Tesla, Marathon, Block maintain BTC treasuries</li>
+                          <li>• State-level reserve proposals (Texas, Wyoming)</li>
                         </ul>
                       </div>
                       <div className="p-6 rounded-xl bg-card border border-border/40">
@@ -2665,8 +2665,8 @@ const Bitcoin2026Report = () => {
 
                 <KeyTakeaways insights={[
                   "Lightning capacity up 120% YoY—network effects accelerating but total value (~$500M) remains immaterial to price",
-                  "El Salvador provides national-scale proof of concept; other emerging markets (Argentina, Africa) watching closely",
-                  "Exchange integration (Coinbase, Kraken, Binance) drives accessibility and normalizes Lightning usage",
+                  "US Strategic Reserve proposal and corporate treasury adoption signal mainstream institutional acceptance",
+                  "Exchange integration (Coinbase, Kraken, OKX) drives accessibility and normalizes Lightning usage",
                   "Long-term narrative value significant; near-term price impact minimal. Monitor as adoption metric, not trading signal."
                 ]} />
               </ChapterSection>
