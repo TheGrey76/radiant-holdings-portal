@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet";
-import { ArrowUp, TrendingUp, BarChart3, Layers, Database, Activity, Coins, Network, Target, LineChart, Lightbulb, HelpCircle, Shield } from "lucide-react";
+import { ArrowUp, TrendingUp, BarChart3, Layers, Database, Activity, Coins, Network, Target, LineChart, Lightbulb, HelpCircle, Shield, Globe, Scale, Calendar, Zap, AlertTriangle, GitBranch, LogOut } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { LineChart as RechartsLineChart, Line, AreaChart, Area, BarChart as RechartsBarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Legend } from "recharts";
@@ -311,6 +311,14 @@ const Bitcoin2026Report = () => {
     { id: "chapter-9", number: "IX", title: "Scenario Analysis & Risk Framework", icon: Target },
     { id: "chapter-10", number: "X", title: "2026 Price Targets & Investment Implications", icon: TrendingUp },
     { id: "chapter-11", number: "XI", title: "Risk Management Framework", icon: Shield },
+    { id: "chapter-12", number: "XII", title: "Cross-Asset Correlations", icon: GitBranch },
+    { id: "chapter-13", number: "XIII", title: "Regulatory Landscape 2026", icon: Scale },
+    { id: "chapter-14", number: "XIV", title: "Institutional Adoption Metrics", icon: Globe },
+    { id: "chapter-15", number: "XV", title: "Macro Calendar & Key Dates 2026", icon: Calendar },
+    { id: "chapter-16", number: "XVI", title: "Geopolitical Risk Analysis", icon: AlertTriangle },
+    { id: "chapter-17", number: "XVII", title: "Historical Cycle Comparison", icon: Activity },
+    { id: "chapter-18", number: "XVIII", title: "Exit Strategy Framework", icon: LogOut },
+    { id: "chapter-19", number: "XIX", title: "Lightning Network & Layer 2", icon: Zap },
   ];
 
   return (
@@ -1568,6 +1576,1097 @@ const Bitcoin2026Report = () => {
                     "Systematic rebalancing prevents concentration risk through quarterly adjustments if allocation drifts >25%, opportunistic rebalancing during regime transitions, and tax-loss harvesting in stress scenarios."
                   ]} />
                 </div>
+              </ChapterSection>
+
+              {/* ===== CHAPTER XII: CROSS-ASSET CORRELATIONS ===== */}
+              <ChapterSection id="chapter-12" dataSection="chapter-12">
+                <div className="flex items-center gap-4 mb-8">
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center border border-primary/30">
+                    <GitBranch className="w-8 h-8 text-primary" />
+                  </div>
+                  <div>
+                    <div className="text-sm font-medium text-primary mb-1">Chapter XII</div>
+                    <h2 className="text-3xl font-bold text-foreground">Cross-Asset Correlations</h2>
+                  </div>
+                </div>
+
+                <div className="space-y-8">
+                  <p className="text-foreground/80 leading-relaxed text-lg">
+                    Understanding Bitcoin's correlation dynamics across asset classes is essential for portfolio construction. These relationships are regime-dependent, shifting dramatically between risk-on and risk-off environments.
+                  </p>
+
+                  {/* Correlation Matrix */}
+                  <div className="space-y-4">
+                    <h3 className="text-2xl font-bold text-foreground flex items-center gap-3">
+                      <div className="w-1.5 h-8 bg-primary rounded-full"></div>
+                      Rolling 90-Day Correlation Matrix (Current)
+                    </h3>
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-sm">
+                        <thead>
+                          <tr className="border-b border-border/40">
+                            <th className="py-3 px-4 text-left text-foreground font-semibold">Asset</th>
+                            <th className="py-3 px-4 text-center text-foreground font-semibold">BTC</th>
+                            <th className="py-3 px-4 text-center text-foreground font-semibold">Gold</th>
+                            <th className="py-3 px-4 text-center text-foreground font-semibold">S&P 500</th>
+                            <th className="py-3 px-4 text-center text-foreground font-semibold">Nasdaq</th>
+                            <th className="py-3 px-4 text-center text-foreground font-semibold">US Bonds</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr className="border-b border-border/20">
+                            <td className="py-3 px-4 font-medium text-foreground">Bitcoin</td>
+                            <td className="py-3 px-4 text-center text-primary font-bold">1.00</td>
+                            <td className="py-3 px-4 text-center text-accent">0.42</td>
+                            <td className="py-3 px-4 text-center text-accent">0.58</td>
+                            <td className="py-3 px-4 text-center text-accent">0.65</td>
+                            <td className="py-3 px-4 text-center text-destructive">-0.28</td>
+                          </tr>
+                          <tr className="border-b border-border/20">
+                            <td className="py-3 px-4 font-medium text-foreground">Gold</td>
+                            <td className="py-3 px-4 text-center text-accent">0.42</td>
+                            <td className="py-3 px-4 text-center text-primary font-bold">1.00</td>
+                            <td className="py-3 px-4 text-center text-muted-foreground">0.12</td>
+                            <td className="py-3 px-4 text-center text-muted-foreground">0.08</td>
+                            <td className="py-3 px-4 text-center text-accent">0.35</td>
+                          </tr>
+                          <tr className="border-b border-border/20">
+                            <td className="py-3 px-4 font-medium text-foreground">S&P 500</td>
+                            <td className="py-3 px-4 text-center text-accent">0.58</td>
+                            <td className="py-3 px-4 text-center text-muted-foreground">0.12</td>
+                            <td className="py-3 px-4 text-center text-primary font-bold">1.00</td>
+                            <td className="py-3 px-4 text-center text-accent">0.92</td>
+                            <td className="py-3 px-4 text-center text-destructive">-0.45</td>
+                          </tr>
+                          <tr className="border-b border-border/20">
+                            <td className="py-3 px-4 font-medium text-foreground">Nasdaq</td>
+                            <td className="py-3 px-4 text-center text-accent">0.65</td>
+                            <td className="py-3 px-4 text-center text-muted-foreground">0.08</td>
+                            <td className="py-3 px-4 text-center text-accent">0.92</td>
+                            <td className="py-3 px-4 text-center text-primary font-bold">1.00</td>
+                            <td className="py-3 px-4 text-center text-destructive">-0.52</td>
+                          </tr>
+                          <tr>
+                            <td className="py-3 px-4 font-medium text-foreground">US Bonds (TLT)</td>
+                            <td className="py-3 px-4 text-center text-destructive">-0.28</td>
+                            <td className="py-3 px-4 text-center text-accent">0.35</td>
+                            <td className="py-3 px-4 text-center text-destructive">-0.45</td>
+                            <td className="py-3 px-4 text-center text-destructive">-0.52</td>
+                            <td className="py-3 px-4 text-center text-primary font-bold">1.00</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  {/* Regime-Dependent Correlations */}
+                  <div className="space-y-4">
+                    <h3 className="text-2xl font-bold text-foreground flex items-center gap-3">
+                      <div className="w-1.5 h-8 bg-primary rounded-full"></div>
+                      Regime-Dependent Correlation Shifts
+                    </h3>
+                    <div className="grid md:grid-cols-3 gap-4">
+                      <div className="p-5 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20">
+                        <h4 className="text-lg font-bold text-foreground mb-3">Risk-On Environment</h4>
+                        <ul className="space-y-2 text-sm text-foreground/70">
+                          <li className="flex justify-between"><span>BTC-Nasdaq:</span> <span className="text-accent font-semibold">+0.75</span></li>
+                          <li className="flex justify-between"><span>BTC-Gold:</span> <span className="text-muted-foreground font-semibold">+0.15</span></li>
+                          <li className="flex justify-between"><span>BTC-Bonds:</span> <span className="text-destructive font-semibold">-0.40</span></li>
+                        </ul>
+                        <p className="text-xs text-muted-foreground mt-3 italic">Bitcoin trades as a high-beta tech proxy</p>
+                      </div>
+                      <div className="p-5 rounded-xl bg-gradient-to-br from-accent/10 to-accent/5 border border-accent/20">
+                        <h4 className="text-lg font-bold text-foreground mb-3">Risk-Off Environment</h4>
+                        <ul className="space-y-2 text-sm text-foreground/70">
+                          <li className="flex justify-between"><span>BTC-Nasdaq:</span> <span className="text-accent font-semibold">+0.85</span></li>
+                          <li className="flex justify-between"><span>BTC-Gold:</span> <span className="text-accent font-semibold">+0.55</span></li>
+                          <li className="flex justify-between"><span>BTC-Bonds:</span> <span className="text-muted-foreground font-semibold">-0.15</span></li>
+                        </ul>
+                        <p className="text-xs text-muted-foreground mt-3 italic">Gold correlation rises during stress</p>
+                      </div>
+                      <div className="p-5 rounded-xl bg-gradient-to-br from-blue-500/10 to-blue-500/5 border border-blue-500/20">
+                        <h4 className="text-lg font-bold text-foreground mb-3">Liquidity Crisis</h4>
+                        <ul className="space-y-2 text-sm text-foreground/70">
+                          <li className="flex justify-between"><span>All Assets:</span> <span className="text-accent font-semibold">→ +0.90</span></li>
+                          <li className="flex justify-between"><span>Correlations:</span> <span className="text-destructive font-semibold">Converge to 1</span></li>
+                          <li className="flex justify-between"><span>Diversification:</span> <span className="text-destructive font-semibold">Fails</span></li>
+                        </ul>
+                        <p className="text-xs text-muted-foreground mt-3 italic">"In a crisis, all correlations go to 1"</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Portfolio Implications */}
+                  <div className="p-6 rounded-xl bg-gradient-to-br from-muted/30 to-background border border-border/40">
+                    <h4 className="text-lg font-bold text-foreground mb-3">Portfolio Construction Implications</h4>
+                    <div className="space-y-3 text-foreground/80">
+                      <div className="flex items-start gap-3">
+                        <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0"></div>
+                        <p><strong>Diversification benefit diminishes</strong> when you need it most—during market stress, Bitcoin correlates strongly with risk assets</p>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0"></div>
+                        <p><strong>Gold remains the superior hedge</strong> for tail risk protection; Bitcoin should be viewed as a convexity play, not a safe haven</p>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0"></div>
+                        <p><strong>Optimal allocation window</strong> is during Accumulation regime when correlations are lower and entry prices more attractive</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <KeyTakeaways insights={[
+                  "Bitcoin's correlation to Nasdaq (0.65) confirms its role as a high-beta risk asset, not digital gold",
+                  "Regime-dependent correlations require dynamic hedging—static allocations ignore changing risk dynamics",
+                  "Gold correlation rises during stress (0.55) but Bitcoin still sells off with equities in acute crises",
+                  "Portfolio diversification benefits from Bitcoin are maximized in Accumulation regime, not Expansion"
+                ]} />
+              </ChapterSection>
+
+              {/* ===== CHAPTER XIII: REGULATORY LANDSCAPE 2026 ===== */}
+              <ChapterSection id="chapter-13" dataSection="chapter-13">
+                <div className="flex items-center gap-4 mb-8">
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center border border-primary/30">
+                    <Scale className="w-8 h-8 text-primary" />
+                  </div>
+                  <div>
+                    <div className="text-sm font-medium text-primary mb-1">Chapter XIII</div>
+                    <h2 className="text-3xl font-bold text-foreground">Regulatory Landscape 2026</h2>
+                  </div>
+                </div>
+
+                <div className="space-y-8">
+                  <p className="text-foreground/80 leading-relaxed text-lg">
+                    The regulatory environment for Bitcoin is undergoing its most significant transformation since inception. 2025-2026 will see major frameworks finalized across key jurisdictions, creating both opportunities and risks for institutional allocators.
+                  </p>
+
+                  {/* Regional Breakdown */}
+                  <div className="space-y-6">
+                    <h3 className="text-2xl font-bold text-foreground flex items-center gap-3">
+                      <div className="w-1.5 h-8 bg-primary rounded-full"></div>
+                      Jurisdiction Analysis
+                    </h3>
+
+                    {/* Europe - MiCA */}
+                    <div className="p-6 rounded-xl bg-gradient-to-br from-blue-500/10 to-blue-500/5 border border-blue-500/20">
+                      <div className="flex items-center gap-3 mb-4">
+                        <span className="text-2xl">🇪🇺</span>
+                        <h4 className="text-xl font-bold text-foreground">European Union: MiCA Implementation</h4>
+                      </div>
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div>
+                          <h5 className="font-semibold text-foreground mb-2">Key Provisions (Effective Dec 2024)</h5>
+                          <ul className="space-y-2 text-sm text-foreground/70">
+                            <li>• Crypto Asset Service Provider (CASP) licensing mandatory</li>
+                            <li>• Stablecoin reserve requirements (1:1 backing)</li>
+                            <li>• Market manipulation and insider trading rules</li>
+                            <li>• Consumer protection and disclosure requirements</li>
+                          </ul>
+                        </div>
+                        <div>
+                          <h5 className="font-semibold text-foreground mb-2">Investment Implications</h5>
+                          <ul className="space-y-2 text-sm text-foreground/70">
+                            <li>• <span className="text-accent">Positive:</span> Regulatory clarity attracts institutional capital</li>
+                            <li>• <span className="text-accent">Positive:</span> EU becomes crypto-friendly jurisdiction</li>
+                            <li>• <span className="text-destructive">Risk:</span> Compliance costs consolidate market</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* United States */}
+                    <div className="p-6 rounded-xl bg-gradient-to-br from-red-500/10 to-red-500/5 border border-red-500/20">
+                      <div className="flex items-center gap-3 mb-4">
+                        <span className="text-2xl">🇺🇸</span>
+                        <h4 className="text-xl font-bold text-foreground">United States: SEC & CFTC Dynamics</h4>
+                      </div>
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div>
+                          <h5 className="font-semibold text-foreground mb-2">Current Status (2025)</h5>
+                          <ul className="space-y-2 text-sm text-foreground/70">
+                            <li>• Spot Bitcoin ETFs approved and trading</li>
+                            <li>• SEC maintains "regulation by enforcement" stance</li>
+                            <li>• CFTC claims jurisdiction over BTC as commodity</li>
+                            <li>• Congressional legislation stalled</li>
+                          </ul>
+                        </div>
+                        <div>
+                          <h5 className="font-semibold text-foreground mb-2">2026 Outlook</h5>
+                          <ul className="space-y-2 text-sm text-foreground/70">
+                            <li>• <span className="text-accent">Likely:</span> ETF options expansion (approved late 2024)</li>
+                            <li>• <span className="text-accent">Possible:</span> FIT21 or similar framework passes</li>
+                            <li>• <span className="text-destructive">Risk:</span> Continued regulatory uncertainty</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Asia */}
+                    <div className="p-6 rounded-xl bg-gradient-to-br from-amber-500/10 to-amber-500/5 border border-amber-500/20">
+                      <div className="flex items-center gap-3 mb-4">
+                        <span className="text-2xl">🌏</span>
+                        <h4 className="text-xl font-bold text-foreground">Asia-Pacific: Divergent Approaches</h4>
+                      </div>
+                      <div className="grid md:grid-cols-3 gap-4">
+                        <div>
+                          <h5 className="font-semibold text-foreground mb-2">Hong Kong</h5>
+                          <ul className="space-y-1 text-sm text-foreground/70">
+                            <li>• Spot ETFs approved (Apr 2024)</li>
+                            <li>• Retail trading permitted</li>
+                            <li>• <span className="text-accent">Pro-crypto stance</span></li>
+                          </ul>
+                        </div>
+                        <div>
+                          <h5 className="font-semibold text-foreground mb-2">Singapore</h5>
+                          <ul className="space-y-1 text-sm text-foreground/70">
+                            <li>• Strict retail restrictions</li>
+                            <li>• Institutional-friendly framework</li>
+                            <li>• <span className="text-muted-foreground">Cautious approach</span></li>
+                          </ul>
+                        </div>
+                        <div>
+                          <h5 className="font-semibold text-foreground mb-2">Japan</h5>
+                          <ul className="space-y-1 text-sm text-foreground/70">
+                            <li>• Comprehensive licensing regime</li>
+                            <li>• Stablecoin framework established</li>
+                            <li>• <span className="text-accent">Mature regulatory environment</span></li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Regulatory Risk Matrix */}
+                  <div className="space-y-4">
+                    <h3 className="text-2xl font-bold text-foreground flex items-center gap-3">
+                      <div className="w-1.5 h-8 bg-primary rounded-full"></div>
+                      Regulatory Risk Matrix
+                    </h3>
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div className="p-5 rounded-xl bg-card border border-border/40">
+                        <h4 className="font-bold text-accent mb-3">Low Risk (Bullish)</h4>
+                        <ul className="space-y-2 text-sm text-foreground/70">
+                          <li>• Spot ETF options expansion</li>
+                          <li>• Clear commodity classification</li>
+                          <li>• Banking integration (custody)</li>
+                          <li>• 401(k) access expansion</li>
+                        </ul>
+                      </div>
+                      <div className="p-5 rounded-xl bg-card border border-border/40">
+                        <h4 className="font-bold text-destructive mb-3">High Risk (Bearish)</h4>
+                        <ul className="space-y-2 text-sm text-foreground/70">
+                          <li>• Mining ban (environmental)</li>
+                          <li>• Self-custody restrictions</li>
+                          <li>• Punitive taxation (unrealized gains)</li>
+                          <li>• CBDC competition mandates</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <KeyTakeaways insights={[
+                  "MiCA creates regulatory clarity in EU—expect institutional capital flows to accelerate in 2025-2026",
+                  "US regulatory uncertainty persists but ETF approval signals de facto acceptance of Bitcoin as legitimate asset",
+                  "Hong Kong's pro-crypto stance positions it as Asia's digital asset hub, with potential mainland China implications",
+                  "Key risk: Environmental regulations targeting proof-of-work mining could create supply-side disruption"
+                ]} />
+              </ChapterSection>
+
+              {/* ===== CHAPTER XIV: INSTITUTIONAL ADOPTION METRICS ===== */}
+              <ChapterSection id="chapter-14" dataSection="chapter-14">
+                <div className="flex items-center gap-4 mb-8">
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center border border-primary/30">
+                    <Globe className="w-8 h-8 text-primary" />
+                  </div>
+                  <div>
+                    <div className="text-sm font-medium text-primary mb-1">Chapter XIV</div>
+                    <h2 className="text-3xl font-bold text-foreground">Institutional Adoption Metrics</h2>
+                  </div>
+                </div>
+
+                <div className="space-y-8">
+                  <p className="text-foreground/80 leading-relaxed text-lg">
+                    Institutional adoption has moved beyond speculation into measurable allocation trends. Tracking these metrics provides leading indicators for sustained price support.
+                  </p>
+
+                  {/* Adoption Categories */}
+                  <div className="space-y-6">
+                    <h3 className="text-2xl font-bold text-foreground flex items-center gap-3">
+                      <div className="w-1.5 h-8 bg-primary rounded-full"></div>
+                      Institutional Holder Categories
+                    </h3>
+
+                    <div className="grid md:grid-cols-2 gap-6">
+                      {/* Corporate Treasury */}
+                      <div className="p-6 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20">
+                        <h4 className="text-xl font-bold text-foreground mb-4">Corporate Treasury Holdings</h4>
+                        <div className="space-y-4">
+                          <div className="flex justify-between items-center py-2 border-b border-border/20">
+                            <span className="text-foreground/80">MicroStrategy (MSTR)</span>
+                            <span className="text-primary font-bold">~446,000 BTC</span>
+                          </div>
+                          <div className="flex justify-between items-center py-2 border-b border-border/20">
+                            <span className="text-foreground/80">Marathon Digital</span>
+                            <span className="text-primary font-bold">~44,000 BTC</span>
+                          </div>
+                          <div className="flex justify-between items-center py-2 border-b border-border/20">
+                            <span className="text-foreground/80">Tesla</span>
+                            <span className="text-primary font-bold">~9,700 BTC</span>
+                          </div>
+                          <div className="flex justify-between items-center py-2">
+                            <span className="text-foreground/80">Block (Square)</span>
+                            <span className="text-primary font-bold">~8,000 BTC</span>
+                          </div>
+                        </div>
+                        <p className="text-sm text-muted-foreground mt-4 italic">Total corporate holdings: ~500,000+ BTC (2.4% of supply)</p>
+                      </div>
+
+                      {/* ETF Holdings */}
+                      <div className="p-6 rounded-xl bg-gradient-to-br from-accent/10 to-accent/5 border border-accent/20">
+                        <h4 className="text-xl font-bold text-foreground mb-4">Spot ETF Holdings (US)</h4>
+                        <div className="space-y-4">
+                          <div className="flex justify-between items-center py-2 border-b border-border/20">
+                            <span className="text-foreground/80">BlackRock IBIT</span>
+                            <span className="text-accent font-bold">~550,000 BTC</span>
+                          </div>
+                          <div className="flex justify-between items-center py-2 border-b border-border/20">
+                            <span className="text-foreground/80">Fidelity FBTC</span>
+                            <span className="text-accent font-bold">~205,000 BTC</span>
+                          </div>
+                          <div className="flex justify-between items-center py-2 border-b border-border/20">
+                            <span className="text-foreground/80">Grayscale GBTC</span>
+                            <span className="text-accent font-bold">~210,000 BTC</span>
+                          </div>
+                          <div className="flex justify-between items-center py-2">
+                            <span className="text-foreground/80">Other ETFs</span>
+                            <span className="text-accent font-bold">~150,000 BTC</span>
+                          </div>
+                        </div>
+                        <p className="text-sm text-muted-foreground mt-4 italic">Total ETF holdings: ~1.1M BTC (5.2% of supply)</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Emerging Institutional Categories */}
+                  <div className="space-y-4">
+                    <h3 className="text-2xl font-bold text-foreground flex items-center gap-3">
+                      <div className="w-1.5 h-8 bg-primary rounded-full"></div>
+                      Emerging Institutional Categories (2025-2026 Watch)
+                    </h3>
+                    <div className="grid md:grid-cols-3 gap-4">
+                      <div className="p-5 rounded-xl bg-card border border-border/40">
+                        <h4 className="font-bold text-foreground mb-2">Sovereign Wealth Funds</h4>
+                        <p className="text-sm text-foreground/70 mb-3">Norway GPFG, Singapore GIC, Abu Dhabi ADIA exploring allocations</p>
+                        <div className="text-xs text-accent">Potential: $50-200B inflows</div>
+                      </div>
+                      <div className="p-5 rounded-xl bg-card border border-border/40">
+                        <h4 className="font-bold text-foreground mb-2">Pension Funds</h4>
+                        <p className="text-sm text-foreground/70 mb-3">Wisconsin State, Houston Firefighters, UK pensions testing waters</p>
+                        <div className="text-xs text-accent">Potential: $100-500B TAM</div>
+                      </div>
+                      <div className="p-5 rounded-xl bg-card border border-border/40">
+                        <h4 className="font-bold text-foreground mb-2">Insurance Companies</h4>
+                        <p className="text-sm text-foreground/70 mb-3">MassMutual, TIAA-CREF precedents set; regulatory barriers easing</p>
+                        <div className="text-xs text-accent">Potential: $50-150B TAM</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Adoption Velocity Metrics */}
+                  <div className="p-6 rounded-xl bg-gradient-to-br from-muted/30 to-background border border-border/40">
+                    <h4 className="text-lg font-bold text-foreground mb-4">Adoption Velocity Indicators</h4>
+                    <div className="grid md:grid-cols-4 gap-4 text-center">
+                      <div>
+                        <div className="text-3xl font-bold text-primary mb-1">1,100+</div>
+                        <p className="text-sm text-foreground/70">13F Filers with BTC ETF exposure</p>
+                      </div>
+                      <div>
+                        <div className="text-3xl font-bold text-accent mb-1">$120B+</div>
+                        <p className="text-sm text-foreground/70">Total ETF AUM (US + Global)</p>
+                      </div>
+                      <div>
+                        <div className="text-3xl font-bold text-primary mb-1">7.6%</div>
+                        <p className="text-sm text-foreground/70">Supply held by institutions</p>
+                      </div>
+                      <div>
+                        <div className="text-3xl font-bold text-accent mb-1">+2.5%</div>
+                        <p className="text-sm text-foreground/70">YoY institutional growth</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <KeyTakeaways insights={[
+                  "ETFs have absorbed 1.1M BTC (5.2% of supply) in 12 months—fastest institutional adoption of any asset class in history",
+                  "Corporate treasury adoption remains concentrated (MicroStrategy ~90% of total) but provides price floor support",
+                  "Sovereign wealth funds and pension funds represent the next wave—2026 may see first major SWF allocation announcements",
+                  "Institutional supply absorption rate exceeds new issuance by 3x, creating structural demand-supply imbalance"
+                ]} />
+              </ChapterSection>
+
+              {/* ===== CHAPTER XV: MACRO CALENDAR 2026 ===== */}
+              <ChapterSection id="chapter-15" dataSection="chapter-15">
+                <div className="flex items-center gap-4 mb-8">
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center border border-primary/30">
+                    <Calendar className="w-8 h-8 text-primary" />
+                  </div>
+                  <div>
+                    <div className="text-sm font-medium text-primary mb-1">Chapter XV</div>
+                    <h2 className="text-3xl font-bold text-foreground">Macro Calendar & Key Dates 2026</h2>
+                  </div>
+                </div>
+
+                <div className="space-y-8">
+                  <p className="text-foreground/80 leading-relaxed text-lg">
+                    Critical dates for portfolio positioning. Our framework integrates scheduled events with regime probability shifts to optimize entry/exit timing.
+                  </p>
+
+                  {/* Q1 2026 */}
+                  <div className="space-y-4">
+                    <h3 className="text-xl font-bold text-foreground flex items-center gap-3">
+                      <div className="px-3 py-1 rounded bg-primary/20 text-primary text-sm font-bold">Q1 2026</div>
+                    </h3>
+                    <div className="space-y-3">
+                      <div className="p-4 rounded-lg bg-card/50 border border-border/40 flex justify-between items-center">
+                        <div>
+                          <div className="font-semibold text-foreground">Jan 28-29</div>
+                          <div className="text-sm text-foreground/70">FOMC Meeting</div>
+                        </div>
+                        <span className="text-xs px-2 py-1 rounded bg-accent/20 text-accent">High Impact</span>
+                      </div>
+                      <div className="p-4 rounded-lg bg-card/50 border border-border/40 flex justify-between items-center">
+                        <div>
+                          <div className="font-semibold text-foreground">Mar 17-18</div>
+                          <div className="text-sm text-foreground/70">FOMC Meeting + Dot Plot</div>
+                        </div>
+                        <span className="text-xs px-2 py-1 rounded bg-destructive/20 text-destructive">Critical</span>
+                      </div>
+                      <div className="p-4 rounded-lg bg-card/50 border border-border/40 flex justify-between items-center">
+                        <div>
+                          <div className="font-semibold text-foreground">Mar 26</div>
+                          <div className="text-sm text-foreground/70">CME BTC Options Quarterly Expiry</div>
+                        </div>
+                        <span className="text-xs px-2 py-1 rounded bg-accent/20 text-accent">High Impact</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Q2 2026 */}
+                  <div className="space-y-4">
+                    <h3 className="text-xl font-bold text-foreground flex items-center gap-3">
+                      <div className="px-3 py-1 rounded bg-accent/20 text-accent text-sm font-bold">Q2 2026</div>
+                    </h3>
+                    <div className="space-y-3">
+                      <div className="p-4 rounded-lg bg-gradient-to-r from-primary/10 to-transparent border border-primary/30 flex justify-between items-center">
+                        <div>
+                          <div className="font-semibold text-foreground">Apr 17</div>
+                          <div className="text-sm text-foreground/70">Halving Anniversary (2 years post-halving)</div>
+                        </div>
+                        <span className="text-xs px-2 py-1 rounded bg-primary/30 text-primary font-bold">Cycle Milestone</span>
+                      </div>
+                      <div className="p-4 rounded-lg bg-card/50 border border-border/40 flex justify-between items-center">
+                        <div>
+                          <div className="font-semibold text-foreground">May 5-6</div>
+                          <div className="text-sm text-foreground/70">FOMC Meeting</div>
+                        </div>
+                        <span className="text-xs px-2 py-1 rounded bg-accent/20 text-accent">High Impact</span>
+                      </div>
+                      <div className="p-4 rounded-lg bg-card/50 border border-border/40 flex justify-between items-center">
+                        <div>
+                          <div className="font-semibold text-foreground">Jun 16-17</div>
+                          <div className="text-sm text-foreground/70">FOMC Meeting + SEP Update</div>
+                        </div>
+                        <span className="text-xs px-2 py-1 rounded bg-destructive/20 text-destructive">Critical</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Q3-Q4 2026 */}
+                  <div className="space-y-4">
+                    <h3 className="text-xl font-bold text-foreground flex items-center gap-3">
+                      <div className="px-3 py-1 rounded bg-blue-500/20 text-blue-400 text-sm font-bold">Q3-Q4 2026</div>
+                    </h3>
+                    <div className="space-y-3">
+                      <div className="p-4 rounded-lg bg-card/50 border border-border/40 flex justify-between items-center">
+                        <div>
+                          <div className="font-semibold text-foreground">Sep 15-16</div>
+                          <div className="text-sm text-foreground/70">FOMC Meeting + Dot Plot</div>
+                        </div>
+                        <span className="text-xs px-2 py-1 rounded bg-destructive/20 text-destructive">Critical</span>
+                      </div>
+                      <div className="p-4 rounded-lg bg-card/50 border border-border/40 flex justify-between items-center">
+                        <div>
+                          <div className="font-semibold text-foreground">Nov 3</div>
+                          <div className="text-sm text-foreground/70">US Midterm Elections</div>
+                        </div>
+                        <span className="text-xs px-2 py-1 rounded bg-destructive/20 text-destructive">Critical</span>
+                      </div>
+                      <div className="p-4 rounded-lg bg-card/50 border border-border/40 flex justify-between items-center">
+                        <div>
+                          <div className="font-semibold text-foreground">Dec 15-16</div>
+                          <div className="text-sm text-foreground/70">FOMC Year-End Meeting</div>
+                        </div>
+                        <span className="text-xs px-2 py-1 rounded bg-accent/20 text-accent">High Impact</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Positioning Framework */}
+                  <div className="p-6 rounded-xl bg-gradient-to-br from-primary/10 to-accent/5 border border-primary/20">
+                    <h4 className="text-lg font-bold text-foreground mb-4">Event-Based Positioning Framework</h4>
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div>
+                        <h5 className="font-semibold text-foreground mb-2">Pre-FOMC (7 days before)</h5>
+                        <p className="text-sm text-foreground/70">Reduce position size by 20-30%; elevated volatility expected. Avoid new entries.</p>
+                      </div>
+                      <div>
+                        <h5 className="font-semibold text-foreground mb-2">Post-FOMC (3 days after)</h5>
+                        <p className="text-sm text-foreground/70">Optimal entry window if dovish surprise. Wait for dust to settle before adding.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <KeyTakeaways insights={[
+                  "April 2026 marks 2-year post-halving—historically the peak probability zone for cycle tops",
+                  "FOMC meetings with dot plots (Mar, Jun, Sep, Dec) drive largest volatility spikes",
+                  "Reduce exposure 7 days before critical events; add on dovish surprises post-meeting",
+                  "Q4 2026 US midterm elections could trigger policy uncertainty and volatility regime"
+                ]} />
+              </ChapterSection>
+
+              {/* ===== CHAPTER XVI: GEOPOLITICAL RISK ANALYSIS ===== */}
+              <ChapterSection id="chapter-16" dataSection="chapter-16">
+                <div className="flex items-center gap-4 mb-8">
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center border border-primary/30">
+                    <AlertTriangle className="w-8 h-8 text-primary" />
+                  </div>
+                  <div>
+                    <div className="text-sm font-medium text-primary mb-1">Chapter XVI</div>
+                    <h2 className="text-3xl font-bold text-foreground">Geopolitical Risk Analysis</h2>
+                  </div>
+                </div>
+
+                <div className="space-y-8">
+                  <p className="text-foreground/80 leading-relaxed text-lg">
+                    Bitcoin's narrative as "digital gold" and hedge against monetary debasement gains strength during geopolitical instability. Understanding these dynamics is critical for institutional positioning.
+                  </p>
+
+                  {/* Key Geopolitical Themes */}
+                  <div className="space-y-6">
+                    <h3 className="text-2xl font-bold text-foreground flex items-center gap-3">
+                      <div className="w-1.5 h-8 bg-primary rounded-full"></div>
+                      Key Geopolitical Themes for 2026
+                    </h3>
+
+                    <div className="space-y-4">
+                      {/* Dedollarization */}
+                      <div className="p-6 rounded-xl bg-gradient-to-br from-amber-500/10 to-amber-500/5 border border-amber-500/20">
+                        <h4 className="text-xl font-bold text-foreground mb-3">Dedollarization & BRICS Expansion</h4>
+                        <div className="grid md:grid-cols-2 gap-4">
+                          <div>
+                            <p className="text-foreground/80 text-sm leading-relaxed mb-3">
+                              BRICS+ now represents 45% of global population and 35% of GDP. Active efforts to create alternative settlement systems (mBridge, bilateral agreements) reduce USD dominance.
+                            </p>
+                            <p className="text-sm text-accent">Bitcoin implication: Neutral settlement layer gains appeal as geopolitical tensions fragment traditional systems.</p>
+                          </div>
+                          <div className="p-4 rounded-lg bg-background/50">
+                            <h5 className="font-semibold text-foreground mb-2">Key Developments</h5>
+                            <ul className="space-y-1 text-sm text-foreground/70">
+                              <li>• China-Russia energy trade in RMB</li>
+                              <li>• Saudi Arabia pricing oil in multiple currencies</li>
+                              <li>• Central bank gold accumulation accelerating</li>
+                              <li>• BRICS payment system development</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* US-China Tensions */}
+                      <div className="p-6 rounded-xl bg-gradient-to-br from-red-500/10 to-red-500/5 border border-red-500/20">
+                        <h4 className="text-xl font-bold text-foreground mb-3">US-China Technology Decoupling</h4>
+                        <div className="grid md:grid-cols-2 gap-4">
+                          <div>
+                            <p className="text-foreground/80 text-sm leading-relaxed mb-3">
+                              Semiconductor export controls, investment restrictions, and technology sanctions fragment global supply chains. Bitcoin mining hardware (ASICs) caught in crossfire.
+                            </p>
+                            <p className="text-sm text-destructive">Risk: Mining hardware supply disruption could impact hashrate and security.</p>
+                          </div>
+                          <div className="p-4 rounded-lg bg-background/50">
+                            <h5 className="font-semibold text-foreground mb-2">Scenario Analysis</h5>
+                            <ul className="space-y-1 text-sm text-foreground/70">
+                              <li>• Taiwan tensions → supply chain crisis</li>
+                              <li>• Further sanctions → hashrate migration</li>
+                              <li>• Currency wars → BTC as neutral asset</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Monetary Sovereignty */}
+                      <div className="p-6 rounded-xl bg-gradient-to-br from-blue-500/10 to-blue-500/5 border border-blue-500/20">
+                        <h4 className="text-xl font-bold text-foreground mb-3">Monetary Sovereignty & CBDCs</h4>
+                        <div className="grid md:grid-cols-2 gap-4">
+                          <div>
+                            <p className="text-foreground/80 text-sm leading-relaxed mb-3">
+                              130+ countries exploring CBDCs. China's digital yuan in advanced rollout. ECB digital euro targeted for 2026. Privacy concerns drive alternative demand.
+                            </p>
+                            <p className="text-sm text-accent">Bitcoin implication: CBDCs highlight privacy value proposition; potential regulatory pushback against self-custody.</p>
+                          </div>
+                          <div className="p-4 rounded-lg bg-background/50">
+                            <h5 className="font-semibold text-foreground mb-2">CBDC Timeline</h5>
+                            <ul className="space-y-1 text-sm text-foreground/70">
+                              <li>• 🇨🇳 China: Live (limited rollout)</li>
+                              <li>• 🇪🇺 EU: 2026-2027 target launch</li>
+                              <li>• 🇺🇸 US: Research phase (politically contentious)</li>
+                              <li>• 🇬🇧 UK: 2025-2026 consultation</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Black Swan Scenarios */}
+                  <div className="space-y-4">
+                    <h3 className="text-2xl font-bold text-foreground flex items-center gap-3">
+                      <div className="w-1.5 h-8 bg-destructive rounded-full"></div>
+                      Black Swan Scenarios
+                    </h3>
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div className="p-5 rounded-xl bg-card border border-destructive/30">
+                        <h4 className="font-bold text-destructive mb-2">Quantum Computing Breakthrough</h4>
+                        <p className="text-sm text-foreground/70">Cryptographic vulnerability exposure. Timeline: 10-15 years for practical threat, but announcements could trigger panic selling.</p>
+                        <div className="mt-2 text-xs text-muted-foreground">Probability: Very Low | Impact: Severe</div>
+                      </div>
+                      <div className="p-5 rounded-xl bg-card border border-destructive/30">
+                        <h4 className="font-bold text-destructive mb-2">Major Exchange Failure</h4>
+                        <p className="text-sm text-foreground/70">FTX-scale collapse at remaining major venues. Contagion risk to custody providers and lending platforms.</p>
+                        <div className="mt-2 text-xs text-muted-foreground">Probability: Low-Medium | Impact: High</div>
+                      </div>
+                      <div className="p-5 rounded-xl bg-card border border-destructive/30">
+                        <h4 className="font-bold text-destructive mb-2">Coordinated G20 Ban</h4>
+                        <p className="text-sm text-foreground/70">Synchronized regulatory action citing financial stability or environmental concerns. Increasingly unlikely post-ETF approval.</p>
+                        <div className="mt-2 text-xs text-muted-foreground">Probability: Very Low | Impact: Severe</div>
+                      </div>
+                      <div className="p-5 rounded-xl bg-card border border-destructive/30">
+                        <h4 className="font-bold text-destructive mb-2">Protocol-Level Bug</h4>
+                        <p className="text-sm text-foreground/70">Critical vulnerability in Bitcoin Core. 15-year track record provides confidence, but tail risk remains.</p>
+                        <div className="mt-2 text-xs text-muted-foreground">Probability: Very Low | Impact: Catastrophic</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <KeyTakeaways insights={[
+                  "Dedollarization accelerates Bitcoin's 'neutral money' narrative—BRICS expansion is structurally bullish",
+                  "US-China decoupling creates mining supply chain risks but reinforces censorship-resistance value",
+                  "CBDC rollouts paradoxically strengthen Bitcoin's privacy and self-custody value proposition",
+                  "Black swan risks require position sizing discipline—never allocate more than you can afford to lose entirely"
+                ]} />
+              </ChapterSection>
+
+              {/* ===== CHAPTER XVII: HISTORICAL CYCLE COMPARISON ===== */}
+              <ChapterSection id="chapter-17" dataSection="chapter-17">
+                <div className="flex items-center gap-4 mb-8">
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center border border-primary/30">
+                    <Activity className="w-8 h-8 text-primary" />
+                  </div>
+                  <div>
+                    <div className="text-sm font-medium text-primary mb-1">Chapter XVII</div>
+                    <h2 className="text-3xl font-bold text-foreground">Historical Cycle Comparison</h2>
+                  </div>
+                </div>
+
+                <div className="space-y-8">
+                  <p className="text-foreground/80 leading-relaxed text-lg">
+                    While we caution against relying solely on cycle analysis, understanding historical patterns provides context for current positioning. This cycle differs fundamentally due to ETF-driven institutional flows.
+                  </p>
+
+                  {/* Cycle Comparison Table */}
+                  <div className="space-y-4">
+                    <h3 className="text-2xl font-bold text-foreground flex items-center gap-3">
+                      <div className="w-1.5 h-8 bg-primary rounded-full"></div>
+                      Cycle Metrics Comparison
+                    </h3>
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-sm">
+                        <thead>
+                          <tr className="border-b border-border/40">
+                            <th className="py-3 px-4 text-left text-foreground font-semibold">Metric</th>
+                            <th className="py-3 px-4 text-center text-foreground font-semibold">2013 Cycle</th>
+                            <th className="py-3 px-4 text-center text-foreground font-semibold">2017 Cycle</th>
+                            <th className="py-3 px-4 text-center text-foreground font-semibold">2021 Cycle</th>
+                            <th className="py-3 px-4 text-center text-primary font-semibold">2024-25 Cycle</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr className="border-b border-border/20">
+                            <td className="py-3 px-4 text-foreground">Halving Date</td>
+                            <td className="py-3 px-4 text-center text-foreground/70">Nov 2012</td>
+                            <td className="py-3 px-4 text-center text-foreground/70">Jul 2016</td>
+                            <td className="py-3 px-4 text-center text-foreground/70">May 2020</td>
+                            <td className="py-3 px-4 text-center text-primary font-semibold">Apr 2024</td>
+                          </tr>
+                          <tr className="border-b border-border/20">
+                            <td className="py-3 px-4 text-foreground">Cycle Low</td>
+                            <td className="py-3 px-4 text-center text-foreground/70">$2</td>
+                            <td className="py-3 px-4 text-center text-foreground/70">$152</td>
+                            <td className="py-3 px-4 text-center text-foreground/70">$3,850</td>
+                            <td className="py-3 px-4 text-center text-primary font-semibold">$15,500</td>
+                          </tr>
+                          <tr className="border-b border-border/20">
+                            <td className="py-3 px-4 text-foreground">Cycle High</td>
+                            <td className="py-3 px-4 text-center text-foreground/70">$1,150</td>
+                            <td className="py-3 px-4 text-center text-foreground/70">$19,700</td>
+                            <td className="py-3 px-4 text-center text-foreground/70">$69,000</td>
+                            <td className="py-3 px-4 text-center text-primary font-semibold">$108,000 (ATH)</td>
+                          </tr>
+                          <tr className="border-b border-border/20">
+                            <td className="py-3 px-4 text-foreground">Peak Multiplier</td>
+                            <td className="py-3 px-4 text-center text-accent font-semibold">575x</td>
+                            <td className="py-3 px-4 text-center text-accent font-semibold">130x</td>
+                            <td className="py-3 px-4 text-center text-accent font-semibold">18x</td>
+                            <td className="py-3 px-4 text-center text-primary font-semibold">7x (so far)</td>
+                          </tr>
+                          <tr className="border-b border-border/20">
+                            <td className="py-3 px-4 text-foreground">Days to Peak (post-halving)</td>
+                            <td className="py-3 px-4 text-center text-foreground/70">367</td>
+                            <td className="py-3 px-4 text-center text-foreground/70">525</td>
+                            <td className="py-3 px-4 text-center text-foreground/70">546</td>
+                            <td className="py-3 px-4 text-center text-primary font-semibold">~240 (ongoing)</td>
+                          </tr>
+                          <tr>
+                            <td className="py-3 px-4 text-foreground">Peak Drawdown</td>
+                            <td className="py-3 px-4 text-center text-destructive font-semibold">-87%</td>
+                            <td className="py-3 px-4 text-center text-destructive font-semibold">-84%</td>
+                            <td className="py-3 px-4 text-center text-destructive font-semibold">-77%</td>
+                            <td className="py-3 px-4 text-center text-muted-foreground">TBD</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  {/* Key Differences This Cycle */}
+                  <div className="space-y-4">
+                    <h3 className="text-2xl font-bold text-foreground flex items-center gap-3">
+                      <div className="w-1.5 h-8 bg-accent rounded-full"></div>
+                      Why This Cycle Is Different
+                    </h3>
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div className="p-5 rounded-xl bg-gradient-to-br from-accent/10 to-accent/5 border border-accent/20">
+                        <h4 className="font-bold text-foreground mb-2">ETF-Driven Demand</h4>
+                        <p className="text-sm text-foreground/70">First cycle with regulated spot ETFs. Institutional inflows create persistent bid that didn't exist before. Daily ETF flows now exceed mining issuance by 5-10x.</p>
+                      </div>
+                      <div className="p-5 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20">
+                        <h4 className="font-bold text-foreground mb-2">Macro Regime Dominance</h4>
+                        <p className="text-sm text-foreground/70">M2 liquidity and real rates now dominate price action over halving supply dynamics. 2020-2021 proved QE correlation; 2022 proved QT correlation.</p>
+                      </div>
+                      <div className="p-5 rounded-xl bg-gradient-to-br from-blue-500/10 to-blue-500/5 border border-blue-500/20">
+                        <h4 className="font-bold text-foreground mb-2">Reduced Volatility</h4>
+                        <p className="text-sm text-foreground/70">Institutional participation dampens extremes. 30-day realized vol trending lower each cycle. Expect shallower drawdowns but also compressed upside.</p>
+                      </div>
+                      <div className="p-5 rounded-xl bg-gradient-to-br from-purple-500/10 to-purple-500/5 border border-purple-500/20">
+                        <h4 className="font-bold text-foreground mb-2">Mature Derivatives</h4>
+                        <p className="text-sm text-foreground/70">CME futures, options, and institutional hedging tools allow position management. Reduces forced liquidation cascades that amplified previous cycle peaks/troughs.</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Cycle Position Indicator */}
+                  <div className="p-6 rounded-xl bg-gradient-to-br from-muted/30 to-background border border-border/40">
+                    <h4 className="text-lg font-bold text-foreground mb-4">Where Are We in the Cycle?</h4>
+                    <div className="relative h-8 bg-muted rounded-full overflow-hidden mb-4">
+                      <div className="absolute left-0 top-0 h-full w-[65%] bg-gradient-to-r from-primary to-accent rounded-full"></div>
+                      <div className="absolute left-[65%] top-0 h-full w-1 bg-white"></div>
+                    </div>
+                    <div className="flex justify-between text-xs text-muted-foreground">
+                      <span>Cycle Low</span>
+                      <span>Accumulation</span>
+                      <span>Expansion ← You Are Here</span>
+                      <span>Distribution</span>
+                      <span>Cycle Top</span>
+                    </div>
+                    <p className="text-sm text-foreground/70 mt-4">Based on our HMM regime model, we are currently in mid-Expansion phase with 60-70% of typical cycle gains realized. Historical peak timing suggests Q2-Q4 2026 as highest probability window for cycle top.</p>
+                  </div>
+                </div>
+
+                <KeyTakeaways insights={[
+                  "Diminishing returns each cycle: 575x → 130x → 18x → ~10x expected. Maturation compresses multiples.",
+                  "Historical peak timing: 12-18 months post-halving (Apr 2025 - Oct 2025) for primary peak",
+                  "ETF flows fundamentally alter supply/demand—institutional bid provides higher floor than prior cycles",
+                  "Expect shallower drawdown (50-60% vs 80%+) but also compressed upside relative to prior cycles"
+                ]} />
+              </ChapterSection>
+
+              {/* ===== CHAPTER XVIII: EXIT STRATEGY FRAMEWORK ===== */}
+              <ChapterSection id="chapter-18" dataSection="chapter-18">
+                <div className="flex items-center gap-4 mb-8">
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center border border-primary/30">
+                    <LogOut className="w-8 h-8 text-primary" />
+                  </div>
+                  <div>
+                    <div className="text-sm font-medium text-primary mb-1">Chapter XVIII</div>
+                    <h2 className="text-3xl font-bold text-foreground">Exit Strategy Framework</h2>
+                  </div>
+                </div>
+
+                <div className="space-y-8">
+                  <p className="text-foreground/80 leading-relaxed text-lg">
+                    The difference between paper gains and realized profits is an exit strategy. Our regime-based framework provides systematic rules for taking profits while maintaining upside exposure.
+                  </p>
+
+                  {/* Exit Triggers */}
+                  <div className="space-y-4">
+                    <h3 className="text-2xl font-bold text-foreground flex items-center gap-3">
+                      <div className="w-1.5 h-8 bg-primary rounded-full"></div>
+                      Regime-Based Exit Signals
+                    </h3>
+                    <div className="space-y-4">
+                      <div className="p-6 rounded-xl bg-gradient-to-br from-destructive/10 to-destructive/5 border border-destructive/20">
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className="w-10 h-10 rounded-full bg-destructive/20 flex items-center justify-center">
+                            <span className="text-destructive font-bold">!</span>
+                          </div>
+                          <h4 className="text-xl font-bold text-foreground">DISTRIBUTION Regime Confirmation</h4>
+                        </div>
+                        <p className="text-foreground/80 mb-4">Primary exit signal. When our HMM model transitions from EXPANSION to DISTRIBUTION:</p>
+                        <div className="grid md:grid-cols-3 gap-4">
+                          <div className="p-4 rounded-lg bg-background/50">
+                            <div className="text-2xl font-bold text-destructive mb-1">Sell 30%</div>
+                            <p className="text-sm text-foreground/70">On first confirmation</p>
+                          </div>
+                          <div className="p-4 rounded-lg bg-background/50">
+                            <div className="text-2xl font-bold text-destructive mb-1">Sell 30%</div>
+                            <p className="text-sm text-foreground/70">On sustained (7+ days)</p>
+                          </div>
+                          <div className="p-4 rounded-lg bg-background/50">
+                            <div className="text-2xl font-bold text-destructive mb-1">Hold 40%</div>
+                            <p className="text-sm text-foreground/70">For potential blow-off top</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Price-Based Targets */}
+                  <div className="space-y-4">
+                    <h3 className="text-2xl font-bold text-foreground flex items-center gap-3">
+                      <div className="w-1.5 h-8 bg-accent rounded-full"></div>
+                      Price-Based Profit Taking Ladder
+                    </h3>
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-sm">
+                        <thead>
+                          <tr className="border-b border-border/40">
+                            <th className="py-3 px-4 text-left text-foreground font-semibold">Price Level</th>
+                            <th className="py-3 px-4 text-center text-foreground font-semibold">Action</th>
+                            <th className="py-3 px-4 text-center text-foreground font-semibold">Cumulative Sold</th>
+                            <th className="py-3 px-4 text-left text-foreground font-semibold">Rationale</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr className="border-b border-border/20">
+                            <td className="py-3 px-4 text-accent font-bold">$120,000</td>
+                            <td className="py-3 px-4 text-center text-foreground">Sell 10%</td>
+                            <td className="py-3 px-4 text-center text-foreground/70">10%</td>
+                            <td className="py-3 px-4 text-foreground/70">Psychological resistance; secure initial profits</td>
+                          </tr>
+                          <tr className="border-b border-border/20">
+                            <td className="py-3 px-4 text-accent font-bold">$150,000</td>
+                            <td className="py-3 px-4 text-center text-foreground">Sell 15%</td>
+                            <td className="py-3 px-4 text-center text-foreground/70">25%</td>
+                            <td className="py-3 px-4 text-foreground/70">Base case upper bound; lock in core gains</td>
+                          </tr>
+                          <tr className="border-b border-border/20">
+                            <td className="py-3 px-4 text-accent font-bold">$180,000</td>
+                            <td className="py-3 px-4 text-center text-foreground">Sell 15%</td>
+                            <td className="py-3 px-4 text-center text-foreground/70">40%</td>
+                            <td className="py-3 px-4 text-foreground/70">High convexity scenario entry; elevated caution</td>
+                          </tr>
+                          <tr className="border-b border-border/20">
+                            <td className="py-3 px-4 text-primary font-bold">$200,000</td>
+                            <td className="py-3 px-4 text-center text-foreground">Sell 20%</td>
+                            <td className="py-3 px-4 text-center text-foreground/70">60%</td>
+                            <td className="py-3 px-4 text-foreground/70">Major psychological level; extended territory</td>
+                          </tr>
+                          <tr>
+                            <td className="py-3 px-4 text-primary font-bold">$250,000+</td>
+                            <td className="py-3 px-4 text-center text-foreground">Sell 25%</td>
+                            <td className="py-3 px-4 text-center text-foreground/70">85%</td>
+                            <td className="py-3 px-4 text-foreground/70">Blow-off top territory; preserve moonbag only</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <p className="text-sm text-muted-foreground italic">Note: Adjust levels based on entry price and individual risk tolerance. This is a framework, not financial advice.</p>
+                  </div>
+
+                  {/* Warning Signs */}
+                  <div className="space-y-4">
+                    <h3 className="text-2xl font-bold text-foreground flex items-center gap-3">
+                      <div className="w-1.5 h-8 bg-destructive rounded-full"></div>
+                      Distribution Warning Signs
+                    </h3>
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div className="p-5 rounded-xl bg-card border border-border/40">
+                        <h4 className="font-bold text-foreground mb-3">On-Chain Signals</h4>
+                        <ul className="space-y-2 text-sm text-foreground/70">
+                          <li className="flex items-start gap-2"><span className="text-destructive">⚠️</span> Long-term holder selling accelerates</li>
+                          <li className="flex items-start gap-2"><span className="text-destructive">⚠️</span> Exchange inflows spike</li>
+                          <li className="flex items-start gap-2"><span className="text-destructive">⚠️</span> Miner outflows increase</li>
+                          <li className="flex items-start gap-2"><span className="text-destructive">⚠️</span> MVRV Z-Score enters overvalued zone (&gt;7)</li>
+                        </ul>
+                      </div>
+                      <div className="p-5 rounded-xl bg-card border border-border/40">
+                        <h4 className="font-bold text-foreground mb-3">Market Structure Signals</h4>
+                        <ul className="space-y-2 text-sm text-foreground/70">
+                          <li className="flex items-start gap-2"><span className="text-destructive">⚠️</span> Funding rates persistently &gt;0.1%</li>
+                          <li className="flex items-start gap-2"><span className="text-destructive">⚠️</span> Open interest at cycle highs</li>
+                          <li className="flex items-start gap-2"><span className="text-destructive">⚠️</span> ETF flows turn negative</li>
+                          <li className="flex items-start gap-2"><span className="text-destructive">⚠️</span> Retail euphoria (Google Trends spike)</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Reentry Framework */}
+                  <div className="p-6 rounded-xl bg-gradient-to-br from-accent/10 to-primary/5 border border-accent/20">
+                    <h4 className="text-lg font-bold text-foreground mb-4">Reentry Framework</h4>
+                    <p className="text-foreground/80 mb-4">After taking profits, deploy capital back during the next ACCUMULATION regime:</p>
+                    <div className="grid md:grid-cols-3 gap-4">
+                      <div className="p-4 rounded-lg bg-background/50">
+                        <div className="text-lg font-bold text-accent mb-1">DCA 30%</div>
+                        <p className="text-sm text-foreground/70">When -50% from peak</p>
+                      </div>
+                      <div className="p-4 rounded-lg bg-background/50">
+                        <div className="text-lg font-bold text-accent mb-1">DCA 40%</div>
+                        <p className="text-sm text-foreground/70">On ACCUMULATION confirmation</p>
+                      </div>
+                      <div className="p-4 rounded-lg bg-background/50">
+                        <div className="text-lg font-bold text-accent mb-1">DCA 30%</div>
+                        <p className="text-sm text-foreground/70">Over next 6 months</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <KeyTakeaways insights={[
+                  "DISTRIBUTION regime confirmation is the primary exit signal—sell 60% systematically on transition",
+                  "Price-based ladder provides structure: 10% at $120k, then 15% increments at key levels",
+                  "Watch on-chain distribution (LTH selling, exchange inflows) and derivatives (funding, OI) for confirmation",
+                  "Always keep 15-20% 'moonbag' for potential blow-off top; reentry on ACCUMULATION regime"
+                ]} />
+              </ChapterSection>
+
+              {/* ===== CHAPTER XIX: LIGHTNING NETWORK & LAYER 2 ===== */}
+              <ChapterSection id="chapter-19" dataSection="chapter-19">
+                <div className="flex items-center gap-4 mb-8">
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center border border-primary/30">
+                    <Zap className="w-8 h-8 text-primary" />
+                  </div>
+                  <div>
+                    <div className="text-sm font-medium text-primary mb-1">Chapter XIX</div>
+                    <h2 className="text-3xl font-bold text-foreground">Lightning Network & Layer 2</h2>
+                  </div>
+                </div>
+
+                <div className="space-y-8">
+                  <p className="text-foreground/80 leading-relaxed text-lg">
+                    Lightning Network represents Bitcoin's scaling solution, enabling instant, low-cost transactions. While not directly impacting price, network growth validates the "medium of exchange" narrative alongside "store of value."
+                  </p>
+
+                  {/* Network Metrics */}
+                  <div className="space-y-4">
+                    <h3 className="text-2xl font-bold text-foreground flex items-center gap-3">
+                      <div className="w-1.5 h-8 bg-primary rounded-full"></div>
+                      Network Capacity Metrics
+                    </h3>
+                    <div className="grid md:grid-cols-4 gap-4">
+                      <div className="p-5 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 text-center">
+                        <div className="text-3xl font-bold text-primary mb-1">~5,400 BTC</div>
+                        <p className="text-sm text-foreground/70">Total Network Capacity</p>
+                      </div>
+                      <div className="p-5 rounded-xl bg-gradient-to-br from-accent/10 to-accent/5 border border-accent/20 text-center">
+                        <div className="text-3xl font-bold text-accent mb-1">~16,000</div>
+                        <p className="text-sm text-foreground/70">Active Nodes</p>
+                      </div>
+                      <div className="p-5 rounded-xl bg-gradient-to-br from-blue-500/10 to-blue-500/5 border border-blue-500/20 text-center">
+                        <div className="text-3xl font-bold text-blue-400 mb-1">~75,000</div>
+                        <p className="text-sm text-foreground/70">Payment Channels</p>
+                      </div>
+                      <div className="p-5 rounded-xl bg-gradient-to-br from-purple-500/10 to-purple-500/5 border border-purple-500/20 text-center">
+                        <div className="text-3xl font-bold text-purple-400 mb-1">+120%</div>
+                        <p className="text-sm text-foreground/70">YoY Capacity Growth</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Adoption Drivers */}
+                  <div className="space-y-4">
+                    <h3 className="text-2xl font-bold text-foreground flex items-center gap-3">
+                      <div className="w-1.5 h-8 bg-accent rounded-full"></div>
+                      Key Adoption Drivers
+                    </h3>
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div className="p-6 rounded-xl bg-card border border-border/40">
+                        <h4 className="text-lg font-bold text-foreground mb-3">El Salvador & National Adoption</h4>
+                        <p className="text-foreground/80 text-sm leading-relaxed mb-3">
+                          Chivo Wallet infrastructure proves Lightning viability at national scale. Despite adoption challenges, provides template for other emerging markets.
+                        </p>
+                        <ul className="space-y-1 text-sm text-foreground/70">
+                          <li>• 4M+ registered wallets</li>
+                          <li>• Remittance use case validated</li>
+                          <li>• Other countries exploring (Argentina, Paraguay)</li>
+                        </ul>
+                      </div>
+                      <div className="p-6 rounded-xl bg-card border border-border/40">
+                        <h4 className="text-lg font-bold text-foreground mb-3">Institutional Integration</h4>
+                        <p className="text-foreground/80 text-sm leading-relaxed mb-3">
+                          Major exchanges (Coinbase, Kraken, Binance) adding Lightning support. Cash App, Strike enabling instant settlement.
+                        </p>
+                        <ul className="space-y-1 text-sm text-foreground/70">
+                          <li>• Reduced withdrawal fees</li>
+                          <li>• Instant settlement capability</li>
+                          <li>• Micropayments enabled</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Investment Implications */}
+                  <div className="p-6 rounded-xl bg-gradient-to-br from-muted/30 to-background border border-border/40">
+                    <h4 className="text-lg font-bold text-foreground mb-4">Investment Implications</h4>
+                    <div className="space-y-3 text-foreground/80">
+                      <div className="flex items-start gap-3">
+                        <div className="w-2 h-2 rounded-full bg-accent mt-2 flex-shrink-0"></div>
+                        <p><strong>Long-term bullish:</strong> Addresses scalability concerns; validates Bitcoin's utility beyond speculation</p>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className="w-2 h-2 rounded-full bg-accent mt-2 flex-shrink-0"></div>
+                        <p><strong>Emerging market adoption:</strong> Remittance corridors (US-LatAm, Africa) drive real-world usage</p>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0"></div>
+                        <p><strong>Not a near-term catalyst:</strong> Capacity (~$500M) too small to impact price directly; narrative value only</p>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className="w-2 h-2 rounded-full bg-destructive mt-2 flex-shrink-0"></div>
+                        <p><strong>Technical risks:</strong> Channel management complexity, liquidity fragmentation, potential protocol vulnerabilities</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <KeyTakeaways insights={[
+                  "Lightning capacity up 120% YoY—network effects accelerating but total value (~$500M) remains immaterial to price",
+                  "El Salvador provides national-scale proof of concept; other emerging markets (Argentina, Africa) watching closely",
+                  "Exchange integration (Coinbase, Kraken, Binance) drives accessibility and normalizes Lightning usage",
+                  "Long-term narrative value significant; near-term price impact minimal. Monitor as adoption metric, not trading signal."
+                ]} />
               </ChapterSection>
 
               {/* About the ARIES76 Team */}
