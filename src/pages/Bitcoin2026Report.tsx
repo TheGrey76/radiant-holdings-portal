@@ -1904,8 +1904,8 @@ const Bitcoin2026Report = () => {
                         <h4 className="text-xl font-bold text-foreground mb-4">Corporate Treasury Holdings</h4>
                         <div className="space-y-4">
                           <div className="flex justify-between items-center py-2 border-b border-border/20">
-                            <span className="text-foreground/80">MicroStrategy (MSTR)</span>
-                            <span className="text-primary font-bold">~446,000 BTC</span>
+                            <a href="https://www.google.com/finance/quote/MSTR:NASDAQ" target="_blank" rel="noopener noreferrer" className="text-foreground/80 hover:text-primary transition-colors underline decoration-dotted">Strategy (MSTR)</a>
+                            <span className="text-primary font-bold">~580,000 BTC</span>
                           </div>
                           <div className="flex justify-between items-center py-2 border-b border-border/20">
                             <span className="text-foreground/80">Marathon Digital</span>
@@ -2000,7 +2000,7 @@ const Bitcoin2026Report = () => {
 
                 <KeyTakeaways insights={[
                   "ETFs have absorbed 1.1M BTC (5.2% of supply) in 12 months—fastest institutional adoption of any asset class in history",
-                  "Corporate treasury adoption remains concentrated (MicroStrategy ~90% of total) but provides price floor support",
+                  "Corporate treasury adoption remains concentrated (Strategy ~90% of total) but provides price floor support",
                   "Sovereign wealth funds and pension funds represent the next wave—2026 may see first major SWF allocation announcements",
                   "Institutional supply absorption rate exceeds new issuance by 3x, creating structural demand-supply imbalance"
                 ]} />
@@ -2615,11 +2615,11 @@ const Bitcoin2026Report = () => {
                       <div className="p-6 rounded-xl bg-card border border-border/40">
                         <h4 className="text-lg font-bold text-foreground mb-3">US Strategic Reserve & Corporate Treasury</h4>
                         <p className="text-foreground/80 text-sm leading-relaxed mb-3">
-                          Trump administration's Strategic Bitcoin Reserve proposal represents potential paradigm shift. MicroStrategy pioneered corporate treasury strategy now replicated by dozens of companies.
+                          Trump administration's Strategic Bitcoin Reserve proposal represents potential paradigm shift. Strategy (ex-MicroStrategy) pioneered corporate treasury strategy now replicated by dozens of companies.
                         </p>
                         <ul className="space-y-1 text-sm text-foreground/70">
                           <li>• US Strategic Reserve bill under Congressional review</li>
-                          <li>• MicroStrategy: 400,000+ BTC ($42B+)</li>
+                          <li>• <a href="https://www.google.com/finance/quote/MSTR:NASDAQ" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-accent underline">Strategy (MSTR)</a>: 580,000+ BTC ($58B+)</li>
                           <li>• Tesla, Marathon, Block maintain BTC treasuries</li>
                           <li>• State-level reserve proposals (Texas, Wyoming)</li>
                         </ul>
