@@ -210,6 +210,22 @@ const Bitcoin2026ReportPreview = () => {
       <Helmet>
         <title>Bitcoin 2026 Report | Institutional Macro-Liquidity Framework | ARIES76</title>
         <meta name="description" content="Access the quantitative model that outperformed 95% of crypto analysts. Proprietary macro-liquidity framework with backtested predictions. Price target: $138,000." />
+        
+        {/* Open Graph meta tags for WhatsApp, Facebook, LinkedIn */}
+        <meta property="og:title" content="Bitcoin 2026 Report | Institutional Macro-Liquidity Framework" />
+        <meta property="og:description" content="Access the quantitative model that outperformed 95% of crypto analysts. Proprietary framework with backtested predictions." />
+        <meta property="og:image" content="https://aries76.com/bitcoin-2026-og.png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="640" />
+        <meta property="og:url" content="https://aries76.com/bitcoin-2026-report-preview" />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="ARIES76 Capital Intelligence" />
+        
+        {/* Twitter Card meta tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Bitcoin 2026 Report | ARIES76" />
+        <meta name="twitter:description" content="Access the quantitative model that outperformed 95% of crypto analysts." />
+        <meta name="twitter:image" content="https://aries76.com/bitcoin-2026-og.png" />
       </Helmet>
 
       <div className="min-h-screen bg-gradient-to-b from-zinc-950 via-zinc-900 to-zinc-950">
