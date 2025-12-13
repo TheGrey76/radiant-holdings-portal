@@ -58,10 +58,11 @@ const Bitcoin2026Report = () => {
         ref={ref}
         id={id}
         data-section={dataSection}
-        className="mb-24 scroll-mt-20"
+        className="mb-24 scroll-mt-20 print-section"
         initial={{ opacity: 0, y: 50 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
+        style={{ willChange: 'auto' }}
       >
         {children}
       </motion.section>
@@ -2894,14 +2895,16 @@ const Bitcoin2026Report = () => {
           /* Reset page settings */
           @page {
             size: A4;
-            margin: 1.5cm;
+            margin: 1cm 1.5cm;
           }
 
-          /* Body and container */
-          body {
+          /* Force all content visible */
+          html, body {
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
             color-adjust: exact !important;
+            background: white !important;
+            color: #1a1a1a !important;
           }
 
           /* Hide non-print elements */
@@ -2909,159 +2912,265 @@ const Bitcoin2026Report = () => {
           footer,
           .fixed,
           button[aria-label="Back to top"],
-          .hidden.xl\\:block {
+          .hidden.xl\\:block,
+          .no-print {
             display: none !important;
+            visibility: hidden !important;
           }
 
-          /* Show all content */
-          .min-h-screen {
-            min-height: auto !important;
+          /* Force visibility on all elements */
+          .min-h-screen,
+          .container,
+          main,
+          article,
+          section,
+          div {
+            visibility: visible !important;
+            opacity: 1 !important;
+            transform: none !important;
           }
 
-          /* Ensure backgrounds print */
-          * {
-            -webkit-print-color-adjust: exact !important;
-            print-color-adjust: exact !important;
-          }
-
-          /* Section page breaks */
-          section[data-section] {
-            page-break-inside: avoid;
-            break-inside: avoid;
-            margin-bottom: 2rem !important;
-          }
-
-          /* Prevent breaks inside cards and tables */
-          .rounded-2xl,
-          .rounded-xl,
-          table,
-          .recharts-wrapper {
-            page-break-inside: avoid;
-            break-inside: avoid;
-          }
-
-          /* Force page break before major chapters */
-          #executive-summary,
-          #chapter-2,
-          #chapter-5,
-          #chapter-7,
-          #chapter-10 {
-            page-break-before: always;
-            break-before: page;
-          }
-
-          /* Charts - ensure they print */
-          .recharts-wrapper {
-            overflow: visible !important;
-          }
-
-          .recharts-surface {
-            overflow: visible !important;
-          }
-
-          /* Typography adjustments */
-          h1 { font-size: 28pt !important; }
-          h2 { font-size: 20pt !important; }
-          h3 { font-size: 14pt !important; }
-          p, li { font-size: 10pt !important; line-height: 1.5 !important; }
-
-          /* Remove animations */
+          /* Remove all animations and transforms */
           * {
             animation: none !important;
             transition: none !important;
+            transform: none !important;
+            opacity: 1 !important;
           }
 
-          /* Remove backdrop blur (not supported in print) */
+          /* Framer motion elements - force visible */
+          [style*="opacity"],
+          [style*="transform"],
+          .print-section {
+            opacity: 1 !important;
+            transform: none !important;
+            visibility: visible !important;
+          }
+
+          /* Motion section override */
+          section.print-section {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+          }
+
+          /* Container full width */
+          .container,
+          .max-w-5xl,
+          .max-w-4xl,
+          .max-w-3xl {
+            max-width: 100% !important;
+            width: 100% !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+          }
+
+          /* Flex layout for print */
+          .flex {
+            display: flex !important;
+          }
+
+          .flex-1 {
+            flex: 1 !important;
+          }
+
+          /* Grid layout for print */
+          .grid {
+            display: grid !important;
+          }
+
+          /* Typography - ensure readable */
+          h1 { 
+            font-size: 24pt !important; 
+            color: #1a2332 !important;
+            margin-bottom: 0.5cm !important;
+          }
+          h2 { 
+            font-size: 18pt !important; 
+            color: #1a2332 !important;
+            margin-bottom: 0.4cm !important;
+          }
+          h3 { 
+            font-size: 14pt !important; 
+            color: #1a2332 !important;
+          }
+          h4 {
+            font-size: 12pt !important;
+            color: #1a2332 !important;
+          }
+          p, li, span { 
+            font-size: 10pt !important; 
+            line-height: 1.4 !important;
+            color: #333 !important;
+          }
+
+          /* Remove backdrop blur */
           .backdrop-blur-sm,
-          .backdrop-blur-lg {
+          .backdrop-blur-lg,
+          .backdrop-blur {
             backdrop-filter: none !important;
-            background-color: white !important;
+            -webkit-backdrop-filter: none !important;
           }
 
-          /* Ensure gradients print */
+          /* Cards and boxes styling */
+          .rounded-2xl,
+          .rounded-xl,
+          .rounded-lg {
+            border: 1px solid #d1d5db !important;
+            background-color: #fafafa !important;
+            page-break-inside: avoid;
+            break-inside: avoid;
+          }
+
+          /* Gradients fallback */
           .bg-gradient-to-br,
-          .bg-gradient-to-r {
-            background: #f8f9fa !important;
-            border: 1px solid #e5e7eb !important;
+          .bg-gradient-to-r,
+          .bg-gradient-to-b,
+          .from-muted\\/30,
+          .from-accent\\/5,
+          .from-primary\\/5 {
+            background: #f5f5f5 !important;
           }
 
-          /* Table styling for print */
+          /* Primary color elements */
+          .text-primary {
+            color: #1a2332 !important;
+          }
+
+          .bg-primary {
+            background-color: #1a2332 !important;
+          }
+
+          .text-primary-foreground {
+            color: white !important;
+          }
+
+          /* Accent/orange elements */
+          .text-accent {
+            color: #d97706 !important;
+          }
+
+          /* Muted text */
+          .text-muted-foreground {
+            color: #6b7280 !important;
+          }
+
+          .text-foreground\\/70,
+          .text-foreground\\/80,
+          .text-foreground\\/90 {
+            color: #374151 !important;
+          }
+
+          /* Border styling */
+          .border,
+          .border-border\\/40,
+          .border-border\\/60,
+          .border-primary\\/20 {
+            border-color: #e5e7eb !important;
+          }
+
+          /* Table styling */
           table {
             width: 100% !important;
             border-collapse: collapse !important;
+            page-break-inside: avoid;
           }
 
           th, td {
             border: 1px solid #d1d5db !important;
-            padding: 8px !important;
+            padding: 6px 8px !important;
             text-align: left !important;
+            font-size: 9pt !important;
           }
 
           th {
             background-color: #f3f4f6 !important;
-            font-weight: bold !important;
+            font-weight: 600 !important;
           }
 
-          /* Links styling */
-          a {
-            color: #1a2332 !important;
-            text-decoration: none !important;
+          /* Charts */
+          .recharts-wrapper,
+          .recharts-surface {
+            overflow: visible !important;
+            page-break-inside: avoid;
           }
 
-          /* Container width */
-          .container,
-          .max-w-5xl {
-            max-width: 100% !important;
-            width: 100% !important;
-            padding: 0 !important;
+          /* Section spacing and page breaks */
+          section[data-section] {
+            page-break-inside: avoid;
+            margin-bottom: 1cm !important;
           }
 
-          /* Remove sticky positioning */
+          /* Force page break before major chapters */
+          #executive-summary {
+            page-break-before: always;
+          }
+
+          #chapter-5,
+          #chapter-8 {
+            page-break-before: always;
+          }
+
+          /* Key Takeaways box */
+          .from-muted\\/30 {
+            border: 2px solid #1a2332 !important;
+            padding: 0.5cm !important;
+          }
+
+          /* Icon containers */
+          .bg-primary\\/10,
+          .bg-primary\\/20,
+          .bg-accent\\/10,
+          .bg-accent\\/20 {
+            background-color: #e5e7eb !important;
+          }
+
+          /* Remove position:sticky */
           .sticky {
             position: relative !important;
           }
 
-          /* Key Takeaways styling */
-          .from-muted\\/30 {
-            background-color: #f8f9fa !important;
-            border: 2px solid #e5e7eb !important;
+          /* Links */
+          a {
+            color: #1a2332 !important;
+            text-decoration: underline !important;
           }
 
-          /* Icon containers for print */
-          .bg-primary\\/10,
-          .bg-primary\\/20,
-          .bg-accent\\/10 {
-            background-color: #e5e7eb !important;
+          /* Testimonial quotes */
+          .absolute {
+            position: relative !important;
           }
 
-          /* Remove opacity classes */
-          .opacity-0 {
-            opacity: 1 !important;
+          /* Figure captions */
+          figcaption,
+          .text-xs {
+            font-size: 8pt !important;
           }
 
-          /* Testimonials section */
-          .from-accent\\/5 {
-            background-color: #fafafa !important;
+          /* Spacing adjustments */
+          .mb-24 {
+            margin-bottom: 1.5cm !important;
           }
 
-          /* Print header on each page */
-          .print-header {
-            display: block !important;
+          .mb-16 {
+            margin-bottom: 1cm !important;
           }
-        }
 
-        /* Print-only elements hidden on screen */
-        .print-only {
-          display: none;
-        }
+          .mb-8 {
+            margin-bottom: 0.5cm !important;
+          }
 
-        @media print {
+          .p-8,
+          .p-10 {
+            padding: 0.4cm !important;
+          }
+
+          .p-6 {
+            padding: 0.3cm !important;
+          }
+
+          /* Print header/footer */
           .print-only {
             display: block !important;
-          }
-          
-          .no-print {
-            display: none !important;
           }
         }
       `}</style>
