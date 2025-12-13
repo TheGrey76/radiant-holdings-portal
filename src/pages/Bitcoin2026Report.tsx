@@ -1905,19 +1905,19 @@ const Bitcoin2026Report = () => {
                         <div className="space-y-4">
                           <div className="flex justify-between items-center py-2 border-b border-border/20">
                             <a href="https://www.google.com/finance/quote/MSTR:NASDAQ" target="_blank" rel="noopener noreferrer" className="text-foreground/80 hover:text-primary transition-colors underline decoration-dotted">Strategy (MSTR)</a>
-                            <span className="text-primary font-bold">~580,000 BTC</span>
+                            <span className="text-primary font-bold">660,624 BTC</span>
                           </div>
                           <div className="flex justify-between items-center py-2 border-b border-border/20">
-                            <span className="text-foreground/80">Marathon Digital</span>
-                            <span className="text-primary font-bold">~44,000 BTC</span>
+                            <a href="https://www.google.com/finance/quote/MARA:NASDAQ" target="_blank" rel="noopener noreferrer" className="text-foreground/80 hover:text-primary transition-colors underline decoration-dotted">MARA Holdings (MARA)</a>
+                            <span className="text-primary font-bold">53,250 BTC</span>
                           </div>
                           <div className="flex justify-between items-center py-2 border-b border-border/20">
-                            <span className="text-foreground/80">Tesla</span>
-                            <span className="text-primary font-bold">~9,700 BTC</span>
+                            <a href="https://www.google.com/finance/quote/TSLA:NASDAQ" target="_blank" rel="noopener noreferrer" className="text-foreground/80 hover:text-primary transition-colors underline decoration-dotted">Tesla (TSLA)</a>
+                            <span className="text-primary font-bold">11,509 BTC</span>
                           </div>
                           <div className="flex justify-between items-center py-2">
-                            <span className="text-foreground/80">Block (Square)</span>
-                            <span className="text-primary font-bold">~8,000 BTC</span>
+                            <a href="https://www.google.com/finance/quote/XYZ:NYSE" target="_blank" rel="noopener noreferrer" className="text-foreground/80 hover:text-primary transition-colors underline decoration-dotted">Block (XYZ)</a>
+                            <span className="text-primary font-bold">8,780 BTC</span>
                           </div>
                         </div>
                         <p className="text-sm text-muted-foreground mt-4 italic">Total corporate holdings: ~500,000+ BTC (2.4% of supply)</p>
@@ -2619,8 +2619,8 @@ const Bitcoin2026Report = () => {
                         </p>
                         <ul className="space-y-1 text-sm text-foreground/70">
                           <li>• US Strategic Reserve bill under Congressional review</li>
-                          <li>• <a href="https://www.google.com/finance/quote/MSTR:NASDAQ" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-accent underline">Strategy (MSTR)</a>: 580,000+ BTC ($58B+)</li>
-                          <li>• Tesla, Marathon, Block maintain BTC treasuries</li>
+                          <li>• <a href="https://www.google.com/finance/quote/MSTR:NASDAQ" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-accent underline">Strategy (MSTR)</a>: 660,624 BTC ($66B+)</li>
+                          <li>• <a href="https://www.google.com/finance/quote/MARA:NASDAQ" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-accent underline">MARA</a>, <a href="https://www.google.com/finance/quote/TSLA:NASDAQ" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-accent underline">Tesla</a>, <a href="https://www.google.com/finance/quote/XYZ:NYSE" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-accent underline">Block</a> maintain BTC treasuries</li>
                           <li>• State-level reserve proposals (Texas, Wyoming)</li>
                         </ul>
                       </div>
