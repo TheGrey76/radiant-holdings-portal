@@ -2889,6 +2889,181 @@ const Bitcoin2026Report = () => {
             linear-gradient(to bottom, hsl(var(--border)) 1px, transparent 1px);
           background-size: 40px 40px;
         }
+
+        @media print {
+          /* Reset page settings */
+          @page {
+            size: A4;
+            margin: 1.5cm;
+          }
+
+          /* Body and container */
+          body {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            color-adjust: exact !important;
+          }
+
+          /* Hide non-print elements */
+          nav, 
+          footer,
+          .fixed,
+          button[aria-label="Back to top"],
+          .hidden.xl\\:block {
+            display: none !important;
+          }
+
+          /* Show all content */
+          .min-h-screen {
+            min-height: auto !important;
+          }
+
+          /* Ensure backgrounds print */
+          * {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+          }
+
+          /* Section page breaks */
+          section[data-section] {
+            page-break-inside: avoid;
+            break-inside: avoid;
+            margin-bottom: 2rem !important;
+          }
+
+          /* Prevent breaks inside cards and tables */
+          .rounded-2xl,
+          .rounded-xl,
+          table,
+          .recharts-wrapper {
+            page-break-inside: avoid;
+            break-inside: avoid;
+          }
+
+          /* Force page break before major chapters */
+          #executive-summary,
+          #chapter-2,
+          #chapter-5,
+          #chapter-7,
+          #chapter-10 {
+            page-break-before: always;
+            break-before: page;
+          }
+
+          /* Charts - ensure they print */
+          .recharts-wrapper {
+            overflow: visible !important;
+          }
+
+          .recharts-surface {
+            overflow: visible !important;
+          }
+
+          /* Typography adjustments */
+          h1 { font-size: 28pt !important; }
+          h2 { font-size: 20pt !important; }
+          h3 { font-size: 14pt !important; }
+          p, li { font-size: 10pt !important; line-height: 1.5 !important; }
+
+          /* Remove animations */
+          * {
+            animation: none !important;
+            transition: none !important;
+          }
+
+          /* Remove backdrop blur (not supported in print) */
+          .backdrop-blur-sm,
+          .backdrop-blur-lg {
+            backdrop-filter: none !important;
+            background-color: white !important;
+          }
+
+          /* Ensure gradients print */
+          .bg-gradient-to-br,
+          .bg-gradient-to-r {
+            background: #f8f9fa !important;
+            border: 1px solid #e5e7eb !important;
+          }
+
+          /* Table styling for print */
+          table {
+            width: 100% !important;
+            border-collapse: collapse !important;
+          }
+
+          th, td {
+            border: 1px solid #d1d5db !important;
+            padding: 8px !important;
+            text-align: left !important;
+          }
+
+          th {
+            background-color: #f3f4f6 !important;
+            font-weight: bold !important;
+          }
+
+          /* Links styling */
+          a {
+            color: #1a2332 !important;
+            text-decoration: none !important;
+          }
+
+          /* Container width */
+          .container,
+          .max-w-5xl {
+            max-width: 100% !important;
+            width: 100% !important;
+            padding: 0 !important;
+          }
+
+          /* Remove sticky positioning */
+          .sticky {
+            position: relative !important;
+          }
+
+          /* Key Takeaways styling */
+          .from-muted\\/30 {
+            background-color: #f8f9fa !important;
+            border: 2px solid #e5e7eb !important;
+          }
+
+          /* Icon containers for print */
+          .bg-primary\\/10,
+          .bg-primary\\/20,
+          .bg-accent\\/10 {
+            background-color: #e5e7eb !important;
+          }
+
+          /* Remove opacity classes */
+          .opacity-0 {
+            opacity: 1 !important;
+          }
+
+          /* Testimonials section */
+          .from-accent\\/5 {
+            background-color: #fafafa !important;
+          }
+
+          /* Print header on each page */
+          .print-header {
+            display: block !important;
+          }
+        }
+
+        /* Print-only elements hidden on screen */
+        .print-only {
+          display: none;
+        }
+
+        @media print {
+          .print-only {
+            display: block !important;
+          }
+          
+          .no-print {
+            display: none !important;
+          }
+        }
       `}</style>
     </TooltipProvider>
   );
