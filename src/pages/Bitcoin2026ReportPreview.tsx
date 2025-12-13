@@ -74,11 +74,11 @@ const Bitcoin2026ReportPreview = () => {
     }
   };
 
-  // Probability-weighted price scenarios data
+  // Probability-weighted price scenarios data (blurred for preview)
   const scenarioData = [
-    { name: 'Stress', range: '$45k-$60k', probability: 15, fill: '#ef4444' },
-    { name: 'Base Case', range: '$96k-$132k', probability: 60, fill: '#22c55e' },
-    { name: 'High Convexity', range: '$180k-$260k', probability: 25, fill: '#f59e0b' },
+    { name: 'Stress', range: '$XX-$XXk', displayRange: '$45k-$60k', probability: 15, fill: '#ef4444' },
+    { name: 'Base Case', range: '$XXk-$XXXk', displayRange: '$96k-$132k', probability: 60, fill: '#22c55e' },
+    { name: 'High Convexity', range: '$XXXk-$XXXk', displayRange: '$180k-$260k', probability: 25, fill: '#f59e0b' },
   ];
 
   // Backtesting performance data
@@ -244,8 +244,9 @@ const Bitcoin2026ReportPreview = () => {
                     <Target className="w-6 h-6 text-emerald-400" />
                     <div className="text-left">
                       <div className="text-xs text-emerald-400/80 uppercase tracking-wide">Probability-Weighted Target</div>
-                      <div className="text-2xl font-bold text-emerald-400">$138,000</div>
+                      <div className="text-2xl font-bold text-emerald-400 blur-sm select-none">$XXX,XXX</div>
                     </div>
+                    <Lock className="w-4 h-4 text-emerald-400/50" />
                   </div>
 
                   {/* Trust Elements */}
@@ -446,19 +447,29 @@ const Bitcoin2026ReportPreview = () => {
                     <div key={i} className="p-4 rounded-lg bg-zinc-800/30 border border-zinc-700/50 flex items-center justify-between">
                       <div>
                         <div className="text-white font-semibold">{scenario.name}</div>
-                        <div className="text-2xl font-bold" style={{ color: scenario.fill }}>{scenario.range}</div>
+                        <div className="text-2xl font-bold blur-sm select-none" style={{ color: scenario.fill }}>{scenario.range}</div>
                       </div>
                       <Badge style={{ backgroundColor: `${scenario.fill}20`, color: scenario.fill, borderColor: `${scenario.fill}40` }}>
                         {scenario.probability}% Prob
                       </Badge>
                     </div>
                   ))}
+                  <div className="flex items-center justify-center gap-2 text-zinc-500 text-sm pt-2">
+                    <Lock className="w-4 h-4" />
+                    <span>Exact price targets revealed in full report</span>
+                  </div>
                 </div>
               </div>
 
-              <div className="text-center p-6 rounded-xl bg-gradient-to-r from-emerald-500/10 to-emerald-500/5 border border-emerald-500/20">
+              <div className="text-center p-6 rounded-xl bg-gradient-to-r from-emerald-500/10 to-emerald-500/5 border border-emerald-500/20 relative">
                 <div className="text-zinc-400 text-sm uppercase tracking-wide mb-2">Probability-Weighted Institutional Target</div>
-                <div className="text-4xl md:text-5xl font-bold text-emerald-400">$138,000</div>
+                <div className="text-4xl md:text-5xl font-bold text-emerald-400 blur-md select-none">$XXX,XXX</div>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="flex items-center gap-2 px-4 py-2 bg-zinc-900/90 rounded-lg border border-emerald-500/30">
+                    <Lock className="w-5 h-5 text-emerald-400" />
+                    <span className="text-emerald-400 font-medium">Unlock with Purchase</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
