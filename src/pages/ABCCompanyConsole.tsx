@@ -516,7 +516,7 @@ const ABCCompanyConsole = () => {
   };
 
   const handleExportApproved = () => {
-    const approvedInvestors = investors.filter(inv => inv.approval_status === 'approved');
+    const approvedInvestors = investors.filter(inv => inv.approvalStatus === 'approved');
     
     if (approvedInvestors.length === 0) {
       toast.warning("Nessun investitore approvato da esportare");
