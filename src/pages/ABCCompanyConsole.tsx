@@ -515,6 +515,38 @@ const ABCCompanyConsole = () => {
     toast.success("Pipeline esportata con successo");
   };
 
+  const handleExportApproved = () => {
+    const approvedInvestors = investors.filter(inv => inv.approval_status === 'approved');
+    
+    if (approvedInvestors.length === 0) {
+      toast.warning("Nessun investitore approvato da esportare");
+      return;
+    }
+
+    const csvContent = [
+      ["Nome", "Azienda", "Ruolo", "Categoria", "Status", "Pipeline Value", "Email", "Telefono", "Città", "LinkedIn"].join(","),
+      ...approvedInvestors.map(inv => [
+        inv.nome,
+        inv.azienda,
+        inv.ruolo || "",
+        inv.categoria,
+        inv.status,
+        inv.pipeline_value,
+        inv.email || "",
+        inv.phone || "",
+        inv.citta || "",
+        inv.linkedin || ""
+      ].map(field => `"${field}"`).join(","))
+    ].join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `abc_approved_investors_${new Date().toISOString().split('T')[0]}.csv`;
+    link.click();
+    toast.success(`${approvedInvestors.length} investitori approvati esportati`);
+  };
+
   const formatCurrency = (value: number) => {
     return `€${(value / 1000000).toFixed(1)}M`;
   };
@@ -839,6 +871,10 @@ const ABCCompanyConsole = () => {
                   <Button className="w-full justify-start" variant="outline" onClick={handleExportPipeline}>
                     <Download className="h-4 w-4 mr-2" />
                     Export Pipeline
+                  </Button>
+                  <Button className="w-full justify-start" variant="outline" onClick={handleExportApproved}>
+                    <CheckCircle className="h-4 w-4 mr-2" />
+                    Export Approved
                   </Button>
                 </CardContent>
               </Card>
