@@ -523,26 +523,40 @@ const ABCCompanyConsole = () => {
       return;
     }
 
-    const csvContent = [
-      ["Nome", "Azienda", "Ruolo", "Categoria", "Status", "Pipeline Value", "Email", "Telefono", "Città", "LinkedIn"].join(","),
-      ...approvedInvestors.map(inv => [
-        inv.nome,
-        inv.azienda,
-        inv.ruolo || "",
-        inv.categoria,
-        inv.status,
-        inv.pipeline_value,
-        inv.email || "",
-        inv.phone || "",
-        inv.citta || "",
-        inv.linkedin || ""
-      ].map(field => `"${field}"`).join(","))
-    ].join("\n");
+    // Escape function for CSV fields
+    const escapeCSV = (value: string | number | null | undefined): string => {
+      if (value === null || value === undefined) return '';
+      const str = String(value);
+      // If contains comma, quote, or newline, wrap in quotes and escape internal quotes
+      if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+        return `"${str.replace(/"/g, '""')}"`;
+      }
+      return str;
+    };
 
-    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const headers = ["Nome", "Azienda", "Ruolo", "Categoria", "Status", "Pipeline Value (EUR)", "Email", "Telefono", "Città", "LinkedIn"];
+    
+    const rows = approvedInvestors.map(inv => [
+      escapeCSV(inv.nome),
+      escapeCSV(inv.azienda),
+      escapeCSV(inv.ruolo),
+      escapeCSV(inv.categoria),
+      escapeCSV(inv.status),
+      escapeCSV(inv.pipeline_value),
+      escapeCSV(inv.email),
+      escapeCSV(inv.phone),
+      escapeCSV(inv.citta),
+      escapeCSV(inv.linkedin)
+    ].join(";"));
+
+    const csvContent = [headers.join(";"), ...rows].join("\n");
+    
+    // Add BOM for UTF-8 Excel compatibility
+    const BOM = '\uFEFF';
+    const blob = new Blob([BOM + csvContent], { type: "text/csv;charset=utf-8;" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.download = `abc_approved_investors_${new Date().toISOString().split('T')[0]}.csv`;
+    link.download = `ABC_Investitori_Approvati_${new Date().toISOString().split('T')[0]}.csv`;
     link.click();
     toast.success(`${approvedInvestors.length} investitori approvati esportati`);
   };
