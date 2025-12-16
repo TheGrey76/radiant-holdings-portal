@@ -19,6 +19,14 @@ const BlogArchive = () => {
 
   const blogPosts = [
     {
+      title: "GP Capital Advisory in 2025: Record Activity and Strategic Imperatives",
+      excerpt: "An in-depth analysis of the evolving GP capital advisory landscape, featuring record transaction volumes, emerging deal structures, and the strategic priorities shaping management company growth.",
+      category: "GP Capital Advisory",
+      date: "2025-12-16",
+      readTime: "9 min read",
+      slug: "gp-capital-advisory-trends-2025"
+    },
+    {
       title: "The Digital Revolution in Structured Products: Tokenization and AI Transform the Market in 2025",
       excerpt: "How blockchain tokenization, AI-powered structuring, and digital distribution are reshaping the €500 billion European structured products market.",
       category: "Structured Products",

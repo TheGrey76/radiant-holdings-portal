@@ -9,6 +9,14 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    title: "GP Capital Advisory in 2025: Record Activity and Strategic Imperatives",
+    excerpt: "An in-depth analysis of the evolving GP capital advisory landscape, featuring record transaction volumes, emerging deal structures, and the strategic priorities shaping management company growth.",
+    category: "GP Capital Advisory",
+    date: "2025-12-16",
+    readTime: "9 min read",
+    slug: "gp-capital-advisory-trends-2025"
+  },
+  {
     title: "Big Tech's $50 Billion AI Bet on India: What It Means for Global Investors",
     excerpt: "Microsoft, Amazon, and Google commit over $50 billion to AI infrastructure in India in under 24 hours. We analyze the strategic implications for institutional investors and the emerging AI infrastructure opportunity.",
     category: "AI & Technology",
