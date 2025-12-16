@@ -539,6 +539,65 @@ export type Database = {
           },
         ]
       }
+      aggregated_news: {
+        Row: {
+          category: string
+          external_id: string | null
+          fetched_at: string
+          id: string
+          image_url: string | null
+          is_curated: boolean
+          is_processed: boolean
+          original_content: string | null
+          original_url: string
+          published_at: string | null
+          relevance_score: number | null
+          source_id: string | null
+          source_name: string
+          title: string
+        }
+        Insert: {
+          category?: string
+          external_id?: string | null
+          fetched_at?: string
+          id?: string
+          image_url?: string | null
+          is_curated?: boolean
+          is_processed?: boolean
+          original_content?: string | null
+          original_url: string
+          published_at?: string | null
+          relevance_score?: number | null
+          source_id?: string | null
+          source_name: string
+          title: string
+        }
+        Update: {
+          category?: string
+          external_id?: string | null
+          fetched_at?: string
+          id?: string
+          image_url?: string | null
+          is_curated?: boolean
+          is_processed?: boolean
+          original_content?: string | null
+          original_url?: string
+          published_at?: string | null
+          relevance_score?: number | null
+          source_id?: string | null
+          source_name?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "aggregated_news_source_id_fkey"
+            columns: ["source_id"]
+            isOneToOne: false
+            referencedRelation: "news_sources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       assessment_bookings: {
         Row: {
           client_type: string
@@ -608,6 +667,57 @@ export type Database = {
           created_at?: string
           email?: string
           id?: string
+        }
+        Relationships: []
+      }
+      blog_posts: {
+        Row: {
+          author: string
+          category: string
+          content: string
+          created_at: string
+          excerpt: string | null
+          featured_image: string | null
+          id: string
+          published_at: string | null
+          read_time: number | null
+          slug: string
+          status: string
+          tags: string[] | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          author?: string
+          category?: string
+          content: string
+          created_at?: string
+          excerpt?: string | null
+          featured_image?: string | null
+          id?: string
+          published_at?: string | null
+          read_time?: number | null
+          slug: string
+          status?: string
+          tags?: string[] | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          author?: string
+          category?: string
+          content?: string
+          created_at?: string
+          excerpt?: string | null
+          featured_image?: string | null
+          id?: string
+          published_at?: string | null
+          read_time?: number | null
+          slug?: string
+          status?: string
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -709,6 +819,56 @@ export type Database = {
           webhook_url?: string
         }
         Relationships: []
+      }
+      curated_content: {
+        Row: {
+          ai_commentary: string | null
+          ai_summary: string
+          ai_tags: string[] | null
+          created_at: string
+          id: string
+          news_id: string | null
+          published_at: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          ai_commentary?: string | null
+          ai_summary: string
+          ai_tags?: string[] | null
+          created_at?: string
+          id?: string
+          news_id?: string | null
+          published_at?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          ai_commentary?: string | null
+          ai_summary?: string
+          ai_tags?: string[] | null
+          created_at?: string
+          id?: string
+          news_id?: string | null
+          published_at?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "curated_content_news_id_fkey"
+            columns: ["news_id"]
+            isOneToOne: false
+            referencedRelation: "aggregated_news"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       distribution_logs: {
         Row: {
@@ -1217,6 +1377,48 @@ export type Database = {
           updated_at?: string
           user_id?: string
           website?: string | null
+        }
+        Relationships: []
+      }
+      news_sources: {
+        Row: {
+          category: string
+          config: Json | null
+          created_at: string
+          fetch_interval_minutes: number | null
+          id: string
+          is_active: boolean
+          last_fetched_at: string | null
+          name: string
+          source_type: string
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          category?: string
+          config?: Json | null
+          created_at?: string
+          fetch_interval_minutes?: number | null
+          id?: string
+          is_active?: boolean
+          last_fetched_at?: string | null
+          name: string
+          source_type: string
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          category?: string
+          config?: Json | null
+          created_at?: string
+          fetch_interval_minutes?: number | null
+          id?: string
+          is_active?: boolean
+          last_fetched_at?: string | null
+          name?: string
+          source_type?: string
+          updated_at?: string
+          url?: string
         }
         Relationships: []
       }
