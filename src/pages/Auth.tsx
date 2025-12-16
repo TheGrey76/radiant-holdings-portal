@@ -56,7 +56,7 @@ const Auth = () => {
     setError('');
 
     try {
-      const redirectUrl = `${window.location.origin}/sneaker-report`;
+      const redirectUrl = `${window.location.origin}/admin`;
       
       const { error: signUpError } = await supabase.auth.signUp({
         email,
@@ -155,8 +155,8 @@ const Auth = () => {
           </CardTitle>
           <CardDescription className="text-aries-navy/70">
             {isLogin 
-              ? 'Access your Sneaker Intelligence Report' 
-              : 'Get access to exclusive sneaker market intelligence'
+              ? 'Access your ARIES76 account' 
+              : 'Create your ARIES76 account'
             }
           </CardDescription>
         </CardHeader>
