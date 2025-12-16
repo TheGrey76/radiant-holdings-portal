@@ -149,13 +149,16 @@ export default function InsightsAdmin() {
     setLoading(false);
   };
 
-  const generateSlug = (title: string) => {
-    return title
+  const generateSlug = (title: string, addTimestamp = false) => {
+    const base = title
       .toLowerCase()
       .replace(/[^a-z0-9\s-]/g, '')
       .replace(/\s+/g, '-')
       .replace(/-+/g, '-')
-      .trim();
+      .trim()
+      .substring(0, 80); // Limit length
+    
+    return addTimestamp ? `${base}-${Date.now().toString(36)}` : base;
   };
 
   const handleCreatePost = async () => {
@@ -331,7 +334,7 @@ export default function InsightsAdmin() {
     
     setNewPost({
       title,
-      slug: generateSlug(title),
+      slug: generateSlug(title, true),
       excerpt: curatedSummary?.substring(0, 200) || '',
       content,
       category: news.category || 'insights',
