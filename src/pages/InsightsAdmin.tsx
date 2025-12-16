@@ -569,16 +569,51 @@ export default function InsightsAdmin() {
                           </Button>
                         </div>
                       </div>
-                      <Textarea
-                        value={editingPost?.content || newPost.content}
-                        onChange={(e) => editingPost
-                          ? setEditingPost({...editingPost, content: e.target.value})
-                          : setNewPost({...newPost, content: e.target.value})
-                        }
-                        placeholder="Scrivi il contenuto in Markdown..."
-                        rows={15}
-                        className="font-mono text-sm"
-                      />
+                      
+                      {/* Editor / Preview Tabs */}
+                      <Tabs defaultValue="editor" className="w-full">
+                        <TabsList className="mb-2">
+                          <TabsTrigger value="editor" className="flex items-center gap-1">
+                            <FileText className="h-3 w-3" />
+                            Editor
+                          </TabsTrigger>
+                          <TabsTrigger value="preview" className="flex items-center gap-1">
+                            <Eye className="h-3 w-3" />
+                            Anteprima
+                          </TabsTrigger>
+                        </TabsList>
+                        <TabsContent value="editor">
+                          <Textarea
+                            value={editingPost?.content || newPost.content}
+                            onChange={(e) => editingPost
+                              ? setEditingPost({...editingPost, content: e.target.value})
+                              : setNewPost({...newPost, content: e.target.value})
+                            }
+                            placeholder="Scrivi il contenuto in Markdown..."
+                            rows={15}
+                            className="font-mono text-sm"
+                          />
+                        </TabsContent>
+                        <TabsContent value="preview">
+                          <div className="border rounded-md p-4 min-h-[360px] bg-card prose prose-sm max-w-none dark:prose-invert overflow-auto">
+                            {(editingPost?.content || newPost.content) ? (
+                              <div 
+                                dangerouslySetInnerHTML={{ 
+                                  __html: (editingPost?.content || newPost.content)
+                                    .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+                                    .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+                                    .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+                                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                                    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                                    .replace(/\n/g, '<br/>')
+                                }} 
+                              />
+                            ) : (
+                              <p className="text-muted-foreground italic">Nessun contenuto da visualizzare</p>
+                            )}
+                          </div>
+                        </TabsContent>
+                      </Tabs>
                       <p className="text-xs text-muted-foreground mt-1">
                         Parole: {(editingPost?.content || newPost.content).split(/\s+/).filter(Boolean).length}
                       </p>
