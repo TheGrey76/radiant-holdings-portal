@@ -12,7 +12,7 @@ import { toast } from "sonner";
 import { 
   FileText, Plus, RefreshCw, CheckCircle, XCircle, 
   Eye, Edit, Trash2, Rss, Sparkles, Clock, Globe,
-  ArrowLeft, Save, Send
+  ArrowLeft, Save, Send, PenLine
 } from "lucide-react";
 
 interface BlogPost {
@@ -315,6 +315,28 @@ export default function InsightsAdmin() {
       toast.success('Contenuto pubblicato');
       fetchData();
     }
+  };
+
+  const handleCreateFromNews = (news: AggregatedNews, curatedSummary?: string, curatedCommentary?: string, curatedTags?: string[]) => {
+    const title = news.title;
+    const content = curatedSummary 
+      ? `## Sommario\n\n${curatedSummary}\n\n## Analisi ARIES76\n\n${curatedCommentary || ''}\n\n---\n\n*Fonte: [${news.source_name}](${news.original_url})*`
+      : `## Articolo\n\nContenuto da elaborare...\n\n---\n\n*Fonte: [${news.source_name}](${news.original_url})*`;
+    
+    setNewPost({
+      title,
+      slug: generateSlug(title),
+      excerpt: curatedSummary?.substring(0, 200) || '',
+      content,
+      category: news.category || 'insights',
+      tags: curatedTags?.join(', ') || '',
+      author: 'ARIES76 Research',
+      read_time: 5,
+      status: 'draft'
+    });
+    setIsCreating(true);
+    setActiveTab('articles');
+    toast.success('Articolo pre-compilato dalla news');
   };
 
   const handleToggleSource = async (id: string, isActive: boolean) => {
@@ -718,6 +740,14 @@ export default function InsightsAdmin() {
                             </Button>
                           )}
                           <Button 
+                            size="sm" 
+                            variant="default"
+                            onClick={() => handleCreateFromNews(news)}
+                          >
+                            <PenLine className="h-4 w-4 mr-1" />
+                            Crea Articolo
+                          </Button>
+                          <Button 
                             size="icon" 
                             variant="ghost"
                             onClick={() => window.open(news.original_url, '_blank')}
@@ -786,6 +816,26 @@ export default function InsightsAdmin() {
                             ))}
                           </div>
                         )}
+
+                        <div className="flex gap-2 justify-end border-t pt-3 mt-3">
+                          <Button 
+                            size="sm"
+                            onClick={() => {
+                              const newsData = (content as any).aggregated_news;
+                              if (newsData) {
+                                handleCreateFromNews(
+                                  newsData,
+                                  content.ai_summary,
+                                  content.ai_commentary || undefined,
+                                  content.ai_tags || undefined
+                                );
+                              }
+                            }}
+                          >
+                            <PenLine className="h-4 w-4 mr-1" />
+                            Crea Articolo
+                          </Button>
+                        </div>
 
                         {content.status === 'pending' && (
                           <div className="flex gap-2 justify-end">
