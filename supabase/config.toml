@@ -62,3 +62,6 @@ verify_jwt = false
 
 [functions.fetch-finnhub-news]
 verify_jwt = false
+
+[functions.generate-article-content]
+verify_jwt = false
