@@ -29,7 +29,7 @@ import BlogArchive from "./pages/BlogArchive";
 import Press from "./pages/Press";
 import Admin from "./pages/Admin";
 import NewsletterComposer from "./pages/NewsletterComposer";
-import DistributionDashboard from "./pages/DistributionDashboard";
+
 import ProposalLinkGenerator from "./pages/ProposalLinkGenerator";
 import GPEquityNextFrontier from "./pages/blog/GPEquityNextFrontier";
 import SuccessionPlanningStrategicImperative from "./pages/blog/SuccessionPlanningStrategicImperative";
@@ -111,7 +111,7 @@ const App = () => (
           <Route path="/admin/proposal-links" element={<ProposalLinkGenerator />} />
           <Route path="/proposal-link-generator" element={<ProposalLinkGenerator />} />
           <Route path="/admin/newsletter" element={<NewsletterComposer />} />
-          <Route path="/admin/distribution" element={<DistributionDashboard />} />
+          
           <Route path="/admin/cross-posting" element={<CrossPostingAssistant />} />
           <Route path="/admin/insights" element={<InsightsAdmin />} />
           <Route path="/admin/gp-lp-matching" element={<GPLPMatching />} />
