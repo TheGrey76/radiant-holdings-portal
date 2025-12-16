@@ -607,20 +607,32 @@ export default function InsightsAdmin() {
                           <Button 
                             variant="ghost" 
                             size="icon"
-                            onClick={() => window.open(`/blog/${post.slug}`, '_blank')}
+                            title="Anteprima"
+                            onClick={() => {
+                              toast.info(`Anteprima: ${post.title}`, {
+                                description: post.excerpt || 'Nessun estratto',
+                                duration: 5000
+                              });
+                            }}
                           >
                             <Eye className="h-4 w-4" />
                           </Button>
                           <Button 
                             variant="ghost" 
                             size="icon"
-                            onClick={() => setEditingPost(post)}
+                            title="Modifica"
+                            onClick={() => {
+                              setEditingPost(post);
+                              setIsCreating(false);
+                              window.scrollTo({ top: 0, behavior: 'smooth' });
+                            }}
                           >
                             <Edit className="h-4 w-4" />
                           </Button>
                           <Button 
                             variant="ghost" 
                             size="icon"
+                            title="Elimina"
                             onClick={() => handleDeletePost(post.id)}
                           >
                             <Trash2 className="h-4 w-4" />
