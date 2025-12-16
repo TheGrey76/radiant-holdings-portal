@@ -12,7 +12,7 @@ import { toast } from "sonner";
 import { 
   FileText, Plus, RefreshCw, CheckCircle, XCircle, 
   Eye, Edit, Trash2, Rss, Sparkles, Clock, Globe,
-  ArrowLeft, Save, Send, PenLine
+  ArrowLeft, Save, Send, PenLine, Wand2, Loader2
 } from "lucide-react";
 
 interface BlogPost {
@@ -95,6 +95,12 @@ export default function InsightsAdmin() {
     read_time: 5,
     status: 'draft'
   });
+
+  // AI generation state
+  const [targetWords, setTargetWords] = useState(500);
+  const [aiLanguage, setAiLanguage] = useState<'en' | 'it'>('en');
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [sourceNewsUrl, setSourceNewsUrl] = useState('');
 
   useEffect(() => {
     fetchData();
@@ -334,9 +340,48 @@ export default function InsightsAdmin() {
       read_time: 5,
       status: 'draft'
     });
+    setSourceNewsUrl(news.original_url);
     setIsCreating(true);
     setActiveTab('articles');
-    toast.success('Articolo pre-compilato dalla news');
+    toast.success('Articolo pre-compilato dalla news - usa "Genera con AI" per creare il contenuto');
+  };
+
+  const handleGenerateAI = async () => {
+    const title = editingPost?.title || newPost.title;
+    if (!title) {
+      toast.error('Inserisci prima un titolo');
+      return;
+    }
+
+    setIsGenerating(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('generate-article-content', {
+        body: {
+          title,
+          sourceUrl: sourceNewsUrl || '',
+          sourceName: 'ARIES76 Research',
+          category: editingPost?.category || newPost.category,
+          targetWords,
+          language: aiLanguage
+        }
+      });
+
+      if (error) throw error;
+      
+      if (data?.content) {
+        if (editingPost) {
+          setEditingPost({ ...editingPost, content: data.content });
+        } else {
+          setNewPost({ ...newPost, content: data.content });
+        }
+        toast.success(`Articolo generato (~${data.wordCount} parole)`);
+      }
+    } catch (err) {
+      console.error('AI generation error:', err);
+      toast.error('Errore nella generazione AI');
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   const handleToggleSource = async (id: string, isActive: boolean) => {
@@ -481,7 +526,46 @@ export default function InsightsAdmin() {
                     </div>
 
                     <div>
-                      <label className="text-sm font-medium">Contenuto (Markdown)</label>
+                      <div className="flex items-center justify-between mb-2">
+                        <label className="text-sm font-medium">Contenuto (Markdown)</label>
+                        <div className="flex items-center gap-2">
+                          <Select value={aiLanguage} onValueChange={(v: 'en' | 'it') => setAiLanguage(v)}>
+                            <SelectTrigger className="w-20 h-8">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="en">EN</SelectItem>
+                              <SelectItem value="it">IT</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <Select value={targetWords.toString()} onValueChange={(v) => setTargetWords(parseInt(v))}>
+                            <SelectTrigger className="w-28 h-8">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="300">300 parole</SelectItem>
+                              <SelectItem value="500">500 parole</SelectItem>
+                              <SelectItem value="800">800 parole</SelectItem>
+                              <SelectItem value="1000">1000 parole</SelectItem>
+                              <SelectItem value="1500">1500 parole</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <Button 
+                            type="button" 
+                            variant="secondary" 
+                            size="sm"
+                            onClick={handleGenerateAI}
+                            disabled={isGenerating}
+                          >
+                            {isGenerating ? (
+                              <Loader2 className="h-4 w-4 mr-1 animate-spin" />
+                            ) : (
+                              <Wand2 className="h-4 w-4 mr-1" />
+                            )}
+                            {isGenerating ? 'Generando...' : 'Genera con AI'}
+                          </Button>
+                        </div>
+                      </div>
                       <Textarea
                         value={editingPost?.content || newPost.content}
                         onChange={(e) => editingPost
@@ -492,6 +576,9 @@ export default function InsightsAdmin() {
                         rows={15}
                         className="font-mono text-sm"
                       />
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Parole: {(editingPost?.content || newPost.content).split(/\s+/).filter(Boolean).length}
+                      </p>
                     </div>
 
                     <div className="grid grid-cols-4 gap-4">
