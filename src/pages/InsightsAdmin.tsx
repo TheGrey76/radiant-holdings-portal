@@ -246,6 +246,25 @@ export default function InsightsAdmin() {
     setLoading(false);
   };
 
+  const handleFetchFinnhub = async (category: string = 'general') => {
+    setLoading(true);
+    toast.info(`Fetch news Finnhub (${category})...`);
+    
+    try {
+      const response = await supabase.functions.invoke('fetch-finnhub-news', {
+        body: { category }
+      });
+      if (response.error) throw response.error;
+      
+      toast.success(`Finnhub: ${response.data?.fetched || 0} news recuperate`);
+      fetchData();
+    } catch (error) {
+      console.error('Error fetching Finnhub news:', error);
+      toast.error('Errore nel fetch Finnhub');
+    }
+    setLoading(false);
+  };
+
   const handleProcessWithAI = async (newsId: string) => {
     toast.info('Elaborazione AI in corso...');
     
@@ -603,12 +622,26 @@ export default function InsightsAdmin() {
           {/* News Sources Tab */}
           <TabsContent value="sources">
             <div className="space-y-4">
-              <div className="flex justify-between items-center">
+              <div className="flex justify-between items-center flex-wrap gap-2">
                 <h2 className="text-lg font-semibold">Fonti News Configurate</h2>
-                <Button onClick={handleFetchNews} disabled={loading}>
-                  <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-                  Fetch News Ora
-                </Button>
+                <div className="flex gap-2 flex-wrap">
+                  <Button onClick={handleFetchNews} disabled={loading} variant="outline">
+                    <Rss className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
+                    Fetch RSS
+                  </Button>
+                  <Button onClick={() => handleFetchFinnhub('general')} disabled={loading}>
+                    <Globe className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
+                    Finnhub General
+                  </Button>
+                  <Button onClick={() => handleFetchFinnhub('crypto')} disabled={loading} variant="secondary">
+                    <Sparkles className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
+                    Finnhub Crypto
+                  </Button>
+                  <Button onClick={() => handleFetchFinnhub('merger')} disabled={loading} variant="secondary">
+                    <FileText className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
+                    Finnhub M&A
+                  </Button>
+                </div>
               </div>
 
               <div className="grid gap-4">
