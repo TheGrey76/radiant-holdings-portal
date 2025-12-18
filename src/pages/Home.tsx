@@ -10,11 +10,7 @@ import HolidaySplash from '@/components/HolidaySplash';
 const Home = () => {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [showSplash, setShowSplash] = useState(() => {
-    // Show splash only once per session
-    const hasSeenSplash = sessionStorage.getItem('hasSeenHolidaySplash');
-    return !hasSeenSplash;
-  });
+  const [showSplash, setShowSplash] = useState(true); // Always show for now
   const { toast } = useToast();
 
   const handleNewsletterSubmit = async (e: React.FormEvent) => {
