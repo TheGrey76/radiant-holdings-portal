@@ -11,8 +11,8 @@ const HolidaySplash = ({ onComplete }: HolidaySplashProps) => {
   const teamMembers = ['Edoardo', 'Alessandro', 'Julio', 'Quinley'];
 
   useEffect(() => {
-    const teamTimer = setTimeout(() => setShowTeam(true), 1200);
-    const completeTimer = setTimeout(() => onComplete(), 4500);
+    const teamTimer = setTimeout(() => setShowTeam(true), 1500);
+    const completeTimer = setTimeout(() => onComplete(), 7000);
     
     return () => {
       clearTimeout(teamTimer);
