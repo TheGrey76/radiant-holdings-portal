@@ -1,14 +1,20 @@
-import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect } from 'react';
 import { Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import HolidaySplash from '@/components/HolidaySplash';
 
 const Home = () => {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [showSplash, setShowSplash] = useState(() => {
+    // Show splash only once per session
+    const hasSeenSplash = sessionStorage.getItem('hasSeenHolidaySplash');
+    return !hasSeenSplash;
+  });
   const { toast } = useToast();
 
   const handleNewsletterSubmit = async (e: React.FormEvent) => {
@@ -49,8 +55,18 @@ const Home = () => {
     }
   };
 
+  const handleSplashComplete = () => {
+    sessionStorage.setItem('hasSeenHolidaySplash', 'true');
+    setShowSplash(false);
+  };
+
   return (
-    <div className="min-h-screen">
+    <>
+      <AnimatePresence>
+        {showSplash && <HolidaySplash onComplete={handleSplashComplete} />}
+      </AnimatePresence>
+      
+      <div className="min-h-screen">
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-[#0f1729] via-[#1a2744] to-[#0d1424] z-0" />
@@ -108,7 +124,8 @@ const Home = () => {
           </motion.div>
         </div>
       </section>
-    </div>
+      </div>
+    </>
   );
 };
 
