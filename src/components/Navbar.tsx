@@ -76,32 +76,13 @@ const Navbar = () => {
       transition={{ duration: 0.5, ease: 'easeOut' }}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <button onClick={() => handleNavigation('/')} className="flex items-center gap-2">
-          <div className="flex flex-col text-left">
-            <span className="text-3xl font-light tracking-wider text-foreground uppercase">
-              ARIES<span className="text-accent">76</span>
-            </span>
-            <span className="text-[0.65rem] font-extralight tracking-[0.3em] text-accent uppercase -mt-0.5">
-              Capital Intelligence
-            </span>
-          </div>
-          {/* Christmas Tree with Lights - Temporary Decoration */}
-          <svg width="24" height="32" viewBox="0 0 24 32" fill="none" xmlns="http://www.w3.org/2000/svg" className="ml-1">
-            {/* Tree layers */}
-            <path d="M12 2 L18 10 H14 L20 18 H15 L22 26 H2 L9 18 H4 L10 10 H6 Z" fill="#1a5c3a"/>
-            {/* Star */}
-            <path d="M12 0 L13 3 L16 3 L13.5 5 L14.5 8 L12 6 L9.5 8 L10.5 5 L8 3 L11 3 Z" fill="#ffd700"/>
-            {/* Trunk */}
-            <rect x="10" y="26" width="4" height="4" fill="#8B4513"/>
-            {/* Lights - animated with CSS */}
-            <circle cx="8" cy="14" r="1.5" fill="#ff0000" className="animate-pulse"/>
-            <circle cx="15" cy="12" r="1.5" fill="#ffd700" className="animate-pulse" style={{animationDelay: '0.2s'}}/>
-            <circle cx="10" cy="20" r="1.5" fill="#00bfff" className="animate-pulse" style={{animationDelay: '0.4s'}}/>
-            <circle cx="16" cy="18" r="1.5" fill="#ff69b4" className="animate-pulse" style={{animationDelay: '0.6s'}}/>
-            <circle cx="6" cy="22" r="1.5" fill="#ffd700" className="animate-pulse" style={{animationDelay: '0.8s'}}/>
-            <circle cx="18" cy="22" r="1.5" fill="#ff0000" className="animate-pulse" style={{animationDelay: '1s'}}/>
-            <circle cx="12" cy="16" r="1.5" fill="#00ff00" className="animate-pulse" style={{animationDelay: '0.3s'}}/>
-          </svg>
+        <button onClick={() => handleNavigation('/')} className="flex flex-col text-left">
+          <span className="text-3xl font-light tracking-wider text-foreground uppercase">
+            ARIES<span className="text-accent">76</span>
+          </span>
+          <span className="text-[0.65rem] font-extralight tracking-[0.3em] text-accent uppercase -mt-0.5">
+            Capital Intelligence
+          </span>
         </button>
         
         {/* Desktop Navigation - Custom Dropdowns */}
