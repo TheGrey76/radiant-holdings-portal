@@ -1,9 +1,42 @@
 import { motion } from 'framer-motion';
+import { useMemo } from 'react';
 import londonSkyline from '@/assets/london-skyline-1.jpg';
 import londonBridge from '@/assets/london-bridge-2.jpg';
 import londonBigBen from '@/assets/london-big-ben-3.jpg';
 
+const Snowflake = ({ delay, duration, left, size }: { delay: number; duration: number; left: number; size: number }) => (
+  <motion.div
+    className="absolute text-blue-200/60 pointer-events-none select-none"
+    style={{ left: `${left}%`, fontSize: `${size}px` }}
+    initial={{ y: -20, opacity: 0 }}
+    animate={{ 
+      y: '100vh', 
+      opacity: [0, 1, 1, 0],
+      x: [0, 10, -10, 5, 0]
+    }}
+    transition={{ 
+      duration, 
+      delay, 
+      repeat: Infinity, 
+      ease: 'linear',
+      x: { duration: duration / 2, repeat: Infinity, ease: 'easeInOut' }
+    }}
+  >
+    ❄
+  </motion.div>
+);
+
 const Hero = () => {
+  const snowflakes = useMemo(() => 
+    Array.from({ length: 25 }, (_, i) => ({
+      id: i,
+      delay: Math.random() * 5,
+      duration: 8 + Math.random() * 7,
+      left: Math.random() * 100,
+      size: 12 + Math.random() * 16
+    })), []
+  );
+
   return (
     <section className="relative min-h-screen flex items-center justify-center pt-24 overflow-hidden">
       {/* London Background Images */}
@@ -50,6 +83,13 @@ const Hero = () => {
             className="w-full h-full object-cover"
           />
         </motion.div>
+      </div>
+
+      {/* Snowflakes - Christmas Decoration */}
+      <div className="absolute inset-0 z-15 pointer-events-none overflow-hidden">
+        {snowflakes.map((flake) => (
+          <Snowflake key={flake.id} {...flake} />
+        ))}
       </div>
 
       {/* Background circuit pattern (reduced opacity) */}
