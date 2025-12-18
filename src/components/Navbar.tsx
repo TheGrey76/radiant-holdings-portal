@@ -76,7 +76,20 @@ const Navbar = () => {
       transition={{ duration: 0.5, ease: 'easeOut' }}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <button onClick={() => handleNavigation('/')} className="flex flex-col text-left">
+        <button onClick={() => handleNavigation('/')} className="flex flex-col text-left relative">
+          {/* Christmas Santa Hat - Temporary Decoration */}
+          <div className="absolute -top-4 -left-1 z-10">
+            <svg width="28" height="24" viewBox="0 0 28 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              {/* Hat body */}
+              <path d="M4 20 Q2 16 6 12 Q10 8 16 6 Q20 5 22 8 L20 18 Q18 20 14 20 Z" fill="#c41e3a"/>
+              {/* White trim */}
+              <ellipse cx="12" cy="20" rx="10" ry="3" fill="#f5f5f5"/>
+              {/* Pompom */}
+              <circle cx="24" cy="6" r="4" fill="#f5f5f5"/>
+              {/* Hat highlight */}
+              <path d="M8 14 Q10 10 14 8" stroke="#e63950" strokeWidth="2" strokeLinecap="round" fill="none"/>
+            </svg>
+          </div>
           <span className="text-3xl font-light tracking-wider text-foreground uppercase">
             ARIES<span className="text-accent">76</span>
           </span>
