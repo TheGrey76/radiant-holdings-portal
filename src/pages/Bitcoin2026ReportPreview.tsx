@@ -19,7 +19,7 @@ import {
   XCircle,
   AlertTriangle,
   Zap,
-  FileSpreadsheet,
+  FileText,
   LineChart,
   PlayCircle,
   Download,
@@ -27,7 +27,10 @@ import {
   ChevronDown,
   ChevronUp,
   Quote,
-  CreditCard
+  CreditCard,
+  Bell,
+  BookOpen,
+  Layers
 } from 'lucide-react';
 import {
   Accordion,
@@ -107,12 +110,13 @@ const Bitcoin2026ReportPreview = () => {
 
   // What you get items
   const deliverables = [
-    { icon: FileSpreadsheet, title: 'Full 120-Page PDF Report', desc: 'Complete analysis, chapter by chapter' },
-    { icon: BarChart3, title: 'Interactive Scenario Calculator', desc: 'Input your M2 and rate assumptions to generate price targets' },
+    { icon: FileText, title: 'Full 120-Page PDF Report', desc: 'Complete analysis, chapter by chapter' },
     { icon: LineChart, title: 'Real-Time Regime Dashboard', desc: 'Private dashboard link showing current market regime (Live Status: EXPANSION)' },
     { icon: Target, title: 'Backtesting Performance Data', desc: 'Historical data proving our model accuracy' },
-    { icon: Download, title: 'Downloadable Charts & Graphics', desc: 'High-resolution visualizations for your presentations' },
+    { icon: Bell, title: 'Regime Change Alerts', desc: 'Email notifications when market regime shifts (Expansion/Contraction)' },
     { icon: PlayCircle, title: 'Quarterly Video Updates', desc: 'Access to quarterly update videos on model and targets' },
+    { icon: Download, title: 'Downloadable Charts & Graphics', desc: 'High-resolution visualizations for your presentations' },
+    { icon: BookOpen, title: 'Methodology Deep-Dive', desc: 'Complete documentation of our macro-liquidity framework' },
     { icon: Zap, title: 'Actionable Trade Signal Summary', desc: 'Clear entry/exit signals based on current regime' },
   ];
 
@@ -162,7 +166,7 @@ const Bitcoin2026ReportPreview = () => {
             <span>30-Day Money-Back Guarantee</span>
           </div>
           <div className="flex items-center gap-2 text-zinc-300">
-            <FileSpreadsheet className="w-4 h-4 text-blue-400" />
+            <Layers className="w-4 h-4 text-blue-400" />
             <span>Includes Interactive Dashboards</span>
           </div>
           <div className="flex items-center gap-2 text-zinc-300">
@@ -272,7 +276,7 @@ const Bitcoin2026ReportPreview = () => {
                       <span>30-Day Money-Back Guarantee</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <FileSpreadsheet className="w-4 h-4 text-blue-400" />
+                      <Layers className="w-4 h-4 text-blue-400" />
                       <span>Interactive Dashboards</span>
                     </div>
                   </div>
@@ -395,7 +399,7 @@ const Bitcoin2026ReportPreview = () => {
             <div className="max-w-5xl mx-auto">
               <div className="text-center mb-10">
                 <Badge className="mb-4 bg-emerald-500/10 text-emerald-400 border-emerald-500/20">
-                  <FileSpreadsheet className="w-3 h-3 mr-1" />
+                  <Layers className="w-3 h-3 mr-1" />
                   WHAT YOU GET
                 </Badge>
                 <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
