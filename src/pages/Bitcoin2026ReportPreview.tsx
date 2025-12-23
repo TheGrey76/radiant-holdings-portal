@@ -136,7 +136,7 @@ const Bitcoin2026ReportPreview = () => {
     },
     { 
       q: 'What if I am not satisfied?', 
-      a: 'You have a 30-day money-back guarantee. If the report does not meet your expectations, we will refund you in full, no questions asked.' 
+      a: 'You have a 7-day money-back guarantee. If the report does not meet your expectations, we will refund you in full, no questions asked.' 
     },
     { 
       q: 'Who is behind ARIES76?', 
