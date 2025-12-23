@@ -4,6 +4,14 @@ import { useState, useEffect, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { LineChart as RechartsLineChart, Line, AreaChart, Area, BarChart as RechartsBarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Legend } from "recharts";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { 
+  BitcoinPriceChart, 
+  M2LiquidityChart, 
+  RealRatesChart, 
+  PriceScenariosChart, 
+  ETFFlowChart, 
+  MiningEconomicsChart 
+} from "@/components/InstitutionalCharts";
 
 // Glossary definitions
 const glossary: Record<string, string> = {
@@ -499,44 +507,7 @@ const Bitcoin2026Report = () => {
                 </p>
               </div>
 
-              <div className="my-12 p-8 rounded-2xl bg-card border-2 border-border/40 shadow-lg">
-                <ResponsiveContainer width="100%" height={400}>
-                  <RechartsLineChart data={btcHistoricalData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
-                    <XAxis 
-                      dataKey="year" 
-                      stroke="hsl(var(--muted-foreground))" 
-                      style={{ fontSize: '12px' }}
-                    />
-                    <YAxis 
-                      stroke="hsl(var(--muted-foreground))" 
-                      style={{ fontSize: '12px' }}
-                      label={{ value: 'BTC Price ($k)', angle: -90, position: 'insideLeft', style: { fill: 'hsl(var(--muted-foreground))' } }}
-                    />
-                    <RechartsTooltip 
-                      contentStyle={{ 
-                        backgroundColor: 'hsl(var(--card))', 
-                        border: '2px solid hsl(var(--primary) / 0.2)',
-                        borderRadius: '12px',
-                        boxShadow: '0 10px 40px rgba(0,0,0,0.2)'
-                      }}
-                      formatter={(value: number) => [`$${value.toFixed(1)}k`, 'BTC Price']}
-                      labelStyle={{ color: 'hsl(var(--primary))', fontWeight: 'bold', marginBottom: '8px' }}
-                    />
-                    <Line 
-                      type="monotone" 
-                      dataKey="price" 
-                      stroke="hsl(var(--primary))" 
-                      strokeWidth={3}
-                      dot={{ fill: 'hsl(var(--primary))', strokeWidth: 2, r: 4 }}
-                      activeDot={{ r: 6, stroke: 'hsl(var(--primary))', strokeWidth: 2 }}
-                    />
-                  </RechartsLineChart>
-                </ResponsiveContainer>
-                <p className="text-sm text-muted-foreground mt-4 text-center font-medium">
-                  Figure 1 — Synthetic Bitcoin Price (2013–2025)
-                </p>
-              </div>
+              <BitcoinPriceChart data={btcHistoricalData} />
 
               <p className="text-foreground/80 leading-relaxed">
                 Figure 1 illustrates the synthetic price path of Bitcoin from 2013 to 2025. Although purely model-based, the series reproduces the core structural features of Bitcoin's historical behaviour: extended appreciation phases coinciding with abundant global liquidity, deep drawdowns during periods of tightening and quantitative tightening, and regime transitions triggered by policy inflection points and funding shocks.
@@ -564,98 +535,9 @@ const Bitcoin2026Report = () => {
                 </div>
               </div>
 
-              <div className="my-12 p-8 rounded-2xl bg-card border-2 border-border/40 shadow-lg">
-                <ResponsiveContainer width="100%" height={400}>
-                  <AreaChart data={m2LiquidityData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
-                    <defs>
-                      <linearGradient id="colorM2" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="hsl(var(--accent))" stopOpacity={0.8}/>
-                        <stop offset="95%" stopColor="hsl(var(--accent))" stopOpacity={0.1}/>
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
-                    <XAxis 
-                      dataKey="year" 
-                      stroke="hsl(var(--muted-foreground))" 
-                      style={{ fontSize: '12px' }}
-                    />
-                    <YAxis 
-                      stroke="hsl(var(--muted-foreground))" 
-                      style={{ fontSize: '12px' }}
-                      label={{ value: 'Index (2013=100)', angle: -90, position: 'insideLeft', style: { fill: 'hsl(var(--muted-foreground))' } }}
-                    />
-                    <RechartsTooltip 
-                      contentStyle={{ 
-                        backgroundColor: 'hsl(var(--card))', 
-                        border: '2px solid hsl(var(--accent) / 0.2)',
-                        borderRadius: '12px',
-                        boxShadow: '0 10px 40px rgba(0,0,0,0.2)'
-                      }}
-                      formatter={(value: number) => [value.toFixed(0), 'M2 Index']}
-                      labelStyle={{ color: 'hsl(var(--accent))', fontWeight: 'bold', marginBottom: '8px' }}
-                    />
-                    <Area 
-                      type="monotone" 
-                      dataKey="m2" 
-                      stroke="hsl(var(--accent))" 
-                      strokeWidth={3}
-                      fillOpacity={1} 
-                      fill="url(#colorM2)"
-                    />
-                  </AreaChart>
-                </ResponsiveContainer>
-                <p className="text-sm text-muted-foreground mt-4 text-center font-medium">
-                  Figure 2 — Global M2 Liquidity Proxy (2013–2025)
-                </p>
-              </div>
+              <M2LiquidityChart data={m2LiquidityData} />
 
-              <div className="my-12 p-8 rounded-2xl bg-card border-2 border-border/40 shadow-lg">
-                <ResponsiveContainer width="100%" height={400}>
-                  <RechartsLineChart data={realRatesData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
-                    <XAxis 
-                      dataKey="year" 
-                      stroke="hsl(var(--muted-foreground))" 
-                      style={{ fontSize: '12px' }}
-                    />
-                    <YAxis 
-                      stroke="hsl(var(--muted-foreground))" 
-                      style={{ fontSize: '12px' }}
-                      label={{ value: 'Real Rate (%)', angle: -90, position: 'insideLeft', style: { fill: 'hsl(var(--muted-foreground))' } }}
-                    />
-                    <RechartsTooltip 
-                      contentStyle={{ 
-                        backgroundColor: 'hsl(var(--card))', 
-                        border: '2px solid hsl(var(--primary) / 0.2)',
-                        borderRadius: '12px',
-                        boxShadow: '0 10px 40px rgba(0,0,0,0.2)'
-                      }}
-                      formatter={(value: number) => [`${value.toFixed(1)}%`, 'Real Rate']}
-                      labelStyle={{ color: 'hsl(var(--primary))', fontWeight: 'bold', marginBottom: '8px' }}
-                    />
-                    <Line 
-                      type="monotone" 
-                      dataKey="rate" 
-                      stroke="hsl(var(--destructive))" 
-                      strokeWidth={3}
-                      dot={{ fill: 'hsl(var(--destructive))', strokeWidth: 2, r: 4 }}
-                      activeDot={{ r: 6, stroke: 'hsl(var(--destructive))', strokeWidth: 2 }}
-                    />
-                    {/* Zero line reference */}
-                    <Line 
-                      type="monotone" 
-                      dataKey={() => 0} 
-                      stroke="hsl(var(--muted-foreground))" 
-                      strokeWidth={1}
-                      strokeDasharray="5 5"
-                      dot={false}
-                    />
-                  </RechartsLineChart>
-                </ResponsiveContainer>
-                <p className="text-sm text-muted-foreground mt-4 text-center font-medium">
-                  Figure 3 — Real Rates Regime (2013–2025)
-                </p>
-              </div>
+              <RealRatesChart data={realRatesData} />
 
               <div className="p-8 rounded-2xl bg-gradient-to-br from-primary/5 via-accent/5 to-background border-2 border-primary/10">
                 <h4 className="text-xl font-bold text-foreground mb-4">Key Synthesis</h4>
@@ -749,31 +631,7 @@ const Bitcoin2026Report = () => {
               </p>
 
               {/* Interactive Price Scenario Chart */}
-              <div className="my-12 p-8 rounded-2xl bg-card border-2 border-border/40 shadow-lg">
-                <h4 className="text-lg font-bold text-foreground mb-6">2026 Price Scenarios (Monthly Progression)</h4>
-                <ResponsiveContainer width="100%" height={300}>
-                  <AreaChart data={priceScenarioData}>
-                    <defs>
-                      <linearGradient id="colorHigh" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="hsl(var(--accent))" stopOpacity={0.3}/>
-                        <stop offset="95%" stopColor="hsl(var(--accent))" stopOpacity={0}/>
-                      </linearGradient>
-                      <linearGradient id="colorBase" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3}/>
-                        <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
-                    <XAxis dataKey="month" stroke="hsl(var(--muted-foreground))" />
-                    <YAxis stroke="hsl(var(--muted-foreground))" label={{ value: '$k', angle: -90, position: 'insideLeft' }} />
-                    <RechartsTooltip content={<CustomPriceTooltip />} />
-                    <Legend />
-                    <Area type="monotone" dataKey="high" stroke="hsl(var(--accent))" fill="url(#colorHigh)" name="High Case" />
-                    <Area type="monotone" dataKey="base" stroke="hsl(var(--primary))" fill="url(#colorBase)" name="Base Case" />
-                    <Area type="monotone" dataKey="stress" stroke="hsl(var(--muted-foreground))" fill="transparent" name="Stress Case" strokeDasharray="5 5" />
-                  </AreaChart>
-                </ResponsiveContainer>
-              </div>
+              <PriceScenariosChart data={priceScenarioData} />
 
               <KeyTakeaways insights={[
                 "Bitcoin valuation requires structural departure from narrative models—price is now determined by multidimensional liquidity conditions, derivatives flows, and institutional balance-sheet dynamics.",
@@ -872,20 +730,7 @@ const Bitcoin2026Report = () => {
               </p>
 
               {/* ETF Flow Chart */}
-              <div className="my-12 p-8 rounded-2xl bg-card border-2 border-border/40 shadow-lg">
-                <h4 className="text-lg font-bold text-foreground mb-6">Weekly ETF Flow Dynamics</h4>
-                <ResponsiveContainer width="100%" height={300}>
-                  <RechartsBarChart data={etfFlowData}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
-                    <XAxis dataKey="week" stroke="hsl(var(--muted-foreground))" />
-                    <YAxis stroke="hsl(var(--muted-foreground))" label={{ value: '$M', angle: -90, position: 'insideLeft' }} />
-                    <RechartsTooltip content={<CustomETFTooltip />} />
-                    <Legend />
-                    <Bar dataKey="inflows" fill="hsl(var(--primary))" name="Inflows" radius={[8, 8, 0, 0]} />
-                    <Bar dataKey="outflows" fill="hsl(var(--muted-foreground))" name="Outflows" radius={[8, 8, 0, 0]} />
-                  </RechartsBarChart>
-                </ResponsiveContainer>
-              </div>
+              <ETFFlowChart data={etfFlowData} />
 
               <KeyTakeaways insights={[
                 "Spot Bitcoin ETFs fundamentally altered market microstructure—institutional flows now channel through regulated vehicles creating new arbitrage dynamics and liquidity patterns distinct from pre-ETF era.",
@@ -1081,20 +926,7 @@ const Bitcoin2026Report = () => {
               </div>
 
               {/* Mining Cost vs Price Chart */}
-              <div className="my-12 p-8 rounded-2xl bg-card border-2 border-border/40 shadow-lg">
-                <h4 className="text-lg font-bold text-foreground mb-6">Mining Cost vs Bitcoin Price (2026 Projection)</h4>
-                <ResponsiveContainer width="100%" height={300}>
-                  <RechartsLineChart data={miningCostData}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
-                    <XAxis dataKey="quarter" stroke="hsl(var(--muted-foreground))" />
-                    <YAxis stroke="hsl(var(--muted-foreground))" label={{ value: '$k', angle: -90, position: 'insideLeft' }} />
-                    <RechartsTooltip content={<CustomMiningTooltip />} />
-                    <Legend />
-                    <Line type="monotone" dataKey="cost" stroke="hsl(var(--muted-foreground))" strokeWidth={3} name="Production Cost" strokeDasharray="5 5" />
-                    <Line type="monotone" dataKey="price" stroke="hsl(var(--primary))" strokeWidth={3} name="Bitcoin Price" />
-                  </RechartsLineChart>
-                </ResponsiveContainer>
-              </div>
+              <MiningEconomicsChart data={miningCostData} />
 
               <KeyTakeaways insights={[
                 "Post-halving mining economics create dynamic price floor—when Bitcoin trades below aggregate production costs (electricity, hardware, operations), marginal miners capitulate reducing network hashrate until equilibrium restores.",
