@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X, ChevronDown } from 'lucide-react';
-import { GlobalSearch } from './GlobalSearch';
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -88,9 +87,6 @@ const Navbar = () => {
         
         {/* Desktop Navigation - Custom Dropdowns */}
         <nav className="hidden lg:flex items-center space-x-1">
-          {/* Global Search */}
-          <GlobalSearch />
-
           {/* Home */}
           <button 
             onClick={() => handleNavigation('/')}
@@ -209,15 +205,12 @@ const Navbar = () => {
         </nav>
         
         {/* Mobile Menu Button */}
-        <div className="lg:hidden flex items-center gap-3">
-          <GlobalSearch />
-          <button
-            className="text-foreground"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
+        <button
+          className="lg:hidden text-foreground"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        >
+          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
       </div>
       
       {/* Mobile Menu */}

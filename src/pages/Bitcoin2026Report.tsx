@@ -13,6 +13,7 @@ import {
   MiningEconomicsChart 
 } from "@/components/InstitutionalCharts";
 import BitcoinTreasuriesLive from "@/components/BitcoinTreasuriesLive";
+import { ReportSearch } from "@/components/ReportSearch";
 
 // Glossary definitions
 const glossary: Record<string, string> = {
@@ -357,9 +358,14 @@ const Bitcoin2026Report = () => {
                 Bitcoin 2026
               </h1>
               
-              <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
+              <p className="text-xl text-muted-foreground mb-6 leading-relaxed">
                 Macro-Liquidity Regime Analysis & Quantitative Valuation Framework
               </p>
+
+              {/* Search Bar */}
+              <div className="mb-8">
+                <ReportSearch chapters={chapters} glossary={glossary} />
+              </div>
 
               <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
                 <div className="flex items-center gap-2">
