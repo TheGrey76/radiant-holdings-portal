@@ -13,7 +13,7 @@ const BitcoinReportBanner = () => {
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className="relative z-50 bg-gradient-to-r from-[#f7931a] via-[#ff9500] to-[#f7931a] text-white overflow-hidden"
+      className="relative z-50 bg-gradient-to-r from-accent via-accent/90 to-accent text-white overflow-hidden"
     >
       {/* Animated background pattern */}
       <div className="absolute inset-0 opacity-20">
