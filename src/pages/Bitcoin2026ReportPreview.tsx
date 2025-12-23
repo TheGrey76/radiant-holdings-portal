@@ -163,7 +163,7 @@ const Bitcoin2026ReportPreview = () => {
         <div className="space-y-2 text-sm">
           <div className="flex items-center gap-2 text-zinc-300">
             <Shield className="w-4 h-4 text-emerald-400" />
-            <span>30-Day Money-Back Guarantee</span>
+            <span>7-Day Money-Back Guarantee</span>
           </div>
           <div className="flex items-center gap-2 text-zinc-300">
             <Layers className="w-4 h-4 text-blue-400" />
@@ -273,7 +273,7 @@ const Bitcoin2026ReportPreview = () => {
                   <div className="flex flex-wrap justify-center lg:justify-start gap-x-6 gap-y-3 text-sm text-zinc-400">
                     <div className="flex items-center gap-2">
                       <Shield className="w-4 h-4 text-emerald-400" />
-                      <span>30-Day Money-Back Guarantee</span>
+                      <span>7-Day Money-Back Guarantee</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Layers className="w-4 h-4 text-blue-400" />
@@ -732,7 +732,7 @@ const Bitcoin2026ReportPreview = () => {
                 </div>
                 <div className="flex items-center gap-2">
                   <Shield className="w-4 h-4" />
-                  <span>30-Day Money-Back Guarantee</span>
+                  <span>7-Day Money-Back Guarantee</span>
                 </div>
               </div>
             </div>
