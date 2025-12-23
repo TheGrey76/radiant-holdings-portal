@@ -12,6 +12,7 @@ import {
   ETFFlowChart, 
   MiningEconomicsChart 
 } from "@/components/InstitutionalCharts";
+import BitcoinTreasuriesLive from "@/components/BitcoinTreasuriesLive";
 
 // Glossary definitions
 const glossary: Record<string, string> = {
@@ -1737,55 +1738,8 @@ const Bitcoin2026Report = () => {
                       Institutional Holder Categories
                     </h3>
 
-                    <div className="grid md:grid-cols-2 gap-6">
-                      {/* Corporate Treasury */}
-                      <div className="p-6 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20">
-                        <h4 className="text-xl font-bold text-foreground mb-4">Corporate Treasury Holdings</h4>
-                        <div className="space-y-4">
-                          <div className="flex justify-between items-center py-2 border-b border-border/20">
-                            <a href="https://www.google.com/finance/quote/MSTR:NASDAQ" target="_blank" rel="noopener noreferrer" className="text-foreground/80 hover:text-primary transition-colors underline decoration-dotted">Strategy (MSTR)</a>
-                            <span className="text-primary font-bold">660,624 BTC</span>
-                          </div>
-                          <div className="flex justify-between items-center py-2 border-b border-border/20">
-                            <a href="https://www.google.com/finance/quote/MARA:NASDAQ" target="_blank" rel="noopener noreferrer" className="text-foreground/80 hover:text-primary transition-colors underline decoration-dotted">MARA Holdings (MARA)</a>
-                            <span className="text-primary font-bold">53,250 BTC</span>
-                          </div>
-                          <div className="flex justify-between items-center py-2 border-b border-border/20">
-                            <a href="https://www.google.com/finance/quote/TSLA:NASDAQ" target="_blank" rel="noopener noreferrer" className="text-foreground/80 hover:text-primary transition-colors underline decoration-dotted">Tesla (TSLA)</a>
-                            <span className="text-primary font-bold">11,509 BTC</span>
-                          </div>
-                          <div className="flex justify-between items-center py-2">
-                            <a href="https://www.google.com/finance/quote/XYZ:NYSE" target="_blank" rel="noopener noreferrer" className="text-foreground/80 hover:text-primary transition-colors underline decoration-dotted">Block (XYZ)</a>
-                            <span className="text-primary font-bold">8,780 BTC</span>
-                          </div>
-                        </div>
-                        <p className="text-sm text-muted-foreground mt-4 italic">Total corporate holdings: ~500,000+ BTC (2.4% of supply)</p>
-                      </div>
-
-                      {/* ETF Holdings */}
-                      <div className="p-6 rounded-xl bg-gradient-to-br from-accent/10 to-accent/5 border border-accent/20">
-                        <h4 className="text-xl font-bold text-foreground mb-4">Spot ETF Holdings (US)</h4>
-                        <div className="space-y-4">
-                          <div className="flex justify-between items-center py-2 border-b border-border/20">
-                            <span className="text-foreground/80">BlackRock IBIT</span>
-                            <span className="text-accent font-bold">~550,000 BTC</span>
-                          </div>
-                          <div className="flex justify-between items-center py-2 border-b border-border/20">
-                            <span className="text-foreground/80">Fidelity FBTC</span>
-                            <span className="text-accent font-bold">~205,000 BTC</span>
-                          </div>
-                          <div className="flex justify-between items-center py-2 border-b border-border/20">
-                            <span className="text-foreground/80">Grayscale GBTC</span>
-                            <span className="text-accent font-bold">~210,000 BTC</span>
-                          </div>
-                          <div className="flex justify-between items-center py-2">
-                            <span className="text-foreground/80">Other ETFs</span>
-                            <span className="text-accent font-bold">~150,000 BTC</span>
-                          </div>
-                        </div>
-                        <p className="text-sm text-muted-foreground mt-4 italic">Total ETF holdings: ~1.1M BTC (5.2% of supply)</p>
-                      </div>
-                    </div>
+                    {/* Live Bitcoin Treasuries Component */}
+                    <BitcoinTreasuriesLive />
                   </div>
 
                   {/* Emerging Institutional Categories */}

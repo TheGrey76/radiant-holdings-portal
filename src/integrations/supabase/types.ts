@@ -670,6 +670,45 @@ export type Database = {
         }
         Relationships: []
       }
+      bitcoin_treasuries: {
+        Row: {
+          bitcoin_holdings: number
+          btc_price_usd: number | null
+          company_name: string
+          country: string | null
+          created_at: string
+          id: string
+          rank: number
+          ticker: string | null
+          updated_at: string
+          value_usd: number | null
+        }
+        Insert: {
+          bitcoin_holdings: number
+          btc_price_usd?: number | null
+          company_name: string
+          country?: string | null
+          created_at?: string
+          id?: string
+          rank: number
+          ticker?: string | null
+          updated_at?: string
+          value_usd?: number | null
+        }
+        Update: {
+          bitcoin_holdings?: number
+          btc_price_usd?: number | null
+          company_name?: string
+          country?: string | null
+          created_at?: string
+          id?: string
+          rank?: number
+          ticker?: string | null
+          updated_at?: string
+          value_usd?: number | null
+        }
+        Relationships: []
+      }
       blog_posts: {
         Row: {
           author: string
