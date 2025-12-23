@@ -10,7 +10,9 @@ import BitcoinReportBanner from '@/components/BitcoinReportBanner';
 const Home = () => {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [showSplash, setShowSplash] = useState(true); // Always show for now
+  const [showSplash, setShowSplash] = useState(() => {
+    return !sessionStorage.getItem('hasSeenHolidaySplash');
+  });
   const { toast } = useToast();
 
   const handleNewsletterSubmit = async (e: React.FormEvent) => {
