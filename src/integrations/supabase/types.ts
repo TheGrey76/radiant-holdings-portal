@@ -1548,6 +1548,45 @@ export type Database = {
         }
         Relationships: []
       }
+      search_index: {
+        Row: {
+          content: string | null
+          content_type: string
+          created_at: string
+          description: string | null
+          id: string
+          search_vector: unknown
+          tags: string[] | null
+          title: string
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          content?: string | null
+          content_type: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          search_vector?: unknown
+          tags?: string[] | null
+          title: string
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          content?: string | null
+          content_type?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          search_vector?: unknown
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+          url?: string
+        }
+        Relationships: []
+      }
       sent_newsletters: {
         Row: {
           content: string
@@ -1678,6 +1717,18 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      search_content: {
+        Args: { content_type_filter?: string; search_query: string }
+        Returns: {
+          content_type: string
+          description: string
+          id: string
+          rank: number
+          tags: string[]
+          title: string
+          url: string
+        }[]
       }
       update_all_engagement_scores: { Args: never; Returns: undefined }
     }
