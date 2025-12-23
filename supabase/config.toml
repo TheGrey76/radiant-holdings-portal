@@ -65,3 +65,6 @@ verify_jwt = false
 
 [functions.generate-article-content]
 verify_jwt = false
+
+[functions.fetch-bitcoin-treasuries]
+verify_jwt = false
