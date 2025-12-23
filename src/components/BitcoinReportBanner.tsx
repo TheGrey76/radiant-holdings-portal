@@ -46,7 +46,6 @@ const BitcoinReportBanner = () => {
           </div>
           
           <span className="font-medium text-sm md:text-base text-center">
-            <span className="hidden sm:inline">🚀 </span>
             <strong>NEW:</strong> Bitcoin 2026 — The Institutional Tipping Point
             <span className="hidden md:inline"> | Exclusive Research Report</span>
           </span>
@@ -55,7 +54,7 @@ const BitcoinReportBanner = () => {
             to="/bitcoin-2026-report-preview"
             className="inline-flex items-center gap-1.5 bg-white/20 hover:bg-white/30 backdrop-blur-sm px-4 py-1.5 rounded-full text-sm font-semibold transition-all duration-300 hover:scale-105 border border-white/30"
           >
-            Scopri di più
+            Learn More
             <motion.span
               animate={{ x: [0, 4, 0] }}
               transition={{ duration: 1.5, repeat: Infinity }}
