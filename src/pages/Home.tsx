@@ -1,12 +1,12 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import HolidaySplash from '@/components/HolidaySplash';
-
+import BitcoinReportBanner from '@/components/BitcoinReportBanner';
 const Home = () => {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -63,6 +63,9 @@ const Home = () => {
       </AnimatePresence>
       
       <div className="min-h-screen">
+      {/* Bitcoin Report Banner */}
+      <BitcoinReportBanner />
+      
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-[#0f1729] via-[#1a2744] to-[#0d1424] z-0" />
