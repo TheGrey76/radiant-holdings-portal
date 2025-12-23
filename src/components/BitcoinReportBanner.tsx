@@ -15,8 +15,35 @@ const BitcoinReportBanner = () => {
       transition={{ duration: 0.5, ease: "easeOut" }}
       className="relative z-50 bg-gradient-to-r from-accent via-accent/90 to-accent text-white overflow-hidden"
     >
+      {/* Shimmer effect */}
+      <motion.div
+        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12"
+        animate={{
+          x: ['-200%', '200%'],
+        }}
+        transition={{
+          duration: 3,
+          repeat: Infinity,
+          repeatDelay: 2,
+          ease: 'easeInOut',
+        }}
+      />
+      
+      {/* Subtle glow pulse */}
+      <motion.div
+        className="absolute inset-0 bg-white/5"
+        animate={{
+          opacity: [0, 0.1, 0],
+        }}
+        transition={{
+          duration: 2,
+          repeat: Infinity,
+          ease: 'easeInOut',
+        }}
+      />
+
       {/* Animated background pattern */}
-      <div className="absolute inset-0 opacity-20">
+      <div className="absolute inset-0 opacity-10">
         <motion.div
           className="absolute inset-0"
           style={{
