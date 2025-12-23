@@ -101,16 +101,16 @@ const Bitcoin2026ReportPreview = () => {
     { feature: 'Predictive Models', aries: true, messari: false, glassnode: false, ark: false },
     { feature: 'Public Backtesting', aries: true, messari: false, glassnode: false, ark: false },
     { feature: 'Actionable Signals', aries: true, messari: false, glassnode: false, ark: false },
-    { feature: 'Excel Models', aries: true, messari: false, glassnode: false, ark: false },
+    { feature: 'Interactive Tools', aries: true, messari: false, glassnode: false, ark: false },
     { feature: 'Price', aries: '€99 (One-Time)', messari: '$2,400/year', glassnode: '$3,588/year', ark: 'Free' },
   ];
 
   // What you get items
   const deliverables = [
     { icon: FileSpreadsheet, title: 'Full 120-Page PDF Report', desc: 'Complete analysis, chapter by chapter' },
-    { icon: BarChart3, title: 'Interactive Scenario Calculator (Excel)', desc: 'Input your M2 and rate assumptions to generate price targets' },
+    { icon: BarChart3, title: 'Interactive Scenario Calculator', desc: 'Input your M2 and rate assumptions to generate price targets' },
     { icon: LineChart, title: 'Real-Time Regime Dashboard', desc: 'Private dashboard link showing current market regime (Live Status: EXPANSION)' },
-    { icon: Target, title: 'Backtesting Performance Data (Excel)', desc: 'Historical data proving our model accuracy' },
+    { icon: Target, title: 'Backtesting Performance Data', desc: 'Historical data proving our model accuracy' },
     { icon: Download, title: 'Downloadable Charts & Graphics', desc: 'High-resolution visualizations for your presentations' },
     { icon: PlayCircle, title: 'Quarterly Video Updates', desc: 'Access to quarterly update videos on model and targets' },
     { icon: Zap, title: 'Actionable Trade Signal Summary', desc: 'Clear entry/exit signals based on current regime' },
@@ -120,11 +120,11 @@ const Bitcoin2026ReportPreview = () => {
   const faqItems = [
     { 
       q: 'What happens after purchase?', 
-      a: 'You receive an email with immediate download links for the full report, Excel models, and dashboard access. Everything is delivered instantly.' 
+      a: 'You receive an email with immediate download links for the full report and dashboard access. Everything is delivered instantly.' 
     },
     { 
       q: 'Is the model difficult to use?', 
-      a: 'No. We provide clear documentation and the report explains everything step by step. The Excel models are user-friendly with built-in instructions.' 
+      a: 'No. We provide clear documentation and the report explains everything step by step. All tools are user-friendly with built-in instructions.' 
     },
     { 
       q: 'Why is this not a subscription?', 
@@ -163,7 +163,7 @@ const Bitcoin2026ReportPreview = () => {
           </div>
           <div className="flex items-center gap-2 text-zinc-300">
             <FileSpreadsheet className="w-4 h-4 text-blue-400" />
-            <span>Includes Excel Models & Dashboards</span>
+            <span>Includes Interactive Dashboards</span>
           </div>
           <div className="flex items-center gap-2 text-zinc-300">
             <Lock className="w-4 h-4 text-orange-400" />
@@ -273,7 +273,7 @@ const Bitcoin2026ReportPreview = () => {
                     </div>
                     <div className="flex items-center gap-2">
                       <FileSpreadsheet className="w-4 h-4 text-blue-400" />
-                      <span>Excel Models Included</span>
+                      <span>Interactive Dashboards</span>
                     </div>
                   </div>
                 </div>
@@ -687,7 +687,7 @@ const Bitcoin2026ReportPreview = () => {
                 Stop Guessing. Start Modeling.
               </h2>
               <p className="text-zinc-400 text-lg mb-8 max-w-2xl mx-auto">
-                Gain the institutional edge in the Bitcoin market. For €99, you get the full report, the Excel models, the backtesting data, and the real-time dashboards. This is the most comprehensive, actionable framework available at this price point.
+                Gain the institutional edge in the Bitcoin market. For €99, you get the full report, the backtesting data, and the real-time dashboards. This is the most comprehensive, actionable framework available at this price point.
               </p>
 
               <div className="max-w-md mx-auto mb-8">
