@@ -68,3 +68,6 @@ verify_jwt = false
 
 [functions.fetch-bitcoin-treasuries]
 verify_jwt = false
+
+[functions.seed-search-index]
+verify_jwt = false
