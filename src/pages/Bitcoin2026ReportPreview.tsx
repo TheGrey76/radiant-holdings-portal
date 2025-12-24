@@ -1,5 +1,6 @@
 // Bitcoin 2026 Report Premium Sales Page
 import { useState } from 'react';
+import BitcoinReportLiveData from '@/components/BitcoinReportLiveData';
 import { Helmet } from 'react-helmet';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -420,6 +421,15 @@ const Bitcoin2026ReportPreview = () => {
                   </div>
                 ))}
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ===== LIVE DATA SECTION ===== */}
+        <section className="py-16 border-t border-zinc-800/50">
+          <div className="container mx-auto px-4">
+            <div className="max-w-5xl mx-auto">
+              <BitcoinReportLiveData />
             </div>
           </div>
         </section>
