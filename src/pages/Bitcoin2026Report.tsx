@@ -392,7 +392,7 @@ const Bitcoin2026Report = () => {
               <div className="flex items-center gap-2">
                 <Activity className="w-4 h-4 text-primary" />
                 <span className="text-sm text-foreground">
-                  I dati di questo report vengono aggiornati automaticamente ogni giorno alle 6:00 CET
+                  Data in this report is automatically updated daily at 6:00 AM CET
                 </span>
               </div>
             </div>
