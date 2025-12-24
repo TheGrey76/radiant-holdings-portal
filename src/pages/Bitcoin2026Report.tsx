@@ -344,23 +344,6 @@ const Bitcoin2026Report = () => {
 
       <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
 
-        {/* Live Data Banner */}
-        <div className="bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 border-b border-primary/20">
-          <div className="container max-w-6xl mx-auto px-6 py-3">
-            <div className="flex items-center justify-center gap-3">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                <span className="text-sm font-medium text-foreground">Live Data Report</span>
-              </div>
-              <span className="text-sm text-muted-foreground">|</span>
-              <span className="text-sm text-muted-foreground">
-                I dati di questo report vengono aggiornati automaticamente ogni giorno alle 6:00 CET
-              </span>
-              <Activity className="w-4 h-4 text-primary" />
-            </div>
-          </div>
-        </div>
-
         {/* Hero Header */}
         <div className="relative overflow-hidden border-b border-border/40 bg-gradient-to-br from-primary/5 via-background to-accent/5">
           <div className="absolute inset-0 bg-grid-pattern opacity-[0.03]"></div>
@@ -389,6 +372,28 @@ const Bitcoin2026Report = () => {
                   <div className="w-1 h-4 bg-primary rounded-full"></div>
                   <span className="font-medium">ARIES76 Capital Intelligence</span>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Live Data Banner */}
+        <div className="bg-gradient-to-r from-green-500/10 via-primary/10 to-green-500/10 border-y border-green-500/30">
+          <div className="container max-w-6xl mx-auto px-6 py-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+              <div className="flex items-center gap-2">
+                <div className="relative">
+                  <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                  <div className="absolute inset-0 w-3 h-3 rounded-full bg-green-500 animate-ping"></div>
+                </div>
+                <span className="text-sm font-semibold text-green-600 dark:text-green-400 uppercase tracking-wider">Live Data Report</span>
+              </div>
+              <span className="hidden sm:block text-muted-foreground">•</span>
+              <div className="flex items-center gap-2">
+                <Activity className="w-4 h-4 text-primary" />
+                <span className="text-sm text-foreground">
+                  I dati di questo report vengono aggiornati automaticamente ogni giorno alle 6:00 CET
+                </span>
               </div>
             </div>
           </div>
