@@ -344,6 +344,23 @@ const Bitcoin2026Report = () => {
 
       <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
 
+        {/* Live Data Banner */}
+        <div className="bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 border-b border-primary/20">
+          <div className="container max-w-6xl mx-auto px-6 py-3">
+            <div className="flex items-center justify-center gap-3">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                <span className="text-sm font-medium text-foreground">Live Data Report</span>
+              </div>
+              <span className="text-sm text-muted-foreground">|</span>
+              <span className="text-sm text-muted-foreground">
+                I dati di questo report vengono aggiornati automaticamente ogni giorno alle 6:00 CET
+              </span>
+              <Activity className="w-4 h-4 text-primary" />
+            </div>
+          </div>
+        </div>
+
         {/* Hero Header */}
         <div className="relative overflow-hidden border-b border-border/40 bg-gradient-to-br from-primary/5 via-background to-accent/5">
           <div className="absolute inset-0 bg-grid-pattern opacity-[0.03]"></div>
