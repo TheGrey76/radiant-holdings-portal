@@ -71,3 +71,6 @@ verify_jwt = false
 
 [functions.seed-search-index]
 verify_jwt = false
+
+[functions.bitcoin-report-updater]
+verify_jwt = false

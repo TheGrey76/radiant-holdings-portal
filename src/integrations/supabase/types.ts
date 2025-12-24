@@ -670,6 +670,198 @@ export type Database = {
         }
         Relationships: []
       }
+      bitcoin_regime_history: {
+        Row: {
+          bitcoin_price_at_time: number | null
+          confidence: number | null
+          created_at: string | null
+          id: number
+          price_target_high: number | null
+          price_target_low: number | null
+          probability: number | null
+          regime: string
+          timestamp: string
+        }
+        Insert: {
+          bitcoin_price_at_time?: number | null
+          confidence?: number | null
+          created_at?: string | null
+          id?: number
+          price_target_high?: number | null
+          price_target_low?: number | null
+          probability?: number | null
+          regime: string
+          timestamp: string
+        }
+        Update: {
+          bitcoin_price_at_time?: number | null
+          confidence?: number | null
+          created_at?: string | null
+          id?: number
+          price_target_high?: number | null
+          price_target_low?: number | null
+          probability?: number | null
+          regime?: string
+          timestamp?: string
+        }
+        Relationships: []
+      }
+      bitcoin_report_data: {
+        Row: {
+          bitcoin_change_24h: number | null
+          bitcoin_market_cap: number | null
+          bitcoin_price_eur: number | null
+          bitcoin_price_usd: number | null
+          bitcoin_volume_24h: number | null
+          created_at: string | null
+          current_regime: string | null
+          id: number
+          inflation_rate: number | null
+          institutional_target: number | null
+          m2_value: number | null
+          price_target_high: number | null
+          price_target_low: number | null
+          probability: number | null
+          raw_data: Json | null
+          real_rate: number | null
+          regime_confidence: number | null
+          timestamp: string
+          unemployment_rate: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          bitcoin_change_24h?: number | null
+          bitcoin_market_cap?: number | null
+          bitcoin_price_eur?: number | null
+          bitcoin_price_usd?: number | null
+          bitcoin_volume_24h?: number | null
+          created_at?: string | null
+          current_regime?: string | null
+          id?: number
+          inflation_rate?: number | null
+          institutional_target?: number | null
+          m2_value?: number | null
+          price_target_high?: number | null
+          price_target_low?: number | null
+          probability?: number | null
+          raw_data?: Json | null
+          real_rate?: number | null
+          regime_confidence?: number | null
+          timestamp?: string
+          unemployment_rate?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          bitcoin_change_24h?: number | null
+          bitcoin_market_cap?: number | null
+          bitcoin_price_eur?: number | null
+          bitcoin_price_usd?: number | null
+          bitcoin_volume_24h?: number | null
+          created_at?: string | null
+          current_regime?: string | null
+          id?: number
+          inflation_rate?: number | null
+          institutional_target?: number | null
+          m2_value?: number | null
+          price_target_high?: number | null
+          price_target_low?: number | null
+          probability?: number | null
+          raw_data?: Json | null
+          real_rate?: number | null
+          regime_confidence?: number | null
+          timestamp?: string
+          unemployment_rate?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      bitcoin_report_latest: {
+        Row: {
+          bitcoin_price_eur: number | null
+          bitcoin_price_usd: number | null
+          current_regime: string | null
+          id: number
+          institutional_target: number | null
+          m2_value: number | null
+          price_target_high: number | null
+          price_target_low: number | null
+          probability: number | null
+          raw_data: Json | null
+          real_rate: number | null
+          regime_confidence: number | null
+          timestamp: string
+          updated_at: string | null
+        }
+        Insert: {
+          bitcoin_price_eur?: number | null
+          bitcoin_price_usd?: number | null
+          current_regime?: string | null
+          id?: number
+          institutional_target?: number | null
+          m2_value?: number | null
+          price_target_high?: number | null
+          price_target_low?: number | null
+          probability?: number | null
+          raw_data?: Json | null
+          real_rate?: number | null
+          regime_confidence?: number | null
+          timestamp: string
+          updated_at?: string | null
+        }
+        Update: {
+          bitcoin_price_eur?: number | null
+          bitcoin_price_usd?: number | null
+          current_regime?: string | null
+          id?: number
+          institutional_target?: number | null
+          m2_value?: number | null
+          price_target_high?: number | null
+          price_target_low?: number | null
+          probability?: number | null
+          raw_data?: Json | null
+          real_rate?: number | null
+          regime_confidence?: number | null
+          timestamp?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      bitcoin_report_updates_log: {
+        Row: {
+          bitcoin_data_updated: boolean | null
+          created_at: string | null
+          error_message: string | null
+          execution_time_ms: number | null
+          id: number
+          macro_data_updated: boolean | null
+          model_updated: boolean | null
+          status: string | null
+          update_timestamp: string
+        }
+        Insert: {
+          bitcoin_data_updated?: boolean | null
+          created_at?: string | null
+          error_message?: string | null
+          execution_time_ms?: number | null
+          id?: number
+          macro_data_updated?: boolean | null
+          model_updated?: boolean | null
+          status?: string | null
+          update_timestamp: string
+        }
+        Update: {
+          bitcoin_data_updated?: boolean | null
+          created_at?: string | null
+          error_message?: string | null
+          execution_time_ms?: number | null
+          id?: number
+          macro_data_updated?: boolean | null
+          model_updated?: boolean | null
+          status?: string | null
+          update_timestamp?: string
+        }
+        Relationships: []
+      }
       bitcoin_treasuries: {
         Row: {
           bitcoin_holdings: number
