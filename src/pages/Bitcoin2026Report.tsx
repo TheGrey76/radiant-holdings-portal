@@ -15,6 +15,7 @@ import {
 import BitcoinTreasuriesLive from "@/components/BitcoinTreasuriesLive";
 import { ReportSearch } from "@/components/ReportSearch";
 import { useBitcoinReportData } from "@/hooks/useBitcoinReportData";
+import { useTwelveDataBtc } from "@/hooks/useTwelveDataBtc";
 
 // Glossary definitions
 const glossary: Record<string, string> = {
@@ -60,6 +61,7 @@ const Bitcoin2026Report = () => {
   const [activeSection, setActiveSection] = useState<string>("");
   const [daysUntilQ2, setDaysUntilQ2] = useState<number>(0);
   const { data: bitcoinData, loading: bitcoinLoading } = useBitcoinReportData();
+  const { data: twelveData, isLoading: twelveLoading, error: twelveError } = useTwelveDataBtc();
 
   // Calculate days until Q2 2026 edition (April 1, 2026)
   useEffect(() => {
@@ -465,7 +467,7 @@ const Bitcoin2026Report = () => {
                     <div className="flex flex-col">
                       <span className="text-xs text-gray-500 uppercase tracking-wider">Live Price</span>
                       <AnimatePresence mode="wait">
-                        {bitcoinLoading ? (
+                        {(twelveLoading && bitcoinLoading) ? (
                           <motion.div
                             key="loading"
                             initial={{ opacity: 0 }}
@@ -475,13 +477,13 @@ const Bitcoin2026Report = () => {
                           />
                         ) : (
                           <motion.span
-                            key={bitcoinData?.bitcoin_price_usd}
+                            key={twelveData?.bitcoin_price_usd || bitcoinData?.bitcoin_price_usd}
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -10 }}
                             className="text-2xl font-bold text-white tabular-nums"
                           >
-                            ${bitcoinData?.bitcoin_price_usd?.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) || '---'}
+                            ${(twelveData?.bitcoin_price_usd || bitcoinData?.bitcoin_price_usd)?.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) || '---'}
                           </motion.span>
                         )}
                       </AnimatePresence>
@@ -491,7 +493,7 @@ const Bitcoin2026Report = () => {
                   <div className="flex flex-col">
                     <span className="text-xs text-gray-500 uppercase tracking-wider">EUR</span>
                     <AnimatePresence mode="wait">
-                      {bitcoinLoading ? (
+                      {(twelveLoading && bitcoinLoading) ? (
                         <motion.div
                           key="loading-eur"
                           initial={{ opacity: 0 }}
@@ -501,19 +503,39 @@ const Bitcoin2026Report = () => {
                         />
                       ) : (
                         <motion.span
-                          key={bitcoinData?.bitcoin_price_eur}
+                          key={twelveData?.bitcoin_price_eur || bitcoinData?.bitcoin_price_eur}
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: -10 }}
                           className="text-lg font-semibold text-gray-300 tabular-nums"
                         >
-                          €{bitcoinData?.bitcoin_price_eur?.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) || '---'}
+                          €{(twelveData?.bitcoin_price_eur || bitcoinData?.bitcoin_price_eur)?.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) || '---'}
                         </motion.span>
                       )}
                     </AnimatePresence>
                   </div>
-                  {/* 24h Change */}
-                  {bitcoinData?.raw_data?.bitcoin?.change_24h !== undefined && (
+                  {/* 24h Change - prioritize Twelve Data */}
+                  {(twelveData?.change_24h !== undefined && twelveData?.change_24h !== null) ? (
+                    <div className={`flex items-center gap-1 px-2 py-1 rounded-md ${
+                      twelveData.change_24h >= 0 
+                        ? 'bg-green-500/10' 
+                        : 'bg-red-500/10'
+                    }`}>
+                      {twelveData.change_24h >= 0 ? (
+                        <ArrowUp className="w-3.5 h-3.5 text-green-400" />
+                      ) : (
+                        <ArrowUp className="w-3.5 h-3.5 text-red-400 rotate-180" />
+                      )}
+                      <span className={`text-sm font-semibold tabular-nums ${
+                        twelveData.change_24h >= 0 
+                          ? 'text-green-400' 
+                          : 'text-red-400'
+                      }`}>
+                        {Math.abs(twelveData.change_24h).toFixed(2)}%
+                      </span>
+                      <span className="text-xs text-gray-500">24h</span>
+                    </div>
+                  ) : bitcoinData?.raw_data?.bitcoin?.change_24h !== undefined && (
                     <div className={`flex items-center gap-1 px-2 py-1 rounded-md ${
                       bitcoinData.raw_data.bitcoin.change_24h >= 0 
                         ? 'bg-green-500/10' 
@@ -539,7 +561,20 @@ const Bitcoin2026Report = () => {
                       <div className="w-2 h-2 rounded-full bg-green-500"></div>
                       <div className="absolute inset-0 w-2 h-2 rounded-full bg-green-500 animate-ping"></div>
                     </div>
-                    <span className="text-xs text-green-400">LIVE</span>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <span className="text-xs text-green-400 cursor-help">
+                          {twelveData?.source === 'twelve_data' ? 'TWELVE DATA' : 'LIVE'}
+                        </span>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p className="text-xs">
+                          {twelveData?.source === 'twelve_data' 
+                            ? 'Real-time data from Twelve Data API' 
+                            : 'Data from internal database'}
+                        </p>
+                      </TooltipContent>
+                    </Tooltip>
                   </div>
                 </div>
               </motion.div>
