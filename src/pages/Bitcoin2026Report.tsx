@@ -58,7 +58,23 @@ const GlossaryTerm = ({ term, children }: { term: string; children: React.ReactN
 const Bitcoin2026Report = () => {
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
+  const [daysUntilQ2, setDaysUntilQ2] = useState<number>(0);
   const { data: bitcoinData, loading: bitcoinLoading } = useBitcoinReportData();
+
+  // Calculate days until Q2 2026 edition (April 1, 2026)
+  useEffect(() => {
+    const calculateDays = () => {
+      const q2ReleaseDate = new Date('2026-04-01');
+      const today = new Date();
+      const diffTime = q2ReleaseDate.getTime() - today.getTime();
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      setDaysUntilQ2(Math.max(0, diffDays));
+    };
+    
+    calculateDays();
+    const interval = setInterval(calculateDays, 1000 * 60 * 60); // Update hourly
+    return () => clearInterval(interval);
+  }, []);
 
   // Animated Chapter Section Component
   const ChapterSection = ({ children, id, dataSection }: { children: React.ReactNode; id: string; dataSection: string }) => {
@@ -534,6 +550,14 @@ const Bitcoin2026Report = () => {
                   <Calendar className="w-4 h-4" />
                   <span>Q1 2026 Edition</span>
                 </div>
+                {daysUntilQ2 > 0 && (
+                  <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/30">
+                    <Zap className="w-3.5 h-3.5 text-orange-400" />
+                    <span className="text-xs font-medium text-orange-400">
+                      Q2 Edition in {daysUntilQ2} days
+                    </span>
+                  </div>
+                )}
               </motion.div>
             </motion.div>
           </div>
