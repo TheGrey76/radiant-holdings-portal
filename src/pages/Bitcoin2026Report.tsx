@@ -345,36 +345,125 @@ const Bitcoin2026Report = () => {
       <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
 
         {/* Hero Header */}
-        <div className="relative overflow-hidden border-b border-border/40 bg-gradient-to-br from-primary/5 via-background to-accent/5">
-          <div className="absolute inset-0 bg-grid-pattern opacity-[0.03]"></div>
-          <div className="container max-w-6xl mx-auto px-6 py-24 relative">
-            <div className="max-w-3xl">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
-                <div className="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
-                <span className="text-xs font-medium text-primary uppercase tracking-wider">Institutional Research</span>
-              </div>
-              
-              <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-4 leading-tight">
-                Bitcoin 2026
-              </h1>
-              
-              <p className="text-xl text-muted-foreground mb-6 leading-relaxed">
-                Macro-Liquidity Regime Analysis & Quantitative Valuation Framework
-              </p>
-
-              {/* Search Bar */}
-              <div className="mb-8">
-                <ReportSearch chapters={chapters} glossary={glossary} />
-              </div>
-
-              <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
-                <div className="flex items-center gap-2">
-                  <div className="w-1 h-4 bg-primary rounded-full"></div>
-                  <span className="font-medium">ARIES76 Capital Intelligence</span>
-                </div>
+        <div className="relative overflow-hidden border-b border-border/40">
+          {/* Animated Background */}
+          <div className="absolute inset-0 bg-gradient-to-br from-[#0d1117] via-[#161b22] to-[#0d1117]"></div>
+          
+          {/* Bitcoin-inspired Grid Pattern */}
+          <div className="absolute inset-0 opacity-20">
+            <div className="absolute inset-0" style={{
+              backgroundImage: `
+                linear-gradient(rgba(247, 147, 26, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(247, 147, 26, 0.1) 1px, transparent 1px)
+              `,
+              backgroundSize: '60px 60px'
+            }}></div>
+          </div>
+          
+          {/* Glowing Orbs */}
+          <div className="absolute top-1/4 -left-20 w-80 h-80 bg-orange-500/20 rounded-full blur-[100px] animate-pulse"></div>
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-[120px]"></div>
+          <div className="absolute top-1/2 right-1/4 w-64 h-64 bg-primary/10 rounded-full blur-[80px] animate-pulse" style={{ animationDelay: '1s' }}></div>
+          
+          {/* Floating Bitcoin Symbol */}
+          <motion.div 
+            className="absolute top-1/2 right-[10%] -translate-y-1/2 hidden lg:block"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, delay: 0.3 }}
+          >
+            <div className="relative">
+              <motion.div
+                className="w-48 h-48 rounded-full border-2 border-orange-500/30 flex items-center justify-center"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+              >
+                <div className="absolute inset-4 rounded-full border border-orange-500/20"></div>
+                <div className="absolute inset-8 rounded-full border border-dashed border-orange-500/15"></div>
+              </motion.div>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-7xl font-bold text-orange-500/80">₿</span>
               </div>
             </div>
+          </motion.div>
+          
+          <div className="container max-w-6xl mx-auto px-6 py-28 md:py-36 relative z-10">
+            <motion.div 
+              className="max-w-3xl"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              {/* Badge */}
+              <motion.div 
+                className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-gradient-to-r from-orange-500/20 to-amber-500/10 border border-orange-500/30 mb-8 backdrop-blur-sm"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+              >
+                <div className="relative">
+                  <div className="w-2.5 h-2.5 rounded-full bg-orange-500"></div>
+                  <div className="absolute inset-0 w-2.5 h-2.5 rounded-full bg-orange-500 animate-ping"></div>
+                </div>
+                <span className="text-sm font-semibold text-orange-400 uppercase tracking-wider">Institutional Research</span>
+              </motion.div>
+              
+              {/* Main Title */}
+              <motion.h1 
+                className="text-6xl md:text-7xl lg:text-8xl font-black mb-6 leading-[0.9] tracking-tight"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+              >
+                <span className="text-white">Bitcoin</span>
+                <br />
+                <span className="bg-gradient-to-r from-orange-400 via-amber-400 to-orange-500 bg-clip-text text-transparent">2026</span>
+              </motion.h1>
+              
+              {/* Subtitle */}
+              <motion.p 
+                className="text-xl md:text-2xl text-gray-400 mb-10 leading-relaxed max-w-2xl font-light"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+              >
+                Macro-Liquidity Regime Analysis & Quantitative Valuation Framework
+              </motion.p>
+
+              {/* Search Bar */}
+              <motion.div 
+                className="mb-10"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.5 }}
+              >
+                <ReportSearch chapters={chapters} glossary={glossary} />
+              </motion.div>
+
+              {/* Author Attribution */}
+              <motion.div 
+                className="flex flex-wrap items-center gap-6"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-1.5 h-8 bg-gradient-to-b from-orange-500 to-amber-500 rounded-full"></div>
+                  <div>
+                    <span className="text-sm font-semibold text-white">ARIES76</span>
+                    <span className="text-sm text-gray-500 ml-2">Capital Intelligence</span>
+                  </div>
+                </div>
+                <div className="hidden sm:flex items-center gap-2 text-sm text-gray-500">
+                  <Calendar className="w-4 h-4" />
+                  <span>Q1 2025 Edition</span>
+                </div>
+              </motion.div>
+            </motion.div>
           </div>
+          
+          {/* Bottom Gradient Fade */}
+          <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent"></div>
         </div>
 
         {/* Live Data Banner */}
