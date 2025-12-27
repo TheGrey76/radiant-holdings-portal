@@ -14,6 +14,30 @@ export type Database = {
   }
   public: {
     Tables: {
+      abc_authorized_users: {
+        Row: {
+          created_at: string
+          email: string
+          granted_by: string | null
+          id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          granted_by?: string | null
+          id?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          granted_by?: string | null
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       abc_company_settings: {
         Row: {
           id: string
@@ -1910,6 +1934,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_abc_authorized: { Args: { _user_id: string }; Returns: boolean }
       search_content: {
         Args: { content_type_filter?: string; search_query: string }
         Returns: {
