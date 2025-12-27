@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "npm:resend@2.0.0";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
@@ -42,8 +43,92 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
+    // Authentication check
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      return new Response(
+        JSON.stringify({ error: 'Authentication required' }),
+        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    // Initialize Supabase client
+    const supabaseUrl = Deno.env.get("SUPABASE_URL");
+    const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+    
+    if (!supabaseUrl || !supabaseServiceKey) {
+      throw new Error("Missing Supabase configuration");
+    }
+
+    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
+    // Verify the user's token
+    const token = authHeader.replace('Bearer ', '');
+    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+
+    if (authError || !user) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid authentication token' }),
+        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    // Check if user has admin role
+    const { data: isAdmin, error: roleError } = await supabase.rpc('has_role', {
+      _user_id: user.id,
+      _role: 'admin'
+    });
+
+    if (roleError || !isAdmin) {
+      // Fallback: check if user email is in abc_console_access
+      const { data: accessData, error: accessError } = await supabase
+        .from('abc_console_access')
+        .select('email')
+        .eq('email', user.email?.toLowerCase())
+        .maybeSingle();
+
+      if (accessError || !accessData) {
+        return new Response(
+          JSON.stringify({ error: 'Access denied. Admin or ABC Console access required.' }),
+          { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+    }
+
+    console.log(`Authenticated user ${user.email} sending ABC campaign`);
+
     const { recipients, subject, content, senderEmail, attachments, campaignId }: CampaignRequest = await req.json();
     
+    // Input validation
+    if (!recipients || !Array.isArray(recipients) || recipients.length === 0) {
+      return new Response(
+        JSON.stringify({ error: 'Recipients array is required and must not be empty' }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    if (!subject || typeof subject !== 'string' || subject.length > 500) {
+      return new Response(
+        JSON.stringify({ error: 'Valid subject is required (max 500 characters)' }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    if (!content || typeof content !== 'string') {
+      return new Response(
+        JSON.stringify({ error: 'Content is required' }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    // Rate limiting: max 100 recipients per request
+    if (recipients.length > 100) {
+      return new Response(
+        JSON.stringify({ error: 'Maximum 100 recipients per campaign request' }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
     console.log(`Starting ABC campaign: "${subject}" to ${recipients.length} recipients`);
     if (attachments && attachments.length > 0) {
       console.log(`Campaign includes ${attachments.length} attachment(s): ${attachments.map(a => a.name).join(', ')}`);
@@ -69,6 +154,13 @@ const handler = async (req: Request): Promise<Response> => {
 
     for (const recipient of recipients) {
       try {
+        // Validate recipient email
+        if (!recipient.email || typeof recipient.email !== 'string' || !recipient.email.includes('@')) {
+          results.failed++;
+          results.errors.push(`${recipient.email}: Invalid email format`);
+          continue;
+        }
+
         // Personalize content with all placeholders
         const personalizedContent = content
           .replace(/\{nome\}/g, recipient.name || '')
