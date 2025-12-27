@@ -40,7 +40,7 @@ verify_jwt = true
 verify_jwt = false
 
 [functions.send-abc-campaign]
-verify_jwt = false
+verify_jwt = true
 
 [functions.track-email-open]
 verify_jwt = false
