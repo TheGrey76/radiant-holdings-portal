@@ -45,21 +45,54 @@ const ABCCompanyConsole = () => {
   const { recordSnapshot } = useKPIHistory();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+  const [currentUserEmail, setCurrentUserEmail] = useState<string | null>(null);
 
-  // Check authentication on mount via sessionStorage
+  // Check authentication on mount via Supabase Auth
   useEffect(() => {
-    const isAuthorized = sessionStorage.getItem('abc_console_authorized') === 'true';
-    if (!isAuthorized) {
-      navigate('/abc-company-console-access');
-      return;
-    }
-    setIsAuthenticated(true);
-    setIsCheckingAuth(false);
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session?.user) {
+        navigate('/abc-company-console-access');
+        return;
+      }
+
+      // Check if user is authorized (either in abc_authorized_users or is admin)
+      const { data: authUser } = await supabase
+        .from('abc_authorized_users')
+        .select('id')
+        .eq('user_id', session.user.id)
+        .maybeSingle();
+      
+      const { data: isAdmin } = await supabase.rpc('has_role', {
+        _user_id: session.user.id,
+        _role: 'admin'
+      });
+      
+      if (!authUser && !isAdmin) {
+        navigate('/abc-company-console-access');
+        return;
+      }
+
+      setCurrentUserEmail(session.user.email || null);
+      setIsAuthenticated(true);
+      setIsCheckingAuth(false);
+    };
+
+    checkAuth();
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_OUT' || !session) {
+        navigate('/abc-company-console-access');
+      }
+    });
+
+    return () => subscription.unsubscribe();
   }, [navigate]);
 
-  const handleLogout = () => {
-    sessionStorage.removeItem('abc_console_authorized');
-    sessionStorage.removeItem('abc_console_email');
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
     navigate('/abc-company-console-access');
   };
   const [filterCategory, setFilterCategory] = useState("all");
@@ -122,7 +155,7 @@ const ABCCompanyConsole = () => {
   const [newAuthorizedEmail, setNewAuthorizedEmail] = useState("");
   const [settingsTargetAmount, setSettingsTargetAmount] = useState("10000000");
   const [settingsDeadline, setSettingsDeadline] = useState("2026-06-30");
-  const currentUserEmail = sessionStorage.getItem('abc_console_email') || '';
+  // currentUserEmail is now set via Supabase auth state in the useEffect above
 
   // Fetch investors from Supabase and load saved data
   useEffect(() => {

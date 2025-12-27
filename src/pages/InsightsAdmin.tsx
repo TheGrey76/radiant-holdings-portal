@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import DOMPurify from "dompurify";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -599,13 +600,19 @@ export default function InsightsAdmin() {
                             {(editingPost?.content || newPost.content) ? (
                               <div 
                                 dangerouslySetInnerHTML={{ 
-                                  __html: (editingPost?.content || newPost.content)
-                                    .replace(/^### (.*$)/gim, '<h3>$1</h3>')
-                                    .replace(/^## (.*$)/gim, '<h2>$1</h2>')
-                                    .replace(/^# (.*$)/gim, '<h1>$1</h1>')
-                                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                                    .replace(/\*(.*?)\*/g, '<em>$1</em>')
-                                    .replace(/\n/g, '<br/>')
+                                  __html: DOMPurify.sanitize(
+                                    (editingPost?.content || newPost.content)
+                                      .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+                                      .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+                                      .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+                                      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                                      .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                                      .replace(/\n/g, '<br/>'),
+                                    {
+                                      ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'u', 'a', 'ul', 'ol', 'li', 'h1', 'h2', 'h3', 'h4', 'div', 'span', 'blockquote'],
+                                      ALLOWED_ATTR: ['href', 'target', 'class']
+                                    }
+                                  )
                                 }} 
                               />
                             ) : (
