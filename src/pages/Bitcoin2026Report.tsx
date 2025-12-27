@@ -561,20 +561,7 @@ const Bitcoin2026Report = () => {
                       <div className="w-2 h-2 rounded-full bg-green-500"></div>
                       <div className="absolute inset-0 w-2 h-2 rounded-full bg-green-500 animate-ping"></div>
                     </div>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <span className="text-xs text-green-400 cursor-help">
-                          {twelveData?.source === 'twelve_data' ? 'TWELVE DATA' : 'LIVE'}
-                        </span>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p className="text-xs">
-                          {twelveData?.source === 'twelve_data' 
-                            ? 'Real-time data from Twelve Data API' 
-                            : 'Data from internal database'}
-                        </p>
-                      </TooltipContent>
-                    </Tooltip>
+                    <span className="text-xs text-green-400">LIVE</span>
                   </div>
                 </div>
               </motion.div>
