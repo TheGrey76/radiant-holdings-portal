@@ -512,6 +512,28 @@ const Bitcoin2026Report = () => {
                       )}
                     </AnimatePresence>
                   </div>
+                  {/* 24h Change */}
+                  {bitcoinData?.raw_data?.bitcoin?.change_24h !== undefined && (
+                    <div className={`flex items-center gap-1 px-2 py-1 rounded-md ${
+                      bitcoinData.raw_data.bitcoin.change_24h >= 0 
+                        ? 'bg-green-500/10' 
+                        : 'bg-red-500/10'
+                    }`}>
+                      {bitcoinData.raw_data.bitcoin.change_24h >= 0 ? (
+                        <ArrowUp className="w-3.5 h-3.5 text-green-400" />
+                      ) : (
+                        <ArrowUp className="w-3.5 h-3.5 text-red-400 rotate-180" />
+                      )}
+                      <span className={`text-sm font-semibold tabular-nums ${
+                        bitcoinData.raw_data.bitcoin.change_24h >= 0 
+                          ? 'text-green-400' 
+                          : 'text-red-400'
+                      }`}>
+                        {Math.abs(bitcoinData.raw_data.bitcoin.change_24h).toFixed(2)}%
+                      </span>
+                      <span className="text-xs text-gray-500">24h</span>
+                    </div>
+                  )}
                   <div className="hidden sm:flex items-center gap-2 ml-2">
                     <div className="relative">
                       <div className="w-2 h-2 rounded-full bg-green-500"></div>
