@@ -559,30 +559,43 @@ const Bitcoin2026Report = () => {
                   </div>
                 )}
                 {bitcoinData?.current_regime && (
-                  <div className={`hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full border ${
-                    bitcoinData.current_regime === 'EXPANSION' 
-                      ? 'bg-green-500/10 border-green-500/30' 
-                      : bitcoinData.current_regime === 'CONTRACTION'
-                      ? 'bg-red-500/10 border-red-500/30'
-                      : 'bg-blue-500/10 border-blue-500/30'
-                  }`}>
-                    <Activity className={`w-3.5 h-3.5 ${
-                      bitcoinData.current_regime === 'EXPANSION' 
-                        ? 'text-green-400' 
-                        : bitcoinData.current_regime === 'CONTRACTION'
-                        ? 'text-red-400'
-                        : 'text-blue-400'
-                    }`} />
-                    <span className={`text-xs font-medium ${
-                      bitcoinData.current_regime === 'EXPANSION' 
-                        ? 'text-green-400' 
-                        : bitcoinData.current_regime === 'CONTRACTION'
-                        ? 'text-red-400'
-                        : 'text-blue-400'
-                    }`}>
-                      {bitcoinData.current_regime.charAt(0) + bitcoinData.current_regime.slice(1).toLowerCase()} Regime
-                    </span>
-                  </div>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div className={`hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full border cursor-help ${
+                        bitcoinData.current_regime === 'EXPANSION' 
+                          ? 'bg-green-500/10 border-green-500/30' 
+                          : bitcoinData.current_regime === 'CONTRACTION'
+                          ? 'bg-red-500/10 border-red-500/30'
+                          : 'bg-blue-500/10 border-blue-500/30'
+                      }`}>
+                        <Activity className={`w-3.5 h-3.5 ${
+                          bitcoinData.current_regime === 'EXPANSION' 
+                            ? 'text-green-400' 
+                            : bitcoinData.current_regime === 'CONTRACTION'
+                            ? 'text-red-400'
+                            : 'text-blue-400'
+                        }`} />
+                        <span className={`text-xs font-medium ${
+                          bitcoinData.current_regime === 'EXPANSION' 
+                            ? 'text-green-400' 
+                            : bitcoinData.current_regime === 'CONTRACTION'
+                            ? 'text-red-400'
+                            : 'text-blue-400'
+                        }`}>
+                          {bitcoinData.current_regime.charAt(0) + bitcoinData.current_regime.slice(1).toLowerCase()} Regime
+                        </span>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent side="bottom" className="max-w-xs">
+                      <p className="text-sm">
+                        {bitcoinData.current_regime === 'EXPANSION' 
+                          ? 'Favorable macro conditions: positive real rates and expanding M2 liquidity support Bitcoin appreciation.'
+                          : bitcoinData.current_regime === 'CONTRACTION'
+                          ? 'Challenging macro conditions: negative real rates or contracting M2 liquidity may pressure Bitcoin prices.'
+                          : 'Mixed macro signals: real rates and M2 liquidity show no clear directional bias.'}
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
                 )}
               </motion.div>
             </motion.div>
