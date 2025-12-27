@@ -558,6 +558,32 @@ const Bitcoin2026Report = () => {
                     </span>
                   </div>
                 )}
+                {bitcoinData?.current_regime && (
+                  <div className={`hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full border ${
+                    bitcoinData.current_regime === 'EXPANSION' 
+                      ? 'bg-green-500/10 border-green-500/30' 
+                      : bitcoinData.current_regime === 'CONTRACTION'
+                      ? 'bg-red-500/10 border-red-500/30'
+                      : 'bg-blue-500/10 border-blue-500/30'
+                  }`}>
+                    <Activity className={`w-3.5 h-3.5 ${
+                      bitcoinData.current_regime === 'EXPANSION' 
+                        ? 'text-green-400' 
+                        : bitcoinData.current_regime === 'CONTRACTION'
+                        ? 'text-red-400'
+                        : 'text-blue-400'
+                    }`} />
+                    <span className={`text-xs font-medium ${
+                      bitcoinData.current_regime === 'EXPANSION' 
+                        ? 'text-green-400' 
+                        : bitcoinData.current_regime === 'CONTRACTION'
+                        ? 'text-red-400'
+                        : 'text-blue-400'
+                    }`}>
+                      {bitcoinData.current_regime.charAt(0) + bitcoinData.current_regime.slice(1).toLowerCase()} Regime
+                    </span>
+                  </div>
+                )}
               </motion.div>
             </motion.div>
           </div>
