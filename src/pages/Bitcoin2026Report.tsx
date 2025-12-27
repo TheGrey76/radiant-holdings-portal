@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet";
 import { ArrowUp, TrendingUp, BarChart3, Layers, Database, Activity, Coins, Network, Target, LineChart, Lightbulb, HelpCircle, Shield, Globe, Scale, Calendar, Zap, AlertTriangle, GitBranch, LogOut } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 import { LineChart as RechartsLineChart, Line, AreaChart, Area, BarChart as RechartsBarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Legend } from "recharts";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { 
@@ -14,6 +14,7 @@ import {
 } from "@/components/InstitutionalCharts";
 import BitcoinTreasuriesLive from "@/components/BitcoinTreasuriesLive";
 import { ReportSearch } from "@/components/ReportSearch";
+import { useBitcoinReportData } from "@/hooks/useBitcoinReportData";
 
 // Glossary definitions
 const glossary: Record<string, string> = {
@@ -57,6 +58,7 @@ const GlossaryTerm = ({ term, children }: { term: string; children: React.ReactN
 const Bitcoin2026Report = () => {
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
+  const { data: bitcoinData, loading: bitcoinLoading } = useBitcoinReportData();
 
   // Animated Chapter Section Component
   const ChapterSection = ({ children, id, dataSection }: { children: React.ReactNode; id: string; dataSection: string }) => {
@@ -422,13 +424,85 @@ const Bitcoin2026Report = () => {
               
               {/* Subtitle */}
               <motion.p 
-                className="text-xl md:text-2xl text-gray-400 mb-10 leading-relaxed max-w-2xl font-light"
+                className="text-xl md:text-2xl text-gray-400 mb-8 leading-relaxed max-w-2xl font-light"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
               >
                 Macro-Liquidity Regime Analysis & Quantitative Valuation Framework
               </motion.p>
+
+              {/* Live Bitcoin Price Ticker */}
+              <motion.div
+                className="mb-10"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.45 }}
+              >
+                <div className="inline-flex items-center gap-4 px-6 py-4 rounded-2xl bg-gradient-to-r from-orange-500/10 via-amber-500/5 to-orange-500/10 border border-orange-500/20 backdrop-blur-md">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-orange-500/20 flex items-center justify-center">
+                      <span className="text-xl font-bold text-orange-400">₿</span>
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-xs text-gray-500 uppercase tracking-wider">Live Price</span>
+                      <AnimatePresence mode="wait">
+                        {bitcoinLoading ? (
+                          <motion.div
+                            key="loading"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="h-8 w-32 bg-gray-700/50 rounded animate-pulse"
+                          />
+                        ) : (
+                          <motion.span
+                            key={bitcoinData?.bitcoin_price_usd}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            className="text-2xl font-bold text-white tabular-nums"
+                          >
+                            ${bitcoinData?.bitcoin_price_usd?.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) || '---'}
+                          </motion.span>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  </div>
+                  <div className="w-px h-10 bg-orange-500/20"></div>
+                  <div className="flex flex-col">
+                    <span className="text-xs text-gray-500 uppercase tracking-wider">EUR</span>
+                    <AnimatePresence mode="wait">
+                      {bitcoinLoading ? (
+                        <motion.div
+                          key="loading-eur"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          className="h-6 w-24 bg-gray-700/50 rounded animate-pulse"
+                        />
+                      ) : (
+                        <motion.span
+                          key={bitcoinData?.bitcoin_price_eur}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                          className="text-lg font-semibold text-gray-300 tabular-nums"
+                        >
+                          €{bitcoinData?.bitcoin_price_eur?.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) || '---'}
+                        </motion.span>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                  <div className="hidden sm:flex items-center gap-2 ml-2">
+                    <div className="relative">
+                      <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                      <div className="absolute inset-0 w-2 h-2 rounded-full bg-green-500 animate-ping"></div>
+                    </div>
+                    <span className="text-xs text-green-400">LIVE</span>
+                  </div>
+                </div>
+              </motion.div>
 
               {/* Search Bar */}
               <motion.div 
