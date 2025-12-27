@@ -417,9 +417,11 @@ const Bitcoin2026Report = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.3 }}
               >
-                <span className="text-white">Bitcoin</span>
+              <span className="text-white">Bitcoin</span>
                 <br />
-                <span className="bg-gradient-to-r from-orange-400 via-amber-400 to-orange-500 bg-clip-text text-transparent">2026</span>
+                <span className="bg-gradient-to-r from-orange-400 via-amber-400 to-orange-500 bg-clip-text text-transparent">Q1 2026</span>
+                <br />
+                <span className="text-3xl md:text-4xl lg:text-5xl text-gray-400 font-medium tracking-wide">Edition</span>
               </motion.h1>
               
               {/* Subtitle */}
