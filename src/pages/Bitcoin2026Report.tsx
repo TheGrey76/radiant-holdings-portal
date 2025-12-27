@@ -532,7 +532,7 @@ const Bitcoin2026Report = () => {
                 </div>
                 <div className="hidden sm:flex items-center gap-2 text-sm text-gray-500">
                   <Calendar className="w-4 h-4" />
-                  <span>Q1 2025 Edition</span>
+                  <span>Q1 2026 Edition</span>
                 </div>
               </motion.div>
             </motion.div>
