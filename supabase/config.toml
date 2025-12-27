@@ -74,3 +74,6 @@ verify_jwt = false
 
 [functions.bitcoin-report-updater]
 verify_jwt = false
+
+[functions.fetch-twelve-data-btc]
+verify_jwt = false
