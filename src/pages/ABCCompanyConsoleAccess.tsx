@@ -44,6 +44,29 @@ const ABCCompanyConsoleAccess = () => {
     checkSession();
   }, [navigate]);
 
+  const handleForgotPassword = async () => {
+    const normalizedEmail = email.toLowerCase().trim();
+    
+    if (!normalizedEmail) {
+      toast.error("Please enter your email address first.");
+      return;
+    }
+
+    setIsLoading(true);
+    
+    const { error } = await supabase.auth.resetPasswordForEmail(normalizedEmail, {
+      redirectTo: `${window.location.origin}/abc-company-console`,
+    });
+
+    if (error) {
+      toast.error(error.message);
+    } else {
+      toast.success("Password reset email sent! Check your inbox.");
+    }
+    
+    setIsLoading(false);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -219,15 +242,26 @@ const ABCCompanyConsoleAccess = () => {
             </Button>
           </form>
 
-          <div className="mt-4 text-center">
+          <div className="mt-4 text-center space-y-2">
             <button
               type="button"
               onClick={() => setIsSignUp(!isSignUp)}
-              className="text-orange-400 hover:text-orange-300 text-sm"
+              className="text-orange-400 hover:text-orange-300 text-sm block w-full"
               disabled={isLoading}
             >
               {isSignUp ? "Already have an account? Sign in" : "Don't have an account? Create one"}
             </button>
+            
+            {!isSignUp && (
+              <button
+                type="button"
+                onClick={handleForgotPassword}
+                className="text-gray-400 hover:text-gray-300 text-sm"
+                disabled={isLoading || !email}
+              >
+                Forgot password?
+              </button>
+            )}
           </div>
 
           <p className="text-center text-gray-600 text-xs mt-6">
