@@ -5,18 +5,18 @@ const Services = () => {
   const services = [
     {
       icon: TrendingUp,
-      title: 'Fundraising & Capital Introduction',
-      description: 'We connect GPs and sponsors with institutional investors and family offices, ensuring strategic alignment and transparent execution.'
+      title: 'Capital Formation & Investor Relations',
+      description: 'We partner with GPs, sponsors, and entrepreneurs to structure and execute fundraising mandates across Europe. Our approach combines deep investor networks with rigorous alignment processes, supporting capital raises from €10M to €100M+.'
     },
     {
       icon: Lightbulb,
-      title: 'Strategic Advisory',
-      description: 'Supporting fund managers and entrepreneurs in structuring deals, governance, and investor communication.'
+      title: 'Family Office & LP Advisory',
+      description: 'Tailored advisory for single and multi-family offices seeking curated access to private market opportunities. We provide portfolio strategy, manager evaluation, and direct deal screening with complete independence and transparency.'
     },
     {
       icon: Database,
-      title: 'Data & AI Integration',
-      description: 'Leveraging proprietary AI frameworks to enhance fundraising efficiency and decision-making.'
+      title: 'AI-Enabled Intelligence',
+      description: 'Proprietary data infrastructure and AI-driven investor targeting to accelerate deal origination and due diligence. Our AIRES platform transforms how capital formation is executed in private markets.'
     }
   ];
 
