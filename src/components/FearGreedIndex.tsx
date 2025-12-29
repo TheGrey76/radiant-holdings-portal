@@ -4,19 +4,19 @@ import { TrendingUp, TrendingDown, Minus, RefreshCw } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 const getColorByValue = (value: number): string => {
-  if (value <= 25) return '#ea384c'; // Extreme Fear - red
-  if (value <= 45) return '#f97316'; // Fear - orange
-  if (value <= 55) return '#eab308'; // Neutral - yellow
-  if (value <= 75) return '#84cc16'; // Greed - lime
-  return '#22c55e'; // Extreme Greed - green
+  if (value <= 25) return 'text-red-500';
+  if (value <= 45) return 'text-orange-500';
+  if (value <= 55) return 'text-yellow-500';
+  if (value <= 75) return 'text-lime-500';
+  return 'text-green-500';
 };
 
-const getGradientByValue = (value: number): string => {
-  if (value <= 25) return 'from-red-500/20 to-red-600/10';
-  if (value <= 45) return 'from-orange-500/20 to-orange-600/10';
-  if (value <= 55) return 'from-yellow-500/20 to-yellow-600/10';
-  if (value <= 75) return 'from-lime-500/20 to-lime-600/10';
-  return 'from-green-500/20 to-green-600/10';
+const getBgByValue = (value: number): string => {
+  if (value <= 25) return 'bg-red-500';
+  if (value <= 45) return 'bg-orange-500';
+  if (value <= 55) return 'bg-yellow-500';
+  if (value <= 75) return 'bg-lime-500';
+  return 'bg-green-500';
 };
 
 export const FearGreedIndex = () => {
@@ -24,10 +24,10 @@ export const FearGreedIndex = () => {
 
   if (loading) {
     return (
-      <div className="bg-gradient-to-br from-zinc-800/50 to-zinc-900/50 rounded-xl p-6 border border-zinc-700/50">
-        <div className="animate-pulse space-y-4">
-          <div className="h-4 bg-zinc-700 rounded w-1/3"></div>
-          <div className="h-24 bg-zinc-700 rounded"></div>
+      <div className="bg-card/50 rounded-lg p-6 border border-border">
+        <div className="animate-pulse space-y-3">
+          <div className="h-3 bg-muted rounded w-1/3"></div>
+          <div className="h-8 bg-muted rounded w-1/2"></div>
         </div>
       </div>
     );
@@ -35,10 +35,10 @@ export const FearGreedIndex = () => {
 
   if (error || !data) {
     return (
-      <div className="bg-gradient-to-br from-zinc-800/50 to-zinc-900/50 rounded-xl p-6 border border-zinc-700/50">
+      <div className="bg-card/50 rounded-lg p-6 border border-border">
         <div className="flex items-center justify-between">
-          <p className="text-zinc-400 text-sm">Fear & Greed Index unavailable</p>
-          <button onClick={refetch} className="text-zinc-400 hover:text-white transition-colors">
+          <p className="text-muted-foreground text-sm">Fear & Greed Index unavailable</p>
+          <button onClick={refetch} className="text-muted-foreground hover:text-foreground transition-colors">
             <RefreshCw className="w-4 h-4" />
           </button>
         </div>
@@ -46,147 +46,114 @@ export const FearGreedIndex = () => {
     );
   }
 
-  const color = getColorByValue(data.value);
-  const gradientClass = getGradientByValue(data.value);
-  const gaugeRotation = (data.value / 100) * 180 - 90; // -90 to 90 degrees
+  const colorClass = getColorByValue(data.value);
+  const bgClass = getBgByValue(data.value);
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`bg-gradient-to-br ${gradientClass} backdrop-blur-sm rounded-xl p-6 border border-zinc-700/50`}
+      transition={{ duration: 0.4 }}
+      className="bg-card/50 rounded-lg p-6 border border-border"
     >
+      {/* Header */}
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-sm font-medium text-zinc-300 uppercase tracking-wider">
-          Fear & Greed Index
-        </h3>
+        <div className="flex items-center gap-2">
+          <div className="w-1.5 h-6 bg-primary rounded-full"></div>
+          <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+            Fear & Greed Index
+          </h3>
+        </div>
         <Tooltip>
           <TooltipTrigger asChild>
-            <button onClick={refetch} className="text-zinc-400 hover:text-white transition-colors">
-              <RefreshCw className="w-4 h-4" />
+            <button onClick={refetch} className="text-muted-foreground hover:text-foreground transition-colors">
+              <RefreshCw className="w-3.5 h-3.5" />
             </button>
           </TooltipTrigger>
-          <TooltipContent>Refresh data</TooltipContent>
+          <TooltipContent>Refresh</TooltipContent>
         </Tooltip>
       </div>
 
-      <div className="flex items-center gap-6">
-        {/* Gauge */}
-        <div className="relative w-32 h-16 overflow-hidden">
-          {/* Background arc */}
-          <div className="absolute inset-0">
-            <svg viewBox="0 0 100 50" className="w-full h-full">
-              <defs>
-                <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#ea384c" />
-                  <stop offset="25%" stopColor="#f97316" />
-                  <stop offset="50%" stopColor="#eab308" />
-                  <stop offset="75%" stopColor="#84cc16" />
-                  <stop offset="100%" stopColor="#22c55e" />
-                </linearGradient>
-              </defs>
-              <path
-                d="M 10 50 A 40 40 0 0 1 90 50"
-                fill="none"
-                stroke="url(#gaugeGradient)"
-                strokeWidth="8"
-                strokeLinecap="round"
-                opacity="0.3"
-              />
-              <path
-                d="M 10 50 A 40 40 0 0 1 90 50"
-                fill="none"
-                stroke="url(#gaugeGradient)"
-                strokeWidth="8"
-                strokeLinecap="round"
-                strokeDasharray={`${(data.value / 100) * 126} 126`}
-              />
-            </svg>
-          </div>
-          
-          {/* Needle */}
-          <motion.div
-            initial={{ rotate: -90 }}
-            animate={{ rotate: gaugeRotation }}
-            transition={{ type: 'spring', stiffness: 60, damping: 15 }}
-            className="absolute bottom-0 left-1/2 w-0.5 h-10 origin-bottom"
-            style={{ backgroundColor: color }}
-          />
-          
-          {/* Center dot */}
-          <div 
-            className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full border-2"
-            style={{ backgroundColor: color, borderColor: 'white' }}
-          />
-        </div>
+      {/* Main Value */}
+      <div className="flex items-baseline gap-3 mb-3">
+        <span className={`text-4xl font-bold tabular-nums ${colorClass}`}>
+          {data.value}
+        </span>
+        <span className="text-sm text-muted-foreground">/100</span>
+        <span className={`text-sm font-medium ${colorClass}`}>
+          {data.classification}
+        </span>
+      </div>
 
-        {/* Value and classification */}
-        <div className="flex-1">
-          <div className="flex items-baseline gap-2">
-            <span 
-              className="text-4xl font-bold tabular-nums"
-              style={{ color }}
-            >
-              {data.value}
+      {/* Progress Bar */}
+      <div className="relative h-2 bg-muted rounded-full overflow-hidden mb-4">
+        <motion.div
+          initial={{ width: 0 }}
+          animate={{ width: `${data.value}%` }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+          className={`absolute inset-y-0 left-0 ${bgClass} rounded-full`}
+        />
+        {/* Scale markers */}
+        <div className="absolute inset-0 flex">
+          <div className="flex-1 border-r border-background/50"></div>
+          <div className="flex-1 border-r border-background/50"></div>
+          <div className="flex-1 border-r border-background/50"></div>
+          <div className="flex-1"></div>
+        </div>
+      </div>
+
+      {/* Scale Labels */}
+      <div className="flex justify-between text-[10px] text-muted-foreground mb-4">
+        <span>Extreme Fear</span>
+        <span>Fear</span>
+        <span>Neutral</span>
+        <span>Greed</span>
+        <span>Extreme Greed</span>
+      </div>
+
+      {/* Trend & History */}
+      <div className="flex items-center justify-between pt-4 border-t border-border">
+        <div className="flex items-center gap-2 text-xs">
+          <span className="text-muted-foreground">7d Trend:</span>
+          {data.trendDirection === 'up' && (
+            <span className="flex items-center gap-1 text-green-500">
+              <TrendingUp className="w-3 h-3" />
+              +{data.trend}
             </span>
-            <span className="text-zinc-500 text-sm">/100</span>
-          </div>
-          
-          <p 
-            className="text-lg font-semibold mt-1"
-            style={{ color }}
-          >
-            {data.classification}
-          </p>
-          
-          {/* Trend indicator */}
-          <div className="flex items-center gap-1 mt-2 text-xs text-zinc-400">
-            {data.trendDirection === 'up' && (
-              <>
-                <TrendingUp className="w-3 h-3 text-green-400" />
-                <span className="text-green-400">+{data.trend}</span>
-              </>
-            )}
-            {data.trendDirection === 'down' && (
-              <>
-                <TrendingDown className="w-3 h-3 text-red-400" />
-                <span className="text-red-400">{data.trend}</span>
-              </>
-            )}
-            {data.trendDirection === 'stable' && (
-              <>
-                <Minus className="w-3 h-3" />
-                <span>0</span>
-              </>
-            )}
-            <span className="text-zinc-500 ml-1">7d trend</span>
-          </div>
+          )}
+          {data.trendDirection === 'down' && (
+            <span className="flex items-center gap-1 text-red-500">
+              <TrendingDown className="w-3 h-3" />
+              {data.trend}
+            </span>
+          )}
+          {data.trendDirection === 'stable' && (
+            <span className="flex items-center gap-1 text-muted-foreground">
+              <Minus className="w-3 h-3" />
+              0
+            </span>
+          )}
+        </div>
+
+        {/* Mini History */}
+        <div className="flex items-end gap-0.5 h-4">
+          {data.history.slice().reverse().map((item, index) => (
+            <Tooltip key={index}>
+              <TooltipTrigger asChild>
+                <div
+                  className={`w-1.5 rounded-sm ${getBgByValue(item.value)} opacity-60 hover:opacity-100 transition-opacity cursor-pointer`}
+                  style={{ height: `${(item.value / 100) * 100}%`, minHeight: '2px' }}
+                />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="text-xs">
+                  {new Date(item.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}: {item.value}
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          ))}
         </div>
       </div>
-
-      {/* Mini sparkline of history */}
-      <div className="mt-4 flex items-end gap-1 h-8">
-        {data.history.slice().reverse().map((item, index) => (
-          <Tooltip key={index}>
-            <TooltipTrigger asChild>
-              <motion.div
-                initial={{ height: 0 }}
-                animate={{ height: `${(item.value / 100) * 100}%` }}
-                transition={{ delay: index * 0.05 }}
-                className="flex-1 rounded-sm cursor-pointer transition-opacity hover:opacity-80"
-                style={{ backgroundColor: getColorByValue(item.value) }}
-              />
-            </TooltipTrigger>
-            <TooltipContent>
-              <p className="text-xs">
-                {new Date(item.date).toLocaleDateString('en-US', { weekday: 'short' })}: {item.value} ({item.classification})
-              </p>
-            </TooltipContent>
-          </Tooltip>
-        ))}
-      </div>
-      
-      <p className="text-xs text-zinc-500 mt-2 text-center">Last 7 days</p>
     </motion.div>
   );
 };
