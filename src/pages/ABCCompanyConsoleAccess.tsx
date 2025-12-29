@@ -51,12 +51,11 @@ const ABCCompanyConsoleAccess = () => {
     const normalizedEmail = email.toLowerCase().trim();
 
     try {
-      // First verify email is in the access list
-      const { data: accessData, error: accessError } = await supabase
-        .from('abc_console_access')
-        .select('email')
-        .eq('email', normalizedEmail)
-        .maybeSingle();
+      // Use the secure function to check email authorization (doesn't expose email list)
+      const { data: isAuthorized, error: accessError } = await supabase.rpc(
+        'check_abc_console_access',
+        { check_email: normalizedEmail }
+      );
 
       if (accessError) {
         console.error('Access verification error:', accessError);
@@ -65,7 +64,7 @@ const ABCCompanyConsoleAccess = () => {
         return;
       }
 
-      if (!accessData) {
+      if (!isAuthorized) {
         toast.error("Access denied. This email is not authorized.");
         setIsLoading(false);
         return;
