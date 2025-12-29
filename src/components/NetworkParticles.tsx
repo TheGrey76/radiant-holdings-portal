@@ -121,7 +121,7 @@ function ParticleField({ count = 200 }: ParticleFieldProps) {
       <Points ref={ref} positions={positions} stride={3} frustumCulled={false}>
         <PointMaterial
           transparent
-          color="#c9a962"
+          color="#f97316"
           size={0.05}
           sizeAttenuation={true}
           depthWrite={false}
@@ -130,7 +130,7 @@ function ParticleField({ count = 200 }: ParticleFieldProps) {
       </Points>
       <lineSegments ref={linesRef} geometry={lineGeometry}>
         <lineBasicMaterial
-          color="#c9a962"
+          color="#f97316"
           transparent
           opacity={0.15}
           depthWrite={false}
