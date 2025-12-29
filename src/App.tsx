@@ -77,6 +77,7 @@ import UnderlyingMonitoring from "./pages/UnderlyingMonitoring";
 import CrossPostingAssistant from "./pages/CrossPostingAssistant";
 import InsightsAdmin from "./pages/InsightsAdmin";
 import ReportsPage from "./pages/ReportsPage";
+import ReportDetailPage from "./pages/ReportDetailPage";
 
 const queryClient = new QueryClient();
 
@@ -161,6 +162,7 @@ const App = () => (
           
           <Route path="/mazal-innovation" element={<MazalInnovation />} />
           <Route path="/reports" element={<ReportsPage />} />
+          <Route path="/reports/:slug" element={<ReportDetailPage />} />
           <Route path="/press" element={<Press />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
