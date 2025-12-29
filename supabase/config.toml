@@ -80,3 +80,6 @@ verify_jwt = false
 
 [functions.fetch-twelve-data-btc]
 verify_jwt = false
+
+[functions.create-report-checkout]
+verify_jwt = false
