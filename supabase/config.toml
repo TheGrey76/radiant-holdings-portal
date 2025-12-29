@@ -1,5 +1,8 @@
 project_id = "dvwmyljnssspwfpwocof"
 
+[functions.fetch-fear-greed-index]
+verify_jwt = false
+
 [functions.send-assessment-booking]
 verify_jwt = false
 

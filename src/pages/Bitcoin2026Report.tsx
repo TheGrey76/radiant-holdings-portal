@@ -14,6 +14,7 @@ import {
 } from "@/components/InstitutionalCharts";
 import BitcoinTreasuriesLive from "@/components/BitcoinTreasuriesLive";
 import { ReportSearch } from "@/components/ReportSearch";
+import { FearGreedIndex } from "@/components/FearGreedIndex";
 import { useBitcoinReportData } from "@/hooks/useBitcoinReportData";
 import { useTwelveDataBtc } from "@/hooks/useTwelveDataBtc";
 
@@ -668,6 +669,13 @@ const Bitcoin2026Report = () => {
                 </span>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Fear & Greed Index Section */}
+        <div className="container max-w-6xl mx-auto px-6 pt-8">
+          <div className="max-w-md">
+            <FearGreedIndex />
           </div>
         </div>
 
