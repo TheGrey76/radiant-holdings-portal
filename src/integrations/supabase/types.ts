@@ -1930,6 +1930,10 @@ export type Database = {
         Args: { check_email: string }
         Returns: boolean
       }
+      check_mazal_innovation_access: {
+        Args: { check_email: string }
+        Returns: boolean
+      }
       get_current_user_role: { Args: never; Returns: string }
       has_role: {
         Args: {
