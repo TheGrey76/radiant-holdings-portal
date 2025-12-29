@@ -1,8 +1,8 @@
-import { useEffect, useState, Suspense } from 'react';
-import { motion } from 'framer-motion';
-import { ArrowRight, TrendingUp, Users, Globe, Cpu } from 'lucide-react';
+import { useEffect, useState, Suspense, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowRight, TrendingUp, Users, Globe, Cpu, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import NetworkParticles from './NetworkParticles';
 
 interface AnimatedCounterProps {
@@ -55,7 +55,35 @@ const stats = [
   { icon: Cpu, value: 100, suffix: '%', label: 'AI-Enabled' },
 ];
 
+const serviceLinks = [
+  { label: 'Fund Placement', path: '/private-equity-funds' },
+  { label: 'GP Capital Advisory', path: '/gp-capital-advisory' },
+  { label: 'Structured Products', path: '/structured-products' },
+  { label: 'For Limited Partners', path: '/for-limited-partners' },
+];
+
 export default function HeroNetwork() {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleServiceClick = (path: string) => {
+    setIsDropdownOpen(false);
+    navigate(path);
+  };
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#0f1729] via-[#1a2744] to-[#0d1424]">
       {/* 3D Network Background */}
@@ -116,16 +144,41 @@ export default function HeroNetwork() {
           transition={{ duration: 0.8, delay: 0.8 }}
           className="flex flex-col sm:flex-row gap-4 justify-center mb-20"
         >
-          <Button
-            asChild
-            size="lg"
-            className="bg-accent hover:bg-accent/90 text-white font-medium px-8 py-6 text-base group"
-          >
-            <Link to="/services">
+          {/* Services Dropdown */}
+          <div className="relative" ref={dropdownRef}>
+            <Button
+              size="lg"
+              className="bg-accent hover:bg-accent/90 text-white font-medium px-8 py-6 text-base group"
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            >
               Explore Services
-              <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </Button>
+              <ChevronDown className={`ml-2 h-5 w-5 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+            </Button>
+            
+            <AnimatePresence>
+              {isDropdownOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute top-full left-0 right-0 mt-2 z-50 bg-[#1a2744] border border-white/20 rounded-xl shadow-2xl overflow-hidden min-w-[240px]"
+                >
+                  {serviceLinks.map((service, index) => (
+                    <button
+                      key={service.path}
+                      onClick={() => handleServiceClick(service.path)}
+                      className="w-full text-left px-5 py-3.5 text-white/80 hover:text-white hover:bg-accent/20 transition-colors text-sm font-medium flex items-center gap-3 group"
+                    >
+                      <ArrowRight className="h-4 w-4 text-accent opacity-0 group-hover:opacity-100 transition-opacity" />
+                      {service.label}
+                    </button>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
           <Button
             asChild
             variant="outline"
