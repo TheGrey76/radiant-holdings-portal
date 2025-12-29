@@ -23,7 +23,6 @@ function AnimatedCounter({ end, suffix = '', prefix = '', duration = 2000 }: Ani
       if (!startTime) startTime = currentTime;
       const progress = Math.min((currentTime - startTime) / duration, 1);
       
-      // Easing function for smooth animation
       const easeOutQuart = 1 - Math.pow(1 - progress, 4);
       setCount(Math.floor(easeOutQuart * end));
 
@@ -58,18 +57,18 @@ const stats = [
 
 export default function HeroNetwork() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-[#0a0a0f] via-[#0d0d15] to-[#111118]">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#0f1729] via-[#1a2744] to-[#0d1424]">
       {/* 3D Network Background */}
-      <Suspense fallback={<div className="absolute inset-0 bg-[#0a0a0f]" />}>
+      <Suspense fallback={<div className="absolute inset-0 bg-[#0f1729]" />}>
         <NetworkParticles />
       </Suspense>
 
       {/* Gradient Overlays */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0f] via-transparent to-transparent z-[1]" />
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0f]/50 via-transparent to-transparent z-[1]" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#0f1729] via-transparent to-transparent z-[1]" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0f1729]/50 via-transparent to-transparent z-[1]" />
       
-      {/* Radial Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#c9a962]/5 rounded-full blur-[120px] z-0" />
+      {/* Radial Glow - using accent orange */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-accent/5 rounded-full blur-[120px] z-0" />
 
       {/* Content */}
       <div className="relative z-10 container mx-auto px-6 text-center">
@@ -80,8 +79,8 @@ export default function HeroNetwork() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="mb-6"
         >
-          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#c9a962]/30 bg-[#c9a962]/5 text-[#c9a962] text-sm font-medium tracking-wider uppercase">
-            <span className="w-2 h-2 rounded-full bg-[#c9a962] animate-pulse" />
+          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 bg-accent/5 text-accent text-sm font-medium tracking-wider uppercase">
+            <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
             Capital Intelligence Platform
           </span>
         </motion.div>
@@ -94,7 +93,7 @@ export default function HeroNetwork() {
           className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-light text-white mb-6 tracking-tight"
         >
           <span className="block">Connecting</span>
-          <span className="block mt-2 bg-gradient-to-r from-[#c9a962] via-[#e8d5a3] to-[#c9a962] bg-clip-text text-transparent font-normal">
+          <span className="block mt-2 text-accent font-normal">
             Capital & Vision
           </span>
         </motion.h1>
@@ -120,7 +119,7 @@ export default function HeroNetwork() {
           <Button
             asChild
             size="lg"
-            className="bg-[#c9a962] hover:bg-[#b8994f] text-[#0a0a0f] font-medium px-8 py-6 text-base group"
+            className="bg-accent hover:bg-accent/90 text-white font-medium px-8 py-6 text-base group"
           >
             <Link to="/services">
               Explore Services
@@ -152,9 +151,9 @@ export default function HeroNetwork() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 1.2 + index * 0.1 }}
-              className="group relative p-6 rounded-2xl border border-white/10 bg-white/[0.02] backdrop-blur-sm hover:border-[#c9a962]/30 hover:bg-[#c9a962]/5 transition-all duration-300"
+              className="group relative p-6 rounded-2xl border border-white/10 bg-white/[0.02] backdrop-blur-sm hover:border-accent/30 hover:bg-accent/5 transition-all duration-300"
             >
-              <stat.icon className="w-6 h-6 text-[#c9a962] mb-3 mx-auto" />
+              <stat.icon className="w-6 h-6 text-accent mb-3 mx-auto" />
               <div className="text-3xl md:text-4xl font-light text-white mb-1">
                 <AnimatedCounter 
                   end={stat.value} 
@@ -182,7 +181,7 @@ export default function HeroNetwork() {
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
           className="w-6 h-10 rounded-full border-2 border-white/20 flex items-start justify-center p-2"
         >
-          <motion.div className="w-1 h-2 bg-[#c9a962] rounded-full" />
+          <motion.div className="w-1 h-2 bg-accent rounded-full" />
         </motion.div>
       </motion.div>
     </section>
