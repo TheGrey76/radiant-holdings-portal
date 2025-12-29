@@ -3,12 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { Shield, Mail, Lock } from "lucide-react";
+import { Shield, Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 const ABCCompanyConsoleAccess = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const [isCheckingSession, setIsCheckingSession] = useState(true);
@@ -222,15 +223,22 @@ const ABCCompanyConsoleAccess = () => {
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
               <Input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 minLength={6}
-                className="w-full pl-10 bg-[#2a3a4a] border-[#3a4a5a] text-white placeholder:text-gray-500"
+                className="w-full pl-10 pr-10 bg-[#2a3a4a] border-[#3a4a5a] text-white placeholder:text-gray-500"
                 disabled={isLoading}
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300"
+              >
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
             </div>
 
             <Button
