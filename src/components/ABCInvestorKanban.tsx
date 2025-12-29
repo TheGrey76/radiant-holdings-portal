@@ -113,36 +113,59 @@ export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvest
 
     if (sourceStatus === destStatus) return;
 
-    const investorId = result.draggableId;
-    const investor = localInvestors.find(inv => inv.id === investorId);
+    const draggedInvestorId = result.draggableId;
+    const draggedInvestor = localInvestors.find(inv => inv.id === draggedInvestorId);
 
-    if (!investor) return;
+    if (!draggedInvestor) return;
 
-    // Block drag for not_approved investors
-    if (investor.approvalStatus === 'not_approved') {
-      toast.error("Investitore non approvato da ABC Company");
+    // Determine which investors to move - if dragged investor is in selection, move all selected
+    // Otherwise, move just the dragged investor
+    const isPartOfSelection = selectedInvestors.has(draggedInvestorId);
+    const investorIdsToMove = isPartOfSelection 
+      ? Array.from(selectedInvestors) 
+      : [draggedInvestorId];
+
+    // Filter out not_approved investors from the move
+    const investorsToMove = localInvestors.filter(inv => 
+      investorIdsToMove.includes(inv.id) && inv.approvalStatus !== 'not_approved'
+    );
+
+    if (investorsToMove.length === 0) {
+      toast.error("Investitori non approvati non possono essere spostati");
       return;
     }
 
+    const blockedCount = investorIdsToMove.length - investorsToMove.length;
+    const idsToMove = investorsToMove.map(inv => inv.id);
+
     // Optimistic update
     const updatedInvestors = localInvestors.map(inv =>
-      inv.id === investorId ? { ...inv, status: destStatus } : inv
+      idsToMove.includes(inv.id) ? { ...inv, status: destStatus } : inv
     );
     setLocalInvestors(updatedInvestors);
+
+    // Clear selection after multi-drag
+    if (isPartOfSelection) {
+      clearSelection();
+    }
 
     try {
       const { error } = await supabase
         .from('abc_investors' as any)
         .update({ status: destStatus })
-        .eq('id', investorId);
+        .in('id', idsToMove);
 
       if (error) throw error;
 
-      toast.success(`${investor.nome} moved to ${destStatus}`);
+      if (investorsToMove.length === 1) {
+        toast.success(`${investorsToMove[0].nome} spostato in ${destStatus}`);
+      } else {
+        toast.success(`${investorsToMove.length} investitori spostati in ${destStatus}${blockedCount > 0 ? ` (${blockedCount} non approvati esclusi)` : ''}`);
+      }
       onStatusChange();
     } catch (error) {
       console.error('Error updating investor status:', error);
-      toast.error('Failed to update investor status');
+      toast.error('Errore durante lo spostamento');
       setLocalInvestors(localInvestors);
     }
   };
@@ -420,6 +443,8 @@ export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvest
                           const statusConfig = approvalStatusConfig[approvalStatus];
                           const StatusIcon = statusConfig.icon;
                           const workable = isWorkable(investor);
+                          const isSelected = selectedInvestors.has(investor.id);
+                          const multiDragCount = isSelected ? selectedInvestors.size : 0;
 
                           return (
                             <Draggable
@@ -429,20 +454,27 @@ export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvest
                               isDragDisabled={!workable}
                             >
                               {(provided, snapshot) => (
-                                <Card
-                                  ref={provided.innerRef}
-                                  {...provided.draggableProps}
-                                  {...provided.dragHandleProps}
-                                  className={`transition-all ${
-                                    workable 
-                                      ? 'cursor-grab hover:shadow-md' 
-                                      : 'opacity-50 cursor-not-allowed grayscale'
-                                  } ${
-                                    snapshot.isDragging ? 'shadow-lg ring-2 ring-primary cursor-grabbing' : ''
-                                  } ${
-                                    selectedInvestors.has(investor.id) ? 'ring-2 ring-primary bg-primary/5' : ''
-                                  }`}
-                                >
+                                <div className="relative">
+                                  <Card
+                                    ref={provided.innerRef}
+                                    {...provided.draggableProps}
+                                    {...provided.dragHandleProps}
+                                    className={`transition-all ${
+                                      workable 
+                                        ? 'cursor-grab hover:shadow-md' 
+                                        : 'opacity-50 cursor-not-allowed grayscale'
+                                    } ${
+                                      snapshot.isDragging ? 'shadow-lg ring-2 ring-primary cursor-grabbing' : ''
+                                    } ${
+                                      isSelected ? 'ring-2 ring-primary bg-primary/5' : ''
+                                    }`}
+                                  >
+                                    {/* Multi-drag indicator badge */}
+                                    {snapshot.isDragging && multiDragCount > 1 && (
+                                      <div className="absolute -top-2 -right-2 z-10 bg-primary text-primary-foreground rounded-full h-6 w-6 flex items-center justify-center text-xs font-bold shadow-md">
+                                        {multiDragCount}
+                                      </div>
+                                    )}
                                   <CardContent className="p-3 space-y-2">
                                     {/* Selection checkbox and Approval Status */}
                                     <div className="flex items-center justify-between">
@@ -562,7 +594,8 @@ export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvest
                                       </Badge>
                                     </div>
                                   </CardContent>
-                                </Card>
+                                  </Card>
+                                </div>
                               )}
                             </Draggable>
                           );
