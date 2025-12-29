@@ -1,7 +1,26 @@
 import { motion } from 'framer-motion';
+import { TrendingUp, Users, Database } from 'lucide-react';
 import londonSkyline from '@/assets/london-skyline-1.jpg';
 import londonBridge from '@/assets/london-bridge-2.jpg';
 import londonBigBen from '@/assets/london-big-ben-3.jpg';
+
+const services = [
+  {
+    icon: TrendingUp,
+    title: 'Capital Formation & Investor Relations',
+    description: 'We partner with GPs, sponsors, and entrepreneurs to structure and execute fundraising mandates across Europe, supporting capital raises from €10M to €100M+.'
+  },
+  {
+    icon: Users,
+    title: 'Family Office & LP Advisory',
+    description: 'Tailored advisory for single and multi-family offices seeking curated access to private market opportunities with complete independence.'
+  },
+  {
+    icon: Database,
+    title: 'AI-Enabled Intelligence',
+    description: 'Proprietary data infrastructure and AI-driven investor targeting through our AIRES platform, transforming capital formation in private markets.'
+  }
+];
 
 const Hero = () => {
   return (
@@ -65,7 +84,7 @@ const Hero = () => {
       </div>
 
       <div className="container mx-auto px-6 relative z-20">
-        <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
+        <div className="flex flex-col items-center text-center max-w-5xl mx-auto">
           <motion.h1 
             className="text-4xl md:text-6xl lg:text-7xl font-display font-bold text-aries-navy mb-3 tracking-tight"
             initial={{ opacity: 0, y: 20 }}
@@ -78,7 +97,7 @@ const Hero = () => {
           </motion.h1>
 
           <motion.p 
-            className="text-sm md:text-base font-light tracking-wide text-gray-500 uppercase mb-8"
+            className="text-sm md:text-base font-light tracking-wide text-gray-500 uppercase mb-6"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
@@ -87,19 +106,48 @@ const Hero = () => {
           </motion.p>
           
           <motion.p 
-            className="text-lg md:text-xl text-gray-600 mb-10 max-w-2xl"
+            className="text-lg md:text-xl text-gray-600 mb-12 max-w-3xl"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            A future-forward holding company investing in and developing cutting-edge artificial intelligence technologies that transform industries and enhance human potential.
+            Aries76 Ltd is a London-based advisory firm supporting GPs, sponsors, and institutional investors in structuring and raising capital across private markets.
           </motion.p>
+
+          {/* Services Grid */}
+          <motion.div 
+            className="grid md:grid-cols-3 gap-6 mb-12 w-full"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+          >
+            {services.map((service, index) => (
+              <motion.div
+                key={service.title}
+                className="bg-white/60 backdrop-blur-sm border border-gray-200 rounded-xl p-6 text-left hover:shadow-lg hover:border-accent/30 transition-all duration-300"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.6 + index * 0.1 }}
+                whileHover={{ y: -4 }}
+              >
+                <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center mb-4">
+                  <service.icon className="h-6 w-6 text-accent" strokeWidth={1.5} />
+                </div>
+                <h3 className="text-lg font-semibold text-aries-navy mb-2">
+                  {service.title}
+                </h3>
+                <p className="text-sm text-gray-600 leading-relaxed">
+                  {service.description}
+                </p>
+              </motion.div>
+            ))}
+          </motion.div>
           
           <motion.div 
             className="flex flex-col sm:flex-row gap-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
+            transition={{ duration: 0.6, delay: 0.9 }}
           >
             <motion.a 
               href="#portfolio" 
