@@ -58,6 +58,7 @@ import ABCCompanyInvestor from "./pages/ABCCompanyInvestor";
 import ABCCompanyConsole from "./pages/ABCCompanyConsole";
 import ABCInvestorProfile from "./pages/ABCInvestorProfile";
 import ABCCompanyConsoleAccess from "./pages/ABCCompanyConsoleAccess";
+import ABCResetPassword from "./pages/ABCResetPassword";
 import GPLPMatching from "./pages/GPLPMatching";
 import GPPortal from "./pages/GPPortal";
 import LPPortal from "./pages/LPPortal";
@@ -134,6 +135,7 @@ const App = () => (
           <Route path="/abc-company-console" element={<ABCCompanyConsole />} />
           <Route path="/abc-company-console/investor/:id" element={<ABCInvestorProfile />} />
           <Route path="/abc-company-console-access" element={<ABCCompanyConsoleAccess />} />
+          <Route path="/abc-reset-password" element={<ABCResetPassword />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/archive" element={<BlogArchive />} />
