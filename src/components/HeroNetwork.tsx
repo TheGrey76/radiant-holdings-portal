@@ -142,7 +142,7 @@ export default function HeroNetwork() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.8 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center mb-20"
+          className="flex flex-col sm:flex-row gap-4 justify-center"
         >
           {/* Services Dropdown */}
           <div className="relative" ref={dropdownRef}>
@@ -191,35 +191,6 @@ export default function HeroNetwork() {
           </Button>
         </motion.div>
 
-        {/* Stats Grid */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 1 }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 max-w-4xl mx-auto"
-        >
-          {stats.map((stat, index) => (
-            <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 1.2 + index * 0.1 }}
-              className="group relative p-6 rounded-2xl border border-white/10 bg-white/[0.02] backdrop-blur-sm hover:border-accent/30 hover:bg-accent/5 transition-all duration-300"
-            >
-              <stat.icon className="w-6 h-6 text-accent mb-3 mx-auto" />
-              <div className="text-3xl md:text-4xl font-light text-white mb-1">
-                <AnimatedCounter 
-                  end={stat.value} 
-                  suffix={stat.suffix} 
-                  prefix={stat.prefix} 
-                />
-              </div>
-              <div className="text-sm text-white/50 font-medium tracking-wide">
-                {stat.label}
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
       </div>
 
       {/* Scroll Indicator */}
