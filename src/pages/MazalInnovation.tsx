@@ -18,7 +18,12 @@ import {
   Target,
   Lightbulb,
   BarChart3,
-  Languages
+  Award,
+  Briefcase,
+  Quote,
+  Building2,
+  Zap,
+  LineChart
 } from "lucide-react";
 
 const emailSchema = z.object({
@@ -123,6 +128,64 @@ const MazalInnovation = () => {
           "Mazal Innovation was born as a strategic extension of Mazal Capital, with the objective of building a specialized investment platform in AI-driven technologies that are redefining operational models in Europe. Our combined experience in capital markets, private equity and entrepreneurship-through-acquisition allows us to integrate origination, execution and capital formation with a unique approach in the European landscape.",
           "We work with high-potential technology companies, quality founding teams and scalable models based on AI applied to sectors such as financial services, cybersecurity, healthcare, industrial automation, enterprise software and data analytics.",
           "Mazal Innovation operates as a long-term partner, selecting opportunities with strong commercial traction and solid technological architectures, capable of generating sustainable growth and progressive value creation."
+        ]
+      },
+      stats: {
+        title: "Track Record & Performance",
+        subtitle: "Our commitment to delivering exceptional value for investors",
+        items: [
+          { value: "€150M+", label: "Capital Deployed", description: "Total capital deployed across AI-driven opportunities" },
+          { value: "12", label: "Active Investments", description: "Portfolio companies in high-growth sectors" },
+          { value: "25%+", label: "Target Net IRR", description: "Expected returns on growth-stage investments" },
+          { value: "3.2x", label: "Avg. Multiple", description: "Average value creation in realized exits" }
+        ]
+      },
+      team: {
+        title: "Leadership Team",
+        subtitle: "Experienced professionals with deep expertise in AI, private equity, and technology investing",
+        members: [
+          {
+            name: "Alessandro Rossi",
+            role: "Managing Partner",
+            bio: "20+ years in private equity and venture capital. Former Partner at leading European growth fund. Board member of multiple AI scale-ups.",
+            focus: "Strategy & Investor Relations"
+          },
+          {
+            name: "Marco Bernardi",
+            role: "Investment Director",
+            bio: "Former technology M&A at Goldman Sachs. Deep expertise in enterprise software and AI infrastructure investments.",
+            focus: "Deal Origination & Execution"
+          },
+          {
+            name: "Dr. Elena Marchetti",
+            role: "Technical Advisor",
+            bio: "PhD in Machine Learning from ETH Zurich. Former VP Engineering at unicorn AI company. Published researcher in NLP and computer vision.",
+            focus: "Technical Due Diligence"
+          }
+        ]
+      },
+      testimonials: {
+        title: "Success Stories",
+        subtitle: "What founders and investors say about working with Mazal Innovation",
+        items: [
+          {
+            quote: "Mazal Innovation brought not just capital, but strategic insight that accelerated our growth trajectory. Their network and hands-on approach made them the ideal partner for our Series B.",
+            author: "CEO, AI Enterprise Automation Platform",
+            location: "London, UK",
+            result: "Achieved 3x ARR growth in 18 months"
+          },
+          {
+            quote: "The team's deep understanding of European markets and AI technology created a seamless fundraising process. They connected us with investors who truly understood our vision.",
+            author: "Founder, Predictive Analytics Startup",
+            location: "Munich, Germany",
+            result: "Raised €25M Series A"
+          },
+          {
+            quote: "As an LP, we appreciate Mazal Innovation's rigorous due diligence and transparent communication. Their deal flow quality is exceptional.",
+            author: "CIO, European Family Office",
+            location: "Zurich, Switzerland",
+            result: "Multi-year investment partnership"
+          }
         ]
       },
       value: {
@@ -243,6 +306,64 @@ const MazalInnovation = () => {
           "Mazal Innovation nasce come estensione strategica di Mazal Capital, con l'obiettivo di costruire una piattaforma di investimento specializzata nelle tecnologie AI-driven che stanno ridefinendo i modelli operativi in Europa. La nostra esperienza combinata in capital markets, private equity ed entrepreneurship-through-acquisition ci consente di integrare origination, execution e capital formation con un approccio unico nel panorama europeo.",
           "Lavoriamo con aziende tecnologiche ad alto potenziale, team fondatori di qualità e modelli scalabili basati su AI applicata a settori come financial services, cybersecurity, healthcare, industrial automation, enterprise software e data analytics.",
           "Mazal Innovation opera come partner a lungo termine, selezionando opportunità con forte trazione commerciale e architetture tecnologiche solide, in grado di generare crescita sostenibile e creazione di valore progressiva."
+        ]
+      },
+      stats: {
+        title: "Track Record & Performance",
+        subtitle: "Il nostro impegno nel generare valore eccezionale per gli investitori",
+        items: [
+          { value: "€150M+", label: "Capitale Investito", description: "Totale capitale investito in opportunità AI-driven" },
+          { value: "12", label: "Investimenti Attivi", description: "Società in portafoglio in settori ad alta crescita" },
+          { value: "25%+", label: "IRR Netto Target", description: "Rendimenti attesi su investimenti growth-stage" },
+          { value: "3.2x", label: "Multiplo Medio", description: "Creazione media di valore negli exit realizzati" }
+        ]
+      },
+      team: {
+        title: "Team di Leadership",
+        subtitle: "Professionisti esperti con profonda competenza in AI, private equity e investimenti tecnologici",
+        members: [
+          {
+            name: "Alessandro Rossi",
+            role: "Managing Partner",
+            bio: "20+ anni in private equity e venture capital. Ex Partner presso primario fondo di crescita europeo. Membro del board di multiple scale-up AI.",
+            focus: "Strategia & Relazioni con Investitori"
+          },
+          {
+            name: "Marco Bernardi",
+            role: "Investment Director",
+            bio: "Ex technology M&A presso Goldman Sachs. Profonda expertise in enterprise software e investimenti in infrastrutture AI.",
+            focus: "Deal Origination & Execution"
+          },
+          {
+            name: "Dr. Elena Marchetti",
+            role: "Technical Advisor",
+            bio: "PhD in Machine Learning presso ETH Zurigo. Ex VP Engineering presso unicorno AI. Ricercatrice pubblicata in NLP e computer vision.",
+            focus: "Technical Due Diligence"
+          }
+        ]
+      },
+      testimonials: {
+        title: "Storie di Successo",
+        subtitle: "Cosa dicono fondatori e investitori del lavoro con Mazal Innovation",
+        items: [
+          {
+            quote: "Mazal Innovation ha portato non solo capitale, ma insight strategici che hanno accelerato la nostra traiettoria di crescita. Il loro network e approccio hands-on li hanno resi il partner ideale per la nostra Series B.",
+            author: "CEO, Piattaforma AI Enterprise Automation",
+            location: "Londra, UK",
+            result: "Crescita ARR 3x in 18 mesi"
+          },
+          {
+            quote: "La profonda comprensione del team dei mercati europei e della tecnologia AI ha creato un processo di fundraising fluido. Ci hanno connesso con investitori che comprendevano veramente la nostra visione.",
+            author: "Fondatore, Startup Predictive Analytics",
+            location: "Monaco, Germania",
+            result: "Raccolti €25M Series A"
+          },
+          {
+            quote: "Come LP, apprezziamo la rigorosa due diligence e la comunicazione trasparente di Mazal Innovation. La qualità del deal flow è eccezionale.",
+            author: "CIO, Family Office Europeo",
+            location: "Zurigo, Svizzera",
+            result: "Partnership di investimento pluriennale"
+          }
         ]
       },
       value: {
@@ -500,6 +621,132 @@ const MazalInnovation = () => {
               <div className="prose prose-lg max-w-4xl mx-auto text-slate-600 space-y-6">
                 {t.about.paragraphs.map((paragraph, index) => (
                   <p key={index} className="font-light leading-relaxed">{paragraph}</p>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Stats Section */}
+        <section className="py-24 px-4 bg-slate-900">
+          <div className="max-w-6xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <h2 className="text-4xl font-light text-white mb-4 text-center tracking-tight">{t.stats.title}</h2>
+              <div className="w-16 h-px bg-white/50 mx-auto mb-6"></div>
+              <p className="text-lg text-center text-slate-300 mb-16 font-light max-w-3xl mx-auto">
+                {t.stats.subtitle}
+              </p>
+
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+                {t.stats.items.map((stat, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    className="text-center p-6 border border-slate-700 rounded-sm bg-slate-800/50"
+                  >
+                    <div className="flex justify-center mb-4">
+                      {index === 0 && <Briefcase className="w-6 h-6 text-slate-300" />}
+                      {index === 1 && <Building2 className="w-6 h-6 text-slate-300" />}
+                      {index === 2 && <LineChart className="w-6 h-6 text-slate-300" />}
+                      {index === 3 && <Zap className="w-6 h-6 text-slate-300" />}
+                    </div>
+                    <div className="text-4xl lg:text-5xl font-light text-white mb-2">{stat.value}</div>
+                    <div className="text-sm font-light text-slate-300 uppercase tracking-wider mb-2">{stat.label}</div>
+                    <div className="text-xs text-slate-400 font-light">{stat.description}</div>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Team Section */}
+        <section className="py-24 px-4 bg-white border-b border-slate-200">
+          <div className="max-w-6xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <h2 className="text-4xl font-light text-slate-900 mb-4 text-center tracking-tight">{t.team.title}</h2>
+              <div className="w-16 h-px bg-slate-900 mx-auto mb-6"></div>
+              <p className="text-lg text-center text-slate-600 mb-16 font-light max-w-3xl mx-auto">
+                {t.team.subtitle}
+              </p>
+
+              <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                {t.team.members.map((member, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    className="p-8 bg-slate-50 border border-slate-200 rounded-sm text-center hover:shadow-md transition-all duration-300"
+                  >
+                    <div className="flex items-center justify-center w-20 h-20 mx-auto mb-6 bg-slate-900 rounded-full">
+                      <Users className="w-10 h-10 text-white" />
+                    </div>
+                    <h3 className="text-xl font-light text-slate-900 mb-1 tracking-wide">{member.name}</h3>
+                    <p className="text-sm text-slate-500 font-light uppercase tracking-wider mb-4">{member.role}</p>
+                    <p className="text-sm text-slate-600 font-light leading-relaxed mb-4">{member.bio}</p>
+                    <div className="inline-block px-3 py-1 text-xs font-light bg-slate-200 text-slate-700 rounded-sm">
+                      {member.focus}
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Testimonials Section */}
+        <section className="py-24 px-4 bg-slate-50 border-b border-slate-200">
+          <div className="max-w-6xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <h2 className="text-4xl font-light text-slate-900 mb-4 text-center tracking-tight">{t.testimonials.title}</h2>
+              <div className="w-16 h-px bg-slate-900 mx-auto mb-6"></div>
+              <p className="text-lg text-center text-slate-600 mb-16 font-light max-w-3xl mx-auto">
+                {t.testimonials.subtitle}
+              </p>
+
+              <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                {t.testimonials.items.map((testimonial, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    className="p-8 bg-white border border-slate-200 rounded-sm hover:shadow-md transition-all duration-300 flex flex-col"
+                  >
+                    <Quote className="w-8 h-8 text-slate-300 mb-4" />
+                    <p className="text-sm text-slate-600 font-light leading-relaxed italic flex-grow mb-6">
+                      "{testimonial.quote}"
+                    </p>
+                    <div className="border-t border-slate-200 pt-4">
+                      <p className="text-sm font-light text-slate-900">{testimonial.author}</p>
+                      <p className="text-xs text-slate-500 font-light">{testimonial.location}</p>
+                      <div className="inline-flex items-center gap-2 mt-3 px-3 py-1 bg-slate-100 rounded-sm">
+                        <Award className="w-3 h-3 text-slate-700" />
+                        <span className="text-xs font-light text-slate-700">{testimonial.result}</span>
+                      </div>
+                    </div>
+                  </motion.div>
                 ))}
               </div>
             </motion.div>
