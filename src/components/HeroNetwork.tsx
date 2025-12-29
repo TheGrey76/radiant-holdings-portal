@@ -81,7 +81,7 @@ export default function HeroNetwork() {
         >
           <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 bg-accent/5 text-accent text-sm font-medium tracking-wider uppercase">
             <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-            Capital Intelligence Platform
+            Capital Intelligence Company
           </span>
         </motion.div>
 
