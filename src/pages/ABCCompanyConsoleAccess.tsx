@@ -47,6 +47,7 @@ const ABCCompanyConsoleAccess = () => {
 
   const handleForgotPassword = async () => {
     const normalizedEmail = email.toLowerCase().trim();
+    const redirectTo = `${window.location.origin}/abc-reset-password`;
     
     if (!normalizedEmail) {
       toast.error("Please enter your email address first.");
@@ -56,7 +57,7 @@ const ABCCompanyConsoleAccess = () => {
     setIsLoading(true);
     
     const { error } = await supabase.auth.resetPasswordForEmail(normalizedEmail, {
-      redirectTo: `${window.location.origin}/abc-company-console`,
+      redirectTo,
     });
 
     if (error) {
