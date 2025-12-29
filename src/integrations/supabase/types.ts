@@ -1764,6 +1764,196 @@ export type Database = {
         }
         Relationships: []
       }
+      report_purchases: {
+        Row: {
+          access_token: string | null
+          amount_paid: number | null
+          created_at: string
+          currency: string | null
+          expires_at: string | null
+          id: string
+          purchased_at: string
+          report_id: string
+          status: string
+          stripe_payment_intent: string | null
+          stripe_session_id: string | null
+          user_email: string
+          user_name: string | null
+        }
+        Insert: {
+          access_token?: string | null
+          amount_paid?: number | null
+          created_at?: string
+          currency?: string | null
+          expires_at?: string | null
+          id?: string
+          purchased_at?: string
+          report_id: string
+          status?: string
+          stripe_payment_intent?: string | null
+          stripe_session_id?: string | null
+          user_email: string
+          user_name?: string | null
+        }
+        Update: {
+          access_token?: string | null
+          amount_paid?: number | null
+          created_at?: string
+          currency?: string | null
+          expires_at?: string | null
+          id?: string
+          purchased_at?: string
+          report_id?: string
+          status?: string
+          stripe_payment_intent?: string | null
+          stripe_session_id?: string | null
+          user_email?: string
+          user_name?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "report_purchases_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "reports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      report_sections: {
+        Row: {
+          chart_config: Json | null
+          content_md: string | null
+          created_at: string
+          css_classes: string | null
+          id: string
+          image_url: string | null
+          is_preview: boolean
+          metadata: Json | null
+          order_index: number
+          report_id: string
+          section_type: string
+          subtitle: string | null
+          table_data: Json | null
+          title: string | null
+          updated_at: string
+        }
+        Insert: {
+          chart_config?: Json | null
+          content_md?: string | null
+          created_at?: string
+          css_classes?: string | null
+          id?: string
+          image_url?: string | null
+          is_preview?: boolean
+          metadata?: Json | null
+          order_index?: number
+          report_id: string
+          section_type: string
+          subtitle?: string | null
+          table_data?: Json | null
+          title?: string | null
+          updated_at?: string
+        }
+        Update: {
+          chart_config?: Json | null
+          content_md?: string | null
+          created_at?: string
+          css_classes?: string | null
+          id?: string
+          image_url?: string | null
+          is_preview?: boolean
+          metadata?: Json | null
+          order_index?: number
+          report_id?: string
+          section_type?: string
+          subtitle?: string | null
+          table_data?: Json | null
+          title?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "report_sections_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "reports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reports: {
+        Row: {
+          author: string
+          category: string
+          cover_image_url: string | null
+          created_at: string
+          description: string | null
+          edition: string | null
+          has_live_data: boolean
+          id: string
+          live_data_source: string | null
+          metadata: Json | null
+          preview_image_url: string | null
+          price_eur: number
+          published_at: string | null
+          seo_description: string | null
+          seo_title: string | null
+          slug: string
+          status: string
+          stripe_price_id: string | null
+          subtitle: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          author?: string
+          category?: string
+          cover_image_url?: string | null
+          created_at?: string
+          description?: string | null
+          edition?: string | null
+          has_live_data?: boolean
+          id?: string
+          live_data_source?: string | null
+          metadata?: Json | null
+          preview_image_url?: string | null
+          price_eur?: number
+          published_at?: string | null
+          seo_description?: string | null
+          seo_title?: string | null
+          slug: string
+          status?: string
+          stripe_price_id?: string | null
+          subtitle?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          author?: string
+          category?: string
+          cover_image_url?: string | null
+          created_at?: string
+          description?: string | null
+          edition?: string | null
+          has_live_data?: boolean
+          id?: string
+          live_data_source?: string | null
+          metadata?: Json | null
+          preview_image_url?: string | null
+          price_eur?: number
+          published_at?: string | null
+          seo_description?: string | null
+          seo_title?: string | null
+          slug?: string
+          status?: string
+          stripe_price_id?: string | null
+          subtitle?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       search_index: {
         Row: {
           content: string | null
@@ -1932,6 +2122,10 @@ export type Database = {
       }
       check_mazal_innovation_access: {
         Args: { check_email: string }
+        Returns: boolean
+      }
+      check_report_access: {
+        Args: { p_report_slug: string; p_user_email: string }
         Returns: boolean
       }
       get_current_user_role: { Args: never; Returns: string }
