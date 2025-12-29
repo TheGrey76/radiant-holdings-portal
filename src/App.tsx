@@ -76,7 +76,6 @@ import Bitcoin2026ReportPreview from "./pages/Bitcoin2026ReportPreview";
 import UnderlyingMonitoring from "./pages/UnderlyingMonitoring";
 import CrossPostingAssistant from "./pages/CrossPostingAssistant";
 import InsightsAdmin from "./pages/InsightsAdmin";
-import DesignTest from "./pages/DesignTest";
 
 const queryClient = new QueryClient();
 
@@ -160,7 +159,6 @@ const App = () => (
           <Route path="/bitcoin-2026-report-preview" element={<Bitcoin2026ReportPreview />} />
           
           <Route path="/mazal-innovation" element={<MazalInnovation />} />
-          <Route path="/design-test" element={<DesignTest />} />
           <Route path="/press" element={<Press />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
