@@ -1926,6 +1926,10 @@ export type Database = {
         Args: { investor_id_param: string }
         Returns: number
       }
+      check_abc_console_access: {
+        Args: { check_email: string }
+        Returns: boolean
+      }
       get_current_user_role: { Args: never; Returns: string }
       has_role: {
         Args: {
