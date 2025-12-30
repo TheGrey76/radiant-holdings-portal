@@ -78,6 +78,7 @@ import CrossPostingAssistant from "./pages/CrossPostingAssistant";
 import InsightsAdmin from "./pages/InsightsAdmin";
 import ReportsPage from "./pages/ReportsPage";
 import ReportDetailPage from "./pages/ReportDetailPage";
+import ResearchHubAdmin from "./pages/ResearchHubAdmin";
 
 const queryClient = new QueryClient();
 
@@ -116,7 +117,8 @@ const App = () => (
           <Route path="/admin/newsletter" element={<NewsletterComposer />} />
           
           <Route path="/admin/cross-posting" element={<CrossPostingAssistant />} />
-          <Route path="/admin/insights" element={<InsightsAdmin />} />
+            <Route path="/admin/insights" element={<InsightsAdmin />} />
+            <Route path="/admin/research-hub" element={<ResearchHubAdmin />} />
           <Route path="/admin/gp-lp-matching" element={<GPLPMatching />} />
           <Route path="/admin/gp-lp-dashboard" element={<GPLPDashboard />} />
           <Route path="/gp-portal" element={<GPPortal />} />
