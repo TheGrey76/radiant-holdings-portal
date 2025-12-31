@@ -31,7 +31,10 @@ import {
   CreditCard,
   Bell,
   BookOpen,
-  Layers
+  Layers,
+  Copy,
+  Check,
+  Wallet
 } from 'lucide-react';
 import {
   Accordion,
@@ -44,6 +47,17 @@ import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Cell, Tooltip } from 
 const Bitcoin2026ReportPreview = () => {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState<'card' | 'crypto'>('card');
+  const [copied, setCopied] = useState(false);
+
+  const USDT_WALLET = 'TJJLg6kdsQAw4aVjV2Z44ei1BhHFfhGTAg';
+
+  const copyWalletAddress = () => {
+    navigator.clipboard.writeText(USDT_WALLET);
+    setCopied(true);
+    toast.success('Wallet address copied!');
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   const handlePurchase = async () => {
     if (!email || !email.includes('@')) {
@@ -161,6 +175,32 @@ const Bitcoin2026ReportPreview = () => {
           <p className="text-zinc-500 text-sm mt-1">One-time purchase • Lifetime access</p>
         </div>
 
+        {/* Payment Method Toggle */}
+        <div className="flex gap-2 p-1 bg-zinc-800 rounded-lg">
+          <button
+            onClick={() => setPaymentMethod('card')}
+            className={`flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-md text-sm font-medium transition-all ${
+              paymentMethod === 'card' 
+                ? 'bg-zinc-700 text-white' 
+                : 'text-zinc-400 hover:text-zinc-300'
+            }`}
+          >
+            <CreditCard className="w-4 h-4" />
+            Card
+          </button>
+          <button
+            onClick={() => setPaymentMethod('crypto')}
+            className={`flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-md text-sm font-medium transition-all ${
+              paymentMethod === 'crypto' 
+                ? 'bg-zinc-700 text-white' 
+                : 'text-zinc-400 hover:text-zinc-300'
+            }`}
+          >
+            <Wallet className="w-4 h-4" />
+            USDT
+          </button>
+        </div>
+
         <div className="space-y-2 text-sm">
           <div className="flex items-center gap-2 text-zinc-300">
             <Shield className="w-4 h-4 text-emerald-400" />
@@ -172,36 +212,85 @@ const Bitcoin2026ReportPreview = () => {
           </div>
           <div className="flex items-center gap-2 text-zinc-300">
             <Lock className="w-4 h-4 text-orange-400" />
-            <span>Secure Stripe Payment</span>
+            <span>{paymentMethod === 'card' ? 'Secure Stripe Payment' : 'USDT TRC20 Network'}</span>
           </div>
         </div>
 
-        <div className="space-y-3">
-          <Input
-            type="email"
-            placeholder="Your email address"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500"
-          />
-          <Button 
-            onClick={handlePurchase}
-            disabled={isLoading}
-            className="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-semibold py-6 text-base"
-          >
-            {isLoading ? (
-              <>
-                <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                Processing...
-              </>
-            ) : (
-              <>
-                Get Instant Access for €99
-                <ArrowRight className="w-5 h-5 ml-2" />
-              </>
-            )}
-          </Button>
-        </div>
+        {paymentMethod === 'card' ? (
+          <div className="space-y-3">
+            <Input
+              type="email"
+              placeholder="Your email address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500"
+            />
+            <Button 
+              onClick={handlePurchase}
+              disabled={isLoading}
+              className="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-semibold py-6 text-base"
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                  Processing...
+                </>
+              ) : (
+                <>
+                  Get Instant Access for €99
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </>
+              )}
+            </Button>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            <div className="p-4 bg-zinc-800/80 rounded-lg border border-emerald-500/20">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs text-emerald-400 font-medium">USDT TRC20 Address</span>
+                <Badge className="bg-emerald-500/10 text-emerald-400 border-emerald-500/30 text-xs">
+                  Tron Network
+                </Badge>
+              </div>
+              <div className="flex items-center gap-2">
+                <code className="flex-1 text-xs text-zinc-300 font-mono bg-zinc-900 p-2 rounded overflow-x-auto">
+                  {USDT_WALLET}
+                </code>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={copyWalletAddress}
+                  className="shrink-0 h-8 w-8 p-0 text-zinc-400 hover:text-white hover:bg-zinc-700"
+                >
+                  {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+                </Button>
+              </div>
+            </div>
+
+            <div className="text-center p-3 bg-orange-500/10 rounded-lg border border-orange-500/20">
+              <p className="text-sm text-orange-300">
+                Send exactly <span className="font-bold text-white">99 USDT</span> and email your TX hash to:
+              </p>
+              <a 
+                href="mailto:research@aries76.com?subject=Bitcoin%202026%20Report%20-%20USDT%20Payment" 
+                className="text-orange-400 font-medium hover:underline text-sm"
+              >
+                research@aries76.com
+              </a>
+            </div>
+
+            <div className="text-xs text-zinc-500 space-y-1">
+              <p className="flex items-center gap-1">
+                <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+                Access delivered within 24h after confirmation
+              </p>
+              <p className="flex items-center gap-1">
+                <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+                Lower fees than traditional payments
+              </p>
+            </div>
+          </div>
+        )}
 
         <p className="text-xs text-zinc-500 text-center">
           Trusted by CIOs at European Family Offices & Multi-Strategy Funds
