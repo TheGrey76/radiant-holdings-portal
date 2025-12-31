@@ -145,6 +145,8 @@ const Bitcoin2026ReportPreview = () => {
     },
   ];
 
+  const COINGATE_URL = 'https://pay.coingate.com/pay/ABTC2026';
+
   const PurchaseCard = ({ className = '' }: { className?: string }) => (
     <Card className={`bg-zinc-900/95 border-zinc-700 backdrop-blur-sm ${className}`}>
       <CardContent className="p-6 space-y-5">
@@ -172,7 +174,7 @@ const Bitcoin2026ReportPreview = () => {
           </div>
           <div className="flex items-center gap-2 text-zinc-300">
             <Lock className="w-4 h-4 text-orange-400" />
-            <span>Secure Stripe Payment</span>
+            <span>Secure Payment</span>
           </div>
         </div>
 
@@ -196,10 +198,19 @@ const Bitcoin2026ReportPreview = () => {
               </>
             ) : (
               <>
-                Get Instant Access for €99
-                <ArrowRight className="w-5 h-5 ml-2" />
+                <CreditCard className="w-5 h-5 mr-2" />
+                Pay with Card
               </>
             )}
+          </Button>
+          
+          <Button 
+            onClick={() => window.open(COINGATE_URL, '_blank')}
+            variant="outline"
+            className="w-full border-zinc-600 bg-zinc-800/50 hover:bg-zinc-700/50 text-white font-semibold py-6 text-base"
+          >
+            <span className="mr-2 text-lg">₿</span>
+            Pay with Crypto (USDT)
           </Button>
         </div>
 
