@@ -272,10 +272,10 @@ const Bitcoin2026ReportPreview = () => {
                 Send exactly <span className="font-bold text-white">99 USDT</span> and email your TX hash to:
               </p>
               <a 
-                href="mailto:research@aries76.com?subject=Bitcoin%202026%20Report%20-%20USDT%20Payment" 
+                href="mailto:quinley.martini@aries76.com?subject=Bitcoin%202026%20Report%20-%20USDT%20Payment" 
                 className="text-orange-400 font-medium hover:underline text-sm"
               >
-                research@aries76.com
+                quinley.martini@aries76.com
               </a>
             </div>
 
