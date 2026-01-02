@@ -451,21 +451,6 @@ const ReelImmobiliareContent = () => {
             <p className="text-xl md:text-2xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
               Da portale video replicabile a piattaforma tecnologica per il Real Estate
             </p>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6 }}
-            >
-              <Button
-                onClick={() => scrollToSection("premessa")}
-                variant="outline"
-                className="border-white/30 text-white hover:bg-white/10 mt-4"
-              >
-                Inizia a leggere
-                <ChevronDown className="ml-2 h-4 w-4" />
-              </Button>
-            </motion.div>
           </motion.div>
         </div>
       </div>
