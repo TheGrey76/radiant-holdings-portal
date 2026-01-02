@@ -198,7 +198,7 @@ const ReelImmobiliareAccessGate = ({ children }: ReelImmobiliareAccessGateProps)
 };
 
 // Table of Contents Component
-const TableOfContents = ({ activeSection, onSectionClick }: { activeSection: string; onSectionClick: (id: string) => void }) => {
+const TableOfContents = ({ activeSection, onSectionClick, isVisible }: { activeSection: string; onSectionClick: (id: string) => void; isVisible: boolean }) => {
   const sections = [
     { id: "premessa", label: "Premessa", icon: Lightbulb },
     { id: "limite", label: "Limite del Portale", icon: XCircle },
@@ -211,25 +211,35 @@ const TableOfContents = ({ activeSection, onSectionClick }: { activeSection: str
   ];
 
   return (
-    <div className="hidden lg:block fixed left-8 top-1/2 -translate-y-1/2 z-40">
-      <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border p-4 space-y-2">
-        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Indice</p>
-        {sections.map((section) => (
-          <button
-            key={section.id}
-            onClick={() => onSectionClick(section.id)}
-            className={`flex items-center gap-2 w-full text-left px-3 py-2 rounded-lg text-sm transition-all ${
-              activeSection === section.id
-                ? "bg-primary text-white font-medium"
-                : "text-muted-foreground hover:bg-muted hover:text-foreground"
-            }`}
-          >
-            <section.icon className="h-4 w-4" />
-            <span className="truncate">{section.label}</span>
-          </button>
-        ))}
-      </div>
-    </div>
+    <AnimatePresence>
+      {isVisible && (
+        <motion.div 
+          className="hidden lg:block fixed left-8 top-1/2 -translate-y-1/2 z-40"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -20 }}
+          transition={{ duration: 0.3 }}
+        >
+          <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border p-4 space-y-2">
+            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Indice</p>
+            {sections.map((section) => (
+              <button
+                key={section.id}
+                onClick={() => onSectionClick(section.id)}
+                className={`flex items-center gap-2 w-full text-left px-3 py-2 rounded-lg text-sm transition-all ${
+                  activeSection === section.id
+                    ? "bg-primary text-white font-medium"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                }`}
+              >
+                <section.icon className="h-4 w-4" />
+                <span className="truncate">{section.label}</span>
+              </button>
+            ))}
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 };
 
@@ -357,9 +367,13 @@ const FeatureList = ({ items, icon: DefaultIcon = CheckCircle }: { items: string
 
 const ReelImmobiliareContent = () => {
   const [activeSection, setActiveSection] = useState("premessa");
+  const [showToc, setShowToc] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
+      // Show TOC only after scrolling past hero (approx 400px)
+      setShowToc(window.scrollY > 400);
+      
       const sections = ["premessa", "limite", "paradigma", "infrastruttura", "controllo", "lovable", "b2b", "conclusione"];
       for (const id of sections) {
         const element = document.getElementById(id);
@@ -392,7 +406,7 @@ const ReelImmobiliareContent = () => {
       </Helmet>
       
       <ReadingProgress />
-      <TableOfContents activeSection={activeSection} onSectionClick={scrollToSection} />
+      <TableOfContents activeSection={activeSection} onSectionClick={scrollToSection} isVisible={showToc} />
       
       {/* Hero Section */}
       <div className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-24 lg:py-32">
