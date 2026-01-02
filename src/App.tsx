@@ -47,6 +47,7 @@ import FamilyOfficeAllocation2026 from "./pages/blog/FamilyOfficeAllocation2026"
 import BigTechAIInvestmentIndia from "./pages/blog/BigTechAIInvestmentIndia";
 import GPCapitalAdvisoryTrends2025 from "./pages/blog/GPCapitalAdvisoryTrends2025";
 import MazalInnovation from "./pages/MazalInnovation";
+import ReelImmobiliare from "./pages/ReelImmobiliare";
 import WhyChooseAries from "./pages/WhyChooseAries";
 import LeadershipTeam from "./pages/LeadershipTeam";
 import VettaFiProposal from "./pages/VettaFiProposal";
@@ -163,6 +164,7 @@ const App = () => (
           <Route path="/bitcoin-2026-report-preview" element={<Bitcoin2026ReportPreview />} />
           
           <Route path="/mazal-innovation" element={<MazalInnovation />} />
+          <Route path="/reelimmobiliare" element={<ReelImmobiliare />} />
           <Route path="/reports" element={<ReportsPage />} />
           <Route path="/reports/:slug" element={<ReportDetailPage />} />
           <Route path="/press" element={<Press />} />
