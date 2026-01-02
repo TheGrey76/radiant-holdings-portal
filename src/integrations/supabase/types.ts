@@ -1764,6 +1764,27 @@ export type Database = {
         }
         Relationships: []
       }
+      reel_immobiliare_access: {
+        Row: {
+          access_granted_at: string
+          created_at: string
+          email: string
+          id: string
+        }
+        Insert: {
+          access_granted_at?: string
+          created_at?: string
+          email: string
+          id?: string
+        }
+        Update: {
+          access_granted_at?: string
+          created_at?: string
+          email?: string
+          id?: string
+        }
+        Relationships: []
+      }
       report_purchases: {
         Row: {
           access_token: string | null
