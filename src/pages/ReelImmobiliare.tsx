@@ -496,16 +496,17 @@ const ReelImmobiliareContent = () => {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.3 }}
             >
-              <Building2 className="h-4 w-4 text-primary" />
+              <Building2 className="h-4 w-4 text-orange-400" />
               Aries76 Capital Intelligence
             </motion.div>
             
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-tight">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-orange-400">
-                ReelImmobiliare
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-tight">
+              <span className="text-white">Reel </span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-300">
+                Immobiliare
               </span>
               <br />
-              <span className="text-3xl md:text-4xl lg:text-5xl">Analisi Strategica e Tecnologica</span>
+              <span className="text-3xl md:text-4xl lg:text-5xl text-slate-200">Analisi Strategica e Tecnologica</span>
             </h1>
             
             <p className="text-xl md:text-2xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
@@ -513,7 +514,7 @@ const ReelImmobiliareContent = () => {
             </p>
 
             <p className="text-sm text-slate-400">
-              Documento di lavoro (versione estesa) – 02 January 2026
+              02 January 2026
             </p>
           </motion.div>
         </div>
