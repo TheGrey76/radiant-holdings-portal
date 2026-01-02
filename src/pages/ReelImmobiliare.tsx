@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
-import { Lock, Mail, CheckCircle, XCircle, ArrowRight, Lightbulb, Database, Video, Target, Building2, Zap, ChevronDown, ChevronUp } from "lucide-react";
+import { Lock, Mail, CheckCircle, XCircle, ArrowRight, Lightbulb, Database, Video, Target, Building2, Zap, ChevronDown, ChevronUp, Layers, Eye, Settings, Shield, BarChart3, Calendar, Users, FileText, AlertTriangle, Briefcase } from "lucide-react";
 import { toast } from "sonner";
 import { Helmet } from "react-helmet";
 import { motion, AnimatePresence } from "framer-motion";
@@ -129,7 +129,7 @@ const ReelImmobiliareAccessGate = ({ children }: ReelImmobiliareAccessGateProps)
             <div>
               <CardTitle className="text-2xl mb-2">ReelImmobiliare</CardTitle>
               <CardDescription className="text-base">
-                Documento Strategico Riservato
+                Analisi Strategica e Tecnologica
               </CardDescription>
             </div>
           </CardHeader>
@@ -200,13 +200,19 @@ const ReelImmobiliareAccessGate = ({ children }: ReelImmobiliareAccessGateProps)
 // Table of Contents Component
 const TableOfContents = ({ activeSection, onSectionClick, isVisible }: { activeSection: string; onSectionClick: (id: string) => void; isVisible: boolean }) => {
   const sections = [
-    { id: "premessa", label: "Premessa", icon: Lightbulb },
-    { id: "limite", label: "Limite del Portale", icon: XCircle },
-    { id: "paradigma", label: "Dal Contenuto al Dato", icon: Database },
-    { id: "infrastruttura", label: "Infrastruttura Tech", icon: Zap },
-    { id: "controllo", label: "Controllo Tecnologico", icon: Video },
-    { id: "lovable", label: "Lovable come Abilitatore", icon: Zap },
-    { id: "b2b", label: "Dal B2C al B2B", icon: Target },
+    { id: "scopo", label: "Scopo", icon: FileText },
+    { id: "sintesi", label: "Sintesi Esecutiva", icon: Briefcase },
+    { id: "fragilita", label: "Fragilità Portale", icon: AlertTriangle },
+    { id: "shift", label: "Video come Sensore", icon: Eye },
+    { id: "vimeo", label: "Perché non Vimeo", icon: XCircle },
+    { id: "alternative", label: "Mux vs api.video", icon: Layers },
+    { id: "lovable", label: "Lovable", icon: Zap },
+    { id: "architettura", label: "Architettura", icon: Settings },
+    { id: "roadmap", label: "Roadmap 6 Mesi", icon: Calendar },
+    { id: "kpi", label: "KPI e Metriche", icon: BarChart3 },
+    { id: "business", label: "Modello di Business", icon: Target },
+    { id: "rischi", label: "Rischi", icon: Shield },
+    { id: "governance", label: "Governance", icon: Users },
     { id: "conclusione", label: "Conclusione", icon: CheckCircle },
   ];
 
@@ -214,25 +220,25 @@ const TableOfContents = ({ activeSection, onSectionClick, isVisible }: { activeS
     <AnimatePresence>
       {isVisible && (
         <motion.div 
-          className="hidden lg:block fixed left-8 top-1/2 -translate-y-1/2 z-40"
+          className="hidden lg:block fixed left-4 top-1/2 -translate-y-1/2 z-40 max-h-[80vh] overflow-y-auto"
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -20 }}
           transition={{ duration: 0.3 }}
         >
-          <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border p-4 space-y-2">
-            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Indice</p>
+          <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border p-3 space-y-1">
+            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 px-2">Indice</p>
             {sections.map((section) => (
               <button
                 key={section.id}
                 onClick={() => onSectionClick(section.id)}
-                className={`flex items-center gap-2 w-full text-left px-3 py-2 rounded-lg text-sm transition-all ${
+                className={`flex items-center gap-2 w-full text-left px-2 py-1.5 rounded-lg text-xs transition-all ${
                   activeSection === section.id
                     ? "bg-primary text-white font-medium"
                     : "text-muted-foreground hover:bg-muted hover:text-foreground"
                 }`}
               >
-                <section.icon className="h-4 w-4" />
+                <section.icon className="h-3 w-3 flex-shrink-0" />
                 <span className="truncate">{section.label}</span>
               </button>
             ))}
@@ -271,7 +277,7 @@ const ReadingProgress = () => {
 };
 
 // Key Point Component with animation
-const KeyPoint = ({ children }: { children: React.ReactNode }) => (
+const KeyPoint = ({ children, label = "Key concept" }: { children: React.ReactNode; label?: string }) => (
   <motion.div 
     className="my-8 p-6 bg-gradient-to-r from-primary/10 to-orange-500/10 border-l-4 border-primary rounded-r-xl shadow-lg"
     initial={{ opacity: 0, x: -20 }}
@@ -279,9 +285,27 @@ const KeyPoint = ({ children }: { children: React.ReactNode }) => (
     viewport={{ once: true }}
     transition={{ duration: 0.5 }}
   >
+    <p className="text-xs font-semibold text-primary uppercase tracking-wider mb-2">{label}</p>
     <div className="flex items-start gap-3">
       <Lightbulb className="h-6 w-6 text-primary flex-shrink-0 mt-0.5" />
       <p className="font-semibold text-lg text-primary italic leading-relaxed">{children}</p>
+    </div>
+  </motion.div>
+);
+
+// Decision Rule Component
+const DecisionRule = ({ children }: { children: React.ReactNode }) => (
+  <motion.div 
+    className="my-8 p-6 bg-gradient-to-r from-blue-500/10 to-indigo-500/10 border-l-4 border-blue-500 rounded-r-xl shadow-lg"
+    initial={{ opacity: 0, x: -20 }}
+    whileInView={{ opacity: 1, x: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.5 }}
+  >
+    <p className="text-xs font-semibold text-blue-600 uppercase tracking-wider mb-2">Decision Rule</p>
+    <div className="flex items-start gap-3">
+      <Settings className="h-6 w-6 text-blue-600 flex-shrink-0 mt-0.5" />
+      <p className="font-semibold text-lg text-blue-600 italic leading-relaxed">{children}</p>
     </div>
   </motion.div>
 );
@@ -365,16 +389,51 @@ const FeatureList = ({ items, icon: DefaultIcon = CheckCircle }: { items: string
   </ul>
 );
 
+// Subsection Component
+const Subsection = ({ title, children }: { title: string; children: React.ReactNode }) => (
+  <div className="mt-6 mb-4">
+    <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
+      <ArrowRight className="h-4 w-4 text-primary" />
+      {title}
+    </h3>
+    {children}
+  </div>
+);
+
+// Roadmap Phase Component
+const RoadmapPhase = ({ phase, title, items }: { phase: string; title: string; items: string[] }) => (
+  <motion.div 
+    className="p-5 bg-gradient-to-r from-muted/50 to-muted/30 rounded-xl border mb-4"
+    initial={{ opacity: 0, y: 10 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+  >
+    <div className="flex items-center gap-3 mb-3">
+      <div className="px-3 py-1 bg-primary text-white text-sm font-semibold rounded-full">
+        {phase}
+      </div>
+      <h4 className="font-semibold text-foreground">{title}</h4>
+    </div>
+    <ul className="space-y-2">
+      {items.map((item, index) => (
+        <li key={index} className="flex items-start gap-2 text-sm text-muted-foreground">
+          <CheckCircle className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+          {item}
+        </li>
+      ))}
+    </ul>
+  </motion.div>
+);
+
 const ReelImmobiliareContent = () => {
-  const [activeSection, setActiveSection] = useState("premessa");
+  const [activeSection, setActiveSection] = useState("scopo");
   const [showToc, setShowToc] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      // Show TOC only after scrolling past hero (approx 400px)
       setShowToc(window.scrollY > 400);
       
-      const sections = ["premessa", "limite", "paradigma", "infrastruttura", "controllo", "lovable", "b2b", "conclusione"];
+      const sections = ["scopo", "sintesi", "fragilita", "shift", "vimeo", "alternative", "lovable", "architettura", "roadmap", "kpi", "business", "rischi", "governance", "conclusione"];
       for (const id of sections) {
         const element = document.getElementById(id);
         if (element) {
@@ -401,7 +460,7 @@ const ReelImmobiliareContent = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       <Helmet>
-        <title>ReelImmobiliare – Evoluzione Strategica | Aries76</title>
+        <title>ReelImmobiliare – Analisi Strategica e Tecnologica | Aries76</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
       
@@ -438,113 +497,267 @@ const ReelImmobiliareContent = () => {
               transition={{ delay: 0.3 }}
             >
               <Building2 className="h-4 w-4 text-primary" />
-              Documento Strategico
+              Aries76 Capital Intelligence
             </motion.div>
             
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-tight">
-              Evoluzione Strategica del Progetto{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-orange-400">
                 ReelImmobiliare
               </span>
+              <br />
+              <span className="text-3xl md:text-4xl lg:text-5xl">Analisi Strategica e Tecnologica</span>
             </h1>
             
             <p className="text-xl md:text-2xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
-              Da portale video replicabile a piattaforma tecnologica per il Real Estate
+              Da portale video replicabile a piattaforma tecnologica data-driven per il Real Estate
+            </p>
+
+            <p className="text-sm text-slate-400">
+              Documento di lavoro (versione estesa) – 02 January 2026
             </p>
           </motion.div>
         </div>
       </div>
 
       {/* Content */}
-      <div className="container mx-auto px-4 max-w-4xl py-16 lg:py-20 lg:pl-72">
+      <div className="container mx-auto px-4 max-w-4xl py-16 lg:py-20 lg:pl-56">
         <div className="space-y-16">
           
-          <Section id="premessa" icon={Lightbulb} title="Premessa">
+          {/* 1. Scopo del documento */}
+          <Section id="scopo" icon={FileText} title="1. Scopo del documento">
             <p className="text-muted-foreground leading-relaxed text-lg">
-              Il progetto ReelImmobiliare nasce da un'intuizione corretta e perfettamente allineata ai cambiamenti nei comportamenti digitali degli utenti: il video è diventato il linguaggio principale attraverso cui le persone esplorano, valutano e prendono decisioni.
+              Questo documento consolida e approfondisce la business review sviluppata in sede di confronto strategico, con l'obiettivo di rendere esplicito lo shift necessario per trasformare ReelImmobiliare da iniziativa "portale video" – intrinsecamente replicabile e fragile – a <strong className="text-foreground">piattaforma tecnologica data-driven per il Real Estate</strong>.
             </p>
             <p className="text-muted-foreground leading-relaxed text-lg mt-4">
-              Nel settore immobiliare, storicamente dominato da fotografie statiche e descrizioni standardizzate, il video rappresenta un'evoluzione naturale e necessaria. Tuttavia, affinché questa intuizione possa trasformarsi in un progetto imprenditoriale sostenibile e scalabile, è fondamentale distinguere tra <strong className="text-foreground">innovazione di formato</strong> e <strong className="text-foreground">innovazione strutturale</strong>.
+              Il focus è duplice: (i) chiarire le implicazioni competitive e di modello economico; (ii) descrivere in modo operativo come i video possano generare dati proprietari, quali componenti architetturali siano indispensabili e quali scelte tecnologiche risultino più coerenti (Vimeo vs Mux vs api.video; Lovable come frontend).
             </p>
           </Section>
 
-          <Section id="limite" icon={XCircle} title="Il limite strutturale del modello portale">
+          {/* 2. Sintesi esecutiva */}
+          <Section id="sintesi" icon={Briefcase} title="2. Sintesi esecutiva">
             <p className="text-muted-foreground leading-relaxed text-lg">
-              Nella sua impostazione originaria, ReelImmobiliare viene concepito come un portale immobiliare basato su annunci esclusivamente video. Sebbene questa proposta risulti innovativa dal punto di vista dell'esperienza, presenta un limite strutturale rilevante.
+              L'intuizione originaria – spostare l'esperienza immobiliare verso un formato video "reel-like" – è corretta dal punto di vista dell'evoluzione dei comportamenti digitali. Tuttavia, un portale video-only compete inevitabilmente sul traffico e sulla distribuzione, terreno nel quale gli incumbent (portali immobiliari e marketplace consolidati) possiedono vantaggi strutturali (brand, basi utenti, supply delle agenzie, budget marketing).
             </p>
             <p className="text-muted-foreground leading-relaxed text-lg mt-4">
-              Un portale, per definizione, compete sul traffico, sulla visibilità e sulla capacità di attrarre inserzionisti. Operatori già affermati dispongono di vantaggi difficilmente colmabili: basi utenti consolidate, relazioni commerciali con migliaia di agenzie, brand recognition e capacità di investimento molto superiori.
+              In questa configurazione, l'innovazione di formato è una feature facilmente replicabile e non genera difendibilità né pricing power.
             </p>
             <KeyPoint>
-              Un portale vince se controlla il traffico. ReelImmobiliare non può competere su questo terreno senza bruciare risorse e tempo.
+              Un portale compete sulla visibilità. Una piattaforma compete sull'intelligenza (dati, correlazioni, learning nel tempo).
             </KeyPoint>
-          </Section>
-
-          <Section id="paradigma" icon={Database} title="Il cambio di paradigma: dal contenuto al dato">
-            <p className="text-muted-foreground leading-relaxed text-lg">
-              Il vero valore potenziale di ReelImmobiliare emerge quando il video smette di essere considerato un semplice contenuto di presentazione e viene ripensato come <strong className="text-foreground">fonte primaria di dati</strong>.
+            <p className="text-muted-foreground leading-relaxed text-lg mt-4">
+              La traiettoria investibile e industrialmente credibile consiste nel riposizionare ReelImmobiliare come <strong className="text-foreground">infrastruttura B2B</strong>: un layer tecnologico che trasforma i video immobiliari in dati strutturati (semantic enrichment) e raccoglie dati comportamentali granulari (event-level analytics) attraverso un player controllato.
             </p>
             <p className="text-muted-foreground leading-relaxed text-lg mt-4">
-              Un video immobiliare contiene una quantità enorme di informazione latente: struttura degli ambienti, qualità percepita, luminosità, materiali, contesto, ma anche informazioni sul comportamento degli utenti che lo guardano.
+              Il valore si accumula con l'uso: dataset proprietario, modelli predittivi, insight su conversione e pricing. Questo abilita un modello SaaS per agenzie e network (ricavi ricorrenti) e una narrativa di partnership/licensing verso player più grandi.
             </p>
-            <KeyPoint>
-              Il video non è marketing. Il video è un sensore.
-            </KeyPoint>
           </Section>
 
-          <Section id="infrastruttura" icon={Zap} title="Perché un'infrastruttura tecnologica è diversa da un portale">
+          {/* 3. Perché il modello "portale video" è fragile */}
+          <Section id="fragilita" icon={AlertTriangle} title="3. Perché il modello 'portale video' è fragile">
             <p className="text-muted-foreground leading-relaxed text-lg">
-              In un portale tradizionale, il valore è generato dalla pubblicazione degli annunci. In una piattaforma tecnologica, il valore è generato dall'elaborazione dei dati.
-            </p>
-            <FeatureList items={[
-              "Analizza automaticamente il contenuto visivo e narrativo",
-              "Riconosce e classifica gli ambienti",
-              "Costruisce metadati strutturati sugli immobili",
-              "Raccoglie dati comportamentali granulari sugli utenti",
-              "Correla tali dati con eventi reali (richieste di visita, offerte, vendite)"
-            ]} />
-            <KeyPoint>
-              Un portale mostra annunci. Una piattaforma costruisce conoscenza.
-            </KeyPoint>
-          </Section>
-
-          <Section id="controllo" icon={Video} title="Il ruolo centrale del controllo tecnologico">
-            <p className="text-muted-foreground leading-relaxed text-lg">
-              Perché questo modello funzioni, è essenziale che la piattaforma mantenga il controllo sull'intera catena del valore del video: dallo storage allo streaming, dal player alle interazioni, fino alla pipeline di analisi e al data layer.
-            </p>
-            <KeyPoint>
-              Se non controlli il player e i dati, non stai costruendo una piattaforma, ma una vetrina.
-            </KeyPoint>
-          </Section>
-
-          <Section id="lovable" icon={Zap} title="Lovable come abilitatore, non come limite">
-            <p className="text-muted-foreground leading-relaxed text-lg">
-              L'utilizzo di strumenti no-code come Lovable può rappresentare una scelta estremamente efficace, se correttamente posizionata. Lovable è adatto a costruire rapidamente il portale, gestire utenti, annunci e flussi di navigazione.
+              Un portale consumer, per generare valore, richiede una massa critica di traffico e una supply ampia e costante di annunci. L'ingresso in un mercato dominato da incumbent comporta un "cold start problem" severo: senza traffico le agenzie non caricano contenuti; senza contenuti gli utenti non arrivano.
             </p>
             <p className="text-muted-foreground leading-relaxed text-lg mt-4">
-              Tuttavia, Lovable non deve essere confuso con il cuore tecnologico della piattaforma. Il suo ruolo ideale è quello di layer di presentazione e orchestrazione, mentre il valore strategico risiede nel backend proprietario.
+              In aggiunta, il formato video e l'interfaccia "reel-like" sono facilmente replicabili e possono essere inglobati dagli incumbent senza costi strategici rilevanti.
+            </p>
+            <p className="text-muted-foreground leading-relaxed text-lg mt-4">
+              Ne deriva un rischio di posizionamento: ReelImmobiliare sarebbe percepito come un canale aggiuntivo, non come uno strumento indispensabile. In assenza di dati proprietari e di un valore operativo misurabile per le agenzie (riduzione visite inutili, miglioramento conversione, qualità lead), la disponibilità a pagare resta limitata e l'economia del progetto tende a dipendere da advertising o fee di lead generation, modelli in cui la competizione è principalmente di scala.
             </p>
             <KeyPoint>
-              Lovable accelera il prodotto. Il backend protegge il valore.
+              Se l'asset principale è il traffico, il vantaggio competitivo è di scala. Se l'asset principale sono i dati, il vantaggio è cumulativo.
             </KeyPoint>
           </Section>
 
-          <Section id="b2b" icon={Target} title="Dal B2C fragile al B2B scalabile">
+          {/* 4. Lo shift: il video come sensore */}
+          <Section id="shift" icon={Eye} title="4. Lo shift: il video come sensore e generatore di dati">
             <p className="text-muted-foreground leading-relaxed text-lg">
-              Un portale consumer richiede volumi di traffico elevatissimi. Una piattaforma tecnologica B2B, invece, può creare valore servendo un numero limitato di clienti professionali ad alto valore.
+              La trasformazione strategica consiste nel considerare ogni video non come semplice contenuto promozionale, ma come <strong className="text-foreground">sensore digitale</strong> che osserva simultaneamente l'immobile e il comportamento dell'utente. Da qui discendono due famiglie di dati:
+            </p>
+
+            <Subsection title="4.1 Dati estratti dal contenuto (computer vision + NLP)">
+              <p className="text-muted-foreground leading-relaxed">
+                Attraverso scene detection e modelli di visione è possibile riconoscere ambienti (cucina, soggiorno, camere, bagni, esterni), identificare macro-caratteristiche (open space vs separato, presenza balconi/terrazzi, vista, luminosità), e costruire una rappresentazione semantica dell'immobile.
+              </p>
+              <p className="text-muted-foreground leading-relaxed mt-3">
+                Se è presente voice-over, la trascrizione consente di estrarre attributi dichiarati dall'agente e di normalizzarli in metadati strutturati.
+              </p>
+            </Subsection>
+
+            <Subsection title="4.2 Dati comportamentali (event-level analytics)">
+              <p className="text-muted-foreground leading-relaxed">
+                Il valore più difendibile deriva dal comportamento: pause, seek, replay, skip, drop-off, tempo di permanenza per segmento, sequenze di visione e azioni successive (contatto, richiesta visita).
+              </p>
+              <p className="text-muted-foreground leading-relaxed mt-3">
+                Questi segnali permettono di costruire heatmap di attenzione e, soprattutto, correlazioni robuste fra contenuto e conversione. È qui che il video diventa "intelligence layer" e non semplice media.
+              </p>
+            </Subsection>
+
+            <KeyPoint>
+              I dati aggregati (views, completion rate) sono marketing. I dati evento-per-evento sono decision intelligence.
+            </KeyPoint>
+          </Section>
+
+          {/* 5. Perché Vimeo non è sufficiente */}
+          <Section id="vimeo" icon={XCircle} title="5. Perché Vimeo non è sufficiente">
+            <p className="text-muted-foreground leading-relaxed text-lg">
+              L'idea originaria di ospitare i video su Vimeo e incorporarli nel portale è coerente con un MVP orientato alla fruizione, ma non con una piattaforma dati. Vimeo fornisce metriche prevalentemente aggregate e non consente un controllo profondo del player né la strumentazione granulare degli eventi necessari per costruire un dataset proprietario e correlabile a user, immobile e outcome.
+            </p>
+            <p className="text-muted-foreground leading-relaxed text-lg mt-4">
+              In aggiunta, Vimeo non esegue analisi semantica del contenuto per finalità di intelligence proprietaria. Il video resta un file: si ottiene una vetrina più moderna, ma non si crea un asset che migliori nel tempo. Questo rende il progetto più replicabile e meno investibile.
+            </p>
+          </Section>
+
+          {/* 6. Alternative consigliate */}
+          <Section id="alternative" icon={Layers} title="6. Alternative consigliate: Mux e api.video">
+            <Subsection title="6.1 Mux: infrastruttura 'platform-first'">
+              <p className="text-muted-foreground leading-relaxed">
+                Mux è un layer infrastrutturale video pensato per prodotti digitali che necessitano di controllo, affidabilità e osservabilità. È particolarmente coerente con l'obiettivo di raccogliere dati comportamentali granulari, perché si integra bene con player custom e fornisce telemetria utile alla costruzione di analytics avanzati.
+              </p>
+              <p className="text-muted-foreground leading-relaxed mt-3">
+                Mux non sostituisce il layer di computer vision (che resta esterno e proprietario), ma copre in modo solido streaming e interaction analytics, riducendo rischi operativi e time-to-market.
+              </p>
+            </Subsection>
+
+            <Subsection title="6.2 api.video: soluzione 'speed-first'">
+              <p className="text-muted-foreground leading-relaxed">
+                api.video è una scelta valida per prototipi e MVP rapidi, con API semplici e integrazione veloce. È indicata se l'obiettivo è testare la fruizione e la supply di contenuti in 30–60 giorni.
+              </p>
+              <p className="text-muted-foreground leading-relaxed mt-3">
+                Tuttavia, per una traiettoria data-driven, la profondità dell'osservabilità e la capacità di strumentazione tendono a essere inferiori rispetto a soluzioni più orientate a platform analytics. Il rischio è che il video rimanga una feature e non diventi un asset dati.
+              </p>
+            </Subsection>
+
+            <DecisionRule>
+              Se l'obiettivo è costruire un "data moat" nel tempo, Mux è più coerente. Se l'obiettivo è validare la UX rapidamente, api.video può essere transitorio.
+            </DecisionRule>
+          </Section>
+
+          {/* 7. Lovable */}
+          <Section id="lovable" icon={Zap} title="7. Lovable: fattibile, ma nel ruolo corretto">
+            <p className="text-muted-foreground leading-relaxed text-lg">
+              Costruire il portale con Lovable è fattibile e, se correttamente impostato, consigliabile per accelerare time-to-market: gestione pagine, autenticazione, workflow utente, UI "reel-like", dashboard base e integrazione con API esterne.
+            </p>
+            <p className="text-muted-foreground leading-relaxed text-lg mt-4">
+              Il punto critico è evitare che Lovable diventi il layer core del video e dei dati. La piattaforma deve adottare una <strong className="text-foreground">separazione netta</strong>: Lovable come frontend/orchestrazione, backend proprietario per video intelligence, player strumentato e data layer.
+            </p>
+            <KeyPoint>
+              Lovable accelera il prodotto. Il backend (player + dati + AI) protegge il valore e la difendibilità.
+            </KeyPoint>
+          </Section>
+
+          {/* 8. Architettura di riferimento */}
+          <Section id="architettura" icon={Settings} title="8. Architettura di riferimento (modulare)">
+            <p className="text-muted-foreground leading-relaxed text-lg">
+              L'architettura consigliata è modulare e progressiva. Il video viene caricato su un layer infrastrutturale (storage/streaming), distribuito tramite CDN e riprodotto da un player controllato (embedded nel portale).
+            </p>
+            <p className="text-muted-foreground leading-relaxed text-lg mt-4">
+              Il player invia eventi granulari a un event collector, che alimenta il data layer. In parallelo, una pipeline di processing analizza i video (scene detection, tagging semantico, trascrizione) e genera metadati e embedding per la ricerca.
+            </p>
+
+            <Subsection title="8.1 Componenti minimi (MVP data-driven)">
+              <FeatureList items={[
+                "Upload + streaming affidabile (Mux o stack cloud equivalente)",
+                "Player strumentato con tracking eventi",
+                "Event pipeline e database per correlare eventi a immobili e utenti",
+                "Pipeline AI minima per tagging ambienti e trascrizione del voice-over"
+              ]} />
+              <p className="text-muted-foreground leading-relaxed mt-3">
+                Questi elementi consentono già di produrre heatmap di attenzione e insight basici sulla conversione, evitando di costruire una vetrina priva di apprendimento.
+              </p>
+            </Subsection>
+          </Section>
+
+          {/* 9. Roadmap operativa 6 mesi */}
+          <Section id="roadmap" icon={Calendar} title="9. Roadmap operativa 6 mesi">
+            <p className="text-muted-foreground leading-relaxed text-lg mb-6">
+              La roadmap deve bilanciare velocità e costruzione dell'asset dati. In 6 mesi è realistico passare da MVP a pilot B2B misurabile, con metriche di riduzione visite inutili e miglioramento conversione.
+            </p>
+
+            <RoadmapPhase 
+              phase="Mese 1–2"
+              title="MVP controllato"
+              items={[
+                "Implementazione portale (Lovable), flussi upload, player strumentato",
+                "Tracking eventi base, data schema, reportistica iniziale",
+                "Selezione di 3–5 agenzie pilota",
+                "Definizione del protocollo video (linee guida minime per standardizzare i contenuti)"
+              ]}
+            />
+
+            <RoadmapPhase 
+              phase="Mese 3–4"
+              title="Enrichment e metriche"
+              items={[
+                "Introduzione pipeline AI per tagging ambienti e trascrizione",
+                "Prime heatmap e report per agenzie",
+                "Raccolta feedback",
+                "Definizione metriche chiave: conversione a richiesta visita, drop-off, tempi di decisione, qualità lead (proxy)"
+              ]}
+            />
+
+            <RoadmapPhase 
+              phase="Mese 5–6"
+              title="Correlazione con outcome e packaging B2B"
+              items={[
+                "Collegamento degli eventi a outcome (visita, offerta, vendita) laddove disponibile",
+                "Costruzione di dashboard B2B",
+                "Definizione del pricing SaaS e del pacchetto commerciale",
+                "Preparazione di case study misurabili e materiali per partnership"
+              ]}
+            />
+          </Section>
+
+          {/* 10. KPI e misurazione */}
+          <Section id="kpi" icon={BarChart3} title="10. KPI e misurazione del valore">
+            <p className="text-muted-foreground leading-relaxed text-lg">
+              Per governare correttamente il progetto occorre evitare metriche vanity (views, like) e misurare impatti operativi.
             </p>
             <FeatureList 
               items={[
-                "Migliorare la qualità degli annunci",
-                "Ridurre visite inutili",
-                "Qualificare meglio i lead",
-                "Prendere decisioni basate su dati reali"
+                "Riduzione delle visite non qualificate",
+                "Tempo medio dalla prima visualizzazione alla richiesta visita",
+                "Tasso di conversione per segmento video",
+                "Qualità dei lead (richieste con informazioni complete)",
+                "Correlazione con offerte e vendite (in fase avanzata)"
               ]} 
-              icon={ArrowRight} 
+              icon={BarChart3}
             />
+          </Section>
+
+          {/* 11. Modello di business */}
+          <Section id="business" icon={Target} title="11. Modello di business e pricing">
+            <p className="text-muted-foreground leading-relaxed text-lg">
+              Il modello portale tende verso advertising e fee su lead, con elevata dipendenza da scala. Il modello piattaforma abilita un <strong className="text-foreground">SaaS B2B</strong>: abbonamenti ricorrenti per agenzie/network, con livelli basati su numero annunci/video e profondità analytics.
+            </p>
+            <p className="text-muted-foreground leading-relaxed text-lg mt-4">
+              L'upsell naturale è su: dashboard avanzate, integrazioni CRM, white-label, e – in fase successiva – licensing dei modelli/insight verso player più grandi.
+            </p>
             <KeyPoint>
-              Meglio pochi clienti che pagano per il valore, che molti utenti che consumano contenuti.
+              Meglio pochi clienti che pagano per efficienza e dati, che molti utenti che consumano contenuti senza monetizzazione certa.
             </KeyPoint>
+          </Section>
+
+          {/* 12. Rischi principali */}
+          <Section id="rischi" icon={Shield} title="12. Rischi principali e mitigazioni">
+            <FeatureList 
+              items={[
+                "Supply insufficiente di contenuti video → mitigazione: pilot con agenzie selezionate e standard di produzione",
+                "Deriva verso un portale consumer non monetizzabile → mitigazione: KPI B2B e dashboard",
+                "Lock-in tecnologico su soluzioni che limitano i dati → mitigazione: player controllato e data layer proprietario",
+                "Compliance e privacy → mitigazione: GDPR by design, minimizzazione dati, consenso e retention policy"
+              ]} 
+              icon={AlertTriangle}
+            />
+          </Section>
+
+          {/* 13. Governance dell'innovazione */}
+          <Section id="governance" icon={Users} title="13. Governance dell'innovazione">
+            <p className="text-muted-foreground leading-relaxed text-lg">
+              Lo shift proposto non è una decisione "una tantum", ma un percorso che richiede governance: priorità di sviluppo, trade-off fra velocità e difendibilità, definizione e controllo delle metriche, packaging commerciale B2B, e mantenimento della coerenza strategica.
+            </p>
+            <p className="text-muted-foreground leading-relaxed text-lg mt-4">
+              Il valore dell'advisory sta nel prevenire mesi di sviluppo nella direzione sbagliata (debito strategico), mantenendo la piattaforma focalizzata su ciò che genera asset dati e monetizzazione.
+            </p>
           </Section>
 
           {/* Conclusione */}
@@ -565,8 +778,11 @@ const ReelImmobiliareContent = () => {
             <p className="text-slate-300 leading-relaxed text-lg mb-4">
               Il passaggio da portale a piattaforma non è un dettaglio tecnico, ma una scelta strategica fondamentale. Un portale video immobiliare è facilmente replicabile e strutturalmente fragile.
             </p>
-            <p className="text-slate-300 leading-relaxed text-lg mb-8">
+            <p className="text-slate-300 leading-relaxed text-lg mb-4">
               Una piattaforma tecnologica che trasforma i video in dati crea, invece, un asset che cresce nel tempo, migliora con l'uso e diventa sempre più difficile da sostituire.
+            </p>
+            <p className="text-slate-300 leading-relaxed text-lg mb-8">
+              Lo shift proposto non snatura l'idea originale, ma la porta a maturità, trasformando un'intuizione corretta in un progetto con basi industriali solide.
             </p>
             <div className="p-6 bg-gradient-to-r from-primary/20 to-orange-500/20 rounded-2xl border border-white/10">
               <p className="font-bold text-xl text-center italic leading-relaxed">
@@ -577,7 +793,7 @@ const ReelImmobiliareContent = () => {
 
           {/* Footer */}
           <div className="pt-8 border-t text-center text-sm text-muted-foreground">
-            <p>Documento riservato – Aries76 Capital Advisory</p>
+            <p>Documento riservato – Aries76 Capital Intelligence</p>
           </div>
         </div>
       </div>
