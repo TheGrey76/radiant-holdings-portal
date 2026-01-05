@@ -14,9 +14,9 @@ export const BitcoinReportLiveData = () => {
     setIsRefreshing(true);
     try {
       await refreshData();
-      toast.success('Dati aggiornati con successo');
+      toast.success('Data updated successfully');
     } catch (err) {
-      toast.error('Errore nell\'aggiornamento dei dati');
+      toast.error('Error updating data');
     } finally {
       setIsRefreshing(false);
     }
@@ -36,7 +36,7 @@ export const BitcoinReportLiveData = () => {
   };
 
   const formatDate = (date: Date) => {
-    return new Intl.DateTimeFormat('it-IT', {
+    return new Intl.DateTimeFormat('en-US', {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
@@ -60,12 +60,12 @@ export const BitcoinReportLiveData = () => {
   const getRegimeDescription = (regime: string) => {
     switch (regime) {
       case 'EXPANSION':
-        return 'Tassi reali negativi favoriscono asset rischiosi';
+        return 'Negative real rates favor risk assets';
       case 'STRESS':
-        return 'Tassi reali elevati sfavoriscono asset rischiosi';
+        return 'High real rates disfavor risk assets';
       case 'ACCUMULATION':
       default:
-        return 'Condizioni favorevoli per accumulazione graduale';
+        return 'Favorable conditions for gradual accumulation';
     }
   };
 
@@ -89,11 +89,11 @@ export const BitcoinReportLiveData = () => {
     return (
       <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 text-center">
         <p className="text-zinc-400 mb-4">
-          {error || 'Nessun dato disponibile. Clicca per aggiornare.'}
+          {error || 'No data available. Click to refresh.'}
         </p>
         <Button onClick={handleRefresh} disabled={isRefreshing} variant="outline">
           <RefreshCw className={`w-4 h-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
-          Carica Dati
+          Load Data
         </Button>
       </div>
     );
@@ -115,10 +115,10 @@ export const BitcoinReportLiveData = () => {
             <Activity className="w-5 h-5 text-orange-400" />
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-white">Dati Live del Report</h3>
+            <h3 className="text-lg font-semibold text-white">Live Report Data</h3>
             <div className="flex items-center gap-2 text-sm text-zinc-500">
               <Clock className="w-3 h-3" />
-              {lastUpdate && <span>Aggiornato: {formatDate(lastUpdate)}</span>}
+              {lastUpdate && <span>Updated: {formatDate(lastUpdate)}</span>}
               <span className="px-2 py-0.5 bg-emerald-500/20 text-emerald-400 rounded-full text-xs font-medium">
                 Live
               </span>
@@ -133,7 +133,7 @@ export const BitcoinReportLiveData = () => {
           className="border-zinc-700 hover:bg-zinc-800"
         >
           <RefreshCw className={`w-4 h-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
-          Aggiorna
+          Refresh
         </Button>
       </div>
 
@@ -143,7 +143,7 @@ export const BitcoinReportLiveData = () => {
         <div className="bg-zinc-800/50 rounded-lg p-4 border border-zinc-700/50">
           <div className="flex items-center gap-2 text-zinc-400 text-sm mb-2">
             <DollarSign className="w-4 h-4" />
-            <span>Prezzo BTC</span>
+            <span>BTC Price</span>
           </div>
           <div className="text-2xl font-bold text-white">
             {formatPrice(data.bitcoin_price_usd)}
@@ -158,13 +158,13 @@ export const BitcoinReportLiveData = () => {
         <div className="bg-zinc-800/50 rounded-lg p-4 border border-zinc-700/50">
           <div className="flex items-center gap-2 text-zinc-400 text-sm mb-2">
             <BarChart3 className="w-4 h-4" />
-            <span>Regime Attuale</span>
+            <span>Current Regime</span>
           </div>
           <div className={`inline-flex px-3 py-1 rounded-full border text-sm font-semibold ${getRegimeColor(data.current_regime)}`}>
             {data.current_regime}
           </div>
           <div className="text-xs text-zinc-500 mt-1">
-            Confidenza: {formatPercent(data.regime_confidence)}
+            Confidence: {formatPercent(data.regime_confidence)}
           </div>
         </div>
 
@@ -172,13 +172,13 @@ export const BitcoinReportLiveData = () => {
         <div className="bg-zinc-800/50 rounded-lg p-4 border border-zinc-700/50">
           <div className="flex items-center gap-2 text-zinc-400 text-sm mb-2">
             <Target className="w-4 h-4" />
-            <span>Range Target 2026</span>
+            <span>2026 Target Range</span>
           </div>
           <div className="text-lg font-bold text-white">
             {formatPrice(data.price_target_low)} - {formatPrice(data.price_target_high)}
           </div>
           <div className="text-xs text-zinc-500">
-            Probabilità: {formatPercent(data.probability)}
+            Probability: {formatPercent(data.probability)}
           </div>
         </div>
 
@@ -186,13 +186,13 @@ export const BitcoinReportLiveData = () => {
         <div className="bg-zinc-800/50 rounded-lg p-4 border border-zinc-700/50">
           <div className="flex items-center gap-2 text-zinc-400 text-sm mb-2">
             <Activity className="w-4 h-4" />
-            <span>Target Istituzionale</span>
+            <span>Institutional Target</span>
           </div>
           <div className="text-2xl font-bold text-orange-400">
             {formatPrice(data.institutional_target)}
           </div>
           <div className="text-xs text-zinc-500">
-            Ponderato per probabilità
+            Probability-Weighted
           </div>
         </div>
       </div>
@@ -206,11 +206,11 @@ export const BitcoinReportLiveData = () => {
           }`} />
           <div>
             <p className="text-zinc-300 text-sm">
-              <strong>Regime {data.current_regime}:</strong> {getRegimeDescription(data.current_regime)}
+              <strong>{data.current_regime} Regime:</strong> {getRegimeDescription(data.current_regime)}
             </p>
             {data.real_rate !== 0 && (
               <p className="text-zinc-500 text-xs mt-1">
-                Tasso reale attuale: {data.real_rate.toFixed(2)}% | M2: ${(data.m2_value / 1000).toFixed(1)}B
+                Current real rate: {data.real_rate.toFixed(2)}% | M2: ${(data.m2_value / 1000).toFixed(1)}B
               </p>
             )}
           </div>
@@ -219,8 +219,8 @@ export const BitcoinReportLiveData = () => {
 
       {/* Footer */}
       <div className="mt-4 pt-4 border-t border-zinc-800 flex items-center justify-between text-xs text-zinc-500">
-        <span>Fonti: CoinGecko (Bitcoin), FRED (Macro Data)</span>
-        <span>Aggiornamento automatico giornaliero alle 6:00 CET</span>
+        <span>Sources: CoinGecko (Bitcoin), FRED (Macro Data)</span>
+        <span>Auto-updated daily at 6:00 AM CET</span>
       </div>
     </motion.div>
   );
