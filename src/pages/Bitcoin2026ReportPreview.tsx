@@ -427,11 +427,30 @@ const Bitcoin2026ReportPreview = () => {
           </div>
         </section>
 
-        {/* ===== LIVE DATA SECTION ===== */}
+        {/* ===== LIVE DATA SECTION (BLURRED) ===== */}
         <section className="py-16 border-t border-zinc-800/50">
           <div className="container mx-auto px-4">
-            <div className="max-w-5xl mx-auto">
-              <BitcoinReportLiveData />
+            <div className="max-w-5xl mx-auto relative">
+              {/* Blurred Live Data */}
+              <div className="blur-sm select-none pointer-events-none">
+                <BitcoinReportLiveData />
+              </div>
+              
+              {/* Overlay Lock */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center z-10 bg-zinc-900/60 rounded-xl backdrop-blur-sm">
+                <Lock className="w-12 h-12 text-orange-400 mb-4" />
+                <p className="text-xl font-semibold text-white mb-2">Premium Live Data</p>
+                <p className="text-zinc-400 text-sm text-center max-w-md mb-4">
+                  Real-time market regime, price targets, and macro indicators are available to report purchasers.
+                </p>
+                <Button 
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                  className="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600"
+                >
+                  Unlock with Purchase
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+              </div>
             </div>
           </div>
         </section>
