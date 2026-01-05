@@ -33,10 +33,14 @@ serve(async (req) => {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: [
-      {
+        {
           price_data: {
             currency: "eur",
-            product: "prod_TXejJZxzsGbfOZ", // Use existing Stripe product
+            product_data: {
+              name: "Bitcoin 2026 Report",
+              description: "Institutional Research Report: A Macro-Liquidity Framework for Institutional Positioning",
+              images: ["https://dvwmyljnssspwfpwocof.supabase.co/storage/v1/object/public/reports/bitcoin-2026-cover.png"],
+            },
             unit_amount: 9900, // €99.00 in cents
           },
           quantity: 1,
