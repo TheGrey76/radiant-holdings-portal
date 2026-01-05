@@ -1,0 +1,1 @@
+INSERT INTO public.reel_immobiliare_access (email) VALUES ('immobiliare.maison@libero.it') ON CONFLICT (email) DO NOTHING;
