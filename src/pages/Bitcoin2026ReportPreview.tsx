@@ -203,15 +203,6 @@ const Bitcoin2026ReportPreview = () => {
               </>
             )}
           </Button>
-          
-          <Button 
-            onClick={() => window.open(COINGATE_URL, '_blank')}
-            variant="outline"
-            className="w-full border-zinc-600 bg-zinc-800/50 hover:bg-zinc-700/50 text-white font-semibold py-6 text-base"
-          >
-            <span className="mr-2 text-lg">₿</span>
-            Pay with Crypto (USDT)
-          </Button>
         </div>
 
         <p className="text-xs text-zinc-500 text-center">
