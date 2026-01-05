@@ -7,6 +7,76 @@ import { Lock, Mail, CheckCircle, XCircle, ArrowRight, Lightbulb, Database, Vide
 import { toast } from "sonner";
 import { Helmet } from "react-helmet";
 import { motion, AnimatePresence } from "framer-motion";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+
+// Glossario termini tecnici
+const glossary: Record<string, string> = {
+  "data-driven": "Approccio decisionale basato sull'analisi sistematica dei dati anziché su intuizioni o esperienze soggettive.",
+  "semantic enrichment": "Processo di arricchimento automatico dei contenuti con metadati significativi estratti tramite intelligenza artificiale.",
+  "event-level analytics": "Analisi granulare che traccia ogni singola interazione dell'utente (click, pause, scroll) invece di metriche aggregate.",
+  "cold start problem": "Difficoltà iniziale di una piattaforma che necessita di contenuti per attrarre utenti e di utenti per attrarre contenuti.",
+  "pricing power": "Capacità di un'azienda di aumentare i prezzi senza perdere clienti, derivante da un vantaggio competitivo difendibile.",
+  "B2B": "Business-to-Business: modello commerciale in cui i clienti sono altre aziende anziché consumatori finali.",
+  "SaaS": "Software as a Service: modello di distribuzione software in abbonamento accessibile via internet.",
+  "MVP": "Minimum Viable Product: versione iniziale di un prodotto con funzionalità essenziali per validare l'idea di business.",
+  "computer vision": "Ramo dell'intelligenza artificiale che permette ai computer di 'vedere' e interpretare immagini e video.",
+  "NLP": "Natural Language Processing: tecnologia AI che permette ai computer di comprendere e processare il linguaggio umano.",
+  "scene detection": "Tecnologia che identifica automaticamente i cambi di scena e gli ambienti presenti in un video.",
+  "heatmap": "Rappresentazione visiva che mostra con colori diversi le zone di maggiore o minore attenzione/interazione.",
+  "drop-off": "Punto in cui gli utenti abbandonano la visualizzazione di un contenuto; indica perdita di interesse.",
+  "CDN": "Content Delivery Network: rete di server distribuiti che velocizza la consegna di contenuti agli utenti.",
+  "embedding": "Rappresentazione numerica di dati (testo, immagini) che permette ricerche semantiche e confronti intelligenti.",
+  "data moat": "Vantaggio competitivo basato su dati proprietari che diventa più forte nel tempo con l'accumulo di informazioni.",
+  "UX": "User Experience: l'esperienza complessiva dell'utente nell'interazione con un prodotto o servizio digitale.",
+  "API": "Application Programming Interface: insieme di protocolli che permettono a software diversi di comunicare tra loro.",
+  "time-to-market": "Tempo necessario per passare dall'idea al lancio del prodotto sul mercato.",
+  "white-label": "Prodotto creato da un'azienda ma venduto da altre con il proprio marchio.",
+  "CRM": "Customer Relationship Management: sistema per gestire le relazioni con clienti e prospect.",
+  "GDPR": "General Data Protection Regulation: normativa europea sulla protezione dei dati personali.",
+  "lock-in": "Situazione in cui un cliente diventa dipendente da un fornitore e il cambio risulta costoso o difficile.",
+  "pilot": "Fase di test controllato di un prodotto con un gruppo ristretto di utenti prima del lancio generale.",
+  "platform-first": "Approccio che privilegia la costruzione di un'infrastruttura solida su cui sviluppare funzionalità.",
+  "telemetria": "Raccolta automatica e trasmissione di dati di utilizzo e performance da sistemi remoti.",
+  "layer": "Strato o livello architetturale con responsabilità specifiche all'interno di un sistema software.",
+  "data layer": "Componente architetturale dedicato alla gestione, storage e accesso ai dati.",
+  "frontend": "Parte di un'applicazione visibile e utilizzata direttamente dagli utenti (interfaccia).",
+  "backend": "Parte di un'applicazione che gestisce logica, dati e processi non visibili agli utenti.",
+  "incumbent": "Azienda già affermata e dominante in un mercato specifico.",
+  "upsell": "Strategia commerciale per vendere versioni premium o servizi aggiuntivi a clienti esistenti.",
+  "licensing": "Concessione di diritti d'uso di proprietà intellettuale, software o dati a terzi dietro compenso.",
+  "voice-over": "Narrazione audio sovrapposta a un video, tipicamente descrittiva dell'immobile mostrato.",
+  "tagging": "Processo di etichettatura automatica o manuale di contenuti con parole chiave o categorie.",
+  "streaming": "Trasmissione continua di contenuti audio/video fruibili in tempo reale senza download completo.",
+};
+
+// Componente TechTerm con tooltip
+const TechTerm = ({ term, children }: { term: string; children?: React.ReactNode }) => {
+  const definition = glossary[term.toLowerCase()];
+  const displayText = children || term;
+  
+  if (!definition) {
+    return <strong className="text-foreground">{displayText}</strong>;
+  }
+  
+  return (
+    <TooltipProvider delayDuration={200}>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <span className="text-foreground font-semibold border-b border-dashed border-primary/50 cursor-help hover:text-primary transition-colors">
+            {displayText}
+          </span>
+        </TooltipTrigger>
+        <TooltipContent 
+          side="top" 
+          className="max-w-xs bg-slate-900 text-white border-slate-700 p-3 text-sm leading-relaxed z-[100]"
+        >
+          <p className="font-semibold text-primary mb-1">{term}</p>
+          <p>{definition}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  );
+};
 
 interface ReelImmobiliareAccessGateProps {
   children: React.ReactNode;
@@ -527,36 +597,36 @@ const ReelImmobiliareContent = () => {
           {/* 1. Scopo del documento */}
           <Section id="scopo" icon={FileText} title="1. Scopo del documento">
             <p className="text-muted-foreground leading-relaxed text-lg">
-              Questo documento consolida e approfondisce la business review sviluppata in sede di confronto strategico, con l'obiettivo di rendere esplicito lo shift necessario per trasformare ReelImmobiliare da iniziativa "portale video" – intrinsecamente replicabile e fragile – a <strong className="text-foreground">piattaforma tecnologica data-driven per il Real Estate</strong>.
+              Questo documento consolida e approfondisce la business review sviluppata in sede di confronto strategico, con l'obiettivo di rendere esplicito lo shift necessario per trasformare ReelImmobiliare da iniziativa "portale video" – intrinsecamente replicabile e fragile – a <TechTerm term="data-driven">piattaforma tecnologica data-driven</TechTerm> per il Real Estate.
             </p>
             <p className="text-muted-foreground leading-relaxed text-lg mt-4">
-              Il focus è duplice: (i) chiarire le implicazioni competitive e di modello economico; (ii) descrivere in modo operativo come i video possano generare dati proprietari, quali componenti architetturali siano indispensabili e quali scelte tecnologiche risultino più coerenti (Vimeo vs Mux vs api.video; Lovable come frontend).
+              Il focus è duplice: (i) chiarire le implicazioni competitive e di modello economico; (ii) descrivere in modo operativo come i video possano generare dati proprietari, quali componenti architetturali siano indispensabili e quali scelte tecnologiche risultino più coerenti (Vimeo vs <TechTerm term="Mux">Mux</TechTerm> vs <TechTerm term="api.video">api.video</TechTerm>; Lovable come <TechTerm term="frontend">frontend</TechTerm>).
             </p>
           </Section>
 
           {/* 2. Sintesi esecutiva */}
           <Section id="sintesi" icon={Briefcase} title="2. Sintesi esecutiva">
             <p className="text-muted-foreground leading-relaxed text-lg">
-              L'intuizione originaria – spostare l'esperienza immobiliare verso un formato video "reel-like" – è corretta dal punto di vista dell'evoluzione dei comportamenti digitali. Tuttavia, un portale video-only compete inevitabilmente sul traffico e sulla distribuzione, terreno nel quale gli incumbent (portali immobiliari e marketplace consolidati) possiedono vantaggi strutturali (brand, basi utenti, supply delle agenzie, budget marketing).
+              L'intuizione originaria – spostare l'esperienza immobiliare verso un formato video "reel-like" – è corretta dal punto di vista dell'evoluzione dei comportamenti digitali. Tuttavia, un portale video-only compete inevitabilmente sul traffico e sulla distribuzione, terreno nel quale gli <TechTerm term="incumbent">incumbent</TechTerm> (portali immobiliari e marketplace consolidati) possiedono vantaggi strutturali (brand, basi utenti, supply delle agenzie, budget marketing).
             </p>
             <p className="text-muted-foreground leading-relaxed text-lg mt-4">
-              In questa configurazione, l'innovazione di formato è una feature facilmente replicabile e non genera difendibilità né pricing power.
+              In questa configurazione, l'innovazione di formato è una feature facilmente replicabile e non genera difendibilità né <TechTerm term="pricing power">pricing power</TechTerm>.
             </p>
             <KeyPoint>
               Un portale compete sulla visibilità. Una piattaforma compete sull'intelligenza (dati, correlazioni, learning nel tempo).
             </KeyPoint>
             <p className="text-muted-foreground leading-relaxed text-lg mt-4">
-              La traiettoria investibile e industrialmente credibile consiste nel riposizionare ReelImmobiliare come <strong className="text-foreground">infrastruttura B2B</strong>: un layer tecnologico che trasforma i video immobiliari in dati strutturati (semantic enrichment) e raccoglie dati comportamentali granulari (event-level analytics) attraverso un player controllato.
+              La traiettoria investibile e industrialmente credibile consiste nel riposizionare ReelImmobiliare come <TechTerm term="B2B">infrastruttura B2B</TechTerm>: un <TechTerm term="layer">layer</TechTerm> tecnologico che trasforma i video immobiliari in dati strutturati (<TechTerm term="semantic enrichment">semantic enrichment</TechTerm>) e raccoglie dati comportamentali granulari (<TechTerm term="event-level analytics">event-level analytics</TechTerm>) attraverso un player controllato.
             </p>
             <p className="text-muted-foreground leading-relaxed text-lg mt-4">
-              Il valore si accumula con l'uso: dataset proprietario, modelli predittivi, insight su conversione e pricing. Questo abilita un modello SaaS per agenzie e network (ricavi ricorrenti) e una narrativa di partnership/licensing verso player più grandi.
+              Il valore si accumula con l'uso: dataset proprietario, modelli predittivi, insight su conversione e pricing. Questo abilita un modello <TechTerm term="SaaS">SaaS</TechTerm> per agenzie e network (ricavi ricorrenti) e una narrativa di partnership/<TechTerm term="licensing">licensing</TechTerm> verso player più grandi.
             </p>
           </Section>
 
           {/* 3. Perché il modello "portale video" è fragile */}
           <Section id="fragilita" icon={AlertTriangle} title="3. Perché il modello 'portale video' è fragile">
             <p className="text-muted-foreground leading-relaxed text-lg">
-              Un portale consumer, per generare valore, richiede una massa critica di traffico e una supply ampia e costante di annunci. L'ingresso in un mercato dominato da incumbent comporta un "cold start problem" severo: senza traffico le agenzie non caricano contenuti; senza contenuti gli utenti non arrivano.
+              Un portale consumer, per generare valore, richiede una massa critica di traffico e una supply ampia e costante di annunci. L'ingresso in un mercato dominato da <TechTerm term="incumbent">incumbent</TechTerm> comporta un <TechTerm term="cold start problem">cold start problem</TechTerm> severo: senza traffico le agenzie non caricano contenuti; senza contenuti gli utenti non arrivano.
             </p>
             <p className="text-muted-foreground leading-relaxed text-lg mt-4">
               In aggiunta, il formato video e l'interfaccia "reel-like" sono facilmente replicabili e possono essere inglobati dagli incumbent senza costi strategici rilevanti.
@@ -577,31 +647,31 @@ const ReelImmobiliareContent = () => {
 
             <Subsection title="4.1 Dati estratti dal contenuto (computer vision + NLP)">
               <p className="text-muted-foreground leading-relaxed">
-                Attraverso scene detection e modelli di visione è possibile riconoscere ambienti (cucina, soggiorno, camere, bagni, esterni), identificare macro-caratteristiche (open space vs separato, presenza balconi/terrazzi, vista, luminosità), e costruire una rappresentazione semantica dell'immobile.
+                Attraverso <TechTerm term="scene detection">scene detection</TechTerm> e modelli di <TechTerm term="computer vision">computer vision</TechTerm> è possibile riconoscere ambienti (cucina, soggiorno, camere, bagni, esterni), identificare macro-caratteristiche (open space vs separato, presenza balconi/terrazzi, vista, luminosità), e costruire una rappresentazione semantica dell'immobile.
               </p>
               <p className="text-muted-foreground leading-relaxed mt-3">
-                Se è presente voice-over, la trascrizione consente di estrarre attributi dichiarati dall'agente e di normalizzarli in metadati strutturati.
+                Se è presente <TechTerm term="voice-over">voice-over</TechTerm>, la trascrizione consente di estrarre attributi dichiarati dall'agente e di normalizzarli in metadati strutturati tramite <TechTerm term="NLP">NLP</TechTerm>.
               </p>
             </Subsection>
 
             <Subsection title="4.2 Dati comportamentali (event-level analytics)">
               <p className="text-muted-foreground leading-relaxed">
-                Il valore più difendibile deriva dal comportamento: pause, seek, replay, skip, drop-off, tempo di permanenza per segmento, sequenze di visione e azioni successive (contatto, richiesta visita).
+                Il valore più difendibile deriva dal comportamento: pause, seek, replay, skip, <TechTerm term="drop-off">drop-off</TechTerm>, tempo di permanenza per segmento, sequenze di visione e azioni successive (contatto, richiesta visita).
               </p>
               <p className="text-muted-foreground leading-relaxed mt-3">
-                Questi segnali permettono di costruire heatmap di attenzione e, soprattutto, correlazioni robuste fra contenuto e conversione. È qui che il video diventa "intelligence layer" e non semplice media.
+                Questi segnali permettono di costruire <TechTerm term="heatmap">heatmap</TechTerm> di attenzione e, soprattutto, correlazioni robuste fra contenuto e conversione. È qui che il video diventa "intelligence layer" e non semplice media.
               </p>
             </Subsection>
 
             <KeyPoint>
-              I dati aggregati (views, completion rate) sono marketing. I dati evento-per-evento sono decision intelligence.
+              I dati aggregati (views, completion rate) sono marketing. I dati <TechTerm term="event-level analytics">evento-per-evento</TechTerm> sono decision intelligence.
             </KeyPoint>
           </Section>
 
           {/* 5. Perché Vimeo non è sufficiente */}
           <Section id="vimeo" icon={XCircle} title="5. Perché Vimeo non è sufficiente">
             <p className="text-muted-foreground leading-relaxed text-lg">
-              L'idea originaria di ospitare i video su Vimeo e incorporarli nel portale è coerente con un MVP orientato alla fruizione, ma non con una piattaforma dati. Vimeo fornisce metriche prevalentemente aggregate e non consente un controllo profondo del player né la strumentazione granulare degli eventi necessari per costruire un dataset proprietario e correlabile a user, immobile e outcome.
+              L'idea originaria di ospitare i video su Vimeo e incorporarli nel portale è coerente con un <TechTerm term="MVP">MVP</TechTerm> orientato alla fruizione, ma non con una piattaforma dati. Vimeo fornisce metriche prevalentemente aggregate e non consente un controllo profondo del player né la strumentazione granulare degli eventi necessari per costruire un dataset proprietario e correlabile a user, immobile e outcome.
             </p>
             <p className="text-muted-foreground leading-relaxed text-lg mt-4">
               In aggiunta, Vimeo non esegue analisi semantica del contenuto per finalità di intelligence proprietaria. Il video resta un file: si ottiene una vetrina più moderna, ma non si crea un asset che migliori nel tempo. Questo rende il progetto più replicabile e meno investibile.
@@ -612,47 +682,47 @@ const ReelImmobiliareContent = () => {
           <Section id="alternative" icon={Layers} title="6. Alternative consigliate: Mux e api.video">
             <Subsection title="6.1 Mux: infrastruttura 'platform-first'">
               <p className="text-muted-foreground leading-relaxed">
-                Mux è un layer infrastrutturale video pensato per prodotti digitali che necessitano di controllo, affidabilità e osservabilità. È particolarmente coerente con l'obiettivo di raccogliere dati comportamentali granulari, perché si integra bene con player custom e fornisce telemetria utile alla costruzione di analytics avanzati.
+                <TechTerm term="platform-first">Mux</TechTerm> è un <TechTerm term="layer">layer</TechTerm> infrastrutturale video pensato per prodotti digitali che necessitano di controllo, affidabilità e osservabilità. È particolarmente coerente con l'obiettivo di raccogliere dati comportamentali granulari, perché si integra bene con player custom e fornisce <TechTerm term="telemetria">telemetria</TechTerm> utile alla costruzione di analytics avanzati.
               </p>
               <p className="text-muted-foreground leading-relaxed mt-3">
-                Mux non sostituisce il layer di computer vision (che resta esterno e proprietario), ma copre in modo solido streaming e interaction analytics, riducendo rischi operativi e time-to-market.
+                Mux non sostituisce il layer di <TechTerm term="computer vision">computer vision</TechTerm> (che resta esterno e proprietario), ma copre in modo solido <TechTerm term="streaming">streaming</TechTerm> e interaction analytics, riducendo rischi operativi e <TechTerm term="time-to-market">time-to-market</TechTerm>.
               </p>
             </Subsection>
 
             <Subsection title="6.2 api.video: soluzione 'speed-first'">
               <p className="text-muted-foreground leading-relaxed">
-                api.video è una scelta valida per prototipi e MVP rapidi, con API semplici e integrazione veloce. È indicata se l'obiettivo è testare la fruizione e la supply di contenuti in 30–60 giorni.
+                <TechTerm term="API">api.video</TechTerm> è una scelta valida per prototipi e <TechTerm term="MVP">MVP</TechTerm> rapidi, con API semplici e integrazione veloce. È indicata se l'obiettivo è testare la fruizione e la supply di contenuti in 30–60 giorni.
               </p>
               <p className="text-muted-foreground leading-relaxed mt-3">
-                Tuttavia, per una traiettoria data-driven, la profondità dell'osservabilità e la capacità di strumentazione tendono a essere inferiori rispetto a soluzioni più orientate a platform analytics. Il rischio è che il video rimanga una feature e non diventi un asset dati.
+                Tuttavia, per una traiettoria <TechTerm term="data-driven">data-driven</TechTerm>, la profondità dell'osservabilità e la capacità di strumentazione tendono a essere inferiori rispetto a soluzioni più orientate a platform analytics. Il rischio è che il video rimanga una feature e non diventi un asset dati.
               </p>
             </Subsection>
 
             <DecisionRule>
-              Se l'obiettivo è costruire un "data moat" nel tempo, Mux è più coerente. Se l'obiettivo è validare la UX rapidamente, api.video può essere transitorio.
+              Se l'obiettivo è costruire un <TechTerm term="data moat">"data moat"</TechTerm> nel tempo, Mux è più coerente. Se l'obiettivo è validare la <TechTerm term="UX">UX</TechTerm> rapidamente, api.video può essere transitorio.
             </DecisionRule>
           </Section>
 
           {/* 7. Lovable */}
           <Section id="lovable" icon={Zap} title="7. Lovable: fattibile, ma nel ruolo corretto">
             <p className="text-muted-foreground leading-relaxed text-lg">
-              Costruire il portale con Lovable è fattibile e, se correttamente impostato, consigliabile per accelerare time-to-market: gestione pagine, autenticazione, workflow utente, UI "reel-like", dashboard base e integrazione con API esterne.
+              Costruire il portale con Lovable è fattibile e, se correttamente impostato, consigliabile per accelerare <TechTerm term="time-to-market">time-to-market</TechTerm>: gestione pagine, autenticazione, workflow utente, UI "reel-like", dashboard base e integrazione con <TechTerm term="API">API</TechTerm> esterne.
             </p>
             <p className="text-muted-foreground leading-relaxed text-lg mt-4">
-              Il punto critico è evitare che Lovable diventi il layer core del video e dei dati. La piattaforma deve adottare una <strong className="text-foreground">separazione netta</strong>: Lovable come frontend/orchestrazione, backend proprietario per video intelligence, player strumentato e data layer.
+              Il punto critico è evitare che Lovable diventi il <TechTerm term="layer">layer</TechTerm> core del video e dei dati. La piattaforma deve adottare una <strong className="text-foreground">separazione netta</strong>: Lovable come <TechTerm term="frontend">frontend</TechTerm>/orchestrazione, <TechTerm term="backend">backend</TechTerm> proprietario per video intelligence, player strumentato e <TechTerm term="data layer">data layer</TechTerm>.
             </p>
             <KeyPoint>
-              Lovable accelera il prodotto. Il backend (player + dati + AI) protegge il valore e la difendibilità.
+              Lovable accelera il prodotto. Il <TechTerm term="backend">backend</TechTerm> (player + dati + AI) protegge il valore e la difendibilità.
             </KeyPoint>
           </Section>
 
           {/* 8. Architettura di riferimento */}
           <Section id="architettura" icon={Settings} title="8. Architettura di riferimento (modulare)">
             <p className="text-muted-foreground leading-relaxed text-lg">
-              L'architettura consigliata è modulare e progressiva. Il video viene caricato su un layer infrastrutturale (storage/streaming), distribuito tramite CDN e riprodotto da un player controllato (embedded nel portale).
+              L'architettura consigliata è modulare e progressiva. Il video viene caricato su un <TechTerm term="layer">layer</TechTerm> infrastrutturale (storage/<TechTerm term="streaming">streaming</TechTerm>), distribuito tramite <TechTerm term="CDN">CDN</TechTerm> e riprodotto da un player controllato (embedded nel portale).
             </p>
             <p className="text-muted-foreground leading-relaxed text-lg mt-4">
-              Il player invia eventi granulari a un event collector, che alimenta il data layer. In parallelo, una pipeline di processing analizza i video (scene detection, tagging semantico, trascrizione) e genera metadati e embedding per la ricerca.
+              Il player invia eventi granulari a un event collector, che alimenta il <TechTerm term="data layer">data layer</TechTerm>. In parallelo, una pipeline di processing analizza i video (<TechTerm term="scene detection">scene detection</TechTerm>, <TechTerm term="tagging">tagging semantico</TechTerm>, trascrizione) e genera metadati e <TechTerm term="embedding">embedding</TechTerm> per la ricerca.
             </p>
 
             <Subsection title="8.1 Componenti minimi (MVP data-driven)">
@@ -663,7 +733,7 @@ const ReelImmobiliareContent = () => {
                 "Pipeline AI minima per tagging ambienti e trascrizione del voice-over"
               ]} />
               <p className="text-muted-foreground leading-relaxed mt-3">
-                Questi elementi consentono già di produrre heatmap di attenzione e insight basici sulla conversione, evitando di costruire una vetrina priva di apprendimento.
+                Questi elementi consentono già di produrre <TechTerm term="heatmap">heatmap</TechTerm> di attenzione e insight basici sulla conversione, evitando di costruire una vetrina priva di apprendimento.
               </p>
             </Subsection>
           </Section>
@@ -671,7 +741,7 @@ const ReelImmobiliareContent = () => {
           {/* 9. Roadmap operativa 6 mesi */}
           <Section id="roadmap" icon={Calendar} title="9. Roadmap operativa 6 mesi">
             <p className="text-muted-foreground leading-relaxed text-lg mb-6">
-              La roadmap deve bilanciare velocità e costruzione dell'asset dati. In 6 mesi è realistico passare da MVP a pilot B2B misurabile, con metriche di riduzione visite inutili e miglioramento conversione.
+              La roadmap deve bilanciare velocità e costruzione dell'asset dati. In 6 mesi è realistico passare da <TechTerm term="MVP">MVP</TechTerm> a <TechTerm term="pilot">pilot</TechTerm> <TechTerm term="B2B">B2B</TechTerm> misurabile, con metriche di riduzione visite inutili e miglioramento conversione.
             </p>
 
             <RoadmapPhase 
@@ -728,10 +798,10 @@ const ReelImmobiliareContent = () => {
           {/* 11. Modello di business */}
           <Section id="business" icon={Target} title="11. Modello di business e pricing">
             <p className="text-muted-foreground leading-relaxed text-lg">
-              Il modello portale tende verso advertising e fee su lead, con elevata dipendenza da scala. Il modello piattaforma abilita un <strong className="text-foreground">SaaS B2B</strong>: abbonamenti ricorrenti per agenzie/network, con livelli basati su numero annunci/video e profondità analytics.
+              Il modello portale tende verso advertising e fee su lead, con elevata dipendenza da scala. Il modello piattaforma abilita un <TechTerm term="SaaS">SaaS B2B</TechTerm>: abbonamenti ricorrenti per agenzie/network, con livelli basati su numero annunci/video e profondità analytics.
             </p>
             <p className="text-muted-foreground leading-relaxed text-lg mt-4">
-              L'upsell naturale è su: dashboard avanzate, integrazioni CRM, white-label, e – in fase successiva – licensing dei modelli/insight verso player più grandi.
+              L'<TechTerm term="upsell">upsell</TechTerm> naturale è su: dashboard avanzate, integrazioni <TechTerm term="CRM">CRM</TechTerm>, <TechTerm term="white-label">white-label</TechTerm>, e – in fase successiva – <TechTerm term="licensing">licensing</TechTerm> dei modelli/insight verso player più grandi.
             </p>
             <KeyPoint>
               Meglio pochi clienti che pagano per efficienza e dati, che molti utenti che consumano contenuti senza monetizzazione certa.
