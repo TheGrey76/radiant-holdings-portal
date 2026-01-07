@@ -246,8 +246,15 @@ const ABCInvestorProfile = () => {
       setEditedInvestor(investorData);
 
       // Fetch related data in parallel
+      const investorNameKey = investorData.nome;
+      const investorNameAltKey = `${investorData.nome} - ${investorData.azienda}`;
+
       const [notesRes, followupsRes, activitiesRes, docsRes, commitmentsRes, emailRes] = await Promise.all([
-        supabase.from('abc_investor_notes').select('*').eq('investor_name', investorData.nome).order('created_at', { ascending: false }),
+        supabase
+          .from('abc_investor_notes')
+          .select('*')
+          .or(`investor_name.eq.${investorNameKey},investor_name.eq.${investorNameAltKey}`)
+          .order('created_at', { ascending: false }),
         supabase.from('abc_investor_followups').select('*').eq('investor_name', investorData.nome).order('follow_up_date', { ascending: false }),
         supabase.from('abc_investor_activities').select('*').eq('investor_name', investorData.nome).order('activity_date', { ascending: false }),
         supabase.from('abc_investor_documents').select('*').eq('investor_name', investorData.nome).order('uploaded_at', { ascending: false }),
