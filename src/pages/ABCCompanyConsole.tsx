@@ -33,6 +33,7 @@ import { NotificationBell } from "@/components/NotificationBell";
 import { OnlineUsersIndicator } from "@/components/OnlineUsersIndicator";
 import { ABCSettingsTab } from "@/components/ABCSettingsTab";
 import ABCEmailEnrichment from "@/components/ABCEmailEnrichment";
+import ABCAIEnrichment from "@/components/ABCAIEnrichment";
 import { ABCRelationshipIntelligence } from "@/components/ABCRelationshipIntelligence";
 import { useKPIHistory } from "@/hooks/useKPIHistory";
 import { supabase } from "@/integrations/supabase/client";
@@ -1163,6 +1164,7 @@ const ABCCompanyConsole = () => {
                 }}
               />
               <ABCEmailEnrichment onEmailUpdated={fetchInvestors} />
+              <ABCAIEnrichment onDataUpdated={fetchInvestors} />
             </div>
           </TabsContent>
 
