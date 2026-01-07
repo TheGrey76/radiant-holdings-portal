@@ -166,13 +166,19 @@ const handler = async (req: Request): Promise<Response> => {
         const baseContent = recipient.personalizedContent ?? content;
         const baseSubject = recipient.personalizedSubject ?? subject;
 
-        const personalizedContent = baseContent
+        let personalizedContent = baseContent
           .replace(/\{nome\}/g, recipient.name || '')
           .replace(/\{azienda\}/g, recipient.company || '')
           .replace(/\{ruolo\}/g, recipient.role || '')
           .replace(/\{citta\}/g, recipient.city || '')
           .replace(/\{categoria\}/g, recipient.category || '')
           .replace(/\{email\}/g, recipient.email || '');
+        
+        // Convert line breaks to HTML paragraphs for proper email rendering
+        personalizedContent = personalizedContent
+          .split(/\n\n+/)  // Split on double line breaks (paragraphs)
+          .map(paragraph => `<p style="margin: 0 0 16px 0;">${paragraph.replace(/\n/g, '<br>')}</p>`)
+          .join('');
         
         const personalizedSubject = baseSubject
           .replace(/\{nome\}/g, recipient.name || '')
@@ -206,7 +212,7 @@ const handler = async (req: Request): Promise<Response> => {
                 
                 <!-- Email Body -->
                 <div style="padding: 40px;">
-                  <div style="font-size: 15px; line-height: 1.8; color: #333333; white-space: pre-wrap;">
+                  <div style="font-size: 15px; line-height: 1.8; color: #333333;">
 ${personalizedContent}
                   </div>
                 </div>
