@@ -101,6 +101,7 @@ export function ABCEmailCampaignManager({ investors, onInvestorsUpdated }: ABCEm
   const [selectedCampaignForResponse, setSelectedCampaignForResponse] = useState<string | null>(null);
   const [responseNote, setResponseNote] = useState("");
   const [responseInvestorEmail, setResponseInvestorEmail] = useState("");
+  const [responseType, setResponseType] = useState<string>("declined");
   const [deletingCampaignId, setDeletingCampaignId] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [trackingCampaignId, setTrackingCampaignId] = useState<string | null>(null);
@@ -478,6 +479,15 @@ export function ABCEmailCampaignManager({ investors, onInvestorsUpdated }: ABCEm
     }
   };
 
+  // Response type to investor status mapping
+  const responseStatusMap: Record<string, string> = {
+    'declined': 'Not Interested',
+    'interested': 'Interested',
+    'meeting_request': 'Meeting Scheduled',
+    'more_info': 'Contacted',
+    'other': 'Contacted',
+  };
+
   // Track email response
   const handleTrackResponse = async () => {
     if (!selectedCampaignForResponse || !responseInvestorEmail) {
@@ -491,31 +501,69 @@ export function ABCEmailCampaignManager({ investors, onInvestorsUpdated }: ABCEm
 
     try {
       // Find investor by email
-      const investor = investors.find(i => i.email === responseInvestorEmail);
+      const investor = investors.find(i => i.email?.toLowerCase() === responseInvestorEmail.toLowerCase());
 
+      // Insert response record
       const { error } = await supabase.from('abc_email_responses').insert({
         campaign_id: selectedCampaignForResponse,
         investor_id: investor?.id,
         investor_email: responseInvestorEmail,
         investor_name: investor?.nome,
-        response_type: 'reply',
+        response_type: responseType,
         notes: responseNote,
       });
 
       if (error) throw error;
 
+      // Automatically update investor status based on response type
+      if (investor) {
+        const newStatus = responseStatusMap[responseType] || 'Contacted';
+        
+        const { error: updateError } = await supabase
+          .from('abc_investors')
+          .update({ 
+            status: newStatus,
+            last_contact_date: new Date().toISOString()
+          })
+          .eq('id', investor.id);
+
+        if (updateError) {
+          console.error('Error updating investor status:', updateError);
+        }
+
+        // Log activity
+        const responseLabels: Record<string, string> = {
+          'declined': 'Ha declinato',
+          'interested': 'È interessato',
+          'meeting_request': 'Ha richiesto un meeting',
+          'more_info': 'Ha chiesto più informazioni',
+          'other': 'Altra risposta',
+        };
+
+        await supabase.from('abc_investor_activities').insert({
+          investor_name: `${investor.nome} - ${investor.azienda}`,
+          activity_type: 'Email Response',
+          activity_description: `${responseLabels[responseType] || 'Risposta'}: ${responseNote || 'Nessuna nota'}`,
+          created_by: currentUserEmail,
+        });
+      }
+
       toast({
         title: "Risposta registrata",
-        description: "La risposta è stata tracciata con successo",
+        description: investor 
+          ? `Risposta tracciata e status aggiornato a "${responseStatusMap[responseType]}"` 
+          : "Risposta tracciata (investitore non trovato nel database)",
       });
 
       setResponseDialogOpen(false);
       setSelectedCampaignForResponse(null);
       setResponseInvestorEmail("");
       setResponseNote("");
+      setResponseType("declined");
       
-      // Refresh campaign history
+      // Refresh campaign history and trigger investors refresh
       fetchCampaignHistory();
+      onInvestorsUpdated?.();
     } catch (error: any) {
       console.error('Error tracking response:', error);
       toast({
@@ -1878,7 +1926,7 @@ Team Aries76"
           </DialogHeader>
           <div className="space-y-4 py-4">
             <p className="text-sm text-muted-foreground">
-              Registra quando un investitore risponde a una campagna email per tracciare l'engagement.
+              Registra la risposta e il sistema aggiornerà automaticamente lo status dell'investitore.
             </p>
             <div>
               <Label>Email Investitore</Label>
@@ -1891,11 +1939,51 @@ Team Aries76"
               />
             </div>
             <div>
+              <Label>Tipo di Risposta</Label>
+              <Select value={responseType} onValueChange={setResponseType}>
+                <SelectTrigger className="mt-2">
+                  <SelectValue placeholder="Seleziona tipo di risposta" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="declined">
+                    <span className="flex items-center gap-2">
+                      <span className="h-2 w-2 rounded-full bg-red-500" />
+                      Ha declinato → Not Interested
+                    </span>
+                  </SelectItem>
+                  <SelectItem value="interested">
+                    <span className="flex items-center gap-2">
+                      <span className="h-2 w-2 rounded-full bg-green-500" />
+                      È interessato → Interested
+                    </span>
+                  </SelectItem>
+                  <SelectItem value="meeting_request">
+                    <span className="flex items-center gap-2">
+                      <span className="h-2 w-2 rounded-full bg-blue-500" />
+                      Richiesta meeting → Meeting Scheduled
+                    </span>
+                  </SelectItem>
+                  <SelectItem value="more_info">
+                    <span className="flex items-center gap-2">
+                      <span className="h-2 w-2 rounded-full bg-yellow-500" />
+                      Chiede più info → Contacted
+                    </span>
+                  </SelectItem>
+                  <SelectItem value="other">
+                    <span className="flex items-center gap-2">
+                      <span className="h-2 w-2 rounded-full bg-gray-500" />
+                      Altra risposta → Contacted
+                    </span>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
               <Label>Note (opzionale)</Label>
               <Textarea
                 value={responseNote}
                 onChange={(e) => setResponseNote(e.target.value)}
-                placeholder="Es: Interessato, chiede meeting settimana prossima..."
+                placeholder="Es: Non interessato al momento, ricontattare in futuro..."
                 rows={3}
                 className="mt-2"
               />
