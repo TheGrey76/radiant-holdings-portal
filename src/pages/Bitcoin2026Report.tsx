@@ -64,12 +64,16 @@ const Bitcoin2026Report = () => {
   const { data: bitcoinData, loading: bitcoinLoading } = useBitcoinReportData();
   const { data: twelveData, isLoading: twelveLoading, error: twelveError } = useTwelveDataBtc();
 
-  // Calculate days until Q2 2026 edition (April 1, 2026)
+  // Calculate days until Q2 2026 edition (April 1, 2026) starting from Jan 7, 2026
   useEffect(() => {
     const calculateDays = () => {
       const q2ReleaseDate = new Date('2026-04-01');
+      const startDate = new Date('2026-01-07');
       const today = new Date();
-      const diffTime = q2ReleaseDate.getTime() - today.getTime();
+      
+      // Only start counting from Jan 7, 2026
+      const effectiveToday = today < startDate ? startDate : today;
+      const diffTime = q2ReleaseDate.getTime() - effectiveToday.getTime();
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
       setDaysUntilQ2(Math.max(0, diffDays));
     };
