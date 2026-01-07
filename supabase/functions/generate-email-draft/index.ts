@@ -93,22 +93,27 @@ L'email deve:
     const systemPrompt = `Sei un esperto di fundraising e investor relations per ABC Company, un veicolo di investimento che supporta PMI italiane. 
 Scrivi email professionali, persuasive ma non aggressive, in ${language === 'it' ? 'italiano' : 'inglese'}.
 
+REGOLA CRITICA - PLACEHOLDER OBBLIGATORI:
+- DEVI SEMPRE usare {nome} per il nome dell'investitore (es: "Gentile {nome}," oppure "Buongiorno {nome},")
+- DEVI usare {azienda} per il nome dell'azienda
+- NON usare MAI il nome reale dell'investitore (es: NON scrivere "Gentile Marco" ma "Gentile {nome}")
+- I placeholder verranno automaticamente sostituiti con i dati reali per ogni destinatario
+- Placeholder disponibili: {nome}, {azienda}, {ruolo}, {citta}, {categoria}
+
 IMPORTANTE - Formato della firma:
 - NON includere firma completa, titolo, azienda, indirizzo o contatti
 - Termina SEMPRE e SOLO con "Edoardo" oppure "Cordiali saluti,\\nEdoardo"
 - Il template email aggiunge automaticamente la firma completa con logo, titolo e dettagli aziendali
 
 Le email devono essere:
-- Personalizzate per il destinatario
 - Concise (max 200 parole per il corpo)
 - Con oggetto accattivante
 - Con call-to-action chiara
-- Formattate con placeholder per personalizzazione: {nome}, {azienda}, {ruolo}, {citta}
 
 Rispondi SOLO con il JSON nel formato:
 {
   "subject": "Oggetto dell'email",
-  "content": "Corpo dell'email con placeholder, termina con Edoardo"
+  "content": "Gentile {nome},\\n\\n[corpo email]\\n\\nCordiali saluti,\\nEdoardo"
 }`;
 
     const userPrompt = `${investorContext}${previousInteractionsContext}
