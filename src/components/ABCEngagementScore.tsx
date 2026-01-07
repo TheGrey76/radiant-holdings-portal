@@ -16,6 +16,7 @@ interface Investor {
   nome: string;
   azienda: string;
   email: string | null;
+  status?: string;
   engagement_score?: number;
   email_opens_count?: number;
   email_responses_count?: number;
@@ -33,8 +34,9 @@ export function ABCEngagementScore({ investors, onSelectInvestor }: ABCEngagemen
   const { toast } = useToast();
 
   // Sort investors by engagement score (highest first)
+  // Exclude investors who declined (Not Interested status) from the hot prospects list
   const sortedInvestors = [...investors]
-    .filter(inv => inv.email)
+    .filter(inv => inv.email && inv.status !== 'Not Interested')
     .sort((a, b) => (b.engagement_score || 0) - (a.engagement_score || 0))
     .slice(0, 10);
 
