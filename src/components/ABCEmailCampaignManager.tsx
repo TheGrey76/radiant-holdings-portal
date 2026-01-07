@@ -101,6 +101,8 @@ export function ABCEmailCampaignManager({ investors, onInvestorsUpdated }: ABCEm
   const [selectedCampaignForResponse, setSelectedCampaignForResponse] = useState<string | null>(null);
   const [responseNote, setResponseNote] = useState("");
   const [responseInvestorEmail, setResponseInvestorEmail] = useState("");
+  const [deletingCampaignId, setDeletingCampaignId] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
   
   // Test email uses company domain for security
   const TEST_EMAIL = "quinley.martini@aries76.com";
@@ -206,6 +208,51 @@ export function ABCEmailCampaignManager({ investors, onInvestorsUpdated }: ABCEm
         })
       );
       setCampaignHistory(campaignsWithMetrics);
+    }
+  };
+
+  // Delete campaign and related data
+  const handleDeleteCampaign = async () => {
+    if (!deletingCampaignId) return;
+    
+    setIsDeleting(true);
+    try {
+      // Delete related opens first
+      await supabase
+        .from('abc_email_opens')
+        .delete()
+        .eq('campaign_id', deletingCampaignId);
+      
+      // Delete related responses
+      await supabase
+        .from('abc_email_responses')
+        .delete()
+        .eq('campaign_id', deletingCampaignId);
+      
+      // Delete the campaign
+      const { error } = await supabase
+        .from('abc_email_campaign_history')
+        .delete()
+        .eq('id', deletingCampaignId);
+      
+      if (error) throw error;
+      
+      toast({
+        title: "Campagna eliminata",
+        description: "La campagna e tutti i dati associati sono stati eliminati",
+      });
+      
+      setDeletingCampaignId(null);
+      fetchCampaignHistory();
+    } catch (error: any) {
+      console.error('Error deleting campaign:', error);
+      toast({
+        title: "Errore",
+        description: "Errore durante l'eliminazione della campagna",
+        variant: "destructive",
+      });
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -1606,17 +1653,27 @@ Team Aries76"
                         {format(new Date(campaign.sent_at), 'dd/MM HH:mm', { locale: it })}
                       </TableCell>
                       <TableCell className="text-right">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => {
-                            setSelectedCampaignForResponse(campaign.id);
-                            setResponseDialogOpen(true);
-                          }}
-                          title="Registra risposta"
-                        >
-                          <MessageSquare className="h-4 w-4" />
-                        </Button>
+                        <div className="flex items-center justify-end gap-1">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => {
+                              setSelectedCampaignForResponse(campaign.id);
+                              setResponseDialogOpen(true);
+                            }}
+                            title="Registra risposta"
+                          >
+                            <MessageSquare className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setDeletingCampaignId(campaign.id)}
+                            title="Elimina campagna"
+                          >
+                            <Trash2 className="h-4 w-4 text-destructive" />
+                          </Button>
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -1668,6 +1725,32 @@ Team Aries76"
             <Button onClick={handleTrackResponse}>
               <CheckCircle className="h-4 w-4 mr-2" />
               Registra Risposta
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Campaign Confirmation Dialog */}
+      <Dialog open={!!deletingCampaignId} onOpenChange={(open) => !open && setDeletingCampaignId(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-destructive">
+              <AlertTriangle className="h-5 w-5" />
+              Elimina Campagna
+            </DialogTitle>
+          </DialogHeader>
+          <div className="py-4">
+            <p className="text-sm text-muted-foreground">
+              Sei sicuro di voler eliminare questa campagna? Verranno eliminati anche tutti i dati relativi ad aperture e risposte. Questa azione non può essere annullata.
+            </p>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setDeletingCampaignId(null)} disabled={isDeleting}>
+              Annulla
+            </Button>
+            <Button variant="destructive" onClick={handleDeleteCampaign} disabled={isDeleting}>
+              {isDeleting ? <Clock className="h-4 w-4 mr-2 animate-spin" /> : <Trash2 className="h-4 w-4 mr-2" />}
+              Elimina
             </Button>
           </DialogFooter>
         </DialogContent>
