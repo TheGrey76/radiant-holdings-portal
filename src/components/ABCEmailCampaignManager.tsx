@@ -103,6 +103,12 @@ export function ABCEmailCampaignManager({ investors, onInvestorsUpdated }: ABCEm
   const [responseInvestorEmail, setResponseInvestorEmail] = useState("");
   const [deletingCampaignId, setDeletingCampaignId] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [trackingCampaignId, setTrackingCampaignId] = useState<string | null>(null);
+  const [trackingData, setTrackingData] = useState<{
+    opens: Array<{ recipient_email: string; recipient_name: string; opened_at: string }>;
+    notOpened: Array<{ email: string; name: string }>;
+  }>({ opens: [], notOpened: [] });
+  const [isLoadingTracking, setIsLoadingTracking] = useState(false);
   
   // Test email uses company domain for security
   const TEST_EMAIL = "quinley.martini@aries76.com";
@@ -253,6 +259,38 @@ export function ABCEmailCampaignManager({ investors, onInvestorsUpdated }: ABCEm
       });
     } finally {
       setIsDeleting(false);
+    }
+  };
+
+  // Fetch tracking data for a specific campaign
+  const fetchTrackingData = async (campaignId: string) => {
+    setIsLoadingTracking(true);
+    setTrackingCampaignId(campaignId);
+    
+    try {
+      // Get campaign to find recipients
+      const campaign = campaignHistory.find(c => c.id === campaignId);
+      if (!campaign) return;
+      
+      // Get all opens for this campaign
+      const { data: opensData } = await supabase
+        .from('abc_email_opens')
+        .select('recipient_email, recipient_name, opened_at')
+        .eq('campaign_id', campaignId)
+        .order('opened_at', { ascending: false });
+      
+      const opens = opensData || [];
+      const openedEmails = new Set(opens.map(o => o.recipient_email.toLowerCase()));
+      
+      // Get recipients who didn't open
+      const recipients = campaign.recipients as Array<{ email: string; name: string }> || [];
+      const notOpened = recipients.filter(r => !openedEmails.has(r.email.toLowerCase()));
+      
+      setTrackingData({ opens, notOpened });
+    } catch (error) {
+      console.error('Error fetching tracking data:', error);
+    } finally {
+      setIsLoadingTracking(false);
     }
   };
 
@@ -912,6 +950,10 @@ export function ABCEmailCampaignManager({ investors, onInvestorsUpdated }: ABCEm
         <TabsTrigger value="history" className="flex items-center gap-2">
           <History className="h-4 w-4" />
           Storico ({campaignHistory.length})
+        </TabsTrigger>
+        <TabsTrigger value="tracking" className="flex items-center gap-2">
+          <Eye className="h-4 w-4" />
+          Tracking
         </TabsTrigger>
       </TabsList>
 
@@ -1680,6 +1722,129 @@ Team Aries76"
                 </TableBody>
               </Table>
             )}
+          </CardContent>
+        </Card>
+      </TabsContent>
+
+      {/* TRACKING TAB */}
+      <TabsContent value="tracking">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center">
+              <Eye className="h-5 w-5 mr-2" />
+              Email Tracking Dettagliato
+            </CardTitle>
+            <CardDescription>
+              Seleziona una campagna per vedere chi ha aperto e chi non ha ancora aperto le email
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-6">
+              {/* Campaign Selector */}
+              <div>
+                <Label>Seleziona Campagna</Label>
+                <Select 
+                  value={trackingCampaignId || ""} 
+                  onValueChange={(value) => fetchTrackingData(value)}
+                >
+                  <SelectTrigger className="mt-2">
+                    <SelectValue placeholder="Scegli una campagna..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {campaignHistory.map(campaign => (
+                      <SelectItem key={campaign.id} value={campaign.id}>
+                        {campaign.campaign_name} - {format(new Date(campaign.sent_at), 'dd/MM/yyyy HH:mm', { locale: it })}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {isLoadingTracking && (
+                <div className="flex items-center justify-center py-8">
+                  <Clock className="h-6 w-6 animate-spin text-muted-foreground" />
+                </div>
+              )}
+
+              {trackingCampaignId && !isLoadingTracking && (
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  {/* Opened */}
+                  <Card className="border-green-200 bg-green-50/50">
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-base flex items-center gap-2 text-green-700">
+                        <MailOpen className="h-5 w-5" />
+                        Hanno Aperto ({trackingData.opens.length})
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      {trackingData.opens.length === 0 ? (
+                        <p className="text-sm text-muted-foreground text-center py-4">
+                          Nessuna apertura registrata
+                        </p>
+                      ) : (
+                        <div className="space-y-2 max-h-[400px] overflow-auto">
+                          {trackingData.opens.map((open, idx) => (
+                            <div 
+                              key={idx} 
+                              className="flex items-center justify-between p-2 bg-white rounded-md border border-green-100"
+                            >
+                              <div>
+                                <p className="text-sm font-medium">{open.recipient_name}</p>
+                                <p className="text-xs text-muted-foreground">{open.recipient_email}</p>
+                              </div>
+                              <Badge variant="outline" className="text-green-600 border-green-200 text-xs">
+                                {format(new Date(open.opened_at), 'dd/MM HH:mm', { locale: it })}
+                              </Badge>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+
+                  {/* Not Opened */}
+                  <Card className="border-orange-200 bg-orange-50/50">
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-base flex items-center gap-2 text-orange-700">
+                        <AlertCircle className="h-5 w-5" />
+                        Non Hanno Aperto ({trackingData.notOpened.length})
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      {trackingData.notOpened.length === 0 ? (
+                        <p className="text-sm text-muted-foreground text-center py-4">
+                          Tutti hanno aperto l'email! 🎉
+                        </p>
+                      ) : (
+                        <div className="space-y-2 max-h-[400px] overflow-auto">
+                          {trackingData.notOpened.map((recipient, idx) => (
+                            <div 
+                              key={idx} 
+                              className="flex items-center justify-between p-2 bg-white rounded-md border border-orange-100"
+                            >
+                              <div>
+                                <p className="text-sm font-medium">{recipient.name}</p>
+                                <p className="text-xs text-muted-foreground">{recipient.email}</p>
+                              </div>
+                              <Badge variant="outline" className="text-orange-600 border-orange-200 text-xs">
+                                Non aperta
+                              </Badge>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </div>
+              )}
+
+              {!trackingCampaignId && !isLoadingTracking && (
+                <div className="text-center py-12">
+                  <Eye className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+                  <p className="text-muted-foreground">Seleziona una campagna per visualizzare i dati di tracking</p>
+                </div>
+              )}
+            </div>
           </CardContent>
         </Card>
       </TabsContent>
