@@ -1930,13 +1930,48 @@ Team Aries76"
             </p>
             <div>
               <Label>Email Investitore</Label>
-              <Input
-                type="email"
-                value={responseInvestorEmail}
-                onChange={(e) => setResponseInvestorEmail(e.target.value)}
-                placeholder="investitore@azienda.com"
-                className="mt-2"
-              />
+              <div className="relative mt-2">
+                <Input
+                  type="email"
+                  value={responseInvestorEmail}
+                  onChange={(e) => setResponseInvestorEmail(e.target.value)}
+                  placeholder="Inizia a digitare per cercare..."
+                />
+                {responseInvestorEmail.length > 0 && (() => {
+                  // Get recipients from selected campaign
+                  const campaign = campaignHistory.find(c => c.id === selectedCampaignForResponse);
+                  const recipients = (campaign?.recipients as Array<{ email: string; name: string; company?: string }>) || [];
+                  
+                  // Filter by search term
+                  const filtered = recipients.filter(r => 
+                    r.email.toLowerCase().includes(responseInvestorEmail.toLowerCase()) ||
+                    r.name.toLowerCase().includes(responseInvestorEmail.toLowerCase())
+                  ).slice(0, 5);
+                  
+                  if (filtered.length > 0 && !filtered.some(r => r.email.toLowerCase() === responseInvestorEmail.toLowerCase())) {
+                    return (
+                      <div className="absolute z-50 w-full mt-1 bg-popover border rounded-md shadow-lg max-h-48 overflow-auto">
+                        {filtered.map((recipient, idx) => (
+                          <div
+                            key={idx}
+                            className="px-3 py-2 hover:bg-accent cursor-pointer flex items-center justify-between"
+                            onClick={() => setResponseInvestorEmail(recipient.email)}
+                          >
+                            <div>
+                              <div className="text-sm font-medium">{recipient.name}</div>
+                              <div className="text-xs text-muted-foreground">{recipient.email}</div>
+                            </div>
+                            {recipient.company && (
+                              <span className="text-xs text-muted-foreground">{recipient.company}</span>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    );
+                  }
+                  return null;
+                })()}
+              </div>
             </div>
             <div>
               <Label>Tipo di Risposta</Label>
