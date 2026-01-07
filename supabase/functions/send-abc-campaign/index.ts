@@ -162,7 +162,11 @@ const handler = async (req: Request): Promise<Response> => {
         }
 
         // Personalize content with all placeholders
-        const personalizedContent = content
+        // Prefer pre-personalized fields coming from the console (useful when the template does not contain placeholders)
+        const baseContent = recipient.personalizedContent ?? content;
+        const baseSubject = recipient.personalizedSubject ?? subject;
+
+        const personalizedContent = baseContent
           .replace(/\{nome\}/g, recipient.name || '')
           .replace(/\{azienda\}/g, recipient.company || '')
           .replace(/\{ruolo\}/g, recipient.role || '')
@@ -170,7 +174,7 @@ const handler = async (req: Request): Promise<Response> => {
           .replace(/\{categoria\}/g, recipient.category || '')
           .replace(/\{email\}/g, recipient.email || '');
         
-        const personalizedSubject = subject
+        const personalizedSubject = baseSubject
           .replace(/\{nome\}/g, recipient.name || '')
           .replace(/\{azienda\}/g, recipient.company || '');
 

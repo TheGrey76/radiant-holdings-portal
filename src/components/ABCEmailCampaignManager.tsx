@@ -295,6 +295,37 @@ export function ABCEmailCampaignManager({ investors, onInvestorsUpdated }: ABCEm
       .replace(/\{status\}/g, investor.status || '');
   };
 
+  // Ensure the template includes the investor name even when placeholders are missing
+  const ensureInvestorNameInGreeting = (text: string, investor: Investor): string => {
+    const trimmed = text.trimStart();
+
+    // If template already uses the placeholder, do nothing
+    if (trimmed.includes('{nome}')) return text;
+
+    // If the template already contains the investor's name, don't modify it
+    if (investor.nome && text.includes(investor.nome)) return text;
+
+    // If the very first line is just a greeting without a name, inject {nome}
+    // Examples it fixes: "Gentile", "Gentile,", "Buongiorno", "Egregio"
+    const lines = text.split(/\r?\n/);
+    const firstLine = (lines[0] || '').trim();
+
+    const match = firstLine.match(/^(Gentile|Buongiorno|Egregio)\s*,?\s*$/i);
+    if (match) {
+      lines[0] = `${match[1]} {nome},`;
+      return lines.join('\n');
+    }
+
+    // Otherwise, prepend a standard greeting with {nome}
+    return `Gentile {nome},\n\n${text}`;
+  };
+
+  const getPersonalizedContent = (investor: Investor) =>
+    replacePlaceholders(ensureInvestorNameInGreeting(emailForm.content || '', investor), investor);
+
+  const getPersonalizedSubject = (investor: Investor) =>
+    replacePlaceholders(emailForm.subject || '', investor);
+
   // AI Email Draft Generation
   const handleGenerateAIDraft = async () => {
     if (selectedInvestors.length === 0) {
@@ -411,8 +442,8 @@ export function ABCEmailCampaignManager({ investors, onInvestorsUpdated }: ABCEm
 
   // Generate HTML email preview matching the actual email template
   const generateEmailHtml = (investor: Investor) => {
-    const personalizedContent = replacePlaceholders(emailForm.content, investor);
-    const personalizedSubject = replacePlaceholders(emailForm.subject, investor);
+    const personalizedContent = getPersonalizedContent(investor);
+    const personalizedSubject = getPersonalizedSubject(investor);
     
     return `
       <!DOCTYPE html>
@@ -710,9 +741,9 @@ export function ABCEmailCampaignManager({ investors, onInvestorsUpdated }: ABCEm
           role: i.ruolo || '',
           city: i.citta || '',
           category: i.categoria,
-          // Pre-process content with placeholders replaced
-          personalizedContent: replacePlaceholders(emailForm.content, i),
-          personalizedSubject: replacePlaceholders(emailForm.subject, i),
+          // Pre-process content with placeholders replaced (+ auto greeting with name)
+          personalizedContent: getPersonalizedContent(i),
+          personalizedSubject: getPersonalizedSubject(i),
         }));
 
       // First, create campaign record to get the ID for tracking
