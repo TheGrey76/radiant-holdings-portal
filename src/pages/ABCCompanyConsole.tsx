@@ -34,6 +34,7 @@ import { OnlineUsersIndicator } from "@/components/OnlineUsersIndicator";
 import { ABCSettingsTab } from "@/components/ABCSettingsTab";
 import ABCEmailEnrichment from "@/components/ABCEmailEnrichment";
 import ABCAIEnrichment from "@/components/ABCAIEnrichment";
+import ABCAIEnrichmentDialog from "@/components/ABCAIEnrichmentDialog";
 import { ABCRelationshipIntelligence } from "@/components/ABCRelationshipIntelligence";
 import { useKPIHistory } from "@/hooks/useKPIHistory";
 import { supabase } from "@/integrations/supabase/client";
@@ -644,6 +645,7 @@ const ABCCompanyConsole = () => {
               <p className="text-sm text-muted-foreground">Target: €10,000,000 | Deadline: June 30, 2026</p>
             </div>
             <div className="flex items-center gap-4">
+              <ABCAIEnrichmentDialog onDataUpdated={fetchInvestors} />
               <ImportABCInvestorsDialog onSuccess={fetchInvestors} />
               <OnlineUsersIndicator />
               <NotificationBell />
