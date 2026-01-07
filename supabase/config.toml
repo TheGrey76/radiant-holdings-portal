@@ -83,3 +83,6 @@ verify_jwt = false
 
 [functions.create-report-checkout]
 verify_jwt = false
+
+[functions.ai-investor-enrichment]
+verify_jwt = false
