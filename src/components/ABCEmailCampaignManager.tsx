@@ -1940,13 +1940,40 @@ Team Aries76"
                 {responseInvestorEmail.length > 0 && (() => {
                   // Get recipients from selected campaign
                   const campaign = campaignHistory.find(c => c.id === selectedCampaignForResponse);
-                  const recipients = (campaign?.recipients as Array<{ email: string; name: string; company?: string }>) || [];
+                  const campaignRecipients = (campaign?.recipients as Array<{ email: string; name: string; company?: string }>) || [];
                   
-                  // Filter by search term
-                  const filtered = recipients.filter(r => 
-                    r.email.toLowerCase().includes(responseInvestorEmail.toLowerCase()) ||
-                    r.name.toLowerCase().includes(responseInvestorEmail.toLowerCase())
-                  ).slice(0, 5);
+                  // Also search in all investors (for emails added after campaign was sent)
+                  const allInvestorMatches = investors
+                    .filter(inv => inv.email && (
+                      inv.email.toLowerCase().includes(responseInvestorEmail.toLowerCase()) ||
+                      inv.nome.toLowerCase().includes(responseInvestorEmail.toLowerCase())
+                    ))
+                    .map(inv => ({ email: inv.email!, name: inv.nome, company: inv.azienda }));
+                  
+                  // Merge campaign recipients with all investors, removing duplicates
+                  const seenEmails = new Set<string>();
+                  const merged: Array<{ email: string; name: string; company?: string }> = [];
+                  
+                  // First add campaign recipients (priority)
+                  campaignRecipients.forEach(r => {
+                    if (r.email.toLowerCase().includes(responseInvestorEmail.toLowerCase()) ||
+                        r.name.toLowerCase().includes(responseInvestorEmail.toLowerCase())) {
+                      if (!seenEmails.has(r.email.toLowerCase())) {
+                        seenEmails.add(r.email.toLowerCase());
+                        merged.push(r);
+                      }
+                    }
+                  });
+                  
+                  // Then add investors with matching email/name not already in list
+                  allInvestorMatches.forEach(inv => {
+                    if (!seenEmails.has(inv.email.toLowerCase())) {
+                      seenEmails.add(inv.email.toLowerCase());
+                      merged.push(inv);
+                    }
+                  });
+                  
+                  const filtered = merged.slice(0, 8);
                   
                   if (filtered.length > 0 && !filtered.some(r => r.email.toLowerCase() === responseInvestorEmail.toLowerCase())) {
                     return (
