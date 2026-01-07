@@ -39,7 +39,7 @@ import { ABCRelationshipIntelligence } from "@/components/ABCRelationshipIntelli
 import { useKPIHistory } from "@/hooks/useKPIHistory";
 import { supabase } from "@/integrations/supabase/client";
 
-// All investor data is now fetched dynamically from Supabase
+// All investor data is fetched dynamically from Supabase - funnel synced with live data
 
 const ABCCompanyConsole = () => {
   const navigate = useNavigate();
