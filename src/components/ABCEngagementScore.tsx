@@ -3,11 +3,12 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { 
   TrendingUp, Flame, ThermometerSun, Snowflake, 
-  RefreshCw, Mail, MessageSquare, Calendar, FileText 
+  RefreshCw, Mail, MessageSquare, Calendar, FileText, HelpCircle 
 } from "lucide-react";
 
 interface Investor {
@@ -72,28 +73,58 @@ export function ABCEngagementScore({ investors, onSelectInvestor }: ABCEngagemen
   };
 
   return (
-    <Card>
-      <CardHeader className="pb-3">
-        <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center text-sm">
-            <TrendingUp className="h-4 w-4 mr-2 text-primary" />
-            Top 10 Prospect più Caldi
-          </CardTitle>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={updateEngagementScores}
-            disabled={isUpdating}
-            className="h-7 text-xs"
-          >
-            <RefreshCw className={`h-3 w-3 mr-1 ${isUpdating ? 'animate-spin' : ''}`} />
-            Aggiorna
-          </Button>
-        </div>
-        <CardDescription className="text-xs">
-          Basato su aperture email, risposte, meeting e note
-        </CardDescription>
-      </CardHeader>
+    <TooltipProvider>
+      <Card>
+        <CardHeader className="pb-3">
+          <div className="flex items-center justify-between">
+            <CardTitle className="flex items-center text-sm">
+              <TrendingUp className="h-4 w-4 mr-2 text-primary" />
+              Top 10 Prospect più Caldi
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <HelpCircle className="h-3.5 w-3.5 ml-1.5 text-muted-foreground cursor-help" />
+                </TooltipTrigger>
+                <TooltipContent side="bottom" className="max-w-xs p-3">
+                  <p className="font-semibold mb-2">Come viene calcolato il punteggio (0-100):</p>
+                  <ul className="text-xs space-y-1">
+                    <li className="flex items-center gap-2">
+                      <Mail className="h-3 w-3" />
+                      <span><strong>+5 punti</strong> per ogni apertura email</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <MessageSquare className="h-3 w-3 text-green-600" />
+                      <span><strong>+25 punti</strong> per ogni risposta</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Calendar className="h-3 w-3 text-blue-600" />
+                      <span><strong>+30 punti</strong> per ogni meeting</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <FileText className="h-3 w-3" />
+                      <span><strong>+10 punti</strong> per ogni nota</span>
+                    </li>
+                  </ul>
+                  <p className="text-xs text-muted-foreground mt-2 pt-2 border-t">
+                    Livelli: Hot (≥70) • Warm (≥40) • Cool (≥20) • Cold (&lt;20)
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </CardTitle>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={updateEngagementScores}
+              disabled={isUpdating}
+              className="h-7 text-xs"
+            >
+              <RefreshCw className={`h-3 w-3 mr-1 ${isUpdating ? 'animate-spin' : ''}`} />
+              Aggiorna
+            </Button>
+          </div>
+          <CardDescription className="text-xs">
+            Basato su aperture email, risposte, meeting e note
+          </CardDescription>
+        </CardHeader>
       <CardContent>
         {sortedInvestors.length === 0 ? (
           <div className="text-center py-4 text-muted-foreground text-sm">
@@ -167,6 +198,7 @@ export function ABCEngagementScore({ investors, onSelectInvestor }: ABCEngagemen
           </div>
         )}
       </CardContent>
-    </Card>
+      </Card>
+    </TooltipProvider>
   );
 }
