@@ -194,9 +194,10 @@ export const ABCRelationshipIntelligence = ({ investors, onInvestorSelect }: ABC
   };
 
   // Build relationship profiles
+  // Exclude investors who declined (Not Interested status) from relationship tracking
   const relationshipProfiles: RelationshipProfile[] = useMemo(() => {
     return investors
-      .filter(inv => inv.approvalStatus !== 'not_approved')
+      .filter(inv => inv.approvalStatus !== 'not_approved' && inv.status !== 'Not Interested')
       .map(investor => {
         const daysSinceLastContact = investor.lastContactDate 
           ? differenceInDays(new Date(), parseISO(investor.lastContactDate))
