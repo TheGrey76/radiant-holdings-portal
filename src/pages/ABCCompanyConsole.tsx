@@ -1125,6 +1125,7 @@ const ABCCompanyConsole = () => {
             </div>
 
             <ABCEmailCampaignManager 
+              key={`campaign-manager-${investors.filter(i => i.email).length}`}
               investors={investors.map(i => ({ 
                 id: i.id, 
                 nome: i.nome, 
