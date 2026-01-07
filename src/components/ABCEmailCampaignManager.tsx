@@ -553,7 +553,7 @@ export function ABCEmailCampaignManager({ investors, onInvestorsUpdated }: ABCEm
           const noteText = `[Risposta Campagna${campaignInfo ? ` "${campaignInfo.campaign_name}"` : ''}] ${responseLabels[responseType] || 'Risposta'}: ${responseNote}`;
           
           await supabase.from('abc_investor_notes').insert({
-            investor_name: `${investor.nome} - ${investor.azienda}`,
+            investor_name: investor.nome,
             note_text: noteText,
             created_by: currentUserEmail,
           });

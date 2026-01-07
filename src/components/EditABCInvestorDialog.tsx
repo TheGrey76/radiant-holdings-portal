@@ -112,7 +112,15 @@ export const EditABCInvestorDialog = ({ investor, open, onOpenChange, onSave }: 
   const fetchNotes = async () => {
     if (!investor) return;
     setLoadingNotes(true);
-    const { data } = await supabase.from('abc_investor_notes').select('*').eq('investor_name', investor.nome).order('created_at', { ascending: false });
+    const investorNameKey = investor.nome;
+    const investorNameAltKey = `${investor.nome} - ${investor.azienda}`;
+
+    const { data } = await supabase
+      .from('abc_investor_notes')
+      .select('*')
+      .or(`investor_name.eq.${investorNameKey},investor_name.eq.${investorNameAltKey}`)
+      .order('created_at', { ascending: false });
+
     setNotes(data || []);
     setLoadingNotes(false);
   };
