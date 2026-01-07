@@ -1410,14 +1410,15 @@ const ABCCompanyConsole = () => {
           {/* REPORTS TAB */}
           <TabsContent value="reports" className="space-y-6">
             {(() => {
-              // Fundraising period: Jan 1, 2026 - Jun 30, 2026
-              const campaignStart = new Date(2026, 0, 1); // Jan 1, 2026
+              // Fundraising period: Jan 7, 2026 - Jun 30, 2026
+              const campaignStart = new Date(2026, 0, 7); // Jan 7, 2026
               const campaignEnd = new Date(2026, 5, 30); // Jun 30, 2026
               const today = new Date();
+              const effectiveToday = today < campaignStart ? campaignStart : today;
               
               // Calculate current biweekly period (2-week intervals starting from campaign start)
               const msPerDay = 24 * 60 * 60 * 1000;
-              const daysSinceStart = Math.floor((today.getTime() - campaignStart.getTime()) / msPerDay);
+              const daysSinceStart = Math.floor((effectiveToday.getTime() - campaignStart.getTime()) / msPerDay);
               const currentPeriodIndex = Math.max(0, Math.floor(daysSinceStart / 14));
               
               const periodStart = new Date(campaignStart.getTime() + currentPeriodIndex * 14 * msPerDay);
@@ -1434,7 +1435,7 @@ const ABCCompanyConsole = () => {
               const nextReportLabel = formatDate(nextReport);
               
               // Calculate weeks remaining
-              const weeksRemaining = Math.ceil((campaignEnd.getTime() - today.getTime()) / (7 * msPerDay));
+              const weeksRemaining = Math.ceil((campaignEnd.getTime() - effectiveToday.getTime()) / (7 * msPerDay));
               
               return (
             <Card>
@@ -1442,7 +1443,7 @@ const ABCCompanyConsole = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <CardTitle>BIWEEKLY REPORT</CardTitle>
-                    <p className="text-sm text-muted-foreground">Campaign: January 1, 2026 → June 30, 2026 ({weeksRemaining > 0 ? `${weeksRemaining} weeks remaining` : 'Campaign ended'})</p>
+                    <p className="text-sm text-muted-foreground">Campaign: January 7, 2026 → June 30, 2026 ({weeksRemaining > 0 ? `${weeksRemaining} weeks remaining` : 'Campaign ended'})</p>
                   </div>
                   <div className="flex items-center gap-2 text-xs text-muted-foreground bg-muted/50 px-3 py-1.5 rounded-full">
                     <div className="h-2 w-2 bg-green-500 rounded-full animate-pulse" />
