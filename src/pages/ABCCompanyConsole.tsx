@@ -1140,6 +1140,7 @@ const ABCCompanyConsole = () => {
                   nome: i.nome,
                   azienda: i.azienda,
                   email: i.email,
+                  status: i.status,
                   engagement_score: i.engagementScore,
                   email_opens_count: i.emailOpensCount,
                   email_responses_count: i.emailResponsesCount,
