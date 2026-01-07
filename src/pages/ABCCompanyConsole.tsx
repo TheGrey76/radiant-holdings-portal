@@ -22,7 +22,7 @@ import { toast } from "sonner";
 import { ABCActivityFeed } from "@/components/ABCActivityFeed";
 import { ABCInvestorKanban } from "@/components/ABCInvestorKanban";
 import { ImportABCInvestorsDialog } from "@/components/ImportABCInvestorsDialog";
-import { EditableFunnelStage } from "@/components/EditableFunnelStage";
+
 import { EditableOverallProgress } from "@/components/EditableOverallProgress";
 import { EditableKPI } from "@/components/EditableKPI";
 import { ABCAnalyticsTab } from "@/components/ABCAnalyticsTab";
@@ -103,7 +103,7 @@ const ABCCompanyConsole = () => {
   const [investors, setInvestors] = useState<any[]>([]);
   const [loadingInvestors, setLoadingInvestors] = useState(true);
   const [upcomingFollowUps, setUpcomingFollowUps] = useState<any[]>([]);
-  const [customFunnelData, setCustomFunnelData] = useState<any[] | null>(null);
+  // Funnel data is now always calculated from real investor data (removed customFunnelData override)
   const [editInvestorId, setEditInvestorId] = useState<string | null>(null);
   const [lastDataUpdate, setLastDataUpdate] = useState<Date | null>(null);
   
@@ -208,17 +208,7 @@ const ABCCompanyConsole = () => {
     }
   }, [isAuthenticated, investors, progressData, closedKPI, meetingsKPI, recordSnapshot]);
 
-  // Load custom funnel data from localStorage on mount
-  useEffect(() => {
-    const saved = localStorage.getItem('abc_funnel_data');
-    if (saved) {
-      try {
-        setCustomFunnelData(JSON.parse(saved));
-      } catch (e) {
-        console.error('Failed to parse saved funnel data');
-      }
-    }
-  }, []);
+  // Funnel data is always calculated from real investor data - no localStorage override
 
   // Load settings from localStorage
   useEffect(() => {
@@ -437,7 +427,8 @@ const ABCCompanyConsole = () => {
     closed: investors.filter(inv => inv.status === "Closed").length
   };
 
-  const defaultFunnelData = [
+  // Funnel data - always calculated from live investor data
+  const funnelData = [
     { stage: "Contacts", count: statusCounts.total, percentage: 100 },
     { stage: "Contacted", count: statusCounts.contacted, percentage: statusCounts.total ? Math.round((statusCounts.contacted / statusCounts.total) * 100) : 0 },
     { stage: "Interested", count: statusCounts.interested, percentage: statusCounts.total ? Math.round((statusCounts.interested / statusCounts.total) * 100) : 0 },
@@ -445,14 +436,6 @@ const ABCCompanyConsole = () => {
     { stage: "Negotiation", count: statusCounts.negotiation, percentage: statusCounts.total ? Math.round((statusCounts.negotiation / statusCounts.total) * 100) : 0 },
     { stage: "Closed", count: statusCounts.closed, percentage: statusCounts.total ? Math.round((statusCounts.closed / statusCounts.total) * 100) : 0 }
   ];
-
-  const funnelData = customFunnelData || defaultFunnelData;
-
-  const handleFunnelUpdate = (newStages: any[]) => {
-    setCustomFunnelData(newStages);
-    // Optionally save to localStorage or database
-    localStorage.setItem('abc_funnel_data', JSON.stringify(newStages));
-  };
 
   const handleProgressUpdate = (newProgress: typeof progressData) => {
     setProgressData(newProgress);
@@ -777,24 +760,26 @@ const ABCCompanyConsole = () => {
               <CardHeader>
                 <CardTitle className="flex items-center justify-between">
                   CONVERSION FUNNEL
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => {
-                      setCustomFunnelData(null);
-                      localStorage.removeItem('abc_funnel_data');
-                      toast.success("Funnel reset to default");
-                    }}
-                  >
-                    Reset to Default
-                  </Button>
+                  <span className="text-xs font-normal text-muted-foreground flex items-center gap-1">
+                    <div className="h-2 w-2 bg-green-500 rounded-full animate-pulse" />
+                    Live Data
+                  </span>
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <EditableFunnelStage
-                  stages={funnelData}
-                  onUpdate={handleFunnelUpdate}
-                />
+                <div className="space-y-3">
+                  {funnelData.map((stage, idx) => (
+                    <div key={idx} className="space-y-1">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="font-medium text-foreground">
+                          {stage.count} {stage.stage}
+                        </span>
+                        <span className="text-primary font-semibold">{stage.percentage}%</span>
+                      </div>
+                      <Progress value={stage.percentage} className="h-2" />
+                    </div>
+                  ))}
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
