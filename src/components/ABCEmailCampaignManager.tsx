@@ -1730,10 +1730,24 @@ Team Aries76"
       <TabsContent value="tracking">
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center">
-              <Eye className="h-5 w-5 mr-2" />
-              Email Tracking Dettagliato
-            </CardTitle>
+            <div className="flex items-center justify-between">
+              <CardTitle className="flex items-center">
+                <Eye className="h-5 w-5 mr-2" />
+                Email Tracking Dettagliato
+              </CardTitle>
+              {trackingCampaignId && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => fetchTrackingData(trackingCampaignId)}
+                  disabled={isLoadingTracking}
+                  className="h-8"
+                >
+                  <RefreshCw className={`h-4 w-4 mr-1 ${isLoadingTracking ? 'animate-spin' : ''}`} />
+                  Aggiorna
+                </Button>
+              )}
+            </div>
             <CardDescription>
               Seleziona una campagna per vedere chi ha aperto e chi non ha ancora aperto le email
             </CardDescription>
