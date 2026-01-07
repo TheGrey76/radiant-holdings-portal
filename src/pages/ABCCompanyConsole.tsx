@@ -1194,7 +1194,10 @@ const ABCCompanyConsole = () => {
                   {/* Phase Cards */}
                   <div className="grid md:grid-cols-2 gap-6">
                     {(() => {
-                      const now = new Date();
+                      // Start counting from Jan 7, 2026
+                      const startDate = new Date('2026-01-07');
+                      const today = new Date();
+                      const now = today < startDate ? startDate : today;
                       const getDaysRemaining = (deadline: Date) => {
                         const diff = deadline.getTime() - now.getTime();
                         return Math.ceil(diff / (1000 * 60 * 60 * 24));
