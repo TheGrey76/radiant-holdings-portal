@@ -300,7 +300,8 @@ export function ABCEmailCampaignManager({ investors, onInvestorsUpdated }: ABCEm
 
   // Filter approved investors with email based on criteria
   const filteredInvestors = approvedWithEmail.filter(inv => {
-    if (filterStatus !== "all" && inv.status !== filterStatus) return false;
+    if (filterStatus === "not_contacted" && inv.status !== "To Contact") return false;
+    if (filterStatus !== "all" && filterStatus !== "not_contacted" && inv.status !== filterStatus) return false;
     if (filterCategory !== "all" && inv.categoria !== filterCategory) return false;
     return true;
   });
@@ -1376,6 +1377,9 @@ Team Aries76"
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">Tutti gli stati</SelectItem>
+                      <SelectItem value="not_contacted" className="text-orange-600 font-medium">
+                        ⚡ Non ancora contattati
+                      </SelectItem>
                       {statuses.map(status => (
                         <SelectItem key={status} value={status}>{status}</SelectItem>
                       ))}
