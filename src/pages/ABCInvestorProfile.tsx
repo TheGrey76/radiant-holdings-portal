@@ -120,6 +120,81 @@ const CATEGORY_OPTIONS = [
   "HNWI", "Institutional", "Club Deal Investor", "Other"
 ];
 
+// Inline editable email component
+const EditableEmailField = ({ investor, onUpdate }: { investor: Investor; onUpdate: (email: string) => void }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [emailValue, setEmailValue] = useState(investor.email || '');
+  const [isSaving, setIsSaving] = useState(false);
+
+  const handleSave = async () => {
+    if (!emailValue.includes('@')) {
+      toast.error("Email non valida");
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      const { error } = await supabase
+        .from('abc_investors')
+        .update({ email: emailValue, updated_at: new Date().toISOString() })
+        .eq('id', investor.id);
+
+      if (error) throw error;
+
+      onUpdate(emailValue);
+      setIsEditing(false);
+      toast.success("Email aggiornata");
+    } catch (error) {
+      console.error('Error updating email:', error);
+      toast.error("Errore nell'aggiornamento");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  if (isEditing) {
+    return (
+      <div className="flex items-center gap-2">
+        <Mail className="h-4 w-4 text-muted-foreground" />
+        <div className="flex-1">
+          <p className="text-sm text-muted-foreground">Email</p>
+          <div className="flex items-center gap-2 mt-1">
+            <Input 
+              value={emailValue}
+              onChange={(e) => setEmailValue(e.target.value)}
+              placeholder="email@azienda.com"
+              className="h-8 text-sm"
+              autoFocus
+            />
+            <Button size="sm" variant="ghost" onClick={handleSave} disabled={isSaving}>
+              <CheckCircle className="h-4 w-4 text-green-500" />
+            </Button>
+            <Button size="sm" variant="ghost" onClick={() => { setIsEditing(false); setEmailValue(investor.email || ''); }}>
+              <XCircle className="h-4 w-4 text-red-500" />
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div 
+      className="flex items-center gap-3 cursor-pointer hover:bg-muted/50 rounded-md p-1 -m-1 transition-colors group"
+      onClick={() => setIsEditing(true)}
+    >
+      <Mail className="h-4 w-4 text-muted-foreground" />
+      <div className="flex-1">
+        <p className="text-sm text-muted-foreground">Email</p>
+        <p className="font-medium">
+          {investor.email || <span className="text-muted-foreground italic">Clicca per aggiungere</span>}
+        </p>
+      </div>
+      <Edit className="h-3 w-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+    </div>
+  );
+};
+
 const ABCInvestorProfile = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -443,13 +518,13 @@ const ABCInvestorProfile = () => {
                         <p className="font-medium">{investor.ruolo || '-'}</p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-3">
-                      <Mail className="h-4 w-4 text-muted-foreground" />
-                      <div>
-                        <p className="text-sm text-muted-foreground">Email</p>
-                        <p className="font-medium">{investor.email || '-'}</p>
-                      </div>
-                    </div>
+                    <EditableEmailField 
+                      investor={investor}
+                      onUpdate={(newEmail) => {
+                        setInvestor({ ...investor, email: newEmail });
+                        setEditedInvestor({ ...editedInvestor, email: newEmail });
+                      }}
+                    />
                     <div className="flex items-center gap-3">
                       <Phone className="h-4 w-4 text-muted-foreground" />
                       <div>
