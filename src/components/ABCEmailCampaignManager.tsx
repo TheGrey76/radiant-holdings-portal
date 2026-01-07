@@ -546,6 +546,18 @@ export function ABCEmailCampaignManager({ investors, onInvestorsUpdated }: ABCEm
           activity_description: `${responseLabels[responseType] || 'Risposta'}: ${responseNote || 'Nessuna nota'}`,
           created_by: currentUserEmail,
         });
+
+        // Also sync note to abc_investor_notes for visibility in investor profile
+        if (responseNote && responseNote.trim()) {
+          const campaignInfo = campaignHistory.find(c => c.id === selectedCampaignForResponse);
+          const noteText = `[Risposta Campagna${campaignInfo ? ` "${campaignInfo.campaign_name}"` : ''}] ${responseLabels[responseType] || 'Risposta'}: ${responseNote}`;
+          
+          await supabase.from('abc_investor_notes').insert({
+            investor_name: `${investor.nome} - ${investor.azienda}`,
+            note_text: noteText,
+            created_by: currentUserEmail,
+          });
+        }
       }
 
       toast({
