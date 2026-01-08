@@ -1,6 +1,7 @@
 import { useMemo, useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowRight, Clock, Zap } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { ArrowRight, Clock, Zap, Info } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { differenceInDays, parseISO } from "date-fns";
 
@@ -273,10 +274,24 @@ export const ABCPipelineVelocity = ({ investors }: ABCPipelineVelocityProps) => 
             <Zap className="h-5 w-5 text-primary" />
             Pipeline Velocity
           </div>
-          <div className="flex items-center gap-2 text-sm font-normal">
-            <Clock className="h-4 w-4 text-muted-foreground" />
-            <span className="text-muted-foreground">Tempo medio per stage</span>
-          </div>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="flex items-center gap-2 text-sm font-normal cursor-help">
+                  <Clock className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-muted-foreground">Tempo medio per stage</span>
+                  <Info className="h-3.5 w-3.5 text-muted-foreground" />
+                </div>
+              </TooltipTrigger>
+              <TooltipContent side="bottom" className="max-w-xs text-xs">
+                <p className="font-medium mb-1">Come calcoliamo i tempi:</p>
+                <ul className="list-disc pl-3 space-y-1">
+                  <li>Dati reali: tempo effettivo tra ogni cambio di status nel Kanban</li>
+                  <li>Dati storici: per investitori importati, stima basata su data creazione e ultimo contatto</li>
+                </ul>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
