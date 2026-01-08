@@ -152,10 +152,27 @@ export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvest
     try {
       const { error } = await supabase
         .from('abc_investors' as any)
-        .update({ status: destStatus })
+        .update({ 
+          status: destStatus,
+          last_contact_date: new Date().toISOString()
+        })
         .in('id', idsToMove);
 
       if (error) throw error;
+
+      // Log status change activities for Pipeline Velocity tracking
+      const currentUserEmail = sessionStorage.getItem('abc_authorized_email') || 'Admin';
+      const activityInserts = investorsToMove.map(inv => ({
+        investor_name: `${inv.nome} - ${inv.azienda}`,
+        activity_type: 'status_change',
+        activity_description: `Status: ${inv.status} → ${destStatus}`,
+        created_by: currentUserEmail,
+        activity_date: new Date().toISOString()
+      }));
+
+      await supabase
+        .from('abc_investor_activities')
+        .insert(activityInserts);
 
       if (investorsToMove.length === 1) {
         toast.success(`${investorsToMove[0].nome} spostato in ${destStatus}`);
