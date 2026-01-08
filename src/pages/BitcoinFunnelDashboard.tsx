@@ -46,6 +46,7 @@ import {
 import { FunnelContentCalendar } from "@/components/FunnelContentCalendar";
 import { FunnelBlogSelector } from "@/components/FunnelBlogSelector";
 import { FunnelPostEditor } from "@/components/FunnelPostEditor";
+import { ContentDistribution } from "@/components/ContentDistribution";
 
 interface FunnelLead {
   id: string;
@@ -491,6 +492,10 @@ export default function BitcoinFunnelDashboard() {
                 <FileText className="w-4 h-4 mr-2" />
                 Blog Articles
               </TabsTrigger>
+              <TabsTrigger value="distribution" className="data-[state=active]:bg-zinc-700">
+                <Zap className="w-4 h-4 mr-2" />
+                Distribution
+              </TabsTrigger>
             </TabsList>
 
             {/* Posts Tab */}
@@ -671,6 +676,11 @@ export default function BitcoinFunnelDashboard() {
                 onSelectPost={(blogPost) => linkBlogToNewPost(blogPost)}
                 selectedPostId={newPost.blog_post_id || null}
               />
+            </TabsContent>
+
+            {/* Distribution Tab */}
+            <TabsContent value="distribution">
+              <ContentDistribution />
             </TabsContent>
           </Tabs>
 
