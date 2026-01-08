@@ -89,22 +89,45 @@ export function FunnelPostEditor({ post, linkedBlogPost, onClose, onUpdate }: Fu
   };
 
   const savePost = async () => {
+    if (!title.trim()) {
+      toast.error("Title is required");
+      return;
+    }
+    
     setSaving(true);
     try {
-      const { error } = await supabase
-        .from("bitcoin_funnel_linkedin_posts")
-        .update({
-          title,
-          angle,
-          notes,
-          generated_content: generatedContent || null,
-          scheduled_for: scheduledFor?.toISOString() || null
-        })
-        .eq("id", post.id);
+      if (post.id) {
+        // Update existing post
+        const { error } = await supabase
+          .from("bitcoin_funnel_linkedin_posts")
+          .update({
+            title,
+            angle,
+            notes,
+            generated_content: generatedContent || null,
+            scheduled_for: scheduledFor?.toISOString() || null
+          })
+          .eq("id", post.id);
 
-      if (error) throw error;
+        if (error) throw error;
+        toast.success("Post saved!");
+      } else {
+        // Create new post
+        const { error } = await supabase
+          .from("bitcoin_funnel_linkedin_posts")
+          .insert({
+            title,
+            angle,
+            notes,
+            generated_content: generatedContent || null,
+            scheduled_for: scheduledFor?.toISOString() || null,
+            status: "draft"
+          });
+
+        if (error) throw error;
+        toast.success("Post created!");
+      }
       
-      toast.success("Post saved!");
       onUpdate();
       onClose();
     } catch (err: any) {
@@ -184,7 +207,9 @@ export function FunnelPostEditor({ post, linkedBlogPost, onClose, onUpdate }: Fu
     <Card className="bg-zinc-900 border-zinc-800">
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-base font-medium text-zinc-300">Edit Post</CardTitle>
+          <CardTitle className="text-base font-medium text-zinc-300">
+            {post.id ? "Edit Post" : "New Post"}
+          </CardTitle>
           <Button variant="ghost" size="icon" className="h-8 w-8" onClick={onClose}>
             <X className="w-4 h-4" />
           </Button>
