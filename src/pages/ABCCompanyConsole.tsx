@@ -36,6 +36,9 @@ import ABCEmailEnrichment from "@/components/ABCEmailEnrichment";
 import ABCAIEnrichment from "@/components/ABCAIEnrichment";
 import ABCAIEnrichmentDialog from "@/components/ABCAIEnrichmentDialog";
 import { ABCRelationshipIntelligence } from "@/components/ABCRelationshipIntelligence";
+import { ABCPipelineVelocity } from "@/components/ABCPipelineVelocity";
+import { ABCAnimatedFunnel } from "@/components/ABCAnimatedFunnel";
+import { ABCAutoReminders } from "@/components/ABCAutoReminders";
 import { useKPIHistory } from "@/hooks/useKPIHistory";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -752,36 +755,26 @@ const ABCCompanyConsole = () => {
               </CardContent>
             </Card>
 
+            {/* Pipeline Velocity & Animated Funnel */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <ABCPipelineVelocity investors={investors} />
+              <ABCAnimatedFunnel investors={investors} />
+            </div>
+
+            {/* Auto Reminders */}
+            <ABCAutoReminders 
+              investors={investors.map(inv => ({
+                ...inv,
+                engagementScore: inv.engagementScore || 0,
+              }))} 
+              onSelectInvestor={(id) => {
+                setActiveTab('investors');
+                setEditInvestorId(id);
+              }}
+            />
+
             {/* Real-time Activity Feed */}
             <ABCActivityFeed />
-
-            {/* Conversion Funnel */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center justify-between">
-                  CONVERSION FUNNEL
-                  <span className="text-xs font-normal text-muted-foreground flex items-center gap-1">
-                    <div className="h-2 w-2 bg-green-500 rounded-full animate-pulse" />
-                    Live Data
-                  </span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {funnelData.map((stage, idx) => (
-                    <div key={idx} className="space-y-1">
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="font-medium text-foreground">
-                          {stage.count} {stage.stage}
-                        </span>
-                        <span className="text-primary font-semibold">{stage.percentage}%</span>
-                      </div>
-                      <Progress value={stage.percentage} className="h-2" />
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
           </TabsContent>
 
           {/* INVESTORS TAB */}
