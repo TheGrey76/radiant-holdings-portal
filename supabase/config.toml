@@ -86,3 +86,9 @@ verify_jwt = false
 
 [functions.ai-investor-enrichment]
 verify_jwt = false
+
+[functions.bitcoin-funnel-webhook]
+verify_jwt = false
+
+[functions.send-bitcoin-funnel-email]
+verify_jwt = false

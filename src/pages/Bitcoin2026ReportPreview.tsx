@@ -47,9 +47,14 @@ const Bitcoin2026ReportPreview = () => {
 
     setIsLoading(true);
     try {
+      // Get source from URL params if available
+      const urlParams = new URLSearchParams(window.location.search);
+      const source = urlParams.get('src') || 'direct';
+      
       const { data, error } = await supabase.functions.invoke('create-bitcoin-report-checkout', {
         body: { 
           email,
+          source,
           successUrl: `${window.location.origin}/bitcoin-2026-report?success=true`,
           cancelUrl: `${window.location.origin}/bitcoin-2026-report-preview?canceled=true`
         }
