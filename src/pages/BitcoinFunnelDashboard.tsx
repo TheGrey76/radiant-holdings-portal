@@ -515,7 +515,20 @@ export default function BitcoinFunnelDashboard() {
                       size="sm"
                       variant="outline"
                       className="border-zinc-700 text-zinc-400 h-8"
-                      onClick={() => setShowNewPostForm(!showNewPostForm)}
+                      onClick={() => {
+                        // Create a new empty post and open the editor
+                        setEditingPost({
+                          id: "",
+                          title: "",
+                          angle: "de-education",
+                          status: "draft",
+                          notes: "",
+                          generated_content: null,
+                          scheduled_for: null,
+                          blog_post_id: null,
+                          published_at: null
+                        });
+                      }}
                     >
                       <Plus className="w-4 h-4 mr-1" /> Add Post
                     </Button>
