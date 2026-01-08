@@ -116,7 +116,7 @@ const Bitcoin2026ReportPreview = () => {
             Request full access
           </h3>
           
-          <p className="text-zinc-400 mb-8 leading-relaxed">
+          <p className="text-zinc-200 mb-8 leading-relaxed">
             Full access provides continuous updates, real-time data, and the complete Bitcoin 2026 analytical framework.
           </p>
           
@@ -126,7 +126,7 @@ const Bitcoin2026ReportPreview = () => {
               placeholder="Professional email address"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="bg-zinc-900/50 border-zinc-700/50 text-white placeholder:text-zinc-500 focus:border-accent/50 focus:ring-accent/20 h-12 text-center"
+              className="bg-zinc-800/50 border-zinc-600 text-white placeholder:text-zinc-400 focus:border-accent focus:ring-accent/30 h-12 text-center"
             />
             <Button 
               onClick={handleAccessRequest}
@@ -147,7 +147,7 @@ const Bitcoin2026ReportPreview = () => {
             </Button>
           </div>
           
-          <p className="text-xs text-zinc-600 mt-6">
+          <p className="text-xs text-zinc-400 mt-6">
             No newsletters · No spam · Access-related communications only
           </p>
         </div>
@@ -167,13 +167,13 @@ const Bitcoin2026ReportPreview = () => {
       <div className="absolute inset-0 backdrop-blur-sm bg-zinc-950/60 z-10" />
       
       <div className="relative z-20 p-8 md:p-12 text-center">
-        <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-zinc-800/50 mb-4">
-          <Lock className="w-5 h-5 text-zinc-500" />
+        <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-zinc-700/50 mb-4">
+          <Lock className="w-5 h-5 text-zinc-400" />
         </div>
         
         <h4 className="text-xl font-semibold text-white mb-3">{title}</h4>
         
-        <p className="text-zinc-500 text-sm max-w-md mx-auto mb-6">
+        <p className="text-zinc-300 text-sm max-w-md mx-auto mb-6">
           This section contains allocation frameworks and regime-based decision logic designed for institutional and professional investors.
         </p>
         
@@ -284,12 +284,12 @@ const Bitcoin2026ReportPreview = () => {
                 <br />
                 <span className="bg-gradient-to-r from-orange-400 via-amber-400 to-orange-500 bg-clip-text text-transparent">Q1 2026</span>
                 <br />
-                <span className="text-2xl md:text-3xl text-zinc-400 font-medium tracking-wide">Edition</span>
+                <span className="text-2xl md:text-3xl text-zinc-300 font-medium tracking-wide">Edition</span>
               </motion.h1>
               
               {/* Subtitle - NEW MICRO-COPY */}
               <motion.p 
-                className="text-lg md:text-xl text-zinc-300 mb-4 leading-relaxed max-w-2xl"
+                className="text-lg md:text-xl text-zinc-100 mb-4 leading-relaxed max-w-2xl"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
@@ -298,7 +298,7 @@ const Bitcoin2026ReportPreview = () => {
               </motion.p>
               
               <motion.p 
-                className="text-sm text-zinc-500 mb-8"
+                className="text-sm text-zinc-400 mb-8"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.45 }}
@@ -319,7 +319,7 @@ const Bitcoin2026ReportPreview = () => {
                       <span className="text-xl font-bold text-orange-400">₿</span>
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-xs text-zinc-500 uppercase tracking-wider">Live Price</span>
+                      <span className="text-xs text-zinc-400 uppercase tracking-wider">Live Price</span>
                       <AnimatePresence mode="wait">
                         {(twelveLoading && bitcoinLoading) ? (
                           <motion.div
@@ -345,8 +345,8 @@ const Bitcoin2026ReportPreview = () => {
                   </div>
                   <div className="w-px h-10 bg-orange-500/20" />
                   <div className="flex flex-col">
-                    <span className="text-xs text-zinc-500 uppercase tracking-wider">EUR</span>
-                    <span className="text-lg font-semibold text-zinc-300 tabular-nums">
+                    <span className="text-xs text-zinc-400 uppercase tracking-wider">EUR</span>
+                    <span className="text-lg font-semibold text-zinc-100 tabular-nums">
                       €{(twelveData?.bitcoin_price_eur || bitcoinData?.bitcoin_price_eur)?.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) || '---'}
                     </span>
                   </div>
@@ -382,10 +382,10 @@ const Bitcoin2026ReportPreview = () => {
                   <div className="w-1.5 h-8 bg-gradient-to-b from-orange-500 to-amber-500 rounded-full" />
                   <div>
                     <span className="text-sm font-semibold text-white">ARIES76</span>
-                    <span className="text-sm text-zinc-500 ml-2">Capital Intelligence</span>
+                    <span className="text-sm text-zinc-400 ml-2">Capital Intelligence</span>
                   </div>
                 </div>
-                <div className="hidden sm:flex items-center gap-2 text-sm text-zinc-500">
+                <div className="hidden sm:flex items-center gap-2 text-sm text-zinc-400">
                   <Calendar className="w-4 h-4" />
                   <span>Q1 2026 Edition</span>
                 </div>
@@ -408,10 +408,10 @@ const Bitcoin2026ReportPreview = () => {
                 </div>
                 <span className="text-sm font-semibold text-green-400 uppercase tracking-wider">Live Data Report</span>
               </div>
-              <span className="hidden sm:block text-zinc-600">•</span>
+              <span className="hidden sm:block text-zinc-500">•</span>
               <div className="flex items-center gap-2">
                 <Activity className="w-4 h-4 text-accent" />
-                <span className="text-sm text-zinc-300">
+                <span className="text-sm text-zinc-100">
                   Data updated daily at 6:00 AM CET
                 </span>
               </div>
@@ -459,7 +459,7 @@ const Bitcoin2026ReportPreview = () => {
                 {/* Bullet 1 - FULLY VISIBLE */}
                 <div className="flex gap-4">
                   <span className="flex-shrink-0 w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center text-accent font-bold text-sm">1</span>
-                  <p className="text-zinc-300 leading-relaxed">
+                  <p className="text-zinc-100 leading-relaxed">
                     Bitcoin's 2026 trajectory is NOT driven by halving cycles—it's governed by global M2 liquidity impulses and real-rate dynamics. Our proprietary macro-liquidity framework reveals that marginal M2 acceleration produces convex upside responses while stagnation triggers volatility spikes.
                   </p>
                 </div>
@@ -467,9 +467,9 @@ const Bitcoin2026ReportPreview = () => {
                 {/* Bullet 2 - TRUNCATED */}
                 <div className="flex gap-4">
                   <span className="flex-shrink-0 w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center text-accent font-bold text-sm">2</span>
-                  <p className="text-zinc-300 leading-relaxed">
+                  <p className="text-zinc-100 leading-relaxed">
                     With real rates compressing toward neutral (0-1% range by mid-2026) and Fed balance-sheet normalization decelerating, Bitcoin faces a macro backdrop comparable to Q4 2020—a period that preceded a 
-                    <span className="text-zinc-500 blur-[2px] select-none"> 350% rally within 12 months. Our regime model assigns 65% probability to sustained expansion...</span>
+                    <span className="text-zinc-400 blur-[2px] select-none"> 350% rally within 12 months. Our regime model assigns 65% probability to sustained expansion...</span>
                   </p>
                 </div>
                 
@@ -477,19 +477,19 @@ const Bitcoin2026ReportPreview = () => {
                 <div className="relative">
                   <div className="flex gap-4 opacity-30 blur-sm select-none pointer-events-none">
                     <span className="flex-shrink-0 w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center text-accent font-bold text-sm">3</span>
-                    <p className="text-zinc-300 leading-relaxed">
+                    <p className="text-zinc-100 leading-relaxed">
                       The institutional capital pipeline remains robust: ETF flows averaged +$450M weekly throughout Q4 2025, while on-chain entity behavior shows accumulation patterns consistent with prior cycle bottoms. This institutional demand layer creates structural price support at key liquidity levels.
                     </p>
                   </div>
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <Lock className="w-5 h-5 text-zinc-600" />
+                    <Lock className="w-5 h-5 text-zinc-400" />
                   </div>
                 </div>
               </div>
               
               {/* Locked content indicator */}
-              <div className="mt-8 pt-6 border-t border-zinc-800/60">
-                <p className="text-sm text-zinc-500 italic">
+              <div className="mt-8 pt-6 border-t border-zinc-700/60">
+                <p className="text-sm text-zinc-400 italic">
                   Full macro-liquidity framework and scenario probabilities available with full access.
                 </p>
               </div>
@@ -504,11 +504,11 @@ const Bitcoin2026ReportPreview = () => {
             viewport={{ once: true }}
           >
             <div className="flex items-center gap-2 mb-6">
-              <Lock className="w-5 h-5 text-zinc-500" />
-              <span className="text-sm text-zinc-500 uppercase tracking-wider font-medium">Navigation Locked</span>
+              <Lock className="w-5 h-5 text-zinc-400" />
+              <span className="text-sm text-zinc-400 uppercase tracking-wider font-medium">Navigation Locked</span>
             </div>
             
-            <div className="bg-zinc-900/50 rounded-xl border border-zinc-800/60 p-8">
+            <div className="bg-zinc-900/70 rounded-xl border border-zinc-700/60 p-8">
               <h3 className="text-xl font-semibold text-white mb-6">Table of Contents</h3>
               
               <div className="grid gap-3">
@@ -517,21 +517,21 @@ const Bitcoin2026ReportPreview = () => {
                   return (
                     <div 
                       key={chapter.id}
-                      className="flex items-center gap-4 p-3 rounded-lg bg-zinc-900/50 border border-zinc-800/40 opacity-60 cursor-not-allowed"
+                      className="flex items-center gap-4 p-3 rounded-lg bg-zinc-800/40 border border-zinc-700/40 opacity-70 cursor-not-allowed"
                     >
                       <div className="flex items-center gap-3 flex-1">
-                        <span className="text-sm font-mono text-zinc-600 w-8">{chapter.number}</span>
-                        <IconComponent className="w-4 h-4 text-zinc-600" />
-                        <span className="text-sm text-zinc-400">{chapter.title}</span>
+                        <span className="text-sm font-mono text-zinc-400 w-8">{chapter.number}</span>
+                        <IconComponent className="w-4 h-4 text-zinc-500" />
+                        <span className="text-sm text-zinc-300">{chapter.title}</span>
                       </div>
-                      <Lock className="w-4 h-4 text-zinc-700" />
+                      <Lock className="w-4 h-4 text-zinc-500" />
                     </div>
                   );
                 })}
               </div>
               
-              <div className="mt-6 pt-6 border-t border-zinc-800/60">
-                <p className="text-sm text-zinc-500">
+              <div className="mt-6 pt-6 border-t border-zinc-700/60">
+                <p className="text-sm text-zinc-400">
                   This page includes <span className="text-white font-medium">19 institutional chapters</span>.
                   <br />
                   Full access is required to explore the complete framework.
@@ -556,28 +556,28 @@ const Bitcoin2026ReportPreview = () => {
 
           {/* ===== POSITIONING FOOTER ===== */}
           <motion.section 
-            className="text-center py-16 border-t border-zinc-800/40"
+            className="text-center py-16 border-t border-zinc-700/40"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
           >
-            <p className="text-lg text-zinc-500 italic max-w-xl mx-auto">
+            <p className="text-lg text-zinc-400 italic max-w-xl mx-auto">
               This is not content consumption.
               <br />
-              <span className="text-zinc-400">It is ongoing visibility.</span>
+              <span className="text-zinc-200">It is ongoing visibility.</span>
             </p>
           </motion.section>
 
         </div>
 
         {/* Footer */}
-        <footer className="border-t border-zinc-800/40 py-8">
+        <footer className="border-t border-zinc-700/40 py-8">
           <div className="container max-w-6xl mx-auto px-6">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-              <div className="text-sm text-zinc-600">
+              <div className="text-sm text-zinc-400">
                 © 2026 ARIES76 Capital Intelligence
               </div>
-              <div className="text-xs text-zinc-700">
+              <div className="text-xs text-zinc-500">
                 Not financial advice. For institutional and professional investors only.
               </div>
             </div>
