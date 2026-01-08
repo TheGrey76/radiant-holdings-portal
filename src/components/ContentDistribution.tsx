@@ -106,23 +106,23 @@ export const ContentDistribution = () => {
   };
 
   return (
-    <Card>
+    <Card className="bg-zinc-900 border-zinc-800">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+        <CardTitle className="flex items-center gap-2 text-zinc-200">
           <Settings className="h-5 w-5" />
           Content Distribution Settings
         </CardTitle>
-        <CardDescription>
+        <CardDescription className="text-zinc-500">
           Configure Zapier webhooks for automatic content distribution to LinkedIn
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-4">
-          <div className="flex items-center gap-3 p-4 bg-muted/50 rounded-lg">
+          <div className="flex items-center gap-3 p-4 bg-zinc-800/50 rounded-lg border border-zinc-700">
             <Linkedin className="h-6 w-6 text-[#0A66C2]" />
             <div className="flex-1">
-              <h3 className="font-semibold">LinkedIn Distribution</h3>
-              <p className="text-sm text-muted-foreground">
+              <h3 className="font-semibold text-zinc-200">LinkedIn Distribution</h3>
+              <p className="text-sm text-zinc-400">
                 Automatically post new blog articles to LinkedIn
               </p>
             </div>
@@ -137,15 +137,16 @@ export const ContentDistribution = () => {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="webhook-url">Zapier Webhook URL</Label>
+            <Label htmlFor="webhook-url" className="text-zinc-300">Zapier Webhook URL</Label>
             <Input
               id="webhook-url"
               type="url"
               placeholder="https://hooks.zapier.com/hooks/catch/..."
               value={webhookUrl}
               onChange={(e) => setWebhookUrl(e.target.value)}
+              className="bg-zinc-800 border-zinc-700 text-zinc-200 placeholder:text-zinc-500"
             />
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-zinc-500">
               Create a Zap with a "Catch Hook" trigger and connect it to LinkedIn
             </p>
           </div>
@@ -162,9 +163,9 @@ export const ContentDistribution = () => {
           </Button>
         </div>
 
-        <div className="pt-4 border-t">
-          <h4 className="font-semibold mb-2">Setup Instructions:</h4>
-          <ol className="text-sm text-muted-foreground space-y-2 list-decimal list-inside">
+        <div className="pt-4 border-t border-zinc-800">
+          <h4 className="font-semibold mb-2 text-zinc-300">Setup Instructions:</h4>
+          <ol className="text-sm text-zinc-400 space-y-2 list-decimal list-inside">
             <li>Create a Zap on Zapier.com</li>
             <li>Choose "Webhooks by Zapier" as trigger</li>
             <li>Select "Catch Hook" and copy the webhook URL</li>
