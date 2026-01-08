@@ -480,19 +480,19 @@ export default function BitcoinFunnelDashboard() {
 
           <Tabs value={contentTab} onValueChange={setContentTab} className="space-y-4">
             <TabsList className="bg-zinc-800 border-zinc-700">
-              <TabsTrigger value="posts" className="data-[state=active]:bg-zinc-700">
+              <TabsTrigger value="posts" className="data-[state=active]:bg-zinc-700 text-zinc-400 data-[state=active]:text-zinc-100">
                 <Sparkles className="w-4 h-4 mr-2" />
                 LinkedIn Posts
               </TabsTrigger>
-              <TabsTrigger value="calendar" className="data-[state=active]:bg-zinc-700">
+              <TabsTrigger value="calendar" className="data-[state=active]:bg-zinc-700 text-zinc-400 data-[state=active]:text-zinc-100">
                 <Calendar className="w-4 h-4 mr-2" />
                 Calendar
               </TabsTrigger>
-              <TabsTrigger value="blog" className="data-[state=active]:bg-zinc-700">
+              <TabsTrigger value="blog" className="data-[state=active]:bg-zinc-700 text-zinc-400 data-[state=active]:text-zinc-100">
                 <FileText className="w-4 h-4 mr-2" />
                 Blog Articles
               </TabsTrigger>
-              <TabsTrigger value="distribution" className="data-[state=active]:bg-zinc-700">
+              <TabsTrigger value="distribution" className="data-[state=active]:bg-zinc-700 text-zinc-400 data-[state=active]:text-zinc-100">
                 <Zap className="w-4 h-4 mr-2" />
                 Distribution
               </TabsTrigger>
