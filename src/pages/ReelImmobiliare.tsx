@@ -283,6 +283,7 @@ const TableOfContents = ({ activeSection, onSectionClick, isVisible }: { activeS
     { id: "business", label: "Modello di Business", icon: Target },
     { id: "rischi", label: "Rischi", icon: Shield },
     { id: "governance", label: "Governance", icon: Users },
+    { id: "incorporazione", label: "Sede di Incorporazione", icon: Building2 },
     { id: "conclusione", label: "Conclusione", icon: CheckCircle },
   ];
 
@@ -503,7 +504,7 @@ const ReelImmobiliareContent = () => {
     const handleScroll = () => {
       setShowToc(window.scrollY > 400);
       
-      const sections = ["scopo", "sintesi", "fragilita", "shift", "vimeo", "alternative", "lovable", "architettura", "roadmap", "kpi", "business", "rischi", "governance", "conclusione"];
+      const sections = ["scopo", "sintesi", "fragilita", "shift", "vimeo", "alternative", "lovable", "architettura", "roadmap", "kpi", "business", "rischi", "governance", "incorporazione", "conclusione"];
       for (const id of sections) {
         const element = document.getElementById(id);
         if (element) {
@@ -829,6 +830,25 @@ const ReelImmobiliareContent = () => {
             <p className="text-muted-foreground leading-relaxed text-lg mt-4">
               Il valore dell'advisory sta nel prevenire mesi di sviluppo nella direzione sbagliata (debito strategico), mantenendo la piattaforma focalizzata su ciò che genera asset dati e monetizzazione.
             </p>
+          </Section>
+
+          {/* 14. Scelta della sede di incorporazione */}
+          <Section id="incorporazione" icon={Building2} title="14. Scelta della sede di incorporazione: contesto attuale e prospettiva futura">
+            <p className="text-muted-foreground leading-relaxed text-lg">
+              La proprietà di ReelImmobiliare ha scelto le Isole Canarie come sede di incorporazione iniziale della società. La decisione è funzionale alla fase early-stage del progetto, orientata a efficienza operativa e controllo dei costi, e coerente con una fase di MVP e validazione del modello di business. Questa scelta consente rapidità di esecuzione senza appesantire la struttura iniziale con vincoli amministrativi o costi fissi non necessari in questa fase.
+            </p>
+            <p className="text-muted-foreground leading-relaxed text-lg mt-4">
+              È importante chiarire che la sede legale iniziale non definisce il posizionamento tecnologico del progetto. ReelImmobiliare è concepito come piattaforma cloud-native: la tecnologia, i dati e l'architettura sono intrinsecamente indipendenti dalla giurisdizione operativa. La scelta della sede operativa iniziale risponde a criteri di efficienza; il valore strategico del progetto risiede nella tecnologia e nei dati.
+            </p>
+            <p className="text-muted-foreground leading-relaxed text-lg mt-4">
+              Le Isole Canarie, pur offrendo vantaggi operativi per una fase iniziale, non rappresentano un hub tecnologico europeo consolidato. Non costituiscono una sede naturale per attrarre capitali venture internazionali né sono destinate a essere il riferimento strategico di lungo periodo del progetto. Questa consapevolezza è parte integrante della pianificazione e non rappresenta una criticità, bensì un elemento di lucidità strategica.
+            </p>
+            <p className="text-muted-foreground leading-relaxed text-lg mt-4">
+              La struttura societaria è pensata per poter evolvere in funzione della crescita del progetto, della maturazione della tecnologia e dello sviluppo del modello di business, senza vincoli che limitino partnership, investimenti o spin-off futuri. Scenari possibili includono la costituzione di una holding superiore, una riorganizzazione societaria più articolata, o la separazione tra veicolo operativo e asset tecnologico, da valutare quando il progetto raggiungerà massa critica e attrarrà interesse istituzionale.
+            </p>
+            <KeyPoint>
+              La sede di incorporazione abilita la fase iniziale del progetto. La visione tecnologica e la capacità di evoluzione ne determinano il valore nel tempo.
+            </KeyPoint>
           </Section>
 
           {/* Conclusione */}
