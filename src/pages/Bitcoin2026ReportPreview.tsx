@@ -115,9 +115,15 @@ const Bitcoin2026ReportPreview = () => {
             Request full access to the Bitcoin 2026 live intelligence page
           </h3>
           
-          <p className="text-sm text-zinc-400 mb-8">
+          <p className="text-sm text-zinc-400 mb-4">
             Continuous updates · Real-time data · Full decision framework
           </p>
+          
+          {/* Price */}
+          <div className="mb-8 py-4 border-y border-zinc-700/60">
+            <div className="text-4xl font-semibold text-white tracking-tight">€99</div>
+            <p className="text-sm text-zinc-400 mt-1">One-time payment · Ongoing updates included</p>
+          </div>
           
           <div className="space-y-4 max-w-sm mx-auto">
             <Input
