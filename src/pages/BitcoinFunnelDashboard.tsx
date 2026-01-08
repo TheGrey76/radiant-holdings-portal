@@ -47,6 +47,8 @@ import { FunnelContentCalendar } from "@/components/FunnelContentCalendar";
 import { FunnelBlogSelector } from "@/components/FunnelBlogSelector";
 import { FunnelPostEditor } from "@/components/FunnelPostEditor";
 import { ContentDistribution } from "@/components/ContentDistribution";
+import { BitcoinNewsPanel } from "@/components/BitcoinNewsPanel";
+import { Newspaper } from "lucide-react";
 
 interface FunnelLead {
   id: string;
@@ -496,6 +498,10 @@ export default function BitcoinFunnelDashboard() {
                 <Zap className="w-4 h-4 mr-2" />
                 Distribution
               </TabsTrigger>
+              <TabsTrigger value="news" className="data-[state=active]:bg-zinc-700 text-zinc-400 data-[state=active]:text-zinc-100">
+                <Newspaper className="w-4 h-4 mr-2" />
+                Bitcoin News
+              </TabsTrigger>
             </TabsList>
 
             {/* Posts Tab */}
@@ -694,6 +700,27 @@ export default function BitcoinFunnelDashboard() {
             {/* Distribution Tab */}
             <TabsContent value="distribution">
               <ContentDistribution />
+            </TabsContent>
+
+            {/* News Tab */}
+            <TabsContent value="news">
+              <BitcoinNewsPanel
+                onUseForPost={(news) => {
+                  // Create a new post inspired by the news
+                  setEditingPost({
+                    id: "",
+                    title: news.title,
+                    angle: "de-education",
+                    status: "draft",
+                    notes: `Source: ${news.source_name}\nURL: ${news.original_url}\n\n${news.original_content || ""}`,
+                    generated_content: null,
+                    scheduled_for: null,
+                    blog_post_id: null,
+                    published_at: null
+                  });
+                  setContentTab("posts");
+                }}
+              />
             </TabsContent>
           </Tabs>
 
