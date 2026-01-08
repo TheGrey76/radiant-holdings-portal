@@ -267,8 +267,9 @@ export const ABCAutoReminders = ({ investors, onSelectInvestor }: ABCAutoReminde
                       className="h-8 w-8 p-0"
                       onClick={(e) => {
                         e.stopPropagation();
-                        window.location.href = `mailto:${reminder.email}`;
+                        window.open(`mailto:${reminder.email}`, '_blank', 'noopener,noreferrer');
                       }}
+                      title={`Invia email a ${reminder.email}`}
                     >
                       <Mail className="h-4 w-4" />
                     </Button>
