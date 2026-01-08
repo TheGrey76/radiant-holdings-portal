@@ -434,7 +434,10 @@ const Bitcoin2026ReportPreview = () => {
               <span className="text-sm text-green-400 uppercase tracking-wider font-medium">Preview Content</span>
             </div>
             <div className="max-w-md">
-              <FearGreedIndex />
+              {/* Force dark theme tokens for readability on this page */}
+              <div className="dark">
+                <FearGreedIndex />
+              </div>
             </div>
           </motion.section>
 
