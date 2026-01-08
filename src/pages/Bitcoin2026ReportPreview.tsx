@@ -1,5 +1,5 @@
-// Bitcoin 2026 - Preview Page with Free/Full Access Gating
-import { useState, useEffect } from 'react';
+// Bitcoin 2026 - Preview Page with HARD GATING
+import { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -27,8 +27,7 @@ import {
   AlertTriangle,
   GitBranch,
   LogOut,
-  ArrowUp,
-  CheckCircle2
+  ArrowUp
 } from 'lucide-react';
 import { FearGreedIndex } from '@/components/FearGreedIndex';
 import { useBitcoinReportData } from '@/hooks/useBitcoinReportData';
@@ -93,7 +92,7 @@ const Bitcoin2026ReportPreview = () => {
     { id: "chapter-19", number: "XIX", title: "Lightning Network & Layer 2", icon: Zap },
   ];
 
-  // Email Gate Component
+  // Email Gate Component (No pricing displayed)
   const EmailGate = () => (
     <motion.div 
       className="relative overflow-hidden rounded-2xl border border-accent/20 bg-gradient-to-b from-zinc-900/95 to-zinc-950"
@@ -113,18 +112,12 @@ const Bitcoin2026ReportPreview = () => {
           </div>
           
           <h3 className="text-2xl md:text-3xl font-semibold text-white mb-4">
-            Request full access
+            Request full access to the Bitcoin 2026 live intelligence page
           </h3>
           
-          <p className="text-zinc-200 mb-6 leading-relaxed">
-            Full access provides continuous updates, real-time data, and the complete Bitcoin 2026 analytical framework.
+          <p className="text-sm text-zinc-400 mb-8">
+            Continuous updates · Real-time data · Full decision framework
           </p>
-          
-          {/* Price */}
-          <div className="mb-8 py-4 border-y border-zinc-700/60">
-            <div className="text-4xl font-semibold text-white tracking-tight">€99</div>
-            <p className="text-sm text-zinc-400 mt-1">One-time payment · Ongoing updates included</p>
-          </div>
           
           <div className="space-y-4 max-w-sm mx-auto">
             <Input
@@ -146,14 +139,14 @@ const Bitcoin2026ReportPreview = () => {
                 </>
               ) : (
                 <>
-                  Request full access to Bitcoin 2026
+                  Request full access
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </>
               )}
             </Button>
           </div>
           
-          <p className="text-xs text-zinc-400 mt-6">
+          <p className="text-xs text-zinc-500 mt-6">
             No newsletters · No spam · Access-related communications only
           </p>
         </div>
@@ -161,16 +154,16 @@ const Bitcoin2026ReportPreview = () => {
     </motion.div>
   );
 
-  // Locked Content Placeholder
-  const LockedSection = ({ title }: { title: string }) => (
+  // Locked Content Placeholder (Investment Implications style)
+  const LockedSection = ({ title, description }: { title: string; description: string }) => (
     <motion.div 
       className="relative rounded-xl border border-zinc-800/60 bg-zinc-900/30 overflow-hidden"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
     >
-      {/* Blur overlay */}
-      <div className="absolute inset-0 backdrop-blur-sm bg-zinc-950/60 z-10" />
+      {/* Subtle blur overlay */}
+      <div className="absolute inset-0 backdrop-blur-[2px] bg-zinc-950/40 z-10" />
       
       <div className="relative z-20 p-8 md:p-12 text-center">
         <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-zinc-700/50 mb-4">
@@ -179,8 +172,12 @@ const Bitcoin2026ReportPreview = () => {
         
         <h4 className="text-xl font-semibold text-white mb-3">{title}</h4>
         
+        <p className="text-zinc-400 text-sm max-w-md mx-auto mb-2">
+          {description}
+        </p>
+        
         <p className="text-zinc-300 text-sm max-w-md mx-auto mb-6">
-          This section contains allocation frameworks and regime-based decision logic designed for institutional and professional investors.
+          Full access is required to view this content.
         </p>
         
         <Button 
@@ -189,7 +186,7 @@ const Bitcoin2026ReportPreview = () => {
           onClick={() => document.getElementById('email-gate')?.scrollIntoView({ behavior: 'smooth' })}
           className="border-accent/30 text-accent hover:bg-accent/10"
         >
-          Access full allocation frameworks
+          Request full access
           <ArrowRight className="w-4 h-4 ml-2" />
         </Button>
       </div>
@@ -293,7 +290,7 @@ const Bitcoin2026ReportPreview = () => {
                 <span className="text-2xl md:text-3xl text-zinc-300 font-medium tracking-wide">Edition</span>
               </motion.h1>
               
-              {/* Subtitle - NEW MICRO-COPY */}
+              {/* Subtitle */}
               <motion.p 
                 className="text-lg md:text-xl text-zinc-100 mb-4 leading-relaxed max-w-2xl"
                 initial={{ opacity: 0, y: 20 }}
@@ -435,27 +432,18 @@ const Bitcoin2026ReportPreview = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <div className="flex items-center gap-2 mb-6">
-              <CheckCircle2 className="w-5 h-5 text-green-400" />
-              <span className="text-sm text-green-400 uppercase tracking-wider font-medium">Preview Content</span>
-            </div>
             <div className="max-w-md [&_.bg-card\/50]:bg-zinc-800/80 [&_.text-muted-foreground]:text-zinc-300 [&_.border-border]:border-zinc-600 [&_.bg-muted]:bg-zinc-700 [&_.text-foreground]:text-white [&_.bg-primary]:bg-accent [&_.text-primary]:text-accent">
               <FearGreedIndex />
             </div>
           </motion.section>
 
-          {/* ===== EXECUTIVE SUMMARY (PARTIAL - VISIBLE IN PREVIEW) ===== */}
+          {/* ===== EXECUTIVE SUMMARY (HARD GATED) ===== */}
           <motion.section 
             className="mb-16"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <div className="flex items-center gap-2 mb-6">
-              <CheckCircle2 className="w-5 h-5 text-green-400" />
-              <span className="text-sm text-green-400 uppercase tracking-wider font-medium">Preview Content</span>
-            </div>
-            
             <div className="bg-gradient-to-br from-accent/10 via-accent/5 to-transparent rounded-xl p-8 md:p-10 border border-accent/20">
               <h2 className="text-2xl md:text-3xl font-bold text-white mb-8 flex items-center gap-3">
                 <span className="text-accent">Executive Summary</span>
@@ -470,65 +458,67 @@ const Bitcoin2026ReportPreview = () => {
                   </p>
                 </div>
                 
-                {/* Bullet 2 - TRUNCATED */}
+                {/* Bullet 2 - TRUNCATED after one sentence */}
                 <div className="flex gap-4">
                   <span className="flex-shrink-0 w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center text-accent font-bold text-sm">2</span>
                   <p className="text-zinc-100 leading-relaxed">
-                    With real rates compressing toward neutral (0-1% range by mid-2026) and Fed balance-sheet normalization decelerating, Bitcoin faces a macro backdrop comparable to Q4 2020—a period that preceded a 
-                    <span className="text-zinc-400 blur-[2px] select-none"> 350% rally within 12 months. Our regime model assigns 65% probability to sustained expansion...</span>
+                    With real rates compressing toward neutral (0-1% range by mid-2026) and Fed balance-sheet normalization decelerating, Bitcoin faces a macro backdrop comparable to Q4 2020.
+                    <span className="text-zinc-500">...</span>
                   </p>
                 </div>
                 
-                {/* Bullet 3 - BLURRED/HIDDEN */}
-                <div className="relative">
-                  <div className="flex gap-4 opacity-30 blur-sm select-none pointer-events-none">
-                    <span className="flex-shrink-0 w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center text-accent font-bold text-sm">3</span>
-                    <p className="text-zinc-100 leading-relaxed">
-                      The institutional capital pipeline remains robust: ETF flows averaged +$450M weekly throughout Q4 2025, while on-chain entity behavior shows accumulation patterns consistent with prior cycle bottoms. This institutional demand layer creates structural price support at key liquidity levels.
-                    </p>
-                  </div>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <Lock className="w-5 h-5 text-zinc-400" />
-                  </div>
-                </div>
+                {/* Bullet 3 - COMPLETELY HIDDEN */}
               </div>
               
-              {/* Locked content indicator */}
+              {/* MANDATORY TEXT (verbatim) */}
               <div className="mt-8 pt-6 border-t border-zinc-700/60">
-                <p className="text-sm text-zinc-400 italic">
-                  Full macro-liquidity framework and scenario probabilities available with full access.
+                <p className="text-sm text-zinc-300">
+                  The full macro-liquidity framework, scenario probabilities, and valuation architecture are available only with full access.
                 </p>
               </div>
             </div>
           </motion.section>
 
-          {/* ===== TABLE OF CONTENTS (LOCKED VIEW) ===== */}
+          {/* ===== INVESTMENT IMPLICATIONS (FULL LOCK) ===== */}
+          <motion.section 
+            className="mb-8"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <LockedSection 
+              title="Investment Implications" 
+              description="This section contains allocation frameworks and regime-based decision logic."
+            />
+          </motion.section>
+
+          {/* ===== CTA IMMEDIATELY AFTER FIRST LOCKED SECTION (NON-OPTIONAL) ===== */}
+          <section id="email-gate" className="mb-16 scroll-mt-24">
+            <EmailGate />
+          </section>
+
+          {/* ===== TABLE OF CONTENTS (PROMISE ONLY) ===== */}
           <motion.section 
             className="mb-16"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <div className="flex items-center gap-2 mb-6">
-              <Lock className="w-5 h-5 text-zinc-400" />
-              <span className="text-sm text-zinc-400 uppercase tracking-wider font-medium">Navigation Locked</span>
-            </div>
-            
             <div className="bg-zinc-900/70 rounded-xl border border-zinc-700/60 p-8">
               <h3 className="text-xl font-semibold text-white mb-6">Table of Contents</h3>
               
               <div className="grid gap-3">
-                {chapters.map((chapter, index) => {
+                {chapters.map((chapter) => {
                   const IconComponent = chapter.icon;
                   return (
                     <div 
                       key={chapter.id}
-                      className="flex items-center gap-4 p-3 rounded-lg bg-zinc-800/40 border border-zinc-700/40 opacity-70 cursor-not-allowed"
+                      className="flex items-center gap-4 p-3 rounded-lg bg-zinc-800/40 border border-zinc-700/40 opacity-60 cursor-not-allowed"
                     >
                       <div className="flex items-center gap-3 flex-1">
-                        <span className="text-sm font-mono text-zinc-400 w-8">{chapter.number}</span>
+                        <span className="text-sm font-mono text-zinc-500 w-8">{chapter.number}</span>
                         <IconComponent className="w-4 h-4 text-zinc-500" />
-                        <span className="text-sm text-zinc-300">{chapter.title}</span>
+                        <span className="text-sm text-zinc-400">{chapter.title}</span>
                       </div>
                       <Lock className="w-4 h-4 text-zinc-500" />
                     </div>
@@ -536,41 +526,55 @@ const Bitcoin2026ReportPreview = () => {
                 })}
               </div>
               
+              {/* MANDATORY TEXT (verbatim) */}
               <div className="mt-6 pt-6 border-t border-zinc-700/60">
-                <p className="text-sm text-zinc-400">
-                  This page includes <span className="text-white font-medium">19 institutional chapters</span>.
-                  <br />
-                  Full access is required to explore the complete framework.
+                <p className="text-sm text-zinc-300">
+                  This page includes 19 institutional chapters available only with full access.
                 </p>
               </div>
             </div>
           </motion.section>
 
-          {/* ===== LOCKED SECTIONS (INVESTMENT IMPLICATIONS, PRICE FRAMEWORK, etc.) ===== */}
+          {/* ===== ADVANCED FRAMEWORKS - LOCKED PLACEHOLDER BLOCKS ===== */}
           <div className="space-y-8 mb-16">
-            <LockedSection title="Investment Implications" />
-            <LockedSection title="Advanced Price Framework" />
-            <LockedSection title="Quantitative Regime Models" />
-            <LockedSection title="Scenario Analysis & Risk Framework" />
-            <LockedSection title="2026 Price Targets" />
+            <LockedSection 
+              title="Advanced Price Framework" 
+              description="This section contains quantitative pricing models and technical architecture."
+            />
+            <LockedSection 
+              title="Quantitative Regime Models" 
+              description="This section contains proprietary regime classification and transition matrices."
+            />
+            <LockedSection 
+              title="Scenario Analysis" 
+              description="This section contains probability-weighted scenario outcomes and sensitivity analysis."
+            />
+            <LockedSection 
+              title="Risk Framework" 
+              description="This section contains risk metrics, drawdown analysis, and position sizing logic."
+            />
+            <LockedSection 
+              title="2026 Price Targets" 
+              description="This section contains base, bull, and bear case price projections with underlying assumptions."
+            />
+            <LockedSection 
+              title="Allocation Logic" 
+              description="This section contains portfolio construction frameworks and rebalancing triggers."
+            />
           </div>
 
-          {/* ===== EMAIL GATE ===== */}
-          <section id="email-gate" className="mb-16 scroll-mt-24">
-            <EmailGate />
-          </section>
-
-          {/* ===== POSITIONING FOOTER ===== */}
+          {/* ===== FINAL POSITIONING LINE (MANDATORY) ===== */}
           <motion.section 
             className="text-center py-16 border-t border-zinc-700/40"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
           >
-            <p className="text-lg text-zinc-400 italic max-w-xl mx-auto">
-              This is not content consumption.
-              <br />
-              <span className="text-zinc-200">It is ongoing visibility.</span>
+            <p className="text-lg text-zinc-300 max-w-xl mx-auto">
+              This page is intentionally incomplete.
+            </p>
+            <p className="text-lg text-zinc-100 font-medium mt-2 max-w-xl mx-auto">
+              Full access is required to make informed decisions.
             </p>
           </motion.section>
 
