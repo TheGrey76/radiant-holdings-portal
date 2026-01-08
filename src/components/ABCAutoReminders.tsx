@@ -2,7 +2,8 @@ import { useMemo, useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Bell, AlertTriangle, Clock, Mail, Calendar, ChevronRight, RefreshCw } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Bell, AlertTriangle, Clock, Send, Calendar, ChevronRight, RefreshCw, CheckSquare } from "lucide-react";
 import { differenceInDays, parseISO, format } from "date-fns";
 import { it } from "date-fns/locale";
 import { supabase } from "@/integrations/supabase/client";
@@ -21,9 +22,10 @@ interface Investor {
 interface ABCAutoRemindersProps {
   investors: Investor[];
   onSelectInvestor?: (investorId: string) => void;
+  onSendReminders?: (reminders: Reminder[]) => void;
 }
 
-interface Reminder {
+export interface Reminder {
   id: string;
   investorId: string;
   investorName: string;
@@ -35,10 +37,11 @@ interface Reminder {
   email: string | null;
 }
 
-export const ABCAutoReminders = ({ investors, onSelectInvestor }: ABCAutoRemindersProps) => {
+export const ABCAutoReminders = ({ investors, onSelectInvestor, onSendReminders }: ABCAutoRemindersProps) => {
   const [overdueFollowUps, setOverdueFollowUps] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [selectedReminders, setSelectedReminders] = useState<string[]>([]);
 
   // Threshold days for reminders
   const NO_CONTACT_THRESHOLD = 7; // Days without contact for active investors
@@ -111,7 +114,6 @@ export const ABCAutoReminders = ({ investors, onSelectInvestor }: ABCAutoReminde
         }
       } else {
         // Never contacted
-        const createdDays = differenceInDays(now, new Date());
         if (investor.status === 'To Contact') {
           allReminders.push({
             id: `new-${investor.id}`,
@@ -164,6 +166,33 @@ export const ABCAutoReminders = ({ investors, onSelectInvestor }: ABCAutoReminde
     toast.success("Reminder aggiornati");
   };
 
+  const handleToggleReminder = (reminderId: string) => {
+    setSelectedReminders(prev => 
+      prev.includes(reminderId) 
+        ? prev.filter(id => id !== reminderId)
+        : [...prev, reminderId]
+    );
+  };
+
+  const handleSelectAll = () => {
+    const remindersWithEmail = reminders.filter(r => r.email);
+    if (selectedReminders.length === remindersWithEmail.length) {
+      setSelectedReminders([]);
+    } else {
+      setSelectedReminders(remindersWithEmail.map(r => r.id));
+    }
+  };
+
+  const handleSendToCampaign = () => {
+    const selected = reminders.filter(r => selectedReminders.includes(r.id) && r.email);
+    if (selected.length === 0) {
+      toast.error("Seleziona almeno un reminder con email");
+      return;
+    }
+    onSendReminders?.(selected);
+    setSelectedReminders([]);
+  };
+
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case 'high': return 'bg-red-500/10 text-red-600 border-red-500/30';
@@ -184,6 +213,7 @@ export const ABCAutoReminders = ({ investors, onSelectInvestor }: ABCAutoReminde
 
   const highPriorityCount = reminders.filter(r => r.priority === 'high').length;
   const mediumPriorityCount = reminders.filter(r => r.priority === 'medium').length;
+  const remindersWithEmail = reminders.filter(r => r.email);
 
   if (loading) {
     return (
@@ -218,15 +248,27 @@ export const ABCAutoReminders = ({ investors, onSelectInvestor }: ABCAutoReminde
               </Badge>
             )}
           </div>
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            onClick={handleRefresh}
-            disabled={isRefreshing}
-          >
-            <RefreshCw className={`h-4 w-4 mr-1 ${isRefreshing ? 'animate-spin' : ''}`} />
-            Aggiorna
-          </Button>
+          <div className="flex items-center gap-2">
+            {selectedReminders.length > 0 && (
+              <Button 
+                size="sm" 
+                onClick={handleSendToCampaign}
+                className="bg-primary hover:bg-primary/90"
+              >
+                <Send className="h-4 w-4 mr-1" />
+                Invia Campagna ({selectedReminders.length})
+              </Button>
+            )}
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={handleRefresh}
+              disabled={isRefreshing}
+            >
+              <RefreshCw className={`h-4 w-4 mr-1 ${isRefreshing ? 'animate-spin' : ''}`} />
+              Aggiorna
+            </Button>
+          </div>
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -237,55 +279,87 @@ export const ABCAutoReminders = ({ investors, onSelectInvestor }: ABCAutoReminde
             <p className="text-sm">Tutti gli investitori sono stati contattati di recente</p>
           </div>
         ) : (
-          <div className="space-y-2 max-h-[400px] overflow-y-auto">
-            {reminders.slice(0, 15).map((reminder) => (
-              <div
-                key={reminder.id}
-                className={`
-                  flex items-center justify-between p-3 rounded-lg border
-                  ${getPriorityColor(reminder.priority)}
-                  hover:shadow-sm transition-shadow cursor-pointer
-                `}
-                onClick={() => onSelectInvestor?.(reminder.investorId)}
-              >
-                <div className="flex items-center gap-3">
-                  {getTypeIcon(reminder.type)}
-                  <div>
-                    <p className="font-medium text-foreground">
-                      {reminder.investorName}
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      {reminder.company} · {reminder.message}
-                    </p>
-                  </div>
-                </div>
+          <>
+            {/* Select All */}
+            {remindersWithEmail.length > 0 && (
+              <div className="flex items-center justify-between mb-3 pb-3 border-b">
                 <div className="flex items-center gap-2">
-                  {reminder.email && (
+                  <Checkbox 
+                    checked={selectedReminders.length === remindersWithEmail.length && remindersWithEmail.length > 0}
+                    onCheckedChange={handleSelectAll}
+                  />
+                  <span className="text-sm text-muted-foreground">
+                    Seleziona tutti ({remindersWithEmail.length} con email)
+                  </span>
+                </div>
+                {selectedReminders.length > 0 && (
+                  <Badge variant="secondary">
+                    <CheckSquare className="h-3 w-3 mr-1" />
+                    {selectedReminders.length} selezionati
+                  </Badge>
+                )}
+              </div>
+            )}
+
+            <div className="space-y-2 max-h-[400px] overflow-y-auto">
+              {reminders.slice(0, 15).map((reminder) => (
+                <div
+                  key={reminder.id}
+                  className={`
+                    flex items-center justify-between p-3 rounded-lg border
+                    ${getPriorityColor(reminder.priority)}
+                    ${selectedReminders.includes(reminder.id) ? 'ring-2 ring-primary ring-offset-1' : ''}
+                    hover:shadow-sm transition-all cursor-pointer
+                  `}
+                  onClick={() => reminder.email && handleToggleReminder(reminder.id)}
+                >
+                  <div className="flex items-center gap-3">
+                    {reminder.email && (
+                      <Checkbox 
+                        checked={selectedReminders.includes(reminder.id)}
+                        onCheckedChange={() => handleToggleReminder(reminder.id)}
+                        onClick={(e) => e.stopPropagation()}
+                      />
+                    )}
+                    {getTypeIcon(reminder.type)}
+                    <div>
+                      <p className="font-medium text-foreground">
+                        {reminder.investorName}
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        {reminder.company} · {reminder.message}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {!reminder.email && (
+                      <Badge variant="outline" className="text-xs">
+                        No email
+                      </Badge>
+                    )}
                     <Button
                       variant="ghost"
                       size="sm"
                       className="h-8 w-8 p-0"
                       onClick={(e) => {
                         e.stopPropagation();
-                        navigator.clipboard.writeText(reminder.email || '');
-                        toast.success(`Email copiata: ${reminder.email}`);
+                        onSelectInvestor?.(reminder.investorId);
                       }}
-                      title={`Copia email: ${reminder.email}`}
+                      title="Vai al profilo"
                     >
-                      <Mail className="h-4 w-4" />
+                      <ChevronRight className="h-4 w-4" />
                     </Button>
-                  )}
-                  <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
 
-            {reminders.length > 15 && (
-              <p className="text-center text-sm text-muted-foreground pt-2">
-                + {reminders.length - 15} altri reminder
-              </p>
-            )}
-          </div>
+              {reminders.length > 15 && (
+                <p className="text-center text-sm text-muted-foreground pt-2">
+                  + {reminders.length - 15} altri reminder
+                </p>
+              )}
+            </div>
+          </>
         )}
 
         {/* Summary */}

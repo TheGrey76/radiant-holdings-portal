@@ -16,7 +16,7 @@ import {
   Mail, Send, Users, Filter, CheckCircle, Clock, AlertCircle, 
   Save, FileText, History, Trash2, Plus, Eye, AlertTriangle, Edit2,
   Paperclip, X, MailOpen, RefreshCw, Sparkles, MessageSquare, Reply,
-  ChevronLeft, ChevronRight
+  ChevronLeft, ChevronRight, Bell
 } from "lucide-react";
 import { format } from "date-fns";
 import { it } from "date-fns/locale";
@@ -64,9 +64,23 @@ interface CampaignHistory {
   responses_count?: number;
 }
 
+interface ReminderData {
+  id: string;
+  investorId: string;
+  investorName: string;
+  company: string;
+  type: 'no_contact' | 'hot_inactive' | 'follow_up_missed';
+  priority: 'high' | 'medium' | 'low';
+  message: string;
+  daysSince: number;
+  email: string | null;
+}
+
 interface ABCEmailCampaignManagerProps {
   investors: Investor[];
   onInvestorsUpdated?: () => void;
+  pendingReminders?: ReminderData[];
+  onRemindersClear?: () => void;
 }
 
 interface Attachment {
@@ -75,9 +89,9 @@ interface Attachment {
   type: string;
 }
 
-type EmailType = 'first_contact' | 'follow_up' | 'meeting_request' | 'proposal' | 'custom';
+type EmailType = 'first_contact' | 'follow_up' | 'meeting_request' | 'proposal' | 'reminder' | 'custom';
 
-export function ABCEmailCampaignManager({ investors, onInvestorsUpdated }: ABCEmailCampaignManagerProps) {
+export function ABCEmailCampaignManager({ investors, onInvestorsUpdated, pendingReminders, onRemindersClear }: ABCEmailCampaignManagerProps) {
   const [selectedInvestors, setSelectedInvestors] = useState<string[]>([]);
   const [filterStatus, setFilterStatus] = useState<string>("all");
   const [filterCategory, setFilterCategory] = useState<string>("all");
@@ -174,6 +188,42 @@ export function ABCEmailCampaignManager({ investors, onInvestorsUpdated }: ABCEm
     fetchTemplates();
     fetchCampaignHistory();
   }, []);
+
+  // Handle pending reminders from auto-reminders
+  useEffect(() => {
+    if (pendingReminders && pendingReminders.length > 0) {
+      // Pre-select investors from reminders
+      const reminderInvestorIds = pendingReminders
+        .map(r => {
+          const inv = investors.find(i => i.id === r.investorId);
+          return inv?.id;
+        })
+        .filter(Boolean) as string[];
+      
+      setSelectedInvestors(reminderInvestorIds);
+      
+      // Generate reminder email content
+      const investorNames = pendingReminders.map(r => r.investorName).join(', ');
+      const highPriorityCount = pendingReminders.filter(r => r.priority === 'high').length;
+      
+      setEmailForm({
+        subject: 'Aggiornamento: ABC Company - Opportunità di Investimento',
+        content: `Gentile {nome},
+
+Ci permettiamo di ricontattarLa riguardo all'opportunità di investimento in ABC Company.
+
+Desideriamo aggiornarLa sugli sviluppi recenti della nostra raccolta fondi e confermare il nostro interesse a proseguire il dialogo.
+
+${highPriorityCount > 0 ? 'I nostri primi closing si avvicinano e saremmo lieti di organizzare un incontro per approfondire.' : 'Restiamo a disposizione per qualsiasi domanda o per organizzare un incontro conoscitivo.'}
+
+Cordiali saluti,
+Il Team ABC Company`,
+        campaignName: `Reminder - ${pendingReminders.length} investitori`,
+      });
+      
+      setAiEmailType('reminder');
+    }
+  }, [pendingReminders, investors]);
 
   const fetchTemplates = async () => {
     const { data, error } = await supabase
@@ -1020,6 +1070,40 @@ export function ABCEmailCampaignManager({ investors, onInvestorsUpdated }: ABCEm
 
       {/* COMPOSE TAB */}
       <TabsContent value="compose">
+        {/* Pending Reminders Banner */}
+        {pendingReminders && pendingReminders.length > 0 && (
+          <Card className="mb-4 border-primary/50 bg-primary/5">
+            <CardContent className="py-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <Bell className="h-5 w-5 text-primary" />
+                  <div>
+                    <p className="font-medium text-foreground">
+                      Campagna Reminder: {pendingReminders.length} investitori selezionati
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      {pendingReminders.filter(r => r.priority === 'high').length} alta priorità · 
+                      {pendingReminders.filter(r => r.priority === 'medium').length} media priorità
+                    </p>
+                  </div>
+                </div>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => {
+                    setSelectedInvestors([]);
+                    setEmailForm({ subject: '', content: '', campaignName: '' });
+                    onRemindersClear?.();
+                  }}
+                >
+                  <X className="h-4 w-4 mr-1" />
+                  Annulla
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Email Composer */}
           <div className="lg:col-span-2 space-y-4">
