@@ -23,7 +23,8 @@ import {
   Calendar as CalendarIcon, 
   Loader2,
   X,
-  Save
+  Save,
+  Send
 } from "lucide-react";
 
 interface LinkedInPost {
@@ -60,6 +61,7 @@ export function FunnelPostEditor({ post, linkedBlogPost, onClose, onUpdate }: Fu
   );
   const [generating, setGenerating] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [publishing, setPublishing] = useState(false);
   const [copied, setCopied] = useState(false);
 
   const generateContent = async () => {
@@ -110,6 +112,63 @@ export function FunnelPostEditor({ post, linkedBlogPost, onClose, onUpdate }: Fu
       toast.error("Failed to save post");
     } finally {
       setSaving(false);
+    }
+  };
+
+  const publishToChannels = async () => {
+    if (!generatedContent) {
+      toast.error("Generate content first");
+      return;
+    }
+    
+    setPublishing(true);
+    try {
+      // Get active webhook
+      const { data: dist, error: distError } = await supabase
+        .from("content_distributions")
+        .select("*")
+        .eq("platform", "linkedin")
+        .eq("is_active", true)
+        .single();
+
+      if (distError || !dist) {
+        toast.error("No active distribution configured. Go to Settings tab.");
+        return;
+      }
+
+      // Send to webhook
+      const response = await fetch(dist.webhook_url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title,
+          content: generatedContent,
+          url: "https://www.aries76.com/bitcoin-2026-report-preview",
+          scheduled_for: scheduledFor?.toISOString() || null,
+          angle,
+          timestamp: new Date().toISOString()
+        })
+      });
+
+      if (!response.ok) throw new Error("Webhook failed");
+
+      // Update post status to published
+      await supabase
+        .from("bitcoin_funnel_linkedin_posts")
+        .update({ 
+          status: "published",
+          published_at: new Date().toISOString()
+        })
+        .eq("id", post.id);
+
+      toast.success("Published to LinkedIn channel!");
+      onUpdate();
+      onClose();
+    } catch (err: any) {
+      console.error("Publish error:", err);
+      toast.error("Failed to publish: " + (err.message || "Unknown error"));
+    } finally {
+      setPublishing(false);
     }
   };
 
@@ -257,13 +316,25 @@ export function FunnelPostEditor({ post, linkedBlogPost, onClose, onUpdate }: Fu
           <Button variant="outline" onClick={onClose} className="border-zinc-700">
             Cancel
           </Button>
-          <Button onClick={savePost} disabled={saving}>
+          <Button variant="outline" onClick={savePost} disabled={saving} className="border-zinc-700">
             {saving ? (
               <Loader2 className="w-4 h-4 mr-2 animate-spin" />
             ) : (
               <Save className="w-4 h-4 mr-2" />
             )}
-            Save Post
+            Save Draft
+          </Button>
+          <Button 
+            onClick={publishToChannels} 
+            disabled={publishing || !generatedContent}
+            className="bg-[#0A66C2] hover:bg-[#084d94]"
+          >
+            {publishing ? (
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+            ) : (
+              <Send className="w-4 h-4 mr-2" />
+            )}
+            Publish
           </Button>
         </div>
       </CardContent>
