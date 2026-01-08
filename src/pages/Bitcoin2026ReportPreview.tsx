@@ -116,9 +116,15 @@ const Bitcoin2026ReportPreview = () => {
             Request full access
           </h3>
           
-          <p className="text-zinc-200 mb-8 leading-relaxed">
+          <p className="text-zinc-200 mb-6 leading-relaxed">
             Full access provides continuous updates, real-time data, and the complete Bitcoin 2026 analytical framework.
           </p>
+          
+          {/* Price */}
+          <div className="mb-8 py-4 border-y border-zinc-700/60">
+            <div className="text-4xl font-semibold text-white tracking-tight">€99</div>
+            <p className="text-sm text-zinc-400 mt-1">One-time payment · Ongoing updates included</p>
+          </div>
           
           <div className="space-y-4 max-w-sm mx-auto">
             <Input
