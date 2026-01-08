@@ -694,6 +694,212 @@ export type Database = {
         }
         Relationships: []
       }
+      bitcoin_funnel_automation_log: {
+        Row: {
+          action: string
+          created_at: string
+          details: Json | null
+          id: string
+          lead_id: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          details?: Json | null
+          id?: string
+          lead_id?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          details?: Json | null
+          id?: string
+          lead_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bitcoin_funnel_automation_log_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "bitcoin_funnel_leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      bitcoin_funnel_dm_templates: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          is_active: boolean
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      bitcoin_funnel_email_sequences: {
+        Row: {
+          body: string
+          created_at: string
+          id: string
+          name: string
+          sequence_order: number
+          status: string
+          subject: string
+          trigger_hours_after_request: number | null
+          updated_at: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          id?: string
+          name: string
+          sequence_order: number
+          status?: string
+          subject: string
+          trigger_hours_after_request?: number | null
+          updated_at?: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: string
+          name?: string
+          sequence_order?: number
+          status?: string
+          subject?: string
+          trigger_hours_after_request?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      bitcoin_funnel_leads: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          paid_at: string | null
+          source: string
+          status: string
+          stripe_payment_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          paid_at?: string | null
+          source?: string
+          status?: string
+          stripe_payment_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          paid_at?: string | null
+          source?: string
+          status?: string
+          stripe_payment_id?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      bitcoin_funnel_linkedin_posts: {
+        Row: {
+          angle: string
+          created_at: string
+          id: string
+          notes: string | null
+          published_at: string | null
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          angle?: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          published_at?: string | null
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          angle?: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          published_at?: string | null
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      bitcoin_funnel_notes: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          note_text: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          note_text: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          note_text?: string
+        }
+        Relationships: []
+      }
+      bitcoin_funnel_settings: {
+        Row: {
+          id: string
+          setting_key: string
+          setting_value: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          id?: string
+          setting_key: string
+          setting_value: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          id?: string
+          setting_key?: string
+          setting_value?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       bitcoin_regime_history: {
         Row: {
           bitcoin_price_at_time: number | null

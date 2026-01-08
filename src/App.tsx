@@ -80,6 +80,7 @@ import InsightsAdmin from "./pages/InsightsAdmin";
 import ReportsPage from "./pages/ReportsPage";
 import ReportDetailPage from "./pages/ReportDetailPage";
 import ResearchHubAdmin from "./pages/ResearchHubAdmin";
+import BitcoinFunnelDashboard from "./pages/BitcoinFunnelDashboard";
 
 const queryClient = new QueryClient();
 
@@ -162,6 +163,7 @@ const App = () => (
           <Route path="/bitcoin-2026-report" element={<Bitcoin2026Report />} />
           <Route path="/bitcoin-2026-report-cover" element={<Bitcoin2026ReportCover />} />
           <Route path="/bitcoin-2026-report-preview" element={<Bitcoin2026ReportPreview />} />
+          <Route path="/funnel-bitcoin-report" element={<BitcoinFunnelDashboard />} />
           
           <Route path="/mazal-innovation" element={<MazalInnovation />} />
           <Route path="/reelimmobiliare" element={<ReelImmobiliare />} />
