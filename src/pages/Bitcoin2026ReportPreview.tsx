@@ -433,11 +433,8 @@ const Bitcoin2026ReportPreview = () => {
               <CheckCircle2 className="w-5 h-5 text-green-400" />
               <span className="text-sm text-green-400 uppercase tracking-wider font-medium">Preview Content</span>
             </div>
-            <div className="max-w-md">
-              {/* Force dark theme tokens for readability on this page */}
-              <div className="dark">
-                <FearGreedIndex />
-              </div>
+            <div className="max-w-md [&_.bg-card\/50]:bg-zinc-800/80 [&_.text-muted-foreground]:text-zinc-300 [&_.border-border]:border-zinc-600 [&_.bg-muted]:bg-zinc-700 [&_.text-foreground]:text-white [&_.bg-primary]:bg-accent [&_.text-primary]:text-accent">
+              <FearGreedIndex />
             </div>
           </motion.section>
 
