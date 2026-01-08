@@ -48,10 +48,10 @@ const Bitcoin2026ReportPreview = () => {
   };
 
   const AccessCard = ({ className = '' }: { className?: string }) => (
-    <Card className={`bg-zinc-900/80 border-zinc-800 ${className}`}>
+    <Card className={`bg-gradient-to-br from-zinc-900 to-zinc-950 border-accent/20 ${className}`}>
       <CardContent className="p-8 space-y-6">
         <div className="text-center">
-          <div className="inline-flex items-center gap-2 text-xs text-zinc-500 uppercase tracking-widest mb-4">
+          <div className="inline-flex items-center gap-2 text-xs text-accent uppercase tracking-widest mb-4">
             <Activity className="w-3 h-3" />
             Live Intelligence
           </div>
@@ -70,12 +70,12 @@ const Bitcoin2026ReportPreview = () => {
             placeholder="Your email address"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="bg-zinc-800/50 border-zinc-700 text-white placeholder:text-zinc-500"
+            className="bg-zinc-800/50 border-zinc-700 text-white placeholder:text-zinc-500 focus:border-accent"
           />
           <Button 
             onClick={handleAccess}
             disabled={isLoading}
-            className="w-full bg-zinc-100 hover:bg-white text-zinc-900 font-medium py-6"
+            className="w-full bg-accent hover:bg-accent/90 text-white font-medium py-6"
           >
             {isLoading ? (
               <>
@@ -116,17 +116,21 @@ const Bitcoin2026ReportPreview = () => {
         <meta name="twitter:image" content="https://aries76.com/bitcoin-2026-og.png" />
       </Helmet>
 
-      <div className="min-h-screen bg-zinc-950">
+      <div className="min-h-screen bg-gradient-to-b from-zinc-950 via-zinc-900 to-zinc-950">
         
         {/* ===== HERO SECTION ===== */}
-        <section className="pt-24 pb-20">
-          <div className="container mx-auto px-4">
+        <section className="relative pt-24 pb-20 overflow-hidden">
+          {/* Subtle gradient accents */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,hsl(var(--accent)/0.12),transparent_50%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,hsl(var(--accent)/0.08),transparent_50%)]" />
+          
+          <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-5xl mx-auto">
               <div className="grid lg:grid-cols-5 gap-12 items-start">
                 
                 {/* Left: Content */}
                 <div className="lg:col-span-3">
-                  <div className="flex items-center gap-2 text-zinc-500 text-sm mb-6">
+                  <div className="flex items-center gap-2 text-accent text-sm mb-6">
                     <RefreshCw className="w-3.5 h-3.5" />
                     <span>Live · Updated in real time</span>
                   </div>
@@ -135,7 +139,7 @@ const Bitcoin2026ReportPreview = () => {
                     Bitcoin 2026
                   </h1>
                   
-                  <p className="text-xl text-zinc-300 mb-4">
+                  <p className="text-xl text-zinc-200 mb-4">
                     A live Bitcoin intelligence page for long-term decision makers
                   </p>
                   
@@ -159,7 +163,7 @@ const Bitcoin2026ReportPreview = () => {
         </section>
 
         {/* ===== WHY THIS EXISTS ===== */}
-        <section className="py-20 border-t border-zinc-900">
+        <section className="py-20 border-t border-accent/10">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto">
               <h2 className="text-2xl md:text-3xl font-semibold text-white mb-8">
@@ -179,7 +183,7 @@ const Bitcoin2026ReportPreview = () => {
         </section>
 
         {/* ===== WHAT CHANGES WITH CONTINUOUS CONTEXT ===== */}
-        <section className="py-20 border-t border-zinc-900">
+        <section className="py-20 border-t border-accent/10">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto">
               <h2 className="text-2xl md:text-3xl font-semibold text-white mb-8">
@@ -205,7 +209,7 @@ const Bitcoin2026ReportPreview = () => {
         </section>
 
         {/* ===== WHAT YOU ACCESS ===== */}
-        <section className="py-20 border-t border-zinc-900">
+        <section className="py-20 border-t border-accent/10">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto">
               <h2 className="text-2xl md:text-3xl font-semibold text-white mb-8">
@@ -231,7 +235,7 @@ const Bitcoin2026ReportPreview = () => {
         </section>
 
         {/* ===== WHO THIS IS FOR ===== */}
-        <section className="py-20 border-t border-zinc-900">
+        <section className="py-20 border-t border-accent/10">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto">
               <h2 className="text-2xl md:text-3xl font-semibold text-white mb-8">
@@ -251,7 +255,7 @@ const Bitcoin2026ReportPreview = () => {
         </section>
 
         {/* ===== A LIVING PRODUCT ===== */}
-        <section className="py-20 border-t border-zinc-900">
+        <section className="py-20 border-t border-accent/10">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto">
               <h2 className="text-2xl md:text-3xl font-semibold text-white mb-8">
@@ -277,7 +281,7 @@ const Bitcoin2026ReportPreview = () => {
         </section>
 
         {/* ===== ACCESS AND UPDATES ===== */}
-        <section className="py-20 border-t border-zinc-900">
+        <section className="py-20 border-t border-accent/10">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto">
               <h2 className="text-2xl md:text-3xl font-semibold text-white mb-8">
@@ -302,10 +306,10 @@ const Bitcoin2026ReportPreview = () => {
         </section>
 
         {/* ===== FOOTER ===== */}
-        <section className="py-12 border-t border-zinc-900">
+        <section className="py-12 border-t border-accent/10">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center">
-              <p className="text-zinc-600 text-sm">
+              <p className="text-zinc-500 text-sm">
                 ARIES76 · Capital Intelligence
               </p>
             </div>
