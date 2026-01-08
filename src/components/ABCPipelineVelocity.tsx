@@ -122,6 +122,9 @@ export const ABCPipelineVelocity = ({ investors }: ABCPipelineVelocityProps) => 
       byInvestor[key].push(a);
     }
 
+    // Track which investors have activity-based data
+    const investorsWithActivities = new Set<string>();
+
     // transitions accumulator
     const transitionsAcc: Record<string, { totalDays: number; count: number }> = {};
 
@@ -131,6 +134,7 @@ export const ABCPipelineVelocity = ({ investors }: ABCPipelineVelocityProps) => 
 
     const isKnownStage = (s: string) => (STAGES as readonly string[]).includes(s);
 
+    // Process activity-based transitions
     Object.entries(byInvestor).forEach(([investorKey, acts]) => {
       const inv = investorByKey.get(investorKey);
       const createdAt = inv?.createdAt ? parseISO(inv.createdAt) : null;
@@ -138,8 +142,6 @@ export const ABCPipelineVelocity = ({ investors }: ABCPipelineVelocityProps) => 
       acts.sort((a, b) => parseISO(a.activity_date).getTime() - parseISO(b.activity_date).getTime());
 
       let prevDate: Date | null = createdAt;
-
-      // Track first time reaching Closed for total-to-close
       let closedAt: Date | null = null;
 
       for (const act of acts) {
@@ -147,6 +149,8 @@ export const ABCPipelineVelocity = ({ investors }: ABCPipelineVelocityProps) => 
         if (!parsed) continue;
         const { from, to } = parsed;
         if (!isKnownStage(from) || !isKnownStage(to)) continue;
+
+        investorsWithActivities.add(investorKey);
 
         const actDate = parseISO(act.activity_date);
         const daysSpent = prevDate ? Math.max(0, differenceInDays(actDate, prevDate)) : 0;
@@ -156,7 +160,6 @@ export const ABCPipelineVelocity = ({ investors }: ABCPipelineVelocityProps) => 
         transitionsAcc[key].totalDays += daysSpent;
         transitionsAcc[key].count += 1;
 
-        // mark close time
         if (to === "Closed" && !closedAt) {
           closedAt = actDate;
         }
@@ -164,13 +167,61 @@ export const ABCPipelineVelocity = ({ investors }: ABCPipelineVelocityProps) => 
         prevDate = actDate;
       }
 
-      // Average total days = createdAt -> first Closed transition date (if investor currently Closed)
       if (inv?.status === "Closed" && createdAt && closedAt) {
         const totalDays = Math.max(0, differenceInDays(closedAt, createdAt));
         if (totalDays > 0) {
           closedTotalDays += totalDays;
           closedCount += 1;
         }
+      }
+    });
+
+    // FALLBACK: For investors without status_change activities, estimate from created_at/last_contact_date
+    const stageOrder: Record<string, number> = {
+      "To Contact": 0,
+      "Contacted": 1,
+      "Interested": 2,
+      "Meeting Scheduled": 3,
+      "In Negotiation": 4,
+      "Closed": 5,
+    };
+
+    investors.forEach((inv) => {
+      const key = normalizeInvestorKey(inv);
+      if (investorsWithActivities.has(key)) return; // Already processed via activities
+
+      const currentStageOrder = stageOrder[inv.status];
+      if (currentStageOrder === undefined || currentStageOrder === 0) return; // Still at To Contact or unknown
+
+      const createdAt = inv.createdAt ? parseISO(inv.createdAt) : null;
+      const lastContact = inv.lastContactDate ? parseISO(inv.lastContactDate) : null;
+      if (!createdAt) return;
+
+      // Estimate: total days from created_at to last_contact_date (or now if no last_contact)
+      const endDate = lastContact || new Date();
+      const totalDays = Math.max(0, differenceInDays(endDate, createdAt));
+      if (totalDays === 0) return;
+
+      // Distribute days evenly across stages traversed (To Contact → current status)
+      const stagesTraversed = currentStageOrder; // Number of transitions made
+      if (stagesTraversed === 0) return;
+
+      const avgDaysPerStage = totalDays / stagesTraversed;
+
+      // Add estimated transition for each stage passed
+      for (let i = 0; i < stagesTraversed; i++) {
+        const fromStage = STAGES[i];
+        const toStage = STAGES[i + 1];
+        const transKey = `${fromStage}→${toStage}`;
+        if (!transitionsAcc[transKey]) transitionsAcc[transKey] = { totalDays: 0, count: 0 };
+        transitionsAcc[transKey].totalDays += avgDaysPerStage;
+        transitionsAcc[transKey].count += 1;
+      }
+
+      // For closed investors, add to overall closing time
+      if (inv.status === "Closed" && totalDays > 0) {
+        closedTotalDays += totalDays;
+        closedCount += 1;
       }
     });
 
