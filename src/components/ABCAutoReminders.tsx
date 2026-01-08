@@ -267,9 +267,10 @@ export const ABCAutoReminders = ({ investors, onSelectInvestor }: ABCAutoReminde
                       className="h-8 w-8 p-0"
                       onClick={(e) => {
                         e.stopPropagation();
-                        window.open(`mailto:${reminder.email}`, '_blank', 'noopener,noreferrer');
+                        navigator.clipboard.writeText(reminder.email || '');
+                        toast.success(`Email copiata: ${reminder.email}`);
                       }}
-                      title={`Invia email a ${reminder.email}`}
+                      title={`Copia email: ${reminder.email}`}
                     >
                       <Mail className="h-4 w-4" />
                     </Button>
