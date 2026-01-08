@@ -38,7 +38,7 @@ import ABCAIEnrichmentDialog from "@/components/ABCAIEnrichmentDialog";
 import { ABCRelationshipIntelligence } from "@/components/ABCRelationshipIntelligence";
 import { ABCPipelineVelocity } from "@/components/ABCPipelineVelocity";
 import { ABCAnimatedFunnel } from "@/components/ABCAnimatedFunnel";
-import { ABCAutoReminders } from "@/components/ABCAutoReminders";
+import { ABCAutoReminders, Reminder } from "@/components/ABCAutoReminders";
 import { useKPIHistory } from "@/hooks/useKPIHistory";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -109,6 +109,7 @@ const ABCCompanyConsole = () => {
   // Funnel data is now always calculated from real investor data (removed customFunnelData override)
   const [editInvestorId, setEditInvestorId] = useState<string | null>(null);
   const [lastDataUpdate, setLastDataUpdate] = useState<Date | null>(null);
+  const [pendingReminders, setPendingReminders] = useState<Reminder[]>([]);
   
   // Quick Actions state
   const [showAddNoteDialog, setShowAddNoteDialog] = useState(false);
@@ -771,6 +772,11 @@ const ABCCompanyConsole = () => {
                 setActiveTab('investors');
                 setEditInvestorId(id);
               }}
+              onSendReminders={(reminders) => {
+                setPendingReminders(reminders);
+                setActiveTab('campaigns');
+                toast.success(`${reminders.length} investitori pronti per campagna reminder`);
+              }}
             />
 
             {/* Real-time Activity Feed */}
@@ -1103,7 +1109,7 @@ const ABCCompanyConsole = () => {
             </div>
 
             <ABCEmailCampaignManager 
-              key={`campaign-manager-${investors.filter(i => i.email).length}`}
+              key={`campaign-manager-${investors.filter(i => i.email).length}-${pendingReminders.length}`}
               investors={investors.map(i => ({ 
                 id: i.id, 
                 nome: i.nome, 
@@ -1121,6 +1127,8 @@ const ABCCompanyConsole = () => {
                 fonte: i.fonte
               }))} 
               onInvestorsUpdated={fetchInvestors}
+              pendingReminders={pendingReminders}
+              onRemindersClear={() => setPendingReminders([])}
             />
           </TabsContent>
 
