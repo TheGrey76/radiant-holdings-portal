@@ -825,35 +825,52 @@ export type Database = {
       bitcoin_funnel_linkedin_posts: {
         Row: {
           angle: string
+          blog_post_id: string | null
           created_at: string
+          generated_content: string | null
           id: string
           notes: string | null
           published_at: string | null
+          scheduled_for: string | null
           status: string
           title: string
           updated_at: string
         }
         Insert: {
           angle?: string
+          blog_post_id?: string | null
           created_at?: string
+          generated_content?: string | null
           id?: string
           notes?: string | null
           published_at?: string | null
+          scheduled_for?: string | null
           status?: string
           title: string
           updated_at?: string
         }
         Update: {
           angle?: string
+          blog_post_id?: string | null
           created_at?: string
+          generated_content?: string | null
           id?: string
           notes?: string | null
           published_at?: string | null
+          scheduled_for?: string | null
           status?: string
           title?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "bitcoin_funnel_linkedin_posts_blog_post_id_fkey"
+            columns: ["blog_post_id"]
+            isOneToOne: false
+            referencedRelation: "blog_posts"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       bitcoin_funnel_notes: {
         Row: {

@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Table, 
   TableBody, 
@@ -37,8 +38,14 @@ import {
   RefreshCw,
   Plus,
   Save,
-  Loader2
+  Loader2,
+  Calendar,
+  Sparkles,
+  Edit
 } from "lucide-react";
+import { FunnelContentCalendar } from "@/components/FunnelContentCalendar";
+import { FunnelBlogSelector } from "@/components/FunnelBlogSelector";
+import { FunnelPostEditor } from "@/components/FunnelPostEditor";
 
 interface FunnelLead {
   id: string;
@@ -56,6 +63,15 @@ interface LinkedInPost {
   status: string;
   published_at: string | null;
   notes: string | null;
+  scheduled_for: string | null;
+  generated_content: string | null;
+  blog_post_id: string | null;
+}
+
+interface BlogPost {
+  id: string;
+  title: string;
+  excerpt: string | null;
 }
 
 interface DMTemplate {
@@ -97,6 +113,7 @@ export default function BitcoinFunnelDashboard() {
   // Data states
   const [leads, setLeads] = useState<FunnelLead[]>([]);
   const [linkedInPosts, setLinkedInPosts] = useState<LinkedInPost[]>([]);
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [dmTemplates, setDMTemplates] = useState<DMTemplate[]>([]);
   const [emailSequences, setEmailSequences] = useState<EmailSequence[]>([]);
   const [settings, setSettings] = useState<FunnelSettings>({
@@ -108,8 +125,12 @@ export default function BitcoinFunnelDashboard() {
   const [newNote, setNewNote] = useState("");
 
   // New post form
-  const [newPost, setNewPost] = useState({ title: "", angle: "positioning", notes: "" });
+  const [newPost, setNewPost] = useState({ title: "", angle: "positioning", notes: "", blog_post_id: "" });
   const [showNewPostForm, setShowNewPostForm] = useState(false);
+  
+  // Post editor
+  const [editingPost, setEditingPost] = useState<LinkedInPost | null>(null);
+  const [contentTab, setContentTab] = useState("posts");
 
   // Check admin access
   useEffect(() => {
@@ -140,6 +161,7 @@ export default function BitcoinFunnelDashboard() {
     await Promise.all([
       fetchLeads(),
       fetchLinkedInPosts(),
+      fetchBlogPosts(),
       fetchDMTemplates(),
       fetchEmailSequences(),
       fetchSettings(),
@@ -161,7 +183,16 @@ export default function BitcoinFunnelDashboard() {
       .from("bitcoin_funnel_linkedin_posts")
       .select("*")
       .order("created_at", { ascending: false });
-    if (data) setLinkedInPosts(data);
+    if (data) setLinkedInPosts(data as LinkedInPost[]);
+  };
+
+  const fetchBlogPosts = async () => {
+    const { data } = await supabase
+      .from("blog_posts")
+      .select("id, title, excerpt")
+      .eq("status", "published")
+      .limit(100);
+    if (data) setBlogPosts(data);
   };
 
   const fetchDMTemplates = async () => {
@@ -281,12 +312,27 @@ export default function BitcoinFunnelDashboard() {
         title: newPost.title,
         angle: newPost.angle,
         notes: newPost.notes,
+        blog_post_id: newPost.blog_post_id || null,
         status: "draft"
       });
-    setNewPost({ title: "", angle: "positioning", notes: "" });
+    setNewPost({ title: "", angle: "positioning", notes: "", blog_post_id: "" });
     setShowNewPostForm(false);
     await fetchLinkedInPosts();
     toast.success("Post added");
+  };
+
+  const linkBlogToNewPost = (blogPost: { id: string; title: string }) => {
+    setNewPost({ 
+      ...newPost, 
+      title: newPost.title || blogPost.title,
+      blog_post_id: blogPost.id 
+    });
+    setShowNewPostForm(true);
+  };
+
+  const getLinkedBlogPost = (blogPostId: string | null) => {
+    if (!blogPostId) return null;
+    return blogPosts.find(bp => bp.id === blogPostId) || null;
   };
 
   const updatePostStatus = async (id: string, status: string) => {
@@ -424,110 +470,209 @@ export default function BitcoinFunnelDashboard() {
 
         {/* 3️⃣ Content Engine */}
         <section className="space-y-6">
-          <div className="flex items-center gap-2">
-            <FileText className="w-5 h-5 text-zinc-500" />
-            <h2 className="text-lg font-medium text-white">Content & Messaging Engine</h2>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <FileText className="w-5 h-5 text-zinc-500" />
+              <h2 className="text-lg font-medium text-white">Content & Messaging Engine</h2>
+            </div>
           </div>
 
-          {/* A. LinkedIn Posts */}
-          <Card className="bg-zinc-900 border-zinc-800">
-            <CardHeader className="pb-2 flex flex-row items-center justify-between">
-              <CardTitle className="text-base font-medium text-zinc-300">LinkedIn Posts</CardTitle>
-              <Button
-                size="sm"
-                variant="outline"
-                className="border-zinc-700 text-zinc-400 h-8"
-                onClick={() => setShowNewPostForm(!showNewPostForm)}
-              >
-                <Plus className="w-4 h-4 mr-1" /> Add Post
-              </Button>
-            </CardHeader>
-            <CardContent>
-              {showNewPostForm && (
-                <div className="mb-4 p-4 bg-zinc-800/50 rounded-lg space-y-3">
-                  <Input
-                    placeholder="Post title"
-                    value={newPost.title}
-                    onChange={(e) => setNewPost({ ...newPost, title: e.target.value })}
-                    className="bg-zinc-800 border-zinc-700"
-                  />
-                  <div className="flex gap-3">
-                    <Select
-                      value={newPost.angle}
-                      onValueChange={(v) => setNewPost({ ...newPost, angle: v })}
+          <Tabs value={contentTab} onValueChange={setContentTab} className="space-y-4">
+            <TabsList className="bg-zinc-800 border-zinc-700">
+              <TabsTrigger value="posts" className="data-[state=active]:bg-zinc-700">
+                <Sparkles className="w-4 h-4 mr-2" />
+                LinkedIn Posts
+              </TabsTrigger>
+              <TabsTrigger value="calendar" className="data-[state=active]:bg-zinc-700">
+                <Calendar className="w-4 h-4 mr-2" />
+                Calendar
+              </TabsTrigger>
+              <TabsTrigger value="blog" className="data-[state=active]:bg-zinc-700">
+                <FileText className="w-4 h-4 mr-2" />
+                Blog Articles
+              </TabsTrigger>
+            </TabsList>
+
+            {/* Posts Tab */}
+            <TabsContent value="posts" className="space-y-4">
+              {editingPost ? (
+                <FunnelPostEditor
+                  post={editingPost}
+                  linkedBlogPost={getLinkedBlogPost(editingPost.blog_post_id)}
+                  onClose={() => setEditingPost(null)}
+                  onUpdate={fetchLinkedInPosts}
+                />
+              ) : (
+                <Card className="bg-zinc-900 border-zinc-800">
+                  <CardHeader className="pb-2 flex flex-row items-center justify-between">
+                    <CardTitle className="text-base font-medium text-zinc-300">LinkedIn Posts</CardTitle>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="border-zinc-700 text-zinc-400 h-8"
+                      onClick={() => setShowNewPostForm(!showNewPostForm)}
                     >
-                      <SelectTrigger className="w-40 bg-zinc-800 border-zinc-700">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="de-education">De-education</SelectItem>
-                        <SelectItem value="positioning">Positioning</SelectItem>
-                        <SelectItem value="qualifying">Qualifying</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <Input
-                      placeholder="Notes"
-                      value={newPost.notes}
-                      onChange={(e) => setNewPost({ ...newPost, notes: e.target.value })}
-                      className="bg-zinc-800 border-zinc-700 flex-1"
-                    />
-                    <Button size="sm" onClick={addLinkedInPost}>Save</Button>
-                  </div>
-                </div>
+                      <Plus className="w-4 h-4 mr-1" /> Add Post
+                    </Button>
+                  </CardHeader>
+                  <CardContent>
+                    {showNewPostForm && (
+                      <div className="mb-4 p-4 bg-zinc-800/50 rounded-lg space-y-3">
+                        <Input
+                          placeholder="Post title/hook"
+                          value={newPost.title}
+                          onChange={(e) => setNewPost({ ...newPost, title: e.target.value })}
+                          className="bg-zinc-800 border-zinc-700"
+                        />
+                        <div className="flex gap-3">
+                          <Select
+                            value={newPost.angle}
+                            onValueChange={(v) => setNewPost({ ...newPost, angle: v })}
+                          >
+                            <SelectTrigger className="w-40 bg-zinc-800 border-zinc-700">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="de-education">De-education</SelectItem>
+                              <SelectItem value="positioning">Positioning</SelectItem>
+                              <SelectItem value="qualifying">Qualifying</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <Input
+                            placeholder="Notes"
+                            value={newPost.notes}
+                            onChange={(e) => setNewPost({ ...newPost, notes: e.target.value })}
+                            className="bg-zinc-800 border-zinc-700 flex-1"
+                          />
+                          <Button size="sm" onClick={addLinkedInPost}>Save</Button>
+                        </div>
+                        {newPost.blog_post_id && (
+                          <div className="flex items-center gap-2 text-xs text-amber-400">
+                            <span>Linked to blog article</span>
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              className="h-6 text-xs"
+                              onClick={() => setNewPost({ ...newPost, blog_post_id: "" })}
+                            >
+                              Remove
+                            </Button>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                    <Table>
+                      <TableHeader>
+                        <TableRow className="border-zinc-800">
+                          <TableHead className="text-zinc-500">Title</TableHead>
+                          <TableHead className="text-zinc-500">Angle</TableHead>
+                          <TableHead className="text-zinc-500">Scheduled</TableHead>
+                          <TableHead className="text-zinc-500">Status</TableHead>
+                          <TableHead className="text-zinc-500">AI</TableHead>
+                          <TableHead className="text-zinc-500">Actions</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {linkedInPosts.map((post) => (
+                          <TableRow key={post.id} className="border-zinc-800">
+                            <TableCell className="text-zinc-300 font-medium max-w-[200px]">
+                              <div className="truncate">{post.title}</div>
+                              {post.blog_post_id && (
+                                <span className="text-xs text-amber-500/70">📎 Blog linked</span>
+                              )}
+                            </TableCell>
+                            <TableCell>
+                              <Badge variant="outline" className="text-xs border-zinc-700 text-zinc-400">
+                                {post.angle}
+                              </Badge>
+                            </TableCell>
+                            <TableCell className="text-zinc-500 text-sm">
+                              {post.scheduled_for 
+                                ? new Date(post.scheduled_for).toLocaleDateString() 
+                                : "—"}
+                            </TableCell>
+                            <TableCell>
+                              <Select
+                                value={post.status}
+                                onValueChange={(v) => updatePostStatus(post.id, v)}
+                              >
+                                <SelectTrigger className="w-28 h-8 bg-zinc-800 border-zinc-700 text-xs">
+                                  <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="draft">Draft</SelectItem>
+                                  <SelectItem value="scheduled">Scheduled</SelectItem>
+                                  <SelectItem value="published">Published</SelectItem>
+                                  <SelectItem value="retired">Retired</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </TableCell>
+                            <TableCell>
+                              {post.generated_content ? (
+                                <Badge variant="outline" className="text-xs border-green-800 text-green-400">
+                                  Ready
+                                </Badge>
+                              ) : (
+                                <Badge variant="outline" className="text-xs border-zinc-700 text-zinc-500">
+                                  —
+                                </Badge>
+                              )}
+                            </TableCell>
+                            <TableCell>
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                className="h-8"
+                                onClick={() => setEditingPost(post)}
+                              >
+                                <Edit className="w-4 h-4" />
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                        {linkedInPosts.length === 0 && (
+                          <TableRow>
+                            <TableCell colSpan={6} className="text-center text-zinc-500 py-8">
+                              No posts yet
+                            </TableCell>
+                          </TableRow>
+                        )}
+                      </TableBody>
+                    </Table>
+                  </CardContent>
+                </Card>
               )}
-              <Table>
-                <TableHeader>
-                  <TableRow className="border-zinc-800">
-                    <TableHead className="text-zinc-500">Title</TableHead>
-                    <TableHead className="text-zinc-500">Angle</TableHead>
-                    <TableHead className="text-zinc-500">Status</TableHead>
-                    <TableHead className="text-zinc-500">Published</TableHead>
-                    <TableHead className="text-zinc-500">Notes</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {linkedInPosts.map((post) => (
-                    <TableRow key={post.id} className="border-zinc-800">
-                      <TableCell className="text-zinc-300 font-medium">{post.title}</TableCell>
-                      <TableCell>
-                        <Badge variant="outline" className="text-xs border-zinc-700 text-zinc-400">
-                          {post.angle}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <Select
-                          value={post.status}
-                          onValueChange={(v) => updatePostStatus(post.id, v)}
-                        >
-                          <SelectTrigger className="w-28 h-8 bg-zinc-800 border-zinc-700 text-xs">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="draft">Draft</SelectItem>
-                            <SelectItem value="published">Published</SelectItem>
-                            <SelectItem value="retired">Retired</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </TableCell>
-                      <TableCell className="text-zinc-500 text-sm">
-                        {post.published_at ? new Date(post.published_at).toLocaleDateString() : "—"}
-                      </TableCell>
-                      <TableCell className="text-zinc-500 text-sm max-w-[200px] truncate">
-                        {post.notes || "—"}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                  {linkedInPosts.length === 0 && (
-                    <TableRow>
-                      <TableCell colSpan={5} className="text-center text-zinc-500 py-8">
-                        No posts yet
-                      </TableCell>
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
+            </TabsContent>
+
+            {/* Calendar Tab */}
+            <TabsContent value="calendar">
+              <FunnelContentCalendar
+                posts={linkedInPosts.map(p => ({
+                  id: p.id,
+                  title: p.title,
+                  scheduled_for: p.scheduled_for || "",
+                  status: p.status,
+                  angle: p.angle
+                }))}
+                onSelectDate={() => {}}
+                onSelectPost={(post) => {
+                  const fullPost = linkedInPosts.find(p => p.id === post.id);
+                  if (fullPost) {
+                    setEditingPost(fullPost);
+                    setContentTab("posts");
+                  }
+                }}
+              />
+            </TabsContent>
+
+            {/* Blog Tab */}
+            <TabsContent value="blog">
+              <FunnelBlogSelector
+                onSelectPost={(blogPost) => linkBlogToNewPost(blogPost)}
+                selectedPostId={newPost.blog_post_id || null}
+              />
+            </TabsContent>
+          </Tabs>
 
           {/* B. DM Templates */}
           <Card className="bg-zinc-900 border-zinc-800">
