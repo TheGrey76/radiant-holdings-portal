@@ -795,8 +795,503 @@ const Bitcoin2026ReportIT = () => {
                 </div>
               </ChapterSection>
 
-              {/* Additional chapters would follow the same pattern */}
-              {/* For brevity, showing key structural elements */}
+              {/* Capitolo III */}
+              <ChapterSection id="chapter-3" dataSection="chapter-3">
+                <div className="mb-12">
+                  <div className="inline-flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                      <Layers className="w-5 h-5 text-primary" />
+                    </div>
+                    <span className="text-xs font-bold text-primary uppercase tracking-widest">Capitolo III</span>
+                  </div>
+                  <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 leading-tight">
+                    Modelli Quantitativi di Regime & Metodologia
+                  </h2>
+                  <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent rounded-full"></div>
+                </div>
+
+                <div className="prose prose-lg max-w-none space-y-8">
+                  <p className="text-foreground/80 leading-relaxed">
+                    Il framework quantitativo impiega Modelli Hidden Markov per identificare regimi di mercato distinti, funzioni di domanda aggiustate per liquidità per modellare i flussi istituzionali, e posizionamento implicito sui derivati per catturare le dinamiche di microstruttura del mercato.
+                  </p>
+
+                  <div className="p-8 rounded-2xl bg-gradient-to-br from-primary/5 via-accent/5 to-background border-2 border-primary/10">
+                    <h4 className="text-xl font-bold text-foreground mb-6">Target Istituzionale: $138.000</h4>
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between p-4 rounded-xl bg-background/50">
+                        <span className="text-sm font-medium text-foreground">Caso Base (60%)</span>
+                        <span className="text-lg font-bold text-primary">$96k–$132k</span>
+                      </div>
+                      <div className="flex items-center justify-between p-4 rounded-xl bg-background/50">
+                        <span className="text-sm font-medium text-foreground">Caso Alto (25%)</span>
+                        <span className="text-lg font-bold text-accent">$180k–$260k</span>
+                      </div>
+                      <div className="flex items-center justify-between p-4 rounded-xl bg-background/50">
+                        <span className="text-sm font-medium text-foreground">Caso Stress (15%)</span>
+                        <span className="text-lg font-bold text-muted-foreground">$45k–$60k</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <KeyTakeaways insights={[
+                    "I Modelli Hidden Markov identificano tre regimi di mercato distinti—accumulazione, espansione e distribuzione—ognuno con volatilità, profili di rendimento e probabilità di transizione caratteristici.",
+                    "Il target istituzionale di $138.000 rappresenta il valore atteso ponderato per probabilità tra scenari Base ($96k-$132k, 60%), Alto ($180k-$260k, 25%) e Stress ($45k-$60k, 15%).",
+                    "La metodologia quantitativa integra impulsi di liquidità macro, elasticità dell'offerta on-chain e posizionamento sui derivati in un framework di valutazione coerente che supera i modelli euristici ciclici."
+                  ]} />
+                </div>
+              </ChapterSection>
+
+              {/* Capitolo IV */}
+              <ChapterSection id="chapter-4" dataSection="chapter-4">
+                <div className="mb-12">
+                  <div className="inline-flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                      <Network className="w-5 h-5 text-primary" />
+                    </div>
+                    <span className="text-xs font-bold text-primary uppercase tracking-widest">Capitolo IV</span>
+                  </div>
+                  <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 leading-tight">
+                    Dinamiche Flussi ETF & Microstruttura di Mercato
+                  </h2>
+                  <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent rounded-full"></div>
+                </div>
+
+                <div className="prose prose-lg max-w-none space-y-8">
+                  <div className="p-6 rounded-2xl bg-gradient-to-br from-primary/5 to-accent/5 border border-primary/10">
+                    <p className="text-foreground/90 leading-relaxed m-0">
+                      L'introduzione degli ETF spot Bitcoin ha fondamentalmente alterato la microstruttura del mercato. I flussi istituzionali ora si muovono attraverso veicoli regolamentati, creando nuovi canali di arbitraggio e pattern di liquidità che differiscono marcatamente dall'era pre-ETF.
+                    </p>
+                  </div>
+
+                  <p className="text-foreground/80 leading-relaxed">
+                    I partecipanti autorizzati (AP) degli ETF arbitrano i differenziali NAV-prezzo spot, comprimendo gli spread ma creando anche dipendenze strutturali sui bilanci dei dealer. Durante periodi di volatilità elevata, i vincoli di capacità degli AP possono amplificare le oscillazioni di prezzo quando i meccanismi di creazione-rimborso incontrano attrito.
+                  </p>
+
+                  <div className="grid md:grid-cols-2 gap-6 my-12">
+                    <div className="p-6 rounded-2xl bg-card border border-border/40">
+                      <h4 className="text-lg font-bold text-foreground mb-3">Afflussi ETF</h4>
+                      <p className="text-sm text-foreground/70 leading-relaxed">
+                        Afflussi ETF sostenuti riducono il free float e creano canali di offerta quasi-inelastici. Gli acquirenti istituzionali attraverso ETF tipicamente detengono più a lungo dei buyer spot retail, riducendo l'elasticità dell'offerta circolante.
+                      </p>
+                    </div>
+                    <div className="p-6 rounded-2xl bg-card border border-border/40">
+                      <h4 className="text-lg font-bold text-foreground mb-3">Profondità di Mercato</h4>
+                      <p className="text-sm text-foreground/70 leading-relaxed">
+                        I market maker ETF coprono l'esposizione delta attraverso spot e futures, concentrando la fornitura di liquidità in meno mani. Questo crea guadagni di efficienza nei mercati normali ma potenziale fragilità durante eventi di stress.
+                      </p>
+                    </div>
+                  </div>
+
+                  <ETFFlowChart data={etfFlowData} />
+
+                  <KeyTakeaways insights={[
+                    "Gli ETF spot Bitcoin hanno fondamentalmente alterato la microstruttura del mercato—i flussi istituzionali ora canalizzano attraverso veicoli regolamentati creando nuove dinamiche di arbitraggio.",
+                    "Afflussi ETF sostenuti riducono l'elasticità dell'offerta circolante poiché gli acquirenti istituzionali dimostrano periodi di detenzione più lunghi rispetto ai buyer spot retail.",
+                    "I partecipanti autorizzati ETF arbitrano i differenziali NAV-spot ma affrontano vincoli di capacità durante i picchi di volatilità—creando efficienza nei mercati normali ma potenziale fragilità durante eventi di stress."
+                  ]} />
+                </div>
+              </ChapterSection>
+
+              {/* Capitolo V */}
+              <ChapterSection id="chapter-5" dataSection="chapter-5">
+                <div className="mb-12">
+                  <div className="inline-flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                      <Database className="w-5 h-5 text-primary" />
+                    </div>
+                    <span className="text-xs font-bold text-primary uppercase tracking-widest">Capitolo V</span>
+                  </div>
+                  <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 leading-tight">
+                    Analisi On-Chain & Comportamento delle Entità
+                  </h2>
+                  <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent rounded-full"></div>
+                </div>
+
+                <div className="prose prose-lg max-w-none space-y-8">
+                  <p className="text-foreground/80 leading-relaxed">
+                    I dati on-chain forniscono visibilità diretta sulla distribuzione dell'offerta, comportamento degli holder e pattern di transazione. Le metriche entity-adjusted distinguono tra holder genuini e aggregazione custodiale, rivelando la vera composizione della proprietà di Bitcoin.
+                  </p>
+
+                  <div className="p-6 rounded-2xl bg-gradient-to-br from-primary/5 to-accent/5 border border-primary/10">
+                    <h4 className="text-lg font-bold text-foreground mb-3">Dinamiche Long-Term Holder</h4>
+                    <p className="text-sm text-foreground/70 leading-relaxed m-0">
+                      I long-term holder (LTH)—definiti come indirizzi che detengono per 155+ giorni—rappresentano il segmento più guidato dalla convinzione. I picchi di offerta LTH tipicamente precedono i top di mercato, mentre l'accumulo LTH durante i drawdown segnala formazione di bottom.
+                    </p>
+                  </div>
+
+                  <div className="p-6 rounded-2xl bg-card border border-border/40">
+                    <h4 className="text-lg font-bold text-foreground mb-4">Segnali On-Chain Chiave</h4>
+                    <ul className="space-y-3 text-sm text-foreground/70">
+                      <li className="flex items-start gap-3">
+                        <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2"></div>
+                        <span>Prezzo realizzato—costo base aggregato—agisce come supporto psicologico durante le correzioni</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2"></div>
+                        <span>Rapporto MVRV (market cap / realized cap) segnala sovraestensione sopra 3.5 e capitolazione sotto 1.0</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2"></div>
+                        <span>Net flow exchange rivela accumulazione istituzionale (deflussi) vs distribuzione retail (afflussi)</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <KeyTakeaways insights={[
+                    "L'analisi on-chain rivela pattern di comportamento delle entità—il prezzo realizzato agisce come costo base aggregato e supporto psicologico.",
+                    "Net flow exchange distingue accumulazione istituzionale (deflussi persistenti verso cold storage) da distribuzione retail (afflussi che precedono vendite).",
+                    "L'offerta long-term holder (12+ mesi) crea inelasticità dell'offerta—mentre l'offerta illiquida cresce attraverso ETF e accumulo treasury corporate, il float disponibile si riduce."
+                  ]} />
+                </div>
+              </ChapterSection>
+
+              {/* Capitolo VI */}
+              <ChapterSection id="chapter-6" dataSection="chapter-6">
+                <div className="mb-12">
+                  <div className="inline-flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                      <Activity className="w-5 h-5 text-primary" />
+                    </div>
+                    <span className="text-xs font-bold text-primary uppercase tracking-widest">Capitolo VI</span>
+                  </div>
+                  <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 leading-tight">
+                    Mercati Derivati & Posizionamento
+                  </h2>
+                  <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent rounded-full"></div>
+                </div>
+
+                <div className="prose prose-lg max-w-none space-y-8">
+                  <p className="text-foreground/80 leading-relaxed">
+                    I mercati dei derivati Bitcoin ora superano il volume spot, rendendo il posizionamento sui derivati un indicatore primario del sentiment di mercato. L'open interest dei futures, i funding rate dei perpetui e lo skew delle opzioni forniscono segnali in tempo reale sulla convinzione istituzionale.
+                  </p>
+
+                  <div className="grid md:grid-cols-3 gap-4">
+                    <div className="p-5 rounded-xl bg-card border border-border/40">
+                      <div className="text-2xl font-bold text-primary mb-2">$45B+</div>
+                      <div className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-2">Open Interest Futures</div>
+                      <p className="text-sm text-foreground/70">Esposizione totale su exchange</p>
+                    </div>
+                    <div className="p-5 rounded-xl bg-card border border-border/40">
+                      <div className="text-2xl font-bold text-accent mb-2">0.01-0.03%</div>
+                      <div className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-2">Funding Rate Medio</div>
+                      <p className="text-sm text-foreground/70">Posizionamento perpetui attuale</p>
+                    </div>
+                    <div className="p-5 rounded-xl bg-card border border-border/40">
+                      <div className="text-2xl font-bold text-primary mb-2">+5% a +15%</div>
+                      <div className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-2">Skew Call Opzioni</div>
+                      <p className="text-sm text-foreground/70">Bias rialzista nel mercato opzioni</p>
+                    </div>
+                  </div>
+
+                  <KeyTakeaways insights={[
+                    "Il volume derivati supera lo spot 3x, rendendo il posizionamento sui derivati un indicatore primario per il sentiment istituzionale.",
+                    "Funding rate elevati (>0.05%) segnalano sovraestensione del leverage long; funding negativi indicano opportunità contrarian.",
+                    "Skew call pronunciato (>20%) anticipa aspettative rialziste ma può segnalare posizionamento affollato vulnerabile a correzioni."
+                  ]} />
+                </div>
+              </ChapterSection>
+
+              {/* Capitolo VII */}
+              <ChapterSection id="chapter-7" dataSection="chapter-7">
+                <div className="mb-12">
+                  <div className="inline-flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                      <Coins className="w-5 h-5 text-primary" />
+                    </div>
+                    <span className="text-xs font-bold text-primary uppercase tracking-widest">Capitolo VII</span>
+                  </div>
+                  <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 leading-tight">
+                    Economia del Mining & Analisi Hashrate
+                  </h2>
+                  <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent rounded-full"></div>
+                </div>
+
+                <div className="prose prose-lg max-w-none space-y-8">
+                  <p className="text-foreground/80 leading-relaxed">
+                    L'economia del mining post-halving 2024 crea dinamiche strutturali cruciali. Con ricompensa dimezzata a 3.125 BTC, l'efficienza operativa e i costi energetici determinano la sopravvivenza dei miner e influenzano i pattern di vendita dell'offerta.
+                  </p>
+
+                  <MiningEconomicsChart data={miningCostData} />
+
+                  <div className="p-6 rounded-2xl bg-gradient-to-br from-primary/5 to-accent/5 border border-primary/10">
+                    <h4 className="text-lg font-bold text-foreground mb-3">Soglia Breakeven Mining</h4>
+                    <p className="text-sm text-foreground/70 leading-relaxed m-0">
+                      Costo medio di produzione stimato: $42,000-$55,000 per BTC nel 2025. Miner con costi superiori devono vendere immediatamente le ricompense, mentre miner efficienti possono accumulare, influenzando la pressione di vendita sull'offerta.
+                    </p>
+                  </div>
+
+                  <KeyTakeaways insights={[
+                    "Il costo breakeven mining post-halving è salito a $42k-$55k, creando un floor naturale per i prezzi—sotto questa soglia, la resa dei miner marginali riduce la pressione di vendita.",
+                    "L'hashrate record indica fiducia dei miner nel lungo termine nonostante margini compressi post-halving.",
+                    "La concentrazione geografica (US >35% hashrate) crea rischi regolatori ma anche benefici di stabilità energetica."
+                  ]} />
+                </div>
+              </ChapterSection>
+
+              {/* Capitolo VIII */}
+              <ChapterSection id="chapter-8" dataSection="chapter-8">
+                <div className="mb-12">
+                  <div className="inline-flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                      <LineChart className="w-5 h-5 text-primary" />
+                    </div>
+                    <span className="text-xs font-bold text-primary uppercase tracking-widest">Capitolo VIII</span>
+                  </div>
+                  <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 leading-tight">
+                    Dinamiche dell'Offerta & Holder Long-Term
+                  </h2>
+                  <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent rounded-full"></div>
+                </div>
+
+                <div className="prose prose-lg max-w-none space-y-8">
+                  <p className="text-foreground/80 leading-relaxed">
+                    L'offerta di Bitcoin presenta caratteristiche uniche tra gli asset finanziari: emissione programmata, cap massimo fisso, e crescente illiquidità dell'offerta attraverso comportamento HODLing e accumulo istituzionale.
+                  </p>
+
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="p-6 rounded-2xl bg-card border border-border/40">
+                      <h4 className="text-lg font-bold text-foreground mb-3">Offerta Illiquida</h4>
+                      <div className="text-3xl font-bold text-primary mb-2">~75%</div>
+                      <p className="text-sm text-foreground/70">dell'offerta circolante non si è mossa in 6+ mesi</p>
+                    </div>
+                    <div className="p-6 rounded-2xl bg-card border border-border/40">
+                      <h4 className="text-lg font-bold text-foreground mb-3">Offerta Exchange</h4>
+                      <div className="text-3xl font-bold text-accent mb-2">~12%</div>
+                      <p className="text-sm text-foreground/70">ai minimi storici, segnalando accumulo</p>
+                    </div>
+                  </div>
+
+                  <KeyTakeaways insights={[
+                    "L'offerta illiquida a livelli record (~75%) crea elasticità dell'offerta ridotta—shock di domanda producono risposte di prezzo amplificate.",
+                    "Deflussi continui dagli exchange indicano preferenza per self-custody e accumulo a lungo termine.",
+                    "La competizione ETF-miner per l'offerta marginale intensifica le dinamiche di scarsità strutturale."
+                  ]} />
+                </div>
+              </ChapterSection>
+
+              {/* Capitolo IX */}
+              <ChapterSection id="chapter-9" dataSection="chapter-9">
+                <div className="mb-12">
+                  <div className="inline-flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                      <Target className="w-5 h-5 text-primary" />
+                    </div>
+                    <span className="text-xs font-bold text-primary uppercase tracking-widest">Capitolo IX</span>
+                  </div>
+                  <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 leading-tight">
+                    Analisi Scenari & Framework di Rischio
+                  </h2>
+                  <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent rounded-full"></div>
+                </div>
+
+                <div className="prose prose-lg max-w-none space-y-8">
+                  <div className="grid md:grid-cols-3 gap-4">
+                    <div className="p-6 rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20">
+                      <h4 className="text-lg font-bold text-foreground mb-2">Scenario Base</h4>
+                      <div className="text-2xl font-bold text-primary mb-2">$96k–$132k</div>
+                      <p className="text-sm text-foreground/70">Probabilità 60%</p>
+                      <p className="text-xs text-muted-foreground mt-2">Espansione M2 moderata, tassi stabili</p>
+                    </div>
+                    <div className="p-6 rounded-2xl bg-gradient-to-br from-accent/10 to-accent/5 border border-accent/20">
+                      <h4 className="text-lg font-bold text-foreground mb-2">Scenario Bull</h4>
+                      <div className="text-2xl font-bold text-accent mb-2">$180k–$260k</div>
+                      <p className="text-sm text-foreground/70">Probabilità 25%</p>
+                      <p className="text-xs text-muted-foreground mt-2">M2 accelera + tassi reali negativi</p>
+                    </div>
+                    <div className="p-6 rounded-2xl bg-gradient-to-br from-destructive/10 to-destructive/5 border border-destructive/20">
+                      <h4 className="text-lg font-bold text-foreground mb-2">Scenario Stress</h4>
+                      <div className="text-2xl font-bold text-destructive mb-2">$45k–$60k</div>
+                      <p className="text-sm text-foreground/70">Probabilità 15%</p>
+                      <p className="text-xs text-muted-foreground mt-2">Stretta monetaria aggressiva</p>
+                    </div>
+                  </div>
+
+                  <KeyTakeaways insights={[
+                    "Distribuzione probabilistica degli scenari riflette incertezza macro—nessun singolo target di prezzo è appropriato per decisioni di investimento.",
+                    "Il framework di rischio richiede stress testing delle posizioni contro scenario peggiore ($45k) prima dell'allocazione.",
+                    "Trigger di regime identificabili (M2, tassi reali, flussi ETF) permettono aggiustamenti tattici del posizionamento."
+                  ]} />
+                </div>
+              </ChapterSection>
+
+              {/* Capitolo X */}
+              <ChapterSection id="chapter-10" dataSection="chapter-10">
+                <div className="mb-12">
+                  <div className="inline-flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                      <TrendingUp className="w-5 h-5 text-primary" />
+                    </div>
+                    <span className="text-xs font-bold text-primary uppercase tracking-widest">Capitolo X</span>
+                  </div>
+                  <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 leading-tight">
+                    Target di Prezzo 2026 & Implicazioni di Investimento
+                  </h2>
+                  <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent rounded-full"></div>
+                </div>
+
+                <div className="prose prose-lg max-w-none space-y-8">
+                  <div className="p-8 rounded-2xl bg-gradient-to-br from-primary/5 via-accent/5 to-background border-2 border-primary/10">
+                    <h4 className="text-2xl font-bold text-foreground mb-4">Target Ponderato: $138.000</h4>
+                    <p className="text-foreground/80">
+                      Valore atteso calcolato come: (0.60 × $114k) + (0.25 × $220k) + (0.15 × $52.5k) = $138.350
+                    </p>
+                  </div>
+
+                  <KeyTakeaways insights={[
+                    "Il target $138k rappresenta il valore atteso ponderato, non una previsione puntuale—la distribuzione degli outcome importa più del target mediano.",
+                    "Allocazione consigliata: 2-5% del portafoglio per investitori istituzionali con orizzonte 24+ mesi.",
+                    "Timing di ingresso ottimale: durante fasi di regime Accumulazione identificate dal modello HMM, non durante momentum parabolico."
+                  ]} />
+                </div>
+              </ChapterSection>
+
+              {/* Capitolo XI */}
+              <ChapterSection id="chapter-11" dataSection="chapter-11">
+                <div className="mb-12">
+                  <div className="inline-flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                      <Shield className="w-5 h-5 text-primary" />
+                    </div>
+                    <span className="text-xs font-bold text-primary uppercase tracking-widest">Capitolo XI</span>
+                  </div>
+                  <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 leading-tight">
+                    Framework di Risk Management
+                  </h2>
+                  <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent rounded-full"></div>
+                </div>
+
+                <div className="prose prose-lg max-w-none space-y-8">
+                  <p className="text-foreground/80 leading-relaxed">
+                    La volatilità di Bitcoin richiede un framework di risk management robusto. Le tecniche tradizionali (VaR, Sharpe) devono essere adattate per catturare la distribuzione fat-tail dei rendimenti crypto.
+                  </p>
+
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="p-6 rounded-2xl bg-card border border-border/40">
+                      <h4 className="text-lg font-bold text-foreground mb-3">Position Sizing</h4>
+                      <p className="text-sm text-foreground/70">Kelly Criterion adattato suggerisce allocazione max 2-5% per portafogli diversificati con orizzonte lungo.</p>
+                    </div>
+                    <div className="p-6 rounded-2xl bg-card border border-border/40">
+                      <h4 className="text-lg font-bold text-foreground mb-3">Stop-Loss Dinamici</h4>
+                      <p className="text-sm text-foreground/70">Stop basati su ATR (Average True Range) preferibili a percentuali fisse per adattarsi alla volatilità corrente.</p>
+                    </div>
+                  </div>
+
+                  <KeyTakeaways insights={[
+                    "Position sizing conservativo (2-5% max) protegge da drawdown estremi preservando esposizione al potenziale rialzo.",
+                    "Stop-loss basati su volatilità (ATR) superano stop percentuali fissi in mercati con volatilità variabile.",
+                    "Ribilanciamento basato su regime (non calendario) cattura meglio le transizioni di mercato."
+                  ]} />
+                </div>
+              </ChapterSection>
+
+              {/* Capitolo XII */}
+              <ChapterSection id="chapter-12" dataSection="chapter-12">
+                <div className="mb-12">
+                  <div className="inline-flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                      <GitBranch className="w-5 h-5 text-primary" />
+                    </div>
+                    <span className="text-xs font-bold text-primary uppercase tracking-widest">Capitolo XII</span>
+                  </div>
+                  <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 leading-tight">
+                    Correlazioni Cross-Asset
+                  </h2>
+                  <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent rounded-full"></div>
+                </div>
+
+                <div className="prose prose-lg max-w-none space-y-8">
+                  <p className="text-foreground/80 leading-relaxed">
+                    Le correlazioni di Bitcoin con asset tradizionali variano significativamente per regime di mercato. Comprendere queste dinamiche è cruciale per la costruzione di portafoglio.
+                  </p>
+
+                  <div className="grid md:grid-cols-3 gap-4">
+                    <div className="p-5 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20">
+                      <h4 className="text-lg font-bold text-foreground mb-3">Ambiente Risk-On</h4>
+                      <ul className="space-y-2 text-sm text-foreground/70">
+                        <li>BTC-Nasdaq: <span className="text-accent font-semibold">+0.75</span></li>
+                        <li>BTC-Oro: <span className="text-muted-foreground font-semibold">+0.15</span></li>
+                        <li>BTC-Bond: <span className="text-destructive font-semibold">-0.40</span></li>
+                      </ul>
+                    </div>
+                    <div className="p-5 rounded-xl bg-gradient-to-br from-accent/10 to-accent/5 border border-accent/20">
+                      <h4 className="text-lg font-bold text-foreground mb-3">Ambiente Risk-Off</h4>
+                      <ul className="space-y-2 text-sm text-foreground/70">
+                        <li>BTC-Nasdaq: <span className="text-accent font-semibold">+0.85</span></li>
+                        <li>BTC-Oro: <span className="text-accent font-semibold">+0.55</span></li>
+                        <li>BTC-Bond: <span className="text-muted-foreground font-semibold">-0.15</span></li>
+                      </ul>
+                    </div>
+                    <div className="p-5 rounded-xl bg-gradient-to-br from-blue-500/10 to-blue-500/5 border border-blue-500/20">
+                      <h4 className="text-lg font-bold text-foreground mb-3">Crisi Liquidità</h4>
+                      <ul className="space-y-2 text-sm text-foreground/70">
+                        <li>Tutti asset: <span className="text-accent font-semibold">→ +0.90</span></li>
+                        <li>Correlazioni: <span className="text-destructive font-semibold">Convergono a 1</span></li>
+                        <li>Diversificazione: <span className="text-destructive font-semibold">Fallisce</span></li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <KeyTakeaways insights={[
+                    "La correlazione Bitcoin-Nasdaq (0.65) conferma il suo ruolo come asset risk ad alto beta, non oro digitale.",
+                    "Correlazioni dipendenti dal regime richiedono hedging dinamico—allocazioni statiche ignorano dinamiche di rischio mutevoli.",
+                    "I benefici di diversificazione da Bitcoin sono massimizzati in regime Accumulazione, non Espansione."
+                  ]} />
+                </div>
+              </ChapterSection>
+
+              {/* Capitolo XIII */}
+              <ChapterSection id="chapter-13" dataSection="chapter-13">
+                <div className="mb-12">
+                  <div className="inline-flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                      <Scale className="w-5 h-5 text-primary" />
+                    </div>
+                    <span className="text-xs font-bold text-primary uppercase tracking-widest">Capitolo XIII</span>
+                  </div>
+                  <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 leading-tight">
+                    Panorama Regolamentare 2026
+                  </h2>
+                  <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent rounded-full"></div>
+                </div>
+
+                <div className="prose prose-lg max-w-none space-y-8">
+                  <p className="text-foreground/80 leading-relaxed text-lg">
+                    L'ambiente regolamentare per Bitcoin sta attraversando la sua trasformazione più significativa dall'inizio. Il 2025-2026 vedrà framework importanti finalizzati nelle giurisdizioni chiave, creando sia opportunità che rischi per gli allocatori istituzionali.
+                  </p>
+
+                  <div className="space-y-6">
+                    <div className="p-6 rounded-xl bg-gradient-to-br from-blue-500/10 to-blue-500/5 border border-blue-500/20">
+                      <div className="flex items-center gap-3 mb-4">
+                        <span className="text-2xl">🇪🇺</span>
+                        <h4 className="text-xl font-bold text-foreground">Unione Europea: Implementazione MiCA</h4>
+                      </div>
+                      <p className="text-sm text-foreground/70">MiCA crea chiarezza regolatoria—aspettarsi accelerazione dei flussi di capitale istituzionale nel 2025-2026.</p>
+                    </div>
+
+                    <div className="p-6 rounded-xl bg-gradient-to-br from-red-500/10 to-red-500/5 border border-red-500/20">
+                      <div className="flex items-center gap-3 mb-4">
+                        <span className="text-2xl">🇺🇸</span>
+                        <h4 className="text-xl font-bold text-foreground">Stati Uniti: Dinamiche SEC & CFTC</h4>
+                      </div>
+                      <p className="text-sm text-foreground/70">L'incertezza regolatoria US persiste ma l'approvazione ETF segnala accettazione de facto di Bitcoin come asset legittimo.</p>
+                    </div>
+
+                    <div className="p-6 rounded-xl bg-gradient-to-br from-amber-500/10 to-amber-500/5 border border-amber-500/20">
+                      <div className="flex items-center gap-3 mb-4">
+                        <span className="text-2xl">🌏</span>
+                        <h4 className="text-xl font-bold text-foreground">Asia-Pacifico: Approcci Divergenti</h4>
+                      </div>
+                      <p className="text-sm text-foreground/70">La posizione pro-crypto di Hong Kong la posiziona come hub degli asset digitali in Asia.</p>
+                    </div>
+                  </div>
+
+                  <KeyTakeaways insights={[
+                    "MiCA crea chiarezza regolatoria in EU—aspettarsi accelerazione dei flussi di capitale istituzionale nel 2025-2026.",
+                    "L'incertezza regolatoria US persiste ma l'approvazione ETF segnala accettazione de facto di Bitcoin come asset legittimo.",
+                    "Rischio chiave: regolamentazioni ambientali che colpiscono il mining proof-of-work potrebbero creare disruption lato offerta."
+                  ]} />
+                </div>
+              </ChapterSection>
 
               {/* Chapter XIV - Institutional Adoption with Live Treasuries */}
               <ChapterSection id="chapter-14" dataSection="chapter-14">
@@ -853,6 +1348,254 @@ const Bitcoin2026ReportIT = () => {
                   "Fondi sovrani e fondi pensione rappresentano la prossima ondata—il 2026 potrebbe vedere i primi annunci di allocazione SWF importanti.",
                   "Il tasso di assorbimento istituzionale dell'offerta supera la nuova emissione di 3x, creando squilibrio strutturale domanda-offerta."
                 ]} />
+              </ChapterSection>
+
+              {/* Capitolo XV */}
+              <ChapterSection id="chapter-15" dataSection="chapter-15">
+                <div className="mb-12">
+                  <div className="inline-flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                      <Calendar className="w-5 h-5 text-primary" />
+                    </div>
+                    <span className="text-xs font-bold text-primary uppercase tracking-widest">Capitolo XV</span>
+                  </div>
+                  <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 leading-tight">
+                    Calendario Macro & Date Chiave 2026
+                  </h2>
+                  <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent rounded-full"></div>
+                </div>
+
+                <div className="prose prose-lg max-w-none space-y-8">
+                  <p className="text-foreground/80 leading-relaxed">
+                    Il 2026 presenta diversi catalizzatori macro potenziali che potrebbero influenzare significativamente il prezzo di Bitcoin. Monitorare queste date consente posizionamento anticipato.
+                  </p>
+
+                  <div className="space-y-4">
+                    <div className="p-5 rounded-xl bg-card border border-border/40">
+                      <div className="flex items-center justify-between mb-2">
+                        <h4 className="font-bold text-foreground">Q1 2026</h4>
+                        <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded">Attuale</span>
+                      </div>
+                      <ul className="text-sm text-foreground/70 space-y-1">
+                        <li>• Meeting FOMC (Gennaio, Marzo)</li>
+                        <li>• Dati inflazione CPI mensili</li>
+                        <li>• Report trimestrale flussi ETF</li>
+                      </ul>
+                    </div>
+                    <div className="p-5 rounded-xl bg-card border border-border/40">
+                      <h4 className="font-bold text-foreground mb-2">Q2-Q4 2026</h4>
+                      <ul className="text-sm text-foreground/70 space-y-1">
+                        <li>• Potenziali tagli tassi Fed (se inflazione scende)</li>
+                        <li>• Elezioni mid-term US (Novembre)</li>
+                        <li>• Review regolamentare MiCA in EU</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <KeyTakeaways insights={[
+                    "I meeting FOMC rimangono i principali catalizzatori macro—ogni decisione sui tassi influenza le condizioni di liquidità globale.",
+                    "Le elezioni mid-term US potrebbero portare cambiamenti regolamentari significativi per il settore crypto.",
+                    "Monitorare il calendario per posizionamento anticipato, non reattivo."
+                  ]} />
+                </div>
+              </ChapterSection>
+
+              {/* Capitolo XVI */}
+              <ChapterSection id="chapter-16" dataSection="chapter-16">
+                <div className="mb-12">
+                  <div className="inline-flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                      <AlertTriangle className="w-5 h-5 text-primary" />
+                    </div>
+                    <span className="text-xs font-bold text-primary uppercase tracking-widest">Capitolo XVI</span>
+                  </div>
+                  <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 leading-tight">
+                    Analisi Rischi Geopolitici
+                  </h2>
+                  <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent rounded-full"></div>
+                </div>
+
+                <div className="prose prose-lg max-w-none space-y-8">
+                  <p className="text-foreground/80 leading-relaxed">
+                    Il contesto geopolitico globale influenza Bitcoin attraverso molteplici canali: flussi di capitali, sanzioni, politiche energetiche e adozione come riserva alternativa.
+                  </p>
+
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="p-6 rounded-2xl bg-gradient-to-br from-destructive/10 to-destructive/5 border border-destructive/20">
+                      <h4 className="text-lg font-bold text-foreground mb-3">Rischi</h4>
+                      <ul className="text-sm text-foreground/70 space-y-2">
+                        <li>• Escalation conflitti → volatilità risk-off</li>
+                        <li>• Sanzioni energetiche → disruption mining</li>
+                        <li>• Ban crypto in economie maggiori</li>
+                      </ul>
+                    </div>
+                    <div className="p-6 rounded-2xl bg-gradient-to-br from-accent/10 to-accent/5 border border-accent/20">
+                      <h4 className="text-lg font-bold text-foreground mb-3">Opportunità</h4>
+                      <ul className="text-sm text-foreground/70 space-y-2">
+                        <li>• De-dollarizzazione → domanda BTC come riserva</li>
+                        <li>• Inflazione emergenti → adozione retail</li>
+                        <li>• Competizione CBDC → narrativa libertà</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <KeyTakeaways insights={[
+                    "Il contesto geopolitico crea sia rischi che opportunità—Bitcoin beneficia dalla narrativa 'oro digitale' durante instabilità.",
+                    "La de-dollarizzazione progressiva potrebbe accelerare l'adozione istituzionale di Bitcoin come riserva neutrale.",
+                    "Monitorare sviluppi CBDC come potenziale catalizzatore per la narrativa di libertà finanziaria."
+                  ]} />
+                </div>
+              </ChapterSection>
+
+              {/* Capitolo XVII */}
+              <ChapterSection id="chapter-17" dataSection="chapter-17">
+                <div className="mb-12">
+                  <div className="inline-flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                      <Activity className="w-5 h-5 text-primary" />
+                    </div>
+                    <span className="text-xs font-bold text-primary uppercase tracking-widest">Capitolo XVII</span>
+                  </div>
+                  <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 leading-tight">
+                    Confronto Cicli Storici
+                  </h2>
+                  <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent rounded-full"></div>
+                </div>
+
+                <div className="prose prose-lg max-w-none space-y-8">
+                  <p className="text-foreground/80 leading-relaxed">
+                    Mentre i cicli storici forniscono contesto, il comportamento attuale di Bitcoin differisce significativamente dai cicli precedenti a causa dell'istituzionalizzazione e della maturazione del mercato.
+                  </p>
+
+                  <div className="p-6 rounded-2xl bg-gradient-to-br from-primary/5 to-accent/5 border border-primary/10">
+                    <h4 className="text-lg font-bold text-foreground mb-4">Evoluzione dei Cicli</h4>
+                    <div className="grid md:grid-cols-3 gap-4 text-sm">
+                      <div>
+                        <div className="font-semibold text-primary mb-1">Ciclo 2013-2017</div>
+                        <p className="text-foreground/70">Retail-driven, volatilità estrema, picchi parabolici</p>
+                      </div>
+                      <div>
+                        <div className="font-semibold text-primary mb-1">Ciclo 2017-2021</div>
+                        <p className="text-foreground/70">Early institutional, COVID stimulus, doppio picco</p>
+                      </div>
+                      <div>
+                        <div className="font-semibold text-primary mb-1">Ciclo 2021-2025+</div>
+                        <p className="text-foreground/70">ETF-driven, macro-correlated, volatilità ridotta</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <KeyTakeaways insights={[
+                    "Ogni ciclo mostra volatilità decrescente e correlazione macro crescente—l'istituzionalizzazione stabilizza ma non elimina la ciclicità.",
+                    "Il ciclo attuale differisce per struttura (ETF), partecipanti (istituzionali) e correlazioni (macro).",
+                    "Cautela nell'usare metriche storiche—il contesto strutturale è fondamentalmente cambiato."
+                  ]} />
+                </div>
+              </ChapterSection>
+
+              {/* Capitolo XVIII */}
+              <ChapterSection id="chapter-18" dataSection="chapter-18">
+                <div className="mb-12">
+                  <div className="inline-flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                      <LogOut className="w-5 h-5 text-primary" />
+                    </div>
+                    <span className="text-xs font-bold text-primary uppercase tracking-widest">Capitolo XVIII</span>
+                  </div>
+                  <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 leading-tight">
+                    Framework Strategia di Uscita
+                  </h2>
+                  <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent rounded-full"></div>
+                </div>
+
+                <div className="prose prose-lg max-w-none space-y-8">
+                  <p className="text-foreground/80 leading-relaxed">
+                    Una strategia di uscita definita è cruciale quanto la strategia di ingresso. Vendere in un mercato euforico richiede disciplina pre-definita.
+                  </p>
+
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="p-6 rounded-2xl bg-card border border-border/40">
+                      <h4 className="text-lg font-bold text-foreground mb-3">Segnali di Uscita</h4>
+                      <ul className="text-sm text-foreground/70 space-y-2">
+                        <li>• MVRV {'>'} 3.5 (storico top indicator)</li>
+                        <li>• Funding rate perpetui {'>'} 0.1%</li>
+                        <li>• Deflussi ETF sostenuti</li>
+                        <li>• Distribuzione LTH accelerata</li>
+                      </ul>
+                    </div>
+                    <div className="p-6 rounded-2xl bg-card border border-border/40">
+                      <h4 className="text-lg font-bold text-foreground mb-3">Approccio Consigliato</h4>
+                      <ul className="text-sm text-foreground/70 space-y-2">
+                        <li>• Prendere profitto gradualmente (25% a target 1, 2, 3)</li>
+                        <li>• Mantenere core position (20-30%)</li>
+                        <li>• Usare trailing stop dopo breakout</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <KeyTakeaways insights={[
+                    "Definire target di uscita PRIMA dell'euforia—la disciplina durante i bull market è la sfida principale.",
+                    "Uscita graduale (scaling out) supera il market timing—nessuno vende esattamente al top.",
+                    "Mantenere core position per esposizione long-term mentre si realizzano profitti tattici."
+                  ]} />
+                </div>
+              </ChapterSection>
+
+              {/* Capitolo XIX */}
+              <ChapterSection id="chapter-19" dataSection="chapter-19">
+                <div className="mb-12">
+                  <div className="inline-flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                      <Zap className="w-5 h-5 text-primary" />
+                    </div>
+                    <span className="text-xs font-bold text-primary uppercase tracking-widest">Capitolo XIX</span>
+                  </div>
+                  <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 leading-tight">
+                    Lightning Network & Layer 2
+                  </h2>
+                  <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent rounded-full"></div>
+                </div>
+
+                <div className="prose prose-lg max-w-none space-y-8">
+                  <p className="text-foreground/80 leading-relaxed">
+                    Lightning Network rappresenta lo scaling layer di Bitcoin per transazioni quotidiane. Mentre la capacità rimane piccola rispetto al mercato spot, la crescita dell'adozione valida l'utilità di Bitcoin oltre la speculazione.
+                  </p>
+
+                  <div className="grid md:grid-cols-3 gap-4">
+                    <div className="p-5 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 text-center">
+                      <div className="text-3xl font-bold text-primary mb-1">~$500M</div>
+                      <p className="text-sm text-foreground/70">Capacità Totale</p>
+                    </div>
+                    <div className="p-5 rounded-xl bg-gradient-to-br from-accent/10 to-accent/5 border border-accent/20 text-center">
+                      <div className="text-3xl font-bold text-accent mb-1">~16.000</div>
+                      <p className="text-sm text-foreground/70">Nodi Attivi</p>
+                    </div>
+                    <div className="p-5 rounded-xl bg-gradient-to-br from-blue-500/10 to-blue-500/5 border border-blue-500/20 text-center">
+                      <div className="text-3xl font-bold text-blue-400 mb-1">+120%</div>
+                      <p className="text-sm text-foreground/70">Crescita Capacità YoY</p>
+                    </div>
+                  </div>
+
+                  <div className="p-6 rounded-xl bg-gradient-to-br from-muted/30 to-background border border-border/40">
+                    <h4 className="text-lg font-bold text-foreground mb-4">Implicazioni di Investimento</h4>
+                    <div className="space-y-3 text-foreground/80">
+                      <div className="flex items-start gap-3">
+                        <div className="w-2 h-2 rounded-full bg-accent mt-2 flex-shrink-0"></div>
+                        <p><strong>Long-term bullish:</strong> Affronta preoccupazioni di scalabilità; valida l'utilità di Bitcoin oltre la speculazione</p>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0"></div>
+                        <p><strong>Non catalizzatore near-term:</strong> Capacità (~$500M) troppo piccola per impattare direttamente il prezzo; solo valore narrativo</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <KeyTakeaways insights={[
+                    "Capacità Lightning up 120% YoY—effetti di rete accelerano ma valore totale (~$500M) rimane immateriale per il prezzo.",
+                    "Proposta US Strategic Reserve e adozione treasury corporate segnalano accettazione mainstream istituzionale.",
+                    "Valore narrativo long-term significativo; impatto prezzo near-term minimo. Monitorare come metrica di adozione, non segnale di trading."
+                  ]} />
+                </div>
               </ChapterSection>
 
               {/* Disclaimer and Footer */}
