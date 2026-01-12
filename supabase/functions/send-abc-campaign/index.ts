@@ -34,6 +34,8 @@ interface CampaignRequest {
   senderEmail: string;
   attachments?: Attachment[];
   campaignId?: string;
+  ctaLink?: string;
+  ctaText?: string;
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -97,7 +99,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     console.log(`Authenticated user ${user.email} sending ABC campaign`);
 
-    const { recipients, subject, content, senderEmail, attachments, campaignId }: CampaignRequest = await req.json();
+    const { recipients, subject, content, senderEmail, attachments, campaignId, ctaLink, ctaText }: CampaignRequest = await req.json();
     
     // Input validation
     if (!recipients || !Array.isArray(recipients) || recipients.length === 0) {
@@ -215,6 +217,14 @@ const handler = async (req: Request): Promise<Response> => {
                   <div style="font-size: 15px; line-height: 1.8; color: #333333;">
 ${personalizedContent}
                   </div>
+${ctaLink ? `
+                  <!-- CTA Button -->
+                  <div style="text-align: center; margin-top: 30px;">
+                    <a href="${ctaLink}" target="_blank" style="display: inline-block; background: linear-gradient(135deg, #c77c4d 0%, #a66840 100%); color: #ffffff; font-size: 15px; font-weight: 600; text-decoration: none; padding: 14px 32px; border-radius: 6px; letter-spacing: 0.5px;">
+                      ${ctaText || 'Scopri di più'}
+                    </a>
+                  </div>
+` : ''}
                 </div>
                 
                 <!-- Signature Block -->

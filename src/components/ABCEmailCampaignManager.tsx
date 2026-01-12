@@ -136,6 +136,8 @@ export function ABCEmailCampaignManager({ investors, onInvestorsUpdated, pending
     subject: "",
     content: "",
     campaignName: "",
+    ctaLink: "",
+    ctaText: "",
   });
 
   // Handle file attachment
@@ -222,6 +224,8 @@ ${highPriorityCount > 0 ? 'I nostri primi closing si avvicinano e saremmo lieti 
 Cordiali saluti,
 Il Team ABC Company`,
         campaignName: `Reminder - ${pendingReminders.length} investitori`,
+        ctaLink: '',
+        ctaText: '',
       });
       
       setAiEmailType('reminder');
@@ -424,6 +428,8 @@ Sarebbe disponibile per una breve call conoscitiva questa settimana?
 Cordiali saluti,
 Il Team ABC Company`,
         campaignName: `Follow-up Aperture - ${campaignName}`,
+        ctaLink: '',
+        ctaText: '',
       });
     } else {
       setEmailForm({
@@ -439,6 +445,8 @@ Restiamo a disposizione per qualsiasi domanda o chiarimento.
 Cordiali saluti,
 Il Team ABC Company`,
         campaignName: `Reminder Non Aperture - ${campaignName}`,
+        ctaLink: '',
+        ctaText: '',
       });
     }
 
@@ -771,6 +779,14 @@ Il Team ABC Company`,
             <!-- Email Body -->
             <div style="padding: 40px;">
               <div style="font-size: 15px; line-height: 1.8; color: #333333; white-space: pre-wrap;">${personalizedContent}</div>
+              ${emailForm.ctaLink ? `
+              <!-- CTA Button -->
+              <div style="text-align: center; margin-top: 30px;">
+                <a href="${emailForm.ctaLink}" target="_blank" style="display: inline-block; background: linear-gradient(135deg, #c77c4d 0%, #a66840 100%); color: #ffffff; font-size: 15px; font-weight: 600; text-decoration: none; padding: 14px 32px; border-radius: 6px; letter-spacing: 0.5px;">
+                  ${emailForm.ctaText || 'Scopri di più'}
+                </a>
+              </div>
+              ` : ''}
             </div>
             
             <!-- Signature Block -->
@@ -911,6 +927,8 @@ Il Team ABC Company`,
           senderEmail: currentUserEmail,
           attachments: attachments,
           campaignId: campaignId,
+          ctaLink: emailForm.ctaLink || undefined,
+          ctaText: emailForm.ctaText || undefined,
         },
       });
 
@@ -1080,6 +1098,8 @@ Il Team ABC Company`,
           senderEmail: currentUserEmail,
           attachments: attachments,
           campaignId: campaignId,
+          ctaLink: emailForm.ctaLink || undefined,
+          ctaText: emailForm.ctaText || undefined,
         },
       });
 
@@ -1131,7 +1151,7 @@ Il Team ABC Company`,
       }
 
       // Reset form
-      setEmailForm({ subject: "", content: "", campaignName: "" });
+      setEmailForm({ subject: "", content: "", campaignName: "", ctaLink: "", ctaText: "" });
       setSelectedInvestors([]);
       setAttachments([]);
       fetchCampaignHistory();
@@ -1198,7 +1218,7 @@ Il Team ABC Company`,
                   size="sm"
                   onClick={() => {
                     setSelectedInvestors([]);
-                    setEmailForm({ subject: '', content: '', campaignName: '' });
+                    setEmailForm({ subject: '', content: '', campaignName: '', ctaLink: '', ctaText: '' });
                     onRemindersClear?.();
                   }}
                 >
@@ -1397,6 +1417,35 @@ Team Aries76"
                     </div>
                   )}
                 </div>
+
+                {/* CTA Link Section */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="ctaLink">Link CTA (opzionale)</Label>
+                    <Input
+                      id="ctaLink"
+                      value={emailForm.ctaLink}
+                      onChange={(e) => setEmailForm(prev => ({ ...prev, ctaLink: e.target.value }))}
+                      placeholder="https://www.example.com"
+                      type="url"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="ctaText">Testo Pulsante</Label>
+                    <Input
+                      id="ctaText"
+                      value={emailForm.ctaText}
+                      onChange={(e) => setEmailForm(prev => ({ ...prev, ctaText: e.target.value }))}
+                      placeholder="Es: Visita il sito, Scopri di più"
+                      disabled={!emailForm.ctaLink}
+                    />
+                  </div>
+                </div>
+                {emailForm.ctaLink && (
+                  <p className="text-xs text-muted-foreground">
+                    Un pulsante con il link verrà aggiunto alla fine dell'email
+                  </p>
+                )}
 
                 <div className="flex flex-wrap gap-2">
                   {/* AI Draft Generation Button */}
