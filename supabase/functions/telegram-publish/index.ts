@@ -118,6 +118,7 @@ async function publishToTelegram(message: string): Promise<{ success: boolean; m
       chat_id: CHANNEL_ID,
       text: message,
       parse_mode: 'HTML',
+      disable_web_page_preview: true, // Disable link preview until dedicated image is created
     };
     
     console.log('Request URL:', url.replace(TELEGRAM_BOT_TOKEN, 'BOT_TOKEN_HIDDEN'));
