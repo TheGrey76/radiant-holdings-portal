@@ -124,6 +124,9 @@ export function ABCEmailCampaignManager({ investors, onInvestorsUpdated, pending
     notOpened: Array<{ email: string; name: string }>;
   }>({ opens: [], notOpened: [] });
   const [isLoadingTracking, setIsLoadingTracking] = useState(false);
+  const [selectedTrackingOpens, setSelectedTrackingOpens] = useState<string[]>([]);
+  const [selectedTrackingNotOpened, setSelectedTrackingNotOpened] = useState<string[]>([]);
+  const [activeTab, setActiveTab] = useState<string>("compose");
   
   // Test email uses company domain for security
   const TEST_EMAIL = "quinley.martini@aries76.com";
@@ -338,11 +341,114 @@ Il Team ABC Company`,
       const notOpened = recipients.filter(r => !openedEmails.has(r.email.toLowerCase()));
       
       setTrackingData({ opens, notOpened });
+      // Reset selections when campaign changes
+      setSelectedTrackingOpens([]);
+      setSelectedTrackingNotOpened([]);
     } catch (error) {
       console.error('Error fetching tracking data:', error);
     } finally {
       setIsLoadingTracking(false);
     }
+  };
+
+  // Handle tracking selection toggle
+  const handleTrackingOpenSelect = (email: string) => {
+    setSelectedTrackingOpens(prev => 
+      prev.includes(email) ? prev.filter(e => e !== email) : [...prev, email]
+    );
+  };
+
+  const handleTrackingNotOpenedSelect = (email: string) => {
+    setSelectedTrackingNotOpened(prev => 
+      prev.includes(email) ? prev.filter(e => e !== email) : [...prev, email]
+    );
+  };
+
+  const handleSelectAllOpens = () => {
+    if (selectedTrackingOpens.length === trackingData.opens.length) {
+      setSelectedTrackingOpens([]);
+    } else {
+      setSelectedTrackingOpens(trackingData.opens.map(o => o.recipient_email));
+    }
+  };
+
+  const handleSelectAllNotOpened = () => {
+    if (selectedTrackingNotOpened.length === trackingData.notOpened.length) {
+      setSelectedTrackingNotOpened([]);
+    } else {
+      setSelectedTrackingNotOpened(trackingData.notOpened.map(r => r.email));
+    }
+  };
+
+  // Get campaign name for tracking context
+  const getTrackingCampaignName = () => {
+    const campaign = campaignHistory.find(c => c.id === trackingCampaignId);
+    return campaign?.campaign_name || '';
+  };
+
+  // Send follow-up to selected tracking recipients
+  const handleSendFollowUpFromTracking = (type: 'opened' | 'not_opened') => {
+    const selectedEmails = type === 'opened' ? selectedTrackingOpens : selectedTrackingNotOpened;
+    const trackingList = type === 'opened' ? trackingData.opens : trackingData.notOpened;
+    
+    // Find investor IDs for selected emails
+    const selectedInvestorIds = investors
+      .filter(inv => inv.email && selectedEmails.includes(inv.email))
+      .map(inv => inv.id);
+    
+    if (selectedInvestorIds.length === 0) {
+      toast({
+        title: "Nessun investitore trovato",
+        description: "I contatti selezionati non sono presenti nel database investitori",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Pre-fill compose tab with selected investors
+    setSelectedInvestors(selectedInvestorIds);
+    
+    // Generate suggested email content based on type
+    const campaignName = getTrackingCampaignName();
+    if (type === 'opened') {
+      setEmailForm({
+        subject: `Follow-up: ${campaignName}`,
+        content: `Gentile {nome},
+
+La ringraziamo per l'interesse dimostrato leggendo la nostra precedente comunicazione.
+
+Desideriamo proseguire il dialogo e fornirLe ulteriori dettagli sull'opportunità di investimento in ABC Company.
+
+Sarebbe disponibile per una breve call conoscitiva questa settimana?
+
+Cordiali saluti,
+Il Team ABC Company`,
+        campaignName: `Follow-up Aperture - ${campaignName}`,
+      });
+    } else {
+      setEmailForm({
+        subject: `Promemoria: ${campaignName}`,
+        content: `Gentile {nome},
+
+Ci permettiamo di ricontattarLa riguardo alla nostra precedente comunicazione su ABC Company.
+
+Comprendiamo che il Suo tempo sia prezioso, ma volevamo assicurarci che avesse avuto modo di considerare l'opportunità presentata.
+
+Restiamo a disposizione per qualsiasi domanda o chiarimento.
+
+Cordiali saluti,
+Il Team ABC Company`,
+        campaignName: `Reminder Non Aperture - ${campaignName}`,
+      });
+    }
+
+    // Switch to compose tab
+    setActiveTab("compose");
+    
+    toast({
+      title: "Destinatari selezionati",
+      description: `${selectedInvestorIds.length} investitori pronti per la campagna follow-up`,
+    });
   };
 
   // Get unique categories from approved investors
@@ -1048,7 +1154,7 @@ Il Team ABC Company`,
   };
 
   return (
-    <Tabs defaultValue="compose" className="w-full">
+    <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
       <TabsList className="mb-4">
         <TabsTrigger value="compose" className="flex items-center gap-2">
           <Mail className="h-4 w-4" />
@@ -1933,10 +2039,31 @@ Team Aries76"
                   {/* Opened */}
                   <Card className="border-green-200 bg-green-50/50">
                     <CardHeader className="pb-3">
-                      <CardTitle className="text-base flex items-center gap-2 text-green-700">
-                        <MailOpen className="h-5 w-5" />
-                        Hanno Aperto ({trackingData.opens.length})
-                      </CardTitle>
+                      <div className="flex items-center justify-between">
+                        <CardTitle className="text-base flex items-center gap-2 text-green-700">
+                          <MailOpen className="h-5 w-5" />
+                          Hanno Aperto ({trackingData.opens.length})
+                        </CardTitle>
+                        {trackingData.opens.length > 0 && (
+                          <div className="flex items-center gap-2">
+                            <Checkbox
+                              checked={selectedTrackingOpens.length === trackingData.opens.length && trackingData.opens.length > 0}
+                              onCheckedChange={handleSelectAllOpens}
+                            />
+                            <span className="text-xs text-muted-foreground">Tutti</span>
+                          </div>
+                        )}
+                      </div>
+                      {selectedTrackingOpens.length > 0 && (
+                        <Button 
+                          size="sm" 
+                          className="mt-2 w-full"
+                          onClick={() => handleSendFollowUpFromTracking('opened')}
+                        >
+                          <Send className="h-4 w-4 mr-2" />
+                          Invia Follow-up ({selectedTrackingOpens.length})
+                        </Button>
+                      )}
                     </CardHeader>
                     <CardContent>
                       {trackingData.opens.length === 0 ? (
@@ -1948,13 +2075,23 @@ Team Aries76"
                           {trackingData.opens.map((open, idx) => (
                             <div 
                               key={idx} 
-                              className="flex items-center justify-between p-2 bg-white rounded-md border border-green-100"
+                              className={`flex items-center gap-3 p-2 bg-white rounded-md border cursor-pointer transition-colors ${
+                                selectedTrackingOpens.includes(open.recipient_email) 
+                                  ? 'border-green-500 bg-green-100' 
+                                  : 'border-green-100 hover:bg-green-50'
+                              }`}
+                              onClick={() => handleTrackingOpenSelect(open.recipient_email)}
                             >
-                              <div>
-                                <p className="text-sm font-medium">{open.recipient_name}</p>
-                                <p className="text-xs text-muted-foreground">{open.recipient_email}</p>
+                              <Checkbox
+                                checked={selectedTrackingOpens.includes(open.recipient_email)}
+                                onCheckedChange={() => handleTrackingOpenSelect(open.recipient_email)}
+                                onClick={(e) => e.stopPropagation()}
+                              />
+                              <div className="flex-1 min-w-0">
+                                <p className="text-sm font-medium truncate">{open.recipient_name}</p>
+                                <p className="text-xs text-muted-foreground truncate">{open.recipient_email}</p>
                               </div>
-                              <Badge variant="outline" className="text-green-600 border-green-200 text-xs">
+                              <Badge variant="outline" className="text-green-600 border-green-200 text-xs shrink-0">
                                 {format(new Date(open.opened_at), 'dd/MM HH:mm', { locale: it })}
                               </Badge>
                             </div>
@@ -1967,10 +2104,32 @@ Team Aries76"
                   {/* Not Opened */}
                   <Card className="border-orange-200 bg-orange-50/50">
                     <CardHeader className="pb-3">
-                      <CardTitle className="text-base flex items-center gap-2 text-orange-700">
-                        <AlertCircle className="h-5 w-5" />
-                        Non Hanno Aperto ({trackingData.notOpened.length})
-                      </CardTitle>
+                      <div className="flex items-center justify-between">
+                        <CardTitle className="text-base flex items-center gap-2 text-orange-700">
+                          <AlertCircle className="h-5 w-5" />
+                          Non Hanno Aperto ({trackingData.notOpened.length})
+                        </CardTitle>
+                        {trackingData.notOpened.length > 0 && (
+                          <div className="flex items-center gap-2">
+                            <Checkbox
+                              checked={selectedTrackingNotOpened.length === trackingData.notOpened.length && trackingData.notOpened.length > 0}
+                              onCheckedChange={handleSelectAllNotOpened}
+                            />
+                            <span className="text-xs text-muted-foreground">Tutti</span>
+                          </div>
+                        )}
+                      </div>
+                      {selectedTrackingNotOpened.length > 0 && (
+                        <Button 
+                          size="sm" 
+                          className="mt-2 w-full"
+                          variant="secondary"
+                          onClick={() => handleSendFollowUpFromTracking('not_opened')}
+                        >
+                          <Send className="h-4 w-4 mr-2" />
+                          Invia Reminder ({selectedTrackingNotOpened.length})
+                        </Button>
+                      )}
                     </CardHeader>
                     <CardContent>
                       {trackingData.notOpened.length === 0 ? (
@@ -1982,13 +2141,23 @@ Team Aries76"
                           {trackingData.notOpened.map((recipient, idx) => (
                             <div 
                               key={idx} 
-                              className="flex items-center justify-between p-2 bg-white rounded-md border border-orange-100"
+                              className={`flex items-center gap-3 p-2 bg-white rounded-md border cursor-pointer transition-colors ${
+                                selectedTrackingNotOpened.includes(recipient.email) 
+                                  ? 'border-orange-500 bg-orange-100' 
+                                  : 'border-orange-100 hover:bg-orange-50'
+                              }`}
+                              onClick={() => handleTrackingNotOpenedSelect(recipient.email)}
                             >
-                              <div>
-                                <p className="text-sm font-medium">{recipient.name}</p>
-                                <p className="text-xs text-muted-foreground">{recipient.email}</p>
+                              <Checkbox
+                                checked={selectedTrackingNotOpened.includes(recipient.email)}
+                                onCheckedChange={() => handleTrackingNotOpenedSelect(recipient.email)}
+                                onClick={(e) => e.stopPropagation()}
+                              />
+                              <div className="flex-1 min-w-0">
+                                <p className="text-sm font-medium truncate">{recipient.name}</p>
+                                <p className="text-xs text-muted-foreground truncate">{recipient.email}</p>
                               </div>
-                              <Badge variant="outline" className="text-orange-600 border-orange-200 text-xs">
+                              <Badge variant="outline" className="text-orange-600 border-orange-200 text-xs shrink-0">
                                 Non aperta
                               </Badge>
                             </div>
