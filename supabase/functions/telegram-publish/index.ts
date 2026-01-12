@@ -8,6 +8,8 @@ const corsHeaders = {
 
 const TELEGRAM_BOT_TOKEN = Deno.env.get('TELEGRAM_BOT_TOKEN');
 const CHANNEL_ID = '@aries76_bitcoin';
+// Banner URL - uses the published site
+const BANNER_URL = 'https://www.aries76.com/telegram-bitcoin-banner.png';
 
 interface PublishRequest {
   action: 'publish' | 'schedule' | 'check-scheduled';
@@ -103,26 +105,40 @@ https://www.aries76.com/bitcoin-2026-report
 #Crypto #News #Trading #ARIES76`;
 }
 
-async function publishToTelegram(message: string): Promise<{ success: boolean; messageId?: string; error?: string }> {
+async function publishToTelegram(message: string, withPhoto: boolean = true): Promise<{ success: boolean; messageId?: string; error?: string }> {
   if (!TELEGRAM_BOT_TOKEN) {
     console.error('TELEGRAM_BOT_TOKEN is not set');
     return { success: false, error: 'Telegram bot token not configured' };
   }
 
   console.log('Attempting to publish to Telegram channel:', CHANNEL_ID);
-  console.log('Bot token length:', TELEGRAM_BOT_TOKEN.length);
+  console.log('With photo:', withPhoto);
 
   try {
-    const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-    const body = {
-      chat_id: CHANNEL_ID,
-      text: message,
-      parse_mode: 'HTML',
-      disable_web_page_preview: true, // Disable link preview until dedicated image is created
-    };
+    let url: string;
+    let body: Record<string, unknown>;
+
+    if (withPhoto) {
+      // Send photo with caption
+      url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`;
+      body = {
+        chat_id: CHANNEL_ID,
+        photo: BANNER_URL,
+        caption: message,
+        parse_mode: 'HTML',
+      };
+    } else {
+      // Send text only
+      url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+      body = {
+        chat_id: CHANNEL_ID,
+        text: message,
+        parse_mode: 'HTML',
+        disable_web_page_preview: true,
+      };
+    }
     
     console.log('Request URL:', url.replace(TELEGRAM_BOT_TOKEN, 'BOT_TOKEN_HIDDEN'));
-    console.log('Request body:', JSON.stringify({ ...body, text: body.text.substring(0, 50) + '...' }));
 
     const response = await fetch(url, {
       method: 'POST',
