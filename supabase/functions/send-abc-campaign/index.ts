@@ -259,6 +259,7 @@ ${personalizedContent}
         const emailPayload: any = {
           from: "Edoardo Grigione - Aries76 <edoardo.grigione@aries76.com>",
           to: [recipient.email],
+          cc: ["edoardo.grigione@aries76.com"],
           subject: personalizedSubject,
           html: emailHtml,
         };
