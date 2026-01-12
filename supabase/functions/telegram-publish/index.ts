@@ -105,26 +105,39 @@ https://www.aries76.com/bitcoin-2026-report
 
 async function publishToTelegram(message: string): Promise<{ success: boolean; messageId?: string; error?: string }> {
   if (!TELEGRAM_BOT_TOKEN) {
+    console.error('TELEGRAM_BOT_TOKEN is not set');
     return { success: false, error: 'Telegram bot token not configured' };
   }
 
+  console.log('Attempting to publish to Telegram channel:', CHANNEL_ID);
+  console.log('Bot token length:', TELEGRAM_BOT_TOKEN.length);
+
   try {
-    const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+    const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+    const body = {
+      chat_id: CHANNEL_ID,
+      text: message,
+      parse_mode: 'HTML',
+    };
+    
+    console.log('Request URL:', url.replace(TELEGRAM_BOT_TOKEN, 'BOT_TOKEN_HIDDEN'));
+    console.log('Request body:', JSON.stringify({ ...body, text: body.text.substring(0, 50) + '...' }));
+
+    const response = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        chat_id: CHANNEL_ID,
-        text: message,
-        parse_mode: 'HTML',
-      }),
+      body: JSON.stringify(body),
     });
 
     const result = await response.json();
+    console.log('Telegram API response:', JSON.stringify(result));
     
     if (result.ok) {
+      console.log('Message published successfully, ID:', result.result.message_id);
       return { success: true, messageId: String(result.result.message_id) };
     } else {
-      return { success: false, error: result.description };
+      console.error('Telegram API error:', result.description, 'Error code:', result.error_code);
+      return { success: false, error: `${result.description} (code: ${result.error_code})` };
     }
   } catch (error) {
     return { success: false, error: error.message };
