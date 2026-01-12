@@ -1,4 +1,4 @@
-// Bitcoin 2026 - Preview Page with HARD GATING
+// Bitcoin 2026 - Pagina Preview con HARD GATING - Versione Italiana
 import { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Button } from '@/components/ui/button';
@@ -34,7 +34,7 @@ import { useBitcoinReportData } from '@/hooks/useBitcoinReportData';
 import { useTwelveDataBtc } from '@/hooks/useTwelveDataBtc';
 import { Link } from 'react-router-dom';
 
-const Bitcoin2026ReportPreview = () => {
+const Bitcoin2026ReportPreviewIT = () => {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { data: bitcoinData, loading: bitcoinLoading } = useBitcoinReportData();
@@ -42,7 +42,7 @@ const Bitcoin2026ReportPreview = () => {
 
   const handleAccessRequest = async () => {
     if (!email || !email.includes('@')) {
-      toast.error('Please enter a valid professional email address');
+      toast.error('Inserisci un indirizzo email professionale valido');
       return;
     }
 
@@ -56,8 +56,8 @@ const Bitcoin2026ReportPreview = () => {
         body: { 
           email,
           source,
-          successUrl: `${window.location.origin}/bitcoin-2026-report?success=true`,
-          cancelUrl: `${window.location.origin}/bitcoin-2026-report-preview?canceled=true`
+          successUrl: `${window.location.origin}/bitcoin-2026-report-it?success=true`,
+          cancelUrl: `${window.location.origin}/bitcoin-2026-report-preview-it?canceled=true`
         }
       });
 
@@ -70,35 +70,35 @@ const Bitcoin2026ReportPreview = () => {
       }
     } catch (error) {
       console.error('Checkout error:', error);
-      toast.error('An error occurred. Please try again.');
+      toast.error('Si è verificato un errore. Riprova.');
       setIsLoading(false);
     }
   };
 
-  // Chapter definitions with icons
+  // Chapter definitions with icons (Italian)
   const chapters = [
-    { id: "chapter-1", number: "I", title: "Executive Summary & Macro Analysis", icon: TrendingUp },
-    { id: "chapter-2", number: "II", title: "Advanced Price Framework", icon: BarChart3 },
-    { id: "chapter-3", number: "III", title: "Quantitative Regime Models", icon: Layers },
-    { id: "chapter-4", number: "IV", title: "ETF Flow Dynamics & Market Microstructure", icon: Network },
-    { id: "chapter-5", number: "V", title: "On-Chain Analytics & Entity Behavior", icon: Database },
-    { id: "chapter-6", number: "VI", title: "Derivatives Markets & Positioning", icon: Activity },
-    { id: "chapter-7", number: "VII", title: "Mining Economics & Hashrate Analysis", icon: Coins },
-    { id: "chapter-8", number: "VIII", title: "Supply Dynamics & Long-Term Holders", icon: LineChart },
-    { id: "chapter-9", number: "IX", title: "Scenario Analysis & Risk Framework", icon: Target },
-    { id: "chapter-10", number: "X", title: "2026 Price Targets & Investment Implications", icon: TrendingUp },
-    { id: "chapter-11", number: "XI", title: "Risk Management Framework", icon: Shield },
-    { id: "chapter-12", number: "XII", title: "Cross-Asset Correlations", icon: GitBranch },
-    { id: "chapter-13", number: "XIII", title: "Regulatory Landscape 2026", icon: Scale },
-    { id: "chapter-14", number: "XIV", title: "Institutional Adoption Metrics", icon: Globe },
-    { id: "chapter-15", number: "XV", title: "Macro Calendar & Key Dates 2026", icon: Calendar },
-    { id: "chapter-16", number: "XVI", title: "Geopolitical Risk Analysis", icon: AlertTriangle },
-    { id: "chapter-17", number: "XVII", title: "Historical Cycle Comparison", icon: Activity },
-    { id: "chapter-18", number: "XVIII", title: "Exit Strategy Framework", icon: LogOut },
-    { id: "chapter-19", number: "XIX", title: "Lightning Network & Layer 2", icon: Zap },
+    { id: "chapter-1", number: "I", title: "Executive Summary e Analisi Macro", icon: TrendingUp },
+    { id: "chapter-2", number: "II", title: "Framework Avanzato dei Prezzi", icon: BarChart3 },
+    { id: "chapter-3", number: "III", title: "Modelli Quantitativi di Regime", icon: Layers },
+    { id: "chapter-4", number: "IV", title: "Dinamiche ETF e Microstruttura di Mercato", icon: Network },
+    { id: "chapter-5", number: "V", title: "Analytics On-Chain e Comportamento Entità", icon: Database },
+    { id: "chapter-6", number: "VI", title: "Mercati Derivati e Posizionamento", icon: Activity },
+    { id: "chapter-7", number: "VII", title: "Economia del Mining e Analisi Hashrate", icon: Coins },
+    { id: "chapter-8", number: "VIII", title: "Dinamiche dell'Offerta e Holder a Lungo Termine", icon: LineChart },
+    { id: "chapter-9", number: "IX", title: "Analisi Scenari e Framework di Rischio", icon: Target },
+    { id: "chapter-10", number: "X", title: "Target di Prezzo 2026 e Implicazioni di Investimento", icon: TrendingUp },
+    { id: "chapter-11", number: "XI", title: "Framework di Gestione del Rischio", icon: Shield },
+    { id: "chapter-12", number: "XII", title: "Correlazioni Cross-Asset", icon: GitBranch },
+    { id: "chapter-13", number: "XIII", title: "Panorama Regolamentare 2026", icon: Scale },
+    { id: "chapter-14", number: "XIV", title: "Metriche di Adozione Istituzionale", icon: Globe },
+    { id: "chapter-15", number: "XV", title: "Calendario Macro e Date Chiave 2026", icon: Calendar },
+    { id: "chapter-16", number: "XVI", title: "Analisi del Rischio Geopolitico", icon: AlertTriangle },
+    { id: "chapter-17", number: "XVII", title: "Confronto Storico dei Cicli", icon: Activity },
+    { id: "chapter-18", number: "XVIII", title: "Framework Strategia di Uscita", icon: LogOut },
+    { id: "chapter-19", number: "XIX", title: "Lightning Network e Layer 2", icon: Zap },
   ];
 
-  // Email Gate Component (No pricing displayed)
+  // Email Gate Component
   const EmailGate = () => (
     <motion.div 
       className="relative overflow-hidden rounded-2xl border border-accent/20 bg-gradient-to-b from-zinc-900/95 to-zinc-950"
@@ -114,27 +114,27 @@ const Bitcoin2026ReportPreview = () => {
         <div className="max-w-xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/20 mb-6">
             <Lock className="w-4 h-4 text-accent" />
-            <span className="text-sm font-medium text-accent">Full Access Required</span>
+            <span className="text-sm font-medium text-accent">Accesso Completo Richiesto</span>
           </div>
           
           <h3 className="text-2xl md:text-3xl font-semibold text-white mb-4">
-            Request full access to the Bitcoin 2026 live intelligence page
+            Richiedi accesso completo alla pagina di intelligence Bitcoin 2026
           </h3>
           
           <p className="text-sm text-zinc-400 mb-4">
-            Continuous updates · Real-time data · Full decision framework
+            Aggiornamenti continui · Dati in tempo reale · Framework decisionale completo
           </p>
           
           {/* Price */}
           <div className="mb-8 py-4 border-y border-zinc-700/60">
             <div className="text-4xl font-semibold text-white tracking-tight">€99</div>
-            <p className="text-sm text-zinc-400 mt-1">One-time payment · Ongoing updates included</p>
+            <p className="text-sm text-zinc-400 mt-1">Pagamento unico · Aggiornamenti continui inclusi</p>
           </div>
           
           <div className="space-y-4 max-w-sm mx-auto">
             <Input
               type="email"
-              placeholder="Professional email address"
+              placeholder="Indirizzo email professionale"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="bg-zinc-800/50 border-zinc-600 text-white placeholder:text-zinc-400 focus:border-accent focus:ring-accent/30 h-12 text-center"
@@ -147,11 +147,11 @@ const Bitcoin2026ReportPreview = () => {
               {isLoading ? (
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Processing...
+                  Elaborazione...
                 </>
               ) : (
                 <>
-                  Request full access
+                  Richiedi accesso completo
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </>
               )}
@@ -159,14 +159,14 @@ const Bitcoin2026ReportPreview = () => {
           </div>
           
           <p className="text-xs text-zinc-500 mt-6">
-            No newsletters · No spam · Access-related communications only
+            Nessuna newsletter · Nessuno spam · Solo comunicazioni relative all'accesso
           </p>
         </div>
       </div>
     </motion.div>
   );
 
-  // Locked Content Placeholder (Investment Implications style)
+  // Locked Content Placeholder
   const LockedSection = ({ title, description }: { title: string; description: string }) => (
     <motion.div 
       className="relative rounded-xl border border-zinc-800/60 bg-zinc-900/30 overflow-hidden"
@@ -189,7 +189,7 @@ const Bitcoin2026ReportPreview = () => {
         </p>
         
         <p className="text-zinc-300 text-sm max-w-md mx-auto mb-6">
-          Full access is required to view this content.
+          L'accesso completo è necessario per visualizzare questo contenuto.
         </p>
         
         <Button 
@@ -198,7 +198,7 @@ const Bitcoin2026ReportPreview = () => {
           onClick={() => document.getElementById('email-gate')?.scrollIntoView({ behavior: 'smooth' })}
           className="border-accent/30 text-accent hover:bg-accent/10"
         >
-          Request full access
+          Richiedi accesso completo
           <ArrowRight className="w-4 h-4 ml-2" />
         </Button>
       </div>
@@ -208,18 +208,18 @@ const Bitcoin2026ReportPreview = () => {
   return (
     <>
       <Helmet>
-        <title>Bitcoin Q1 2026 Edition | Institutional Research | ARIES76</title>
-        <meta name="description" content="A continuously updated Bitcoin intelligence page for long-term decision makers. Real-time price data, key statistics, and evolving strategic context." />
+        <title>Bitcoin Q1 2026 Edizione | Ricerca Istituzionale | ARIES76</title>
+        <meta name="description" content="Una pagina di intelligence Bitcoin aggiornata continuamente per decisori a lungo termine. Dati di prezzo in tempo reale, statistiche chiave e contesto strategico in evoluzione." />
         
-        <meta property="og:title" content="Bitcoin Q1 2026 | Live Institutional Research" />
-        <meta property="og:description" content="Continuously updated Bitcoin intelligence with real-time data and macro-liquidity framework analysis." />
+        <meta property="og:title" content="Bitcoin Q1 2026 | Ricerca Istituzionale Live" />
+        <meta property="og:description" content="Intelligence Bitcoin aggiornata continuamente con dati in tempo reale e analisi del framework macro-liquidità." />
         <meta property="og:image" content="https://aries76.com/bitcoin-2026-og.png" />
-        <meta property="og:url" content="https://aries76.com/bitcoin-2026-report-preview" />
+        <meta property="og:url" content="https://aries76.com/bitcoin-2026-report-preview-it" />
         <meta property="og:type" content="website" />
         
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Bitcoin Q1 2026 | ARIES76" />
-        <meta name="twitter:description" content="Live Bitcoin intelligence for institutional decision makers." />
+        <meta name="twitter:description" content="Intelligence Bitcoin live per decisori istituzionali." />
         <meta name="twitter:image" content="https://aries76.com/bitcoin-2026-og.png" />
       </Helmet>
 
@@ -281,17 +281,18 @@ const Bitcoin2026ReportPreview = () => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
               >
-                <span className="px-3 py-1.5 rounded-md text-sm font-medium bg-accent/20 text-accent border border-accent/30">
-                  EN
-                </span>
-                <span className="text-zinc-600">|</span>
                 <Link 
-                  to="/bitcoin-2026-report-preview-it"
+                  to="/bitcoin-2026-report-preview"
                   className="px-3 py-1.5 rounded-md text-sm font-medium text-zinc-400 hover:text-white hover:bg-zinc-800/60 transition-colors"
                 >
-                  IT
+                  EN
                 </Link>
+                <span className="text-zinc-600">|</span>
+                <span className="px-3 py-1.5 rounded-md text-sm font-medium bg-accent/20 text-accent border border-accent/30">
+                  IT
+                </span>
               </motion.div>
+
               {/* Badge */}
               <motion.div 
                 className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-gradient-to-r from-orange-500/20 to-amber-500/10 border border-orange-500/30 mb-8 backdrop-blur-sm"
@@ -303,7 +304,7 @@ const Bitcoin2026ReportPreview = () => {
                   <div className="w-2.5 h-2.5 rounded-full bg-orange-500" />
                   <div className="absolute inset-0 w-2.5 h-2.5 rounded-full bg-orange-500 animate-ping" />
                 </div>
-                <span className="text-sm font-semibold text-orange-400 uppercase tracking-wider">Institutional Research</span>
+                <span className="text-sm font-semibold text-orange-400 uppercase tracking-wider">Ricerca Istituzionale</span>
               </motion.div>
               
               {/* Title */}
@@ -317,7 +318,7 @@ const Bitcoin2026ReportPreview = () => {
                 <br />
                 <span className="bg-gradient-to-r from-orange-400 via-amber-400 to-orange-500 bg-clip-text text-transparent">Q1 2026</span>
                 <br />
-                <span className="text-2xl md:text-3xl text-zinc-300 font-medium tracking-wide">Edition</span>
+                <span className="text-2xl md:text-3xl text-zinc-300 font-medium tracking-wide">Edizione</span>
               </motion.h1>
               
               {/* Subtitle */}
@@ -327,7 +328,7 @@ const Bitcoin2026ReportPreview = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
               >
-                A continuously updated Bitcoin intelligence page for long-term decision makers.
+                Una pagina di intelligence Bitcoin aggiornata continuamente per decisori a lungo termine.
               </motion.p>
               
               <motion.p 
@@ -336,7 +337,7 @@ const Bitcoin2026ReportPreview = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.45 }}
               >
-                This is not a PDF and not a static report.
+                Questo non è un PDF e non è un report statico.
               </motion.p>
 
               {/* Live Bitcoin Price */}
@@ -352,7 +353,7 @@ const Bitcoin2026ReportPreview = () => {
                       <span className="text-xl font-bold text-orange-400">₿</span>
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-xs text-zinc-400 uppercase tracking-wider">Live Price</span>
+                      <span className="text-xs text-zinc-400 uppercase tracking-wider">Prezzo Live</span>
                       <AnimatePresence mode="wait">
                         {(twelveLoading && bitcoinLoading) ? (
                           <motion.div
@@ -370,7 +371,7 @@ const Bitcoin2026ReportPreview = () => {
                             exit={{ opacity: 0, y: -10 }}
                             className="text-2xl font-bold text-white tabular-nums"
                           >
-                            ${(twelveData?.bitcoin_price_usd || bitcoinData?.bitcoin_price_usd)?.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) || '---'}
+                            ${(twelveData?.bitcoin_price_usd || bitcoinData?.bitcoin_price_usd)?.toLocaleString('it-IT', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) || '---'}
                           </motion.span>
                         )}
                       </AnimatePresence>
@@ -380,7 +381,7 @@ const Bitcoin2026ReportPreview = () => {
                   <div className="flex flex-col">
                     <span className="text-xs text-zinc-400 uppercase tracking-wider">EUR</span>
                     <span className="text-lg font-semibold text-zinc-100 tabular-nums">
-                      €{(twelveData?.bitcoin_price_eur || bitcoinData?.bitcoin_price_eur)?.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) || '---'}
+                      €{(twelveData?.bitcoin_price_eur || bitcoinData?.bitcoin_price_eur)?.toLocaleString('it-IT', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) || '---'}
                     </span>
                   </div>
                   {/* 24h Change */}
@@ -420,7 +421,7 @@ const Bitcoin2026ReportPreview = () => {
                 </div>
                 <div className="hidden sm:flex items-center gap-2 text-sm text-zinc-400">
                   <Calendar className="w-4 h-4" />
-                  <span>Q1 2026 Edition</span>
+                  <span>Edizione Q1 2026</span>
                 </div>
               </motion.div>
             </motion.div>
@@ -439,13 +440,13 @@ const Bitcoin2026ReportPreview = () => {
                   <div className="w-3 h-3 rounded-full bg-green-500" />
                   <div className="absolute inset-0 w-3 h-3 rounded-full bg-green-500 animate-ping" />
                 </div>
-                <span className="text-sm font-semibold text-green-400 uppercase tracking-wider">Live Data Report</span>
+                <span className="text-sm font-semibold text-green-400 uppercase tracking-wider">Report con Dati Live</span>
               </div>
               <span className="hidden sm:block text-zinc-500">•</span>
               <div className="flex items-center gap-2">
                 <Activity className="w-4 h-4 text-accent" />
                 <span className="text-sm text-zinc-100">
-                  Data updated daily at 6:00 AM CET
+                  Dati aggiornati quotidianamente alle 6:00 CET
                 </span>
               </div>
             </div>
@@ -484,7 +485,7 @@ const Bitcoin2026ReportPreview = () => {
                 <div className="flex gap-4">
                   <span className="flex-shrink-0 w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center text-accent font-bold text-sm">1</span>
                   <p className="text-zinc-100 leading-relaxed">
-                    Bitcoin's 2026 trajectory is NOT driven by halving cycles—it's governed by global M2 liquidity impulses and real-rate dynamics. Our proprietary macro-liquidity framework reveals that marginal M2 acceleration produces convex upside responses while stagnation triggers volatility spikes.
+                    La traiettoria di Bitcoin nel 2026 NON è guidata dai cicli di halving—è governata dagli impulsi di liquidità globale M2 e dalle dinamiche dei tassi reali. Il nostro framework proprietario macro-liquidità rivela che l'accelerazione marginale di M2 produce risposte convesse al rialzo mentre la stagnazione innesca picchi di volatilità.
                   </p>
                 </div>
                 
@@ -492,7 +493,7 @@ const Bitcoin2026ReportPreview = () => {
                 <div className="flex gap-4">
                   <span className="flex-shrink-0 w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center text-accent font-bold text-sm">2</span>
                   <p className="text-zinc-100 leading-relaxed">
-                    With real rates compressing toward neutral (0-1% range by mid-2026) and Fed balance-sheet normalization decelerating, Bitcoin faces a macro backdrop comparable to Q4 2020.
+                    Con i tassi reali che comprimono verso la neutralità (range 0-1% entro metà 2026) e la normalizzazione del bilancio Fed in decelerazione, Bitcoin affronta un contesto macro paragonabile al Q4 2020.
                     <span className="text-zinc-500">...</span>
                   </p>
                 </div>
@@ -500,10 +501,10 @@ const Bitcoin2026ReportPreview = () => {
                 {/* Bullet 3 - COMPLETELY HIDDEN */}
               </div>
               
-              {/* MANDATORY TEXT (verbatim) */}
+              {/* MANDATORY TEXT */}
               <div className="mt-8 pt-6 border-t border-zinc-700/60">
                 <p className="text-sm text-zinc-300">
-                  The full macro-liquidity framework, scenario probabilities, and valuation architecture are available only with full access.
+                  Il framework macro-liquidità completo, le probabilità degli scenari e l'architettura di valutazione sono disponibili solo con l'accesso completo.
                 </p>
               </div>
             </div>
@@ -517,8 +518,8 @@ const Bitcoin2026ReportPreview = () => {
             viewport={{ once: true }}
           >
             <LockedSection 
-              title="Investment Implications" 
-              description="This section contains allocation frameworks and regime-based decision logic."
+              title="Implicazioni di Investimento" 
+              description="Questa sezione contiene framework di allocazione e logica decisionale basata sui regimi."
             />
           </motion.section>
 
@@ -535,7 +536,7 @@ const Bitcoin2026ReportPreview = () => {
             viewport={{ once: true }}
           >
             <div className="bg-zinc-900/70 rounded-xl border border-zinc-700/60 p-8">
-              <h3 className="text-xl font-semibold text-white mb-6">Table of Contents</h3>
+              <h3 className="text-xl font-semibold text-white mb-6">Indice dei Contenuti</h3>
               
               <div className="grid gap-3">
                 {chapters.map((chapter) => {
@@ -556,10 +557,10 @@ const Bitcoin2026ReportPreview = () => {
                 })}
               </div>
               
-              {/* MANDATORY TEXT (verbatim) */}
+              {/* MANDATORY TEXT */}
               <div className="mt-6 pt-6 border-t border-zinc-700/60">
                 <p className="text-sm text-zinc-300">
-                  This page includes 19 institutional chapters available only with full access.
+                  Questa pagina include 19 capitoli istituzionali disponibili solo con l'accesso completo.
                 </p>
               </div>
             </div>
@@ -568,28 +569,28 @@ const Bitcoin2026ReportPreview = () => {
           {/* ===== ADVANCED FRAMEWORKS - LOCKED PLACEHOLDER BLOCKS ===== */}
           <div className="space-y-8 mb-16">
             <LockedSection 
-              title="Advanced Price Framework" 
-              description="This section contains quantitative pricing models and technical architecture."
+              title="Framework Avanzato dei Prezzi" 
+              description="Questa sezione contiene modelli di pricing quantitativi e architettura tecnica."
             />
             <LockedSection 
-              title="Quantitative Regime Models" 
-              description="This section contains proprietary regime classification and transition matrices."
+              title="Modelli Quantitativi di Regime" 
+              description="Questa sezione contiene classificazione proprietaria dei regimi e matrici di transizione."
             />
             <LockedSection 
-              title="Scenario Analysis" 
-              description="This section contains probability-weighted scenario outcomes and sensitivity analysis."
+              title="Analisi Scenari" 
+              description="Questa sezione contiene risultati degli scenari ponderati per probabilità e analisi di sensibilità."
             />
             <LockedSection 
-              title="Risk Framework" 
-              description="This section contains risk metrics, drawdown analysis, and position sizing logic."
+              title="Framework di Rischio" 
+              description="Questa sezione contiene metriche di rischio, analisi dei drawdown e logica di dimensionamento delle posizioni."
             />
             <LockedSection 
-              title="2026 Price Targets" 
-              description="This section contains base, bull, and bear case price projections with underlying assumptions."
+              title="Target di Prezzo 2026" 
+              description="Questa sezione contiene proiezioni di prezzo base, bull e bear con assunzioni sottostanti."
             />
             <LockedSection 
-              title="Allocation Logic" 
-              description="This section contains portfolio construction frameworks and rebalancing triggers."
+              title="Logica di Allocazione" 
+              description="Questa sezione contiene framework di costruzione del portafoglio e trigger di ribilanciamento."
             />
           </div>
 
@@ -601,10 +602,10 @@ const Bitcoin2026ReportPreview = () => {
             viewport={{ once: true }}
           >
             <p className="text-lg text-zinc-300 max-w-xl mx-auto">
-              This page is intentionally incomplete.
+              Questa pagina è volutamente incompleta.
             </p>
             <p className="text-lg text-zinc-100 font-medium mt-2 max-w-xl mx-auto">
-              Full access is required to make informed decisions.
+              L'accesso completo è necessario per prendere decisioni informate.
             </p>
           </motion.section>
 
@@ -618,7 +619,7 @@ const Bitcoin2026ReportPreview = () => {
                 © 2026 ARIES76 Capital Intelligence
               </div>
               <div className="text-xs text-zinc-500">
-                Not financial advice. For institutional and professional investors only.
+                Non costituisce consulenza finanziaria. Solo per investitori istituzionali e professionali.
               </div>
             </div>
           </div>
@@ -628,4 +629,4 @@ const Bitcoin2026ReportPreview = () => {
   );
 };
 
-export default Bitcoin2026ReportPreview;
+export default Bitcoin2026ReportPreviewIT;
