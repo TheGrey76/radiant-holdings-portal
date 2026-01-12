@@ -2330,6 +2330,83 @@ export type Database = {
         }
         Relationships: []
       }
+      telegram_publication_logs: {
+        Row: {
+          created_at: string
+          error_message: string | null
+          id: string
+          message_content: string | null
+          publication_id: string | null
+          publication_type: string
+          published_at: string
+          status: string
+          telegram_message_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          message_content?: string | null
+          publication_id?: string | null
+          publication_type: string
+          published_at?: string
+          status?: string
+          telegram_message_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          message_content?: string | null
+          publication_id?: string | null
+          publication_type?: string
+          published_at?: string
+          status?: string
+          telegram_message_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "telegram_publication_logs_publication_id_fkey"
+            columns: ["publication_id"]
+            isOneToOne: false
+            referencedRelation: "telegram_scheduled_publications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      telegram_scheduled_publications: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          last_published_at: string | null
+          message_template: string | null
+          publication_type: string
+          scheduled_time: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          last_published_at?: string | null
+          message_template?: string | null
+          publication_type?: string
+          scheduled_time: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          last_published_at?: string | null
+          message_template?: string | null
+          publication_type?: string
+          scheduled_time?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string | null

@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
-import { ArrowUp, TrendingUp, BarChart3, Layers, Database, Activity, Coins, Network, Target, LineChart, Lightbulb, HelpCircle, Shield, Globe, Scale, Calendar, Zap, AlertTriangle, GitBranch, LogOut } from "lucide-react";
+import { ArrowUp, TrendingUp, BarChart3, Layers, Database, Activity, Coins, Network, Target, LineChart, Lightbulb, HelpCircle, Shield, Globe, Scale, Calendar, Zap, AlertTriangle, GitBranch, LogOut, Send } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { LineChart as RechartsLineChart, Line, AreaChart, Area, BarChart as RechartsBarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Legend } from "recharts";
@@ -621,6 +621,15 @@ const Bitcoin2026Report = () => {
                     </span>
                   </div>
                 )}
+                <a
+                  href="https://t.me/aries76_bitcoin"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#0088cc]/20 hover:bg-[#0088cc]/30 border border-[#0088cc]/40 transition-colors"
+                >
+                  <Send className="w-4 h-4 text-[#0088cc]" />
+                  <span className="text-sm font-medium text-[#0088cc]">Join Telegram</span>
+                </a>
                 {bitcoinData?.current_regime && (
                   <Tooltip>
                     <TooltipTrigger asChild>
