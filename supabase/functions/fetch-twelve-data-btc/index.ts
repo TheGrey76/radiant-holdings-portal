@@ -32,22 +32,73 @@ serve(async (req) => {
 
     console.log('Fetching Bitcoin price from Twelve Data...');
 
-    // Fetch BTC/USD price only (reduce API calls from 3 to 1)
+    const fetchFromCoinGecko = async () => {
+      // No API key required
+      const cgRes = await fetch(
+        'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd,eur&include_last_updated_at=true'
+      );
+      const cg = await cgRes.json();
+      const usd = cg?.bitcoin?.usd;
+      const eur = cg?.bitcoin?.eur;
+      const ts = cg?.bitcoin?.last_updated_at
+        ? new Date(cg.bitcoin.last_updated_at * 1000).toISOString()
+        : new Date().toISOString();
+
+      if (typeof usd !== 'number' || typeof eur !== 'number') {
+        throw new Error('CoinGecko fallback returned invalid data');
+      }
+
+      return {
+        bitcoin_price_usd: usd,
+        bitcoin_price_eur: eur,
+        change_24h: null,
+        timestamp: ts,
+        source: 'coingecko_fallback',
+      };
+    };
+
+    // Fetch BTC/USD price from Twelve Data (single call)
     const btcUsdResponse = await fetch(
       `https://api.twelvedata.com/price?symbol=BTC/USD&apikey=${TWELVE_DATA_API_KEY}`
     );
     const btcUsdData = await btcUsdResponse.json();
     console.log('BTC/USD response:', btcUsdData);
 
-    if (btcUsdData.code) {
-      // If rate limited but we have cached data, return it
+    // Twelve Data returns errors as JSON with a "code" field.
+    // On rate limit, prefer (1) cached data, (2) CoinGecko fallback, (3) graceful null response.
+    if (btcUsdData?.code) {
+      const message = btcUsdData?.message || btcUsdData?.code;
+
       if (cachedData) {
-        console.log('Rate limited, returning stale cached data');
-        return new Response(JSON.stringify({ ...cachedData.data, cached: true, stale: true }), {
+        console.log('Twelve Data error, returning stale cached data:', message);
+        return new Response(JSON.stringify({ ...cachedData.data, cached: true, stale: true, rate_limited: true }), {
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         });
       }
-      throw new Error(`Twelve Data API error: ${btcUsdData.message || btcUsdData.code}`);
+
+      try {
+        console.log('Twelve Data error, using CoinGecko fallback:', message);
+        const fallback = await fetchFromCoinGecko();
+        cachedData = { data: fallback, timestamp: Date.now() };
+        return new Response(JSON.stringify({ ...fallback, cached: true, fallback: true }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      } catch (fallbackErr) {
+        console.error('CoinGecko fallback failed:', fallbackErr);
+        // Graceful (non-500) response so the frontend doesn’t crash
+        return new Response(
+          JSON.stringify({
+            bitcoin_price_usd: null,
+            bitcoin_price_eur: null,
+            change_24h: null,
+            timestamp: new Date().toISOString(),
+            source: 'unavailable',
+            error: `Twelve Data API error: ${message}`,
+            rate_limited: true,
+          }),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
     }
 
     // Estimate EUR price (approximate conversion rate)
@@ -81,14 +132,18 @@ serve(async (req) => {
       });
     }
     
+    // Graceful (non-500) response so the frontend can show an error state without crashing
     return new Response(
-      JSON.stringify({ 
+      JSON.stringify({
+        bitcoin_price_usd: null,
+        bitcoin_price_eur: null,
+        change_24h: null,
+        source: 'unavailable',
         error: error instanceof Error ? error.message : 'Unknown error',
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       }),
-      { 
-        status: 500, 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+      {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       }
     );
   }
