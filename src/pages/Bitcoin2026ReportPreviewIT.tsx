@@ -209,7 +209,7 @@ const Bitcoin2026ReportPreviewIT = () => {
     <>
       <Helmet>
         <title>Bitcoin Q1 2026 Edizione | Ricerca Istituzionale | ARIES76</title>
-        <meta name="description" content="Una pagina di intelligence Bitcoin aggiornata continuamente per decisori a lungo termine. Dati di prezzo in tempo reale, statistiche chiave e contesto strategico in evoluzione." />
+        <meta name="description" content="Una pagina di intelligence Bitcoin aggiornata continuamente per Decision Makers. Dati di prezzo in tempo reale, statistiche chiave e contesto strategico in evoluzione." />
         
         <meta property="og:title" content="Bitcoin Q1 2026 | Ricerca Istituzionale Live" />
         <meta property="og:description" content="Intelligence Bitcoin aggiornata continuamente con dati in tempo reale e analisi del framework macro-liquidità." />
@@ -219,7 +219,7 @@ const Bitcoin2026ReportPreviewIT = () => {
         
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Bitcoin Q1 2026 | ARIES76" />
-        <meta name="twitter:description" content="Intelligence Bitcoin live per decisori istituzionali." />
+        <meta name="twitter:description" content="Intelligence Bitcoin live per Decision Makers istituzionali." />
         <meta name="twitter:image" content="https://aries76.com/bitcoin-2026-og.png" />
       </Helmet>
 
@@ -328,7 +328,7 @@ const Bitcoin2026ReportPreviewIT = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
               >
-                Una pagina di intelligence Bitcoin aggiornata continuamente per decisori a lungo termine.
+                Una pagina di intelligence Bitcoin aggiornata continuamente per Decision Makers.
               </motion.p>
               
               <motion.p 
