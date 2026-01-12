@@ -243,7 +243,7 @@ const Bitcoin2026ReportIT = () => {
     { id: "chapter-5", number: "V", title: "Analisi On-Chain & Comportamento Entità", icon: Database },
     { id: "chapter-6", number: "VI", title: "Mercati Derivati & Posizionamento", icon: Activity },
     { id: "chapter-7", number: "VII", title: "Economia del Mining & Analisi Hashrate", icon: Coins },
-    { id: "chapter-8", number: "VIII", title: "Dinamiche dell'Offerta & Holder Long-Term", icon: LineChart },
+    { id: "chapter-8", number: "VIII", title: "Dinamiche dell'Offerta & Long-Term Holder", icon: LineChart },
     { id: "chapter-9", number: "IX", title: "Analisi Scenari & Framework di Rischio", icon: Target },
     { id: "chapter-10", number: "X", title: "Target di Prezzo 2026 & Implicazioni", icon: TrendingUp },
     { id: "chapter-11", number: "XI", title: "Framework di Risk Management", icon: Shield },
@@ -915,7 +915,7 @@ const Bitcoin2026ReportIT = () => {
                   <div className="p-6 rounded-2xl bg-gradient-to-br from-primary/5 to-accent/5 border border-primary/10">
                     <h4 className="text-lg font-bold text-foreground mb-3">Dinamiche Long-Term Holder</h4>
                     <p className="text-sm text-foreground/70 leading-relaxed m-0">
-                      I long-term holder (LTH)—definiti come indirizzi che detengono per 155+ giorni—rappresentano il segmento più guidato dalla convinzione. I picchi di offerta LTH tipicamente precedono i top di mercato, mentre l'accumulo LTH durante i drawdown segnala formazione di bottom.
+                      I Long-Term Holder (LTH)—definiti come indirizzi che detengono per 155+ giorni—rappresentano il segmento più guidato dalla convinzione. I picchi di offerta LTH tipicamente precedono i market top, mentre l'accumulo LTH durante i drawdown segnala formazione di bottom.
                     </p>
                   </div>
 
@@ -940,7 +940,7 @@ const Bitcoin2026ReportIT = () => {
                   <KeyTakeaways insights={[
                     "L'analisi on-chain rivela pattern di comportamento delle entità—il prezzo realizzato agisce come costo base aggregato e supporto psicologico.",
                     "Net flow exchange distingue accumulazione istituzionale (deflussi persistenti verso cold storage) da distribuzione retail (afflussi che precedono vendite).",
-                    "L'offerta long-term holder (12+ mesi) crea inelasticità dell'offerta—mentre l'offerta illiquida cresce attraverso ETF e accumulo treasury corporate, il float disponibile si riduce."
+                    "L'offerta Long-Term Holder (12+ mesi) crea inelasticità dell'offerta—mentre l'offerta illiquida cresce attraverso ETF e accumulo corporate treasury, il float disponibile si riduce."
                   ]} />
                 </div>
               </ChapterSection>
@@ -1038,7 +1038,7 @@ const Bitcoin2026ReportIT = () => {
                     <span className="text-xs font-bold text-primary uppercase tracking-widest">Capitolo VIII</span>
                   </div>
                   <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 leading-tight">
-                    Dinamiche dell'Offerta & Holder Long-Term
+                    Dinamiche dell'Offerta & Long-Term Holder
                   </h2>
                   <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent rounded-full"></div>
                 </div>
@@ -1206,7 +1206,7 @@ const Bitcoin2026ReportIT = () => {
 
                   <div className="grid md:grid-cols-3 gap-4">
                     <div className="p-5 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20">
-                      <h4 className="text-lg font-bold text-foreground mb-3">Ambiente Risk-On</h4>
+                      <h4 className="text-lg font-bold text-foreground mb-3">Risk-On Environment</h4>
                       <ul className="space-y-2 text-sm text-foreground/70">
                         <li>BTC-Nasdaq: <span className="text-accent font-semibold">+0.75</span></li>
                         <li>BTC-Oro: <span className="text-muted-foreground font-semibold">+0.15</span></li>
@@ -1214,7 +1214,7 @@ const Bitcoin2026ReportIT = () => {
                       </ul>
                     </div>
                     <div className="p-5 rounded-xl bg-gradient-to-br from-accent/10 to-accent/5 border border-accent/20">
-                      <h4 className="text-lg font-bold text-foreground mb-3">Ambiente Risk-Off</h4>
+                      <h4 className="text-lg font-bold text-foreground mb-3">Risk-Off Environment</h4>
                       <ul className="space-y-2 text-sm text-foreground/70">
                         <li>BTC-Nasdaq: <span className="text-accent font-semibold">+0.85</span></li>
                         <li>BTC-Oro: <span className="text-accent font-semibold">+0.55</span></li>
@@ -1222,7 +1222,7 @@ const Bitcoin2026ReportIT = () => {
                       </ul>
                     </div>
                     <div className="p-5 rounded-xl bg-gradient-to-br from-blue-500/10 to-blue-500/5 border border-blue-500/20">
-                      <h4 className="text-lg font-bold text-foreground mb-3">Crisi Liquidità</h4>
+                      <h4 className="text-lg font-bold text-foreground mb-3">Liquidity Crisis</h4>
                       <ul className="space-y-2 text-sm text-foreground/70">
                         <li>Tutti asset: <span className="text-accent font-semibold">→ +0.90</span></li>
                         <li>Correlazioni: <span className="text-destructive font-semibold">Convergono a 1</span></li>
