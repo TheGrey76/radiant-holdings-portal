@@ -8,8 +8,9 @@ const corsHeaders = {
 
 const TELEGRAM_BOT_TOKEN = Deno.env.get('TELEGRAM_BOT_TOKEN');
 const CHANNEL_ID = '@aries76_bitcoin';
-// Banner URL - uses the published site
-const BANNER_URL = 'https://www.aries76.com/telegram-bitcoin-banner.png';
+// Banner URL - using the bitcoin OG image (works with Telegram)
+// To use the new banner, upload it to Supabase Storage bucket 'reports'
+const BANNER_URL = 'https://www.aries76.com/bitcoin-2026-og.png';
 
 interface PublishRequest {
   action: 'publish' | 'schedule' | 'check-scheduled';
