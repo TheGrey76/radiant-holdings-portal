@@ -36,6 +36,13 @@ interface CampaignRequest {
   campaignId?: string;
   ctaLink?: string;
   ctaText?: string;
+  sendSummaryOnly?: boolean; // If true, only sends summary email without sending campaign
+  summaryData?: { // Data for summary-only mode
+    successful: number;
+    failed: number;
+    sentTo: string[];
+    errors: string[];
+  };
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -99,7 +106,63 @@ const handler = async (req: Request): Promise<Response> => {
 
     console.log(`Authenticated user ${user.email} sending ABC campaign`);
 
-    const { recipients, subject, content, senderEmail, attachments, campaignId, ctaLink, ctaText }: CampaignRequest = await req.json();
+    const { recipients, subject, content, senderEmail, attachments, campaignId, ctaLink, ctaText, sendSummaryOnly, summaryData }: CampaignRequest = await req.json();
+    
+    // Handle summary-only mode (for testing or resending summaries)
+    if (sendSummaryOnly && summaryData) {
+      console.log('Summary-only mode: sending campaign summary email');
+      try {
+        const summaryHtml = `
+          <!DOCTYPE html>
+          <html>
+          <head><meta charset="utf-8"></head>
+          <body style="font-family: 'Helvetica Neue', Arial, sans-serif; padding: 20px; background: #f5f5f5;">
+            <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 8px; padding: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+              <h2 style="color: #1a2332; margin-top: 0;">📧 Riepilogo Campagna Email</h2>
+              <p style="color: #666;"><strong>Campagna:</strong> ${subject}</p>
+              <p style="color: #666;"><strong>Data:</strong> ${new Date().toLocaleString('it-IT', { timeZone: 'Europe/Rome' })}</p>
+              
+              <div style="background: #e8f5e9; padding: 15px; border-radius: 6px; margin: 20px 0;">
+                <p style="margin: 0; color: #2e7d32;"><strong>✓ Inviate con successo:</strong> ${summaryData.successful}</p>
+                ${summaryData.failed > 0 ? `<p style="margin: 10px 0 0; color: #c62828;"><strong>✗ Fallite:</strong> ${summaryData.failed}</p>` : ''}
+              </div>
+              
+              <h3 style="color: #1a2332; margin-bottom: 10px;">Lista destinatari (${summaryData.sentTo.length}):</h3>
+              <div style="max-height: 400px; overflow-y: auto; background: #fafafa; padding: 15px; border-radius: 6px; font-size: 13px;">
+                ${summaryData.sentTo.map((r: string, i: number) => `<div style="padding: 5px 0; border-bottom: 1px solid #eee;">${i + 1}. ${r}</div>`).join('')}
+              </div>
+              
+              ${summaryData.errors.length > 0 ? `
+              <h3 style="color: #c62828; margin-top: 20px;">Errori:</h3>
+              <div style="background: #ffebee; padding: 15px; border-radius: 6px; font-size: 12px;">
+                ${summaryData.errors.map((e: string) => `<div style="padding: 3px 0;">${e}</div>`).join('')}
+              </div>
+              ` : ''}
+            </div>
+          </body>
+          </html>
+        `;
+
+        await resend.emails.send({
+          from: "Aries76 Campaign Bot <edoardo.grigione@aries76.com>",
+          to: ["edoardo.grigione@aries76.com"],
+          subject: `📊 Riepilogo: ${subject} (${summaryData.successful}/${summaryData.sentTo.length} inviate)`,
+          html: summaryHtml,
+        });
+        console.log('✓ Summary email sent to admin');
+        
+        return new Response(
+          JSON.stringify({ success: true, message: 'Summary email sent' }),
+          { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      } catch (summaryError: any) {
+        console.error('Failed to send summary email:', summaryError.message);
+        return new Response(
+          JSON.stringify({ error: 'Failed to send summary: ' + summaryError.message }),
+          { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+    }
     
     // Input validation
     if (!recipients || !Array.isArray(recipients) || recipients.length === 0) {

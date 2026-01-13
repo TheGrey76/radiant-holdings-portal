@@ -127,6 +127,7 @@ export function ABCEmailCampaignManager({ investors, onInvestorsUpdated, pending
   const [selectedTrackingOpens, setSelectedTrackingOpens] = useState<string[]>([]);
   const [selectedTrackingNotOpened, setSelectedTrackingNotOpened] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState<string>("compose");
+  const [isSendingSummary, setIsSendingSummary] = useState(false);
   
   // Test email uses company domain for security
   const TEST_EMAIL = "quinley.martini@aries76.com";
@@ -457,6 +458,52 @@ Il Team ABC Company`,
       title: "Destinatari selezionati",
       description: `${selectedInvestorIds.length} investitori pronti per la campagna follow-up`,
     });
+  };
+
+  // Send summary email for a campaign
+  const handleSendSummary = async (campaign: CampaignHistory) => {
+    setIsSendingSummary(true);
+    try {
+      const recipients = Array.isArray(campaign.recipients) ? campaign.recipients : [];
+      const sentTo = recipients.map((r: any) => `${r.name || 'N/A'} <${r.email}>`);
+      
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        throw new Error('Non autenticato');
+      }
+
+      const response = await supabase.functions.invoke('send-abc-campaign', {
+        body: {
+          sendSummaryOnly: true,
+          subject: campaign.subject,
+          recipients: [],
+          content: '',
+          senderEmail: '',
+          summaryData: {
+            successful: campaign.successful_sends,
+            failed: campaign.failed_sends,
+            sentTo,
+            errors: [],
+          },
+        },
+      });
+
+      if (response.error) throw response.error;
+
+      toast({
+        title: "Riepilogo inviato",
+        description: `Email di riepilogo inviata a edoardo.grigione@aries76.com`,
+      });
+    } catch (error: any) {
+      console.error('Error sending summary:', error);
+      toast({
+        title: "Errore",
+        description: error.message || "Errore nell'invio del riepilogo",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSendingSummary(false);
+    }
   };
 
   // Get unique categories from approved investors
@@ -1999,6 +2046,15 @@ Team Aries76"
                       </TableCell>
                       <TableCell className="text-right">
                         <div className="flex items-center justify-end gap-1">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleSendSummary(campaign)}
+                            disabled={isSendingSummary}
+                            title="Invia riepilogo via email"
+                          >
+                            <FileText className="h-4 w-4" />
+                          </Button>
                           <Button
                             variant="ghost"
                             size="sm"
