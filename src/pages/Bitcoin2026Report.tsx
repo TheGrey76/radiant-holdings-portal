@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet";
-import { Link } from "react-router-dom";
-import { ArrowUp, TrendingUp, BarChart3, Layers, Database, Activity, Coins, Network, Target, LineChart, Lightbulb, HelpCircle, Shield, Globe, Scale, Calendar, Zap, AlertTriangle, GitBranch, LogOut, Send } from "lucide-react";
+import { Link, Navigate } from "react-router-dom";
+import { ArrowUp, TrendingUp, BarChart3, Layers, Database, Activity, Coins, Network, Target, LineChart, Lightbulb, HelpCircle, Shield, Globe, Scale, Calendar, Zap, AlertTriangle, GitBranch, LogOut, Send, Loader2 } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { LineChart as RechartsLineChart, Line, AreaChart, Area, BarChart as RechartsBarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Legend } from "recharts";
@@ -18,6 +18,7 @@ import { ReportSearch } from "@/components/ReportSearch";
 import { FearGreedIndex } from "@/components/FearGreedIndex";
 import { useBitcoinReportData } from "@/hooks/useBitcoinReportData";
 import { useTwelveDataBtc } from "@/hooks/useTwelveDataBtc";
+import { supabase } from "@/integrations/supabase/client";
 
 // Glossary definitions
 const glossary: Record<string, string> = {
@@ -62,8 +63,68 @@ const Bitcoin2026Report = () => {
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
   const [daysUntilQ2, setDaysUntilQ2] = useState<number>(0);
+  const [accessChecking, setAccessChecking] = useState(true);
+  const [hasAccess, setHasAccess] = useState(false);
   const { data: bitcoinData, loading: bitcoinLoading } = useBitcoinReportData();
   const { data: twelveData, isLoading: twelveLoading, error: twelveError } = useTwelveDataBtc();
+
+  // Check if user has purchased access
+  useEffect(() => {
+    const checkAccess = async () => {
+      try {
+        // Check URL for successful payment return
+        const urlParams = new URLSearchParams(window.location.search);
+        const paymentSuccess = urlParams.get('success');
+        
+        // Get user email from session or localStorage
+        const { data: { user } } = await supabase.auth.getUser();
+        const userEmail = user?.email || localStorage.getItem('bitcoin_report_email');
+        
+        if (!userEmail) {
+          setHasAccess(false);
+          setAccessChecking(false);
+          return;
+        }
+        
+        // Check access via database function
+        const { data: accessGranted, error } = await supabase.rpc('check_report_access', {
+          p_report_slug: 'bitcoin-2026',
+          p_user_email: userEmail
+        });
+        
+        if (error) {
+          console.error('Error checking access:', error);
+          setHasAccess(false);
+        } else {
+          setHasAccess(accessGranted === true);
+        }
+      } catch (err) {
+        console.error('Access check failed:', err);
+        setHasAccess(false);
+      } finally {
+        setAccessChecking(false);
+      }
+    };
+    
+    checkAccess();
+  }, []);
+
+  // If still checking access, show loading
+  if (accessChecking) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="w-8 h-8 animate-spin text-primary mx-auto mb-4" />
+          <p className="text-muted-foreground">Verifying access...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // If no access, redirect to preview page
+  if (!hasAccess) {
+    return <Navigate to="/bitcoin-2026-report-preview" replace />;
+  }
 
   // Calculate days until Q2 2026 edition (April 1, 2026) starting from Jan 7, 2026
   useEffect(() => {
