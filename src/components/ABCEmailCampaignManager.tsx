@@ -833,7 +833,7 @@ Il Team ABC Company`,
               ${emailForm.ctaLink ? `
               <!-- CTA Button -->
               <div style="text-align: center; margin-top: 30px;">
-                <a href="${emailForm.ctaLink}" target="_blank" style="display: inline-block; background: linear-gradient(135deg, #c77c4d 0%, #a66840 100%); color: #ffffff; font-size: 15px; font-weight: 600; text-decoration: none; padding: 14px 32px; border-radius: 6px; letter-spacing: 0.5px;">
+                <a href="${emailForm.ctaLink}" target="_blank" style="display: inline-block; background: linear-gradient(135deg, #1a2332 0%, #2d3748 100%); color: #ffffff; font-size: 15px; font-weight: 600; text-decoration: none; padding: 14px 32px; border-radius: 6px; letter-spacing: 0.5px;">
                   ${emailForm.ctaText || 'Scopri di più'}
                 </a>
               </div>
