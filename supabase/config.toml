@@ -99,3 +99,6 @@ verify_jwt = false
 [functions.check-bitcoin-report-access]
 verify_jwt = false
 
+[functions.check-page-access]
+verify_jwt = false
+
