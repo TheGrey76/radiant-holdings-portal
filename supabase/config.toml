@@ -95,3 +95,7 @@ verify_jwt = false
 
 [functions.telegram-publish]
 verify_jwt = false
+
+[functions.check-bitcoin-report-access]
+verify_jwt = false
+
