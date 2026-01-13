@@ -69,60 +69,44 @@ const Bitcoin2026Report = () => {
   const { data: twelveData, isLoading: twelveLoading, error: twelveError } = useTwelveDataBtc();
 
   // Admin email for bypass
-  const ADMIN_EMAIL = 'edoardo.grigione@aries76.com';
+  const ADMIN_EMAIL = "edoardo.grigione@aries76.com";
 
-  // Check if user has purchased access or is admin
+  // Check if user has purchased access (server-side) or is admin
   useEffect(() => {
     const checkAccess = async () => {
       try {
-        // Get user email from session or localStorage (set during checkout)
         const { data: { user } } = await supabase.auth.getUser();
-        const userEmail = user?.email || localStorage.getItem('bitcoin_report_email');
-        
+        const userEmail = user?.email || localStorage.getItem("bitcoin_report_email");
+
         if (!userEmail) {
           setHasAccess(false);
-          setAccessChecking(false);
           return;
         }
-        
-        // Admin bypass
+
         if (userEmail.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
           setHasAccess(true);
-          setAccessChecking(false);
           return;
         }
-        
-        // Check if user has PAID in bitcoin_funnel_leads
-        const { data: leadData, error: leadError } = await supabase
-          .from('bitcoin_funnel_leads')
-          .select('status')
-          .eq('email', userEmail.toLowerCase())
-          .eq('status', 'paid')
-          .maybeSingle();
-        
-        if (leadError) {
-          console.error('Error checking lead status:', leadError);
+
+        const { data, error } = await supabase.functions.invoke("check-bitcoin-report-access", {
+          body: { email: userEmail },
+        });
+
+        if (error) {
+          console.error("check-bitcoin-report-access invoke error:", error);
           setHasAccess(false);
-          setAccessChecking(false);
           return;
         }
-        
-        if (leadData) {
-          setHasAccess(true);
-          setAccessChecking(false);
-          return;
-        }
-        
-        // No paid access found
-        setHasAccess(false);
+
+        setHasAccess(data?.hasAccess === true);
       } catch (err) {
-        console.error('Access check failed:', err);
+        console.error("Access check failed:", err);
         setHasAccess(false);
       } finally {
         setAccessChecking(false);
       }
     };
-    
+
     checkAccess();
   }, []);
 
