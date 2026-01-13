@@ -3,7 +3,7 @@ import jsPDF from "jspdf";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { 
-  TrendingUp, Users, Calendar, CheckCircle, AlertCircle, 
+  TrendingUp, Users, Calendar, CheckCircle, AlertCircle, AlertTriangle,
   Target, Clock, FileText, Settings, Search, Filter,
   Mail, Phone, Building, MapPin, Download, Share2, X, Plus,
   ExternalLink, Paperclip, Edit, Trash2, LogOut, Send, Eye, Heart
@@ -1571,55 +1571,203 @@ const ABCCompanyConsole = () => {
                   </div>
                 </div>
 
-                  <div className="border-t border-border pt-6">
-                  <h4 className="font-semibold text-foreground mb-2">Top 5 Investors by Weighted Pipeline</h4>
-                  <p className="text-xs text-muted-foreground mb-4">Pipeline Value × Probability = Expected Value</p>
-                  <div className="space-y-3">
-                    {[...investors]
-                      .map(inv => ({
-                        ...inv,
-                        weightedValue: (inv.pipelineValue || 0) * ((inv.probability || 50) / 100)
-                      }))
-                      .sort((a, b) => b.weightedValue - a.weightedValue)
-                      .slice(0, 5)
-                      .map((investor, idx) => (
-                        <div 
-                          key={investor.id || idx} 
-                          className="flex items-center justify-between p-3 bg-muted/50 rounded-lg cursor-pointer hover:bg-muted transition-colors group"
-                          onClick={() => {
-                            setEditInvestorId(investor.id);
-                            setActiveTab('investors');
-                          }}
-                        >
-                          <div className="flex-1">
-                            <p className="text-sm font-semibold text-foreground">{idx + 1}. {investor.nome}</p>
-                            <p className="text-xs text-muted-foreground">{investor.azienda}</p>
-                          </div>
-                          <div className="text-right flex items-center gap-2">
-                            <div>
-                              <p className="text-sm font-bold text-primary">{formatCurrency(investor.weightedValue)}</p>
-                              <p className="text-xs text-muted-foreground">
-                                {formatCurrency(investor.pipelineValue || 0)} × {investor.probability || 50}%
-                              </p>
+                  {/* Three Action-Oriented Sections */}
+                  <div className="border-t border-border pt-6 grid md:grid-cols-3 gap-6">
+                    
+                    {/* 1. Hot Opportunities - Closest to Close */}
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-2">
+                        <div className="h-2 w-2 bg-orange-500 rounded-full animate-pulse" />
+                        <h4 className="font-semibold text-foreground">Hot Opportunities</h4>
+                      </div>
+                      <p className="text-xs text-muted-foreground">Probability ≥70% + recent activity</p>
+                      <div className="space-y-2">
+                        {(() => {
+                          const hotOpportunities = investors
+                            .filter(inv => {
+                              const prob = inv.probability || 50;
+                              const lastContact = inv.lastContactDate ? new Date(inv.lastContactDate) : null;
+                              const daysSinceContact = lastContact 
+                                ? Math.floor((Date.now() - lastContact.getTime()) / (1000 * 60 * 60 * 24))
+                                : 999;
+                              const isActive = ["Interested", "Meeting Scheduled", "In Negotiation"].includes(inv.status);
+                              return prob >= 70 && daysSinceContact <= 14 && isActive;
+                            })
+                            .sort((a, b) => (b.probability || 50) - (a.probability || 50))
+                            .slice(0, 4);
+                          
+                          if (hotOpportunities.length === 0) {
+                            return (
+                              <div className="p-3 bg-muted/30 rounded-lg text-center">
+                                <p className="text-xs text-muted-foreground">No hot opportunities yet</p>
+                                <p className="text-xs text-muted-foreground mt-1">Move investors to active stages with high probability</p>
+                              </div>
+                            );
+                          }
+                          
+                          return hotOpportunities.map((inv, idx) => (
+                            <div 
+                              key={inv.id}
+                              className="p-2.5 bg-orange-500/10 border border-orange-500/20 rounded-lg cursor-pointer hover:bg-orange-500/20 transition-colors"
+                              onClick={() => {
+                                setEditInvestorId(inv.id);
+                                setActiveTab('investors');
+                              }}
+                            >
+                              <div className="flex justify-between items-start">
+                                <div className="flex-1 min-w-0">
+                                  <p className="text-sm font-medium text-foreground truncate">{inv.nome}</p>
+                                  <p className="text-xs text-muted-foreground truncate">{inv.azienda}</p>
+                                </div>
+                                <Badge variant="outline" className="text-xs ml-2 shrink-0 border-orange-500/50 text-orange-600">
+                                  {inv.probability}%
+                                </Badge>
+                              </div>
+                              <div className="flex justify-between mt-1.5 text-xs">
+                                <span className="text-muted-foreground">{inv.status}</span>
+                                <span className="font-medium text-primary">{formatCurrency(inv.pipelineValue || 0)}</span>
+                              </div>
                             </div>
-                            <Edit className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
-                          </div>
-                        </div>
-                      ))}
-                  </div>
-                  <div className="mt-4 p-3 bg-primary/10 rounded-lg">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm font-semibold text-foreground">Total Weighted Pipeline</span>
-                      <span className="text-lg font-bold text-primary">
-                        {formatCurrency(
-                          investors.reduce((sum, inv) => 
-                            sum + ((inv.pipelineValue || 0) * ((inv.probability || 50) / 100)), 0
-                          )
-                        )}
-                      </span>
+                          ));
+                        })()}
+                      </div>
+                    </div>
+
+                    {/* 4. Most Engaged Prospects */}
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-2">
+                        <Mail className="h-4 w-4 text-blue-500" />
+                        <h4 className="font-semibold text-foreground">Most Engaged</h4>
+                      </div>
+                      <p className="text-xs text-muted-foreground">Highest engagement scores</p>
+                      <div className="space-y-2">
+                        {(() => {
+                          const engaged = investors
+                            .filter(inv => (inv.engagementScore || 0) > 0)
+                            .sort((a, b) => (b.engagementScore || 0) - (a.engagementScore || 0))
+                            .slice(0, 4);
+                          
+                          if (engaged.length === 0) {
+                            return (
+                              <div className="p-3 bg-muted/30 rounded-lg text-center">
+                                <p className="text-xs text-muted-foreground">No engagement data yet</p>
+                                <p className="text-xs text-muted-foreground mt-1">Send campaigns to track engagement</p>
+                              </div>
+                            );
+                          }
+                          
+                          return engaged.map((inv) => (
+                            <div 
+                              key={inv.id}
+                              className="p-2.5 bg-blue-500/10 border border-blue-500/20 rounded-lg cursor-pointer hover:bg-blue-500/20 transition-colors"
+                              onClick={() => {
+                                setEditInvestorId(inv.id);
+                                setActiveTab('investors');
+                              }}
+                            >
+                              <div className="flex justify-between items-start">
+                                <div className="flex-1 min-w-0">
+                                  <p className="text-sm font-medium text-foreground truncate">{inv.nome}</p>
+                                  <p className="text-xs text-muted-foreground truncate">{inv.azienda}</p>
+                                </div>
+                                <div className="flex items-center gap-1 ml-2">
+                                  <div className="h-2 w-12 bg-muted rounded-full overflow-hidden">
+                                    <div 
+                                      className="h-full bg-blue-500 rounded-full" 
+                                      style={{ width: `${inv.engagementScore || 0}%` }}
+                                    />
+                                  </div>
+                                  <span className="text-xs font-medium text-blue-600">{inv.engagementScore || 0}</span>
+                                </div>
+                              </div>
+                              <div className="flex gap-3 mt-1.5 text-xs text-muted-foreground">
+                                <span>Opens: {inv.emailOpensCount || 0}</span>
+                                <span>Responses: {inv.emailResponsesCount || 0}</span>
+                                <span>Meetings: {inv.meetingsCount || 0}</span>
+                              </div>
+                            </div>
+                          ));
+                        })()}
+                      </div>
+                    </div>
+
+                    {/* 5. Overdue Actions */}
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-2">
+                        <AlertTriangle className="h-4 w-4 text-red-500" />
+                        <h4 className="font-semibold text-foreground">Overdue Actions</h4>
+                      </div>
+                      <p className="text-xs text-muted-foreground">Requires immediate attention</p>
+                      <div className="space-y-2">
+                        {(() => {
+                          const now = new Date();
+                          const overdue = investors
+                            .filter(inv => {
+                              // Check for overdue follow-ups
+                              if (inv.nextFollowUpDate) {
+                                const followUp = new Date(inv.nextFollowUpDate);
+                                if (followUp < now) return true;
+                              }
+                              // Check for stale active investors (no contact in 14+ days)
+                              if (["Contacted", "Interested", "Meeting Scheduled", "In Negotiation"].includes(inv.status)) {
+                                const lastContact = inv.lastContactDate ? new Date(inv.lastContactDate) : null;
+                                if (!lastContact) return true;
+                                const daysSince = Math.floor((now.getTime() - lastContact.getTime()) / (1000 * 60 * 60 * 24));
+                                if (daysSince >= 14) return true;
+                              }
+                              return false;
+                            })
+                            .map(inv => {
+                              const lastContact = inv.lastContactDate ? new Date(inv.lastContactDate) : null;
+                              const daysSince = lastContact 
+                                ? Math.floor((now.getTime() - lastContact.getTime()) / (1000 * 60 * 60 * 24))
+                                : 999;
+                              const hasOverdueFollowUp = inv.nextFollowUpDate && new Date(inv.nextFollowUpDate) < now;
+                              return { ...inv, daysSince, hasOverdueFollowUp };
+                            })
+                            .sort((a, b) => b.daysSince - a.daysSince)
+                            .slice(0, 4);
+                          
+                          if (overdue.length === 0) {
+                            return (
+                              <div className="p-3 bg-green-500/10 border border-green-500/20 rounded-lg text-center">
+                                <CheckCircle className="h-5 w-5 text-green-500 mx-auto mb-1" />
+                                <p className="text-xs text-green-600 font-medium">All caught up!</p>
+                                <p className="text-xs text-muted-foreground mt-1">No overdue actions</p>
+                              </div>
+                            );
+                          }
+                          
+                          return overdue.map((inv) => (
+                            <div 
+                              key={inv.id}
+                              className="p-2.5 bg-red-500/10 border border-red-500/20 rounded-lg cursor-pointer hover:bg-red-500/20 transition-colors"
+                              onClick={() => {
+                                setEditInvestorId(inv.id);
+                                setActiveTab('investors');
+                              }}
+                            >
+                              <div className="flex justify-between items-start">
+                                <div className="flex-1 min-w-0">
+                                  <p className="text-sm font-medium text-foreground truncate">{inv.nome}</p>
+                                  <p className="text-xs text-muted-foreground truncate">{inv.azienda}</p>
+                                </div>
+                                <Badge variant="destructive" className="text-xs ml-2 shrink-0">
+                                  {inv.daysSince}d ago
+                                </Badge>
+                              </div>
+                              <div className="flex justify-between mt-1.5 text-xs">
+                                <span className="text-red-600">
+                                  {inv.hasOverdueFollowUp ? '⏰ Follow-up overdue' : '📭 No recent contact'}
+                                </span>
+                                <span className="text-muted-foreground">{inv.status}</span>
+                              </div>
+                            </div>
+                          ));
+                        })()}
+                      </div>
                     </div>
                   </div>
-                </div>
 
                 <div className="flex gap-2">
                   <Button variant="outline" className="gap-2" onClick={() => {
