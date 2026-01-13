@@ -31,6 +31,7 @@ interface CampaignRequest {
   recipients: Recipient[];
   subject: string;
   content: string;
+  preheader?: string; // Preview text shown in inbox
   senderEmail: string;
   attachments?: Attachment[];
   campaignId?: string;
@@ -106,7 +107,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     console.log(`Authenticated user ${user.email} sending ABC campaign`);
 
-    const { recipients, subject, content, senderEmail, attachments, campaignId, ctaLink, ctaText, sendSummaryOnly, summaryData }: CampaignRequest = await req.json();
+    const { recipients, subject, content, preheader, senderEmail, attachments, campaignId, ctaLink, ctaText, sendSummaryOnly, summaryData }: CampaignRequest = await req.json();
     
     // Handle summary-only mode (for testing or resending summaries)
     if (sendSummaryOnly && summaryData) {
@@ -258,37 +259,79 @@ const handler = async (req: Request): Promise<Response> => {
           ? `${trackingBaseUrl}?cid=${campaignId}&e=${encodeURIComponent(recipient.email)}&n=${encodeURIComponent(recipient.name || '')}`
           : '';
 
+        // Add UTM parameters to CTA link for better tracking
+        const buildUtmLink = (baseUrl: string) => {
+          if (!baseUrl) return '';
+          const separator = baseUrl.includes('?') ? '&' : '?';
+          const utmParams = `utm_source=email&utm_medium=campaign&utm_campaign=${encodeURIComponent(campaignId || 'abc-campaign')}&utm_content=cta_button`;
+          return `${baseUrl}${separator}${utmParams}`;
+        };
+
+        const utmCtaLink = ctaLink ? buildUtmLink(ctaLink) : '';
+
+        // Personalize preheader
+        const personalizedPreheader = (preheader || '')
+          .replace(/\{nome\}/g, recipient.name || '')
+          .replace(/\{azienda\}/g, recipient.company || '');
+
         const emailHtml = `
           <!DOCTYPE html>
-          <html>
+          <html lang="it" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
           <head>
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+            <meta name="x-apple-disable-message-reformatting">
+            <title>${personalizedSubject}</title>
+            <!--[if mso]>
+            <noscript>
+              <xml>
+                <o:OfficeDocumentSettings>
+                  <o:PixelsPerInch>96</o:PixelsPerInch>
+                </o:OfficeDocumentSettings>
+              </xml>
+            </noscript>
+            <![endif]-->
+            <style>
+              @media only screen and (max-width: 600px) {
+                .container { width: 100% !important; padding: 15px !important; }
+                .content { padding: 25px !important; }
+              }
+            </style>
           </head>
-          <body style="margin: 0; padding: 0; background-color: #f8f9fa; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+          <body style="margin: 0; padding: 0; background-color: #f8f9fa; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;">
+            
+            <!-- Preheader Text (visible in email preview) -->
+            <div style="display: none; max-height: 0px; overflow: hidden; mso-hide: all;">
+              ${personalizedPreheader || personalizedSubject}
+              ${'&nbsp;'.repeat(100)}
+            </div>
             
             <!-- Main Container -->
-            <div style="max-width: 640px; margin: 0 auto; padding: 30px 15px;">
+            <div class="container" style="max-width: 640px; margin: 0 auto; padding: 30px 15px;">
               
               <!-- Email Card -->
               <div style="background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); overflow: hidden;">
                 
                 <!-- Header with Logo -->
                 <div style="background: linear-gradient(135deg, #1a2332 0%, #2d3748 100%); padding: 35px 40px; text-align: center;">
-                  <img src="https://aries76.lovable.app/aries76-og-logo.png" alt="ARIES76" style="height: 50px;" />
+                  <img src="https://aries76.lovable.app/aries76-og-logo.png" alt="ARIES76" style="height: 50px; display: inline-block;" />
                   <p style="color: #c77c4d; font-size: 11px; letter-spacing: 3px; margin: 12px 0 0 0; text-transform: uppercase;">Capital Intelligence</p>
                 </div>
                 
                 <!-- Email Body -->
-                <div style="padding: 40px;">
+                <div class="content" style="padding: 40px;">
                   <div style="font-size: 15px; line-height: 1.8; color: #333333;">
 ${personalizedContent}
                   </div>
-${ctaLink ? `
+${utmCtaLink ? `
                   <!-- CTA Button -->
                   <div style="text-align: center; margin-top: 30px;">
-                    <a href="${ctaLink}" target="_blank" style="display: inline-block; background: linear-gradient(135deg, #c77c4d 0%, #a66840 100%); color: #ffffff; font-size: 15px; font-weight: 600; text-decoration: none; padding: 14px 32px; border-radius: 6px; letter-spacing: 0.5px;">
-                      ${ctaText || 'Scopri di più'}
+                    <a href="${utmCtaLink}" target="_blank" rel="noopener" style="display: inline-block; background: linear-gradient(135deg, #c77c4d 0%, #a66840 100%); color: #ffffff; font-size: 15px; font-weight: 600; text-decoration: none; padding: 14px 32px; border-radius: 6px; letter-spacing: 0.5px; mso-padding-alt: 0;">
+                      <!--[if mso]><i style="letter-spacing: 32px; mso-font-width: -100%; mso-text-raise: 26pt;">&nbsp;</i><![endif]-->
+                      <span style="mso-text-raise: 13pt;">${ctaText || 'Scopri di più'}</span>
+                      <!--[if mso]><i style="letter-spacing: 32px; mso-font-width: -100%;">&nbsp;</i><![endif]-->
                     </a>
                   </div>
 ` : ''}
@@ -297,16 +340,16 @@ ${ctaLink ? `
                 <!-- Signature Block -->
                 <div style="padding: 0 40px 40px 40px;">
                   <div style="border-top: 2px solid #c77c4d; padding-top: 25px;">
-                    <table cellpadding="0" cellspacing="0" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+                    <table cellpadding="0" cellspacing="0" border="0" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
                       <tr>
                         <td style="vertical-align: top; padding-right: 25px; border-right: 1px solid #e5e5e5;">
-                          <img src="https://aries76.lovable.app/aries76-og-logo.png" alt="ARIES76" style="height: 40px;" />
+                          <img src="https://aries76.lovable.app/aries76-og-logo.png" alt="ARIES76" style="height: 40px; display: block;" />
                         </td>
                         <td style="vertical-align: top; padding-left: 25px;">
                           <div style="font-size: 16px; font-weight: 700; color: #1a2332; letter-spacing: 0.5px;">Edoardo GRIGIONE</div>
                           <div style="font-size: 13px; color: #c77c4d; margin-top: 4px; font-weight: 500;">CEO | Founder</div>
                           <div style="font-size: 13px; margin-top: 8px;">
-                            <a href="https://www.aries76.com" style="color: #2563eb; text-decoration: none; font-weight: 500;">www.aries76.com</a>
+                            <a href="https://www.aries76.com?utm_source=email&utm_medium=signature" style="color: #2563eb; text-decoration: none; font-weight: 500;">www.aries76.com</a>
                           </div>
                           <div style="font-size: 12px; color: #666666; margin-top: 6px;">27, Old Gloucester Street, London WC1N 3AX, UK</div>
                         </td>
@@ -333,12 +376,33 @@ ${ctaLink ? `
           </html>
         `;
 
+        // Generate plain text version for better deliverability
+        const plainTextContent = personalizedContent
+          .replace(/<p[^>]*>/gi, '')
+          .replace(/<\/p>/gi, '\n\n')
+          .replace(/<br\s*\/?>/gi, '\n')
+          .replace(/<[^>]+>/g, '')
+          .trim();
+
+        // Build plain text signature
+        const plainTextSignature = `
+---
+Edoardo GRIGIONE
+CEO | Founder
+Aries76 Capital Advisory
+www.aries76.com
+27, Old Gloucester Street, London WC1N 3AX, UK
+`;
+
+        const fullPlainText = `${plainTextContent}${utmCtaLink ? `\n\n${ctaText || 'Scopri di più'}: ${utmCtaLink}` : ''}${plainTextSignature}`;
+
         const emailPayload: any = {
           from: "Edoardo Grigione - Aries76 <edoardo.grigione@aries76.com>",
           to: [recipient.email],
-          bcc: ["edoardo.grigione@aries76.com"], // Changed from CC to BCC for better deliverability
+          bcc: ["edoardo.grigione@aries76.com"], // BCC for better deliverability
           subject: personalizedSubject,
           html: emailHtml,
+          text: fullPlainText, // Plain text fallback improves deliverability
         };
 
         // Add attachments if present

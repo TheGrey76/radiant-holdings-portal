@@ -135,6 +135,7 @@ export function ABCEmailCampaignManager({ investors, onInvestorsUpdated, pending
 
   const [emailForm, setEmailForm] = useState({
     subject: "",
+    preheader: "", // Preview text shown in inbox
     content: "",
     campaignName: "",
     ctaLink: "",
@@ -214,6 +215,7 @@ export function ABCEmailCampaignManager({ investors, onInvestorsUpdated, pending
       
       setEmailForm({
         subject: 'Aggiornamento: ABC Company - Opportunità di Investimento',
+        preheader: 'Aggiornamento sulla raccolta fondi e prossimi passi',
         content: `Gentile {nome},
 
 Ci permettiamo di ricontattarLa riguardo all'opportunità di investimento in ABC Company.
@@ -418,6 +420,7 @@ Il Team ABC Company`,
     if (type === 'opened') {
       setEmailForm({
         subject: `Follow-up: ${campaignName}`,
+        preheader: 'Grazie per il Suo interesse - organizziamo un incontro?',
         content: `Gentile {nome},
 
 La ringraziamo per l'interesse dimostrato leggendo la nostra precedente comunicazione.
@@ -435,6 +438,7 @@ Il Team ABC Company`,
     } else {
       setEmailForm({
         subject: `Promemoria: ${campaignName}`,
+        preheader: 'Promemoria sulla nostra opportunità di investimento',
         content: `Gentile {nome},
 
 Ci permettiamo di ricontattarLa riguardo alla nostra precedente comunicazione su ABC Company.
@@ -970,6 +974,7 @@ Il Team ABC Company`,
         body: {
           recipients: [testRecipient],
           subject: emailForm.subject,
+          preheader: emailForm.preheader || undefined,
           content: emailForm.content,
           senderEmail: currentUserEmail,
           attachments: attachments,
@@ -1141,6 +1146,7 @@ Il Team ABC Company`,
         body: {
           recipients: selectedRecipients,
           subject: emailForm.subject,
+          preheader: emailForm.preheader || undefined,
           content: emailForm.content,
           senderEmail: currentUserEmail,
           attachments: attachments,
@@ -1198,7 +1204,7 @@ Il Team ABC Company`,
       }
 
       // Reset form
-      setEmailForm({ subject: "", content: "", campaignName: "", ctaLink: "", ctaText: "" });
+      setEmailForm({ subject: "", preheader: "", content: "", campaignName: "", ctaLink: "", ctaText: "" });
       setSelectedInvestors([]);
       setAttachments([]);
       fetchCampaignHistory();
@@ -1265,7 +1271,7 @@ Il Team ABC Company`,
                   size="sm"
                   onClick={() => {
                     setSelectedInvestors([]);
-                    setEmailForm({ subject: '', content: '', campaignName: '', ctaLink: '', ctaText: '' });
+                    setEmailForm({ subject: '', preheader: '', content: '', campaignName: '', ctaLink: '', ctaText: '' });
                     onRemindersClear?.();
                   }}
                 >
@@ -1322,6 +1328,22 @@ Il Team ABC Company`,
                     onChange={(e) => setEmailForm(prev => ({ ...prev, subject: e.target.value }))}
                     placeholder="ABC Company - Opportunità di Investimento"
                   />
+                </div>
+                <div>
+                  <Label htmlFor="preheader" className="flex items-center gap-2">
+                    Preheader 
+                    <span className="text-xs text-muted-foreground font-normal">(testo anteprima inbox)</span>
+                  </Label>
+                  <Input
+                    id="preheader"
+                    value={emailForm.preheader}
+                    onChange={(e) => setEmailForm(prev => ({ ...prev, preheader: e.target.value }))}
+                    placeholder="Es: Scopri l'opportunità esclusiva per il tuo portafoglio"
+                    className="text-sm"
+                  />
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Visibile nell'anteprima email (max 150 caratteri). Migliora open rate del 10-20%.
+                  </p>
                 </div>
                 <div>
                   <div className="flex items-center justify-between mb-1">
