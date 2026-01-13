@@ -47,7 +47,7 @@ import { supabase } from "@/integrations/supabase/client";
 const ABCCompanyConsole = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("dashboard");
-  const { recordSnapshot } = useKPIHistory();
+  // KPI history is now automatically managed by Supabase
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const [currentUserEmail, setCurrentUserEmail] = useState<string | null>(null);
@@ -187,30 +187,7 @@ const ABCCompanyConsole = () => {
   }, [isAuthenticated]);
 
   // Record daily KPI snapshot automatically
-  useEffect(() => {
-    if (!isAuthenticated) return;
-    
-    const recordDailySnapshot = () => {
-      const totalPipeline = investors.reduce((sum, inv) => sum + inv.pipelineValue, 0);
-      const closedInvestors = investors.filter(inv => inv.status === "Closed");
-      const closedValue = closedInvestors.reduce((sum, inv) => sum + inv.pipelineValue, 0);
-
-      recordSnapshot({
-        raisedAmount: progressData.raisedAmount,
-        targetAmount: progressData.targetAmount,
-        pipelineValue: totalPipeline,
-        closedDealsCount: closedKPI.current,
-        closedDealsValue: closedValue,
-        meetingsCount: meetingsKPI.current,
-        meetingsTarget: meetingsKPI.target,
-      });
-    };
-
-    // Record snapshot when data is available
-    if (investors.length > 0) {
-      recordDailySnapshot();
-    }
-  }, [isAuthenticated, investors, progressData, closedKPI, meetingsKPI, recordSnapshot]);
+  // KPI snapshots are now captured automatically from the database via capture_kpi_snapshot()
 
   // Funnel data is always calculated from real investor data - no localStorage override
 

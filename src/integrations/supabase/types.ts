@@ -522,6 +522,72 @@ export type Database = {
         }
         Relationships: []
       }
+      abc_kpi_snapshots: {
+        Row: {
+          activities_count: number | null
+          campaigns_count: number | null
+          closed_deals_count: number | null
+          closed_deals_value: number | null
+          contacted_count: number | null
+          created_at: string
+          id: string
+          in_negotiation_count: number | null
+          interested_count: number | null
+          meeting_scheduled_count: number | null
+          meetings_count: number | null
+          meetings_target: number | null
+          notes_count: number | null
+          pipeline_value: number | null
+          raised_amount: number | null
+          snapshot_date: string
+          target_amount: number | null
+          to_contact_count: number | null
+          total_investors: number | null
+        }
+        Insert: {
+          activities_count?: number | null
+          campaigns_count?: number | null
+          closed_deals_count?: number | null
+          closed_deals_value?: number | null
+          contacted_count?: number | null
+          created_at?: string
+          id?: string
+          in_negotiation_count?: number | null
+          interested_count?: number | null
+          meeting_scheduled_count?: number | null
+          meetings_count?: number | null
+          meetings_target?: number | null
+          notes_count?: number | null
+          pipeline_value?: number | null
+          raised_amount?: number | null
+          snapshot_date?: string
+          target_amount?: number | null
+          to_contact_count?: number | null
+          total_investors?: number | null
+        }
+        Update: {
+          activities_count?: number | null
+          campaigns_count?: number | null
+          closed_deals_count?: number | null
+          closed_deals_value?: number | null
+          contacted_count?: number | null
+          created_at?: string
+          id?: string
+          in_negotiation_count?: number | null
+          interested_count?: number | null
+          meeting_scheduled_count?: number | null
+          meetings_count?: number | null
+          meetings_target?: number | null
+          notes_count?: number | null
+          pipeline_value?: number | null
+          raised_amount?: number | null
+          snapshot_date?: string
+          target_amount?: number | null
+          to_contact_count?: number | null
+          total_investors?: number | null
+        }
+        Relationships: []
+      }
       abc_notifications: {
         Row: {
           created_at: string
@@ -2476,6 +2542,7 @@ export type Database = {
         Args: { investor_id_param: string }
         Returns: number
       }
+      capture_kpi_snapshot: { Args: never; Returns: undefined }
       check_abc_console_access: {
         Args: { check_email: string }
         Returns: boolean
