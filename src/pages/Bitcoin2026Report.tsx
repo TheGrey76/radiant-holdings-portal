@@ -103,23 +103,6 @@ const Bitcoin2026Report = () => {
     checkAccess();
   }, []);
 
-  // If still checking access, show loading
-  if (accessChecking) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <Loader2 className="w-8 h-8 animate-spin text-primary mx-auto mb-4" />
-          <p className="text-muted-foreground">Verifying access...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // If no access, redirect to preview page
-  if (!hasAccess) {
-    return <Navigate to="/bitcoin-2026-report-preview" replace />;
-  }
-
   // Calculate days until Q2 2026 edition (April 1, 2026) starting from Jan 7, 2026
   useEffect(() => {
     const calculateDays = () => {
@@ -138,6 +121,42 @@ const Bitcoin2026Report = () => {
     const interval = setInterval(calculateDays, 1000 * 60 * 60); // Update hourly
     return () => clearInterval(interval);
   }, []);
+
+  // Scroll handler effect - MUST be before early returns
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowBackToTop(window.scrollY > 400);
+
+      // Detect active section
+      const sections = document.querySelectorAll('[data-section]');
+      sections.forEach((section) => {
+        const rect = section.getBoundingClientRect();
+        if (rect.top >= 0 && rect.top <= 200) {
+          setActiveSection(section.getAttribute('data-section') || '');
+        }
+      });
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // If still checking access, show loading
+  if (accessChecking) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="w-8 h-8 animate-spin text-primary mx-auto mb-4" />
+          <p className="text-muted-foreground">Verifying access...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // If no access, redirect to preview page
+  if (!hasAccess) {
+    return <Navigate to="/bitcoin-2026-report-preview" replace />;
+  }
 
   // Animated Chapter Section Component
   const ChapterSection = ({ children, id, dataSection }: { children: React.ReactNode; id: string; dataSection: string }) => {
@@ -369,23 +388,6 @@ const Bitcoin2026Report = () => {
     { quarter: "Q4", cost: 51, price: 130 },
   ];
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setShowBackToTop(window.scrollY > 400);
-
-      // Detect active section
-      const sections = document.querySelectorAll('[data-section]');
-      sections.forEach((section) => {
-        const rect = section.getBoundingClientRect();
-        if (rect.top >= 0 && rect.top <= 200) {
-          setActiveSection(section.getAttribute('data-section') || '');
-        }
-      });
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
