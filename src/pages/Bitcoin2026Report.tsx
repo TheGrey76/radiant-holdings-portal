@@ -68,15 +68,11 @@ const Bitcoin2026Report = () => {
   const { data: bitcoinData, loading: bitcoinLoading } = useBitcoinReportData();
   const { data: twelveData, isLoading: twelveLoading, error: twelveError } = useTwelveDataBtc();
 
-  // Check if user has purchased access
+  // Check if user has purchased access or is admin
   useEffect(() => {
     const checkAccess = async () => {
       try {
-        // Check URL for successful payment return
-        const urlParams = new URLSearchParams(window.location.search);
-        const paymentSuccess = urlParams.get('success');
-        
-        // Get user email from session or localStorage
+        // Get user email from session
         const { data: { user } } = await supabase.auth.getUser();
         const userEmail = user?.email || localStorage.getItem('bitcoin_report_email');
         
@@ -86,7 +82,32 @@ const Bitcoin2026Report = () => {
           return;
         }
         
-        // Check access via database function
+        // Check if user is admin (has ABC Console access or admin role)
+        const { data: isAdmin } = await supabase.rpc('check_abc_console_access', {
+          check_email: userEmail
+        });
+        
+        if (isAdmin) {
+          setHasAccess(true);
+          setAccessChecking(false);
+          return;
+        }
+        
+        // Check if user has admin role
+        if (user) {
+          const { data: hasAdminRole } = await supabase.rpc('has_role', {
+            _user_id: user.id,
+            _role: 'admin'
+          });
+          
+          if (hasAdminRole) {
+            setHasAccess(true);
+            setAccessChecking(false);
+            return;
+          }
+        }
+        
+        // Check access via database function for regular users
         const { data: accessGranted, error } = await supabase.rpc('check_report_access', {
           p_report_slug: 'bitcoin-2026',
           p_user_email: userEmail
