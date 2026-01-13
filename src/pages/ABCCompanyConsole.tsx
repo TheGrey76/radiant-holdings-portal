@@ -1721,11 +1721,19 @@ const ABCCompanyConsole = () => {
                               const lastContact = inv.lastContactDate ? new Date(inv.lastContactDate) : null;
                               const daysSince = lastContact 
                                 ? Math.floor((now.getTime() - lastContact.getTime()) / (1000 * 60 * 60 * 24))
-                                : 999;
+                                : null;
                               const hasOverdueFollowUp = inv.nextFollowUpDate && new Date(inv.nextFollowUpDate) < now;
-                              return { ...inv, daysSince, hasOverdueFollowUp };
+                              const followUpDaysOverdue = inv.nextFollowUpDate 
+                                ? Math.floor((now.getTime() - new Date(inv.nextFollowUpDate).getTime()) / (1000 * 60 * 60 * 24))
+                                : null;
+                              return { ...inv, daysSince, hasOverdueFollowUp, followUpDaysOverdue };
                             })
-                            .sort((a, b) => b.daysSince - a.daysSince)
+                            .sort((a, b) => {
+                              // Prioritize overdue follow-ups, then by days since contact
+                              if (a.hasOverdueFollowUp && !b.hasOverdueFollowUp) return -1;
+                              if (!a.hasOverdueFollowUp && b.hasOverdueFollowUp) return 1;
+                              return (b.daysSince || 0) - (a.daysSince || 0);
+                            })
                             .slice(0, 4);
                           
                           if (overdue.length === 0) {
@@ -1752,13 +1760,23 @@ const ABCCompanyConsole = () => {
                                   <p className="text-sm font-medium text-foreground truncate">{inv.nome}</p>
                                   <p className="text-xs text-muted-foreground truncate">{inv.azienda}</p>
                                 </div>
-                                <Badge variant="destructive" className="text-xs ml-2 shrink-0">
-                                  {inv.daysSince}d ago
-                                </Badge>
+                                {inv.hasOverdueFollowUp ? (
+                                  <Badge variant="destructive" className="text-xs ml-2 shrink-0">
+                                    +{inv.followUpDaysOverdue}d
+                                  </Badge>
+                                ) : inv.daysSince !== null ? (
+                                  <Badge variant="destructive" className="text-xs ml-2 shrink-0">
+                                    {inv.daysSince}d ago
+                                  </Badge>
+                                ) : (
+                                  <Badge variant="outline" className="text-xs ml-2 shrink-0 border-red-500/50 text-red-600">
+                                    Mai
+                                  </Badge>
+                                )}
                               </div>
                               <div className="flex justify-between mt-1.5 text-xs">
                                 <span className="text-red-600">
-                                  {inv.hasOverdueFollowUp ? '⏰ Follow-up overdue' : '📭 No recent contact'}
+                                  {inv.hasOverdueFollowUp ? '⏰ Follow-up scaduto' : '📭 Nessun contatto recente'}
                                 </span>
                                 <span className="text-muted-foreground">{inv.status}</span>
                               </div>
