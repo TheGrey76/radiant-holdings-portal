@@ -1960,6 +1960,45 @@ export type Database = {
         }
         Relationships: []
       }
+      page_access: {
+        Row: {
+          access_type: string
+          created_at: string
+          email: string
+          expires_at: string | null
+          granted_at: string
+          id: string
+          metadata: Json | null
+          page_slug: string
+          stripe_payment_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          access_type?: string
+          created_at?: string
+          email: string
+          expires_at?: string | null
+          granted_at?: string
+          id?: string
+          metadata?: Json | null
+          page_slug: string
+          stripe_payment_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          access_type?: string
+          created_at?: string
+          email?: string
+          expires_at?: string | null
+          granted_at?: string
+          id?: string
+          metadata?: Json | null
+          page_slug?: string
+          stripe_payment_id?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           company: string | null
@@ -2443,6 +2482,10 @@ export type Database = {
       }
       check_mazal_innovation_access: {
         Args: { check_email: string }
+        Returns: boolean
+      }
+      check_page_access: {
+        Args: { p_email: string; p_page_slug: string }
         Returns: boolean
       }
       check_report_access: {

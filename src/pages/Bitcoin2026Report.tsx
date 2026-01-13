@@ -68,10 +68,7 @@ const Bitcoin2026Report = () => {
   const { data: bitcoinData, loading: bitcoinLoading } = useBitcoinReportData();
   const { data: twelveData, isLoading: twelveLoading, error: twelveError } = useTwelveDataBtc();
 
-  // Admin email for bypass
-  const ADMIN_EMAIL = "edoardo.grigione@aries76.com";
-
-  // Check if user has purchased access (server-side) or is admin
+  // Check if user has access via unified page_access table
   useEffect(() => {
     const checkAccess = async () => {
       try {
@@ -80,25 +77,21 @@ const Bitcoin2026Report = () => {
 
         if (!userEmail) {
           setHasAccess(false);
+          setAccessChecking(false);
           return;
         }
 
-        if (userEmail.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
-          setHasAccess(true);
-          return;
-        }
-
-        const { data, error } = await supabase.functions.invoke("check-bitcoin-report-access", {
-          body: { email: userEmail },
+        // Use unified check-page-access Edge Function
+        const { data, error } = await supabase.functions.invoke("check-page-access", {
+          body: { email: userEmail, page_slug: "bitcoin-2026-report" },
         });
 
         if (error) {
-          console.error("check-bitcoin-report-access invoke error:", error);
+          console.error("check-page-access error:", error);
           setHasAccess(false);
-          return;
+        } else {
+          setHasAccess(data?.hasAccess === true);
         }
-
-        setHasAccess(data?.hasAccess === true);
       } catch (err) {
         console.error("Access check failed:", err);
         setHasAccess(false);
