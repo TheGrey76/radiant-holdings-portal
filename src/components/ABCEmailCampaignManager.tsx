@@ -138,8 +138,8 @@ export function ABCEmailCampaignManager({ investors, onInvestorsUpdated, pending
     preheader: "", // Preview text shown in inbox
     content: "",
     campaignName: "",
-    ctaLink: "",
-    ctaText: "",
+    ctaLink: "https://abccompany.it/",
+    ctaText: "Scopri di più",
   });
 
   // Handle file attachment
