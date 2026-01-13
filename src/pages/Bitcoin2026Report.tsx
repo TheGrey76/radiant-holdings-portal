@@ -68,11 +68,14 @@ const Bitcoin2026Report = () => {
   const { data: bitcoinData, loading: bitcoinLoading } = useBitcoinReportData();
   const { data: twelveData, isLoading: twelveLoading, error: twelveError } = useTwelveDataBtc();
 
+  // Admin email for bypass
+  const ADMIN_EMAIL = 'edoardo.grigione@aries76.com';
+
   // Check if user has purchased access or is admin
   useEffect(() => {
     const checkAccess = async () => {
       try {
-        // Get user email from session
+        // Get user email from session or localStorage (set during checkout)
         const { data: { user } } = await supabase.auth.getUser();
         const userEmail = user?.email || localStorage.getItem('bitcoin_report_email');
         
@@ -82,43 +85,36 @@ const Bitcoin2026Report = () => {
           return;
         }
         
-        // Check if user is admin (has ABC Console access or admin role)
-        const { data: isAdmin } = await supabase.rpc('check_abc_console_access', {
-          check_email: userEmail
-        });
-        
-        if (isAdmin) {
+        // Admin bypass
+        if (userEmail.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
           setHasAccess(true);
           setAccessChecking(false);
           return;
         }
         
-        // Check if user has admin role
-        if (user) {
-          const { data: hasAdminRole } = await supabase.rpc('has_role', {
-            _user_id: user.id,
-            _role: 'admin'
-          });
-          
-          if (hasAdminRole) {
-            setHasAccess(true);
-            setAccessChecking(false);
-            return;
-          }
-        }
+        // Check if user has PAID in bitcoin_funnel_leads
+        const { data: leadData, error: leadError } = await supabase
+          .from('bitcoin_funnel_leads')
+          .select('status')
+          .eq('email', userEmail.toLowerCase())
+          .eq('status', 'paid')
+          .maybeSingle();
         
-        // Check access via database function for regular users
-        const { data: accessGranted, error } = await supabase.rpc('check_report_access', {
-          p_report_slug: 'bitcoin-2026',
-          p_user_email: userEmail
-        });
-        
-        if (error) {
-          console.error('Error checking access:', error);
+        if (leadError) {
+          console.error('Error checking lead status:', leadError);
           setHasAccess(false);
-        } else {
-          setHasAccess(accessGranted === true);
+          setAccessChecking(false);
+          return;
         }
+        
+        if (leadData) {
+          setHasAccess(true);
+          setAccessChecking(false);
+          return;
+        }
+        
+        // No paid access found
+        setHasAccess(false);
       } catch (err) {
         console.error('Access check failed:', err);
         setHasAccess(false);
