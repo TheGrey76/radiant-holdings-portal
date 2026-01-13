@@ -29,31 +29,58 @@ interface PublishRequest {
 
 function generateBitcoinAnalysis(data: PublishRequest['data']) {
   const {
-    price = '$90,000',
-    change24h = '+0.50%',
-    sentiment = 'NEUTRAL 🟡',
-    signal = 'BUY 🟢',
-    resistance = '$92,000',
-    support = '$88,000',
+    price = '$94,000',
+    priceEur = '€86,500',
+    change24h = '-0.74%',
+    regime = 'ACCUMULATION',
+    regimeConfidence = '60%',
+    targetLow = '$96,000',
+    targetHigh = '$132,000',
+    institutionalTarget = '$138,000',
+    m2Value = '$22.3T',
+    realRate = '+1.45%',
   } = data || {};
 
-  return `<b>📊 BITCOIN ANALYSIS</b>
+  // Determine signal based on regime
+  let signal = 'HOLD 🟡';
+  let signalEmoji = '🟡';
+  if (regime === 'ACCUMULATION' || regime === 'EXPANSION') {
+    signal = 'BUY 🟢';
+    signalEmoji = '🟢';
+  } else if (regime === 'CONTRACTION') {
+    signal = 'SELL 🔴';
+    signalEmoji = '🔴';
+  }
 
-<b>Price:</b> ${price}
-<b>24h Change:</b> ${change24h}
-<b>Market Cap:</b> $1.8T
-<b>Sentiment:</b> ${sentiment}
+  // Regime emoji
+  let regimeEmoji = '🟡';
+  if (regime === 'EXPANSION') regimeEmoji = '🟢';
+  else if (regime === 'ACCUMULATION') regimeEmoji = '🔵';
+  else if (regime === 'CONTRACTION') regimeEmoji = '🔴';
 
-<b>Technical Levels:</b>
-🔴 Resistance: ${resistance}
-🟢 Support: ${support}
+  return `<b>📊 BITCOIN Q1 2026 ANALYSIS</b>
+<i>powered by ARIES76 Macro Model</i>
 
-<b>Signal:</b> ${signal}
+<b>💰 Price:</b> ${price} | ${priceEur}
+<b>📉 24h:</b> ${change24h}
 
-🔗 Full Report:
-https://www.aries76.com/bitcoin-2026-report
+<b>🎯 Current Regime:</b> ${regime} ${regimeEmoji}
+<b>📈 Confidence:</b> ${regimeConfidence}
 
-#Bitcoin #Trading #Analysis #ARIES76`;
+<b>🔮 Price Targets (12M):</b>
+├ Conservative: ${targetLow}
+├ Base Case: ${targetHigh}
+└ Institutional: ${institutionalTarget}
+
+<b>📊 Macro Indicators:</b>
+├ Global M2: ${m2Value}
+└ Real Rate: ${realRate}
+
+<b>⚡ Signal:</b> ${signal}
+
+📖 <a href="https://www.aries76.com/bitcoin-2026-report">Full Report →</a>
+
+#Bitcoin #BTC #Crypto #MacroAnalysis #ARIES76`;
 }
 
 function generateEthereumAnalysis(data: PublishRequest['data']) {
