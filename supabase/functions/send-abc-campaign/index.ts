@@ -143,6 +143,7 @@ const handler = async (req: Request): Promise<Response> => {
       successful: 0,
       failed: 0,
       errors: [] as string[],
+      sentTo: [] as string[],
     };
 
     // Prepare attachments for Resend format
@@ -153,6 +154,9 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Base URL for tracking pixel
     const trackingBaseUrl = "https://dvwmyljnssspwfpwocof.supabase.co/functions/v1/track-email-open";
+
+    // Helper function to add delay between emails
+    const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
     for (const recipient of recipients) {
       try {
@@ -269,7 +273,7 @@ ${ctaLink ? `
         const emailPayload: any = {
           from: "Edoardo Grigione - Aries76 <edoardo.grigione@aries76.com>",
           to: [recipient.email],
-          cc: ["edoardo.grigione@aries76.com"],
+          bcc: ["edoardo.grigione@aries76.com"], // Changed from CC to BCC for better deliverability
           subject: personalizedSubject,
           html: emailHtml,
         };
@@ -282,7 +286,13 @@ ${ctaLink ? `
         await resend.emails.send(emailPayload);
 
         results.successful++;
+        results.sentTo.push(`${recipient.name} <${recipient.email}>`);
         console.log(`✓ Email sent to ${recipient.email}`);
+        
+        // Add 200ms delay between emails to avoid throttling
+        if (recipients.indexOf(recipient) < recipients.length - 1) {
+          await delay(200);
+        }
         
       } catch (error: any) {
         results.failed++;
@@ -292,6 +302,52 @@ ${ctaLink ? `
     }
 
     console.log(`Campaign complete: ${results.successful} sent, ${results.failed} failed`);
+
+    // Send summary email to admin
+    if (results.successful > 0) {
+      try {
+        const summaryHtml = `
+          <!DOCTYPE html>
+          <html>
+          <head><meta charset="utf-8"></head>
+          <body style="font-family: 'Helvetica Neue', Arial, sans-serif; padding: 20px; background: #f5f5f5;">
+            <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 8px; padding: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+              <h2 style="color: #1a2332; margin-top: 0;">📧 Riepilogo Campagna Email</h2>
+              <p style="color: #666;"><strong>Campagna:</strong> ${subject}</p>
+              <p style="color: #666;"><strong>Data:</strong> ${new Date().toLocaleString('it-IT', { timeZone: 'Europe/Rome' })}</p>
+              
+              <div style="background: #e8f5e9; padding: 15px; border-radius: 6px; margin: 20px 0;">
+                <p style="margin: 0; color: #2e7d32;"><strong>✓ Inviate con successo:</strong> ${results.successful}</p>
+                ${results.failed > 0 ? `<p style="margin: 10px 0 0; color: #c62828;"><strong>✗ Fallite:</strong> ${results.failed}</p>` : ''}
+              </div>
+              
+              <h3 style="color: #1a2332; margin-bottom: 10px;">Lista destinatari (${results.sentTo.length}):</h3>
+              <div style="max-height: 400px; overflow-y: auto; background: #fafafa; padding: 15px; border-radius: 6px; font-size: 13px;">
+                ${results.sentTo.map((r, i) => `<div style="padding: 5px 0; border-bottom: 1px solid #eee;">${i + 1}. ${r}</div>`).join('')}
+              </div>
+              
+              ${results.errors.length > 0 ? `
+              <h3 style="color: #c62828; margin-top: 20px;">Errori:</h3>
+              <div style="background: #ffebee; padding: 15px; border-radius: 6px; font-size: 12px;">
+                ${results.errors.map(e => `<div style="padding: 3px 0;">${e}</div>`).join('')}
+              </div>
+              ` : ''}
+            </div>
+          </body>
+          </html>
+        `;
+
+        await resend.emails.send({
+          from: "Aries76 Campaign Bot <edoardo.grigione@aries76.com>",
+          to: ["edoardo.grigione@aries76.com"],
+          subject: `📊 Riepilogo: ${subject} (${results.successful}/${recipients.length} inviate)`,
+          html: summaryHtml,
+        });
+        console.log('✓ Summary email sent to admin');
+      } catch (summaryError: any) {
+        console.error('Failed to send summary email:', summaryError.message);
+      }
+    }
 
     return new Response(
       JSON.stringify({
