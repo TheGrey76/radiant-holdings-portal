@@ -60,12 +60,6 @@ import ABCCompanyConsole from "./pages/ABCCompanyConsole";
 import ABCInvestorProfile from "./pages/ABCInvestorProfile";
 import ABCCompanyConsoleAccess from "./pages/ABCCompanyConsoleAccess";
 import ABCResetPassword from "./pages/ABCResetPassword";
-import GPLPMatching from "./pages/GPLPMatching";
-import GPPortal from "./pages/GPPortal";
-import LPPortal from "./pages/LPPortal";
-import GPLPDashboard from "./pages/GPLPDashboard";
-import GPRegistrationPage from "./pages/GPRegistrationPage";
-import LPRegistrationPage from "./pages/LPRegistrationPage";
 import FinancialAdvisersPortal from "./pages/FinancialAdvisersPortal";
 import FamilyOfficeAdvisory from "./pages/FamilyOfficeAdvisory";
 import Partners from "./pages/Partners";
@@ -123,13 +117,7 @@ const App = () => (
           <Route path="/admin/cross-posting" element={<CrossPostingAssistant />} />
             <Route path="/admin/insights" element={<InsightsAdmin />} />
             <Route path="/admin/research-hub" element={<ResearchHubAdmin />} />
-          <Route path="/admin/gp-lp-matching" element={<GPLPMatching />} />
-          <Route path="/admin/gp-lp-dashboard" element={<GPLPDashboard />} />
-          <Route path="/gp-portal" element={<GPPortal />} />
-          <Route path="/lp-portal" element={<LPPortal />} />
           <Route path="/financial-advisers" element={<FinancialAdvisersPortal />} />
-          <Route path="/gp-registration" element={<GPRegistrationPage />} />
-          <Route path="/lp-registration" element={<LPRegistrationPage />} />
           
           <Route path="/vettafi-access" element={<Navigate to="/vettafi-proposal" replace />} />
           <Route path="/vettafi-proposal" element={<VettaFiProposal />} />

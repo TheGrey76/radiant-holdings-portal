@@ -386,15 +386,6 @@ const Admin = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => navigate('/admin/gp-lp-matching')}
-                className="text-white/70 hover:text-white hover:bg-white/10"
-              >
-                <TrendingUp className="w-4 h-4 mr-2" />
-                GP/LP Matching
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
                 onClick={() => navigate('/')}
                 className="text-white/70 hover:text-white hover:bg-white/10"
               >
