@@ -40,7 +40,7 @@ const CERTIFICATES_DATA = [
     cedola: 9.32, 
     frequenza: 'Trimestrale', 
     barriera: 65,
-    importoInvestito: 120000,
+    importoInvestito: 6000,
     dataEmissione: new Date(2024, 10, 15),
     scadenza: new Date(2027, 10, 15)
   },
@@ -51,7 +51,7 @@ const CERTIFICATES_DATA = [
     cedola: 10.0, 
     frequenza: 'Trimestrale', 
     barriera: 60,
-    importoInvestito: 80000,
+    importoInvestito: 4000,
     dataEmissione: new Date(2024, 10, 13),
     scadenza: new Date(2028, 10, 13)
   },
@@ -62,7 +62,7 @@ const CERTIFICATES_DATA = [
     cedola: 12.0, 
     frequenza: 'Mensile', 
     barriera: 65,
-    importoInvestito: 80000,
+    importoInvestito: 4000,
     dataEmissione: new Date(2024, 9, 20),
     scadenza: new Date(2027, 9, 20)
   },
@@ -73,7 +73,7 @@ const CERTIFICATES_DATA = [
     cedola: 8.0, 
     frequenza: 'Trimestrale', 
     barriera: 65,
-    importoInvestito: 60000,
+    importoInvestito: 3000,
     dataEmissione: new Date(2024, 11, 1),
     scadenza: new Date(2028, 11, 1)
   },
@@ -84,7 +84,7 @@ const CERTIFICATES_DATA = [
     cedola: 0, 
     frequenza: 'A scadenza', 
     barriera: 100,
-    importoInvestito: 60000,
+    importoInvestito: 3000,
     dataEmissione: new Date(2024, 11, 1),
     scadenza: new Date(2029, 11, 1)
   },
@@ -125,7 +125,7 @@ const ETFCertificatesPortfolio = () => {
   });
 
   // Calcoli portafoglio
-  const totalETFValue = 200000; // Valore ETF
+  const totalETFValue = 10000; // Valore ETF
   const totalCertificatesValue = CERTIFICATES_DATA.reduce((sum, c) => sum + c.importoInvestito, 0);
   const totalPortfolioValue = totalETFValue + totalCertificatesValue;
   
