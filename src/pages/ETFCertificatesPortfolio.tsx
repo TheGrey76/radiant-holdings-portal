@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Switch } from '@/components/ui/switch';
@@ -9,17 +9,43 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Separator } from '@/components/ui/separator';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { 
   Wallet, TrendingUp, CalendarDays, FileText, 
   PieChart, DollarSign, AlertTriangle, Calendar as CalendarIcon,
-  Upload, RefreshCw, ArrowLeft, Info
+  Upload, RefreshCw, ArrowLeft, Info, FileUp, CheckCircle, XCircle, Loader2
 } from 'lucide-react';
-import { format, addMonths, startOfMonth, isBefore, isAfter, isSameMonth } from 'date-fns';
+import { format, addMonths, startOfMonth, isBefore, isAfter } from 'date-fns';
 import { it } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import { toast } from 'sonner';
+
+// PDF Market Data - Simulazione dati estratti dal PDF
+const PDF_CERTIFICATES_DATA = [
+  { isin: 'XS3189071965', name: 'Energy Basket', ask: 97.4, irr: 12.77, coupon: 12.0, barrier: 65 },
+  { isin: 'XS3120925063', name: 'Semiconductor Basket', ask: 91.08, irr: 18.21, coupon: 15.6, barrier: 65 },
+  { isin: 'DE000VJ1P3J8', name: 'Luxury Basket', ask: 98.6, irr: 10.52, coupon: 11.92, barrier: 65 },
+  { isin: 'CH1505566112', name: 'US Tech Autocallable', ask: 100.23, irr: 11.96, coupon: 12.0, barrier: 60 },
+  { isin: 'CH1491786658', name: 'Italian Equity Capital Protected', ask: 99.63, irr: null, coupon: null, barrier: 100 },
+  { isin: 'XS3167626897', name: 'ITA Basket', ask: 96.64, irr: 13.09, coupon: 12.0, barrier: 60 },
+  { isin: 'XS3221979696', name: 'Quantum Computing Basket', ask: null, irr: 27.4, coupon: 28.44, barrier: 55 },
+  { isin: 'DE000VH8P6R1', name: 'AI Quantum Basket', ask: 89.3, irr: 33.43, coupon: 28.28, barrier: 40 },
+  { isin: 'XS3167625907', name: 'FinTech Basket', ask: 87.96, irr: 17.46, coupon: 15.0, barrier: 50 },
+  { isin: 'XS3153270833', name: 'Look Back Ita Basket', ask: 97.94, irr: 9.02, coupon: 8.0, barrier: 65 },
+];
+
+interface MatchResult {
+  isin: string;
+  nome: string;
+  inPortfolio: boolean;
+  marketAsk?: number;
+  marketIRR?: number;
+  opportunity?: 'buy' | 'close' | 'hold' | 'new';
+  reason?: string;
+}
 
 // Descrizioni ruoli ETF in italiano
 const ROLE_DESCRIPTIONS: { [key: string]: string } = {
@@ -132,6 +158,10 @@ const ETFCertificatesPortfolio = () => {
   const [cashFlowActive, setCashFlowActive] = useState(false);
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [calendarOpen, setCalendarOpen] = useState(false);
+  const [importDialogOpen, setImportDialogOpen] = useState(false);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [matchResults, setMatchResults] = useState<MatchResult[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [weeklyReport, setWeeklyReport] = useState<WeeklyReport>({
     lastUpdated: new Date(),
     rendimentoStimato: 7.8,
@@ -142,6 +172,73 @@ const ETFCertificatesPortfolio = () => {
       { tipo: 'Neutro', descrizione: 'Mercati stabili, volatilità contenuta' },
     ]
   });
+
+  // Funzione per analizzare PDF e confrontare con portafoglio
+  const handleFileImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsAnalyzing(true);
+    setImportDialogOpen(true);
+
+    // Simulazione analisi PDF
+    await new Promise(resolve => setTimeout(resolve, 1500));
+
+    // Confronto con certificati in portafoglio
+    const results: MatchResult[] = [];
+    
+    // Controlla certificati in portafoglio
+    CERTIFICATES_DATA.forEach(cert => {
+      const marketData = PDF_CERTIFICATES_DATA.find(p => p.isin === cert.isin);
+      if (marketData) {
+        let opportunity: 'buy' | 'close' | 'hold' = 'hold';
+        let reason = 'Nessuna variazione significativa';
+        
+        if (marketData.ask && marketData.ask < 95) {
+          opportunity = 'buy';
+          reason = `Prezzo interessante (${marketData.ask}%), possibile incremento`;
+        } else if (marketData.irr && marketData.irr < 5) {
+          opportunity = 'close';
+          reason = `IRR basso (${marketData.irr}%), valutare chiusura`;
+        }
+        
+        results.push({
+          isin: cert.isin,
+          nome: cert.nome,
+          inPortfolio: true,
+          marketAsk: marketData.ask,
+          marketIRR: marketData.irr,
+          opportunity,
+          reason
+        });
+      }
+    });
+
+    // Nuove opportunità non in portafoglio
+    PDF_CERTIFICATES_DATA.forEach(pdfCert => {
+      const inPortfolio = CERTIFICATES_DATA.some(c => c.isin === pdfCert.isin);
+      if (!inPortfolio && pdfCert.irr && pdfCert.irr > 15) {
+        results.push({
+          isin: pdfCert.isin,
+          nome: pdfCert.name,
+          inPortfolio: false,
+          marketAsk: pdfCert.ask,
+          marketIRR: pdfCert.irr,
+          opportunity: 'new',
+          reason: `Alto IRR (${pdfCert.irr}%), potenziale acquisto`
+        });
+      }
+    });
+
+    setMatchResults(results);
+    setIsAnalyzing(false);
+    toast.success('Analisi completata', { description: `${results.length} certificati analizzati` });
+    
+    // Reset file input
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
 
   // Calcoli portafoglio
   const totalETFValue = 20000; // Valore ETF
@@ -240,13 +337,32 @@ const ETFCertificatesPortfolio = () => {
         </Link>
 
         {/* Page Title */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground">
-            Portafoglio ETF & Certificates – Income Strategy
-          </h1>
-          <p className="text-muted-foreground mt-2">
-            Aggiornata Settimanale • Ultimo aggiornamento: {format(weeklyReport.lastUpdated, 'dd MMMM yyyy', { locale: it })}
-          </p>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+          <div>
+            <h1 className="text-3xl font-bold text-foreground">
+              Portafoglio ETF & Certificates – Income Strategy
+            </h1>
+            <p className="text-muted-foreground mt-2">
+              Aggiornata Settimanale • Ultimo aggiornamento: {format(weeklyReport.lastUpdated, 'dd MMMM yyyy', { locale: it })}
+            </p>
+          </div>
+          <div>
+            <input
+              type="file"
+              ref={fileInputRef}
+              accept=".pdf"
+              onChange={handleFileImport}
+              className="hidden"
+            />
+            <Button 
+              variant="outline" 
+              onClick={() => fileInputRef.current?.click()}
+              className="gap-2"
+            >
+              <FileUp className="h-4 w-4" />
+              Importa Lista PDF
+            </Button>
+          </div>
         </div>
 
         {/* Hero Section */}
@@ -482,12 +598,12 @@ const ETFCertificatesPortfolio = () => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <CalendarDays className="h-5 w-5" />
-                  Calendario Cash Flow
+                  Calendario Cash Flow Certificati
                 </CardTitle>
                 <CardDescription>
                   {cashFlowActive 
-                    ? `Cedole totali anno corrente: ${formatCurrency(annualCashFlow)}`
-                    : 'Attiva il flusso cedolare per visualizzare il calendario'
+                    ? `Cedole certificati anno corrente: ${formatCurrency(annualCashFlow)}`
+                    : 'Attiva il flusso cedolare per visualizzare il calendario cedole certificati'
                   }
                 </CardDescription>
               </CardHeader>
@@ -617,6 +733,113 @@ const ETFCertificatesPortfolio = () => {
           </TabsContent>
         </Tabs>
       </main>
+
+      {/* Import Analysis Dialog */}
+      <Dialog open={importDialogOpen} onOpenChange={setImportDialogOpen}>
+        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <FileText className="h-5 w-5" />
+              Analisi Lista Certificati
+            </DialogTitle>
+            <DialogDescription>
+              Confronto tra certificati in portafoglio e opportunità di mercato
+            </DialogDescription>
+          </DialogHeader>
+          
+          {isAnalyzing ? (
+            <div className="flex flex-col items-center justify-center py-12">
+              <Loader2 className="h-8 w-8 animate-spin text-primary mb-4" />
+              <p className="text-muted-foreground">Analisi in corso...</p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {matchResults.length === 0 ? (
+                <p className="text-center text-muted-foreground py-8">
+                  Nessun risultato da visualizzare
+                </p>
+              ) : (
+                <>
+                  {/* Certificati in portafoglio */}
+                  <div>
+                    <h4 className="font-semibold mb-2 flex items-center gap-2">
+                      <Wallet className="h-4 w-4" />
+                      Certificati in Portafoglio
+                    </h4>
+                    <div className="space-y-2">
+                      {matchResults.filter(r => r.inPortfolio).map(result => (
+                        <div key={result.isin} className="flex items-center justify-between p-3 border border-border rounded-lg">
+                          <div>
+                            <p className="font-medium text-sm">{result.nome}</p>
+                            <p className="text-xs text-muted-foreground font-mono">{result.isin}</p>
+                          </div>
+                          <div className="flex items-center gap-3">
+                            {result.marketAsk && (
+                              <Badge variant="outline" className="text-xs">
+                                Ask: {result.marketAsk}%
+                              </Badge>
+                            )}
+                            {result.marketIRR && (
+                              <Badge variant="outline" className="text-xs">
+                                IRR: {result.marketIRR}%
+                              </Badge>
+                            )}
+                            <Badge 
+                              variant={result.opportunity === 'hold' ? 'secondary' : 'default'}
+                              className={cn(
+                                result.opportunity === 'buy' && 'bg-green-600',
+                                result.opportunity === 'close' && 'bg-red-600'
+                              )}
+                            >
+                              {result.opportunity === 'hold' && <CheckCircle className="h-3 w-3 mr-1" />}
+                              {result.opportunity === 'buy' && <TrendingUp className="h-3 w-3 mr-1" />}
+                              {result.opportunity === 'close' && <XCircle className="h-3 w-3 mr-1" />}
+                              {result.opportunity === 'hold' ? 'OK' : result.opportunity === 'buy' ? 'Incrementare' : 'Chiudere'}
+                            </Badge>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Nuove opportunità */}
+                  {matchResults.filter(r => !r.inPortfolio).length > 0 && (
+                    <div>
+                      <h4 className="font-semibold mb-2 flex items-center gap-2 text-green-600">
+                        <TrendingUp className="h-4 w-4" />
+                        Nuove Opportunità
+                      </h4>
+                      <div className="space-y-2">
+                        {matchResults.filter(r => !r.inPortfolio).map(result => (
+                          <div key={result.isin} className="flex items-center justify-between p-3 border border-green-500/30 bg-green-500/5 rounded-lg">
+                            <div>
+                              <p className="font-medium text-sm">{result.nome}</p>
+                              <p className="text-xs text-muted-foreground font-mono">{result.isin}</p>
+                              <p className="text-xs text-green-600 mt-1">{result.reason}</p>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              {result.marketAsk && (
+                                <Badge variant="outline" className="text-xs">
+                                  Ask: {result.marketAsk}%
+                                </Badge>
+                              )}
+                              {result.marketIRR && (
+                                <Badge variant="outline" className="text-xs bg-green-500/10 text-green-600 border-green-500/30">
+                                  IRR: {result.marketIRR}%
+                                </Badge>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
 
       <Footer />
     </div>
