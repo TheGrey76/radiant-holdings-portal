@@ -20,6 +20,7 @@ import { it } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
+import ETFPortfolioAccessGate from '@/components/ETFPortfolioAccessGate';
 
 // PDF Market Data - Simulazione dati estratti dal PDF
 const PDF_CERTIFICATES_DATA = [
@@ -840,4 +841,11 @@ const ETFCertificatesPortfolio = () => {
   );
 };
 
-export default ETFCertificatesPortfolio;
+// Wrapped component with access gate
+const ETFCertificatesPortfolioPage = () => (
+  <ETFPortfolioAccessGate>
+    <ETFCertificatesPortfolio />
+  </ETFPortfolioAccessGate>
+);
+
+export default ETFCertificatesPortfolioPage;
