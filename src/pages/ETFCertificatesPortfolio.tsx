@@ -20,73 +20,82 @@ import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
-// ETF Data
+// ETF Data (€10.000)
 const ETF_DATA = [
-  { isin: 'IE00B4L5Y983', name: 'iShares Core MSCI World UCITS ETF', weight: 25, role: 'Core Equity' },
-  { isin: 'IE00B5BMR087', name: 'iShares Core S&P 500 UCITS ETF', weight: 15, role: 'US Large Cap' },
-  { isin: 'IE00BZ163G84', name: 'Vanguard EUR Corporate Bond UCITS ETF', weight: 20, role: 'Fixed Income' },
-  { isin: 'IE00B4WXJJ64', name: 'iShares Core EUR Govt Bond UCITS ETF', weight: 15, role: 'Govt Bonds' },
-  { isin: 'IE00B1XNHC34', name: 'iShares Global High Yield Corp Bond UCITS ETF', weight: 10, role: 'High Yield' },
-  { isin: 'IE00BKM4GZ66', name: 'iShares Core EM IMI UCITS ETF', weight: 10, role: 'Emerging Markets' },
-  { isin: 'LU0290358497', name: 'Xtrackers Physical Gold ETC', weight: 5, role: 'Commodity Hedge' },
+  { isin: 'IE00B4L5Y983', name: 'iShares Core MSCI World UCITS ETF', importo: 4000, weight: 40, role: 'Core Equity Globale' },
+  { isin: 'IE00BP3QZ601', name: 'iShares MSCI World Quality Factor UCITS ETF', importo: 2000, weight: 20, role: 'Riduzione Drawdown' },
+  { isin: 'IE00B3DKXQ41', name: 'iShares Core € Aggregate Bond UCITS ETF', importo: 2000, weight: 20, role: 'Stabilità' },
+  { isin: 'IE00B579F325', name: 'Invesco Physical Gold ETC', importo: 1000, weight: 10, role: 'Decorrelazione' },
+  { isin: 'LU0290358497', name: 'Xtrackers II EUR Overnight Rate Swap UCITS ETF', importo: 1000, weight: 10, role: 'Liquidità Tattica' },
 ];
 
-// Certificates Data
+// Certificates Data (€20.000)
 const CERTIFICATES_DATA = [
   { 
-    isin: 'DE000MS0H1P0', 
-    emittente: 'Morgan Stanley', 
-    nome: 'Phoenix Mixed Basket',
-    cedola: 9.32, 
+    isin: 'XS3189071965', 
+    emittente: 'Barclays', 
+    nome: 'Energy Basket',
+    cedola: 12.0, 
     frequenza: 'Trimestrale', 
-    barriera: 65,
-    importoInvestito: 6000,
+    barriera: 60,
+    importoInvestito: 5000,
     dataEmissione: new Date(2024, 10, 15),
     scadenza: new Date(2027, 10, 15)
   },
   { 
-    isin: 'DE000UQ23YT1', 
-    emittente: 'UBS', 
-    nome: 'Phoenix Healthcare Basket',
-    cedola: 10.0, 
+    isin: 'XS3120925063', 
+    emittente: 'Barclays', 
+    nome: 'Semiconductor',
+    cedola: 15.6, 
     frequenza: 'Trimestrale', 
     barriera: 60,
     importoInvestito: 4000,
     dataEmissione: new Date(2024, 10, 13),
-    scadenza: new Date(2028, 10, 13)
+    scadenza: new Date(2027, 10, 13)
   },
   { 
-    isin: 'DE000UQ0LUM5', 
-    emittente: 'UBS', 
-    nome: 'Memory Cash Collect Monthly',
-    cedola: 12.0, 
-    frequenza: 'Mensile', 
-    barriera: 65,
-    importoInvestito: 4000,
+    isin: 'DE000VJ1P3J8', 
+    emittente: 'Vontobel', 
+    nome: 'Luxury',
+    cedola: 10.52, 
+    frequenza: 'Trimestrale', 
+    barriera: 60,
+    importoInvestito: 3000,
     dataEmissione: new Date(2024, 9, 20),
     scadenza: new Date(2027, 9, 20)
   },
   { 
-    isin: 'XS3153270833', 
-    emittente: 'Barclays', 
-    nome: 'Phoenix Italy Consumer & Luxury',
-    cedola: 8.0, 
-    frequenza: 'Trimestrale', 
-    barriera: 65,
+    isin: 'CH1505566112', 
+    emittente: 'Leonteq', 
+    nome: 'US Tech',
+    cedola: 12.0, 
+    frequenza: 'Mensile', 
+    barriera: 60,
     importoInvestito: 3000,
     dataEmissione: new Date(2024, 11, 1),
-    scadenza: new Date(2028, 11, 1)
+    scadenza: new Date(2027, 11, 1)
   },
   { 
-    isin: 'XS3153397073', 
-    emittente: 'Barclays', 
-    nome: 'Capital Protected',
+    isin: 'CH1491786658', 
+    emittente: 'Leonteq', 
+    nome: 'Capital Protected IT',
     cedola: 0, 
     frequenza: 'A scadenza', 
     barriera: 100,
     importoInvestito: 3000,
     dataEmissione: new Date(2024, 11, 1),
     scadenza: new Date(2029, 11, 1)
+  },
+  { 
+    isin: 'XS3167626897', 
+    emittente: 'Barclays', 
+    nome: 'ITA Basket',
+    cedola: 12.0, 
+    frequenza: 'Trimestrale', 
+    barriera: 60,
+    importoInvestito: 2000,
+    dataEmissione: new Date(2024, 10, 1),
+    scadenza: new Date(2027, 10, 1)
   },
 ];
 
