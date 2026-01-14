@@ -5,8 +5,6 @@ import { useRef } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Calendar, User, ArrowLeft, ArrowRight } from 'lucide-react';
 import DOMPurify from 'dompurify';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
 
 // Local type definition for BlogPost
 type BlogPost = {
@@ -100,7 +98,6 @@ const BlogPost = () => {
   if (!post) {
     return (
       <div className="min-h-screen bg-white">
-        <Navbar />
         <div className="pt-32 pb-16">
           <div className="container mx-auto px-6 text-center">
             <h1 className="text-3xl font-bold text-aries-navy mb-4">Article Not Found</h1>
@@ -114,15 +111,12 @@ const BlogPost = () => {
             </Link>
           </div>
         </div>
-        <Footer />
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-white">
-      <Navbar />
-      
       {/* Hero Section with Featured Image */}
       <section className="pt-32 pb-16 bg-gradient-to-b from-aries-light to-white">
         <div className="container mx-auto px-6">
@@ -244,8 +238,6 @@ const BlogPost = () => {
           </motion.div>
         </div>
       </section>
-
-      <Footer />
     </div>
   );
 };
