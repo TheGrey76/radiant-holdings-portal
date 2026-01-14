@@ -7,7 +7,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar as CalendarComponent } from '@/components/ui/calendar';
-import { AlertTriangle, TrendingUp, TrendingDown, Save, RefreshCw, Calendar, ArrowLeft, Download, Loader2, Coins, Bell, BarChart3, CalendarIcon, Settings } from 'lucide-react';
+import { AlertTriangle, TrendingUp, TrendingDown, Save, RefreshCw, Calendar, ArrowLeft, Download, Loader2, Coins, Bell, BarChart3, CalendarIcon, Settings, FileText } from 'lucide-react';
+import jsPDF from 'jspdf';
 import { motion } from 'framer-motion';
 import { Link, Navigate } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -341,6 +342,132 @@ const UnderlyingMonitoring = () => {
 
   const certificates = [...new Set(underlyings.map(u => u.certificateId))];
 
+  // Export PDF for bank orders
+  const exportToPDF = () => {
+    const pdf = new jsPDF();
+    const margin = 20;
+    let y = margin;
+    
+    // Header
+    pdf.setFontSize(18);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('Riepilogo Portafoglio Certificati', margin, y);
+    y += 10;
+    
+    pdf.setFontSize(10);
+    pdf.setFont('helvetica', 'normal');
+    pdf.text(`Data: ${new Date().toLocaleDateString('it-IT')}`, margin, y);
+    y += 5;
+    pdf.text('Cliente: G.U.', margin, y);
+    y += 15;
+    
+    // Portfolio allocation
+    const portfolioAllocation = [
+      { cert: 'A - Morgan Stanley Phoenix', isin: 'DE000MS0H1P0', amount: 120000 },
+      { cert: 'B - UBS Phoenix Healthcare', isin: 'DE000UQ23YT1', amount: 80000 },
+      { cert: 'C - UBS Memory Cash Collect', isin: 'DE000UQ0LUM5', amount: 80000 },
+      { cert: 'D - Barclays Phoenix Luxury', isin: 'XS3153270833', amount: 60000 },
+      { cert: 'E - Barclays Capital Protected', isin: 'XS3153397073', amount: 60000 },
+    ];
+    
+    // Section: Composizione Portafoglio
+    pdf.setFontSize(14);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('Composizione Portafoglio', margin, y);
+    y += 8;
+    
+    pdf.setFontSize(9);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('Certificato', margin, y);
+    pdf.text('ISIN', margin + 70, y);
+    pdf.text('Allocazione', margin + 120, y);
+    y += 6;
+    
+    pdf.setFont('helvetica', 'normal');
+    portfolioAllocation.forEach(item => {
+      pdf.text(item.cert, margin, y);
+      pdf.text(item.isin, margin + 70, y);
+      pdf.text(`€ ${item.amount.toLocaleString('it-IT')}`, margin + 120, y);
+      y += 5;
+    });
+    
+    y += 5;
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('TOTALE PORTAFOGLIO', margin, y);
+    pdf.text('€ 400.000', margin + 120, y);
+    y += 15;
+    
+    // Section: Stato Sottostanti
+    pdf.setFontSize(14);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('Stato Sottostanti', margin, y);
+    y += 8;
+    
+    pdf.setFontSize(8);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('Sottostante', margin, y);
+    pdf.text('Ticker', margin + 35, y);
+    pdf.text('Prezzo', margin + 60, y);
+    pdf.text('Strike', margin + 85, y);
+    pdf.text('Barriera', margin + 110, y);
+    pdf.text('Distanza', margin + 135, y);
+    pdf.text('Status', margin + 160, y);
+    y += 6;
+    
+    pdf.setFont('helvetica', 'normal');
+    underlyings.forEach(u => {
+      const distance = calculateDistanceFromBarrier(u.currentPrice, u.strikePrice, u.barrier);
+      const status = distance > 30 ? 'Safe' : distance > 15 ? 'OK' : distance > 5 ? 'Watch' : 'Alert';
+      
+      pdf.text(u.name, margin, y);
+      pdf.text(u.ticker, margin + 35, y);
+      pdf.text(u.currentPrice > 0 ? `€ ${u.currentPrice.toFixed(2)}` : '-', margin + 60, y);
+      pdf.text(`€ ${u.strikePrice.toFixed(2)}`, margin + 85, y);
+      pdf.text(`${u.barrier}%`, margin + 110, y);
+      pdf.text(u.currentPrice > 0 ? `${distance.toFixed(1)}%` : '-', margin + 135, y);
+      pdf.text(status, margin + 160, y);
+      y += 5;
+      
+      if (y > 270) {
+        pdf.addPage();
+        y = margin;
+      }
+    });
+    
+    y += 10;
+    
+    // Worst performers summary
+    pdf.setFontSize(12);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('Worst Performer per Certificato', margin, y);
+    y += 8;
+    
+    pdf.setFontSize(9);
+    pdf.setFont('helvetica', 'normal');
+    certificates.forEach(certId => {
+      const worst = getWorstPerformer(certId);
+      const certName = underlyings.find(u => u.certificateId === certId)?.certificate || certId;
+      if (worst) {
+        const distance = calculateDistanceFromBarrier(worst.currentPrice, worst.strikePrice, worst.barrier);
+        pdf.text(`${certName}: ${worst.name} (${distance.toFixed(1)}% dalla barriera)`, margin, y);
+        y += 5;
+      }
+    });
+    
+    // Footer
+    y += 10;
+    pdf.setFontSize(8);
+    pdf.setFont('helvetica', 'italic');
+    pdf.text('Documento generato automaticamente', margin, y);
+    pdf.text('Per esecuzione ordini, contattare il proprio intermediario finanziario.', margin, y + 5);
+    
+    // Save PDF
+    const date = new Date().toISOString().split('T')[0];
+    pdf.save(`Monitoring_GU_${date}.pdf`);
+    
+    toast.success('PDF generato con successo');
+  };
+
   if (isAuthorized === null) {
     return <div className="min-h-screen flex items-center justify-center">Caricamento...</div>;
   }
@@ -430,23 +557,33 @@ const UnderlyingMonitoring = () => {
               </div>
             </div>
             <div className="text-right flex flex-col items-end gap-3">
-              <Button 
-                onClick={fetchAllPrices} 
-                disabled={isLoadingPrices}
-                className="bg-emerald-600 hover:bg-emerald-700 text-white"
-              >
-                {isLoadingPrices ? (
-                  <>
-                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    Caricamento...
-                  </>
-                ) : (
-                  <>
-                    <Download className="h-4 w-4 mr-2" />
-                    Aggiorna Tutti i Prezzi
-                  </>
-                )}
-              </Button>
+              <div className="flex gap-2">
+                <Button 
+                  onClick={exportToPDF}
+                  variant="outline"
+                  className="border-slate-600 text-slate-300 hover:bg-slate-700 hover:text-white"
+                >
+                  <FileText className="h-4 w-4 mr-2" />
+                  Esporta PDF
+                </Button>
+                <Button 
+                  onClick={fetchAllPrices} 
+                  disabled={isLoadingPrices}
+                  className="bg-emerald-600 hover:bg-emerald-700 text-white"
+                >
+                  {isLoadingPrices ? (
+                    <>
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                      Caricamento...
+                    </>
+                  ) : (
+                    <>
+                      <Download className="h-4 w-4 mr-2" />
+                      Aggiorna Tutti i Prezzi
+                    </>
+                  )}
+                </Button>
+              </div>
               <div>
                 <p className="text-slate-400 text-sm">Ultimo aggiornamento</p>
                 <p className="text-white font-mono">{new Date().toLocaleDateString('it-IT')}</p>
