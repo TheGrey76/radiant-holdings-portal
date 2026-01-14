@@ -162,7 +162,7 @@ const App = () => (
           <Route path="/reelimmobiliare" element={<ReelImmobiliare />} />
           <Route path="/reports" element={<ReportsPage />} />
           <Route path="/reports/:slug" element={<ReportDetailPage />} />
-          <Route path="/etf-certificates-portfolio" element={<ETFCertificatesPortfolio />} />
+          <Route path="/etf-sp-A.F" element={<ETFCertificatesPortfolio />} />
           <Route path="/press" element={<Press />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
