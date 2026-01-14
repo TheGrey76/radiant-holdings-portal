@@ -104,7 +104,7 @@ const App = () => (
           <Route path="/family-office-advisory" element={<FamilyOfficeAdvisory />} />
           <Route path="/partners" element={<Partners />} />
           <Route path="/strategic-partnerships" element={<StrategicPartnerships />} />
-          <Route path="/structured-products-gu" element={<StructuredProductsGU />} />
+          <Route path="/GU" element={<StructuredProductsGU />} />
           <Route path="/underlying-monitoring" element={<UnderlyingMonitoring />} />
           <Route path="/structured-products" element={<StructuredProducts />} />
           <Route path="/for-limited-partners" element={<ForLimitedPartners />} />
