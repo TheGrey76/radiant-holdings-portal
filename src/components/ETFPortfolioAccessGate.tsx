@@ -39,7 +39,7 @@ const ETFPortfolioAccessGate = ({ children }: ETFPortfolioAccessGateProps) => {
     
     try {
       const { data, error } = await supabase.functions.invoke('check-page-access', {
-        body: { email: email.trim().toLowerCase(), page_slug: 'etf-sp-af' }
+        body: { email: email.trim().toLowerCase(), page_slug: 'af' }
       });
 
       if (error) {

@@ -1,0 +1,1 @@
+UPDATE page_access SET page_slug = 'af' WHERE page_slug = 'etf-sp-af';
