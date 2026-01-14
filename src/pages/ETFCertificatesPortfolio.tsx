@@ -436,7 +436,7 @@ const ETFCertificatesPortfolio = () => {
     // Footer
     pdf.setFontSize(8);
     pdf.setFont('helvetica', 'italic');
-    pdf.text('Documento generato automaticamente - Aries76 Portfolio Management', margin, y);
+    pdf.text('Documento generato automaticamente', margin, y);
     pdf.text('Per esecuzione ordini, contattare il proprio intermediario finanziario.', margin, y + 5);
     
     // Save PDF
