@@ -253,6 +253,48 @@ export type Database = {
         }
         Relationships: []
       }
+      abc_followup_sequences: {
+        Row: {
+          completed_count: number
+          created_at: string
+          description: string | null
+          enrolled_count: number
+          id: string
+          is_active: boolean
+          name: string
+          steps: Json
+          trigger_days: number
+          trigger_type: string
+          updated_at: string
+        }
+        Insert: {
+          completed_count?: number
+          created_at?: string
+          description?: string | null
+          enrolled_count?: number
+          id?: string
+          is_active?: boolean
+          name: string
+          steps?: Json
+          trigger_days?: number
+          trigger_type?: string
+          updated_at?: string
+        }
+        Update: {
+          completed_count?: number
+          created_at?: string
+          description?: string | null
+          enrolled_count?: number
+          id?: string
+          is_active?: boolean
+          name?: string
+          steps?: Json
+          trigger_days?: number
+          trigger_type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       abc_investor_activities: {
         Row: {
           activity_date: string
@@ -625,6 +667,63 @@ export type Database = {
             columns: ["note_id"]
             isOneToOne: false
             referencedRelation: "abc_investor_notes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      abc_sequence_enrollments: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          current_step: number
+          enrolled_at: string
+          id: string
+          investor_email: string
+          investor_id: string | null
+          investor_name: string
+          next_email_date: string
+          sequence_id: string | null
+          status: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          current_step?: number
+          enrolled_at?: string
+          id?: string
+          investor_email: string
+          investor_id?: string | null
+          investor_name: string
+          next_email_date?: string
+          sequence_id?: string | null
+          status?: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          current_step?: number
+          enrolled_at?: string
+          id?: string
+          investor_email?: string
+          investor_id?: string | null
+          investor_name?: string
+          next_email_date?: string
+          sequence_id?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "abc_sequence_enrollments_investor_id_fkey"
+            columns: ["investor_id"]
+            isOneToOne: false
+            referencedRelation: "abc_investors"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "abc_sequence_enrollments_sequence_id_fkey"
+            columns: ["sequence_id"]
+            isOneToOne: false
+            referencedRelation: "abc_followup_sequences"
             referencedColumns: ["id"]
           },
         ]
