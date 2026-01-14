@@ -39,6 +39,8 @@ import { ABCRelationshipIntelligence } from "@/components/ABCRelationshipIntelli
 import { ABCPipelineVelocity } from "@/components/ABCPipelineVelocity";
 import { ABCAnimatedFunnel } from "@/components/ABCAnimatedFunnel";
 import { ABCAutoReminders, Reminder } from "@/components/ABCAutoReminders";
+import { ABCFollowUpSequences } from "@/components/ABCFollowUpSequences";
+import { ABCCampaignStatsDialog } from "@/components/ABCCampaignStatsDialog";
 import { useKPIHistory } from "@/hooks/useKPIHistory";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -144,6 +146,8 @@ const ABCCompanyConsole = () => {
     totalOpens: 0,
     successRate: 0,
   });
+  const [statsDialogOpen, setStatsDialogOpen] = useState(false);
+  const [statsDialogType, setStatsDialogType] = useState<'campaigns' | 'sent' | 'opens' | 'success'>('campaigns');
 
   // Settings state
   const [notificationPrefs, setNotificationPrefs] = useState({
@@ -1029,9 +1033,9 @@ const ABCCompanyConsole = () => {
 
           {/* CAMPAIGNS TAB */}
           <TabsContent value="campaigns" className="space-y-6">
-            {/* Campaign Stats Cards */}
+            {/* Campaign Stats Cards - Clickable */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <Card className="bg-card/50 border-border/50">
+              <Card className="bg-card/50 border-border/50 cursor-pointer hover:bg-card/70 transition-colors" onClick={() => { setStatsDialogType('campaigns'); setStatsDialogOpen(true); }}>
                 <CardContent className="pt-4 pb-3">
                   <div className="flex items-center gap-3">
                     <div className="p-2 rounded-lg bg-primary/10">
@@ -1044,7 +1048,7 @@ const ABCCompanyConsole = () => {
                   </div>
                 </CardContent>
               </Card>
-              <Card className="bg-card/50 border-border/50">
+              <Card className="bg-card/50 border-border/50 cursor-pointer hover:bg-card/70 transition-colors" onClick={() => { setStatsDialogType('sent'); setStatsDialogOpen(true); }}>
                 <CardContent className="pt-4 pb-3">
                   <div className="flex items-center gap-3">
                     <div className="p-2 rounded-lg bg-blue-500/10">
@@ -1057,7 +1061,7 @@ const ABCCompanyConsole = () => {
                   </div>
                 </CardContent>
               </Card>
-              <Card className="bg-card/50 border-border/50">
+              <Card className="bg-card/50 border-border/50 cursor-pointer hover:bg-card/70 transition-colors" onClick={() => { setStatsDialogType('opens'); setStatsDialogOpen(true); }}>
                 <CardContent className="pt-4 pb-3">
                   <div className="flex items-center gap-3">
                     <div className="p-2 rounded-lg bg-green-500/10">
@@ -1070,7 +1074,7 @@ const ABCCompanyConsole = () => {
                   </div>
                 </CardContent>
               </Card>
-              <Card className="bg-card/50 border-border/50">
+              <Card className="bg-card/50 border-border/50 cursor-pointer hover:bg-card/70 transition-colors" onClick={() => { setStatsDialogType('success'); setStatsDialogOpen(true); }}>
                 <CardContent className="pt-4 pb-3">
                   <div className="flex items-center gap-3">
                     <div className="p-2 rounded-lg bg-orange-500/10">
@@ -1084,6 +1088,29 @@ const ABCCompanyConsole = () => {
                 </CardContent>
               </Card>
             </div>
+
+            {/* Follow-up Sequences */}
+            <ABCFollowUpSequences 
+              investors={investors.map(i => ({
+                id: i.id,
+                nome: i.nome,
+                azienda: i.azienda,
+                email: i.email,
+                status: i.status,
+                last_contact_date: i.lastContactDate,
+              }))}
+            />
+
+            {/* Stats Dialog */}
+            <ABCCampaignStatsDialog
+              open={statsDialogOpen}
+              onOpenChange={setStatsDialogOpen}
+              statType={statsDialogType}
+              onNavigateToInvestor={(id) => {
+                setEditInvestorId(id);
+                setActiveTab("investors");
+              }}
+            />
 
             <ABCEmailCampaignManager 
               key={`campaign-manager-${investors.filter(i => i.email).length}-${pendingReminders.length}`}
