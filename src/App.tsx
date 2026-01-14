@@ -77,6 +77,7 @@ import ReportsPage from "./pages/ReportsPage";
 import ReportDetailPage from "./pages/ReportDetailPage";
 import ResearchHubAdmin from "./pages/ResearchHubAdmin";
 import BitcoinFunnelDashboard from "./pages/BitcoinFunnelDashboard";
+import ETFCertificatesPortfolio from "./pages/ETFCertificatesPortfolio";
 
 const queryClient = new QueryClient();
 
@@ -161,6 +162,7 @@ const App = () => (
           <Route path="/reelimmobiliare" element={<ReelImmobiliare />} />
           <Route path="/reports" element={<ReportsPage />} />
           <Route path="/reports/:slug" element={<ReportDetailPage />} />
+          <Route path="/etf-certificates-portfolio" element={<ETFCertificatesPortfolio />} />
           <Route path="/press" element={<Press />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
