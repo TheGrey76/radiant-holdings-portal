@@ -13,8 +13,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { 
   Wallet, TrendingUp, CalendarDays, FileText, 
   PieChart, DollarSign, AlertTriangle, Calendar as CalendarIcon,
-  Upload, RefreshCw, ArrowLeft, Info, FileUp, CheckCircle, XCircle, Loader2
+  Upload, RefreshCw, ArrowLeft, Info, FileUp, CheckCircle, XCircle, Loader2, Download
 } from 'lucide-react';
+import jsPDF from 'jspdf';
 import { format, addMonths, startOfMonth, isBefore, isAfter } from 'date-fns';
 import { it } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
@@ -324,6 +325,126 @@ const ETFCertificatesPortfolio = () => {
     return new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(value);
   };
 
+  // PDF Export function
+  const exportToPDF = () => {
+    const pdf = new jsPDF();
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const margin = 20;
+    let y = 20;
+    
+    // Header
+    pdf.setFontSize(18);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('Ordini Portafoglio - Income Strategy', margin, y);
+    y += 10;
+    
+    pdf.setFontSize(10);
+    pdf.setFont('helvetica', 'normal');
+    pdf.text(`Data: ${format(new Date(), 'dd/MM/yyyy HH:mm', { locale: it })}`, margin, y);
+    y += 15;
+    
+    // Portfolio Summary
+    pdf.setFontSize(12);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('Riepilogo Portafoglio', margin, y);
+    y += 8;
+    
+    pdf.setFontSize(10);
+    pdf.setFont('helvetica', 'normal');
+    pdf.text(`Valore Totale: ${formatCurrency(totalPortfolioValue)}`, margin, y);
+    y += 6;
+    pdf.text(`Allocazione ETF: ${formatCurrency(totalETFValue)} (${etfAllocation}%)`, margin, y);
+    y += 6;
+    pdf.text(`Allocazione Certificates: ${formatCurrency(totalCertificatesValue)} (${certAllocation}%)`, margin, y);
+    y += 15;
+    
+    // ETF Section
+    pdf.setFontSize(12);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('ETF - Ordini di Acquisto', margin, y);
+    y += 10;
+    
+    // ETF Table Header
+    pdf.setFontSize(9);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('ISIN', margin, y);
+    pdf.text('Nome', margin + 35, y);
+    pdf.text('Importo', pageWidth - margin - 20, y, { align: 'right' });
+    y += 2;
+    pdf.setLineWidth(0.3);
+    pdf.line(margin, y, pageWidth - margin, y);
+    y += 5;
+    
+    // ETF Rows
+    pdf.setFont('helvetica', 'normal');
+    ETF_DATA.forEach((etf) => {
+      pdf.text(etf.isin, margin, y);
+      const truncatedName = etf.name.length > 40 ? etf.name.substring(0, 40) + '...' : etf.name;
+      pdf.text(truncatedName, margin + 35, y);
+      pdf.text(formatCurrency(etf.importo), pageWidth - margin - 20, y, { align: 'right' });
+      y += 6;
+    });
+    
+    y += 10;
+    
+    // Certificates Section
+    pdf.setFontSize(12);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('Certificates - Ordini di Acquisto', margin, y);
+    y += 10;
+    
+    // Certificates Table Header
+    pdf.setFontSize(9);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('ISIN', margin, y);
+    pdf.text('Emittente', margin + 35, y);
+    pdf.text('Nome', margin + 60, y);
+    pdf.text('Cedola', margin + 100, y);
+    pdf.text('Importo', pageWidth - margin - 20, y, { align: 'right' });
+    y += 2;
+    pdf.line(margin, y, pageWidth - margin, y);
+    y += 5;
+    
+    // Certificates Rows
+    pdf.setFont('helvetica', 'normal');
+    CERTIFICATES_DATA.forEach((cert) => {
+      if (y > 270) {
+        pdf.addPage();
+        y = 20;
+      }
+      pdf.text(cert.isin, margin, y);
+      pdf.text(cert.emittente, margin + 35, y);
+      pdf.text(cert.nome, margin + 60, y);
+      pdf.text(cert.cedola > 0 ? `${cert.cedola}%` : '-', margin + 100, y);
+      pdf.text(formatCurrency(cert.importoInvestito), pageWidth - margin - 20, y, { align: 'right' });
+      y += 6;
+    });
+    
+    y += 15;
+    
+    // Totals
+    pdf.setLineWidth(0.5);
+    pdf.line(margin, y, pageWidth - margin, y);
+    y += 8;
+    pdf.setFontSize(11);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('TOTALE ORDINI:', margin, y);
+    pdf.text(formatCurrency(totalPortfolioValue), pageWidth - margin - 20, y, { align: 'right' });
+    
+    y += 20;
+    
+    // Footer
+    pdf.setFontSize(8);
+    pdf.setFont('helvetica', 'italic');
+    pdf.text('Documento generato automaticamente - Aries76 Portfolio Management', margin, y);
+    pdf.text('Per esecuzione ordini, contattare il proprio intermediario finanziario.', margin, y + 5);
+    
+    // Save PDF
+    const fileName = `Ordini_Portafoglio_${format(new Date(), 'yyyy-MM-dd')}.pdf`;
+    pdf.save(fileName);
+    toast.success('PDF generato', { description: fileName });
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <main className="container mx-auto px-4 py-8 pt-24">
@@ -343,7 +464,15 @@ const ETFCertificatesPortfolio = () => {
               Aggiornata Settimanale • Ultimo aggiornamento: {format(weeklyReport.lastUpdated, 'dd MMMM yyyy', { locale: it })}
             </p>
           </div>
-          <div>
+          <div className="flex gap-2">
+            <Button 
+              variant="default" 
+              onClick={exportToPDF}
+              className="gap-2"
+            >
+              <Download className="h-4 w-4" />
+              Esporta PDF
+            </Button>
             <input
               type="file"
               ref={fileInputRef}
