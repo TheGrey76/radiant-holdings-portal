@@ -8,10 +8,11 @@ import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Separator } from '@/components/ui/separator';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { 
   Wallet, TrendingUp, CalendarDays, FileText, 
   PieChart, DollarSign, AlertTriangle, Calendar as CalendarIcon,
-  Upload, RefreshCw, ArrowLeft
+  Upload, RefreshCw, ArrowLeft, Info
 } from 'lucide-react';
 import { format, addMonths, startOfMonth, isBefore, isAfter, isSameMonth } from 'date-fns';
 import { it } from 'date-fns/locale';
@@ -19,6 +20,15 @@ import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+
+// Descrizioni ruoli ETF in italiano
+const ROLE_DESCRIPTIONS: { [key: string]: string } = {
+  'Core Equity Globale': 'Esposizione diversificata ai mercati azionari mondiali. Costituisce la base del portafoglio per la crescita a lungo termine.',
+  'Riduzione Drawdown': 'Azioni di qualità con bassa volatilità. Riduce le perdite massime durante le correzioni di mercato.',
+  'Stabilità': 'Obbligazioni investment grade in euro. Fornisce stabilità e reddito regolare con basso rischio.',
+  'Decorrelazione': 'Oro fisico come bene rifugio. Protegge il portafoglio durante crisi e inflazione.',
+  'Liquidità Tattica': 'Replica il tasso overnight BCE. Parcheggio liquidità con rendimento superiore al conto corrente.'
+};
 
 // ETF Data (€10.000)
 const ETF_DATA = [
@@ -361,28 +371,42 @@ const ETFCertificatesPortfolio = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>ISIN</TableHead>
-                      <TableHead>Nome</TableHead>
-                      <TableHead className="text-right">Peso %</TableHead>
-                      <TableHead>Ruolo</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {ETF_DATA.map((etf) => (
-                      <TableRow key={etf.isin}>
-                        <TableCell className="font-mono text-sm">{etf.isin}</TableCell>
-                        <TableCell>{etf.name}</TableCell>
-                        <TableCell className="text-right font-semibold">{etf.weight}%</TableCell>
-                        <TableCell>
-                          <Badge variant="outline">{etf.role}</Badge>
-                        </TableCell>
+                <TooltipProvider>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>ISIN</TableHead>
+                        <TableHead>Nome</TableHead>
+                        <TableHead className="text-right">Importo</TableHead>
+                        <TableHead className="text-right">Peso %</TableHead>
+                        <TableHead>Ruolo</TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                    </TableHeader>
+                    <TableBody>
+                      {ETF_DATA.map((etf) => (
+                        <TableRow key={etf.isin}>
+                          <TableCell className="font-mono text-sm">{etf.isin}</TableCell>
+                          <TableCell>{etf.name}</TableCell>
+                          <TableCell className="text-right font-semibold">{formatCurrency(etf.importo)}</TableCell>
+                          <TableCell className="text-right font-semibold">{etf.weight}%</TableCell>
+                          <TableCell>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <div className="flex items-center gap-1.5 cursor-help">
+                                  <Badge variant="outline">{etf.role}</Badge>
+                                  <Info className="h-3.5 w-3.5 text-muted-foreground" />
+                                </div>
+                              </TooltipTrigger>
+                              <TooltipContent side="left" className="max-w-[280px]">
+                                <p className="text-sm">{ROLE_DESCRIPTIONS[etf.role] || etf.role}</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TooltipProvider>
               </CardContent>
             </Card>
           </TabsContent>
