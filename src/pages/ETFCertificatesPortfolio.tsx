@@ -335,7 +335,7 @@ const ETFCertificatesPortfolio = () => {
     // Header
     pdf.setFontSize(18);
     pdf.setFont('helvetica', 'bold');
-    pdf.text('Ordini Portafoglio - Income Strategy', margin, y);
+    pdf.text('Ordini Portafoglio - OF COURSE!!!!', margin, y);
     y += 10;
     
     pdf.setFontSize(10);
@@ -458,7 +458,7 @@ const ETFCertificatesPortfolio = () => {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <div>
             <h1 className="text-3xl font-bold text-foreground">
-              Portafoglio ETF & Certificates – Income Strategy
+              Portafoglio ETF & Certificates – OF COURSE!!!!
             </h1>
             <p className="text-muted-foreground mt-2">
               Aggiornata Settimanale • Ultimo aggiornamento: {format(weeklyReport.lastUpdated, 'dd MMMM yyyy', { locale: it })}
