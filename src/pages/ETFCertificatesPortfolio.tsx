@@ -19,8 +19,6 @@ import { format, addMonths, startOfMonth, isBefore, isAfter } from 'date-fns';
 import { it } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
 import { toast } from 'sonner';
 
 // PDF Market Data - Simulazione dati estratti dal PDF
@@ -41,8 +39,8 @@ interface MatchResult {
   isin: string;
   nome: string;
   inPortfolio: boolean;
-  marketAsk?: number;
-  marketIRR?: number;
+  marketAsk?: number | null;
+  marketIRR?: number | null;
   opportunity?: 'buy' | 'close' | 'hold' | 'new';
   reason?: string;
 }
@@ -327,8 +325,6 @@ const ETFCertificatesPortfolio = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
-      
       <main className="container mx-auto px-4 py-8 pt-24">
         {/* Back link */}
         <Link to="/" className="inline-flex items-center text-muted-foreground hover:text-foreground mb-6">
@@ -447,17 +443,17 @@ const ETFCertificatesPortfolio = () => {
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={startDate}
-                      onSelect={(date) => {
-                        if (date) {
-                          setStartDate(date);
-                          setCalendarOpen(false);
-                        }
-                      }}
-                      initialFocus
-                    />
+                      <Calendar
+                        mode="single"
+                        selected={startDate}
+                        onSelect={(date: Date | undefined) => {
+                          if (date) {
+                            setStartDate(date);
+                            setCalendarOpen(false);
+                          }
+                        }}
+                        initialFocus
+                      />
                   </PopoverContent>
                 </Popover>
               </div>
@@ -840,8 +836,6 @@ const ETFCertificatesPortfolio = () => {
           )}
         </DialogContent>
       </Dialog>
-
-      <Footer />
     </div>
   );
 };
