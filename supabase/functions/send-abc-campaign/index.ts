@@ -430,6 +430,30 @@ www.aries76.com
 
     console.log(`Campaign complete: ${results.successful} sent, ${results.failed} failed`);
 
+    // Update last_contact_date for all successfully contacted investors
+    if (results.successful > 0) {
+      const successfulEmails = recipients
+        .filter(r => results.sentTo.some(s => s.includes(r.email)))
+        .map(r => r.email.toLowerCase());
+      
+      if (successfulEmails.length > 0) {
+        try {
+          const { error: updateError } = await supabase
+            .from('abc_investors')
+            .update({ last_contact_date: new Date().toISOString() })
+            .in('email', successfulEmails);
+          
+          if (updateError) {
+            console.error('Failed to update last_contact_date:', updateError.message);
+          } else {
+            console.log(`✓ Updated last_contact_date for ${successfulEmails.length} investors`);
+          }
+        } catch (updateErr: any) {
+          console.error('Error updating last_contact_date:', updateErr.message);
+        }
+      }
+    }
+
     // Send summary email to admin
     if (results.successful > 0) {
       try {
