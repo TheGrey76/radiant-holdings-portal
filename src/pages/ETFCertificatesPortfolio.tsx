@@ -30,16 +30,16 @@ const ROLE_DESCRIPTIONS: { [key: string]: string } = {
   'Liquidità Tattica': 'Replica il tasso overnight BCE. Parcheggio liquidità con rendimento superiore al conto corrente.'
 };
 
-// ETF Data (€10.000)
+// ETF Data (€20.000)
 const ETF_DATA = [
-  { isin: 'IE00B4L5Y983', name: 'iShares Core MSCI World UCITS ETF', importo: 4000, weight: 40, role: 'Core Equity Globale' },
-  { isin: 'IE00BP3QZ601', name: 'iShares MSCI World Quality Factor UCITS ETF', importo: 2000, weight: 20, role: 'Riduzione Drawdown' },
-  { isin: 'IE00B3DKXQ41', name: 'iShares Core € Aggregate Bond UCITS ETF', importo: 2000, weight: 20, role: 'Stabilità' },
-  { isin: 'IE00B579F325', name: 'Invesco Physical Gold ETC', importo: 1000, weight: 10, role: 'Decorrelazione' },
-  { isin: 'LU0290358497', name: 'Xtrackers II EUR Overnight Rate Swap UCITS ETF', importo: 1000, weight: 10, role: 'Liquidità Tattica' },
+  { isin: 'IE00B4L5Y983', name: 'iShares Core MSCI World UCITS ETF', importo: 8000, weight: 40, role: 'Core Equity Globale' },
+  { isin: 'IE00BP3QZ601', name: 'iShares MSCI World Quality Factor UCITS ETF', importo: 4000, weight: 20, role: 'Riduzione Drawdown' },
+  { isin: 'IE00B3DKXQ41', name: 'iShares Core € Aggregate Bond UCITS ETF', importo: 4000, weight: 20, role: 'Stabilità' },
+  { isin: 'IE00B579F325', name: 'Invesco Physical Gold ETC', importo: 2000, weight: 10, role: 'Decorrelazione' },
+  { isin: 'LU0290358497', name: 'Xtrackers II EUR Overnight Rate Swap UCITS ETF', importo: 2000, weight: 10, role: 'Liquidità Tattica' },
 ];
 
-// Certificates Data (€20.000)
+// Certificates Data (€10.000)
 const CERTIFICATES_DATA = [
   { 
     isin: 'XS3189071965', 
@@ -48,7 +48,7 @@ const CERTIFICATES_DATA = [
     cedola: 12.0, 
     frequenza: 'Trimestrale', 
     barriera: 60,
-    importoInvestito: 5000,
+    importoInvestito: 2500,
     dataEmissione: new Date(2024, 10, 15),
     scadenza: new Date(2027, 10, 15)
   },
@@ -59,7 +59,7 @@ const CERTIFICATES_DATA = [
     cedola: 15.6, 
     frequenza: 'Trimestrale', 
     barriera: 60,
-    importoInvestito: 4000,
+    importoInvestito: 2000,
     dataEmissione: new Date(2024, 10, 13),
     scadenza: new Date(2027, 10, 13)
   },
@@ -70,7 +70,7 @@ const CERTIFICATES_DATA = [
     cedola: 10.52, 
     frequenza: 'Trimestrale', 
     barriera: 60,
-    importoInvestito: 3000,
+    importoInvestito: 1500,
     dataEmissione: new Date(2024, 9, 20),
     scadenza: new Date(2027, 9, 20)
   },
@@ -81,7 +81,7 @@ const CERTIFICATES_DATA = [
     cedola: 12.0, 
     frequenza: 'Mensile', 
     barriera: 60,
-    importoInvestito: 3000,
+    importoInvestito: 1500,
     dataEmissione: new Date(2024, 11, 1),
     scadenza: new Date(2027, 11, 1)
   },
@@ -92,7 +92,7 @@ const CERTIFICATES_DATA = [
     cedola: 0, 
     frequenza: 'A scadenza', 
     barriera: 100,
-    importoInvestito: 3000,
+    importoInvestito: 1500,
     dataEmissione: new Date(2024, 11, 1),
     scadenza: new Date(2029, 11, 1)
   },
@@ -103,7 +103,7 @@ const CERTIFICATES_DATA = [
     cedola: 12.0, 
     frequenza: 'Trimestrale', 
     barriera: 60,
-    importoInvestito: 2000,
+    importoInvestito: 1000,
     dataEmissione: new Date(2024, 10, 1),
     scadenza: new Date(2027, 10, 1)
   },
@@ -144,7 +144,7 @@ const ETFCertificatesPortfolio = () => {
   });
 
   // Calcoli portafoglio
-  const totalETFValue = 10000; // Valore ETF
+  const totalETFValue = 20000; // Valore ETF
   const totalCertificatesValue = CERTIFICATES_DATA.reduce((sum, c) => sum + c.importoInvestito, 0);
   const totalPortfolioValue = totalETFValue + totalCertificatesValue;
   
