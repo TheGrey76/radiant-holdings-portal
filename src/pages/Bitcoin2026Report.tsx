@@ -537,18 +537,6 @@ const Bitcoin2026Report = () => {
 
       <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
 
-        {/* Language Switcher */}
-        <div className="fixed top-20 right-4 z-50 flex gap-2">
-          <span className="px-3 py-1.5 rounded-full text-xs font-medium bg-primary text-primary-foreground">
-            EN
-          </span>
-          <Link 
-            to="/bitcoin-2026-report-it"
-            className="px-3 py-1.5 rounded-full text-xs font-medium bg-muted/80 hover:bg-muted text-muted-foreground hover:text-foreground transition-colors backdrop-blur-sm"
-          >
-            IT
-          </Link>
-        </div>
 
         {/* Hero Header */}
         <div className="relative overflow-hidden border-b border-border/40">
