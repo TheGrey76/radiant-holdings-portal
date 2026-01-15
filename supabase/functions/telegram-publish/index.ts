@@ -112,9 +112,7 @@ https://www.aries76.com/bitcoin-2026-report
 #Ethereum #Trading #Analysis #ARIES76`;
 }
 
-function generateNewsDigest(data: PublishRequest['data']) {
-  const news = data?.news || [];
-
+function generateNewsDigest(news: Array<{ title: string; source: string; url?: string }>) {
   if (news.length === 0) {
     return `<b>📰 DIGITAL ASSETS NEWS</b>
 <i>powered by ARIES76</i>
@@ -144,6 +142,27 @@ ${newsItems}
 📖 <a href="https://www.aries76.com/bitcoin-2026-report">Bitcoin 2026 Report →</a>
 
 #Crypto #News #DigitalAssets #ARIES76`;
+}
+
+// Fetch news from database with actual article URLs
+async function fetchNewsFromDatabase(supabase: ReturnType<typeof createClient>): Promise<Array<{ title: string; source: string; url: string }>> {
+  const { data, error } = await supabase
+    .from('aggregated_news')
+    .select('title, source_name, original_url')
+    .or('category.eq.digital_assets,title.ilike.%bitcoin%,title.ilike.%btc%,title.ilike.%crypto%')
+    .order('published_at', { ascending: false })
+    .limit(5);
+
+  if (error) {
+    console.error('Error fetching news from database:', error);
+    return [];
+  }
+
+  return (data || []).map(item => ({
+    title: item.title,
+    source: item.source_name,
+    url: item.original_url
+  }));
 }
 
 async function publishToTelegram(message: string, withPhoto: boolean = true): Promise<{ success: boolean; messageId?: string; error?: string }> {
@@ -226,7 +245,10 @@ serve(async (req) => {
           message = generateEthereumAnalysis(data);
           break;
         case 'news':
-          message = generateNewsDigest(data);
+          // Use provided news or fetch from database
+          const providedNews = data?.news || [];
+          const newsToPublish = providedNews.length > 0 ? providedNews : await fetchNewsFromDatabase(supabase);
+          message = generateNewsDigest(newsToPublish);
           break;
         default:
           message = generateBitcoinAnalysis(data);
@@ -293,7 +315,8 @@ serve(async (req) => {
             message = generateEthereumAnalysis({});
             break;
           case 'news':
-            message = generateNewsDigest({});
+            const scheduledNews = await fetchNewsFromDatabase(supabase);
+            message = generateNewsDigest(scheduledNews);
             break;
           default:
             message = generateBitcoinAnalysis({});
