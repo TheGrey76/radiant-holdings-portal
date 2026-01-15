@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Wallet, TrendingUp, TrendingDown, RefreshCw, ExternalLink, BarChart3 } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, ReferenceLine } from 'recharts';
@@ -59,21 +58,21 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     const data = payload[0].payload;
     return (
-      <div className="bg-card border border-border/50 rounded-lg p-3 shadow-xl">
-        <p className="text-xs font-medium text-primary mb-2">{label}</p>
+      <div className="bg-zinc-800 border border-zinc-700 rounded-lg p-3 shadow-xl">
+        <p className="text-xs font-medium text-orange-400 mb-2">{label}</p>
         <div className="space-y-1">
           <div className="flex justify-between gap-4">
-            <span className="text-xs text-muted-foreground">Inflows:</span>
-            <span className="text-xs font-medium text-green-400">+${data.inflows}M</span>
+            <span className="text-xs text-zinc-400">Inflows:</span>
+            <span className="text-xs font-medium text-emerald-400">+${data.inflows}M</span>
           </div>
           <div className="flex justify-between gap-4">
-            <span className="text-xs text-muted-foreground">Outflows:</span>
+            <span className="text-xs text-zinc-400">Outflows:</span>
             <span className="text-xs font-medium text-red-400">-${data.outflows}M</span>
           </div>
-          <div className="pt-1 border-t border-border/30">
+          <div className="pt-1 border-t border-zinc-700">
             <div className="flex justify-between gap-4">
-              <span className="text-xs text-muted-foreground">Net:</span>
-              <span className={`text-xs font-bold ${data.netFlow >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+              <span className="text-xs text-zinc-400">Net:</span>
+              <span className={`text-xs font-bold ${data.netFlow >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
                 {data.netFlow >= 0 ? '+' : ''}${data.netFlow}M
               </span>
             </div>
@@ -108,21 +107,22 @@ export const ETFFlowsTracker = () => {
   }, []);
 
   return (
-    <Card className="bg-card/50 border-border/50 overflow-hidden">
-      <CardHeader className="border-b border-border/30 pb-4">
+    <div className="rounded-xl border border-zinc-700/60 bg-zinc-900/80 overflow-hidden">
+      {/* Header */}
+      <div className="border-b border-zinc-700/60 p-5">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center">
-              <Wallet className="w-5 h-5 text-green-400" />
+            <div className="w-10 h-10 rounded-xl bg-emerald-500/15 flex items-center justify-center">
+              <Wallet className="w-5 h-5 text-emerald-400" />
             </div>
             <div>
-              <CardTitle className="text-lg font-bold">ETF Flows Tracker</CardTitle>
-              <p className="text-xs text-muted-foreground mt-0.5">Institutional capital flows</p>
+              <h3 className="text-lg font-bold text-white">ETF Flows Tracker</h3>
+              <p className="text-xs text-zinc-400 mt-0.5">Institutional capital flows</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
             {data && (
-              <span className="text-xs text-muted-foreground">
+              <span className="text-xs text-zinc-500">
                 Updated {data.lastUpdate.toLocaleTimeString()}
               </span>
             )}
@@ -131,22 +131,24 @@ export const ETFFlowsTracker = () => {
               size="sm"
               onClick={handleRefresh}
               disabled={refreshing}
-              className="h-8 w-8 p-0"
+              className="h-8 w-8 p-0 text-zinc-400 hover:text-white hover:bg-zinc-800"
             >
               <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
             </Button>
           </div>
         </div>
-      </CardHeader>
-      <CardContent className="p-6">
+      </div>
+      
+      {/* Content */}
+      <div className="p-5">
         {loading ? (
           <div className="space-y-4">
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               {[...Array(4)].map((_, i) => (
-                <Skeleton key={i} className="h-20 rounded-xl" />
+                <Skeleton key={i} className="h-20 rounded-xl bg-zinc-800" />
               ))}
             </div>
-            <Skeleton className="h-48 rounded-xl" />
+            <Skeleton className="h-48 rounded-xl bg-zinc-800" />
           </div>
         ) : data ? (
           <motion.div
@@ -156,72 +158,72 @@ export const ETFFlowsTracker = () => {
           >
             {/* Summary Stats */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-              <div className="p-4 rounded-xl bg-muted/30 border border-border/30">
-                <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider block mb-1">
+              <div className="p-4 rounded-xl bg-zinc-800/60 border border-zinc-700/50">
+                <span className="text-xs font-medium text-zinc-400 uppercase tracking-wider block mb-1">
                   Total AUM
                 </span>
                 <div className="flex items-end gap-2">
-                  <span className="text-xl font-bold text-foreground">${data.totalAUM.toFixed(1)}B</span>
-                  <span className="text-xs font-medium text-green-400 mb-0.5">+{data.aumChange.toFixed(1)}%</span>
+                  <span className="text-xl font-bold text-white">${data.totalAUM.toFixed(1)}B</span>
+                  <span className="text-xs font-medium text-emerald-400 mb-0.5">+{data.aumChange.toFixed(1)}%</span>
                 </div>
               </div>
-              <div className="p-4 rounded-xl bg-muted/30 border border-border/30">
-                <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider block mb-1">
+              <div className="p-4 rounded-xl bg-zinc-800/60 border border-zinc-700/50">
+                <span className="text-xs font-medium text-zinc-400 uppercase tracking-wider block mb-1">
                   Weekly Net Flow
                 </span>
                 <div className="flex items-center gap-2">
-                  <TrendingUp className="w-4 h-4 text-green-400" />
-                  <span className="text-xl font-bold text-green-400">+${data.weeklyNetFlow.toFixed(2)}B</span>
+                  <TrendingUp className="w-4 h-4 text-emerald-400" />
+                  <span className="text-xl font-bold text-emerald-400">+${data.weeklyNetFlow.toFixed(2)}B</span>
                 </div>
               </div>
-              <div className="p-4 rounded-xl bg-muted/30 border border-border/30">
-                <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider block mb-1">
+              <div className="p-4 rounded-xl bg-zinc-800/60 border border-zinc-700/50">
+                <span className="text-xs font-medium text-zinc-400 uppercase tracking-wider block mb-1">
                   Monthly Net Flow
                 </span>
                 <div className="flex items-center gap-2">
-                  <TrendingUp className="w-4 h-4 text-green-400" />
-                  <span className="text-xl font-bold text-green-400">+${data.monthlyNetFlow.toFixed(2)}B</span>
+                  <TrendingUp className="w-4 h-4 text-emerald-400" />
+                  <span className="text-xl font-bold text-emerald-400">+${data.monthlyNetFlow.toFixed(2)}B</span>
                 </div>
               </div>
-              <div className="p-4 rounded-xl bg-muted/30 border border-border/30">
-                <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider block mb-1">
+              <div className="p-4 rounded-xl bg-zinc-800/60 border border-zinc-700/50">
+                <span className="text-xs font-medium text-zinc-400 uppercase tracking-wider block mb-1">
                   Top Inflow
                 </span>
-                <span className="text-sm font-bold text-foreground">{data.topInflows[0].name}</span>
-                <span className="text-xs text-green-400 block">+${data.topInflows[0].flow}M</span>
+                <span className="text-sm font-bold text-white">{data.topInflows[0].name}</span>
+                <span className="text-xs text-emerald-400 block">+${data.topInflows[0].flow}M</span>
               </div>
             </div>
 
             {/* Daily Flows Chart */}
-            <div className="p-4 rounded-xl bg-muted/20 border border-border/30">
+            <div className="p-4 rounded-xl bg-zinc-800/40 border border-zinc-700/50">
               <div className="flex items-center gap-2 mb-4">
-                <BarChart3 className="w-4 h-4 text-muted-foreground" />
-                <span className="text-sm font-medium text-foreground">Daily Net Flows (This Week)</span>
+                <BarChart3 className="w-4 h-4 text-zinc-400" />
+                <span className="text-sm font-medium text-white">Daily Net Flows (This Week)</span>
               </div>
               <ResponsiveContainer width="100%" height={180}>
                 <BarChart data={data.dailyFlows} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} vertical={false} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#3f3f46" opacity={0.5} vertical={false} />
                   <XAxis 
                     dataKey="date" 
                     axisLine={false}
                     tickLine={false}
-                    tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 11 }}
+                    tick={{ fill: '#a1a1aa', fontSize: 11 }}
                   />
                   <YAxis 
                     axisLine={false}
                     tickLine={false}
-                    tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 11 }}
+                    tick={{ fill: '#a1a1aa', fontSize: 11 }}
                     tickFormatter={(value) => `$${value}M`}
                     width={55}
                   />
-                  <Tooltip content={<CustomTooltip />} cursor={{ fill: 'hsl(var(--muted))', opacity: 0.3 }} />
-                  <ReferenceLine y={0} stroke="hsl(var(--border))" strokeWidth={1} />
+                  <Tooltip content={<CustomTooltip />} cursor={{ fill: '#27272a', opacity: 0.5 }} />
+                  <ReferenceLine y={0} stroke="#52525b" strokeWidth={1} />
                   <Bar dataKey="netFlow" radius={[4, 4, 0, 0]}>
                     {data.dailyFlows.map((entry, index) => (
                       <Cell 
                         key={`cell-${index}`} 
-                        fill={entry.netFlow >= 0 ? 'hsl(142, 76%, 36%)' : 'hsl(0, 84%, 60%)'} 
-                        opacity={0.8}
+                        fill={entry.netFlow >= 0 ? '#10b981' : '#ef4444'} 
+                        opacity={0.85}
                       />
                     ))}
                   </Bar>
@@ -230,16 +232,16 @@ export const ETFFlowsTracker = () => {
             </div>
 
             {/* Top ETFs Table */}
-            <div className="mt-4 p-4 rounded-xl bg-muted/20 border border-border/30">
-              <span className="text-sm font-medium text-foreground block mb-3">Top ETFs by Inflows (Today)</span>
+            <div className="mt-4 p-4 rounded-xl bg-zinc-800/40 border border-zinc-700/50">
+              <span className="text-sm font-medium text-white block mb-3">Top ETFs by Inflows (Today)</span>
               <div className="space-y-2">
                 {data.topInflows.map((etf, index) => (
-                  <div key={etf.name} className="flex items-center justify-between py-2 border-b border-border/20 last:border-0">
+                  <div key={etf.name} className="flex items-center justify-between py-2 border-b border-zinc-700/40 last:border-0">
                     <div className="flex items-center gap-3">
-                      <span className="text-xs font-bold text-muted-foreground w-4">{index + 1}</span>
-                      <span className="text-sm font-medium text-foreground">{etf.name}</span>
+                      <span className="text-xs font-bold text-zinc-500 w-4">{index + 1}</span>
+                      <span className="text-sm font-medium text-zinc-200">{etf.name}</span>
                     </div>
-                    <span className="text-sm font-bold text-green-400">+${etf.flow}M</span>
+                    <span className="text-sm font-bold text-emerald-400">+${etf.flow}M</span>
                   </div>
                 ))}
               </div>
@@ -248,18 +250,18 @@ export const ETFFlowsTracker = () => {
         ) : null}
         
         {/* Source Attribution */}
-        <div className="mt-6 pt-4 border-t border-border/30 flex items-center justify-between text-xs text-muted-foreground">
+        <div className="mt-6 pt-4 border-t border-zinc-700/50 flex items-center justify-between text-xs text-zinc-500">
           <span>Data: SoSo Value, ETF.com, ARIES76 Analytics</span>
           <a 
             href="https://sosovalue.xyz" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="flex items-center gap-1 hover:text-primary transition-colors"
+            className="flex items-center gap-1 hover:text-orange-400 transition-colors"
           >
             View ETF data <ExternalLink className="w-3 h-3" />
           </a>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 };
