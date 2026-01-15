@@ -191,15 +191,44 @@ const Bitcoin2026Report = () => {
     );
   }
 
+  // Handle manual email verification
+  const handleManualEmailVerify = async () => {
+    const email = manualEmail.trim().toLowerCase();
+    if (!email || !email.includes('@')) return;
+    
+    setAccessChecking(true);
+    
+    try {
+      // Check via edge function (server-side verification)
+      const { data, error } = await supabase.functions.invoke("check-page-access", {
+        body: { email, page_slug: "bitcoin-2026-report" },
+      });
+      
+      if (!error && data?.hasAccess === true) {
+        localStorage.setItem('bitcoin_report_email', email);
+        setAccessEmail(email);
+        setHasAccess(true);
+      } else {
+        // No access - redirect to preview
+        window.location.href = '/bitcoin-2026-report-preview';
+      }
+    } catch (err) {
+      console.error("Manual verification failed:", err);
+      window.location.href = '/bitcoin-2026-report-preview';
+    } finally {
+      setAccessChecking(false);
+    }
+  };
+
   // If no access, redirect to preview page (or ask for email if we don't have it)
   if (!hasAccess) {
     if (!accessEmail) {
       return (
         <div className="min-h-screen bg-background flex items-center justify-center p-6">
           <div className="w-full max-w-md rounded-xl border border-border bg-card p-6">
-            <h1 className="text-xl font-semibold text-foreground">Access required</h1>
+            <h1 className="text-xl font-semibold text-foreground">Accesso richiesto</h1>
             <p className="mt-2 text-sm text-muted-foreground">
-              Inserisci l'email con cui hai acquistato o ricevuto l'accesso per continuare.
+              Inserisci l'email con cui hai acquistato o ricevuto l'accesso.
             </p>
 
             <div className="mt-5 space-y-3">
@@ -209,21 +238,24 @@ const Bitcoin2026Report = () => {
                 placeholder="you@company.com"
                 inputMode="email"
                 autoComplete="email"
+                onKeyDown={(e) => e.key === 'Enter' && handleManualEmailVerify()}
               />
               <div className="flex gap-2">
                 <Button
                   className="flex-1"
-                  onClick={() => {
-                    const email = manualEmail.trim();
-                    if (!email || !email.includes('@')) return;
-                    localStorage.setItem('bitcoin_report_email', email);
-                    window.location.reload();
-                  }}
+                  onClick={handleManualEmailVerify}
+                  disabled={accessChecking}
                 >
-                  Continua
+                  {accessChecking ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Verifica...
+                    </>
+                  ) : (
+                    'Continua'
+                  )}
                 </Button>
-                <Button variant="outline" onClick={() => (window.location.href = '/bitcoin-2026-report-preview')}
-                >
+                <Button variant="outline" onClick={() => (window.location.href = '/bitcoin-2026-report-preview')}>
                   Preview
                 </Button>
               </div>
