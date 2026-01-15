@@ -48,6 +48,9 @@ const Bitcoin2026ReportPreview = () => {
 
     setIsLoading(true);
     try {
+      // Save email to localStorage BEFORE redirecting to Stripe
+      localStorage.setItem('bitcoin_report_email', email.toLowerCase().trim());
+      
       // Get source from URL params if available
       const urlParams = new URLSearchParams(window.location.search);
       const source = urlParams.get('src') || 'direct';
