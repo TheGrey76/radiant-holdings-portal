@@ -1,9 +1,7 @@
-import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { LineChart, CheckCircle2, AlertTriangle, Target, TrendingUp, Info } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { LineChart, CheckCircle2, Target, TrendingUp, Info } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, ReferenceLine, Line, ComposedChart } from 'recharts';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Line, ComposedChart } from 'recharts';
 
 interface BacktestPoint {
   date: string;
@@ -62,29 +60,29 @@ const CustomTooltip = ({ active, payload, label }: any) => {
     const data = payload[0].payload;
     const error = ((Math.abs(data.actual - data.predicted) / data.actual) * 100).toFixed(1);
     return (
-      <div className="bg-card border border-border/50 rounded-lg p-3 shadow-xl">
-        <p className="text-xs font-medium text-primary mb-2">{label}</p>
+      <div className="bg-zinc-800 border border-zinc-700 rounded-lg p-3 shadow-xl">
+        <p className="text-xs font-medium text-orange-400 mb-2">{label}</p>
         <div className="space-y-1">
           <div className="flex justify-between gap-4">
-            <span className="text-xs text-muted-foreground">Actual:</span>
-            <span className="text-xs font-bold text-foreground">${data.actual}k</span>
+            <span className="text-xs text-zinc-400">Actual:</span>
+            <span className="text-xs font-bold text-white">${data.actual}k</span>
           </div>
           <div className="flex justify-between gap-4">
-            <span className="text-xs text-muted-foreground">Predicted:</span>
-            <span className="text-xs font-bold text-primary">${data.predicted}k</span>
+            <span className="text-xs text-zinc-400">Predicted:</span>
+            <span className="text-xs font-bold text-orange-400">${data.predicted}k</span>
           </div>
-          <div className="pt-1 border-t border-border/30">
+          <div className="pt-1 border-t border-zinc-700">
             <div className="flex justify-between gap-4">
-              <span className="text-xs text-muted-foreground">Error:</span>
-              <span className={`text-xs font-medium ${parseFloat(error) < 10 ? 'text-green-400' : 'text-amber-400'}`}>
+              <span className="text-xs text-zinc-400">Error:</span>
+              <span className={`text-xs font-medium ${parseFloat(error) < 10 ? 'text-emerald-400' : 'text-amber-400'}`}>
                 {error}%
               </span>
             </div>
           </div>
           <div className="flex items-center gap-1 mt-1">
-            <span className="text-[10px] text-muted-foreground">Regime:</span>
+            <span className="text-[10px] text-zinc-500">Regime:</span>
             <span className={`text-[10px] font-medium uppercase ${
-              data.regime === 'expansion' ? 'text-green-400' : 
+              data.regime === 'expansion' ? 'text-emerald-400' : 
               data.regime === 'stress' ? 'text-red-400' : 'text-amber-400'
             }`}>{data.regime}</span>
           </div>
@@ -130,19 +128,22 @@ export const ModelBacktesting = () => {
   ];
 
   return (
-    <Card className="bg-card/50 border-border/50 overflow-hidden">
-      <CardHeader className="border-b border-border/30 pb-4">
+    <div className="rounded-xl border border-zinc-700/60 bg-zinc-900/80 overflow-hidden">
+      {/* Header */}
+      <div className="border-b border-zinc-700/60 p-5">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center">
-            <LineChart className="w-5 h-5 text-purple-400" />
+          <div className="w-10 h-10 rounded-xl bg-violet-500/15 flex items-center justify-center">
+            <LineChart className="w-5 h-5 text-violet-400" />
           </div>
           <div>
-            <CardTitle className="text-lg font-bold">Model Backtesting</CardTitle>
-            <p className="text-xs text-muted-foreground mt-0.5">Historical prediction accuracy (Jan 2024 – Jan 2025)</p>
+            <h3 className="text-lg font-bold text-white">Model Backtesting</h3>
+            <p className="text-xs text-zinc-400 mt-0.5">Historical prediction accuracy (Jan 2024 – Jan 2025)</p>
           </div>
         </div>
-      </CardHeader>
-      <CardContent className="p-6">
+      </div>
+      
+      {/* Content */}
+      <div className="p-5">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -157,32 +158,32 @@ export const ModelBacktesting = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4, delay: index * 0.1 }}
-                    className={`p-4 rounded-xl border cursor-help transition-all hover:border-primary/30 ${
-                      metric.status === 'good' ? 'bg-green-500/5 border-green-500/20' :
-                      metric.status === 'warning' ? 'bg-amber-500/5 border-amber-500/20' :
-                      'bg-muted/30 border-border/30'
+                    className={`p-4 rounded-xl border cursor-help transition-all hover:border-orange-500/40 ${
+                      metric.status === 'good' ? 'bg-emerald-500/10 border-emerald-500/30' :
+                      metric.status === 'warning' ? 'bg-amber-500/10 border-amber-500/30' :
+                      'bg-zinc-800/60 border-zinc-700/50'
                     }`}
                   >
                     <div className="flex items-center gap-2 mb-2">
                       <metric.icon className={`w-4 h-4 ${
-                        metric.status === 'good' ? 'text-green-400' :
+                        metric.status === 'good' ? 'text-emerald-400' :
                         metric.status === 'warning' ? 'text-amber-400' :
-                        'text-purple-400'
+                        'text-violet-400'
                       }`} />
-                      <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                      <span className="text-xs font-medium text-zinc-400 uppercase tracking-wider">
                         {metric.label}
                       </span>
                     </div>
                     <span className={`text-xl font-bold ${
-                      metric.status === 'good' ? 'text-green-400' :
+                      metric.status === 'good' ? 'text-emerald-400' :
                       metric.status === 'warning' ? 'text-amber-400' :
-                      'text-foreground'
+                      'text-white'
                     }`}>
                       {metric.value}
                     </span>
                   </motion.div>
                 </TooltipTrigger>
-                <TooltipContent className="max-w-xs">
+                <TooltipContent className="max-w-xs bg-zinc-800 border-zinc-700 text-zinc-100">
                   <p className="text-sm">{metric.tooltip}</p>
                 </TooltipContent>
               </Tooltip>
@@ -190,17 +191,17 @@ export const ModelBacktesting = () => {
           </div>
 
           {/* Backtest Chart */}
-          <div className="p-4 rounded-xl bg-muted/20 border border-border/30">
+          <div className="p-4 rounded-xl bg-zinc-800/40 border border-zinc-700/50">
             <div className="flex items-center justify-between mb-4">
-              <span className="text-sm font-medium text-foreground">Predicted vs Actual Price</span>
+              <span className="text-sm font-medium text-white">Predicted vs Actual Price</span>
               <div className="flex items-center gap-4 text-xs">
                 <div className="flex items-center gap-1.5">
-                  <div className="w-3 h-0.5 bg-foreground rounded"></div>
-                  <span className="text-muted-foreground">Actual</span>
+                  <div className="w-3 h-0.5 bg-white rounded"></div>
+                  <span className="text-zinc-400">Actual</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <div className="w-3 h-0.5 bg-primary rounded"></div>
-                  <span className="text-muted-foreground">Predicted</span>
+                  <div className="w-3 h-0.5 bg-orange-400 rounded"></div>
+                  <span className="text-zinc-400">Predicted</span>
                 </div>
               </div>
             </div>
@@ -208,30 +209,30 @@ export const ModelBacktesting = () => {
               <ComposedChart data={backtestData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
                 <defs>
                   <linearGradient id="actualGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="hsl(var(--foreground))" stopOpacity={0.1}/>
-                    <stop offset="100%" stopColor="hsl(var(--foreground))" stopOpacity={0}/>
+                    <stop offset="0%" stopColor="#ffffff" stopOpacity={0.15}/>
+                    <stop offset="100%" stopColor="#ffffff" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} vertical={false} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#3f3f46" opacity={0.5} vertical={false} />
                 <XAxis 
                   dataKey="date" 
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 10 }}
+                  tick={{ fill: '#a1a1aa', fontSize: 10 }}
                 />
                 <YAxis 
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 10 }}
+                  tick={{ fill: '#a1a1aa', fontSize: 10 }}
                   tickFormatter={(value) => `$${value}k`}
                   width={50}
                   domain={[30, 120]}
                 />
-                <RechartsTooltip content={<CustomTooltip />} cursor={{ stroke: 'hsl(var(--primary))', strokeWidth: 1, strokeDasharray: '4 4' }} />
+                <RechartsTooltip content={<CustomTooltip />} cursor={{ stroke: '#f97316', strokeWidth: 1, strokeDasharray: '4 4' }} />
                 <Area 
                   type="monotone" 
                   dataKey="actual" 
-                  stroke="hsl(var(--foreground))" 
+                  stroke="#ffffff" 
                   strokeWidth={2}
                   fill="url(#actualGradient)"
                   dot={false}
@@ -239,26 +240,26 @@ export const ModelBacktesting = () => {
                 <Line 
                   type="monotone" 
                   dataKey="predicted" 
-                  stroke="hsl(var(--primary))" 
+                  stroke="#f97316" 
                   strokeWidth={2}
                   strokeDasharray="5 5"
-                  dot={{ r: 3, fill: 'hsl(var(--primary))', stroke: 'hsl(var(--card))', strokeWidth: 2 }}
+                  dot={{ r: 3, fill: '#f97316', stroke: '#18181b', strokeWidth: 2 }}
                 />
               </ComposedChart>
             </ResponsiveContainer>
           </div>
 
           {/* Methodology Note */}
-          <div className="mt-4 p-3 rounded-lg bg-muted/30 border border-border/30 flex items-start gap-2">
-            <Info className="w-4 h-4 text-muted-foreground mt-0.5 flex-shrink-0" />
-            <p className="text-xs text-muted-foreground leading-relaxed">
-              <strong>Methodology:</strong> The ARIES76 Macro-Liquidity Model combines M2 growth, real interest rates, 
+          <div className="mt-4 p-3 rounded-lg bg-zinc-800/40 border border-zinc-700/50 flex items-start gap-2">
+            <Info className="w-4 h-4 text-zinc-500 mt-0.5 flex-shrink-0" />
+            <p className="text-xs text-zinc-400 leading-relaxed">
+              <strong className="text-zinc-300">Methodology:</strong> The ARIES76 Macro-Liquidity Model combines M2 growth, real interest rates, 
               and on-chain metrics to generate price targets. This backtest covers the period from January 2024 to January 2025. 
               Past performance is not indicative of future results.
             </p>
           </div>
         </motion.div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 };

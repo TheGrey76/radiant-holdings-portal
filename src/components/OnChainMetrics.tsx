@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Activity, Users, TrendingUp, BarChart3, RefreshCw, ExternalLink } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
@@ -20,7 +19,6 @@ interface OnChainData {
 
 // Simulated data - in production would come from Glassnode/CryptoQuant API
 const fetchOnChainData = async (): Promise<OnChainData> => {
-  // Simulate API call delay
   await new Promise(resolve => setTimeout(resolve, 800));
   
   return {
@@ -38,17 +36,17 @@ const fetchOnChainData = async (): Promise<OnChainData> => {
 
 const getMVRVColor = (zone: string) => {
   switch (zone) {
-    case 'undervalued': return 'text-green-400';
+    case 'undervalued': return 'text-emerald-400';
     case 'overvalued': return 'text-red-400';
-    default: return 'text-amber-400';
+    default: return 'text-orange-400';
   }
 };
 
 const getMVRVBg = (zone: string) => {
   switch (zone) {
-    case 'undervalued': return 'bg-green-500/10 border-green-500/20';
-    case 'overvalued': return 'bg-red-500/10 border-red-500/20';
-    default: return 'bg-amber-500/10 border-amber-500/20';
+    case 'undervalued': return 'bg-emerald-500/10 border-emerald-500/30';
+    case 'overvalued': return 'bg-red-500/10 border-red-500/30';
+    default: return 'bg-orange-500/10 border-orange-500/30';
   }
 };
 
@@ -109,21 +107,22 @@ export const OnChainMetrics = () => {
   ] : [];
 
   return (
-    <Card className="bg-card/50 border-border/50 overflow-hidden">
-      <CardHeader className="border-b border-border/30 pb-4">
+    <div className="rounded-xl border border-zinc-700/60 bg-zinc-900/80 overflow-hidden">
+      {/* Header */}
+      <div className="border-b border-zinc-700/60 p-5">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-              <Activity className="w-5 h-5 text-primary" />
+            <div className="w-10 h-10 rounded-xl bg-orange-500/15 flex items-center justify-center">
+              <Activity className="w-5 h-5 text-orange-400" />
             </div>
             <div>
-              <CardTitle className="text-lg font-bold">On-Chain Metrics</CardTitle>
-              <p className="text-xs text-muted-foreground mt-0.5">Live network health indicators</p>
+              <h3 className="text-lg font-bold text-white">On-Chain Metrics</h3>
+              <p className="text-xs text-zinc-400 mt-0.5">Live network health indicators</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
             {data && (
-              <span className="text-xs text-muted-foreground">
+              <span className="text-xs text-zinc-500">
                 Updated {data.lastUpdate.toLocaleTimeString()}
               </span>
             )}
@@ -132,18 +131,20 @@ export const OnChainMetrics = () => {
               size="sm"
               onClick={handleRefresh}
               disabled={refreshing}
-              className="h-8 w-8 p-0"
+              className="h-8 w-8 p-0 text-zinc-400 hover:text-white hover:bg-zinc-800"
             >
               <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
             </Button>
           </div>
         </div>
-      </CardHeader>
-      <CardContent className="p-6">
+      </div>
+      
+      {/* Content */}
+      <div className="p-5">
         {loading ? (
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {[...Array(4)].map((_, i) => (
-              <Skeleton key={i} className="h-28 rounded-xl" />
+              <Skeleton key={i} className="h-28 rounded-xl bg-zinc-800" />
             ))}
           </div>
         ) : (
@@ -160,24 +161,24 @@ export const OnChainMetrics = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4, delay: index * 0.1 }}
-                    className={`p-5 rounded-xl border cursor-help transition-all hover:border-primary/30 ${
+                    className={`p-5 rounded-xl border cursor-help transition-all hover:border-orange-500/40 ${
                       metric.zone 
                         ? getMVRVBg(metric.zone) 
-                        : 'bg-muted/30 border-border/30'
+                        : 'bg-zinc-800/60 border-zinc-700/50'
                     }`}
                   >
                     <div className="flex items-center gap-2 mb-3">
-                      <metric.icon className={`w-4 h-4 ${metric.zone ? getMVRVColor(metric.zone) : 'text-primary'}`} />
-                      <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                      <metric.icon className={`w-4 h-4 ${metric.zone ? getMVRVColor(metric.zone) : 'text-orange-400'}`} />
+                      <span className="text-xs font-medium text-zinc-400 uppercase tracking-wider">
                         {metric.label}
                       </span>
                     </div>
                     <div className="flex items-end justify-between">
-                      <span className={`text-2xl font-bold ${metric.zone ? getMVRVColor(metric.zone) : 'text-foreground'}`}>
+                      <span className={`text-2xl font-bold ${metric.zone ? getMVRVColor(metric.zone) : 'text-white'}`}>
                         {metric.value}
                       </span>
                       {metric.change && (
-                        <span className={`text-xs font-medium ${metric.changePositive ? 'text-green-400' : 'text-red-400'}`}>
+                        <span className={`text-xs font-medium ${metric.changePositive ? 'text-emerald-400' : 'text-red-400'}`}>
                           {metric.change}
                         </span>
                       )}
@@ -189,7 +190,7 @@ export const OnChainMetrics = () => {
                     </div>
                   </motion.div>
                 </TooltipTrigger>
-                <TooltipContent className="max-w-xs">
+                <TooltipContent className="max-w-xs bg-zinc-800 border-zinc-700 text-zinc-100">
                   <p className="text-sm">{metric.tooltip}</p>
                 </TooltipContent>
               </Tooltip>
@@ -198,18 +199,18 @@ export const OnChainMetrics = () => {
         )}
         
         {/* Source Attribution */}
-        <div className="mt-6 pt-4 border-t border-border/30 flex items-center justify-between text-xs text-muted-foreground">
+        <div className="mt-6 pt-4 border-t border-zinc-700/50 flex items-center justify-between text-xs text-zinc-500">
           <span>Data: Glassnode, CryptoQuant, ARIES76 Analytics</span>
           <a 
             href="https://glassnode.com" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="flex items-center gap-1 hover:text-primary transition-colors"
+            className="flex items-center gap-1 hover:text-orange-400 transition-colors"
           >
             View on-chain data <ExternalLink className="w-3 h-3" />
           </a>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 };
