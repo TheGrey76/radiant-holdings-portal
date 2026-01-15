@@ -102,3 +102,6 @@ verify_jwt = false
 [functions.check-page-access]
 verify_jwt = false
 
+[functions.x-auto-post]
+verify_jwt = false
+

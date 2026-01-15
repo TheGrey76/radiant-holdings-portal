@@ -2632,6 +2632,39 @@ export type Database = {
         }
         Relationships: []
       }
+      x_post_log: {
+        Row: {
+          content: string
+          content_type: string | null
+          created_at: string | null
+          error_message: string | null
+          id: string
+          posted_at: string | null
+          status: string | null
+          tweet_id: string | null
+        }
+        Insert: {
+          content: string
+          content_type?: string | null
+          created_at?: string | null
+          error_message?: string | null
+          id?: string
+          posted_at?: string | null
+          status?: string | null
+          tweet_id?: string | null
+        }
+        Update: {
+          content?: string
+          content_type?: string | null
+          created_at?: string | null
+          error_message?: string | null
+          id?: string
+          posted_at?: string | null
+          status?: string | null
+          tweet_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
