@@ -1,108 +1,106 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Activity, Users, TrendingUp, BarChart3, RefreshCw, ExternalLink } from 'lucide-react';
+import { Activity, Users, TrendingUp, BarChart3, RefreshCw, ExternalLink, Wifi, WifiOff, Cpu, Box } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { supabase } from '@/integrations/supabase/client';
 
 interface OnChainData {
-  hashRate: number; // EH/s
-  hashRateChange: number;
-  activeAddresses: number;
-  activeAddressesChange: number;
-  mvrv: number;
-  mvrvZone: 'undervalued' | 'neutral' | 'overvalued';
-  transactionVolume: number; // billions
-  transactionVolumeChange: number;
-  lastUpdate: Date;
+  hashRate: { value: number; change24h: number; unit: string };
+  difficulty: { value: number; change: number; nextAdjustment: string };
+  activeAddresses: { value: number; change24h: number };
+  mempoolSize: { value: number; avgFee: number };
+  blockHeight: number;
+  lastBlockTime: string;
+  supplyData: { circulating: number; maxSupply: number; percentMined: number };
+  lastUpdated: string;
+  dataSource: 'live' | 'fallback';
 }
-
-// Simulated data - in production would come from Glassnode/CryptoQuant API
-const fetchOnChainData = async (): Promise<OnChainData> => {
-  await new Promise(resolve => setTimeout(resolve, 800));
-  
-  return {
-    hashRate: 750 + Math.random() * 50,
-    hashRateChange: 2.3 + Math.random() * 3,
-    activeAddresses: 1.1 + Math.random() * 0.2,
-    activeAddressesChange: 5.2 + Math.random() * 5,
-    mvrv: 1.8 + Math.random() * 0.5,
-    mvrvZone: 'neutral',
-    transactionVolume: 15 + Math.random() * 5,
-    transactionVolumeChange: 8.5 + Math.random() * 4,
-    lastUpdate: new Date(),
-  };
-};
-
-const getMVRVColor = (zone: string) => {
-  switch (zone) {
-    case 'undervalued': return 'text-emerald-400';
-    case 'overvalued': return 'text-red-400';
-    default: return 'text-orange-400';
-  }
-};
-
-const getMVRVBg = (zone: string) => {
-  switch (zone) {
-    case 'undervalued': return 'bg-emerald-500/10 border-emerald-500/30';
-    case 'overvalued': return 'bg-red-500/10 border-red-500/30';
-    default: return 'bg-orange-500/10 border-orange-500/30';
-  }
-};
 
 export const OnChainMetrics = () => {
   const [data, setData] = useState<OnChainData | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const loadData = async () => {
-    setLoading(true);
-    const result = await fetchOnChainData();
-    setData(result);
-    setLoading(false);
+  const fetchData = async () => {
+    try {
+      const { data: result, error: fetchError } = await supabase.functions.invoke('fetch-onchain-metrics');
+      
+      if (fetchError) throw fetchError;
+      setData(result);
+      setError(null);
+    } catch (err) {
+      console.error('Error fetching on-chain metrics:', err);
+      setError('Failed to load data');
+      // Use fallback
+      setData({
+        hashRate: { value: 750, change24h: 2.3, unit: "EH/s" },
+        difficulty: { value: 110.45, change: 3.2, nextAdjustment: "~5 days" },
+        activeAddresses: { value: 1050000, change24h: 1.8 },
+        mempoolSize: { value: 45000, avgFee: 12.5 },
+        blockHeight: 878500,
+        lastBlockTime: new Date().toISOString(),
+        supplyData: { circulating: 19800000, maxSupply: 21000000, percentMined: 94.3 },
+        lastUpdated: new Date().toISOString(),
+        dataSource: 'fallback'
+      });
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
   };
 
   const handleRefresh = async () => {
     setRefreshing(true);
-    await loadData();
-    setRefreshing(false);
+    await fetchData();
   };
 
   useEffect(() => {
-    loadData();
+    fetchData();
   }, []);
+
+  const formatNumber = (num: number) => {
+    if (num >= 1000000) return `${(num / 1000000).toFixed(2)}M`;
+    if (num >= 1000) return `${(num / 1000).toFixed(1)}K`;
+    return num.toLocaleString();
+  };
+
+  const isLive = data?.dataSource === 'live';
 
   const metrics = data ? [
     {
-      icon: Activity,
+      icon: Cpu,
       label: 'Hash Rate',
-      value: `${data.hashRate.toFixed(0)} EH/s`,
-      change: `+${data.hashRateChange.toFixed(1)}%`,
-      changePositive: true,
-      tooltip: 'Total computational power securing the Bitcoin network. Higher hash rate = stronger security.',
+      value: `${data.hashRate.value.toFixed(0)} ${data.hashRate.unit}`,
+      change: `${data.hashRate.change24h >= 0 ? '+' : ''}${data.hashRate.change24h.toFixed(1)}%`,
+      changePositive: data.hashRate.change24h >= 0,
+      tooltip: 'Total computational power securing the Bitcoin network. Higher = stronger security.',
+    },
+    {
+      icon: Activity,
+      label: 'Difficulty',
+      value: `${data.difficulty.value.toFixed(1)}T`,
+      subtext: data.difficulty.nextAdjustment,
+      change: `${data.difficulty.change >= 0 ? '+' : ''}${data.difficulty.change.toFixed(1)}%`,
+      changePositive: data.difficulty.change >= 0,
+      tooltip: 'Mining difficulty adjusts every 2016 blocks to maintain 10-min block times.',
     },
     {
       icon: Users,
       label: 'Active Addresses',
-      value: `${data.activeAddresses.toFixed(2)}M`,
-      change: `+${data.activeAddressesChange.toFixed(1)}%`,
-      changePositive: true,
+      value: formatNumber(data.activeAddresses.value),
+      change: `${data.activeAddresses.change24h >= 0 ? '+' : ''}${data.activeAddresses.change24h.toFixed(1)}%`,
+      changePositive: data.activeAddresses.change24h >= 0,
       tooltip: 'Unique addresses transacting on-chain in the last 24h. Proxy for network adoption.',
     },
     {
-      icon: TrendingUp,
-      label: 'MVRV Ratio',
-      value: data.mvrv.toFixed(2),
-      zone: data.mvrvZone,
-      tooltip: 'Market Value to Realized Value. Below 1 = undervalued, 1-2.5 = neutral, >2.5 = overvalued.',
-    },
-    {
-      icon: BarChart3,
-      label: 'Tx Volume (24h)',
-      value: `$${data.transactionVolume.toFixed(1)}B`,
-      change: `+${data.transactionVolumeChange.toFixed(1)}%`,
-      changePositive: true,
-      tooltip: 'Total value transferred on-chain in USD. Indicates economic activity and demand.',
+      icon: Box,
+      label: 'Block Height',
+      value: data.blockHeight.toLocaleString(),
+      subtext: `${data.supplyData.percentMined}% mined`,
+      tooltip: 'Current blockchain height. Each block adds ~6.25 BTC to circulating supply.',
     },
   ] : [];
 
@@ -120,12 +118,18 @@ export const OnChainMetrics = () => {
               <p className="text-xs text-zinc-400 mt-0.5">Live network health indicators</p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            {data && (
+          <div className="flex items-center gap-3">
+            {/* Status indicator */}
+            <div className="flex items-center gap-1.5">
+              {isLive ? (
+                <Wifi className="w-3.5 h-3.5 text-emerald-400" />
+              ) : (
+                <WifiOff className="w-3.5 h-3.5 text-amber-400" />
+              )}
               <span className="text-xs text-zinc-500">
-                Updated {data.lastUpdate.toLocaleTimeString()}
+                {isLive ? 'Live' : 'Cached'}
               </span>
-            )}
+            </div>
             <Button
               variant="ghost"
               size="sm"
@@ -161,30 +165,26 @@ export const OnChainMetrics = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4, delay: index * 0.1 }}
-                    className={`p-5 rounded-xl border cursor-help transition-all hover:border-orange-500/40 ${
-                      metric.zone 
-                        ? getMVRVBg(metric.zone) 
-                        : 'bg-zinc-800/60 border-zinc-700/50'
-                    }`}
+                    className="p-5 rounded-xl border cursor-help transition-all hover:border-orange-500/40 bg-zinc-800/60 border-zinc-700/50"
                   >
                     <div className="flex items-center gap-2 mb-3">
-                      <metric.icon className={`w-4 h-4 ${metric.zone ? getMVRVColor(metric.zone) : 'text-orange-400'}`} />
+                      <metric.icon className="w-4 h-4 text-orange-400" />
                       <span className="text-xs font-medium text-zinc-400 uppercase tracking-wider">
                         {metric.label}
                       </span>
                     </div>
                     <div className="flex items-end justify-between">
-                      <span className={`text-2xl font-bold ${metric.zone ? getMVRVColor(metric.zone) : 'text-white'}`}>
-                        {metric.value}
-                      </span>
+                      <div>
+                        <span className="text-2xl font-bold text-white">
+                          {metric.value}
+                        </span>
+                        {metric.subtext && (
+                          <p className="text-xs text-zinc-500 mt-1">{metric.subtext}</p>
+                        )}
+                      </div>
                       {metric.change && (
                         <span className={`text-xs font-medium ${metric.changePositive ? 'text-emerald-400' : 'text-red-400'}`}>
                           {metric.change}
-                        </span>
-                      )}
-                      {metric.zone && (
-                        <span className={`text-xs font-medium uppercase ${getMVRVColor(metric.zone)}`}>
-                          {metric.zone}
                         </span>
                       )}
                     </div>
@@ -197,18 +197,37 @@ export const OnChainMetrics = () => {
             ))}
           </motion.div>
         )}
+
+        {/* Supply Progress */}
+        {data && (
+          <div className="mt-6 p-4 rounded-lg bg-zinc-800/40 border border-zinc-700/50">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm text-zinc-400">Bitcoin Supply</span>
+              <span className="text-sm font-medium text-white">
+                {formatNumber(data.supplyData.circulating)} / 21M BTC
+              </span>
+            </div>
+            <div className="h-2 bg-zinc-700 rounded-full overflow-hidden">
+              <motion.div 
+                className="h-full bg-gradient-to-r from-orange-500 to-amber-500"
+                initial={{ width: 0 }}
+                animate={{ width: `${data.supplyData.percentMined}%` }}
+                transition={{ duration: 1, ease: "easeOut" }}
+              />
+            </div>
+            <div className="flex justify-between mt-2 text-xs text-zinc-500">
+              <span>Mempool: {formatNumber(data.mempoolSize.value)} txs</span>
+              <span>Avg fee: {data.mempoolSize.avgFee} sat/vB</span>
+            </div>
+          </div>
+        )}
         
         {/* Source Attribution */}
-        <div className="mt-6 pt-4 border-t border-zinc-700/50 flex items-center justify-between text-xs text-zinc-500">
-          <span>Data: Glassnode, CryptoQuant, ARIES76 Analytics</span>
-          <a 
-            href="https://glassnode.com" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="flex items-center gap-1 hover:text-orange-400 transition-colors"
-          >
-            View on-chain data <ExternalLink className="w-3 h-3" />
-          </a>
+        <div className="mt-4 pt-4 border-t border-zinc-700/50 flex items-center justify-between text-xs text-zinc-500">
+          <span>Data: Blockchain.com, CoinGecko</span>
+          {data?.lastUpdated && (
+            <span>Updated: {new Date(data.lastUpdated).toLocaleTimeString()}</span>
+          )}
         </div>
       </div>
     </div>
