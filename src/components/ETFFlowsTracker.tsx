@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Wallet, TrendingUp, TrendingDown, RefreshCw, ExternalLink, BarChart3 } from 'lucide-react';
+import { Wallet, TrendingUp, TrendingDown, RefreshCw, ExternalLink, BarChart3, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, ReferenceLine } from 'recharts';
+import { supabase } from '@/integrations/supabase/client';
 
 interface ETFFlowData {
   date: string;
@@ -12,47 +13,23 @@ interface ETFFlowData {
   outflows: number;
 }
 
+interface TopETF {
+  name: string;
+  ticker: string;
+  aum: number;
+  flow: number;
+}
+
 interface ETFSummary {
   totalAUM: number;
   aumChange: number;
   weeklyNetFlow: number;
   monthlyNetFlow: number;
-  topInflows: { name: string; flow: number }[];
+  topETFs: TopETF[];
   dailyFlows: ETFFlowData[];
-  lastUpdate: Date;
+  lastUpdate: string;
+  source: string;
 }
-
-// Simulated data - in production would come from SoSo Value or similar API
-const fetchETFData = async (): Promise<ETFSummary> => {
-  await new Promise(resolve => setTimeout(resolve, 800));
-  
-  const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
-  const dailyFlows = days.map(day => {
-    const inflows = Math.floor(100 + Math.random() * 400);
-    const outflows = Math.floor(50 + Math.random() * 200);
-    return {
-      date: day,
-      netFlow: inflows - outflows,
-      inflows,
-      outflows,
-    };
-  });
-  
-  return {
-    totalAUM: 115 + Math.random() * 10,
-    aumChange: 2.1 + Math.random() * 3,
-    weeklyNetFlow: 1.2 + Math.random() * 0.8,
-    monthlyNetFlow: 4.5 + Math.random() * 2,
-    topInflows: [
-      { name: 'IBIT (BlackRock)', flow: 450 + Math.floor(Math.random() * 100) },
-      { name: 'FBTC (Fidelity)', flow: 180 + Math.floor(Math.random() * 50) },
-      { name: 'ARKB (ARK)', flow: 85 + Math.floor(Math.random() * 30) },
-      { name: 'BITB (Bitwise)', flow: 45 + Math.floor(Math.random() * 20) },
-    ],
-    dailyFlows,
-    lastUpdate: new Date(),
-  };
-};
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
@@ -88,12 +65,26 @@ export const ETFFlowsTracker = () => {
   const [data, setData] = useState<ETFSummary | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const loadData = async () => {
-    setLoading(true);
-    const result = await fetchETFData();
-    setData(result);
-    setLoading(false);
+    try {
+      setError(null);
+      const { data: result, error: fetchError } = await supabase.functions.invoke('fetch-etf-flows');
+      
+      if (fetchError) {
+        console.error('ETF flows fetch error:', fetchError);
+        setError('Unable to load ETF data');
+        return;
+      }
+      
+      setData(result);
+    } catch (err) {
+      console.error('ETF flows error:', err);
+      setError('Unable to load ETF data');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleRefresh = async () => {
@@ -105,6 +96,11 @@ export const ETFFlowsTracker = () => {
   useEffect(() => {
     loadData();
   }, []);
+
+  const formatLastUpdate = (isoString: string) => {
+    const date = new Date(isoString);
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  };
 
   return (
     <div className="rounded-xl border border-zinc-700/60 bg-zinc-900/80 overflow-hidden">
@@ -122,9 +118,16 @@ export const ETFFlowsTracker = () => {
           </div>
           <div className="flex items-center gap-2">
             {data && (
-              <span className="text-xs text-zinc-500">
-                Updated {data.lastUpdate.toLocaleTimeString()}
-              </span>
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-zinc-500">
+                  {formatLastUpdate(data.lastUpdate)}
+                </span>
+                {data.source === 'fallback' && (
+                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400">
+                    Cached
+                  </span>
+                )}
+              </div>
             )}
             <Button
               variant="ghost"
@@ -150,6 +153,19 @@ export const ETFFlowsTracker = () => {
             </div>
             <Skeleton className="h-48 rounded-xl bg-zinc-800" />
           </div>
+        ) : error ? (
+          <div className="p-8 text-center">
+            <AlertCircle className="w-8 h-8 text-amber-400 mx-auto mb-3" />
+            <p className="text-zinc-400 text-sm">{error}</p>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleRefresh}
+              className="mt-4 border-zinc-700 text-zinc-300 hover:bg-zinc-800"
+            >
+              Try Again
+            </Button>
+          </div>
         ) : data ? (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -172,8 +188,14 @@ export const ETFFlowsTracker = () => {
                   Weekly Net Flow
                 </span>
                 <div className="flex items-center gap-2">
-                  <TrendingUp className="w-4 h-4 text-emerald-400" />
-                  <span className="text-xl font-bold text-emerald-400">+${data.weeklyNetFlow.toFixed(2)}B</span>
+                  {data.weeklyNetFlow >= 0 ? (
+                    <TrendingUp className="w-4 h-4 text-emerald-400" />
+                  ) : (
+                    <TrendingDown className="w-4 h-4 text-red-400" />
+                  )}
+                  <span className={`text-xl font-bold ${data.weeklyNetFlow >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                    {data.weeklyNetFlow >= 0 ? '+' : ''}${data.weeklyNetFlow.toFixed(2)}B
+                  </span>
                 </div>
               </div>
               <div className="p-4 rounded-xl bg-zinc-800/60 border border-zinc-700/50">
@@ -181,16 +203,22 @@ export const ETFFlowsTracker = () => {
                   Monthly Net Flow
                 </span>
                 <div className="flex items-center gap-2">
-                  <TrendingUp className="w-4 h-4 text-emerald-400" />
-                  <span className="text-xl font-bold text-emerald-400">+${data.monthlyNetFlow.toFixed(2)}B</span>
+                  {data.monthlyNetFlow >= 0 ? (
+                    <TrendingUp className="w-4 h-4 text-emerald-400" />
+                  ) : (
+                    <TrendingDown className="w-4 h-4 text-red-400" />
+                  )}
+                  <span className={`text-xl font-bold ${data.monthlyNetFlow >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                    {data.monthlyNetFlow >= 0 ? '+' : ''}${data.monthlyNetFlow.toFixed(2)}B
+                  </span>
                 </div>
               </div>
               <div className="p-4 rounded-xl bg-zinc-800/60 border border-zinc-700/50">
                 <span className="text-xs font-medium text-zinc-400 uppercase tracking-wider block mb-1">
                   Top Inflow
                 </span>
-                <span className="text-sm font-bold text-white">{data.topInflows[0].name}</span>
-                <span className="text-xs text-emerald-400 block">+${data.topInflows[0].flow}M</span>
+                <span className="text-sm font-bold text-white">{data.topETFs[0]?.ticker}</span>
+                <span className="text-xs text-emerald-400 block">+${data.topETFs[0]?.flow}M</span>
               </div>
             </div>
 
@@ -233,15 +261,23 @@ export const ETFFlowsTracker = () => {
 
             {/* Top ETFs Table */}
             <div className="mt-4 p-4 rounded-xl bg-zinc-800/40 border border-zinc-700/50">
-              <span className="text-sm font-medium text-white block mb-3">Top ETFs by Inflows (Today)</span>
+              <span className="text-sm font-medium text-white block mb-3">Top Bitcoin ETFs by AUM</span>
               <div className="space-y-2">
-                {data.topInflows.map((etf, index) => (
-                  <div key={etf.name} className="flex items-center justify-between py-2 border-b border-zinc-700/40 last:border-0">
+                {data.topETFs.slice(0, 5).map((etf, index) => (
+                  <div key={etf.ticker} className="flex items-center justify-between py-2 border-b border-zinc-700/40 last:border-0">
                     <div className="flex items-center gap-3">
                       <span className="text-xs font-bold text-zinc-500 w-4">{index + 1}</span>
-                      <span className="text-sm font-medium text-zinc-200">{etf.name}</span>
+                      <div>
+                        <span className="text-sm font-medium text-zinc-200">{etf.ticker}</span>
+                        <span className="text-xs text-zinc-500 ml-2">{etf.name}</span>
+                      </div>
                     </div>
-                    <span className="text-sm font-bold text-emerald-400">+${etf.flow}M</span>
+                    <div className="flex items-center gap-4">
+                      <span className="text-xs text-zinc-400">${etf.aum.toFixed(1)}B</span>
+                      <span className={`text-sm font-bold ${etf.flow >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                        {etf.flow >= 0 ? '+' : ''}${etf.flow}M
+                      </span>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -251,9 +287,9 @@ export const ETFFlowsTracker = () => {
         
         {/* Source Attribution */}
         <div className="mt-6 pt-4 border-t border-zinc-700/50 flex items-center justify-between text-xs text-zinc-500">
-          <span>Data: SoSo Value, ETF.com, ARIES76 Analytics</span>
+          <span>Data: CoinGlass, SoSo Value, ARIES76 Analytics</span>
           <a 
-            href="https://sosovalue.xyz" 
+            href="https://sosovalue.xyz/assets/etf/us-btc-spot" 
             target="_blank" 
             rel="noopener noreferrer"
             className="flex items-center gap-1 hover:text-orange-400 transition-colors"
