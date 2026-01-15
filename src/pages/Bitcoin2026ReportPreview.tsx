@@ -30,6 +30,10 @@ import {
   ArrowUp
 } from 'lucide-react';
 import { FearGreedIndex } from '@/components/FearGreedIndex';
+import { OnChainMetrics } from '@/components/OnChainMetrics';
+import { ETFFlowsTracker } from '@/components/ETFFlowsTracker';
+import { ModelBacktesting } from '@/components/ModelBacktesting';
+import { CorrelationMatrix } from '@/components/CorrelationMatrix';
 import { useBitcoinReportData } from '@/hooks/useBitcoinReportData';
 import { useTwelveDataBtc } from '@/hooks/useTwelveDataBtc';
 import { Link } from 'react-router-dom';
@@ -466,6 +470,14 @@ const Bitcoin2026ReportPreview = () => {
               <FearGreedIndex />
             </div>
           </motion.section>
+
+          {/* ===== ADVANCED DATA SECTIONS ===== */}
+          <div className="grid gap-8 mb-16">
+            <OnChainMetrics />
+            <ETFFlowsTracker />
+            <ModelBacktesting />
+            <CorrelationMatrix />
+          </div>
 
           {/* ===== EXECUTIVE SUMMARY (HARD GATED) ===== */}
           <motion.section 
