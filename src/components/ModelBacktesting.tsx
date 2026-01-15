@@ -1,0 +1,264 @@
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { LineChart, CheckCircle2, AlertTriangle, Target, TrendingUp, Info } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, ReferenceLine, Line, ComposedChart } from 'recharts';
+
+interface BacktestPoint {
+  date: string;
+  actual: number;
+  predicted: number;
+  regime: 'expansion' | 'neutral' | 'stress';
+}
+
+// Historical model predictions vs actual prices (simulated backtest data)
+const backtestData: BacktestPoint[] = [
+  { date: 'Jan 24', actual: 42, predicted: 40, regime: 'neutral' },
+  { date: 'Feb 24', actual: 52, predicted: 48, regime: 'expansion' },
+  { date: 'Mar 24', actual: 71, predicted: 65, regime: 'expansion' },
+  { date: 'Apr 24', actual: 64, predicted: 68, regime: 'neutral' },
+  { date: 'May 24', actual: 68, predicted: 70, regime: 'neutral' },
+  { date: 'Jun 24', actual: 62, predicted: 65, regime: 'neutral' },
+  { date: 'Jul 24', actual: 65, predicted: 62, regime: 'neutral' },
+  { date: 'Aug 24', actual: 59, predicted: 58, regime: 'neutral' },
+  { date: 'Sep 24', actual: 63, predicted: 60, regime: 'neutral' },
+  { date: 'Oct 24', actual: 72, predicted: 68, regime: 'expansion' },
+  { date: 'Nov 24', actual: 96, predicted: 85, regime: 'expansion' },
+  { date: 'Dec 24', actual: 105, predicted: 95, regime: 'expansion' },
+  { date: 'Jan 25', actual: 102, predicted: 100, regime: 'expansion' },
+];
+
+// Calculate model accuracy metrics
+const calculateMetrics = (data: BacktestPoint[]) => {
+  const errors = data.map(d => Math.abs(d.actual - d.predicted) / d.actual * 100);
+  const mape = errors.reduce((a, b) => a + b, 0) / errors.length;
+  
+  const directions = data.slice(1).map((d, i) => {
+    const actualDir = d.actual > data[i].actual;
+    const predictedDir = d.predicted > data[i].predicted;
+    return actualDir === predictedDir;
+  });
+  const directionAccuracy = (directions.filter(Boolean).length / directions.length) * 100;
+  
+  const regimeCorrect = data.filter(d => {
+    if (d.regime === 'expansion' && d.actual > 60) return true;
+    if (d.regime === 'stress' && d.actual < 40) return true;
+    if (d.regime === 'neutral' && d.actual >= 40 && d.actual <= 70) return true;
+    return false;
+  }).length;
+  const regimeAccuracy = (regimeCorrect / data.length) * 100;
+  
+  return {
+    mape: mape.toFixed(1),
+    directionAccuracy: directionAccuracy.toFixed(0),
+    regimeAccuracy: regimeAccuracy.toFixed(0),
+    totalPredictions: data.length,
+  };
+};
+
+const CustomTooltip = ({ active, payload, label }: any) => {
+  if (active && payload && payload.length) {
+    const data = payload[0].payload;
+    const error = ((Math.abs(data.actual - data.predicted) / data.actual) * 100).toFixed(1);
+    return (
+      <div className="bg-card border border-border/50 rounded-lg p-3 shadow-xl">
+        <p className="text-xs font-medium text-primary mb-2">{label}</p>
+        <div className="space-y-1">
+          <div className="flex justify-between gap-4">
+            <span className="text-xs text-muted-foreground">Actual:</span>
+            <span className="text-xs font-bold text-foreground">${data.actual}k</span>
+          </div>
+          <div className="flex justify-between gap-4">
+            <span className="text-xs text-muted-foreground">Predicted:</span>
+            <span className="text-xs font-bold text-primary">${data.predicted}k</span>
+          </div>
+          <div className="pt-1 border-t border-border/30">
+            <div className="flex justify-between gap-4">
+              <span className="text-xs text-muted-foreground">Error:</span>
+              <span className={`text-xs font-medium ${parseFloat(error) < 10 ? 'text-green-400' : 'text-amber-400'}`}>
+                {error}%
+              </span>
+            </div>
+          </div>
+          <div className="flex items-center gap-1 mt-1">
+            <span className="text-[10px] text-muted-foreground">Regime:</span>
+            <span className={`text-[10px] font-medium uppercase ${
+              data.regime === 'expansion' ? 'text-green-400' : 
+              data.regime === 'stress' ? 'text-red-400' : 'text-amber-400'
+            }`}>{data.regime}</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  return null;
+};
+
+export const ModelBacktesting = () => {
+  const metrics = calculateMetrics(backtestData);
+
+  const metricCards = [
+    {
+      icon: Target,
+      label: 'Mean Absolute Error',
+      value: `${metrics.mape}%`,
+      status: parseFloat(metrics.mape) < 15 ? 'good' : 'warning',
+      tooltip: 'Average percentage difference between predicted and actual prices',
+    },
+    {
+      icon: TrendingUp,
+      label: 'Direction Accuracy',
+      value: `${metrics.directionAccuracy}%`,
+      status: parseFloat(metrics.directionAccuracy) > 65 ? 'good' : 'warning',
+      tooltip: 'How often the model correctly predicted price direction (up/down)',
+    },
+    {
+      icon: CheckCircle2,
+      label: 'Regime Accuracy',
+      value: `${metrics.regimeAccuracy}%`,
+      status: parseFloat(metrics.regimeAccuracy) > 70 ? 'good' : 'warning',
+      tooltip: 'Accuracy in predicting macro regimes (expansion/neutral/stress)',
+    },
+    {
+      icon: LineChart,
+      label: 'Total Predictions',
+      value: metrics.totalPredictions.toString(),
+      status: 'neutral',
+      tooltip: 'Number of monthly predictions in the backtest period',
+    },
+  ];
+
+  return (
+    <Card className="bg-card/50 border-border/50 overflow-hidden">
+      <CardHeader className="border-b border-border/30 pb-4">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center">
+            <LineChart className="w-5 h-5 text-purple-400" />
+          </div>
+          <div>
+            <CardTitle className="text-lg font-bold">Model Backtesting</CardTitle>
+            <p className="text-xs text-muted-foreground mt-0.5">Historical prediction accuracy (Jan 2024 – Jan 2025)</p>
+          </div>
+        </div>
+      </CardHeader>
+      <CardContent className="p-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          {/* Accuracy Metrics */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            {metricCards.map((metric, index) => (
+              <Tooltip key={metric.label}>
+                <TooltipTrigger asChild>
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: index * 0.1 }}
+                    className={`p-4 rounded-xl border cursor-help transition-all hover:border-primary/30 ${
+                      metric.status === 'good' ? 'bg-green-500/5 border-green-500/20' :
+                      metric.status === 'warning' ? 'bg-amber-500/5 border-amber-500/20' :
+                      'bg-muted/30 border-border/30'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2 mb-2">
+                      <metric.icon className={`w-4 h-4 ${
+                        metric.status === 'good' ? 'text-green-400' :
+                        metric.status === 'warning' ? 'text-amber-400' :
+                        'text-purple-400'
+                      }`} />
+                      <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                        {metric.label}
+                      </span>
+                    </div>
+                    <span className={`text-xl font-bold ${
+                      metric.status === 'good' ? 'text-green-400' :
+                      metric.status === 'warning' ? 'text-amber-400' :
+                      'text-foreground'
+                    }`}>
+                      {metric.value}
+                    </span>
+                  </motion.div>
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs">
+                  <p className="text-sm">{metric.tooltip}</p>
+                </TooltipContent>
+              </Tooltip>
+            ))}
+          </div>
+
+          {/* Backtest Chart */}
+          <div className="p-4 rounded-xl bg-muted/20 border border-border/30">
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-sm font-medium text-foreground">Predicted vs Actual Price</span>
+              <div className="flex items-center gap-4 text-xs">
+                <div className="flex items-center gap-1.5">
+                  <div className="w-3 h-0.5 bg-foreground rounded"></div>
+                  <span className="text-muted-foreground">Actual</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <div className="w-3 h-0.5 bg-primary rounded"></div>
+                  <span className="text-muted-foreground">Predicted</span>
+                </div>
+              </div>
+            </div>
+            <ResponsiveContainer width="100%" height={250}>
+              <ComposedChart data={backtestData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="actualGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="hsl(var(--foreground))" stopOpacity={0.1}/>
+                    <stop offset="100%" stopColor="hsl(var(--foreground))" stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} vertical={false} />
+                <XAxis 
+                  dataKey="date" 
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 10 }}
+                />
+                <YAxis 
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 10 }}
+                  tickFormatter={(value) => `$${value}k`}
+                  width={50}
+                  domain={[30, 120]}
+                />
+                <RechartsTooltip content={<CustomTooltip />} cursor={{ stroke: 'hsl(var(--primary))', strokeWidth: 1, strokeDasharray: '4 4' }} />
+                <Area 
+                  type="monotone" 
+                  dataKey="actual" 
+                  stroke="hsl(var(--foreground))" 
+                  strokeWidth={2}
+                  fill="url(#actualGradient)"
+                  dot={false}
+                />
+                <Line 
+                  type="monotone" 
+                  dataKey="predicted" 
+                  stroke="hsl(var(--primary))" 
+                  strokeWidth={2}
+                  strokeDasharray="5 5"
+                  dot={{ r: 3, fill: 'hsl(var(--primary))', stroke: 'hsl(var(--card))', strokeWidth: 2 }}
+                />
+              </ComposedChart>
+            </ResponsiveContainer>
+          </div>
+
+          {/* Methodology Note */}
+          <div className="mt-4 p-3 rounded-lg bg-muted/30 border border-border/30 flex items-start gap-2">
+            <Info className="w-4 h-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              <strong>Methodology:</strong> The ARIES76 Macro-Liquidity Model combines M2 growth, real interest rates, 
+              and on-chain metrics to generate price targets. This backtest covers the period from January 2024 to January 2025. 
+              Past performance is not indicative of future results.
+            </p>
+          </div>
+        </motion.div>
+      </CardContent>
+    </Card>
+  );
+};

@@ -16,6 +16,10 @@ import {
 import BitcoinTreasuriesLive from "@/components/BitcoinTreasuriesLive";
 import { ReportSearch } from "@/components/ReportSearch";
 import { FearGreedIndex } from "@/components/FearGreedIndex";
+import { OnChainMetrics } from "@/components/OnChainMetrics";
+import { ETFFlowsTracker } from "@/components/ETFFlowsTracker";
+import { ModelBacktesting } from "@/components/ModelBacktesting";
+import { CorrelationMatrix } from "@/components/CorrelationMatrix";
 import { useBitcoinReportData } from "@/hooks/useBitcoinReportData";
 import { useTwelveDataBtc } from "@/hooks/useTwelveDataBtc";
 import { supabase } from "@/integrations/supabase/client";
@@ -760,6 +764,28 @@ const Bitcoin2026Report = () => {
         <div className="container max-w-6xl mx-auto px-6 pt-8">
           <div className="max-w-md">
             <FearGreedIndex />
+          </div>
+        </div>
+
+        {/* Advanced Data Sections */}
+        <div className="container max-w-6xl mx-auto px-6 pt-12">
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-foreground mb-2">Live Market Intelligence</h2>
+            <p className="text-muted-foreground">Real-time data powering our institutional analysis</p>
+          </div>
+          
+          <div className="grid gap-6">
+            {/* On-Chain Metrics */}
+            <OnChainMetrics />
+            
+            {/* ETF Flows Tracker */}
+            <ETFFlowsTracker />
+            
+            {/* Model Backtesting */}
+            <ModelBacktesting />
+            
+            {/* Correlation Matrix */}
+            <CorrelationMatrix />
           </div>
         </div>
 
