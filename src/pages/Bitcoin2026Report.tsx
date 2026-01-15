@@ -226,9 +226,9 @@ const Bitcoin2026Report = () => {
       return (
         <div className="min-h-screen bg-background flex items-center justify-center p-6">
           <div className="w-full max-w-md rounded-xl border border-border bg-card p-6">
-            <h1 className="text-xl font-semibold text-foreground">Accesso richiesto</h1>
+            <h1 className="text-xl font-semibold text-foreground">Access Required</h1>
             <p className="mt-2 text-sm text-muted-foreground">
-              Inserisci l'email con cui hai acquistato o ricevuto l'accesso.
+              Enter the email you used to purchase or receive access.
             </p>
 
             <div className="mt-5 space-y-3">
@@ -249,10 +249,10 @@ const Bitcoin2026Report = () => {
                   {accessChecking ? (
                     <>
                       <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Verifica...
+                      Verifying...
                     </>
                   ) : (
-                    'Continua'
+                    'Continue'
                   )}
                 </Button>
                 <Button variant="outline" onClick={() => (window.location.href = '/bitcoin-2026-report-preview')}>
