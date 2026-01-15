@@ -5,6 +5,8 @@ import { useState, useEffect, useRef } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { LineChart as RechartsLineChart, Line, AreaChart, Area, BarChart as RechartsBarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Legend } from "recharts";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { 
   BitcoinPriceChart, 
   M2LiquidityChart, 
@@ -69,6 +71,8 @@ const Bitcoin2026Report = () => {
   const [daysUntilQ2, setDaysUntilQ2] = useState<number>(0);
   const [accessChecking, setAccessChecking] = useState(true);
   const [hasAccess, setHasAccess] = useState(false);
+  const [accessEmail, setAccessEmail] = useState<string | null>(null);
+  const [manualEmail, setManualEmail] = useState<string>("");
   const { data: bitcoinData, loading: bitcoinLoading } = useBitcoinReportData();
   const { data: twelveData, isLoading: twelveLoading, error: twelveError } = useTwelveDataBtc();
 
@@ -82,6 +86,7 @@ const Bitcoin2026Report = () => {
         const { data: { user } } = await supabase.auth.getUser();
         const storedEmail = localStorage.getItem("bitcoin_report_email");
         const userEmail = user?.email || storedEmail;
+        setAccessEmail(userEmail || null);
 
         // Check admin list first - grant immediate access
         if (userEmail && ADMIN_EMAILS.some(admin => admin.toLowerCase() === userEmail.toLowerCase())) {
@@ -186,8 +191,48 @@ const Bitcoin2026Report = () => {
     );
   }
 
-  // If no access, redirect to preview page
+  // If no access, redirect to preview page (or ask for email if we don't have it)
   if (!hasAccess) {
+    if (!accessEmail) {
+      return (
+        <div className="min-h-screen bg-background flex items-center justify-center p-6">
+          <div className="w-full max-w-md rounded-xl border border-border bg-card p-6">
+            <h1 className="text-xl font-semibold text-foreground">Access required</h1>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Inserisci l'email con cui hai acquistato o ricevuto l'accesso per continuare.
+            </p>
+
+            <div className="mt-5 space-y-3">
+              <Input
+                value={manualEmail}
+                onChange={(e) => setManualEmail(e.target.value)}
+                placeholder="you@company.com"
+                inputMode="email"
+                autoComplete="email"
+              />
+              <div className="flex gap-2">
+                <Button
+                  className="flex-1"
+                  onClick={() => {
+                    const email = manualEmail.trim();
+                    if (!email || !email.includes('@')) return;
+                    localStorage.setItem('bitcoin_report_email', email);
+                    window.location.reload();
+                  }}
+                >
+                  Continua
+                </Button>
+                <Button variant="outline" onClick={() => (window.location.href = '/bitcoin-2026-report-preview')}
+                >
+                  Preview
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
     return <Navigate to="/bitcoin-2026-report-preview" replace />;
   }
 
