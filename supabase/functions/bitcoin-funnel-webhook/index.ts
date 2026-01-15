@@ -60,15 +60,16 @@ serve(async (req) => {
         console.log("Processing Bitcoin 2026 Report purchase for:", customerEmail);
 
         if (customerEmail) {
-          // Update lead status to 'paid'
+          const normalizedEmail = customerEmail.toLowerCase().trim();
+          
+          // 1. Update lead status to 'paid' in bitcoin_funnel_leads
           const { data: existingLead, error: findError } = await supabase
             .from("bitcoin_funnel_leads")
             .select("id, status")
-            .eq("email", customerEmail.toLowerCase())
+            .eq("email", normalizedEmail)
             .maybeSingle();
 
           if (existingLead) {
-            // Update existing lead
             const { error: updateError } = await supabase
               .from("bitcoin_funnel_leads")
               .update({
@@ -82,16 +83,15 @@ serve(async (req) => {
             if (updateError) {
               console.error("Error updating lead:", updateError);
             } else {
-              console.log("Lead updated to paid:", customerEmail);
+              console.log("Lead updated to paid:", normalizedEmail);
             }
           } else {
-            // Create new lead with paid status (direct purchase without preview)
             const { error: insertError } = await supabase
               .from("bitcoin_funnel_leads")
               .insert({
-                email: customerEmail.toLowerCase(),
+                email: normalizedEmail,
                 status: "paid",
-                source: "direct",
+                source: session.metadata?.source || "direct",
                 paid_at: new Date().toISOString(),
                 stripe_payment_id: paymentIntentId,
               });
@@ -99,34 +99,49 @@ serve(async (req) => {
             if (insertError) {
               console.error("Error inserting lead:", insertError);
             } else {
-              console.log("New paid lead created:", customerEmail);
+              console.log("New paid lead created:", normalizedEmail);
             }
           }
 
-          // Log automation action
-          const { error: logError } = await supabase
+          // 2. CRITICAL: Add to page_access table for access control
+          const { error: accessError } = await supabase
+            .from("page_access")
+            .upsert({
+              email: normalizedEmail,
+              page_slug: "bitcoin-2026-report",
+              access_type: "paid",
+              stripe_payment_id: paymentIntentId,
+              granted_at: new Date().toISOString(),
+            }, {
+              onConflict: "email,page_slug",
+            });
+
+          if (accessError) {
+            console.error("Error adding page_access:", accessError);
+          } else {
+            console.log("Page access granted for:", normalizedEmail);
+          }
+
+          // 3. Log automation action
+          await supabase
             .from("bitcoin_funnel_automation_log")
             .insert({
               lead_id: existingLead?.id || null,
               action: "payment_completed",
               details: {
-                email: customerEmail,
+                email: normalizedEmail,
                 payment_intent: paymentIntentId,
                 amount: session.amount_total,
                 currency: session.currency,
               },
             });
 
-          if (logError) {
-            console.error("Error logging automation:", logError);
-          }
-
-          // Also create report purchase record for access control
-          const { error: purchaseError } = await supabase
+          // 4. Also create report purchase record (for legacy/analytics)
+          await supabase
             .from("report_purchases")
             .upsert({
-              report_id: "bitcoin-2026", // You may need to get this from reports table
-              user_email: customerEmail.toLowerCase(),
+              report_id: "bitcoin-2026",
+              user_email: normalizedEmail,
               status: "completed",
               amount_paid: (session.amount_total || 0) / 100,
               currency: session.currency?.toUpperCase() || "EUR",
@@ -136,10 +151,6 @@ serve(async (req) => {
             }, {
               onConflict: "user_email,report_id",
             });
-
-          if (purchaseError) {
-            console.error("Error creating purchase record:", purchaseError);
-          }
         }
       }
     }
