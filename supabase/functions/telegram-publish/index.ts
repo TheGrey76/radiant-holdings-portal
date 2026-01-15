@@ -22,7 +22,7 @@ interface PublishRequest {
     signal?: string;
     resistance?: string;
     support?: string;
-    news?: Array<{ title: string; source: string }>;
+    news?: Array<{ title: string; source: string; url?: string }>;
   };
   scheduleTime?: string;
 }
@@ -113,24 +113,37 @@ https://www.aries76.com/bitcoin-2026-report
 }
 
 function generateNewsDigest(data: PublishRequest['data']) {
-  const news = data?.news || [
-    { title: 'Bitcoin market update', source: 'CoinTelegraph' },
-    { title: 'Ethereum network upgrades', source: 'The Block' },
-    { title: 'DeFi protocols update', source: 'Cointelegraph' },
-  ];
+  const news = data?.news || [];
 
-  const newsItems = news.slice(0, 3).map((item, i) => 
-    `${i + 1}️⃣ ${item.title}\nSource: ${item.source}`
-  ).join('\n\n');
+  if (news.length === 0) {
+    return `<b>📰 DIGITAL ASSETS NEWS</b>
+<i>powered by ARIES76</i>
+
+No news available at the moment.
+
+📖 <a href="https://www.aries76.com/bitcoin-2026-report">Full Report →</a>
+
+#Crypto #News #DigitalAssets #ARIES76`;
+  }
+
+  const newsItems = news.slice(0, 5).map((item, i) => {
+    const emoji = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣'][i] || '▪️';
+    if (item.url) {
+      return `${emoji} <a href="${item.url}">${item.title}</a>\n<i>${item.source}</i>`;
+    }
+    return `${emoji} ${item.title}\n<i>${item.source}</i>`;
+  }).join('\n\n');
 
   return `<b>📰 DIGITAL ASSETS NEWS</b>
+<i>powered by ARIES76</i>
 
 ${newsItems}
 
-🔗 Full Report:
-https://www.aries76.com/bitcoin-2026-report
+━━━━━━━━━━━━━━━━━━━━
 
-#Crypto #News #Trading #ARIES76`;
+📖 <a href="https://www.aries76.com/bitcoin-2026-report">Bitcoin 2026 Report →</a>
+
+#Crypto #News #DigitalAssets #ARIES76`;
 }
 
 async function publishToTelegram(message: string, withPhoto: boolean = true): Promise<{ success: boolean; messageId?: string; error?: string }> {
