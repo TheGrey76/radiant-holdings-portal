@@ -78,7 +78,7 @@ function generateBitcoinAnalysis(data: PublishRequest['data']) {
 
 <b>⚡ Signal:</b> ${signal}
 
-📖 <a href="https://www.aries76.com/bitcoin-2026-report">Full Report →</a>
+📖 <a href="https://www.aries76.com/bitcoin-2026-report-preview">Full Report →</a>
 
 #Bitcoin #BTC #Crypto #MacroAnalysis #ARIES76`;
 }
@@ -107,7 +107,7 @@ function generateEthereumAnalysis(data: PublishRequest['data']) {
 <b>Signal:</b> ${signal}
 
 🔗 Full Report:
-https://www.aries76.com/bitcoin-2026-report
+https://www.aries76.com/bitcoin-2026-report-preview
 
 #Ethereum #Trading #Analysis #ARIES76`;
 }
@@ -119,7 +119,7 @@ function generateNewsDigest(news: Array<{ title: string; source: string; url?: s
 
 No news available at the moment.
 
-📖 <a href="https://www.aries76.com/bitcoin-2026-report">Full Report →</a>
+📖 <a href="https://www.aries76.com/bitcoin-2026-report-preview">Full Report →</a>
 
 #Crypto #News #DigitalAssets #ARIES76`;
   }
@@ -139,7 +139,7 @@ ${newsItems}
 
 ━━━━━━━━━━━━━━━━━━━━
 
-📖 <a href="https://www.aries76.com/bitcoin-2026-report">Bitcoin 2026 Report →</a>
+📖 <a href="https://www.aries76.com/bitcoin-2026-report-preview">Bitcoin 2026 Report →</a>
 
 #Crypto #News #DigitalAssets #ARIES76`;
 }
