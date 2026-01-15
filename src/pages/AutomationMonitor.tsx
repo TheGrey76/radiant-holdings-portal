@@ -126,10 +126,10 @@ export default function AutomationMonitor() {
   };
 
   const getStatusBadge = (success: boolean | null | string) => {
-    if (success === true || success === "success") {
+    if (success === true || success === "success" || success === "published") {
       return <Badge className="bg-green-500/20 text-green-400"><CheckCircle className="w-3 h-3 mr-1" />Success</Badge>;
     }
-    if (success === false || success === "error") {
+    if (success === false || success === "error" || success === "failed") {
       return <Badge variant="destructive"><XCircle className="w-3 h-3 mr-1" />Failed</Badge>;
     }
     return <Badge variant="secondary"><Clock className="w-3 h-3 mr-1" />Pending</Badge>;
@@ -139,7 +139,7 @@ export default function AutomationMonitor() {
   const xPostsToday = xPosts.filter(p => 
     p.created_at && new Date(p.created_at).toDateString() === new Date().toDateString()
   ).length;
-  const xPostsSuccess = xPosts.filter(p => p.status === 'success').length;
+  const xPostsSuccess = xPosts.filter(p => p.status === 'published' || p.status === 'success').length;
   const bitcoinUpdatesToday = bitcoinUpdates.filter(u =>
     new Date(u.update_timestamp).toDateString() === new Date().toDateString()
   ).length;
@@ -266,7 +266,7 @@ export default function AutomationMonitor() {
                         <TableCell className="max-w-md truncate">
                           {post.content?.substring(0, 100)}...
                         </TableCell>
-                        <TableCell>{getStatusBadge(post.status === 'success')}</TableCell>
+                        <TableCell>{getStatusBadge(post.status)}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
