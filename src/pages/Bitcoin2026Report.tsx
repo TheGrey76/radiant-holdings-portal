@@ -72,12 +72,29 @@ const Bitcoin2026Report = () => {
   const { data: bitcoinData, loading: bitcoinLoading } = useBitcoinReportData();
   const { data: twelveData, isLoading: twelveLoading, error: twelveError } = useTwelveDataBtc();
 
+  // Admin emails with permanent access (bypass all checks)
+  const ADMIN_EMAILS = ["edoardo.grigione@aries76.com"];
+
   // Check if user has access via unified page_access table
   useEffect(() => {
     const checkAccess = async () => {
       try {
         const { data: { user } } = await supabase.auth.getUser();
         const userEmail = user?.email || localStorage.getItem("bitcoin_report_email");
+
+        // Check admin list first (from user session or localStorage)
+        if (userEmail && ADMIN_EMAILS.some(admin => admin.toLowerCase() === userEmail.toLowerCase())) {
+          setHasAccess(true);
+          setAccessChecking(false);
+          return;
+        }
+
+        // If logged in as admin user, grant access
+        if (user?.email && ADMIN_EMAILS.some(admin => admin.toLowerCase() === user.email?.toLowerCase())) {
+          setHasAccess(true);
+          setAccessChecking(false);
+          return;
+        }
 
         if (!userEmail) {
           setHasAccess(false);
