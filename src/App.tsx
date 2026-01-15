@@ -77,6 +77,7 @@ import ReportDetailPage from "./pages/ReportDetailPage";
 import ResearchHubAdmin from "./pages/ResearchHubAdmin";
 import BitcoinFunnelDashboard from "./pages/BitcoinFunnelDashboard";
 import ETFCertificatesPortfolio from "./pages/ETFCertificatesPortfolio";
+import AutomationMonitor from "./pages/AutomationMonitor";
 
 const queryClient = new QueryClient();
 
@@ -115,8 +116,9 @@ const App = () => (
           <Route path="/admin/newsletter" element={<NewsletterComposer />} />
           
           <Route path="/admin/cross-posting" element={<CrossPostingAssistant />} />
-            <Route path="/admin/insights" element={<InsightsAdmin />} />
-            <Route path="/admin/research-hub" element={<ResearchHubAdmin />} />
+          <Route path="/admin/insights" element={<InsightsAdmin />} />
+          <Route path="/admin/research-hub" element={<ResearchHubAdmin />} />
+          <Route path="/admin/automations" element={<AutomationMonitor />} />
           <Route path="/financial-advisers" element={<FinancialAdvisersPortal />} />
           
           <Route path="/vettafi-access" element={<Navigate to="/vettafi-proposal" replace />} />
