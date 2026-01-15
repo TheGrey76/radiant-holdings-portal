@@ -80,20 +80,32 @@ const Bitcoin2026Report = () => {
     const checkAccess = async () => {
       try {
         const { data: { user } } = await supabase.auth.getUser();
-        const userEmail = user?.email || localStorage.getItem("bitcoin_report_email");
+        const storedEmail = localStorage.getItem("bitcoin_report_email");
+        const userEmail = user?.email || storedEmail;
 
-        // Check admin list first (from user session or localStorage)
+        // Check admin list first - grant immediate access
         if (userEmail && ADMIN_EMAILS.some(admin => admin.toLowerCase() === userEmail.toLowerCase())) {
           setHasAccess(true);
           setAccessChecking(false);
           return;
         }
 
-        // If logged in as admin user, grant access
-        if (user?.email && ADMIN_EMAILS.some(admin => admin.toLowerCase() === user.email?.toLowerCase())) {
-          setHasAccess(true);
-          setAccessChecking(false);
-          return;
+        // Try to get email from URL params (for returning from Stripe checkout)
+        const urlParams = new URLSearchParams(window.location.search);
+        const successParam = urlParams.get('success');
+        
+        // If success=true from Stripe, check localStorage email
+        if (successParam === 'true' && storedEmail) {
+          // Verify access via Edge Function
+          const { data, error } = await supabase.functions.invoke("check-page-access", {
+            body: { email: storedEmail, page_slug: "bitcoin-2026-report" },
+          });
+          
+          if (!error && data?.hasAccess === true) {
+            setHasAccess(true);
+            setAccessChecking(false);
+            return;
+          }
         }
 
         if (!userEmail) {
