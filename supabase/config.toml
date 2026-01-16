@@ -105,3 +105,9 @@ verify_jwt = false
 [functions.x-auto-post]
 verify_jwt = false
 
+[functions.admin-list-page-access]
+verify_jwt = false
+
+[functions.send-advisory-link]
+verify_jwt = false
+
