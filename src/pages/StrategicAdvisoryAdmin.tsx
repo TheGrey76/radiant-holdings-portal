@@ -137,11 +137,15 @@ export default function StrategicAdvisoryAdmin() {
 
   const fetchAccessList = async (docSlug: string) => {
     const pageSlug = `advisory/${docSlug}`;
+    console.log('Fetching access for page_slug:', pageSlug);
+    
     const { data, error } = await supabase
       .from('page_access')
       .select('*')
       .eq('page_slug', pageSlug)
       .order('created_at', { ascending: false });
+
+    console.log('Access list result:', { data, error });
 
     if (error) {
       console.error("Error fetching access list:", error);
