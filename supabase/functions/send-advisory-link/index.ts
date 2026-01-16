@@ -59,7 +59,7 @@ serve(async (req) => {
     for (const email of emails) {
       try {
         await resend.emails.send({
-          from: "Aries76 Advisory <advisory@aries76.com>",
+          from: "Aries76 Advisory <onboarding@resend.dev>",
           to: [email],
           subject: `Documento disponibile: ${document_title}`,
           html: `
