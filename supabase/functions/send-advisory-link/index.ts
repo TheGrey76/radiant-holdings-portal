@@ -59,7 +59,6 @@ serve(async (req) => {
     for (const email of emails) {
       try {
         const emailResponse = await resend.emails.send({
-          // NOTE: use your verified domain on Resend
           from: "Aries76 Advisory <advisory@aries76.com>",
           to: [email],
           reply_to: "advisory@aries76.com",
@@ -115,7 +114,15 @@ serve(async (req) => {
         });
 
         console.log("Resend response:", { to: email, emailResponse });
-        results.successful++;
+        
+        // Check if Resend returned an error in the response
+        if (emailResponse?.error) {
+          console.error("Resend API error:", { to: email, error: emailResponse.error });
+          results.failed++;
+          results.errors.push(`${email}: ${emailResponse.error.message || 'Unknown error'}`);
+        } else {
+          results.successful++;
+        }
       } catch (emailError: any) {
         console.error("Resend error:", { to: email, message: emailError?.message, emailError });
         results.failed++;
