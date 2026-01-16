@@ -137,18 +137,28 @@ export default function StrategicAdvisoryAdmin() {
 
   const fetchAccessList = async (docSlug: string) => {
     const pageSlug = `advisory/${docSlug}`;
-    console.log('Fetching access for page_slug:', pageSlug);
-    
+
+    // Prefer Edge Function (service role) to avoid RLS/UI inconsistencies
+    const { data: fnData, error: fnError } = await supabase.functions.invoke(
+      'admin-list-page-access',
+      { body: { page_slug: pageSlug } }
+    );
+
+    if (!fnError && fnData?.data) {
+      setAccessList(fnData.data);
+      return;
+    }
+
+    // Fallback: direct table query
     const { data, error } = await supabase
       .from('page_access')
       .select('*')
       .eq('page_slug', pageSlug)
       .order('created_at', { ascending: false });
 
-    console.log('Access list result:', { data, error });
-
     if (error) {
       console.error("Error fetching access list:", error);
+      toast.error("Errore nel caricamento accessi");
       return;
     }
 
