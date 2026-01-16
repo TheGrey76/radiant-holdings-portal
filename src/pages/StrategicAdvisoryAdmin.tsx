@@ -657,13 +657,11 @@ export default function StrategicAdvisoryAdmin() {
                         <p className="text-sm text-muted-foreground">
                           Gestisci gli utenti che possono accedere a questo documento
                         </p>
+                        <Button size="sm" onClick={() => setIsAddAccessOpen(true)}>
+                          <Plus className="h-4 w-4 mr-1" />
+                          Aggiungi Accesso
+                        </Button>
                         <Dialog open={isAddAccessOpen} onOpenChange={setIsAddAccessOpen}>
-                          <DialogTrigger asChild>
-                            <Button size="sm">
-                              <Plus className="h-4 w-4 mr-1" />
-                              Aggiungi Accesso
-                            </Button>
-                          </DialogTrigger>
                           <DialogContent>
                             <DialogHeader>
                               <DialogTitle>Aggiungi Accesso</DialogTitle>
