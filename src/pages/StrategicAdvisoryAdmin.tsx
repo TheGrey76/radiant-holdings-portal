@@ -591,30 +591,31 @@ export default function StrategicAdvisoryAdmin() {
                           Carica un file .docx per importare e formattare automaticamente il contenuto
                         </p>
                         <div className="flex justify-center gap-2">
-                          <label className="cursor-pointer">
-                            <input
-                              type="file"
-                              accept=".docx,.doc"
-                              className="hidden"
-                              onChange={handleFileUpload}
-                              disabled={uploading}
-                            />
-                            <Button variant="default" disabled={uploading} asChild>
-                              <span>
-                                {uploading ? (
-                                  <>
-                                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
-                                    Elaborazione...
-                                  </>
-                                ) : (
-                                  <>
-                                    <FileUp className="h-4 w-4 mr-2" />
-                                    Seleziona File
-                                  </>
-                                )}
-                              </span>
-                            </Button>
-                          </label>
+                          <input
+                            id="word-file-upload"
+                            type="file"
+                            accept=".docx,.doc"
+                            className="hidden"
+                            onChange={handleFileUpload}
+                            disabled={uploading}
+                          />
+                          <Button
+                            variant="default"
+                            disabled={uploading}
+                            onClick={() => document.getElementById('word-file-upload')?.click()}
+                          >
+                            {uploading ? (
+                              <>
+                                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+                                Elaborazione...
+                              </>
+                            ) : (
+                              <>
+                                <FileUp className="h-4 w-4 mr-2" />
+                                Seleziona File
+                              </>
+                            )}
+                          </Button>
                         </div>
                       </div>
 
