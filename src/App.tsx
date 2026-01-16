@@ -78,6 +78,8 @@ import ResearchHubAdmin from "./pages/ResearchHubAdmin";
 import BitcoinFunnelDashboard from "./pages/BitcoinFunnelDashboard";
 import ETFCertificatesPortfolio from "./pages/ETFCertificatesPortfolio";
 import AutomationMonitor from "./pages/AutomationMonitor";
+import StrategicAdvisoryAdmin from "./pages/StrategicAdvisoryAdmin";
+import AdvisoryDocument from "./pages/AdvisoryDocument";
 
 const queryClient = new QueryClient();
 

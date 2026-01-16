@@ -299,7 +299,7 @@ const AdvisoryDocument = () => {
 
           {/* Content Sections */}
           <AdvisoryDocumentRenderer 
-            content={Array.isArray(document.content) ? document.content : []} 
+            content={Array.isArray(document.content) ? document.content as any[] : []} 
           />
 
           {/* Footer */}
