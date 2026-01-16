@@ -298,12 +298,19 @@ export default function StrategicAdvisoryAdmin() {
     }
 
     const file = event.target.files[0];
+
+    // Some browsers (and some OS setups) report .docx as application/octet-stream.
+    // Prefer extension-based validation to avoid false negatives.
+    const fileNameLower = file.name.toLowerCase();
+    const hasValidExtension = fileNameLower.endsWith('.docx') || fileNameLower.endsWith('.doc');
+
     const allowedTypes = [
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
       'application/msword',
+      'application/octet-stream',
     ];
 
-    if (!allowedTypes.includes(file.type)) {
+    if (!hasValidExtension && !allowedTypes.includes(file.type)) {
       toast.error("Formato non supportato. Usa file .docx o .doc");
       return;
     }
