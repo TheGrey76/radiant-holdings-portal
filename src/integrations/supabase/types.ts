@@ -2534,6 +2534,51 @@ export type Database = {
         }
         Relationships: []
       }
+      strategic_advisory_documents: {
+        Row: {
+          client_name: string
+          content: Json
+          cover_image_url: string | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          document_date: string
+          id: string
+          slug: string
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          client_name: string
+          content?: Json
+          cover_image_url?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          document_date?: string
+          id?: string
+          slug: string
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          client_name?: string
+          content?: Json
+          cover_image_url?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          document_date?: string
+          id?: string
+          slug?: string
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       telegram_publication_logs: {
         Row: {
           created_at: string
