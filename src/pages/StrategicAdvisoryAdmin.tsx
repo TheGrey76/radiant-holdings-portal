@@ -26,7 +26,8 @@ import {
   FileUp,
   ExternalLink,
   Copy,
-  Calendar
+  Calendar,
+  Mail
 } from "lucide-react";
 
 interface AdvisoryDocument {
@@ -667,14 +668,52 @@ export default function StrategicAdvisoryAdmin() {
                     </TabsContent>
 
                     <TabsContent value="access" className="space-y-4">
-                      <div className="flex justify-between items-center">
+                      <div className="flex justify-between items-center gap-2">
                         <p className="text-sm text-muted-foreground">
                           Gestisci gli utenti che possono accedere a questo documento
                         </p>
-                        <Button size="sm" onClick={() => setIsAddAccessOpen(true)}>
-                          <Plus className="h-4 w-4 mr-1" />
-                          Aggiungi Accesso
-                        </Button>
+                        <div className="flex gap-2">
+                          {accessList.length > 0 && (
+                            <Button 
+                              size="sm" 
+                              variant="outline"
+                              onClick={async () => {
+                                const emails = accessList.map(a => a.email);
+                                const pageSlug = `advisory/${selectedDocument.slug}`;
+                                
+                                toast.loading('Invio email in corso...');
+                                
+                                const { data, error } = await supabase.functions.invoke('send-advisory-link', {
+                                  body: {
+                                    page_slug: pageSlug,
+                                    document_title: selectedDocument.title,
+                                    emails
+                                  }
+                                });
+                                
+                                toast.dismiss();
+                                
+                                if (error) {
+                                  toast.error('Errore nell\'invio delle email');
+                                  console.error(error);
+                                  return;
+                                }
+                                
+                                const results = data?.results;
+                                if (results) {
+                                  toast.success(`Email inviate: ${results.successful} successo, ${results.failed} fallite`);
+                                }
+                              }}
+                            >
+                              <Mail className="h-4 w-4 mr-1" />
+                              Invia Link ({accessList.length})
+                            </Button>
+                          )}
+                          <Button size="sm" onClick={() => setIsAddAccessOpen(true)}>
+                            <Plus className="h-4 w-4 mr-1" />
+                            Aggiungi Accesso
+                          </Button>
+                        </div>
                         <Dialog open={isAddAccessOpen} onOpenChange={setIsAddAccessOpen}>
                           <DialogContent>
                             <DialogHeader>
