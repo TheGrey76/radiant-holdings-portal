@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import JSZip from "https://esm.sh/jszip@3.10.1";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -41,7 +42,7 @@ function parseDocxContent(xmlContent: string): DocumentSection[] {
     if (!textContent.trim()) continue;
     
     // Determine section type based on style
-    if (style?.includes('Heading') || style?.includes('Title')) {
+    if (style?.includes('Heading') || style?.includes('Title') || style?.includes('Titolo')) {
       const levelMatch = style.match(/(\d+)/);
       const level = levelMatch ? parseInt(levelMatch[1]) : 1;
       sections.push({
@@ -220,43 +221,36 @@ serve(async (req) => {
     if (downloadError || !fileData) {
       console.error('Download error:', downloadError);
       return new Response(
-        JSON.stringify({ error: 'Failed to download file' }),
+        JSON.stringify({ error: 'Failed to download file', details: downloadError?.message }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
     // Read the file as array buffer
     const arrayBuffer = await fileData.arrayBuffer();
-    const uint8Array = new Uint8Array(arrayBuffer);
     
     let sections: DocumentSection[] = [];
     
-    // Check if it's a DOCX file (ZIP format with specific signature)
-    const isDocx = uint8Array[0] === 0x50 && uint8Array[1] === 0x4B;
-    
-    if (isDocx) {
-      // For DOCX, we need to extract the document.xml from the ZIP
-      // Using a simple approach to find and extract the main content
-      const textContent = new TextDecoder().decode(uint8Array);
+    try {
+      // Use JSZip to properly extract content from the DOCX (which is a ZIP archive)
+      const zip = await JSZip.loadAsync(arrayBuffer);
       
-      // Look for the document.xml content within the ZIP
-      const docXmlStart = textContent.indexOf('<w:document');
-      const docXmlEnd = textContent.indexOf('</w:document>');
+      // DOCX stores the main content in word/document.xml
+      const documentXml = await zip.file('word/document.xml')?.async('string');
       
-      if (docXmlStart !== -1 && docXmlEnd !== -1) {
-        const xmlContent = textContent.substring(docXmlStart, docXmlEnd + '</w:document>'.length);
-        sections = parseDocxContent(xmlContent);
+      if (documentXml) {
+        console.log('Successfully extracted document.xml from DOCX');
+        sections = parseDocxContent(documentXml);
       } else {
-        // Fallback: extract any readable text
-        const cleanText = textContent
-          .replace(/[^\x20-\x7E\n\r]/g, ' ')
-          .replace(/\s+/g, ' ')
-          .trim();
-        sections = parseTextContent(cleanText);
+        console.log('No document.xml found, trying plain text extraction');
+        // Fallback: try to read as plain text
+        const textContent = new TextDecoder().decode(new Uint8Array(arrayBuffer));
+        sections = parseTextContent(textContent);
       }
-    } else {
-      // Plain text or RTF - parse as text
-      const textContent = new TextDecoder().decode(uint8Array);
+    } catch (zipError) {
+      console.log('ZIP extraction failed, trying plain text:', zipError);
+      // If ZIP extraction fails, try plain text
+      const textContent = new TextDecoder().decode(new Uint8Array(arrayBuffer));
       sections = parseTextContent(textContent);
     }
 
