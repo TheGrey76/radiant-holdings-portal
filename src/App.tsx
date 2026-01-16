@@ -119,6 +119,8 @@ const App = () => (
           <Route path="/admin/insights" element={<InsightsAdmin />} />
           <Route path="/admin/research-hub" element={<ResearchHubAdmin />} />
           <Route path="/admin/automations" element={<AutomationMonitor />} />
+          <Route path="/admin/strategic-advisory" element={<StrategicAdvisoryAdmin />} />
+          <Route path="/advisory/:slug" element={<AdvisoryDocument />} />
           <Route path="/financial-advisers" element={<FinancialAdvisersPortal />} />
           
           <Route path="/vettafi-access" element={<Navigate to="/vettafi-proposal" replace />} />
