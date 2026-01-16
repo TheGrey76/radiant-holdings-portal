@@ -60,7 +60,7 @@ const AdvisoryDocument = () => {
       const { data, error } = await supabase.functions.invoke('check-page-access', {
         body: { 
           email: email.toLowerCase().trim(),
-          pageSlug: `advisory/${slug}`,
+          page_slug: `advisory/${slug}`,
         },
       });
 
