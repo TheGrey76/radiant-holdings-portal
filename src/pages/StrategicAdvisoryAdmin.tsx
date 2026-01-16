@@ -319,7 +319,14 @@ export default function StrategicAdvisoryAdmin() {
 
     try {
       // Upload file to storage
-      const fileName = `${selectedDocument.slug}/${Date.now()}_${file.name}`;
+      // Supabase Storage object keys must be URL-safe; Word filenames often contain unicode dashes/spaces.
+      const safeOriginalName = file.name
+        .normalize('NFKD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-zA-Z0-9._-]+/g, '_')
+        .replace(/_+/g, '_');
+
+      const fileName = `${selectedDocument.slug}/${Date.now()}_${safeOriginalName}`;
       const { error: uploadError } = await supabase.storage
         .from('advisory-assets')
         .upload(fileName, file);
