@@ -15,43 +15,55 @@ interface ContentItem {
   hashtags: string[];
 }
 
-// Bitcoin-focused content templates - more engaging, detailed content
+// Bitcoin-focused content templates - engaging, provocative, viral
 const bitcoinTemplates = [
-  "📊 Bitcoin Market Update\n\nBTC continues to demonstrate resilience in the current macro environment.\n\nKey observations:\n• Institutional accumulation accelerating\n• Hash rate at all-time highs\n• On-chain metrics show strong holder conviction\n\nThe digital gold thesis strengthens daily.",
-  "⚡ Bitcoin Adoption Alert\n\nMore corporations are adding BTC to their treasury reserves.\n\nWhy it matters:\n• Inflation hedge for corporate balance sheets\n• Store of value in uncertain times\n• Network effects compound over time\n\nWall Street is finally paying attention.",
-  "🔗 On-Chain Intelligence\n\nLong-term holder accumulation patterns signal confidence.\n\nWhat smart money sees:\n• Supply shock potential\n• Declining exchange reserves\n• Whale addresses growing\n\nThe data tells the story before price does.",
-  "💡 Bitcoin's Monetary Revolution\n\n21 million cap. Halving every 4 years. No CEO.\n\nIn a world of infinite money printing:\n• Scarcity becomes invaluable\n• Hard money wins long-term\n• Code is law\n\nMathematical certainty vs. political promises.",
-  "📈 Institutional BTC Flows\n\nETF inflows continue their positive trajectory.\n\nMarket dynamics shifting:\n• Traditional finance embracing crypto\n• Regulatory clarity improving\n• Infrastructure maturing rapidly\n\nA new era for Bitcoin as an asset class.",
-  "🌐 Network Security Update\n\nBitcoin hashrate reaches new ATH.\n\nWhat this means:\n• Most secure network in history\n• Miners betting on future value\n• Decentralization strengthening\n\nSecurity = Value. The math doesn't lie.",
-  "🏦 Central Banks vs Bitcoin\n\nCBDCs are coming. But they're not Bitcoin.\n\nKey differences:\n• Centralized vs decentralized\n• Surveillance vs privacy\n• Inflationary vs deflationary\n\nThe monetary revolution is permissionless.",
-  "🎯 Bitcoin Price Levels\n\nKey technical zones to monitor:\n\n• Support holding strong\n• Resistance zones being tested\n• Volume confirming moves\n\nPatience is the ultimate edge in this market.",
+  "Unpopular opinion:\n\nBitcoin at $100K isn't expensive.\n\nIt's still early.\n\nHere's why most people will realize this too late 🧵",
+  "I studied 100+ billionaire portfolios.\n\nEvery single one now holds Bitcoin.\n\nThis wasn't true 3 years ago.\n\nThe wealth transfer is happening. Are you positioned?",
+  "2025: \"Bitcoin is too volatile\"\n2030: \"I wish I bought at $100K\"\n\nThis pattern has repeated every cycle.\n\nDon't be the person who waits for \"confirmation.\"",
+  "BlackRock didn't build a Bitcoin ETF for fun.\n\nThey built it because their clients demanded it.\n\nWhen the smartest money in the room speaks, you listen.",
+  "Hot take:\n\nBitcoin isn't an investment anymore.\n\nIt's a savings technology.\n\nThe difference? Investments can fail. Sound money can't.",
+  "Everyone wants Bitcoin's returns.\n\nNo one wants Bitcoin's volatility.\n\nBut you can't have one without the other.\n\nThis is the cost of admission.",
+  "Your bank pays 4% interest.\n\nInflation runs at 7%.\n\nYou're losing 3% a year by \"being safe.\"\n\nBitcoin holders know this game is rigged.",
+  "The average Bitcoin holder has outperformed:\n\n• 99% of hedge funds\n• Every fiat currency\n• Most real estate markets\n\nBy simply... holding.\n\nTime preference matters.",
+  "Central banks printed $10T in 3 years.\n\nBitcoin printed exactly 0 new coins.\n\n21 million. Forever.\n\nMathematics beats politics.",
+  "MicroStrategy's playbook:\n\n1. Buy Bitcoin\n2. Hold Bitcoin\n3. Repeat\n\nStock up 1,000%+ in 4 years.\n\nSometimes the simple strategy wins.",
+  "\"Bitcoin has no intrinsic value\"\n\n- Same people who think the dollar does\n\nThe dollar lost 96% of its value since 1913.\n\nBitcoin gained 1,000,000%+ in 15 years.",
+  "Generational wealth isn't built by following the crowd.\n\nIt's built by understanding what the crowd will want next.\n\nEvery institution now wants Bitcoin.\n\nWhat does that tell you?",
 ];
 
-// AI-focused content templates  
+// AI-focused content templates - thought-provoking
 const aiTemplates = [
-  "🤖 AI Transforms Finance\n\nMachine learning is revolutionizing how we analyze markets.\n\nImpact areas:\n• Pattern recognition at scale\n• Real-time risk assessment\n• Predictive modeling\n\nThe future of analysis is AI-augmented.",
-  "🧠 AI + Blockchain Convergence\n\nTwo transformative technologies merging.\n\nOpportunities emerging:\n• Automated trading strategies\n• Smart contract optimization\n• Decentralized AI models\n\nThe intersection creates new possibilities.",
-  "💻 LLMs in Finance\n\nLarge Language Models are changing research.\n\nUse cases expanding:\n• Document analysis at scale\n• Market sentiment processing\n• Automated report generation\n\nEveryone gets a personal analyst now.",
-  "🔮 Predictive Analytics\n\nAI identifies patterns invisible to humans.\n\nAdvantages:\n• Process millions of data points\n• Remove emotional bias\n• 24/7 market monitoring\n\nData-driven decisions outperform intuition.",
-  "⚙️ AI Automation in Capital Markets\n\nFrom execution to compliance, AI leads.\n\nTransformation areas:\n• Trade execution optimization\n• Regulatory compliance automation\n• Risk management enhancement\n\nEfficiency meets intelligence.",
-  "🎯 Machine Learning for Regime Detection\n\nAI helps navigate changing markets.\n\nCapabilities:\n• Identify market regime shifts\n• Adapt strategies dynamically\n• Reduce drawdown risk\n\nPrecision meets adaptability.",
+  "AI won't replace you.\n\nBut someone using AI will.\n\nThis is the skill gap of our generation.\n\nAre you on the right side of it?",
+  "Every job posting in 2025:\n\n\"AI experience preferred\"\n\nEvery job posting in 2030:\n\n\"AI experience required\"\n\nThe window to adapt is now.",
+  "ChatGPT hit 100M users in 2 months.\n\nFacebook took 4.5 years.\n\nInstagram took 2.5 years.\n\nWe're witnessing the fastest technology adoption in human history.",
+  "Unpopular opinion:\n\nAI won't destroy jobs.\n\nIt will destroy job descriptions.\n\nEvery role is being rewritten. Adapt or become obsolete.",
+  "I automated 40 hours of weekly tasks to 4 hours.\n\nNo one taught me this.\n\nI just started experimenting.\n\nCuriosity is the most valuable skill in the AI era.",
+  "The AI revolution isn't coming.\n\nIt arrived in November 2022.\n\nMost people are still in denial.\n\nEarly adopters are already 10x more productive.",
+  "In 5 years, there will be two types of companies:\n\n1. AI-native companies\n2. Dead companies\n\nDigital transformation is no longer optional.",
+  "AI is the new electricity.\n\nIn 1900, factories resisted electricity.\n\nIn 2025, companies resist AI.\n\nHistory rhymes for those paying attention.",
+  "The question isn't IF AI will transform your industry.\n\nIt's WHEN and HOW FAST.\n\nFirst movers win. Fast followers survive. The rest disappear.",
+  "Hot take:\n\nLearning to prompt AI well is more valuable than learning to code.\n\nCode is becoming a commodity.\n\nThinking is becoming premium.",
 ];
 
-// Tech-focused content templates
+// Tech & Finance content templates - engaging insights
 const techTemplates = [
-  "🚀 Digital Infrastructure Boom\n\nEnterprises embrace cloud-native architectures.\n\nKey trends:\n• Edge computing expansion\n• Hybrid cloud adoption\n• API-first strategies\n\nDigital transformation accelerates.",
-  "🔐 Cybersecurity Imperative\n\nAs digital footprints expand, so do threats.\n\nPriorities:\n• Zero-trust architecture\n• AI-powered threat detection\n• Security-first culture\n\nProtection is the new competitive advantage.",
-  "📡 5G + IoT Convergence\n\nConnected devices reshape industries.\n\nImpact areas:\n• Smart manufacturing\n• Autonomous systems\n• Real-time analytics\n\nEverything that can be connected, will be.",
-  "💾 Data as Strategic Asset\n\nData is the new oil. AI is the refinery.\n\nWinning formula:\n• Collect strategically\n• Process intelligently\n• Act decisively\n\nCompetitive advantage flows from data mastery.",
-  "🌍 Fintech Bridges Gaps\n\nTechnology enables global financial access.\n\nBreakthroughs:\n• Borderless payments\n• Democratized investing\n• Financial inclusion\n\nBanking the unbanked becomes reality.",
-  "⚡ Quantum Computing Advances\n\nThe next computing revolution approaches.\n\nImplications:\n• Cryptography transformation\n• Optimization breakthroughs\n• Scientific acceleration\n\nPrepare for the quantum era.",
+  "Silicon Valley secret:\n\nThe best founders aren't the smartest.\n\nThey're the most resilient.\n\n90% of success is surviving long enough to get lucky.",
+  "Every major tech company started with skeptics:\n\n\"Email will never replace fax\"\n\"Nobody needs a smartphone\"\n\"Crypto is a scam\"\n\nSkepticism is the early warning sign of opportunity.",
+  "The best investment I ever made:\n\nLearning how technology actually works.\n\nTech literacy isn't optional anymore. It's survival.",
+  "VC insight:\n\nThe best pitches aren't about technology.\n\nThey're about the problem being solved.\n\nTechnology is just the tool. Customer pain is the opportunity.",
+  "In 10 years, every company will be a tech company.\n\nNot because they want to be.\n\nBecause they have to be.\n\nDigitize or die.",
+  "The companies winning in 2025:\n\n• AI-first operations\n• Data-driven decisions\n• Remote-friendly culture\n\nThe playbook has changed. Have you?",
+  "Fintech is eating traditional banking.\n\nNot because it's better.\n\nBecause it's 10x faster and 10x cheaper.\n\nSpeed and cost always win eventually.",
+  "The new status symbols:\n\n• Time freedom\n• Location independence\n• Skill optionality\n\nNot fancy cars. Not big houses.\n\nFlexibility is the new wealth.",
+  "Most people overestimate what they can do in 1 year.\n\nAnd underestimate what they can do in 10.\n\nCompounding works for skills too, not just money.",
+  "Contrarian take:\n\nThe best career move isn't following trends.\n\nIt's mastering fundamentals that never change.\n\nTrends fade. Principles compound.",
 ];
 
-// More hashtags for better reach - targeting 10k followers
+// Engaging hashtags - mix of reach and niche
 const hashtags = {
-  bitcoin: ["#Bitcoin", "#BTC", "#Crypto", "#DigitalGold", "#HODL", "#Blockchain", "#Web3", "#DeFi", "#CryptoTwitter", "#BitcoinNews", "#CryptoInvesting", "#Satoshi"],
-  ai: ["#AI", "#MachineLearning", "#ArtificialIntelligence", "#DeepLearning", "#DataScience", "#Tech", "#ChatGPT", "#GenerativeAI", "#AINews", "#TechTwitter", "#Innovation", "#FutureOfWork"],
-  tech: ["#Tech", "#Innovation", "#DigitalTransformation", "#Fintech", "#Startup", "#Future", "#Technology", "#CloudComputing", "#Cybersecurity", "#IoT", "#TechNews", "#Entrepreneurship"],
+  bitcoin: ["#Bitcoin", "#BTC", "#Crypto", "#DigitalGold", "#CryptoTwitter", "#Web3", "#Blockchain", "#HODL", "#BitcoinNews", "#WealthBuilding", "#FinancialFreedom", "#Investing"],
+  ai: ["#AI", "#ChatGPT", "#ArtificialIntelligence", "#FutureOfWork", "#Productivity", "#TechTwitter", "#MachineLearning", "#Innovation", "#Automation", "#CareerGrowth", "#DigitalTransformation", "#AITools"],
+  tech: ["#Tech", "#Startups", "#Fintech", "#Entrepreneurship", "#VentureCapital", "#Innovation", "#DigitalTransformation", "#Leadership", "#FutureOfWork", "#BusinessStrategy", "#TechCareers", "#Growth"],
 };
 
 function getRandomContent(): ContentItem {
