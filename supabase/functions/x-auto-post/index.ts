@@ -7,8 +7,8 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Aries76 branding image URL
-const ARIES76_IMAGE_URL = 'https://aries76.lovable.app/aries76-x-card.png';
+// Aries76 branding image URL - Capital Intelligence
+const ARIES76_IMAGE_URL = 'https://www.aries76.com/aries76-x-card-new.png';
 
 interface ContentItem {
   type: 'bitcoin' | 'ai' | 'tech';
