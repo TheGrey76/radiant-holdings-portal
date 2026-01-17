@@ -7,8 +7,7 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Aries76 branding image URL - Capital Intelligence
-const ARIES76_IMAGE_URL = 'https://www.aries76.com/aries76-x-card-new.png';
+// No image - text only posts
 
 interface ContentItem {
   type: 'bitcoin' | 'ai' | 'tech';
@@ -147,62 +146,7 @@ function generateOAuthHeader(
   return `OAuth ${headerParts}`;
 }
 
-// Upload media to X using v1.1 API
-async function uploadMediaToX(
-  imageUrl: string,
-  apiKey: string,
-  apiSecret: string,
-  accessToken: string,
-  accessTokenSecret: string
-): Promise<{ success: boolean; mediaId?: string; error?: string }> {
-  try {
-    // Fetch the image
-    const imageResponse = await fetch(imageUrl);
-    if (!imageResponse.ok) {
-      return { success: false, error: `Failed to fetch image: ${imageResponse.status}` };
-    }
-    
-    const imageBuffer = await imageResponse.arrayBuffer();
-    const base64Image = btoa(
-      new Uint8Array(imageBuffer).reduce((data, byte) => data + String.fromCharCode(byte), '')
-    );
-    
-    const uploadUrl = 'https://upload.twitter.com/1.1/media/upload.json';
-    
-    const authHeader = generateOAuthHeader(
-      'POST',
-      uploadUrl,
-      apiKey,
-      apiSecret,
-      accessToken,
-      accessTokenSecret
-    );
-    
-    const formData = new FormData();
-    formData.append('media_data', base64Image);
-    
-    const response = await fetch(uploadUrl, {
-      method: 'POST',
-      headers: {
-        'Authorization': authHeader,
-      },
-      body: formData,
-    });
-    
-    const data = await response.json();
-    
-    if (!response.ok) {
-      console.error('Media upload error:', data);
-      return { success: false, error: data.errors?.[0]?.message || 'Failed to upload media' };
-    }
-    
-    console.log('Media uploaded successfully, media_id:', data.media_id_string);
-    return { success: true, mediaId: data.media_id_string };
-  } catch (error) {
-    console.error('Error uploading media:', error);
-    return { success: false, error: error.message };
-  }
-}
+// No media upload - text only
 
 async function postToX(text: string, mediaId?: string): Promise<{ success: boolean; tweetId?: string; error?: string }> {
   const apiKey = Deno.env.get('X_API_KEY');
@@ -295,25 +239,8 @@ serve(async (req) => {
     
     console.log(`Posting ${contentType} content to X:`, tweetText.substring(0, 50) + '...');
     
-    // Upload the Aries76 branding image
-    console.log('Uploading Aries76 branding image...');
-    const mediaUpload = await uploadMediaToX(
-      ARIES76_IMAGE_URL,
-      apiKey,
-      apiSecret,
-      accessToken,
-      accessTokenSecret
-    );
-    
-    let mediaId: string | undefined;
-    if (mediaUpload.success && mediaUpload.mediaId) {
-      mediaId = mediaUpload.mediaId;
-      console.log('Image uploaded, media_id:', mediaId);
-    } else {
-      console.warn('Failed to upload image, posting without media:', mediaUpload.error);
-    }
-    
-    const result = await postToX(tweetText, mediaId);
+    // Post text only - no image
+    const result = await postToX(tweetText);
     
     // Log the post to database
     const { error: logError } = await supabase
@@ -336,8 +263,7 @@ serve(async (req) => {
           success: true, 
           message: 'Posted to X successfully',
           tweetId: result.tweetId,
-          content: tweetText.substring(0, 100) + '...',
-          hasImage: !!mediaId
+          content: tweetText.substring(0, 100) + '...'
         }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
