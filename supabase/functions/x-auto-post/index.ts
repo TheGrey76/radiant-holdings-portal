@@ -16,43 +16,43 @@ interface ContentItem {
   hashtags: string[];
 }
 
-// Bitcoin-focused content templates
+// Bitcoin-focused content templates - more engaging, detailed content
 const bitcoinTemplates = [
-  "📊 Bitcoin Market Update: BTC continues to demonstrate resilience in the current macro environment. Key levels to watch for institutional positioning.",
-  "⚡ #Bitcoin adoption accelerates as more corporations add BTC to their treasury reserves. The digital gold narrative strengthens.",
-  "🔗 On-chain data shows strong accumulation patterns among long-term holders. Smart money positioning for the next leg up.",
-  "💡 Bitcoin's monetary policy remains unchanged: 21 million cap, halving every 4 years. In a world of infinite money printing, scarcity matters.",
-  "📈 Institutional BTC ETF flows continue positive trend. Wall Street's embrace of Bitcoin marks a new era for the asset class.",
-  "🌐 Bitcoin hashrate reaches new ATH, securing the network with unprecedented computational power. Security = Value.",
-  "🏦 Central banks worldwide exploring CBDCs while Bitcoin offers a decentralized alternative. The monetary revolution unfolds.",
+  "📊 Bitcoin Market Update\n\nBTC continues to demonstrate resilience in the current macro environment.\n\nKey observations:\n• Institutional accumulation accelerating\n• Hash rate at all-time highs\n• On-chain metrics show strong holder conviction\n\nThe digital gold thesis strengthens daily.",
+  "⚡ Bitcoin Adoption Alert\n\nMore corporations are adding BTC to their treasury reserves.\n\nWhy it matters:\n• Inflation hedge for corporate balance sheets\n• Store of value in uncertain times\n• Network effects compound over time\n\nWall Street is finally paying attention.",
+  "🔗 On-Chain Intelligence\n\nLong-term holder accumulation patterns signal confidence.\n\nWhat smart money sees:\n• Supply shock potential\n• Declining exchange reserves\n• Whale addresses growing\n\nThe data tells the story before price does.",
+  "💡 Bitcoin's Monetary Revolution\n\n21 million cap. Halving every 4 years. No CEO.\n\nIn a world of infinite money printing:\n• Scarcity becomes invaluable\n• Hard money wins long-term\n• Code is law\n\nMathematical certainty vs. political promises.",
+  "📈 Institutional BTC Flows\n\nETF inflows continue their positive trajectory.\n\nMarket dynamics shifting:\n• Traditional finance embracing crypto\n• Regulatory clarity improving\n• Infrastructure maturing rapidly\n\nA new era for Bitcoin as an asset class.",
+  "🌐 Network Security Update\n\nBitcoin hashrate reaches new ATH.\n\nWhat this means:\n• Most secure network in history\n• Miners betting on future value\n• Decentralization strengthening\n\nSecurity = Value. The math doesn't lie.",
+  "🏦 Central Banks vs Bitcoin\n\nCBDCs are coming. But they're not Bitcoin.\n\nKey differences:\n• Centralized vs decentralized\n• Surveillance vs privacy\n• Inflationary vs deflationary\n\nThe monetary revolution is permissionless.",
+  "🎯 Bitcoin Price Levels\n\nKey technical zones to monitor:\n\n• Support holding strong\n• Resistance zones being tested\n• Volume confirming moves\n\nPatience is the ultimate edge in this market.",
 ];
 
 // AI-focused content templates  
 const aiTemplates = [
-  "🤖 AI is transforming financial analysis. Machine learning models now process market data at unprecedented scale and speed.",
-  "🧠 The intersection of AI and blockchain creates new possibilities for automated trading, risk management, and portfolio optimization.",
-  "💻 Large Language Models are revolutionizing how we consume and analyze financial information. The future of research is AI-augmented.",
-  "🔮 Predictive analytics powered by AI helps institutional investors identify patterns invisible to human analysis.",
-  "⚙️ AI-driven automation is reshaping capital markets. From execution to compliance, intelligent systems lead the transformation.",
-  "📱 Conversational AI is democratizing access to sophisticated financial analysis. Everyone gets a personal analyst.",
-  "🎯 Machine learning models for regime detection help investors navigate changing market conditions with data-driven precision.",
+  "🤖 AI Transforms Finance\n\nMachine learning is revolutionizing how we analyze markets.\n\nImpact areas:\n• Pattern recognition at scale\n• Real-time risk assessment\n• Predictive modeling\n\nThe future of analysis is AI-augmented.",
+  "🧠 AI + Blockchain Convergence\n\nTwo transformative technologies merging.\n\nOpportunities emerging:\n• Automated trading strategies\n• Smart contract optimization\n• Decentralized AI models\n\nThe intersection creates new possibilities.",
+  "💻 LLMs in Finance\n\nLarge Language Models are changing research.\n\nUse cases expanding:\n• Document analysis at scale\n• Market sentiment processing\n• Automated report generation\n\nEveryone gets a personal analyst now.",
+  "🔮 Predictive Analytics\n\nAI identifies patterns invisible to humans.\n\nAdvantages:\n• Process millions of data points\n• Remove emotional bias\n• 24/7 market monitoring\n\nData-driven decisions outperform intuition.",
+  "⚙️ AI Automation in Capital Markets\n\nFrom execution to compliance, AI leads.\n\nTransformation areas:\n• Trade execution optimization\n• Regulatory compliance automation\n• Risk management enhancement\n\nEfficiency meets intelligence.",
+  "🎯 Machine Learning for Regime Detection\n\nAI helps navigate changing markets.\n\nCapabilities:\n• Identify market regime shifts\n• Adapt strategies dynamically\n• Reduce drawdown risk\n\nPrecision meets adaptability.",
 ];
 
 // Tech-focused content templates
 const techTemplates = [
-  "🚀 Digital infrastructure investment accelerates as enterprises embrace cloud-native architectures and edge computing.",
-  "🔐 Cybersecurity becomes mission-critical as digital transformation expands attack surfaces. Security-first mindset essential.",
-  "📡 5G and IoT convergence unlocks new use cases across industries. Connected devices reshape how we live and work.",
-  "💾 Data is the new oil, but AI is the refinery. Companies that master both gain competitive advantage.",
-  "🌍 Tech enables global access to financial services. Fintech bridges gaps that traditional banking left open.",
-  "⚡ Quantum computing advances promise to revolutionize cryptography, optimization, and scientific simulation.",
-  "🔄 DevOps and continuous delivery accelerate innovation cycles. Ship fast, iterate faster, scale globally.",
+  "🚀 Digital Infrastructure Boom\n\nEnterprises embrace cloud-native architectures.\n\nKey trends:\n• Edge computing expansion\n• Hybrid cloud adoption\n• API-first strategies\n\nDigital transformation accelerates.",
+  "🔐 Cybersecurity Imperative\n\nAs digital footprints expand, so do threats.\n\nPriorities:\n• Zero-trust architecture\n• AI-powered threat detection\n• Security-first culture\n\nProtection is the new competitive advantage.",
+  "📡 5G + IoT Convergence\n\nConnected devices reshape industries.\n\nImpact areas:\n• Smart manufacturing\n• Autonomous systems\n• Real-time analytics\n\nEverything that can be connected, will be.",
+  "💾 Data as Strategic Asset\n\nData is the new oil. AI is the refinery.\n\nWinning formula:\n• Collect strategically\n• Process intelligently\n• Act decisively\n\nCompetitive advantage flows from data mastery.",
+  "🌍 Fintech Bridges Gaps\n\nTechnology enables global financial access.\n\nBreakthroughs:\n• Borderless payments\n• Democratized investing\n• Financial inclusion\n\nBanking the unbanked becomes reality.",
+  "⚡ Quantum Computing Advances\n\nThe next computing revolution approaches.\n\nImplications:\n• Cryptography transformation\n• Optimization breakthroughs\n• Scientific acceleration\n\nPrepare for the quantum era.",
 ];
 
+// More hashtags for better reach - targeting 10k followers
 const hashtags = {
-  bitcoin: ["#Bitcoin", "#BTC", "#Crypto", "#DigitalGold", "#HODL", "#Blockchain"],
-  ai: ["#AI", "#MachineLearning", "#ArtificialIntelligence", "#DeepLearning", "#DataScience", "#Tech"],
-  tech: ["#Tech", "#Innovation", "#DigitalTransformation", "#Fintech", "#Startup", "#Future"],
+  bitcoin: ["#Bitcoin", "#BTC", "#Crypto", "#DigitalGold", "#HODL", "#Blockchain", "#Web3", "#DeFi", "#CryptoTwitter", "#BitcoinNews", "#CryptoInvesting", "#Satoshi"],
+  ai: ["#AI", "#MachineLearning", "#ArtificialIntelligence", "#DeepLearning", "#DataScience", "#Tech", "#ChatGPT", "#GenerativeAI", "#AINews", "#TechTwitter", "#Innovation", "#FutureOfWork"],
+  tech: ["#Tech", "#Innovation", "#DigitalTransformation", "#Fintech", "#Startup", "#Future", "#Technology", "#CloudComputing", "#Cybersecurity", "#IoT", "#TechNews", "#Entrepreneurship"],
 };
 
 function getRandomContent(): ContentItem {
@@ -73,7 +73,9 @@ function getRandomContent(): ContentItem {
   }
   
   const content = templates[Math.floor(Math.random() * templates.length)];
-  const selectedHashtags = hashtags[type].slice(0, 3 + Math.floor(Math.random() * 2));
+  // Use 5-7 hashtags for better reach
+  const shuffledHashtags = [...hashtags[type]].sort(() => Math.random() - 0.5);
+  const selectedHashtags = shuffledHashtags.slice(0, 5 + Math.floor(Math.random() * 3));
   
   return { type, content, hashtags: selectedHashtags };
 }
