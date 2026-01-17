@@ -9,8 +9,66 @@ const corsHeaders = {
 const TELEGRAM_BOT_TOKEN = Deno.env.get('TELEGRAM_BOT_TOKEN');
 const CHANNEL_ID = '@aries76_bitcoin';
 // Banner URL - using the bitcoin OG image (works with Telegram)
-// To use the new banner, upload it to Supabase Storage bucket 'reports'
 const BANNER_URL = 'https://www.aries76.com/bitcoin-2026-og.png';
+
+// Fetch live prices from CoinGecko (reliable, no rate limits for basic use)
+async function fetchLiveCryptoPrices(): Promise<{
+  bitcoin: { usd: number; eur: number; change24h: number; marketCap: number };
+  ethereum: { usd: number; eur: number; change24h: number; marketCap: number };
+}> {
+  try {
+    console.log('Fetching live crypto prices from CoinGecko...');
+    const response = await fetch(
+      'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd,eur&include_24hr_change=true&include_market_cap=true'
+    );
+    
+    if (!response.ok) {
+      throw new Error(`CoinGecko API error: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    console.log('CoinGecko response:', JSON.stringify(data));
+    
+    return {
+      bitcoin: {
+        usd: data.bitcoin?.usd || 0,
+        eur: data.bitcoin?.eur || 0,
+        change24h: data.bitcoin?.usd_24h_change || 0,
+        marketCap: data.bitcoin?.usd_market_cap || 0,
+      },
+      ethereum: {
+        usd: data.ethereum?.usd || 0,
+        eur: data.ethereum?.eur || 0,
+        change24h: data.ethereum?.usd_24h_change || 0,
+        marketCap: data.ethereum?.usd_market_cap || 0,
+      },
+    };
+  } catch (error) {
+    console.error('Error fetching crypto prices:', error);
+    // Return fallback values
+    return {
+      bitcoin: { usd: 0, eur: 0, change24h: 0, marketCap: 0 },
+      ethereum: { usd: 0, eur: 0, change24h: 0, marketCap: 0 },
+    };
+  }
+}
+
+// Format price with commas
+function formatPrice(price: number, currency: string = '$'): string {
+  return `${currency}${price.toLocaleString('en-US', { maximumFractionDigits: 0 })}`;
+}
+
+// Format market cap in billions
+function formatMarketCap(marketCap: number): string {
+  const billions = marketCap / 1_000_000_000;
+  return `$${billions.toFixed(0)}B`;
+}
+
+// Format percentage
+function formatChange(change: number): string {
+  const sign = change >= 0 ? '+' : '';
+  return `${sign}${change.toFixed(2)}%`;
+}
 
 interface PublishRequest {
   action: 'publish' | 'schedule' | 'check-scheduled';
@@ -27,29 +85,40 @@ interface PublishRequest {
   scheduleTime?: string;
 }
 
-function generateBitcoinAnalysis(data: PublishRequest['data']) {
-  const {
-    price = '$94,000',
-    priceEur = '€86,500',
-    change24h = '-0.74%',
-    regime = 'ACCUMULATION',
-    regimeConfidence = '60%',
-    targetLow = '$96,000',
-    targetHigh = '$132,000',
-    institutionalTarget = '$138,000',
-    m2Value = '$22.3T',
-    realRate = '+1.45%',
-  } = data || {};
+function generateBitcoinAnalysis(liveData?: {
+  usd: number;
+  eur: number;
+  change24h: number;
+  marketCap: number;
+}, dbData?: {
+  regime?: string;
+  regimeConfidence?: number;
+  targetLow?: number;
+  targetHigh?: number;
+  institutionalTarget?: number;
+  m2Value?: number;
+  realRate?: number;
+}) {
+  // Use live CoinGecko data for price
+  const price = liveData?.usd ? formatPrice(liveData.usd) : '$94,000';
+  const priceEur = liveData?.eur ? formatPrice(liveData.eur, '€') : '€86,500';
+  const change24h = liveData?.change24h ? formatChange(liveData.change24h) : '-0.74%';
+  
+  // Use database data for regime/targets or defaults
+  const regime = dbData?.regime || 'ACCUMULATION';
+  const regimeConfidence = dbData?.regimeConfidence ? `${dbData.regimeConfidence}%` : '60%';
+  const targetLow = dbData?.targetLow ? formatPrice(dbData.targetLow) : '$96,000';
+  const targetHigh = dbData?.targetHigh ? formatPrice(dbData.targetHigh) : '$132,000';
+  const institutionalTarget = dbData?.institutionalTarget ? formatPrice(dbData.institutionalTarget) : '$138,000';
+  const m2Value = dbData?.m2Value ? `$${(dbData.m2Value / 1_000_000_000_000).toFixed(1)}T` : '$22.3T';
+  const realRate = dbData?.realRate ? formatChange(dbData.realRate) : '+1.45%';
 
   // Determine signal based on regime
   let signal = 'HOLD 🟡';
-  let signalEmoji = '🟡';
   if (regime === 'ACCUMULATION' || regime === 'EXPANSION') {
     signal = 'BUY 🟢';
-    signalEmoji = '🟢';
   } else if (regime === 'CONTRACTION') {
     signal = 'SELL 🔴';
-    signalEmoji = '🔴';
   }
 
   // Regime emoji
@@ -83,33 +152,53 @@ function generateBitcoinAnalysis(data: PublishRequest['data']) {
 #Bitcoin #BTC #Crypto #MacroAnalysis #ARIES76`;
 }
 
-function generateEthereumAnalysis(data: PublishRequest['data']) {
-  const {
-    price = '$3,100',
-    change24h = '+0.30%',
-    sentiment = 'NEUTRAL 🟡',
-    signal = 'HOLD 🟡',
-    resistance = '$3,150',
-    support = '$3,050',
-  } = data || {};
+function generateEthereumAnalysis(liveData?: {
+  usd: number;
+  eur: number;
+  change24h: number;
+  marketCap: number;
+}) {
+  // Use live data or defaults
+  const price = liveData?.usd ? formatPrice(liveData.usd) : '$3,100';
+  const priceEur = liveData?.eur ? formatPrice(liveData.eur, '€') : '€2,850';
+  const change24h = liveData?.change24h ? formatChange(liveData.change24h) : '+0.30%';
+  const marketCap = liveData?.marketCap ? formatMarketCap(liveData.marketCap) : '$370B';
+  
+  // Determine sentiment and signal based on 24h change
+  let sentiment = 'NEUTRAL 🟡';
+  let signal = 'HOLD 🟡';
+  if (liveData?.change24h) {
+    if (liveData.change24h > 3) {
+      sentiment = 'BULLISH 🟢';
+      signal = 'BUY 🟢';
+    } else if (liveData.change24h < -3) {
+      sentiment = 'BEARISH 🔴';
+      signal = 'SELL 🔴';
+    }
+  }
+  
+  // Calculate dynamic support/resistance (approximate)
+  const priceNum = liveData?.usd || 3100;
+  const resistance = formatPrice(Math.round(priceNum * 1.02));
+  const support = formatPrice(Math.round(priceNum * 0.98));
 
   return `<b>📊 ETHEREUM ANALYSIS</b>
+<i>powered by ARIES76</i>
 
-<b>Price:</b> ${price}
-<b>24h Change:</b> ${change24h}
-<b>Market Cap:</b> $370B
-<b>Sentiment:</b> ${sentiment}
+<b>💰 Price:</b> ${price} | ${priceEur}
+<b>📉 24h:</b> ${change24h}
+<b>📊 Market Cap:</b> ${marketCap}
+<b>🎯 Sentiment:</b> ${sentiment}
 
 <b>Technical Levels:</b>
 🔴 Resistance: ${resistance}
 🟢 Support: ${support}
 
-<b>Signal:</b> ${signal}
+<b>⚡ Signal:</b> ${signal}
 
-🔗 Full Report:
-https://www.aries76.com/bitcoin-2026-report-preview
+📖 <a href="https://www.aries76.com/bitcoin-2026-report-preview">Full Report →</a>
 
-#Ethereum #Trading #Analysis #ARIES76`;
+#Ethereum #ETH #Crypto #Analysis #ARIES76`;
 }
 
 function generateNewsDigest(news: Array<{ title: string; source: string; url?: string }>) {
@@ -235,14 +324,37 @@ serve(async (req) => {
     const { action, type = 'bitcoin', data } = body;
 
     if (action === 'publish') {
+      // Fetch live prices from CoinGecko
+      const livePrices = await fetchLiveCryptoPrices();
+      console.log('Live prices fetched:', JSON.stringify(livePrices));
+      
+      // Fetch regime data from database for Bitcoin
+      let dbReportData = null;
+      if (type === 'bitcoin') {
+        const { data: reportData } = await supabase
+          .from('bitcoin_report_latest')
+          .select('current_regime, regime_confidence, price_target_low, price_target_high, institutional_target, m2_value, real_rate')
+          .single();
+        dbReportData = reportData;
+        console.log('DB report data:', JSON.stringify(dbReportData));
+      }
+
       // Generate message based on type
       let message = '';
       switch (type) {
         case 'bitcoin':
-          message = generateBitcoinAnalysis(data);
+          message = generateBitcoinAnalysis(livePrices.bitcoin, dbReportData ? {
+            regime: dbReportData.current_regime,
+            regimeConfidence: dbReportData.regime_confidence,
+            targetLow: dbReportData.price_target_low,
+            targetHigh: dbReportData.price_target_high,
+            institutionalTarget: dbReportData.institutional_target,
+            m2Value: dbReportData.m2_value,
+            realRate: dbReportData.real_rate,
+          } : undefined);
           break;
         case 'ethereum':
-          message = generateEthereumAnalysis(data);
+          message = generateEthereumAnalysis(livePrices.ethereum);
           break;
         case 'news':
           // Use provided news or fetch from database
@@ -251,7 +363,7 @@ serve(async (req) => {
           message = generateNewsDigest(newsToPublish);
           break;
         default:
-          message = generateBitcoinAnalysis(data);
+          message = generateBitcoinAnalysis(livePrices.bitcoin);
       }
 
       // Publish to Telegram
@@ -291,6 +403,16 @@ serve(async (req) => {
         throw error;
       }
 
+      // Fetch live prices once for all scheduled publications
+      const livePrices = await fetchLiveCryptoPrices();
+      console.log('Live prices for scheduled:', JSON.stringify(livePrices));
+      
+      // Fetch DB report data once
+      const { data: dbReportData } = await supabase
+        .from('bitcoin_report_latest')
+        .select('current_regime, regime_confidence, price_target_low, price_target_high, institutional_target, m2_value, real_rate')
+        .single();
+
       const published = [];
       for (const schedule of schedules || []) {
         // Check if already published today
@@ -305,21 +427,29 @@ serve(async (req) => {
           continue; // Already published today
         }
 
-        // Generate and publish
+        // Generate and publish with live data
         let message = '';
         switch (schedule.publication_type) {
           case 'bitcoin':
-            message = generateBitcoinAnalysis({});
+            message = generateBitcoinAnalysis(livePrices.bitcoin, dbReportData ? {
+              regime: dbReportData.current_regime,
+              regimeConfidence: dbReportData.regime_confidence,
+              targetLow: dbReportData.price_target_low,
+              targetHigh: dbReportData.price_target_high,
+              institutionalTarget: dbReportData.institutional_target,
+              m2Value: dbReportData.m2_value,
+              realRate: dbReportData.real_rate,
+            } : undefined);
             break;
           case 'ethereum':
-            message = generateEthereumAnalysis({});
+            message = generateEthereumAnalysis(livePrices.ethereum);
             break;
           case 'news':
             const scheduledNews = await fetchNewsFromDatabase(supabase);
             message = generateNewsDigest(scheduledNews);
             break;
           default:
-            message = generateBitcoinAnalysis({});
+            message = generateBitcoinAnalysis(livePrices.bitcoin);
         }
 
         const result = await publishToTelegram(message);
