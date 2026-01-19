@@ -1,5 +1,6 @@
-import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import { useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 interface PriceData {
   isin: string;
@@ -22,81 +23,57 @@ interface UsePricesResult {
 
 export const usePortfolioPrices = (
   isins: string[],
-  type: 'etf' | 'certificates' = 'etf',
+  type: "etf" | "certificates" = "etf",
   autoRefresh: boolean = true,
-  refreshInterval: number = 60000 // 1 minute default
+  refreshInterval: number = 60000
 ): UsePricesResult => {
-  const [prices, setPrices] = useState<Record<string, PriceData>>({});
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
-  const hasFetched = useRef(false);
-  const isFetching = useRef(false);
-  
-  // Memoize isins key to prevent unnecessary re-renders
-  const isinsKey = useMemo(() => isins.join(','), [isins]);
+  const isinsKey = useMemo(() => [...isins].sort().join(","), [isins]);
 
-  const fetchPrices = useCallback(async () => {
-    // Prevent concurrent fetches
-    if (isFetching.current) return;
-    if (isins.length === 0) return;
-
-    isFetching.current = true;
-    setLoading(true);
-    setError(null);
-
-    try {
-      const { data, error: fnError } = await supabase.functions.invoke('fetch-portfolio-prices', {
-        body: { isins, type }
+  const {
+    data,
+    isLoading,
+    isFetching,
+    error,
+    refetch,
+  } = useQuery({
+    queryKey: ["portfolio-prices", type, isinsKey],
+    enabled: isins.length > 0,
+    queryFn: async () => {
+      const { data, error } = await supabase.functions.invoke("fetch-portfolio-prices", {
+        body: { isins, type },
       });
 
-      if (fnError) {
-        throw new Error(fnError.message);
+      if (error) throw new Error(error.message);
+      if (!data?.results) {
+        return {
+          prices: {} as Record<string, PriceData>,
+          lastUpdated: null as Date | null,
+        };
       }
 
-      if (data?.results) {
-        const priceMap: Record<string, PriceData> = {};
-        data.results.forEach((result: PriceData) => {
-          priceMap[result.isin] = result;
-        });
-        setPrices(priceMap);
-        setLastUpdated(new Date(data.timestamp));
-      }
-    } catch (err) {
-      console.error('Error fetching portfolio prices:', err);
-      setError(err instanceof Error ? err.message : 'Failed to fetch prices');
-    } finally {
-      setLoading(false);
-      isFetching.current = false;
-    }
-  }, [isinsKey, type]);
+      const priceMap: Record<string, PriceData> = {};
+      (data.results as PriceData[]).forEach((r) => {
+        priceMap[r.isin] = r;
+      });
 
-  // Initial fetch - only once
-  useEffect(() => {
-    if (!hasFetched.current && isins.length > 0) {
-      hasFetched.current = true;
-      fetchPrices();
-    }
-  }, [fetchPrices, isins.length]);
-
-  // Auto-refresh interval (separate effect)
-  useEffect(() => {
-    if (!autoRefresh || refreshInterval <= 0) return;
-    
-    const interval = setInterval(() => {
-      if (!isFetching.current) {
-        fetchPrices();
-      }
-    }, refreshInterval);
-    
-    return () => clearInterval(interval);
-  }, [autoRefresh, refreshInterval, fetchPrices]);
+      return {
+        prices: priceMap,
+        lastUpdated: data.timestamp ? new Date(data.timestamp) : new Date(),
+      };
+    },
+    // Important: only auto-refresh if requested
+    refetchInterval: autoRefresh && refreshInterval > 0 ? refreshInterval : false,
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 
   return {
-    prices,
-    loading,
-    error,
-    lastUpdated,
-    refetch: fetchPrices
+    prices: data?.prices ?? {},
+    loading: isLoading || isFetching,
+    error: error instanceof Error ? error.message : null,
+    lastUpdated: data?.lastUpdated ?? null,
+    refetch: async () => {
+      await refetch();
+    },
   };
 };
