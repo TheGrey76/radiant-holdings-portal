@@ -2263,6 +2263,36 @@ export type Database = {
         }
         Relationships: []
       }
+      portfolio_metrics: {
+        Row: {
+          assets: string[]
+          created_at: string | null
+          id: number
+          metrics: Json
+          timeframe: string
+          updated_at: string | null
+          weights: number[]
+        }
+        Insert: {
+          assets: string[]
+          created_at?: string | null
+          id?: never
+          metrics: Json
+          timeframe: string
+          updated_at?: string | null
+          weights: number[]
+        }
+        Update: {
+          assets?: string[]
+          created_at?: string | null
+          id?: never
+          metrics?: Json
+          timeframe?: string
+          updated_at?: string | null
+          weights?: number[]
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           company: string | null
@@ -2585,6 +2615,39 @@ export type Database = {
           sent_by?: string | null
           subject?: string
           successful_sends?: number
+        }
+        Relationships: []
+      }
+      sentiment_metrics: {
+        Row: {
+          active_addresses: number | null
+          created_at: string | null
+          exchange_flows: number | null
+          fear_greed_index: number
+          id: number
+          interpretation: string | null
+          mvrv_zscore: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          active_addresses?: number | null
+          created_at?: string | null
+          exchange_flows?: number | null
+          fear_greed_index: number
+          id?: never
+          interpretation?: string | null
+          mvrv_zscore?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          active_addresses?: number | null
+          created_at?: string | null
+          exchange_flows?: number | null
+          fear_greed_index?: number
+          id?: never
+          interpretation?: string | null
+          mvrv_zscore?: number | null
+          updated_at?: string | null
         }
         Relationships: []
       }
