@@ -233,25 +233,61 @@ ${newsItems}
 #Crypto #News #DigitalAssets #ARIES76`;
 }
 
-// Fetch news from database with actual article URLs
+// Fetch news from database with actual article URLs - excluding already published ones
 async function fetchNewsFromDatabase(supabase: ReturnType<typeof createClient>): Promise<Array<{ title: string; source: string; url: string }>> {
+  // First, get IDs of news already published to Telegram in the last 7 days
+  const sevenDaysAgo = new Date();
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+  
+  const { data: publishedLogs } = await supabase
+    .from('telegram_publication_logs')
+    .select('message_content')
+    .eq('publication_type', 'news')
+    .eq('status', 'published')
+    .gte('published_at', sevenDaysAgo.toISOString());
+  
+  // Extract titles from already published messages
+  const publishedTitles = new Set<string>();
+  if (publishedLogs) {
+    for (const log of publishedLogs) {
+      // Extract titles from the message content (they appear after emoji numbers)
+      const titleMatches = log.message_content?.match(/(?:1️⃣|2️⃣|3️⃣|4️⃣|5️⃣)\s*<a[^>]*>([^<]+)<\/a>/g) || [];
+      for (const match of titleMatches) {
+        const titleMatch = match.match(/>([^<]+)<\/a>/);
+        if (titleMatch) {
+          publishedTitles.add(titleMatch[1].trim().toLowerCase());
+        }
+      }
+    }
+  }
+  
+  console.log(`Found ${publishedTitles.size} already published news titles`);
+  
+  // Fetch more news than needed to filter out already published ones
   const { data, error } = await supabase
     .from('aggregated_news')
     .select('title, source_name, original_url')
-    .or('category.eq.digital_assets,title.ilike.%bitcoin%,title.ilike.%btc%,title.ilike.%crypto%')
+    .or('category.eq.digital_assets,title.ilike.%bitcoin%,title.ilike.%btc%,title.ilike.%crypto%,title.ilike.%ethereum%,title.ilike.%eth%')
     .order('published_at', { ascending: false })
-    .limit(5);
+    .limit(30);
 
   if (error) {
     console.error('Error fetching news from database:', error);
     return [];
   }
 
-  return (data || []).map(item => ({
-    title: item.title,
-    source: item.source_name,
-    url: item.original_url
-  }));
+  // Filter out already published news
+  const freshNews = (data || [])
+    .filter(item => !publishedTitles.has(item.title.trim().toLowerCase()))
+    .slice(0, 5)
+    .map(item => ({
+      title: item.title,
+      source: item.source_name,
+      url: item.original_url
+    }));
+  
+  console.log(`Returning ${freshNews.length} fresh news items`);
+  return freshNews;
 }
 
 async function publishToTelegram(message: string, withPhoto: boolean = true): Promise<{ success: boolean; messageId?: string; error?: string }> {
