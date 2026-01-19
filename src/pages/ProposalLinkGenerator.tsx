@@ -19,12 +19,6 @@ interface Proposal {
 
 const PROPOSALS: Proposal[] = [
   {
-    id: "vettafi",
-    name: "VettaFi Proposal",
-    accessRoute: "/vettafi-proposal",
-    proposalRoute: "/vettafi-proposal"
-  },
-  {
     id: "alkemia",
     name: "Alkemia Praesidium FRPA",
     accessRoute: "/alkemia-praesidium-proposal",
