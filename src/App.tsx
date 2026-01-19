@@ -157,10 +157,15 @@ const App = () => (
           <Route path="/blog/big-tech-ai-investment-india-2025" element={<BigTechAIInvestmentIndia />} />
           <Route path="/blog/gp-capital-advisory-trends-2025" element={<GPCapitalAdvisoryTrends2025 />} />
           <Route path="/blog/private-equity-momentum-2026" element={<PrivateEquityMomentum2026 />} />
-          <Route path="/bitcoin-2026-report" element={<Bitcoin2026Report />} />
-          <Route path="/bitcoin-2026-report-cover" element={<Bitcoin2026ReportCover />} />
-          <Route path="/bitcoin-2026-report-preview" element={<Bitcoin2026ReportPreview />} />
+          {/* Bitcoin Dynamic Allocation - new naming */}
+          <Route path="/bitcoin-dynamic-allocation" element={<Bitcoin2026Report />} />
+          <Route path="/bitcoin-dynamic-allocation-preview" element={<Bitcoin2026ReportPreview />} />
           <Route path="/bitcoin-research" element={<BitcoinResearch />} />
+          
+          {/* Legacy redirects for old URLs */}
+          <Route path="/bitcoin-2026-report" element={<Navigate to="/bitcoin-dynamic-allocation" replace />} />
+          <Route path="/bitcoin-2026-report-preview" element={<Navigate to="/bitcoin-dynamic-allocation-preview" replace />} />
+          <Route path="/bitcoin-2026-report-cover" element={<Bitcoin2026ReportCover />} />
           
           <Route path="/funnel-bitcoin-report" element={<BitcoinFunnelDashboard />} />
           
