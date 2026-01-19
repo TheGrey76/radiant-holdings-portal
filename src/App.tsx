@@ -69,6 +69,7 @@ import StructuredProductsGU from "./pages/StructuredProductsGU";
 import Bitcoin2026Report from "./pages/Bitcoin2026Report";
 import Bitcoin2026ReportCover from "./pages/Bitcoin2026ReportCover";
 import Bitcoin2026ReportPreview from "./pages/Bitcoin2026ReportPreview";
+import BitcoinResearch from "./pages/BitcoinResearch";
 
 import UnderlyingMonitoring from "./pages/UnderlyingMonitoring";
 import CrossPostingAssistant from "./pages/CrossPostingAssistant";
@@ -159,6 +160,7 @@ const App = () => (
           <Route path="/bitcoin-2026-report" element={<Bitcoin2026Report />} />
           <Route path="/bitcoin-2026-report-cover" element={<Bitcoin2026ReportCover />} />
           <Route path="/bitcoin-2026-report-preview" element={<Bitcoin2026ReportPreview />} />
+          <Route path="/bitcoin-research" element={<BitcoinResearch />} />
           
           <Route path="/funnel-bitcoin-report" element={<BitcoinFunnelDashboard />} />
           
