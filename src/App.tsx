@@ -46,6 +46,7 @@ import InvestmentCertificates2025 from "./pages/blog/InvestmentCertificates2025"
 import FamilyOfficeAllocation2026 from "./pages/blog/FamilyOfficeAllocation2026";
 import BigTechAIInvestmentIndia from "./pages/blog/BigTechAIInvestmentIndia";
 import GPCapitalAdvisoryTrends2025 from "./pages/blog/GPCapitalAdvisoryTrends2025";
+import PrivateEquityMomentum2026 from "./pages/blog/PrivateEquityMomentum2026";
 import MazalInnovation from "./pages/MazalInnovation";
 import ReelImmobiliare from "./pages/ReelImmobiliare";
 import WhyChooseAries from "./pages/WhyChooseAries";
@@ -154,6 +155,7 @@ const App = () => (
           <Route path="/blog/family-office-allocation-2026" element={<FamilyOfficeAllocation2026 />} />
           <Route path="/blog/big-tech-ai-investment-india-2025" element={<BigTechAIInvestmentIndia />} />
           <Route path="/blog/gp-capital-advisory-trends-2025" element={<GPCapitalAdvisoryTrends2025 />} />
+          <Route path="/blog/private-equity-momentum-2026" element={<PrivateEquityMomentum2026 />} />
           <Route path="/bitcoin-2026-report" element={<Bitcoin2026Report />} />
           <Route path="/bitcoin-2026-report-cover" element={<Bitcoin2026ReportCover />} />
           <Route path="/bitcoin-2026-report-preview" element={<Bitcoin2026ReportPreview />} />

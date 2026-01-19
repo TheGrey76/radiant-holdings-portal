@@ -9,6 +9,14 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    title: "The Great Unlocking: PE Fundraising Surges into 2026",
+    excerpt: "Private equity enters 2026 with renewed momentum as mega-funds dominate fundraising, exits surge 93%, and strategic LPs drive capital deployment. Analysis of the latest market dynamics.",
+    category: "Private Equity",
+    date: "2026-01-19",
+    readTime: "7 min read",
+    slug: "private-equity-momentum-2026"
+  },
+  {
     title: "GP Capital Advisory in 2025: Record Activity and Strategic Imperatives",
     excerpt: "An in-depth analysis of the evolving GP capital advisory landscape, featuring record transaction volumes, emerging deal structures, and the strategic priorities shaping management company growth.",
     category: "GP Capital Advisory",
