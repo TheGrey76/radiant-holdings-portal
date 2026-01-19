@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
 interface PriceData {
@@ -30,22 +30,24 @@ export const usePortfolioPrices = (
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+  const hasFetched = useRef(false);
+  const isFetching = useRef(false);
   
-  // Stabilize isins reference to prevent infinite loops
-  const isinsKey = isins.join(',');
-  const isinsRef = useRef(isins);
-  isinsRef.current = isins;
+  // Memoize isins key to prevent unnecessary re-renders
+  const isinsKey = useMemo(() => isins.join(','), [isins]);
 
   const fetchPrices = useCallback(async () => {
-    const currentIsins = isinsRef.current;
-    if (currentIsins.length === 0) return;
+    // Prevent concurrent fetches
+    if (isFetching.current) return;
+    if (isins.length === 0) return;
 
+    isFetching.current = true;
     setLoading(true);
     setError(null);
 
     try {
       const { data, error: fnError } = await supabase.functions.invoke('fetch-portfolio-prices', {
-        body: { isins: currentIsins, type }
+        body: { isins, type }
       });
 
       if (fnError) {
@@ -65,18 +67,29 @@ export const usePortfolioPrices = (
       setError(err instanceof Error ? err.message : 'Failed to fetch prices');
     } finally {
       setLoading(false);
+      isFetching.current = false;
     }
   }, [isinsKey, type]);
 
+  // Initial fetch - only once
   useEffect(() => {
-    fetchPrices();
-  }, [fetchPrices]);
-
-  useEffect(() => {
-    if (autoRefresh && refreshInterval > 0) {
-      const interval = setInterval(fetchPrices, refreshInterval);
-      return () => clearInterval(interval);
+    if (!hasFetched.current && isins.length > 0) {
+      hasFetched.current = true;
+      fetchPrices();
     }
+  }, [fetchPrices, isins.length]);
+
+  // Auto-refresh interval (separate effect)
+  useEffect(() => {
+    if (!autoRefresh || refreshInterval <= 0) return;
+    
+    const interval = setInterval(() => {
+      if (!isFetching.current) {
+        fetchPrices();
+      }
+    }, refreshInterval);
+    
+    return () => clearInterval(interval);
   }, [autoRefresh, refreshInterval, fetchPrices]);
 
   return {
