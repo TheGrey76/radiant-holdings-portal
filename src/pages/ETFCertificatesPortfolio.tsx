@@ -1007,10 +1007,8 @@ const ETFCertificatesPortfolio = () => {
               </Card>
             </div>
           </TabsContent>
-        </Tabs>
-      </main>
 
-        {/* Market Analysis Tab - NEW */}
+          {/* Market Analysis Tab */}
           <TabsContent value="market">
             <div className="space-y-6">
               {/* Import Section */}
@@ -1259,6 +1257,8 @@ const ETFCertificatesPortfolio = () => {
               )}
             </div>
           </TabsContent>
+        </Tabs>
+      </main>
     </div>
   );
 };
