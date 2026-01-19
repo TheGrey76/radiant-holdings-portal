@@ -116,3 +116,30 @@ verify_jwt = false
 
 [functions.sentiment-data]
 verify_jwt = false
+
+[functions.fetch-portfolio-prices]
+verify_jwt = false
+
+[functions.fetch-stock-prices]
+verify_jwt = false
+
+[functions.fetch-etf-flows]
+verify_jwt = false
+
+[functions.fetch-correlations]
+verify_jwt = false
+
+[functions.fetch-onchain-metrics]
+verify_jwt = false
+
+[functions.fetch-backtest-data]
+verify_jwt = false
+
+[functions.generate-linkedin-post]
+verify_jwt = false
+
+[functions.import-financial-advisers]
+verify_jwt = false
+
+[functions.parse-advisory-document]
+verify_jwt = false
