@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
 interface PriceData {
@@ -30,16 +30,22 @@ export const usePortfolioPrices = (
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+  
+  // Stabilize isins reference to prevent infinite loops
+  const isinsKey = isins.join(',');
+  const isinsRef = useRef(isins);
+  isinsRef.current = isins;
 
   const fetchPrices = useCallback(async () => {
-    if (isins.length === 0) return;
+    const currentIsins = isinsRef.current;
+    if (currentIsins.length === 0) return;
 
     setLoading(true);
     setError(null);
 
     try {
       const { data, error: fnError } = await supabase.functions.invoke('fetch-portfolio-prices', {
-        body: { isins, type }
+        body: { isins: currentIsins, type }
       });
 
       if (fnError) {
@@ -60,16 +66,18 @@ export const usePortfolioPrices = (
     } finally {
       setLoading(false);
     }
-  }, [isins, type]);
+  }, [isinsKey, type]);
 
   useEffect(() => {
     fetchPrices();
+  }, [fetchPrices]);
 
+  useEffect(() => {
     if (autoRefresh && refreshInterval > 0) {
       const interval = setInterval(fetchPrices, refreshInterval);
       return () => clearInterval(interval);
     }
-  }, [fetchPrices, autoRefresh, refreshInterval]);
+  }, [autoRefresh, refreshInterval, fetchPrices]);
 
   return {
     prices,
