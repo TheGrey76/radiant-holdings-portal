@@ -15,7 +15,8 @@ import {
   ModelComparisonTable, 
   DynamicRanges, 
   QuarterlyCommentary, 
-  MethodologyDisclaimer 
+  MethodologyDisclaimer,
+  PortfolioAnalysisDashboard 
 } from "@/components/bitcoin";
 
 // Animated Chapter Section Component
@@ -196,6 +197,7 @@ const Bitcoin2026Report = () => {
     { id: "model-comparison", number: "XXI", title: "Model Comparison Table", icon: BarChart3 },
     { id: "dynamic-ranges", number: "XXII", title: "Bitcoin 2026 – Dynamic Ranges", icon: TrendingUp },
     { id: "model-commentary", number: "XXIII", title: "Quarterly Model Commentary", icon: Lightbulb },
+    { id: "portfolio-analysis", number: "XXIV", title: "Portfolio Analysis Engine", icon: BarChart3 },
   ];
 
   return (
@@ -474,6 +476,11 @@ const Bitcoin2026Report = () => {
               quarter={getCurrentQuarter()} 
               loading={modelsLoading} 
             />
+          </ChapterSection>
+
+          {/* Chapter XXIV: Portfolio Analysis Engine */}
+          <ChapterSection id="portfolio-analysis" dataSection="portfolio-analysis">
+            <PortfolioAnalysisDashboard />
           </ChapterSection>
 
           {/* Methodology & Disclaimers */}

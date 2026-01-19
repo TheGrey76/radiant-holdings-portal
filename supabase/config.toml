@@ -111,3 +111,8 @@ verify_jwt = false
 [functions.send-advisory-link]
 verify_jwt = false
 
+[functions.portfolio-analysis]
+verify_jwt = false
+
+[functions.sentiment-data]
+verify_jwt = false
