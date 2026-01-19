@@ -74,6 +74,63 @@ const GlossaryTerm = ({ term, children }: { term: string; children: React.ReactN
   );
 };
 
+// Animated Chapter Section Component - MUST be outside main component to avoid hooks issues
+const ChapterSection = ({ children, id, dataSection }: { children: React.ReactNode; id: string; dataSection: string }) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+  return (
+    <motion.section
+      ref={ref}
+      id={id}
+      data-section={dataSection}
+      className="mb-24 scroll-mt-20 print-section"
+      initial={{ opacity: 0, y: 50 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      style={{ willChange: 'auto' }}
+    >
+      {children}
+    </motion.section>
+  );
+};
+
+// Key Takeaways Component - MUST be outside main component
+const KeyTakeaways = ({ insights }: { insights: string[] }) => {
+  const colors = [
+    'from-primary/10 to-primary/5 border-primary/20',
+    'from-accent/10 to-accent/5 border-accent/20',
+    'from-blue-500/10 to-blue-500/5 border-blue-500/20',
+    'from-purple-500/10 to-purple-500/5 border-purple-500/20',
+  ];
+
+  return (
+    <div className="mt-12 p-8 rounded-2xl bg-gradient-to-br from-muted/30 to-background border-2 border-border/60">
+      <div className="flex items-center gap-3 mb-6">
+        <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+          <Lightbulb className="w-5 h-5 text-primary" />
+        </div>
+        <h3 className="text-2xl font-bold text-foreground">Key Takeaways</h3>
+      </div>
+      <div className="grid gap-4">
+        {insights.map((insight, index) => (
+          <div 
+            key={index}
+            className={`p-5 rounded-xl bg-gradient-to-br ${colors[index % colors.length]} border-2`}
+          >
+            <div className="flex items-start gap-3">
+              <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <span className="text-xs font-bold text-primary">{index + 1}</span>
+              </div>
+              <p className="text-sm text-foreground/90 leading-relaxed">{insight}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 const Bitcoin2026Report = () => {
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
@@ -277,63 +334,6 @@ const Bitcoin2026Report = () => {
 
     return <Navigate to="/bitcoin-2026-report-preview" replace />;
   }
-
-  // Animated Chapter Section Component
-  const ChapterSection = ({ children, id, dataSection }: { children: React.ReactNode; id: string; dataSection: string }) => {
-    const ref = useRef(null);
-    const isInView = useInView(ref, { once: true, margin: "-100px" });
-
-    return (
-      <motion.section
-        ref={ref}
-        id={id}
-        data-section={dataSection}
-        className="mb-24 scroll-mt-20 print-section"
-        initial={{ opacity: 0, y: 50 }}
-        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        style={{ willChange: 'auto' }}
-      >
-        {children}
-      </motion.section>
-    );
-  };
-
-  // Key Takeaways Component
-  const KeyTakeaways = ({ insights }: { insights: string[] }) => {
-    const colors = [
-      'from-primary/10 to-primary/5 border-primary/20',
-      'from-accent/10 to-accent/5 border-accent/20',
-      'from-blue-500/10 to-blue-500/5 border-blue-500/20',
-      'from-purple-500/10 to-purple-500/5 border-purple-500/20',
-    ];
-
-    return (
-      <div className="mt-12 p-8 rounded-2xl bg-gradient-to-br from-muted/30 to-background border-2 border-border/60">
-        <div className="flex items-center gap-3 mb-6">
-          <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-            <Lightbulb className="w-5 h-5 text-primary" />
-          </div>
-          <h3 className="text-2xl font-bold text-foreground">Key Takeaways</h3>
-        </div>
-        <div className="grid gap-4">
-          {insights.map((insight, index) => (
-            <div 
-              key={index}
-              className={`p-5 rounded-xl bg-gradient-to-br ${colors[index % colors.length]} border-2`}
-            >
-              <div className="flex items-start gap-3">
-                <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <span className="text-xs font-bold text-primary">{index + 1}</span>
-                </div>
-                <p className="text-sm text-foreground/90 leading-relaxed">{insight}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  };
 
   // Custom Tooltip Components
   const CustomPriceTooltip = ({ active, payload }: any) => {
