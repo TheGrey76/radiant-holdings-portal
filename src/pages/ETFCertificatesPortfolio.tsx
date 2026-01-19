@@ -13,7 +13,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { 
   Wallet, TrendingUp, CalendarDays, FileText, 
   PieChart, DollarSign, AlertTriangle, Calendar as CalendarIcon,
-  Upload, RefreshCw, ArrowLeft, Info, FileUp, CheckCircle, XCircle, Loader2, Download
+  Upload, RefreshCw, ArrowLeft, Info, FileUp, CheckCircle, XCircle, Loader2, Download,
+  TrendingDown, Activity
 } from 'lucide-react';
 import jsPDF from 'jspdf';
 import { format, addMonths, startOfMonth, isBefore, isAfter } from 'date-fns';
@@ -22,6 +23,7 @@ import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import ETFPortfolioAccessGate from '@/components/ETFPortfolioAccessGate';
+import { usePortfolioPrices } from '@/hooks/usePortfolioPrices';
 
 // PDF Market Data - Simulazione dati estratti dal PDF
 const PDF_CERTIFICATES_DATA = [
@@ -172,6 +174,30 @@ const ETFCertificatesPortfolio = () => {
       { tipo: 'Neutro', descrizione: 'Mercati stabili, volatilità contenuta' },
     ]
   });
+
+  // Real-time price hooks
+  const etfIsins = ETF_DATA.map(e => e.isin);
+  const certIsins = CERTIFICATES_DATA.map(c => c.isin);
+  
+  const { 
+    prices: etfPrices, 
+    loading: etfLoading, 
+    lastUpdated: etfLastUpdated,
+    refetch: refetchEtf 
+  } = usePortfolioPrices(etfIsins, 'etf', true, 60000);
+  
+  const { 
+    prices: certPrices, 
+    loading: certLoading, 
+    lastUpdated: certLastUpdated,
+    refetch: refetchCert 
+  } = usePortfolioPrices(certIsins, 'certificates', true, 60000);
+
+  const handleRefreshPrices = async () => {
+    toast.info('Aggiornamento prezzi in corso...');
+    await Promise.all([refetchEtf(), refetchCert()]);
+    toast.success('Prezzi aggiornati');
+  };
 
   // Funzione per analizzare PDF e confrontare con portafoglio
   const handleFileImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -460,11 +486,27 @@ const ETFCertificatesPortfolio = () => {
             <h1 className="text-3xl font-bold text-foreground">
               Portafoglio ETF & Certificates – OF COURSE!!!!
             </h1>
-            <p className="text-muted-foreground mt-2">
-              Aggiornata Settimanale • Ultimo aggiornamento: {format(weeklyReport.lastUpdated, 'dd MMMM yyyy', { locale: it })}
+            <p className="text-muted-foreground mt-2 flex items-center gap-2">
+              {etfLastUpdated ? (
+                <>
+                  <Activity className="h-3.5 w-3.5 text-green-500" />
+                  Prezzi live • {format(etfLastUpdated, 'HH:mm:ss', { locale: it })}
+                </>
+              ) : (
+                <>Aggiornata Settimanale • {format(weeklyReport.lastUpdated, 'dd MMMM yyyy', { locale: it })}</>
+              )}
             </p>
           </div>
           <div className="flex gap-2">
+            <Button 
+              variant="outline" 
+              onClick={handleRefreshPrices}
+              className="gap-2"
+              disabled={etfLoading || certLoading}
+            >
+              <RefreshCw className={cn("h-4 w-4", (etfLoading || certLoading) && "animate-spin")} />
+              Aggiorna Prezzi
+            </Button>
             <Button 
               variant="default" 
               onClick={exportToPDF}
@@ -619,33 +661,66 @@ const ETFCertificatesPortfolio = () => {
                       <TableRow>
                         <TableHead>ISIN</TableHead>
                         <TableHead>Nome</TableHead>
+                        <TableHead className="text-right">Prezzo</TableHead>
+                        <TableHead className="text-right">Var %</TableHead>
                         <TableHead className="text-right">Importo</TableHead>
                         <TableHead className="text-right">Peso %</TableHead>
                         <TableHead>Ruolo</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {ETF_DATA.map((etf) => (
-                        <TableRow key={etf.isin}>
-                          <TableCell className="font-mono text-sm">{etf.isin}</TableCell>
-                          <TableCell>{etf.name}</TableCell>
-                          <TableCell className="text-right font-semibold">{formatCurrency(etf.importo)}</TableCell>
-                          <TableCell className="text-right font-semibold">{etf.weight}%</TableCell>
-                          <TableCell>
-                            <Tooltip>
-                              <TooltipTrigger asChild>
-                                <div className="flex items-center gap-1.5 cursor-help">
-                                  <Badge variant="outline">{etf.role}</Badge>
-                                  <Info className="h-3.5 w-3.5 text-muted-foreground" />
-                                </div>
-                              </TooltipTrigger>
-                              <TooltipContent side="left" className="max-w-[280px]">
-                                <p className="text-sm">{ROLE_DESCRIPTIONS[etf.role] || etf.role}</p>
-                              </TooltipContent>
-                            </Tooltip>
-                          </TableCell>
-                        </TableRow>
-                      ))}
+                      {ETF_DATA.map((etf) => {
+                        const priceData = etfPrices[etf.isin];
+                        const hasPrice = priceData?.price !== null && priceData?.price !== undefined;
+                        const changePercent = priceData?.changePercent;
+                        const isPositive = changePercent && changePercent > 0;
+                        const isNegative = changePercent && changePercent < 0;
+                        
+                        return (
+                          <TableRow key={etf.isin}>
+                            <TableCell className="font-mono text-sm">{etf.isin}</TableCell>
+                            <TableCell>{etf.name}</TableCell>
+                            <TableCell className="text-right font-semibold">
+                              {etfLoading ? (
+                                <Loader2 className="h-4 w-4 animate-spin inline" />
+                              ) : hasPrice ? (
+                                `€${priceData.price.toFixed(2)}`
+                              ) : (
+                                <span className="text-muted-foreground">—</span>
+                              )}
+                            </TableCell>
+                            <TableCell className="text-right">
+                              {hasPrice && changePercent !== null ? (
+                                <span className={cn(
+                                  "flex items-center justify-end gap-1 font-medium",
+                                  isPositive && "text-green-600",
+                                  isNegative && "text-red-600"
+                                )}>
+                                  {isPositive ? <TrendingUp className="h-3.5 w-3.5" /> : isNegative ? <TrendingDown className="h-3.5 w-3.5" /> : null}
+                                  {changePercent > 0 ? '+' : ''}{changePercent.toFixed(2)}%
+                                </span>
+                              ) : (
+                                <span className="text-muted-foreground">—</span>
+                              )}
+                            </TableCell>
+                            <TableCell className="text-right font-semibold">{formatCurrency(etf.importo)}</TableCell>
+                            <TableCell className="text-right font-semibold">{etf.weight}%</TableCell>
+                            <TableCell>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <div className="flex items-center gap-1.5 cursor-help">
+                                    <Badge variant="outline">{etf.role}</Badge>
+                                    <Info className="h-3.5 w-3.5 text-muted-foreground" />
+                                  </div>
+                                </TooltipTrigger>
+                                <TooltipContent side="left" className="max-w-[280px]">
+                                  <p className="text-sm">{ROLE_DESCRIPTIONS[etf.role] || etf.role}</p>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
                     </TableBody>
                   </Table>
                 </TooltipProvider>
@@ -672,6 +747,8 @@ const ETFCertificatesPortfolio = () => {
                       <TableRow>
                         <TableHead>ISIN</TableHead>
                         <TableHead>Emittente</TableHead>
+                        <TableHead className="text-right">Prezzo</TableHead>
+                        <TableHead className="text-right">Var %</TableHead>
                         <TableHead className="text-right">Cedola %</TableHead>
                         <TableHead>Frequenza</TableHead>
                         <TableHead className="text-right">Barriera</TableHead>
@@ -687,10 +764,39 @@ const ETFCertificatesPortfolio = () => {
                             ? cert.importoInvestito * cert.cedola / 100 / 4
                             : 0;
                         
+                        const priceData = certPrices[cert.isin];
+                        const hasPrice = priceData?.price !== null && priceData?.price !== undefined;
+                        const changePercent = priceData?.changePercent;
+                        const isPositive = changePercent && changePercent > 0;
+                        const isNegative = changePercent && changePercent < 0;
+                        
                         return (
                           <TableRow key={cert.isin}>
                             <TableCell className="font-mono text-sm">{cert.isin}</TableCell>
                             <TableCell>{cert.emittente}</TableCell>
+                            <TableCell className="text-right font-semibold">
+                              {certLoading ? (
+                                <Loader2 className="h-4 w-4 animate-spin inline" />
+                              ) : hasPrice ? (
+                                `€${priceData.price.toFixed(2)}`
+                              ) : (
+                                <span className="text-muted-foreground">—</span>
+                              )}
+                            </TableCell>
+                            <TableCell className="text-right">
+                              {hasPrice && changePercent !== null ? (
+                                <span className={cn(
+                                  "flex items-center justify-end gap-1 font-medium",
+                                  isPositive && "text-green-600",
+                                  isNegative && "text-red-600"
+                                )}>
+                                  {isPositive ? <TrendingUp className="h-3.5 w-3.5" /> : isNegative ? <TrendingDown className="h-3.5 w-3.5" /> : null}
+                                  {changePercent > 0 ? '+' : ''}{changePercent.toFixed(2)}%
+                                </span>
+                              ) : (
+                                <span className="text-muted-foreground">—</span>
+                              )}
+                            </TableCell>
                             <TableCell className="text-right font-semibold">
                               {cert.cedola > 0 ? `${cert.cedola}%` : '—'}
                             </TableCell>
