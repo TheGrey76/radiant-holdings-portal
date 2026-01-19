@@ -859,6 +859,69 @@ export type Database = {
         }
         Relationships: []
       }
+      bitcoin_allocation_models: {
+        Row: {
+          allocation_max: number
+          allocation_min: number
+          color_theme: string
+          created_at: string
+          current_allocation: number
+          current_regime: string
+          description: string | null
+          display_name: string
+          distance_from_mean: string | null
+          exposure_level: string
+          historical_mean: number
+          id: string
+          model_name: string
+          sort_order: number
+          stress_floor: number | null
+          target_range_high: number | null
+          target_range_low: number | null
+          updated_at: string
+        }
+        Insert: {
+          allocation_max?: number
+          allocation_min?: number
+          color_theme?: string
+          created_at?: string
+          current_allocation?: number
+          current_regime?: string
+          description?: string | null
+          display_name: string
+          distance_from_mean?: string | null
+          exposure_level?: string
+          historical_mean?: number
+          id?: string
+          model_name: string
+          sort_order?: number
+          stress_floor?: number | null
+          target_range_high?: number | null
+          target_range_low?: number | null
+          updated_at?: string
+        }
+        Update: {
+          allocation_max?: number
+          allocation_min?: number
+          color_theme?: string
+          created_at?: string
+          current_allocation?: number
+          current_regime?: string
+          description?: string | null
+          display_name?: string
+          distance_from_mean?: string | null
+          exposure_level?: string
+          historical_mean?: number
+          id?: string
+          model_name?: string
+          sort_order?: number
+          stress_floor?: number | null
+          target_range_high?: number | null
+          target_range_low?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       bitcoin_funnel_automation_log: {
         Row: {
           action: string
@@ -1079,6 +1142,42 @@ export type Database = {
           setting_value?: string
           updated_at?: string
           updated_by?: string | null
+        }
+        Relationships: []
+      }
+      bitcoin_quarterly_commentary: {
+        Row: {
+          commentary_text: string
+          created_at: string
+          id: string
+          is_current: boolean
+          published_at: string
+          quarter: string
+          regime_summary: string | null
+          updated_at: string
+          year: number
+        }
+        Insert: {
+          commentary_text: string
+          created_at?: string
+          id?: string
+          is_current?: boolean
+          published_at?: string
+          quarter: string
+          regime_summary?: string | null
+          updated_at?: string
+          year: number
+        }
+        Update: {
+          commentary_text?: string
+          created_at?: string
+          id?: string
+          is_current?: boolean
+          published_at?: string
+          quarter?: string
+          regime_summary?: string | null
+          updated_at?: string
+          year?: number
         }
         Relationships: []
       }
