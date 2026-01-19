@@ -188,12 +188,12 @@ const BitcoinDynamicAllocationHero = () => {
               Institutional-grade research typically costs thousands of euros per year. We've democratized access by leveraging AI-powered data processing and scalable delivery—without compromising on analytical depth.
             </p>
             <p className="text-lg text-gray-300 leading-relaxed">
-              €99 is a one-time payment that includes all quarterly updates through 2026. No subscriptions. No upsells. One investment in decision discipline that pays for itself the first time it prevents an emotional mistake.
+              €99 is a one-year payment that includes all quarterly updates through 2026. No subscriptions. No upsells. One investment in decision discipline that pays for itself the first time it prevents an emotional mistake.
             </p>
             <div className="mt-6 flex items-center gap-4">
               <div className="text-3xl font-bold text-orange-400">€99</div>
               <div className="text-sm text-gray-500">
-                One-time payment<br />
+                One-year payment<br />
                 All updates included
               </div>
             </div>
