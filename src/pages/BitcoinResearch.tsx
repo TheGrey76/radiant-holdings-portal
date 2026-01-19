@@ -232,6 +232,10 @@ const BitcoinResearch = () => {
     { id: "chapter-13", number: "XIII", title: "Macro Calendar 2026", icon: Calendar },
     { id: "chapter-14", number: "XIV", title: "Exit Strategy Framework", icon: LogOut },
     { id: "chapter-15", number: "XV", title: "Lightning Network & Layer 2", icon: Zap },
+    { id: "chapter-16", number: "XVI", title: "Institutional & Sovereign Adoption", icon: Globe },
+    { id: "chapter-17", number: "XVII", title: "Portfolio Construction Framework", icon: Layers },
+    { id: "chapter-18", number: "XVIII", title: "Future Outlook & Catalysts", icon: LineChart },
+    { id: "chapter-19", number: "XIX", title: "Conclusion & Methodology", icon: Target },
   ];
 
   const scrollToTop = () => {
@@ -1291,6 +1295,268 @@ const BitcoinResearch = () => {
               "Exchange integration (Coinbase, Kraken, OKX) drives accessibility.",
               "Long-term narrative value significant; near-term price impact minimal.",
               "Monitor as adoption metric, not trading signal."
+            ]} />
+          </ChapterSection>
+
+          {/* Chapter XVI - Institutional & Sovereign Adoption */}
+          <ChapterSection id="chapter-16" dataSection="chapter-16">
+            <div className="mb-12">
+              <div className="inline-flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <Globe className="w-5 h-5 text-primary" />
+                </div>
+                <span className="text-xs font-bold text-primary uppercase tracking-widest">Chapter XVI</span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 leading-tight">
+                Institutional & Sovereign Adoption
+              </h2>
+            </div>
+
+            <div className="prose prose-lg max-w-none space-y-8">
+              <p className="text-foreground/80 leading-relaxed">
+                The 2024–2026 period marks the transition from speculative retail-driven markets to institutional and sovereign participation. This structural shift fundamentally alters Bitcoin's demand profile and volatility characteristics.
+              </p>
+
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="p-6 rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20">
+                  <h4 className="font-bold text-foreground mb-3">Corporate Treasury Adoption</h4>
+                  <p className="text-sm text-foreground/70 leading-relaxed">
+                    Following MicroStrategy's pioneering strategy, corporate treasuries increasingly view Bitcoin as a hedge against fiat debasement. Public companies now hold over 500,000 BTC in aggregate.
+                  </p>
+                </div>
+                <div className="p-6 rounded-2xl bg-gradient-to-br from-accent/10 to-accent/5 border border-accent/20">
+                  <h4 className="font-bold text-foreground mb-3">Sovereign Wealth Funds</h4>
+                  <p className="text-sm text-foreground/70 leading-relaxed">
+                    Early-mover sovereign funds (Norway, Singapore, Abu Dhabi) are building indirect exposure through ETF holdings and mining investments.
+                  </p>
+                </div>
+                <div className="p-6 rounded-2xl bg-card border border-border/40">
+                  <h4 className="font-bold text-foreground mb-3">Pension Fund Allocations</h4>
+                  <p className="text-sm text-foreground/70 leading-relaxed">
+                    U.S. state pension funds (Wisconsin, Florida) have initiated Bitcoin ETF positions, signalling mainstream institutional acceptance.
+                  </p>
+                </div>
+                <div className="p-6 rounded-2xl bg-card border border-border/40">
+                  <h4 className="font-bold text-foreground mb-3">Central Bank Reserves</h4>
+                  <p className="text-sm text-foreground/70 leading-relaxed">
+                    El Salvador continues accumulating BTC as legal tender. Other emerging markets are exploring Bitcoin as reserve diversification.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <KeyTakeaways insights={[
+              "Corporate treasuries now hold 500,000+ BTC—structural demand floor.",
+              "Sovereign wealth funds building indirect exposure via ETFs and mining.",
+              "Pension fund participation signals mainstream institutional acceptance.",
+              "Central bank reserve diversification remains early-stage but growing."
+            ]} />
+          </ChapterSection>
+
+          {/* Chapter XVII - Portfolio Construction Framework */}
+          <ChapterSection id="chapter-17" dataSection="chapter-17">
+            <div className="mb-12">
+              <div className="inline-flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <Layers className="w-5 h-5 text-primary" />
+                </div>
+                <span className="text-xs font-bold text-primary uppercase tracking-widest">Chapter XVII</span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 leading-tight">
+                Portfolio Construction Framework
+              </h2>
+            </div>
+
+            <div className="prose prose-lg max-w-none space-y-8">
+              <div className="p-6 rounded-2xl bg-gradient-to-br from-primary/5 to-accent/5 border border-primary/10">
+                <p className="text-foreground/90 leading-relaxed m-0">
+                  Bitcoin's role in a diversified portfolio requires structured thinking about position sizing, rebalancing triggers, and correlation dynamics across market regimes.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="p-6 rounded-2xl bg-card border border-border/40 text-center">
+                  <div className="text-3xl font-bold text-primary mb-2">1-3%</div>
+                  <h4 className="font-bold text-foreground mb-2">Conservative</h4>
+                  <p className="text-sm text-foreground/70">Traditional institutions, endowments with strict volatility limits</p>
+                </div>
+                <div className="p-6 rounded-2xl bg-card border border-border/40 text-center">
+                  <div className="text-3xl font-bold text-accent mb-2">3-5%</div>
+                  <h4 className="font-bold text-foreground mb-2">Balanced</h4>
+                  <p className="text-sm text-foreground/70">Family offices, sophisticated investors seeking asymmetric returns</p>
+                </div>
+                <div className="p-6 rounded-2xl bg-card border border-border/40 text-center">
+                  <div className="text-3xl font-bold text-orange-400 mb-2">5-10%</div>
+                  <h4 className="font-bold text-foreground mb-2">Aggressive</h4>
+                  <p className="text-sm text-foreground/70">High-conviction allocators with long time horizons</p>
+                </div>
+              </div>
+
+              <div className="p-6 rounded-2xl bg-card border border-border/40">
+                <h4 className="text-lg font-bold text-foreground mb-4">Rebalancing Triggers</h4>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="p-4 rounded-xl bg-muted/30">
+                    <h5 className="font-semibold text-foreground mb-2">Threshold-Based</h5>
+                    <p className="text-sm text-foreground/70">Rebalance when allocation drifts ±50% from target (e.g., 3% target → rebalance at 1.5% or 4.5%)</p>
+                  </div>
+                  <div className="p-4 rounded-xl bg-muted/30">
+                    <h5 className="font-semibold text-foreground mb-2">Regime-Based</h5>
+                    <p className="text-sm text-foreground/70">Adjust allocation based on macro regime transitions (expansion vs. contraction)</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <KeyTakeaways insights={[
+              "1-3% allocation for conservative institutions; 5-10% for high-conviction investors.",
+              "Threshold-based rebalancing prevents emotional decision-making.",
+              "Regime-based adjustments align allocation with macro conditions.",
+              "Position sizing should reflect individual risk tolerance and time horizon."
+            ]} />
+          </ChapterSection>
+
+          {/* Chapter XVIII - Future Outlook & Catalysts */}
+          <ChapterSection id="chapter-18" dataSection="chapter-18">
+            <div className="mb-12">
+              <div className="inline-flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <LineChart className="w-5 h-5 text-primary" />
+                </div>
+                <span className="text-xs font-bold text-primary uppercase tracking-widest">Chapter XVIII</span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 leading-tight">
+                Future Outlook & Catalysts
+              </h2>
+            </div>
+
+            <div className="prose prose-lg max-w-none space-y-8">
+              <p className="text-foreground/80 leading-relaxed">
+                Bitcoin's 2026 trajectory will be shaped by a convergence of macro, regulatory, and adoption catalysts. Understanding these drivers enables forward-looking positioning.
+              </p>
+
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="p-6 rounded-2xl bg-gradient-to-br from-green-500/10 to-green-500/5 border border-green-500/20">
+                  <h4 className="font-bold text-green-400 mb-3">Bullish Catalysts</h4>
+                  <ul className="space-y-2 text-sm text-foreground/70">
+                    <li>• Fed pivot to rate cuts / QE resumption</li>
+                    <li>• Sovereign adoption beyond El Salvador</li>
+                    <li>• Ethereum ETF approval driving crypto inflows</li>
+                    <li>• MiCA implementation enhancing EU access</li>
+                    <li>• Continued corporate treasury accumulation</li>
+                  </ul>
+                </div>
+                <div className="p-6 rounded-2xl bg-gradient-to-br from-destructive/10 to-destructive/5 border border-destructive/20">
+                  <h4 className="font-bold text-destructive mb-3">Bearish Catalysts</h4>
+                  <ul className="space-y-2 text-sm text-foreground/70">
+                    <li>• Sustained high real rates / liquidity contraction</li>
+                    <li>• Regulatory fragmentation or hostile legislation</li>
+                    <li>• Major exchange or custodian failure</li>
+                    <li>• Geopolitical escalation impacting risk appetite</li>
+                    <li>• Mining centralisation or network security concerns</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="p-6 rounded-2xl bg-card border border-border/40">
+                <h4 className="text-lg font-bold text-foreground mb-4">2026 Milestone Watchlist</h4>
+                <div className="grid md:grid-cols-4 gap-4">
+                  <div className="p-4 rounded-xl bg-muted/30 text-center">
+                    <div className="text-2xl font-bold text-primary mb-1">Q1</div>
+                    <p className="text-xs text-foreground/70">Fed policy direction clarity</p>
+                  </div>
+                  <div className="p-4 rounded-xl bg-muted/30 text-center">
+                    <div className="text-2xl font-bold text-accent mb-1">Q2</div>
+                    <p className="text-xs text-foreground/70">MiCA full implementation</p>
+                  </div>
+                  <div className="p-4 rounded-xl bg-muted/30 text-center">
+                    <div className="text-2xl font-bold text-blue-400 mb-1">Q3</div>
+                    <p className="text-xs text-foreground/70">Institutional rebalancing</p>
+                  </div>
+                  <div className="p-4 rounded-xl bg-muted/30 text-center">
+                    <div className="text-2xl font-bold text-purple-400 mb-1">Q4</div>
+                    <p className="text-xs text-foreground/70">Year-end positioning</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <KeyTakeaways insights={[
+              "Fed pivot remains the primary bullish catalyst for 2026.",
+              "Regulatory fragmentation poses the greatest structural risk.",
+              "Sovereign and corporate adoption provides demand floor.",
+              "Monitor quarterly milestones for regime transition signals."
+            ]} />
+          </ChapterSection>
+
+          {/* Chapter XIX - Conclusion & Methodology */}
+          <ChapterSection id="chapter-19" dataSection="chapter-19">
+            <div className="mb-12">
+              <div className="inline-flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <Target className="w-5 h-5 text-primary" />
+                </div>
+                <span className="text-xs font-bold text-primary uppercase tracking-widest">Chapter XIX</span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 leading-tight">
+                Conclusion & Methodology
+              </h2>
+            </div>
+
+            <div className="prose prose-lg max-w-none space-y-8">
+              <div className="p-6 rounded-2xl bg-gradient-to-br from-primary/10 via-accent/5 to-background border-2 border-primary/20">
+                <h4 className="text-lg font-bold text-foreground mb-4">Research Summary</h4>
+                <p className="text-foreground/80 leading-relaxed">
+                  This research presents a comprehensive, institutional-grade framework for understanding Bitcoin's 2026 trajectory. Our analysis integrates macro-liquidity dynamics, on-chain intelligence, derivatives positioning, and regulatory developments to construct probability-weighted scenarios.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="p-6 rounded-2xl bg-card border border-border/40">
+                  <h4 className="font-bold text-foreground mb-3">Methodology</h4>
+                  <ul className="space-y-2 text-sm text-foreground/70">
+                    <li>• <GlossaryTerm term="LADM">LADM</GlossaryTerm> for liquidity-price modelling</li>
+                    <li>• <GlossaryTerm term="HMM">HMM</GlossaryTerm> for regime classification</li>
+                    <li>• Entity-adjusted on-chain analysis</li>
+                    <li>• Derivatives flow and positioning data</li>
+                    <li>• ETF creation/redemption tracking</li>
+                  </ul>
+                </div>
+                <div className="p-6 rounded-2xl bg-card border border-border/40">
+                  <h4 className="font-bold text-foreground mb-3">Data Sources</h4>
+                  <ul className="space-y-2 text-sm text-foreground/70">
+                    <li>• Glassnode, CryptoQuant (on-chain)</li>
+                    <li>• Bloomberg, TradingView (price data)</li>
+                    <li>• CME, Deribit (derivatives)</li>
+                    <li>• FRED, ECB (macro indicators)</li>
+                    <li>• SEC filings, ETF issuers (flows)</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="p-6 rounded-2xl bg-gradient-to-br from-muted/30 to-background border border-border/40">
+                <h4 className="text-lg font-bold text-foreground mb-4">Key Conclusions</h4>
+                <div className="space-y-4">
+                  <div className="flex gap-4">
+                    <span className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">1</span>
+                    <p className="text-sm text-foreground/80 leading-relaxed">Bitcoin is now a macro-liquidity asset whose price is governed by M2 dynamics and real-rate trajectories rather than halving cycles.</p>
+                  </div>
+                  <div className="flex gap-4">
+                    <span className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">2</span>
+                    <p className="text-sm text-foreground/80 leading-relaxed">Institutional adoption via ETFs has structurally changed Bitcoin's demand profile and reduced volatility clustering.</p>
+                  </div>
+                  <div className="flex gap-4">
+                    <span className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">3</span>
+                    <p className="text-sm text-foreground/80 leading-relaxed">The probability-weighted institutional target of $138,000 reflects base case expansion with asymmetric upside potential.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <KeyTakeaways insights={[
+              "Bitcoin is a macro-liquidity asset—abandon halving-centric models.",
+              "Institutional adoption has structurally altered demand dynamics.",
+              "Probability-weighted $138k target with asymmetric upside.",
+              "Continuous regime monitoring enables disciplined allocation."
             ]} />
           </ChapterSection>
 
