@@ -149,24 +149,6 @@ const Bitcoin2026ReportPreview = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
             >
-              {/* Language Switcher */}
-              <motion.div
-                className="flex items-center justify-center gap-2 mb-8"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-              >
-                <span className="px-3 py-1.5 rounded-md text-sm font-medium bg-accent/20 text-accent border border-accent/30">
-                  EN
-                </span>
-                <span className="text-zinc-600">|</span>
-                <Link 
-                  to="/bitcoin-2026-report-preview-it"
-                  className="px-3 py-1.5 rounded-md text-sm font-medium text-zinc-400 hover:text-white hover:bg-zinc-800/60 transition-colors"
-                >
-                  IT
-                </Link>
-              </motion.div>
 
               {/* Main Title */}
               <motion.h1 
