@@ -72,8 +72,6 @@ import Bitcoin2026ReportPreviewIT from "./pages/Bitcoin2026ReportPreviewIT";
 import UnderlyingMonitoring from "./pages/UnderlyingMonitoring";
 import CrossPostingAssistant from "./pages/CrossPostingAssistant";
 import InsightsAdmin from "./pages/InsightsAdmin";
-import ReportsPage from "./pages/ReportsPage";
-import ReportDetailPage from "./pages/ReportDetailPage";
 import ResearchHubAdmin from "./pages/ResearchHubAdmin";
 import BitcoinFunnelDashboard from "./pages/BitcoinFunnelDashboard";
 import ETFCertificatesPortfolio from "./pages/ETFCertificatesPortfolio";
@@ -164,8 +162,6 @@ const App = () => (
           
           <Route path="/mazal-innovation" element={<MazalInnovation />} />
           <Route path="/reelimmobiliare" element={<ReelImmobiliare />} />
-          <Route path="/reports" element={<ReportsPage />} />
-          <Route path="/reports/:slug" element={<ReportDetailPage />} />
           <Route path="/AF" element={<ETFCertificatesPortfolio />} />
           <Route path="/press" element={<Press />} />
           <Route path="*" element={<NotFound />} />

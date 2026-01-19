@@ -42,7 +42,6 @@ const Navbar = () => {
       { name: 'Structured Products', path: '/structured-products' },
     ],
     insights: [
-      { name: 'Research Reports', path: '/reports' },
       { name: 'Articles & Analysis', path: '/blog' },
       { name: 'Case Studies', path: '/press' },
       { name: 'Bitcoin 2026 Report', path: '/bitcoin-2026-report-preview' },
@@ -63,7 +62,6 @@ const Navbar = () => {
     { name: 'For LPs', path: '/for-limited-partners' },
     { name: 'Partnerships', path: '/strategic-partnerships' },
     { name: 'Insights', path: '#', section: 'insights' },
-    { name: 'Research Reports', path: '/reports', indent: true },
     { name: 'Articles & Analysis', path: '/blog', indent: true },
     { name: 'Case Studies', path: '/press', indent: true },
     { name: 'Bitcoin 2026 Report', path: '/bitcoin-2026-report-preview', indent: true },
