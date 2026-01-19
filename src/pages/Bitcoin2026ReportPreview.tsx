@@ -150,6 +150,25 @@ const Bitcoin2026ReportPreview = () => {
               transition={{ duration: 0.8 }}
             >
 
+              {/* Bitcoin Logo */}
+              <motion.div
+                className="flex justify-center mb-8"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+              >
+                <div className="relative">
+                  <motion.div
+                    className="w-24 h-24 md:w-28 md:h-28 rounded-full bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center shadow-lg shadow-orange-500/30"
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+                  >
+                    <span className="text-5xl md:text-6xl font-bold text-white">₿</span>
+                  </motion.div>
+                  <div className="absolute -inset-2 rounded-full border border-orange-500/30 animate-pulse" />
+                </div>
+              </motion.div>
+
               {/* Main Title */}
               <motion.h1 
                 className="text-4xl md:text-5xl lg:text-6xl font-black mb-6 leading-tight tracking-tight"
@@ -157,7 +176,7 @@ const Bitcoin2026ReportPreview = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
               >
-                <span className="text-white">Bitcoin Dynamic Allocation</span>
+                <span className="bg-gradient-to-r from-orange-400 via-amber-400 to-orange-500 bg-clip-text text-transparent">Bitcoin Dynamic Allocation</span>
               </motion.h1>
               
               {/* Subtitle */}
