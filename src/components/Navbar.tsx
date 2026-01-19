@@ -45,7 +45,6 @@ const Navbar = () => {
       { name: 'Articles & Analysis', path: '/blog' },
       { name: 'Case Studies', path: '/press' },
       { name: 'Bitcoin Research', path: '/bitcoin-research' },
-      { name: 'Dynamic Allocation', path: '/bitcoin-dynamic-allocation' },
     ],
   };
 
@@ -66,7 +65,6 @@ const Navbar = () => {
     { name: 'Articles & Analysis', path: '/blog', indent: true },
     { name: 'Case Studies', path: '/press', indent: true },
     { name: 'Bitcoin Research', path: '/bitcoin-research', indent: true },
-    { name: 'Dynamic Allocation', path: '/bitcoin-dynamic-allocation', indent: true },
     { name: 'Contact', path: '/contact' },
   ];
 
