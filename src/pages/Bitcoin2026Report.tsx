@@ -25,6 +25,7 @@ import { CorrelationMatrix } from "@/components/CorrelationMatrix";
 import { useBitcoinReportData } from "@/hooks/useBitcoinReportData";
 import { useTwelveDataBtc } from "@/hooks/useTwelveDataBtc";
 import { supabase } from "@/integrations/supabase/client";
+import BitcoinDynamicAllocationHero from "@/components/BitcoinDynamicAllocationHero";
 
 // Glossary definitions
 const glossary: Record<string, string> = {
@@ -528,10 +529,10 @@ const Bitcoin2026Report = () => {
   return (
     <TooltipProvider>
       <Helmet>
-        <title>Bitcoin 2026: Institutional Analysis | ARIES76</title>
+        <title>Bitcoin Dynamic Allocation | ARIES76</title>
         <meta 
           name="description" 
-          content="Comprehensive institutional analysis of Bitcoin's 2026 trajectory through macro-liquidity framework and quantitative modeling." 
+          content="Bitcoin Dynamic Allocation Model: A rules-based decision framework for disciplined Bitcoin capital allocation. Institutional logic, quarterly updates, macro-liquidity analysis." 
         />
       </Helmet>
 
@@ -611,9 +612,9 @@ const Bitcoin2026Report = () => {
               >
               <span className="text-white">Bitcoin</span>
                 <br />
-                <span className="bg-gradient-to-r from-orange-400 via-amber-400 to-orange-500 bg-clip-text text-transparent">Q1 2026</span>
+                <span className="bg-gradient-to-r from-orange-400 via-amber-400 to-orange-500 bg-clip-text text-transparent">Dynamic Allocation</span>
                 <br />
-                <span className="text-3xl md:text-4xl lg:text-5xl text-gray-400 font-medium tracking-wide">Edition</span>
+                <span className="text-3xl md:text-4xl lg:text-5xl text-gray-400 font-medium tracking-wide">Q1 2026 Edition</span>
               </motion.h1>
               
               {/* Subtitle */}
@@ -623,7 +624,7 @@ const Bitcoin2026Report = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
               >
-                Macro-Liquidity Regime Analysis & Quantitative Valuation Framework
+                Rules-Based Decision Framework for Disciplined Bitcoin Capital Allocation
               </motion.p>
 
               {/* Live Bitcoin Price Ticker */}
@@ -853,6 +854,9 @@ const Bitcoin2026Report = () => {
             </div>
           </div>
         </div>
+
+        {/* Bitcoin Dynamic Allocation Positioning Section */}
+        <BitcoinDynamicAllocationHero />
 
         {/* Fear & Greed Index Section */}
         <div className="container max-w-6xl mx-auto px-6 pt-8">
