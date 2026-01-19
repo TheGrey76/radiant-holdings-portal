@@ -1,57 +1,37 @@
-// Bitcoin 2026 - Preview Page with HARD GATING
+// Bitcoin Dynamic Allocation - Live Models Preview Page
 import { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { 
   ArrowRight,
   Loader2,
-  Lock,
-  TrendingUp,
-  BarChart3,
-  Layers,
-  Database,
-  Activity,
-  Coins,
-  Network,
-  Target,
-  LineChart,
   Shield,
-  Globe,
-  Scale,
-  Calendar,
-  Zap,
-  AlertTriangle,
-  GitBranch,
-  LogOut,
-  ArrowUp
+  Target,
+  TrendingUp,
+  RefreshCw,
+  CheckCircle2,
+  Sparkles
 } from 'lucide-react';
-import { FearGreedIndex } from '@/components/FearGreedIndex';
-import { useBitcoinReportData } from '@/hooks/useBitcoinReportData';
-import { useTwelveDataBtc } from '@/hooks/useTwelveDataBtc';
 import { Link } from 'react-router-dom';
 
 const Bitcoin2026ReportPreview = () => {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { data: bitcoinData, loading: bitcoinLoading } = useBitcoinReportData();
-  const { data: twelveData, isLoading: twelveLoading } = useTwelveDataBtc();
 
   const handleAccessRequest = async () => {
     if (!email || !email.includes('@')) {
-      toast.error('Please enter a valid professional email address');
+      toast.error('Please enter a valid email address');
       return;
     }
 
     setIsLoading(true);
     try {
-      // Save email to localStorage BEFORE redirecting to Stripe
       localStorage.setItem('bitcoin_report_email', email.toLowerCase().trim());
       
-      // Get source from URL params if available
       const urlParams = new URLSearchParams(window.location.search);
       const source = urlParams.get('src') || 'direct';
       
@@ -78,210 +58,102 @@ const Bitcoin2026ReportPreview = () => {
     }
   };
 
-  // Chapter definitions with icons
-  const chapters = [
-    { id: "chapter-1", number: "I", title: "Executive Summary & Macro Analysis", icon: TrendingUp },
-    { id: "chapter-2", number: "II", title: "Advanced Price Framework", icon: BarChart3 },
-    { id: "chapter-3", number: "III", title: "Quantitative Regime Models", icon: Layers },
-    { id: "chapter-4", number: "IV", title: "ETF Flow Dynamics & Market Microstructure", icon: Network },
-    { id: "chapter-5", number: "V", title: "On-Chain Analytics & Entity Behavior", icon: Database },
-    { id: "chapter-6", number: "VI", title: "Derivatives Markets & Positioning", icon: Activity },
-    { id: "chapter-7", number: "VII", title: "Mining Economics & Hashrate Analysis", icon: Coins },
-    { id: "chapter-8", number: "VIII", title: "Supply Dynamics & Long-Term Holders", icon: LineChart },
-    { id: "chapter-9", number: "IX", title: "Scenario Analysis & Risk Framework", icon: Target },
-    { id: "chapter-10", number: "X", title: "2026 Price Targets & Investment Implications", icon: TrendingUp },
-    { id: "chapter-11", number: "XI", title: "Risk Management Framework", icon: Shield },
-    { id: "chapter-12", number: "XII", title: "Cross-Asset Correlations", icon: GitBranch },
-    { id: "chapter-13", number: "XIII", title: "Regulatory Landscape 2026", icon: Scale },
-    { id: "chapter-14", number: "XIV", title: "Institutional Adoption Metrics", icon: Globe },
-    { id: "chapter-15", number: "XV", title: "Macro Calendar & Key Dates 2026", icon: Calendar },
-    { id: "chapter-16", number: "XVI", title: "Geopolitical Risk Analysis", icon: AlertTriangle },
-    { id: "chapter-17", number: "XVII", title: "Historical Cycle Comparison", icon: Activity },
-    { id: "chapter-18", number: "XVIII", title: "Exit Strategy Framework", icon: LogOut },
-    { id: "chapter-19", number: "XIX", title: "Lightning Network & Layer 2", icon: Zap },
-  ];
+  // Allocation Model Card Component
+  const AllocationModelCard = ({ 
+    name, 
+    objective, 
+    status, 
+    statusColor 
+  }: { 
+    name: string; 
+    objective: string; 
+    status: string;
+    statusColor: 'low' | 'medium' | 'high';
+  }) => {
+    const statusColors = {
+      low: 'text-emerald-400 bg-emerald-400/10 border-emerald-400/30',
+      medium: 'text-amber-400 bg-amber-400/10 border-amber-400/30',
+      high: 'text-orange-400 bg-orange-400/10 border-orange-400/30'
+    };
 
-  // Email Gate Component (No pricing displayed)
-  const EmailGate = () => (
-    <motion.div 
-      className="relative overflow-hidden rounded-2xl border border-accent/20 bg-gradient-to-b from-zinc-900/95 to-zinc-950"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5 }}
-    >
-      {/* Subtle glow */}
-      <div className="absolute -inset-px bg-gradient-to-r from-accent/20 via-transparent to-accent/20 rounded-2xl opacity-50" />
-      
-      <div className="relative p-8 md:p-12">
-        <div className="max-w-xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/20 mb-6">
-            <Lock className="w-4 h-4 text-accent" />
-            <span className="text-sm font-medium text-accent">Full Access Required</span>
-          </div>
-          
-          <h3 className="text-2xl md:text-3xl font-semibold text-white mb-4">
-            Request full access to the Bitcoin 2026 live intelligence page
-          </h3>
-          
-          <p className="text-sm text-zinc-400 mb-4">
-            Continuous updates · Real-time data · Full decision framework
-          </p>
-          
-          {/* Price */}
-          <div className="mb-8 py-4 border-y border-zinc-700/60">
-            <div className="text-4xl font-semibold text-white tracking-tight">€99</div>
-            <p className="text-sm text-zinc-400 mt-1">One-time payment · Ongoing updates included</p>
-          </div>
-          
-          <div className="space-y-4 max-w-sm mx-auto">
-            <Input
-              type="email"
-              placeholder="Professional email address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="bg-zinc-800/50 border-zinc-600 text-white placeholder:text-zinc-400 focus:border-accent focus:ring-accent/30 h-12 text-center"
-            />
-            <Button 
-              onClick={handleAccessRequest}
-              disabled={isLoading}
-              className="w-full bg-accent hover:bg-accent/90 text-white font-medium h-12 transition-all duration-300"
-            >
-              {isLoading ? (
-                <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Processing...
-                </>
-              ) : (
-                <>
-                  Request full access
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </>
-              )}
-            </Button>
-          </div>
-          
-          <p className="text-xs text-zinc-500 mt-6">
-            No newsletters · No spam · Access-related communications only
-          </p>
-        </div>
-      </div>
-    </motion.div>
-  );
-
-  // Locked Content Placeholder (Investment Implications style)
-  const LockedSection = ({ title, description }: { title: string; description: string }) => (
-    <motion.div 
-      className="relative rounded-xl border border-zinc-800/60 bg-zinc-900/30 overflow-hidden"
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true }}
-    >
-      {/* Subtle blur overlay */}
-      <div className="absolute inset-0 backdrop-blur-[2px] bg-zinc-950/40 z-10" />
-      
-      <div className="relative z-20 p-8 md:p-12 text-center">
-        <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-zinc-700/50 mb-4">
-          <Lock className="w-5 h-5 text-zinc-400" />
+    return (
+      <motion.div 
+        className="relative rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 hover:border-zinc-700 transition-colors"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="mb-4">
+          <h4 className="text-lg font-semibold text-white mb-1">{name}</h4>
+          <p className="text-sm text-zinc-400">{objective}</p>
         </div>
         
-        <h4 className="text-xl font-semibold text-white mb-3">{title}</h4>
+        <div className="mb-4">
+          <span className="text-xs text-zinc-500 uppercase tracking-wider">Current Status</span>
+          <div className={`mt-2 inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium border ${statusColors[statusColor]}`}>
+            {status}
+          </div>
+        </div>
         
-        <p className="text-zinc-400 text-sm max-w-md mx-auto mb-2">
-          {description}
+        <p className="text-xs text-zinc-500 italic">
+          Full allocation ranges and targets available with access
         </p>
-        
-        <p className="text-zinc-300 text-sm max-w-md mx-auto mb-6">
-          Full access is required to view this content.
-        </p>
-        
-        <Button 
-          variant="outline" 
-          size="sm"
-          onClick={() => document.getElementById('email-gate')?.scrollIntoView({ behavior: 'smooth' })}
-          className="border-accent/30 text-accent hover:bg-accent/10"
-        >
-          Request full access
-          <ArrowRight className="w-4 h-4 ml-2" />
-        </Button>
-      </div>
-    </motion.div>
-  );
+      </motion.div>
+    );
+  };
 
   return (
     <>
       <Helmet>
-        <title>Bitcoin Q1 2026 Edition | Institutional Research | ARIES76</title>
-        <meta name="description" content="A continuously updated Bitcoin intelligence page for long-term decision makers. Real-time price data, key statistics, and evolving strategic context." />
+        <title>Bitcoin Dynamic Allocation – Live Models | ARIES76</title>
+        <meta name="description" content="A rules-based framework to observe how Bitcoin exposure evolves over time. Not a report. Not advice. A live reference model updated quarterly." />
         
-        <meta property="og:title" content="Bitcoin Q1 2026 | Live Institutional Research" />
-        <meta property="og:description" content="Continuously updated Bitcoin intelligence with real-time data and macro-liquidity framework analysis." />
+        <meta property="og:title" content="Bitcoin Dynamic Allocation – Live Models" />
+        <meta property="og:description" content="A rules-based framework to observe how Bitcoin exposure evolves over time." />
         <meta property="og:image" content="https://aries76.com/bitcoin-2026-og.png" />
         <meta property="og:url" content="https://aries76.com/bitcoin-2026-report-preview" />
         <meta property="og:type" content="website" />
         
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Bitcoin Q1 2026 | ARIES76" />
-        <meta name="twitter:description" content="Live Bitcoin intelligence for institutional decision makers." />
+        <meta name="twitter:title" content="Bitcoin Dynamic Allocation | ARIES76" />
+        <meta name="twitter:description" content="A rules-based framework to observe how Bitcoin exposure evolves over time." />
         <meta name="twitter:image" content="https://aries76.com/bitcoin-2026-og.png" />
       </Helmet>
 
       <div className="min-h-screen bg-zinc-950">
         
-        {/* ===== HERO SECTION ===== */}
+        {/* ===== SECTION 1: HERO ===== */}
         <section className="relative overflow-hidden border-b border-zinc-800/40">
           {/* Background */}
           <div className="absolute inset-0 bg-gradient-to-br from-[#0d1117] via-[#161b22] to-[#0d1117]" />
           
           {/* Grid pattern */}
-          <div className="absolute inset-0 opacity-20">
+          <div className="absolute inset-0 opacity-15">
             <div className="absolute inset-0" style={{
               backgroundImage: `
                 linear-gradient(rgba(247, 147, 26, 0.1) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(247, 147, 26, 0.1) 1px, transparent 1px)
               `,
-              backgroundSize: '60px 60px'
+              backgroundSize: '80px 80px'
             }} />
           </div>
           
           {/* Glowing orbs */}
-          <div className="absolute top-1/4 -left-20 w-80 h-80 bg-orange-500/20 rounded-full blur-[100px] animate-pulse" />
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-[120px]" />
+          <div className="absolute top-1/4 -left-20 w-80 h-80 bg-orange-500/15 rounded-full blur-[100px]" />
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-amber-500/8 rounded-full blur-[120px]" />
           
-          {/* Bitcoin symbol */}
-          <motion.div 
-            className="absolute top-1/2 right-[10%] -translate-y-1/2 hidden lg:block"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 0.3 }}
-          >
-            <div className="relative">
-              <motion.div
-                className="w-48 h-48 rounded-full border-2 border-orange-500/30 flex items-center justify-center"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-              >
-                <div className="absolute inset-4 rounded-full border border-orange-500/20" />
-                <div className="absolute inset-8 rounded-full border border-dashed border-orange-500/15" />
-              </motion.div>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-7xl font-bold text-orange-500/80">₿</span>
-              </div>
-            </div>
-          </motion.div>
-          
-          <div className="container max-w-6xl mx-auto px-6 py-24 md:py-32 relative z-10">
-            <motion.div 
-              className="max-w-3xl"
+          <div className="container max-w-4xl mx-auto px-6 py-24 md:py-32 relative z-10 text-center">
+            <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
             >
               {/* Language Switcher */}
               <motion.div
-                className="flex items-center gap-2 mb-6"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
+                className="flex items-center justify-center gap-2 mb-8"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
               >
                 <span className="px-3 py-1.5 rounded-md text-sm font-medium bg-accent/20 text-accent border border-accent/30">
@@ -295,336 +167,303 @@ const Bitcoin2026ReportPreview = () => {
                   IT
                 </Link>
               </motion.div>
-              {/* Badge */}
-              <motion.div 
-                className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-gradient-to-r from-orange-500/20 to-amber-500/10 border border-orange-500/30 mb-8 backdrop-blur-sm"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-              >
-                <div className="relative">
-                  <div className="w-2.5 h-2.5 rounded-full bg-orange-500" />
-                  <div className="absolute inset-0 w-2.5 h-2.5 rounded-full bg-orange-500 animate-ping" />
-                </div>
-                <span className="text-sm font-semibold text-orange-400 uppercase tracking-wider">Institutional Research</span>
-              </motion.div>
-              
-              {/* Title */}
+
+              {/* Main Title */}
               <motion.h1 
-                className="text-5xl md:text-6xl lg:text-7xl font-black mb-6 leading-[0.9] tracking-tight"
+                className="text-4xl md:text-5xl lg:text-6xl font-black mb-6 leading-tight tracking-tight"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.3 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
               >
-                <span className="text-white">Bitcoin</span>
-                <br />
-                <span className="bg-gradient-to-r from-orange-400 via-amber-400 to-orange-500 bg-clip-text text-transparent">Q1 2026</span>
-                <br />
-                <span className="text-2xl md:text-3xl text-zinc-300 font-medium tracking-wide">Edition</span>
+                <span className="text-white">Bitcoin Dynamic Allocation</span>
               </motion.h1>
               
               {/* Subtitle */}
               <motion.p 
-                className="text-lg md:text-xl text-zinc-100 mb-4 leading-relaxed max-w-2xl"
+                className="text-lg md:text-xl text-zinc-300 mb-4 max-w-2xl mx-auto"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+              >
+                A rules-based framework to observe how Bitcoin exposure evolves over time
+              </motion.p>
+              
+              {/* Micro text */}
+              <motion.p 
+                className="text-base text-zinc-500 mb-3"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
               >
-                A continuously updated Bitcoin intelligence page for long-term decision makers.
+                Not a report. Not advice.
               </motion.p>
               
               <motion.p 
-                className="text-sm text-zinc-400 mb-8"
+                className="text-base text-zinc-400 mb-10"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.45 }}
               >
-                This is not a PDF and not a static report.
+                A live reference model updated quarterly.
               </motion.p>
 
-              {/* Live Bitcoin Price */}
-              <motion.div
-                className="mb-10"
+              {/* Micro-framing */}
+              <motion.p 
+                className="text-sm text-zinc-500 italic mb-10"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.5 }}
               >
-                <div className="inline-flex items-center gap-4 px-6 py-4 rounded-2xl bg-gradient-to-r from-orange-500/10 via-amber-500/5 to-orange-500/10 border border-orange-500/20 backdrop-blur-md">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-orange-500/20 flex items-center justify-center">
-                      <span className="text-xl font-bold text-orange-400">₿</span>
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="text-xs text-zinc-400 uppercase tracking-wider">Live Price</span>
-                      <AnimatePresence mode="wait">
-                        {(twelveLoading && bitcoinLoading) ? (
-                          <motion.div
-                            key="loading"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            className="h-8 w-32 bg-zinc-700/50 rounded animate-pulse"
-                          />
-                        ) : (
-                          <motion.span
-                            key={twelveData?.bitcoin_price_usd || bitcoinData?.bitcoin_price_usd}
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -10 }}
-                            className="text-2xl font-bold text-white tabular-nums"
-                          >
-                            ${(twelveData?.bitcoin_price_usd || bitcoinData?.bitcoin_price_usd)?.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) || '---'}
-                          </motion.span>
-                        )}
-                      </AnimatePresence>
-                    </div>
-                  </div>
-                  <div className="w-px h-10 bg-orange-500/20" />
-                  <div className="flex flex-col">
-                    <span className="text-xs text-zinc-400 uppercase tracking-wider">EUR</span>
-                    <span className="text-lg font-semibold text-zinc-100 tabular-nums">
-                      €{(twelveData?.bitcoin_price_eur || bitcoinData?.bitcoin_price_eur)?.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) || '---'}
-                    </span>
-                  </div>
-                  {/* 24h Change */}
-                  {(twelveData?.change_24h !== undefined && twelveData?.change_24h !== null) && (
-                    <div className={`flex items-center gap-1 px-2 py-1 rounded-md ${
-                      twelveData.change_24h >= 0 ? 'bg-green-500/10' : 'bg-red-500/10'
-                    }`}>
-                      <ArrowUp className={`w-3.5 h-3.5 ${twelveData.change_24h >= 0 ? 'text-green-400' : 'text-red-400 rotate-180'}`} />
-                      <span className={`text-sm font-semibold tabular-nums ${twelveData.change_24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                        {Math.abs(twelveData.change_24h).toFixed(2)}%
-                      </span>
-                    </div>
-                  )}
-                  <div className="hidden sm:flex items-center gap-2 ml-2">
-                    <div className="relative">
-                      <div className="w-2 h-2 rounded-full bg-green-500" />
-                      <div className="absolute inset-0 w-2 h-2 rounded-full bg-green-500 animate-ping" />
-                    </div>
-                    <span className="text-xs text-green-400">LIVE</span>
-                  </div>
-                </div>
-              </motion.div>
+                Designed for investors who want structure, not predictions.
+              </motion.p>
 
-              {/* Live data indicator */}
-              <motion.div 
-                className="flex items-center gap-6"
+              {/* Hero CTA */}
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
+                transition={{ duration: 0.8, delay: 0.55 }}
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-1.5 h-8 bg-gradient-to-b from-orange-500 to-amber-500 rounded-full" />
-                  <div>
-                    <span className="text-sm font-semibold text-white">ARIES76</span>
-                    <span className="text-sm text-zinc-400 ml-2">Capital Intelligence</span>
-                  </div>
-                </div>
-                <div className="hidden sm:flex items-center gap-2 text-sm text-zinc-400">
-                  <Calendar className="w-4 h-4" />
-                  <span>Q1 2026 Edition</span>
-                </div>
+                <Button 
+                  size="lg"
+                  onClick={() => document.getElementById('access-section')?.scrollIntoView({ behavior: 'smooth' })}
+                  className="bg-accent hover:bg-accent/90 text-white font-medium h-14 px-8 text-base"
+                >
+                  Get 12-month access – €99
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </Button>
               </motion.div>
             </motion.div>
           </div>
-          
-          {/* Bottom fade */}
-          <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-zinc-950 to-transparent" />
         </section>
 
-        {/* Live Data Banner */}
-        <div className="bg-gradient-to-r from-green-500/10 via-accent/10 to-green-500/10 border-y border-green-500/30">
-          <div className="container max-w-6xl mx-auto px-6 py-4">
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
-              <div className="flex items-center gap-2">
-                <div className="relative">
-                  <div className="w-3 h-3 rounded-full bg-green-500" />
-                  <div className="absolute inset-0 w-3 h-3 rounded-full bg-green-500 animate-ping" />
-                </div>
-                <span className="text-sm font-semibold text-green-400 uppercase tracking-wider">Live Data Report</span>
-              </div>
-              <span className="hidden sm:block text-zinc-500">•</span>
-              <div className="flex items-center gap-2">
-                <Activity className="w-4 h-4 text-accent" />
-                <span className="text-sm text-zinc-100">
-                  Data updated daily at 6:00 AM CET
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* ===== CONTENT AREA ===== */}
-        <div className="container max-w-6xl mx-auto px-6 py-16">
-          
-          {/* ===== FEAR & GREED INDEX (VISIBLE IN PREVIEW) ===== */}
-          <motion.section 
-            className="mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <div className="max-w-md [&_.bg-card\/50]:bg-zinc-800/80 [&_.text-muted-foreground]:text-zinc-300 [&_.border-border]:border-zinc-600 [&_.bg-muted]:bg-zinc-700 [&_.text-foreground]:text-white [&_.bg-primary]:bg-accent [&_.text-primary]:text-accent">
-              <FearGreedIndex />
-            </div>
-          </motion.section>
-
-
-          {/* ===== EXECUTIVE SUMMARY (HARD GATED) ===== */}
-          <motion.section 
-            className="mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <div className="bg-gradient-to-br from-accent/10 via-accent/5 to-transparent rounded-xl p-8 md:p-10 border border-accent/20">
-              <h2 className="text-2xl md:text-3xl font-bold text-white mb-8 flex items-center gap-3">
-                <span className="text-accent">Executive Summary</span>
+        {/* ===== SECTION 2: WHAT THIS IS ===== */}
+        <section className="py-20 md:py-28 border-b border-zinc-800/40">
+          <div className="container max-w-3xl mx-auto px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <h2 className="text-2xl md:text-3xl font-bold text-white mb-8">
+                What you are accessing
               </h2>
               
-              <div className="space-y-6">
-                {/* Bullet 1 - FULLY VISIBLE */}
-                <div className="flex gap-4">
-                  <span className="flex-shrink-0 w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center text-accent font-bold text-sm">1</span>
-                  <p className="text-zinc-100 leading-relaxed">
-                    Bitcoin's 2026 trajectory is NOT driven by halving cycles—it's governed by global M2 liquidity impulses and real-rate dynamics. Our proprietary macro-liquidity framework reveals that marginal M2 acceleration produces convex upside responses while stagnation triggers volatility spikes.
-                  </p>
-                </div>
+              <div className="space-y-6 text-zinc-300 leading-relaxed">
+                <p>
+                  This is not a PDF you download once and forget. It's not a price prediction dressed up as research, and it's certainly not financial advice tailored to your specific situation.
+                </p>
                 
-                {/* Bullet 2 - TRUNCATED after one sentence */}
-                <div className="flex gap-4">
-                  <span className="flex-shrink-0 w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center text-accent font-bold text-sm">2</span>
-                  <p className="text-zinc-100 leading-relaxed">
-                    With real rates compressing toward neutral (0-1% range by mid-2026) and Fed balance-sheet normalization decelerating, Bitcoin faces a macro backdrop comparable to Q4 2020.
-                    <span className="text-zinc-500">...</span>
-                  </p>
-                </div>
+                <p>
+                  What you're accessing is a <span className="text-white font-medium">dynamic, continuously updated page</span> that tracks how a rules-based allocation framework behaves over time. The data refreshes. The target levels evolve. The models adapt to changing market conditions—automatically, transparently, and without emotional interference.
+                </p>
                 
-                {/* Bullet 3 - COMPLETELY HIDDEN */}
-              </div>
-              
-              {/* MANDATORY TEXT (verbatim) */}
-              <div className="mt-8 pt-6 border-t border-zinc-700/60">
-                <p className="text-sm text-zinc-300">
-                  The full macro-liquidity framework, scenario probabilities, and valuation architecture are available only with full access.
+                <p>
+                  The AI behind this system maintains consistency in the framework's logic. It doesn't make decisions for you. It provides a stable reference point—a disciplined lens through which to view Bitcoin allocation, updated quarterly with fresh data and recalibrated thresholds.
+                </p>
+                
+                <p className="text-zinc-400 border-l-2 border-accent/40 pl-4 italic">
+                  When you purchase access, you're not buying a file. You're buying ongoing access to a living model.
                 </p>
               </div>
-            </div>
-          </motion.section>
-
-          {/* ===== INVESTMENT IMPLICATIONS (FULL LOCK) ===== */}
-          <motion.section 
-            className="mb-8"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <LockedSection 
-              title="Investment Implications" 
-              description="This section contains allocation frameworks and regime-based decision logic."
-            />
-          </motion.section>
-
-          {/* ===== CTA IMMEDIATELY AFTER FIRST LOCKED SECTION (NON-OPTIONAL) ===== */}
-          <section id="email-gate" className="mb-16 scroll-mt-24">
-            <EmailGate />
-          </section>
-
-          {/* ===== TABLE OF CONTENTS (PROMISE ONLY) ===== */}
-          <motion.section 
-            className="mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <div className="bg-zinc-900/70 rounded-xl border border-zinc-700/60 p-8">
-              <h3 className="text-xl font-semibold text-white mb-6">Table of Contents</h3>
-              
-              <div className="grid gap-3">
-                {chapters.map((chapter) => {
-                  const IconComponent = chapter.icon;
-                  return (
-                    <div 
-                      key={chapter.id}
-                      className="flex items-center gap-4 p-3 rounded-lg bg-zinc-800/40 border border-zinc-700/40 opacity-60 cursor-not-allowed"
-                    >
-                      <div className="flex items-center gap-3 flex-1">
-                        <span className="text-sm font-mono text-zinc-500 w-8">{chapter.number}</span>
-                        <IconComponent className="w-4 h-4 text-zinc-500" />
-                        <span className="text-sm text-zinc-400">{chapter.title}</span>
-                      </div>
-                      <Lock className="w-4 h-4 text-zinc-500" />
-                    </div>
-                  );
-                })}
-              </div>
-              
-              {/* MANDATORY TEXT (verbatim) */}
-              <div className="mt-6 pt-6 border-t border-zinc-700/60">
-                <p className="text-sm text-zinc-300">
-                  This page includes 19 institutional chapters available only with full access.
-                </p>
-              </div>
-            </div>
-          </motion.section>
-
-          {/* ===== ADVANCED FRAMEWORKS - LOCKED PLACEHOLDER BLOCKS ===== */}
-          <div className="space-y-8 mb-16">
-            <LockedSection 
-              title="Advanced Price Framework" 
-              description="This section contains quantitative pricing models and technical architecture."
-            />
-            <LockedSection 
-              title="Quantitative Regime Models" 
-              description="This section contains proprietary regime classification and transition matrices."
-            />
-            <LockedSection 
-              title="Scenario Analysis" 
-              description="This section contains probability-weighted scenario outcomes and sensitivity analysis."
-            />
-            <LockedSection 
-              title="Risk Framework" 
-              description="This section contains risk metrics, drawdown analysis, and position sizing logic."
-            />
-            <LockedSection 
-              title="2026 Price Targets" 
-              description="This section contains base, bull, and bear case price projections with underlying assumptions."
-            />
-            <LockedSection 
-              title="Allocation Logic" 
-              description="This section contains portfolio construction frameworks and rebalancing triggers."
-            />
+            </motion.div>
           </div>
+        </section>
 
-          {/* ===== FINAL POSITIONING LINE (MANDATORY) ===== */}
-          <motion.section 
-            className="text-center py-16 border-t border-zinc-700/40"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-          >
-            <p className="text-lg text-zinc-300 max-w-xl mx-auto">
-              This page is intentionally incomplete.
-            </p>
-            <p className="text-lg text-zinc-100 font-medium mt-2 max-w-xl mx-auto">
-              Full access is required to make informed decisions.
-            </p>
-          </motion.section>
-
-        </div>
-
-        {/* Footer */}
-        <footer className="border-t border-zinc-700/40 py-8">
-          <div className="container max-w-6xl mx-auto px-6">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-              <div className="text-sm text-zinc-400">
-                © 2026 ARIES76 Capital Intelligence
-              </div>
-              <div className="text-xs text-zinc-500">
-                Not financial advice. For institutional and professional investors only.
-              </div>
+        {/* ===== SECTION 3: STANDARD ALLOCATION MODELS ===== */}
+        <section className="py-20 md:py-28 border-b border-zinc-800/40 bg-zinc-900/20">
+          <div className="container max-w-5xl mx-auto px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-12"
+            >
+              <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+                Standard Allocation Models – Current Status
+              </h2>
+              <p className="text-zinc-400 max-w-2xl mx-auto">
+                Three distinct models for different risk profiles, each with their own rules and thresholds.
+              </p>
+            </motion.div>
+            
+            <div className="grid md:grid-cols-3 gap-6">
+              <AllocationModelCard 
+                name="Conservative Allocation Model"
+                objective="Exposure control"
+                status="Low Exposure"
+                statusColor="low"
+              />
+              
+              <AllocationModelCard 
+                name="Balanced Allocation Model"
+                objective="Cycle-aware participation"
+                status="Medium Exposure"
+                statusColor="medium"
+              />
+              
+              <AllocationModelCard 
+                name="Aggressive Allocation Model"
+                objective="Asymmetric long-term exposure"
+                status="High Exposure"
+                statusColor="high"
+              />
             </div>
+          </div>
+        </section>
+
+        {/* ===== SECTION 4: HOW THE MODELS WORK ===== */}
+        <section className="py-20 md:py-28 border-b border-zinc-800/40">
+          <div className="container max-w-3xl mx-auto px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <h2 className="text-2xl md:text-3xl font-bold text-white mb-8">
+                How these models behave
+              </h2>
+              
+              <div className="space-y-6 text-zinc-300 leading-relaxed">
+                <p>
+                  Each model operates on a shared set of fundamental rules. They observe price levels, measure volatility regimes, and track drawdown thresholds. But each model applies these inputs differently—calibrated for its specific risk tolerance and time horizon.
+                </p>
+                
+                <p>
+                  The framework is designed for <span className="text-white font-medium">multi-year horizons</span>. It doesn't chase headlines or react to daily noise. News events, Twitter drama, and short-term speculation are explicitly excluded from the decision logic.
+                </p>
+                
+                <p>
+                  Updates happen <span className="text-white font-medium">quarterly</span>. Each revision recalibrates target levels based on realized data—not forecasts, not opinions. The goal is consistency: a stable reference that you can return to without wondering if the rules changed overnight.
+                </p>
+                
+                <p>
+                  Crucially, these are <span className="text-white font-medium">observation models, not trading signals</span>. There are no buy or sell alerts. No notifications telling you what to do. The framework shows you where the model stands; what you do with that information is entirely your decision.
+                </p>
+              </div>
+
+              {/* Key characteristics */}
+              <div className="mt-10 grid sm:grid-cols-2 gap-4">
+                <div className="flex items-start gap-3 p-4 rounded-lg bg-zinc-800/30 border border-zinc-700/50">
+                  <RefreshCw className="w-5 h-5 text-accent mt-0.5 shrink-0" />
+                  <div>
+                    <p className="text-sm font-medium text-white">Quarterly Updates</p>
+                    <p className="text-xs text-zinc-400">Models recalibrate every quarter</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start gap-3 p-4 rounded-lg bg-zinc-800/30 border border-zinc-700/50">
+                  <Target className="w-5 h-5 text-accent mt-0.5 shrink-0" />
+                  <div>
+                    <p className="text-sm font-medium text-white">Rules-Based Logic</p>
+                    <p className="text-xs text-zinc-400">No discretionary overrides</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start gap-3 p-4 rounded-lg bg-zinc-800/30 border border-zinc-700/50">
+                  <Shield className="w-5 h-5 text-accent mt-0.5 shrink-0" />
+                  <div>
+                    <p className="text-sm font-medium text-white">No Trading Signals</p>
+                    <p className="text-xs text-zinc-400">Observation only, your decisions</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start gap-3 p-4 rounded-lg bg-zinc-800/30 border border-zinc-700/50">
+                  <TrendingUp className="w-5 h-5 text-accent mt-0.5 shrink-0" />
+                  <div>
+                    <p className="text-sm font-medium text-white">Multi-Year Horizon</p>
+                    <p className="text-xs text-zinc-400">Built for patient capital</p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ===== SECTION 5: PRICING & ACCESS ===== */}
+        <section id="access-section" className="py-20 md:py-28">
+          <div className="container max-w-2xl mx-auto px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-center"
+            >
+              <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+                Simple access. No tiers.
+              </h2>
+              
+              <div className="mt-8 p-8 md:p-10 rounded-2xl border border-zinc-800 bg-zinc-900/50">
+                <div className="mb-6">
+                  <span className="text-5xl md:text-6xl font-bold text-white">€99</span>
+                  <p className="text-zinc-400 mt-2">12 months access</p>
+                </div>
+                
+                <div className="space-y-3 text-sm text-zinc-300 mb-8">
+                  <div className="flex items-center justify-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                    <span>All three allocation models</span>
+                  </div>
+                  <div className="flex items-center justify-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                    <span>All quarterly updates</span>
+                  </div>
+                  <div className="flex items-center justify-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                    <span>All future revisions</span>
+                  </div>
+                </div>
+                
+                <div className="space-y-4 max-w-sm mx-auto">
+                  <Input
+                    type="email"
+                    placeholder="Your email address"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="bg-zinc-800/50 border-zinc-600 text-white placeholder:text-zinc-500 focus:border-accent focus:ring-accent/30 h-12 text-center"
+                    onKeyDown={(e) => e.key === 'Enter' && handleAccessRequest()}
+                  />
+                  <Button 
+                    onClick={handleAccessRequest}
+                    disabled={isLoading}
+                    className="w-full bg-accent hover:bg-accent/90 text-white font-medium h-12 transition-all duration-300"
+                  >
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        Processing...
+                      </>
+                    ) : (
+                      <>
+                        Unlock the allocation framework
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </>
+                    )}
+                  </Button>
+                </div>
+                
+                <p className="text-xs text-zinc-500 mt-6">
+                  One-time payment. No subscription. No hidden fees.
+                </p>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ===== FOOTER ===== */}
+        <footer className="border-t border-zinc-800/40 py-12">
+          <div className="container max-w-4xl mx-auto px-6 text-center">
+            <p className="text-xs text-zinc-500 leading-relaxed max-w-2xl mx-auto">
+              This content is provided for informational purposes only and does not constitute financial, investment, or legal advice. 
+              Past performance is not indicative of future results. Bitcoin is a highly volatile asset. 
+              Always consult with a qualified financial advisor before making investment decisions.
+            </p>
+            <p className="text-xs text-zinc-600 mt-6">
+              © 2026 ARIES76. All rights reserved.
+            </p>
           </div>
         </footer>
       </div>
