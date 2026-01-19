@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
 export interface AllocationModel {
@@ -38,10 +38,14 @@ export function useBitcoinAllocationModels() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
+  const hasFetched = useRef(false);
 
-  const fetchData = async () => {
+  const fetchData = async (isInitial = false) => {
     try {
-      setLoading(true);
+      // Only show loading on initial fetch
+      if (isInitial) {
+        setLoading(true);
+      }
       
       // Fetch allocation models
       const { data: modelsData, error: modelsError } = await supabase
@@ -84,46 +88,11 @@ export function useBitcoinAllocationModels() {
   };
 
   useEffect(() => {
-    fetchData();
-
-    // Subscribe to real-time changes for models
-    const modelsChannel = supabase
-      .channel('allocation-models-changes')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'bitcoin_allocation_models'
-        },
-        (payload) => {
-          console.log('Allocation models updated:', payload);
-          fetchData();
-        }
-      )
-      .subscribe();
-
-    // Subscribe to commentary changes
-    const commentaryChannel = supabase
-      .channel('commentary-changes')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'bitcoin_quarterly_commentary'
-        },
-        (payload) => {
-          console.log('Commentary updated:', payload);
-          fetchData();
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(modelsChannel);
-      supabase.removeChannel(commentaryChannel);
-    };
+    // Prevent double fetch in development mode
+    if (hasFetched.current) return;
+    hasFetched.current = true;
+    
+    fetchData(true);
   }, []);
 
   // Helper to get model by name
@@ -147,7 +116,7 @@ export function useBitcoinAllocationModels() {
     loading,
     error,
     lastUpdate,
-    refetch: fetchData,
+    refetch: () => fetchData(false),
     getModel,
     getCurrentQuarter,
   };
