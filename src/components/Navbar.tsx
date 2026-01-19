@@ -44,7 +44,8 @@ const Navbar = () => {
     insights: [
       { name: 'Articles & Analysis', path: '/blog' },
       { name: 'Case Studies', path: '/press' },
-      { name: 'Bitcoin 2026 Report', path: '/bitcoin-2026-report-preview' },
+      { name: 'Bitcoin Dynamic Allocation', path: '/bitcoin-2026-report-preview' },
+      { name: 'Bitcoin Research (Free)', path: '/bitcoin-research' },
     ],
   };
 
@@ -64,7 +65,8 @@ const Navbar = () => {
     { name: 'Insights', path: '#', section: 'insights' },
     { name: 'Articles & Analysis', path: '/blog', indent: true },
     { name: 'Case Studies', path: '/press', indent: true },
-    { name: 'Bitcoin 2026 Report', path: '/bitcoin-2026-report-preview', indent: true },
+    { name: 'Bitcoin Dynamic Allocation', path: '/bitcoin-2026-report-preview', indent: true },
+    { name: 'Bitcoin Research (Free)', path: '/bitcoin-research', indent: true },
     { name: 'Contact', path: '/contact' },
   ];
 
