@@ -51,7 +51,7 @@ import MazalInnovation from "./pages/MazalInnovation";
 import ReelImmobiliare from "./pages/ReelImmobiliare";
 import WhyChooseAries from "./pages/WhyChooseAries";
 import LeadershipTeam from "./pages/LeadershipTeam";
-import VettaFiProposal from "./pages/VettaFiProposal";
+
 import AlkemiaPraesidiumProposal from "./pages/AlkemiaPraesidiumProposal";
 import AssetGUProposal from "./pages/AssetGUProposal";
 import AssetGUAccess from "./pages/AssetGUAccess";
@@ -125,8 +125,6 @@ const App = () => (
           <Route path="/advisory/:slug" element={<AdvisoryDocument />} />
           <Route path="/financial-advisers" element={<FinancialAdvisersPortal />} />
           
-          <Route path="/vettafi-access" element={<Navigate to="/vettafi-proposal" replace />} />
-          <Route path="/vettafi-proposal" element={<VettaFiProposal />} />
           <Route path="/alkemia-praesidium-access" element={<Navigate to="/alkemia-praesidium-proposal" replace />} />
           <Route path="/alkemia-praesidium-proposal" element={<AlkemiaPraesidiumProposal />} />
           <Route path="/asset-gu-access" element={<AssetGUAccess />} />
