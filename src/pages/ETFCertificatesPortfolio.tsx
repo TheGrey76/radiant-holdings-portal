@@ -49,6 +49,18 @@ interface MatchResult {
   reason?: string;
 }
 
+interface PortfolioOrder {
+  id: string;
+  isin: string;
+  nome: string;
+  tipo: 'acquisto' | 'vendita' | 'incremento';
+  quantita?: number;
+  importo?: number;
+  note?: string;
+  status: 'pending' | 'confirmed' | 'executed';
+  createdAt: Date;
+}
+
 // Descrizioni ruoli ETF in italiano
 const ROLE_DESCRIPTIONS: { [key: string]: string } = {
   'Core Equity Globale': 'Esposizione diversificata ai mercati azionari mondiali. Costituisce la base del portafoglio per la crescita a lungo termine.',
@@ -160,9 +172,10 @@ const ETFCertificatesPortfolio = () => {
   const [cashFlowActive, setCashFlowActive] = useState(false);
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [calendarOpen, setCalendarOpen] = useState(false);
-  const [importDialogOpen, setImportDialogOpen] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [matchResults, setMatchResults] = useState<MatchResult[]>([]);
+  const [pendingOrders, setPendingOrders] = useState<PortfolioOrder[]>([]);
+  const [showMarketAnalysis, setShowMarketAnalysis] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [weeklyReport, setWeeklyReport] = useState<WeeklyReport>({
     lastUpdated: new Date(),
@@ -199,13 +212,51 @@ const ETFCertificatesPortfolio = () => {
     toast.success('Prezzi aggiornati');
   };
 
+  // Funzione per creare un ordine
+  const createOrder = (isin: string, nome: string, tipo: 'acquisto' | 'vendita' | 'incremento', importo?: number) => {
+    const newOrder: PortfolioOrder = {
+      id: crypto.randomUUID(),
+      isin,
+      nome,
+      tipo,
+      importo,
+      status: 'pending',
+      createdAt: new Date()
+    };
+    setPendingOrders(prev => [...prev, newOrder]);
+    toast.success(`Ordine ${tipo} aggiunto`, { description: `${nome} (${isin})` });
+  };
+
+  const removeOrder = (orderId: string) => {
+    setPendingOrders(prev => prev.filter(o => o.id !== orderId));
+    toast.info('Ordine rimosso');
+  };
+
+  const confirmOrders = () => {
+    if (pendingOrders.length === 0) return;
+    
+    // Genera email con gli ordini
+    const ordersList = pendingOrders.map(o => 
+      `• ${o.tipo.toUpperCase()}: ${o.nome} (${o.isin})${o.importo ? ` - €${o.importo.toLocaleString('it-IT')}` : ''}`
+    ).join('\n');
+    
+    const emailBody = encodeURIComponent(
+      `Gentili,\n\nSi prega di eseguire i seguenti ordini sul portafoglio:\n\n${ordersList}\n\nCordiali saluti`
+    );
+    
+    window.open(`mailto:operazioni@bancasella.it?subject=Disposizione%20Ordini%20Portafoglio&body=${emailBody}`);
+    
+    setPendingOrders(prev => prev.map(o => ({ ...o, status: 'confirmed' as const })));
+    toast.success('Ordini confermati', { description: 'Email disposizione preparata' });
+  };
+
   // Funzione per analizzare PDF e confrontare con portafoglio
   const handleFileImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     setIsAnalyzing(true);
-    setImportDialogOpen(true);
+    setShowMarketAnalysis(true);
 
     // Simulazione analisi PDF
     await new Promise(resolve => setTimeout(resolve, 1500));
@@ -515,21 +566,6 @@ const ETFCertificatesPortfolio = () => {
               <Download className="h-4 w-4" />
               Esporta PDF
             </Button>
-            <input
-              type="file"
-              ref={fileInputRef}
-              accept=".pdf"
-              onChange={handleFileImport}
-              className="hidden"
-            />
-            <Button 
-              variant="outline" 
-              onClick={() => fileInputRef.current?.click()}
-              className="gap-2"
-            >
-              <FileUp className="h-4 w-4" />
-              Importa Lista PDF
-            </Button>
           </div>
         </div>
 
@@ -635,11 +671,19 @@ const ETFCertificatesPortfolio = () => {
 
         {/* Main Tabs */}
         <Tabs defaultValue="etf" className="w-full">
-          <TabsList className="grid w-full grid-cols-4 mb-6">
+          <TabsList className="grid w-full grid-cols-5 mb-6">
             <TabsTrigger value="etf">Allocazione ETF</TabsTrigger>
             <TabsTrigger value="certificates">Certificates & Cedole</TabsTrigger>
+            <TabsTrigger value="market" className="relative">
+              Analisi Mercato
+              {matchResults.length > 0 && (
+                <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {matchResults.length}
+                </span>
+              )}
+            </TabsTrigger>
             <TabsTrigger value="cashflow">Cash Flow</TabsTrigger>
-            <TabsTrigger value="report">Report Settimanale</TabsTrigger>
+            <TabsTrigger value="report">Report</TabsTrigger>
           </TabsList>
 
           {/* ETF Tab */}
@@ -966,112 +1010,255 @@ const ETFCertificatesPortfolio = () => {
         </Tabs>
       </main>
 
-      {/* Import Analysis Dialog */}
-      <Dialog open={importDialogOpen} onOpenChange={setImportDialogOpen}>
-        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <FileText className="h-5 w-5" />
-              Analisi Lista Certificati
-            </DialogTitle>
-            <DialogDescription>
-              Confronto tra certificati in portafoglio e opportunità di mercato
-            </DialogDescription>
-          </DialogHeader>
-          
-          {isAnalyzing ? (
-            <div className="flex flex-col items-center justify-center py-12">
-              <Loader2 className="h-8 w-8 animate-spin text-primary mb-4" />
-              <p className="text-muted-foreground">Analisi in corso...</p>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {matchResults.length === 0 ? (
-                <p className="text-center text-muted-foreground py-8">
-                  Nessun risultato da visualizzare
-                </p>
-              ) : (
-                <>
-                  {/* Certificati in portafoglio */}
-                  <div>
-                    <h4 className="font-semibold mb-2 flex items-center gap-2">
-                      <Wallet className="h-4 w-4" />
-                      Certificati in Portafoglio
-                    </h4>
-                    <div className="space-y-2">
-                      {matchResults.filter(r => r.inPortfolio).map(result => (
-                        <div key={result.isin} className="flex items-center justify-between p-3 border border-border rounded-lg">
-                          <div>
-                            <p className="font-medium text-sm">{result.nome}</p>
-                            <p className="text-xs text-muted-foreground font-mono">{result.isin}</p>
-                          </div>
-                          <div className="flex items-center gap-3">
-                            {result.marketAsk && (
-                              <Badge variant="outline" className="text-xs">
-                                Ask: {result.marketAsk}%
-                              </Badge>
-                            )}
-                            {result.marketIRR && (
-                              <Badge variant="outline" className="text-xs">
-                                IRR: {result.marketIRR}%
-                              </Badge>
-                            )}
-                            <Badge 
-                              variant={result.opportunity === 'hold' ? 'secondary' : 'default'}
-                              className={cn(
-                                result.opportunity === 'buy' && 'bg-green-600',
-                                result.opportunity === 'close' && 'bg-red-600'
-                              )}
-                            >
-                              {result.opportunity === 'hold' && <CheckCircle className="h-3 w-3 mr-1" />}
-                              {result.opportunity === 'buy' && <TrendingUp className="h-3 w-3 mr-1" />}
-                              {result.opportunity === 'close' && <XCircle className="h-3 w-3 mr-1" />}
-                              {result.opportunity === 'hold' ? 'OK' : result.opportunity === 'buy' ? 'Incrementare' : 'Chiudere'}
-                            </Badge>
-                          </div>
-                        </div>
-                      ))}
+        {/* Market Analysis Tab - NEW */}
+          <TabsContent value="market">
+            <div className="space-y-6">
+              {/* Import Section */}
+              <Card className="bg-card border-border">
+                <CardHeader>
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <CardTitle className="flex items-center gap-2">
+                        <FileUp className="h-5 w-5" />
+                        Analisi Lista Certificati
+                      </CardTitle>
+                      <CardDescription>
+                        Importa una lista PDF per confrontare con il portafoglio
+                      </CardDescription>
+                    </div>
+                    <div className="flex gap-2">
+                      <input
+                        type="file"
+                        ref={fileInputRef}
+                        accept=".pdf"
+                        onChange={handleFileImport}
+                        className="hidden"
+                      />
+                      <Button 
+                        onClick={() => fileInputRef.current?.click()}
+                        disabled={isAnalyzing}
+                        className="gap-2"
+                      >
+                        {isAnalyzing ? (
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                        ) : (
+                          <FileUp className="h-4 w-4" />
+                        )}
+                        {isAnalyzing ? 'Analisi in corso...' : 'Importa Lista PDF'}
+                      </Button>
                     </div>
                   </div>
+                </CardHeader>
+              </Card>
 
-                  {/* Nuove opportunità */}
-                  {matchResults.filter(r => !r.inPortfolio).length > 0 && (
-                    <div>
-                      <h4 className="font-semibold mb-2 flex items-center gap-2 text-green-600">
-                        <TrendingUp className="h-4 w-4" />
-                        Nuove Opportunità
-                      </h4>
-                      <div className="space-y-2">
-                        {matchResults.filter(r => !r.inPortfolio).map(result => (
-                          <div key={result.isin} className="flex items-center justify-between p-3 border border-green-500/30 bg-green-500/5 rounded-lg">
-                            <div>
-                              <p className="font-medium text-sm">{result.nome}</p>
-                              <p className="text-xs text-muted-foreground font-mono">{result.isin}</p>
-                              <p className="text-xs text-green-600 mt-1">{result.reason}</p>
+              {/* Results */}
+              {matchResults.length > 0 && (
+                <>
+                  {/* Certificati in Portafoglio */}
+                  <Card className="bg-card border-border">
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Wallet className="h-5 w-5" />
+                        Certificati in Portafoglio
+                      </CardTitle>
+                      <CardDescription>
+                        Confronto con i prezzi di mercato attuali
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-3">
+                        {matchResults.filter(r => r.inPortfolio).map(result => (
+                          <div key={result.isin} className="flex items-center justify-between p-4 border border-border rounded-lg hover:bg-muted/30 transition-colors">
+                            <div className="flex-1">
+                              <p className="font-semibold">{result.nome}</p>
+                              <p className="text-sm text-muted-foreground font-mono">{result.isin}</p>
                             </div>
-                            <div className="flex items-center gap-3">
+                            <div className="flex items-center gap-4">
                               {result.marketAsk && (
-                                <Badge variant="outline" className="text-xs">
-                                  Ask: {result.marketAsk}%
-                                </Badge>
+                                <div className="text-right">
+                                  <p className="text-xs text-muted-foreground">Ask</p>
+                                  <p className="font-semibold">{result.marketAsk}%</p>
+                                </div>
                               )}
                               {result.marketIRR && (
-                                <Badge variant="outline" className="text-xs bg-green-500/10 text-green-600 border-green-500/30">
-                                  IRR: {result.marketIRR}%
-                                </Badge>
+                                <div className="text-right">
+                                  <p className="text-xs text-muted-foreground">IRR</p>
+                                  <p className="font-semibold">{result.marketIRR}%</p>
+                                </div>
                               )}
+                              <Badge 
+                                variant={result.opportunity === 'hold' ? 'secondary' : 'default'}
+                                className={cn(
+                                  "min-w-[100px] justify-center",
+                                  result.opportunity === 'buy' && 'bg-green-600 hover:bg-green-700',
+                                  result.opportunity === 'close' && 'bg-red-600 hover:bg-red-700'
+                                )}
+                              >
+                                {result.opportunity === 'hold' && <CheckCircle className="h-3 w-3 mr-1" />}
+                                {result.opportunity === 'buy' && <TrendingUp className="h-3 w-3 mr-1" />}
+                                {result.opportunity === 'close' && <XCircle className="h-3 w-3 mr-1" />}
+                                {result.opportunity === 'hold' ? 'OK' : result.opportunity === 'buy' ? 'Incrementare' : 'Chiudere'}
+                              </Badge>
+                              <div className="flex gap-1">
+                                {result.opportunity === 'buy' && (
+                                  <Button 
+                                    size="sm" 
+                                    variant="outline"
+                                    onClick={() => createOrder(result.isin, result.nome, 'incremento')}
+                                    className="text-green-600 border-green-600/50 hover:bg-green-600/10"
+                                  >
+                                    <TrendingUp className="h-4 w-4 mr-1" />
+                                    Incrementa
+                                  </Button>
+                                )}
+                                {result.opportunity === 'close' && (
+                                  <Button 
+                                    size="sm" 
+                                    variant="outline"
+                                    onClick={() => createOrder(result.isin, result.nome, 'vendita')}
+                                    className="text-red-600 border-red-600/50 hover:bg-red-600/10"
+                                  >
+                                    <TrendingDown className="h-4 w-4 mr-1" />
+                                    Vendi
+                                  </Button>
+                                )}
+                              </div>
                             </div>
                           </div>
                         ))}
                       </div>
-                    </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Nuove Opportunità */}
+                  {matchResults.filter(r => !r.inPortfolio).length > 0 && (
+                    <Card className="bg-green-500/5 border-green-500/30">
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2 text-green-600">
+                          <TrendingUp className="h-5 w-5" />
+                          Nuove Opportunità
+                        </CardTitle>
+                        <CardDescription>
+                          Certificati con alto IRR non presenti in portafoglio
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-3">
+                          {matchResults.filter(r => !r.inPortfolio).map(result => (
+                            <div key={result.isin} className="flex items-center justify-between p-4 border border-green-500/30 rounded-lg bg-background">
+                              <div className="flex-1">
+                                <p className="font-semibold">{result.nome}</p>
+                                <p className="text-sm text-muted-foreground font-mono">{result.isin}</p>
+                                <p className="text-sm text-green-600 mt-1">{result.reason}</p>
+                              </div>
+                              <div className="flex items-center gap-4">
+                                {result.marketAsk && (
+                                  <div className="text-right">
+                                    <p className="text-xs text-muted-foreground">Ask</p>
+                                    <p className="font-semibold">{result.marketAsk}%</p>
+                                  </div>
+                                )}
+                                {result.marketIRR && (
+                                  <div className="text-right">
+                                    <p className="text-xs text-muted-foreground">IRR</p>
+                                    <p className="font-semibold text-green-600">{result.marketIRR}%</p>
+                                  </div>
+                                )}
+                                <Button 
+                                  size="sm"
+                                  onClick={() => createOrder(result.isin, result.nome, 'acquisto')}
+                                  className="bg-green-600 hover:bg-green-700"
+                                >
+                                  <DollarSign className="h-4 w-4 mr-1" />
+                                  Acquista
+                                </Button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
                   )}
                 </>
               )}
+
+              {/* Empty State */}
+              {matchResults.length === 0 && !isAnalyzing && (
+                <Card className="bg-muted/20 border-dashed">
+                  <CardContent className="py-16">
+                    <div className="text-center">
+                      <FileText className="h-16 w-16 mx-auto text-muted-foreground/30 mb-4" />
+                      <h3 className="text-lg font-semibold text-muted-foreground mb-2">
+                        Nessuna analisi attiva
+                      </h3>
+                      <p className="text-sm text-muted-foreground mb-4">
+                        Importa una lista PDF di certificati per analizzarla e confrontarla con il tuo portafoglio
+                      </p>
+                      <Button 
+                        variant="outline"
+                        onClick={() => fileInputRef.current?.click()}
+                      >
+                        <FileUp className="h-4 w-4 mr-2" />
+                        Importa Lista PDF
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Pending Orders */}
+              {pendingOrders.length > 0 && (
+                <Card className="bg-amber-500/5 border-amber-500/30">
+                  <CardHeader>
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <CardTitle className="flex items-center gap-2 text-amber-600">
+                          <FileText className="h-5 w-5" />
+                          Ordini in Attesa ({pendingOrders.length})
+                        </CardTitle>
+                        <CardDescription>
+                          Conferma per inviare la disposizione alla banca
+                        </CardDescription>
+                      </div>
+                      <Button onClick={confirmOrders} className="gap-2">
+                        <CheckCircle className="h-4 w-4" />
+                        Conferma e Invia Disposizione
+                      </Button>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-2">
+                      {pendingOrders.map(order => (
+                        <div key={order.id} className="flex items-center justify-between p-3 border border-border rounded-lg bg-background">
+                          <div className="flex items-center gap-3">
+                            <Badge className={cn(
+                              order.tipo === 'acquisto' && 'bg-green-600',
+                              order.tipo === 'vendita' && 'bg-red-600',
+                              order.tipo === 'incremento' && 'bg-blue-600'
+                            )}>
+                              {order.tipo.toUpperCase()}
+                            </Badge>
+                            <div>
+                              <p className="font-medium text-sm">{order.nome}</p>
+                              <p className="text-xs text-muted-foreground font-mono">{order.isin}</p>
+                            </div>
+                          </div>
+                          <Button 
+                            size="sm" 
+                            variant="ghost"
+                            onClick={() => removeOrder(order.id)}
+                            className="text-muted-foreground hover:text-destructive"
+                          >
+                            <XCircle className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
             </div>
-          )}
-        </DialogContent>
-      </Dialog>
+          </TabsContent>
     </div>
   );
 };
