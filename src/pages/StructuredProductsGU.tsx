@@ -1,12 +1,31 @@
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Building2, TrendingUp, Shield, BarChart3, DollarSign, Target, Calendar, Percent, ExternalLink, Activity } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Building2, TrendingUp, Shield, BarChart3, DollarSign, Target, Calendar, Percent, ExternalLink, Activity, RefreshCcw, FileText, AlertTriangle } from "lucide-react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { GUPortfolioAccessGate } from "@/components/GUPortfolioAccessGate";
+import { CertificateListManager } from "@/components/CertificateListManager";
+import { toast } from "sonner";
 
 const StructuredProductsGU = () => {
+  const [activeTab, setActiveTab] = useState("portfolio");
+  const [replacingCert, setReplacingCert] = useState<string | null>(null);
+  const [selectedReplacement, setSelectedReplacement] = useState<{ isin: string; theme: string } | null>(null);
+
+  const handleStartReplacement = (isin: string) => {
+    setReplacingCert(isin);
+    setActiveTab("certificates");
+    toast.info(`Seleziona un certificato per sostituire ${isin}`);
+  };
+
+  const handleSelectReplacement = (cert: { isin: string; theme: string }) => {
+    setSelectedReplacement(cert);
+    toast.success(`Selezionato: ${cert.theme} (${cert.isin})`);
+    setActiveTab("portfolio");
+  };
   return (
     <GUPortfolioAccessGate>
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
@@ -30,20 +49,75 @@ const StructuredProductsGU = () => {
               Client G.U. — Allocation on EUR 400,000
             </p>
             <div className="h-0.5 w-20 mx-auto bg-gradient-to-r from-transparent via-slate-400 to-transparent" />
-            <Link to="/underlying-monitoring">
-              <Button variant="outline" className="mt-6 border-slate-400 text-slate-300 hover:bg-slate-700 hover:text-white">
-                <Activity className="h-4 w-4 mr-2" />
-                Monitoring Sottostanti
+            <div className="flex flex-wrap justify-center gap-4 mt-6">
+              <Link to="/underlying-monitoring">
+                <Button variant="outline" className="border-slate-400 text-slate-300 hover:bg-slate-700 hover:text-white">
+                  <Activity className="h-4 w-4 mr-2" />
+                  Monitoring Sottostanti
+                </Button>
+              </Link>
+              <Button 
+                variant="outline" 
+                className="border-amber-400 text-amber-300 hover:bg-amber-700 hover:text-white"
+                onClick={() => handleStartReplacement('DE000MS0H1P0')}
+              >
+                <RefreshCcw className="h-4 w-4 mr-2" />
+                Ribilancia Portafoglio
               </Button>
-            </Link>
+            </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Introduction */}
-      <section className="py-16 px-4">
+      {/* Alert Banner for Replacement */}
+      {replacingCert && (
+        <section className="py-4 px-4 bg-amber-50 border-b border-amber-200">
+          <div className="container mx-auto max-w-6xl">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <AlertTriangle className="h-5 w-5 text-amber-600" />
+                <span className="text-amber-800">
+                  <strong>Sostituzione in corso:</strong> Il certificato {replacingCert} (Morgan Stanley Phoenix) viene chiuso oggi.
+                  {selectedReplacement && (
+                    <span className="ml-2 text-emerald-700">
+                      → Sostituto selezionato: <strong>{selectedReplacement.theme}</strong> ({selectedReplacement.isin})
+                    </span>
+                  )}
+                </span>
+              </div>
+              <Button variant="ghost" size="sm" onClick={() => { setReplacingCert(null); setSelectedReplacement(null); }}>
+                Annulla
+              </Button>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Tabs for Portfolio vs Certificate List */}
+      <section className="py-8 px-4">
         <div className="container mx-auto max-w-6xl">
-          <Card className="border-slate-200 shadow-sm">
+          <Tabs value={activeTab} onValueChange={setActiveTab}>
+            <TabsList className="grid w-full max-w-md grid-cols-2 mb-8">
+              <TabsTrigger value="portfolio" className="flex items-center gap-2">
+                <FileText className="h-4 w-4" />
+                Portafoglio Attuale
+              </TabsTrigger>
+              <TabsTrigger value="certificates" className="flex items-center gap-2">
+                <RefreshCcw className="h-4 w-4" />
+                Lista Certificati
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="certificates">
+              <CertificateListManager 
+                replacingIsin={replacingCert || undefined}
+                onSelectReplacement={handleSelectReplacement}
+              />
+            </TabsContent>
+
+            <TabsContent value="portfolio">
+      {/* Introduction */}
+      <Card className="border-slate-200 shadow-sm mb-8">
             <CardHeader>
               <div className="flex items-center gap-3">
                 <Target className="h-7 w-7 text-slate-700" />
@@ -82,8 +156,6 @@ const StructuredProductsGU = () => {
               </div>
             </CardContent>
           </Card>
-        </div>
-      </section>
 
       {/* Instruments Included - Final Selection */}
       <section className="py-16 px-4 bg-slate-50">
@@ -816,11 +888,15 @@ const StructuredProductsGU = () => {
       </section>
 
       {/* Footer Note */}
-      <section className="py-12 px-4 bg-slate-50">
+      <div className="py-12 px-4 bg-slate-50">
         <div className="container mx-auto max-w-6xl text-center">
           <p className="text-sm text-slate-600">
             © 2025 ARIES76 Capital Intelligence | Confidential Portfolio Presentation — Client G.U.
           </p>
+        </div>
+      </div>
+            </TabsContent>
+          </Tabs>
         </div>
       </section>
     </div>
