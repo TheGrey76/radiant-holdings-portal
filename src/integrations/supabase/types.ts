@@ -2263,6 +2263,160 @@ export type Database = {
         }
         Relationships: []
       }
+      portfolio_change_log: {
+        Row: {
+          change_type: string
+          changed_at: string
+          changed_by: string | null
+          id: string
+          new_isin: string | null
+          new_name: string | null
+          old_isin: string | null
+          old_name: string | null
+          portfolio_id: string
+          position_label: string | null
+          reason: string | null
+        }
+        Insert: {
+          change_type: string
+          changed_at?: string
+          changed_by?: string | null
+          id?: string
+          new_isin?: string | null
+          new_name?: string | null
+          old_isin?: string | null
+          old_name?: string | null
+          portfolio_id: string
+          position_label?: string | null
+          reason?: string | null
+        }
+        Update: {
+          change_type?: string
+          changed_at?: string
+          changed_by?: string | null
+          id?: string
+          new_isin?: string | null
+          new_name?: string | null
+          old_isin?: string | null
+          old_name?: string | null
+          portfolio_id?: string
+          position_label?: string | null
+          reason?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "portfolio_change_log_portfolio_id_fkey"
+            columns: ["portfolio_id"]
+            isOneToOne: false
+            referencedRelation: "portfolio_configurations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      portfolio_configurations: {
+        Row: {
+          client_code: string
+          client_name: string
+          created_at: string
+          id: string
+          is_active: boolean | null
+          notes: string | null
+          total_value: number
+          updated_at: string
+        }
+        Insert: {
+          client_code: string
+          client_name: string
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          notes?: string | null
+          total_value?: number
+          updated_at?: string
+        }
+        Update: {
+          client_code?: string
+          client_name?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          notes?: string | null
+          total_value?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      portfolio_holdings: {
+        Row: {
+          allocation_amount: number
+          allocation_percent: number
+          capital_barrier: string | null
+          coupon_barrier: string | null
+          coupon_frequency: string | null
+          coupon_pa: string | null
+          created_at: string
+          id: string
+          isin: string
+          issuer: string
+          maturity_date: string | null
+          name: string
+          portfolio_id: string
+          position_label: string
+          replaced_at: string | null
+          replaced_isin: string | null
+          role: string | null
+          underlyings: string | null
+        }
+        Insert: {
+          allocation_amount: number
+          allocation_percent: number
+          capital_barrier?: string | null
+          coupon_barrier?: string | null
+          coupon_frequency?: string | null
+          coupon_pa?: string | null
+          created_at?: string
+          id?: string
+          isin: string
+          issuer: string
+          maturity_date?: string | null
+          name: string
+          portfolio_id: string
+          position_label: string
+          replaced_at?: string | null
+          replaced_isin?: string | null
+          role?: string | null
+          underlyings?: string | null
+        }
+        Update: {
+          allocation_amount?: number
+          allocation_percent?: number
+          capital_barrier?: string | null
+          coupon_barrier?: string | null
+          coupon_frequency?: string | null
+          coupon_pa?: string | null
+          created_at?: string
+          id?: string
+          isin?: string
+          issuer?: string
+          maturity_date?: string | null
+          name?: string
+          portfolio_id?: string
+          position_label?: string
+          replaced_at?: string | null
+          replaced_isin?: string | null
+          role?: string | null
+          underlyings?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "portfolio_holdings_portfolio_id_fkey"
+            columns: ["portfolio_id"]
+            isOneToOne: false
+            referencedRelation: "portfolio_configurations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       portfolio_metrics: {
         Row: {
           assets: string[]
