@@ -10,20 +10,21 @@ import { GUPortfolioAccessGate } from "@/components/GUPortfolioAccessGate";
 import { CertificateListManager, Certificate } from "@/components/CertificateListManager";
 import { PortfolioPDFExport } from "@/components/PortfolioPDFExport";
 import { PortfolioChangeHistory } from "@/components/PortfolioChangeHistory";
+import { PortfolioInstrumentsList } from "@/components/PortfolioInstrumentsList";
 import { usePortfolioGU } from "@/hooks/usePortfolioGU";
 import { toast } from "sonner";
 
 const StructuredProductsGU = () => {
   const [activeTab, setActiveTab] = useState("portfolio");
-  const [replacingCert, setReplacingCert] = useState<string | null>(null);
+  const [replacingCert, setReplacingCert] = useState<{ isin: string; positionLabel: string; name: string } | null>(null);
   const [selectedReplacement, setSelectedReplacement] = useState<Certificate | null>(null);
 
   const { portfolio, loading: portfolioLoading, saving, replaceCertificate, refetch } = usePortfolioGU();
 
-  const handleStartReplacement = (isin: string) => {
-    setReplacingCert(isin);
+  const handleStartReplacement = (isin: string, positionLabel: string, name: string) => {
+    setReplacingCert({ isin, positionLabel, name });
     setActiveTab("certificates");
-    toast.info(`Seleziona un certificato per sostituire ${isin}`);
+    toast.info(`Seleziona un certificato per sostituire ${name}`);
   };
 
   const handleSelectReplacement = (cert: Certificate) => {
@@ -36,9 +37,9 @@ const StructuredProductsGU = () => {
     if (!selectedReplacement || !replacingCert) return;
 
     const success = await replaceCertificate({
-      positionLabel: 'A', // Morgan Stanley is position A
-      oldIsin: replacingCert,
-      oldName: 'Morgan Stanley Phoenix "Mixed Basket"',
+      positionLabel: replacingCert.positionLabel,
+      oldIsin: replacingCert.isin,
+      oldName: replacingCert.name,
       newCertificate: {
         isin: selectedReplacement.isin,
         issuer: selectedReplacement.issuer,
@@ -50,12 +51,13 @@ const StructuredProductsGU = () => {
         maturity: selectedReplacement.maturity,
         underlyings: selectedReplacement.underlyings
       },
-      reason: 'Certificate closed on 23/01/2026'
+      reason: `Certificate ${replacingCert.isin} replaced on ${new Date().toLocaleDateString('it-IT')}`
     });
 
     if (success) {
       setReplacingCert(null);
       setSelectedReplacement(null);
+      refetch(); // Refresh portfolio data
     }
   };
   return (
@@ -91,7 +93,13 @@ const StructuredProductsGU = () => {
               <Button 
                 variant="outline" 
                 className="border-amber-400 text-amber-300 hover:bg-amber-700 hover:text-white"
-                onClick={() => handleStartReplacement('DE000MS0H1P0')}
+                onClick={() => {
+                  // Find first certificate to offer replacement
+                  if (portfolio?.holdings?.[0]) {
+                    const h = portfolio.holdings[0];
+                    handleStartReplacement(h.isin, h.position_label, h.name);
+                  }
+                }}
               >
                 <RefreshCcw className="h-4 w-4 mr-2" />
                 Ribilancia Portafoglio
@@ -109,10 +117,10 @@ const StructuredProductsGU = () => {
               <div className="flex items-center gap-3">
                 <AlertTriangle className="h-5 w-5 text-amber-600 flex-shrink-0" />
                 <span className="text-amber-800">
-                  <strong>Sostituzione in corso:</strong> Il certificato {replacingCert} (Morgan Stanley Phoenix) viene chiuso oggi.
+                  <strong>Sostituzione in corso:</strong> Certificato {replacingCert.isin} ({replacingCert.name}) — Posizione {replacingCert.positionLabel}
                   {selectedReplacement && (
                     <span className="ml-2 text-emerald-700">
-                      → Sostituto selezionato: <strong>{selectedReplacement.theme}</strong> ({selectedReplacement.isin})
+                      → Sostituto: <strong>{selectedReplacement.theme}</strong> ({selectedReplacement.isin})
                     </span>
                   )}
                 </span>
@@ -177,7 +185,7 @@ const StructuredProductsGU = () => {
 
             <TabsContent value="certificates">
               <CertificateListManager 
-                replacingIsin={replacingCert || undefined}
+                replacingIsin={replacingCert?.isin || undefined}
                 onSelectReplacement={handleSelectReplacement}
               />
             </TabsContent>
@@ -228,435 +236,117 @@ const StructuredProductsGU = () => {
             </CardContent>
           </Card>
 
-      {/* Instruments Included - Final Selection */}
+      {/* Instruments Included - Dynamic from Database */}
       <section className="py-16 px-4 bg-slate-50">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-3 text-slate-900">Instruments Included — Final Selection</h2>
-            <p className="text-slate-600 text-lg">Five certificates with complementary roles</p>
+            <h2 className="text-3xl font-bold mb-3 text-slate-900">Strumenti in Portafoglio</h2>
+            <p className="text-slate-600 text-lg">
+              {portfolio?.holdings?.length || 0} certificati — Allocazione EUR {portfolio?.total_value?.toLocaleString() || '400,000'}
+            </p>
           </div>
 
-          <div className="space-y-6">
-            {/* Instrument A - Morgan Stanley Phoenix */}
-            <Card className="border-l-4 border-l-slate-700 shadow-sm">
-              <CardHeader className="pb-4">
-                <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Badge className="bg-slate-700 text-white">A</Badge>
-                      <span className="text-sm text-slate-500 font-mono">DE000MS0H1P0</span>
-                      <a 
-                        href="https://www.borsaitaliana.it/borsa/cw-e-certificates/eurotlx/scheda/DE000MS0H1P0.html?lang=it" 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 transition-colors"
-                      >
-                        <ExternalLink className="h-3 w-3" />
-                        Prezzo
-                      </a>
-                    </div>
-                    <CardTitle className="text-xl text-slate-900">Morgan Stanley Phoenix "Mixed Basket"</CardTitle>
-                    <CardDescription className="text-base mt-2 text-slate-600">
-                      Primary cash-flow generator, high structural quality
-                    </CardDescription>
-                  </div>
-                  <Badge variant="outline" className="border-slate-300 text-slate-700">Phoenix Worst-of</Badge>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="space-y-1">
-                    <p className="text-xs text-slate-500 uppercase tracking-wide">Underlyings</p>
-                    <p className="font-semibold text-slate-900">Enel, Alphabet (GOOGL), UniCredit</p>
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-xs text-slate-500 uppercase tracking-wide">Coupon</p>
-                    <p className="font-semibold text-slate-900">2.33% quarterly</p>
-                    <p className="text-sm text-slate-600">(9.32% annual)</p>
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-xs text-slate-500 uppercase tracking-wide">Barriers</p>
-                    <p className="font-semibold text-slate-900">65% / 65%</p>
-                    <p className="text-sm text-slate-600">Coupon / Capital</p>
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-xs text-slate-500 uppercase tracking-wide">Maturity</p>
-                    <p className="font-semibold text-slate-900">27 Nov 2030</p>
-                  </div>
-                </div>
-                <div className="mt-4 pt-4 border-t border-slate-200">
-                  <div className="flex items-center gap-2">
-                    <Badge variant="secondary" className="text-xs">Memory</Badge>
-                    <Badge variant="secondary" className="text-xs">European Barrier</Badge>
-                    <span className="text-sm text-slate-600 ml-2">Role: <span className="font-semibold">Core Income</span></span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Instrument B - UBS Phoenix Healthcare */}
-            <Card className="border-l-4 border-l-blue-600 shadow-sm">
-              <CardHeader className="pb-4">
-                <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Badge className="bg-blue-600">B</Badge>
-                      <span className="text-sm text-slate-500 font-mono">DE000UQ23YT1</span>
-                      <a 
-                        href="https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/DE000UQ23YT1.html?lang=it" 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 transition-colors"
-                      >
-                        <ExternalLink className="h-3 w-3" />
-                        Prezzo
-                      </a>
-                    </div>
-                    <CardTitle className="text-xl text-slate-900">UBS Phoenix "Healthcare Basket"</CardTitle>
-                    <CardDescription className="text-base mt-2 text-slate-600">
-                      Defensive thematic income with strong sector fundamentals
-                    </CardDescription>
-                  </div>
-                  <Badge variant="outline" className="border-blue-300 text-blue-700">Phoenix Memory</Badge>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="space-y-1">
-                    <p className="text-xs text-slate-500 uppercase tracking-wide">Underlyings</p>
-                    <p className="font-semibold text-slate-900">Novo Nordisk, Merck KGaA, CVS Health</p>
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-xs text-slate-500 uppercase tracking-wide">Coupon</p>
-                    <p className="font-semibold text-slate-900">2.50% quarterly</p>
-                    <p className="text-sm text-slate-600">(10% annual)</p>
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-xs text-slate-500 uppercase tracking-wide">Barriers</p>
-                    <p className="font-semibold text-slate-900">60% / 60%</p>
-                    <p className="text-sm text-slate-600">Coupon / Capital</p>
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-xs text-slate-500 uppercase tracking-wide">Maturity</p>
-                    <p className="font-semibold text-slate-900">13 Nov 2028</p>
-                  </div>
-                </div>
-                <div className="mt-4 pt-4 border-t border-slate-200">
-                  <div className="flex items-center gap-2">
-                    <Badge variant="secondary" className="text-xs">Memory</Badge>
-                    <Badge variant="secondary" className="text-xs bg-blue-100 text-blue-800">Healthcare</Badge>
-                    <span className="text-sm text-slate-600 ml-2">Role: <span className="font-semibold">Defensive Income</span></span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Instrument C - UBS Memory Cash Collect */}
-            <Card className="border-l-4 border-l-emerald-600 shadow-sm">
-              <CardHeader className="pb-4">
-                <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Badge className="bg-emerald-600">C</Badge>
-                      <span className="text-sm text-slate-500 font-mono">DE000UQ0LUM5</span>
-                      <a 
-                        href="https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/DE000UQ0LUM5.html?lang=it" 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 transition-colors"
-                      >
-                        <ExternalLink className="h-3 w-3" />
-                        Prezzo
-                      </a>
-                    </div>
-                    <CardTitle className="text-xl text-slate-900">UBS Memory Cash Collect (Monthly)</CardTitle>
-                    <CardDescription className="text-base mt-2 text-slate-600">
-                      High-yield income engine with monthly cash flow
-                    </CardDescription>
-                  </div>
-                  <Badge variant="outline" className="border-emerald-300 text-emerald-700">Memory Cash Collect</Badge>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="space-y-1">
-                    <p className="text-xs text-slate-500 uppercase tracking-wide">Underlyings</p>
-                    <p className="font-semibold text-slate-900">Diversified Italian Large Caps</p>
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-xs text-slate-500 uppercase tracking-wide">Coupon</p>
-                    <p className="font-semibold text-slate-900">1% monthly</p>
-                    <p className="text-sm text-slate-600">(12% annual)</p>
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-xs text-slate-500 uppercase tracking-wide">Barriers</p>
-                    <p className="font-semibold text-slate-900">65% / 65%</p>
-                    <p className="text-sm text-slate-600">Coupon / Capital</p>
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-xs text-slate-500 uppercase tracking-wide">Maturity</p>
-                    <p className="font-semibold text-slate-900">09 Sep 2030</p>
-                  </div>
-                </div>
-                <div className="mt-4 pt-4 border-t border-slate-200">
-                  <div className="flex items-center gap-2">
-                    <Badge variant="secondary" className="text-xs">Memory</Badge>
-                    <Badge variant="secondary" className="text-xs bg-emerald-100 text-emerald-800">Monthly Payout</Badge>
-                    <span className="text-sm text-slate-600 ml-2">Role: <span className="font-semibold">Income Engine</span></span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Instrument D - Barclays Phoenix Italy Consumer & Luxury */}
-            <Card className="border-l-4 border-l-amber-600 shadow-sm">
-              <CardHeader className="pb-4">
-                <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Badge className="bg-amber-600">D</Badge>
-                      <span className="text-sm text-slate-500 font-mono">XS3153270833</span>
-                      <a 
-                        href="https://www.borsaitaliana.it/borsa/cw-e-certificates/eurotlx/scheda/XS3153270833.html?lang=it" 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 transition-colors"
-                      >
-                        <ExternalLink className="h-3 w-3" />
-                        Prezzo
-                      </a>
-                    </div>
-                    <CardTitle className="text-xl text-slate-900">Barclays Phoenix "Italy Consumer & Luxury"</CardTitle>
-                    <CardDescription className="text-base mt-2 text-slate-600">
-                      Premium consumer/luxury exposure, low event risk
-                    </CardDescription>
-                  </div>
-                  <Badge variant="outline" className="border-amber-300 text-amber-700">Phoenix Memory</Badge>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="space-y-1">
-                    <p className="text-xs text-slate-500 uppercase tracking-wide">Underlyings</p>
-                    <p className="font-semibold text-slate-900">Ferrari, Brunello Cucinelli, Campari</p>
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-xs text-slate-500 uppercase tracking-wide">Coupon</p>
-                    <p className="font-semibold text-slate-900">2% quarterly</p>
-                    <p className="text-sm text-slate-600">(8% annual)</p>
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-xs text-slate-500 uppercase tracking-wide">Barriers</p>
-                    <p className="font-semibold text-slate-900">65%</p>
-                    <p className="text-sm text-slate-600">Unified</p>
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-xs text-slate-500 uppercase tracking-wide">Maturity</p>
-                    <p className="font-semibold text-slate-900">22 Oct 2029</p>
-                  </div>
-                </div>
-                <div className="mt-4 pt-4 border-t border-slate-200">
-                  <div className="flex items-center gap-2">
-                    <Badge variant="secondary" className="text-xs">Memory</Badge>
-                    <Badge variant="secondary" className="text-xs bg-amber-100 text-amber-800">Luxury / Consumer</Badge>
-                    <span className="text-sm text-slate-600 ml-2">Role: <span className="font-semibold">Thematic Exposure</span></span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Instrument E - Barclays Capital Protected */}
-            <Card className="border-l-4 border-l-green-600 shadow-sm">
-              <CardHeader className="pb-4">
-                <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Badge className="bg-green-600">E</Badge>
-                      <span className="text-sm text-slate-500 font-mono">XS3153397073</span>
-                      <a 
-                        href="https://www.borsaitaliana.it/borsa/cw-e-certificates/eurotlx/scheda/XS3153397073.html?lang=it" 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 transition-colors"
-                      >
-                        <ExternalLink className="h-3 w-3" />
-                        Prezzo
-                      </a>
-                    </div>
-                    <CardTitle className="text-xl text-slate-900">Barclays Capital Protected "KG on Indices"</CardTitle>
-                    <CardDescription className="text-base mt-2 text-slate-600">
-                      Defensive anchor, stabilizer of portfolio volatility
-                    </CardDescription>
-                  </div>
-                  <Badge variant="outline" className="border-green-300 text-green-700">Capital Protected</Badge>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="space-y-1">
-                    <p className="text-xs text-slate-500 uppercase tracking-wide">Underlyings</p>
-                    <p className="font-semibold text-slate-900">NDX, NKY, SMI, Euro Stoxx Banks</p>
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-xs text-slate-500 uppercase tracking-wide">Capital Protection</p>
-                    <p className="font-semibold text-green-700">100% at maturity</p>
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-xs text-slate-500 uppercase tracking-wide">Participation</p>
-                    <p className="font-semibold text-slate-900">100% up to +50% cap</p>
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-xs text-slate-500 uppercase tracking-wide">Maturity</p>
-                    <p className="font-semibold text-slate-900">24 Oct 2030</p>
-                  </div>
-                </div>
-                <div className="mt-4 pt-4 border-t border-slate-200">
-                  <div className="flex items-center gap-2">
-                    <Badge variant="secondary" className="text-xs bg-green-100 text-green-800">No Coupon</Badge>
-                    <Badge variant="secondary" className="text-xs">CPPI-style</Badge>
-                    <span className="text-sm text-slate-600 ml-2">Role: <span className="font-semibold">Portfolio Stabilizer</span></span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+          <PortfolioInstrumentsList 
+            holdings={portfolio?.holdings || []}
+            loading={portfolioLoading}
+            onStartReplacement={handleStartReplacement}
+          />
         </div>
       </section>
 
-      {/* Portfolio Allocation */}
+      {/* Portfolio Allocation - Dynamic */}
       <section className="py-16 px-4">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-3 text-slate-900">Portfolio Allocation</h2>
-            <p className="text-slate-600 text-lg">EUR 400,000 Total</p>
+            <h2 className="text-3xl font-bold mb-3 text-slate-900">Allocazione Portafoglio</h2>
+            <p className="text-slate-600 text-lg">EUR {portfolio?.total_value?.toLocaleString() || '400,000'} Totale</p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Allocation Table */}
+            {/* Allocation Table - Dynamic */}
             <Card className="shadow-sm border-slate-200">
               <CardHeader>
-                <CardTitle className="text-slate-900">Breakdown by Instrument</CardTitle>
+                <CardTitle className="text-slate-900">Ripartizione per Strumento</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <div className="flex items-center justify-between p-4 bg-slate-50 rounded-lg border border-slate-200">
-                  <div>
-                    <p className="font-semibold text-slate-900">A — Morgan Stanley Phoenix</p>
-                    <p className="text-sm text-slate-600">DE000MS0H1P0</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-2xl font-bold text-slate-700">30%</p>
-                    <p className="text-sm text-slate-600">€120,000</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between p-4 bg-blue-50 rounded-lg border border-blue-200">
-                  <div>
-                    <p className="font-semibold text-slate-900">B — UBS Phoenix Healthcare</p>
-                    <p className="text-sm text-slate-600">DE000UQ23YT1</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-2xl font-bold text-blue-700">20%</p>
-                    <p className="text-sm text-slate-600">€80,000</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between p-4 bg-emerald-50 rounded-lg border border-emerald-200">
-                  <div>
-                    <p className="font-semibold text-slate-900">C — UBS Memory Cash Collect</p>
-                    <p className="text-sm text-slate-600">DE000UQ0LUM5</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-2xl font-bold text-emerald-700">20%</p>
-                    <p className="text-sm text-slate-600">€80,000</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between p-4 bg-amber-50 rounded-lg border border-amber-200">
-                  <div>
-                    <p className="font-semibold text-slate-900">D — Barclays Luxury/Consumer</p>
-                    <p className="text-sm text-slate-600">XS3153270833</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-2xl font-bold text-amber-700">15%</p>
-                    <p className="text-sm text-slate-600">€60,000</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between p-4 bg-green-50 rounded-lg border border-green-200">
-                  <div>
-                    <p className="font-semibold text-slate-900">E — Barclays Capital Protected</p>
-                    <p className="text-sm text-slate-600">XS3153397073</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-2xl font-bold text-green-700">15%</p>
-                    <p className="text-sm text-slate-600">€60,000</p>
-                  </div>
-                </div>
+                {portfolio?.holdings?.map((holding) => {
+                  const bgColors: Record<string, string> = {
+                    'A': 'bg-slate-50 border-slate-200',
+                    'B': 'bg-blue-50 border-blue-200',
+                    'C': 'bg-emerald-50 border-emerald-200',
+                    'D': 'bg-amber-50 border-amber-200',
+                    'E': 'bg-green-50 border-green-200',
+                  };
+                  const textColors: Record<string, string> = {
+                    'A': 'text-slate-700',
+                    'B': 'text-blue-700',
+                    'C': 'text-emerald-700',
+                    'D': 'text-amber-700',
+                    'E': 'text-green-700',
+                  };
+                  return (
+                    <div 
+                      key={holding.id} 
+                      className={`flex items-center justify-between p-4 rounded-lg border ${bgColors[holding.position_label] || bgColors['A']}`}
+                    >
+                      <div>
+                        <p className="font-semibold text-slate-900">{holding.position_label} — {holding.issuer} {holding.name}</p>
+                        <p className="text-sm text-slate-600">{holding.isin}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className={`text-2xl font-bold ${textColors[holding.position_label] || textColors['A']}`}>
+                          {holding.allocation_percent}%
+                        </p>
+                        <p className="text-sm text-slate-600">€{holding.allocation_amount.toLocaleString()}</p>
+                      </div>
+                    </div>
+                  );
+                })}
 
                 <div className="pt-4 border-t border-slate-300">
                   <div className="flex items-center justify-between">
-                    <p className="text-lg font-semibold text-slate-900">Total Portfolio</p>
-                    <p className="text-2xl font-bold text-slate-900">€400,000</p>
+                    <p className="text-lg font-semibold text-slate-900">Totale Portafoglio</p>
+                    <p className="text-2xl font-bold text-slate-900">€{portfolio?.total_value?.toLocaleString() || '400,000'}</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Strategic Split */}
+            {/* Strategic Split - Dynamic */}
             <Card className="shadow-sm border-slate-200">
               <CardHeader>
-                <CardTitle className="text-slate-900">Strategic Split</CardTitle>
+                <CardTitle className="text-slate-900">Ripartizione Strategica</CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-slate-700">Core Income (A + B)</span>
-                    <span className="text-sm font-bold text-slate-900">50%</span>
-                  </div>
-                  <div className="h-3 bg-slate-200 rounded-full overflow-hidden">
-                    <div className="h-full bg-gradient-to-r from-slate-600 to-blue-600" style={{ width: '50%' }}></div>
-                  </div>
-                  <p className="text-xs text-slate-600 mt-1">Morgan Stanley + UBS Healthcare</p>
-                </div>
-
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-slate-700">High-Yield Engine (C)</span>
-                    <span className="text-sm font-bold text-slate-900">20%</span>
-                  </div>
-                  <div className="h-3 bg-slate-200 rounded-full overflow-hidden">
-                    <div className="h-full bg-emerald-600" style={{ width: '20%' }}></div>
-                  </div>
-                  <p className="text-xs text-slate-600 mt-1">UBS Monthly Cash Collect</p>
-                </div>
-
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-slate-700">Premium Thematic (D)</span>
-                    <span className="text-sm font-bold text-slate-900">15%</span>
-                  </div>
-                  <div className="h-3 bg-slate-200 rounded-full overflow-hidden">
-                    <div className="h-full bg-amber-600" style={{ width: '15%' }}></div>
-                  </div>
-                  <p className="text-xs text-slate-600 mt-1">Luxury & Consumer</p>
-                </div>
-
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-slate-700">Capital Protected (E)</span>
-                    <span className="text-sm font-bold text-slate-900">15%</span>
-                  </div>
-                  <div className="h-3 bg-slate-200 rounded-full overflow-hidden">
-                    <div className="h-full bg-green-600" style={{ width: '15%' }}></div>
-                  </div>
-                  <p className="text-xs text-slate-600 mt-1">100% Protection Layer</p>
-                </div>
+                {portfolio?.holdings?.map((holding) => {
+                  const colors: Record<string, string> = {
+                    'A': 'bg-slate-600',
+                    'B': 'bg-blue-600',
+                    'C': 'bg-emerald-600',
+                    'D': 'bg-amber-600',
+                    'E': 'bg-green-600',
+                  };
+                  return (
+                    <div key={holding.id}>
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-sm font-medium text-slate-700">{holding.role || holding.name}</span>
+                        <span className="text-sm font-bold text-slate-900">{holding.allocation_percent}%</span>
+                      </div>
+                      <div className="h-3 bg-slate-200 rounded-full overflow-hidden">
+                        <div 
+                          className={`h-full ${colors[holding.position_label] || colors['A']}`} 
+                          style={{ width: `${holding.allocation_percent}%` }}
+                        />
+                      </div>
+                      <p className="text-xs text-slate-600 mt-1">{holding.issuer} — {holding.underlyings}</p>
+                    </div>
+                  );
+                })}
 
                 <div className="pt-4 border-t border-slate-300">
                   <p className="text-sm text-slate-600 leading-relaxed">
-                    The portfolio balances <span className="font-semibold text-slate-900">regular coupon income</span> (85% of allocation) 
-                    with <span className="font-semibold text-slate-900">full capital protection</span> (15%) to ensure downside 
-                    resilience while maintaining attractive yield potential.
+                    Portafoglio dinamico con <span className="font-semibold text-slate-900">tracking completo</span> delle modifiche. 
+                    Ogni sostituzione viene registrata nello storico per una visione completa dell'evoluzione del portafoglio.
                   </p>
                 </div>
               </CardContent>
