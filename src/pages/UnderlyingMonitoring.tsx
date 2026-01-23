@@ -20,60 +20,48 @@ import { PerformanceHistory } from '@/components/PerformanceHistory';
 import { format } from 'date-fns';
 import { it } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
-
-interface Underlying {
-  id: string;
-  name: string;
-  ticker: string;
-  certificate: string;
-  certificateId: string;
-  barrier: number;
-  strikePrice: number;
-  currentPrice: number;
-  lastUpdate: string;
-}
+import { useMonitoringUnderlyings, Underlying } from '@/hooks/useMonitoringUnderlyings';
 
 interface PriceHistory {
   date: string;
   prices: Record<string, number>;
 }
 
-const INITIAL_UNDERLYINGS: Underlying[] = [
-  // Certificate A - Morgan Stanley Phoenix Mixed Basket
-  { id: 'enel', name: 'Enel', ticker: 'ENEL.MI', certificate: 'A - Morgan Stanley Phoenix', certificateId: 'DE000MS0H1P0', barrier: 65, strikePrice: 6.50, currentPrice: 0, lastUpdate: '' },
-  { id: 'googl', name: 'Alphabet', ticker: 'GOOGL', certificate: 'A - Morgan Stanley Phoenix', certificateId: 'DE000MS0H1P0', barrier: 65, strikePrice: 175.00, currentPrice: 0, lastUpdate: '' },
-  { id: 'ucg', name: 'UniCredit', ticker: 'UCG.MI', certificate: 'A - Morgan Stanley Phoenix', certificateId: 'DE000MS0H1P0', barrier: 65, strikePrice: 38.00, currentPrice: 0, lastUpdate: '' },
-  
-  // Certificate B - UBS Phoenix Healthcare
-  { id: 'novo', name: 'Novo Nordisk', ticker: 'NVO', certificate: 'B - UBS Phoenix Healthcare', certificateId: 'DE000UQ23YT1', barrier: 60, strikePrice: 110.00, currentPrice: 0, lastUpdate: '' },
-  { id: 'mrk-de', name: 'Merck KGaA', ticker: 'MRK.DE', certificate: 'B - UBS Phoenix Healthcare', certificateId: 'DE000UQ23YT1', barrier: 60, strikePrice: 150.00, currentPrice: 0, lastUpdate: '' },
-  { id: 'cvs', name: 'CVS Health', ticker: 'CVS', certificate: 'B - UBS Phoenix Healthcare', certificateId: 'DE000UQ23YT1', barrier: 60, strikePrice: 58.00, currentPrice: 0, lastUpdate: '' },
-  
-  // Certificate C - UBS Memory Cash Collect (Italian Large Caps)
-  { id: 'isp', name: 'Intesa Sanpaolo', ticker: 'ISP.MI', certificate: 'C - UBS Memory Cash Collect', certificateId: 'DE000UQ0LUM5', barrier: 65, strikePrice: 3.80, currentPrice: 0, lastUpdate: '' },
-  { id: 'eni', name: 'Eni', ticker: 'ENI.MI', certificate: 'C - UBS Memory Cash Collect', certificateId: 'DE000UQ0LUM5', barrier: 65, strikePrice: 14.00, currentPrice: 0, lastUpdate: '' },
-  { id: 'stm', name: 'STMicroelectronics', ticker: 'STM', certificate: 'C - UBS Memory Cash Collect', certificateId: 'DE000UQ0LUM5', barrier: 65, strikePrice: 24.00, currentPrice: 0, lastUpdate: '' },
-  
-  // Certificate D - Barclays Phoenix Italy Consumer & Luxury
-  { id: 'race', name: 'Ferrari', ticker: 'RACE.MI', certificate: 'D - Barclays Phoenix Luxury', certificateId: 'XS3153270833', barrier: 65, strikePrice: 420.00, currentPrice: 0, lastUpdate: '' },
-  { id: 'bc', name: 'Brunello Cucinelli', ticker: 'BC.MI', certificate: 'D - Barclays Phoenix Luxury', certificateId: 'XS3153270833', barrier: 65, strikePrice: 95.00, currentPrice: 0, lastUpdate: '' },
-  { id: 'cpr', name: 'Campari', ticker: 'CPR.MI', certificate: 'D - Barclays Phoenix Luxury', certificateId: 'XS3153270833', barrier: 65, strikePrice: 6.50, currentPrice: 0, lastUpdate: '' },
-];
-
-const STORAGE_KEY = 'aries76_underlying_prices';
-const HISTORY_KEY = 'aries76_price_history';
+const STORAGE_KEY = 'aries76_underlying_prices_v2';
+const HISTORY_KEY = 'aries76_price_history_v2';
 const PORTFOLIO_DATE_KEY = 'aries76_portfolio_start_date';
 const AUTH_KEY = 'aries76_monitoring_auth';
 
 const UnderlyingMonitoring = () => {
   const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
   const [email, setEmail] = useState('');
-  const [underlyings, setUnderlyings] = useState<Underlying[]>(INITIAL_UNDERLYINGS);
+  const [underlyings, setUnderlyings] = useState<Underlying[]>([]);
   const [priceHistory, setPriceHistory] = useState<PriceHistory[]>([]);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [tempPrice, setTempPrice] = useState<string>('');
   const [isLoadingPrices, setIsLoadingPrices] = useState(false);
   const [portfolioStartDate, setPortfolioStartDate] = useState<Date | undefined>(undefined);
+  
+  // Fetch dynamic underlyings from database
+  const { underlyings: dbUnderlyings, loading: loadingUnderlyings, refetch: refetchUnderlyings } = useMonitoringUnderlyings();
+
+  // Initialize underlyings from database
+  useEffect(() => {
+    if (dbUnderlyings.length > 0 && isAuthorized) {
+      // Merge with saved price data
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const savedData = JSON.parse(saved) as Underlying[];
+        const mergedUnderlyings = dbUnderlyings.map(u => {
+          const savedU = savedData.find(s => s.id === u.id || s.ticker === u.ticker);
+          return savedU ? { ...u, currentPrice: savedU.currentPrice, lastUpdate: savedU.lastUpdate } : u;
+        });
+        setUnderlyings(mergedUnderlyings);
+      } else {
+        setUnderlyings(dbUnderlyings);
+      }
+    }
+  }, [dbUnderlyings, isAuthorized]);
 
   // Load portfolio start date
   useEffect(() => {
@@ -120,30 +108,9 @@ const UnderlyingMonitoring = () => {
     checkAuth();
   }, []);
 
-  // Load saved data and migrate old tickers
+  // Load saved history data
   useEffect(() => {
     if (isAuthorized) {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        let savedData = JSON.parse(saved) as Underlying[];
-        
-        // Migrate old STM.MI ticker to STM
-        savedData = savedData.map(u => {
-          if (u.ticker === 'STM.MI') {
-            return { ...u, ticker: 'STM' };
-          }
-          return u;
-        });
-        
-        // Save migrated data
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(savedData));
-        
-        setUnderlyings(prev => prev.map(u => {
-          const savedU = savedData.find(s => s.id === u.id);
-          return savedU ? { ...u, currentPrice: savedU.currentPrice, lastUpdate: savedU.lastUpdate, strikePrice: savedU.strikePrice } : u;
-        }));
-      }
-      
       const historyData = localStorage.getItem(HISTORY_KEY);
       if (historyData) {
         setPriceHistory(JSON.parse(historyData));
