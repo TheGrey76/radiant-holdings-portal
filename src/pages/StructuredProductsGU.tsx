@@ -3,17 +3,21 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Building2, TrendingUp, Shield, BarChart3, DollarSign, Target, Calendar, Percent, ExternalLink, Activity, RefreshCcw, FileText, AlertTriangle } from "lucide-react";
+import { Building2, TrendingUp, Shield, BarChart3, DollarSign, Target, Calendar, Percent, ExternalLink, Activity, RefreshCcw, FileText, AlertTriangle, Save, Loader2, History } from "lucide-react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { GUPortfolioAccessGate } from "@/components/GUPortfolioAccessGate";
-import { CertificateListManager } from "@/components/CertificateListManager";
+import { CertificateListManager, Certificate } from "@/components/CertificateListManager";
+import { PortfolioPDFExport } from "@/components/PortfolioPDFExport";
+import { usePortfolioGU } from "@/hooks/usePortfolioGU";
 import { toast } from "sonner";
 
 const StructuredProductsGU = () => {
   const [activeTab, setActiveTab] = useState("portfolio");
   const [replacingCert, setReplacingCert] = useState<string | null>(null);
-  const [selectedReplacement, setSelectedReplacement] = useState<{ isin: string; theme: string } | null>(null);
+  const [selectedReplacement, setSelectedReplacement] = useState<Certificate | null>(null);
+
+  const { portfolio, loading: portfolioLoading, saving, replaceCertificate, refetch } = usePortfolioGU();
 
   const handleStartReplacement = (isin: string) => {
     setReplacingCert(isin);
@@ -21,10 +25,37 @@ const StructuredProductsGU = () => {
     toast.info(`Seleziona un certificato per sostituire ${isin}`);
   };
 
-  const handleSelectReplacement = (cert: { isin: string; theme: string }) => {
+  const handleSelectReplacement = (cert: Certificate) => {
     setSelectedReplacement(cert);
     toast.success(`Selezionato: ${cert.theme} (${cert.isin})`);
     setActiveTab("portfolio");
+  };
+
+  const handleSaveReplacement = async () => {
+    if (!selectedReplacement || !replacingCert) return;
+
+    const success = await replaceCertificate({
+      positionLabel: 'A', // Morgan Stanley is position A
+      oldIsin: replacingCert,
+      oldName: 'Morgan Stanley Phoenix "Mixed Basket"',
+      newCertificate: {
+        isin: selectedReplacement.isin,
+        issuer: selectedReplacement.issuer,
+        name: selectedReplacement.theme,
+        couponPa: selectedReplacement.couponPa,
+        couponFrequency: selectedReplacement.couponFrequency,
+        couponBarrier: selectedReplacement.couponBarrier,
+        capitalBarrier: selectedReplacement.capitalBarrier,
+        maturity: selectedReplacement.maturity,
+        underlyings: selectedReplacement.underlyings
+      },
+      reason: 'Certificate closed on 23/01/2026'
+    });
+
+    if (success) {
+      setReplacingCert(null);
+      setSelectedReplacement(null);
+    }
   };
   return (
     <GUPortfolioAccessGate>
@@ -73,9 +104,9 @@ const StructuredProductsGU = () => {
       {replacingCert && (
         <section className="py-4 px-4 bg-amber-50 border-b border-amber-200">
           <div className="container mx-auto max-w-6xl">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div className="flex items-center gap-3">
-                <AlertTriangle className="h-5 w-5 text-amber-600" />
+                <AlertTriangle className="h-5 w-5 text-amber-600 flex-shrink-0" />
                 <span className="text-amber-800">
                   <strong>Sostituzione in corso:</strong> Il certificato {replacingCert} (Morgan Stanley Phoenix) viene chiuso oggi.
                   {selectedReplacement && (
@@ -85,9 +116,40 @@ const StructuredProductsGU = () => {
                   )}
                 </span>
               </div>
-              <Button variant="ghost" size="sm" onClick={() => { setReplacingCert(null); setSelectedReplacement(null); }}>
-                Annulla
-              </Button>
+              <div className="flex items-center gap-2">
+                {selectedReplacement && (
+                  <Button 
+                    onClick={handleSaveReplacement} 
+                    disabled={saving}
+                    className="bg-emerald-600 hover:bg-emerald-700"
+                  >
+                    {saving ? (
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    ) : (
+                      <Save className="h-4 w-4 mr-2" />
+                    )}
+                    Salva Sostituzione
+                  </Button>
+                )}
+                <Button variant="ghost" size="sm" onClick={() => { setReplacingCert(null); setSelectedReplacement(null); }}>
+                  Annulla
+                </Button>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Action Bar with PDF Export */}
+      {portfolio && !replacingCert && (
+        <section className="py-4 px-4 bg-slate-100 border-b border-slate-200">
+          <div className="container mx-auto max-w-6xl">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="flex items-center gap-2 text-sm text-slate-600">
+                <History className="h-4 w-4" />
+                <span>Ultimo aggiornamento: {new Date(portfolio.updated_at).toLocaleDateString('it-IT', { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
+              </div>
+              <PortfolioPDFExport portfolio={portfolio} variant="default" size="sm" />
             </div>
           </div>
         </section>

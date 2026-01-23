@@ -10,7 +10,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Upload, Search, ExternalLink, ArrowUpDown, Star, Filter, X, CheckCircle2, AlertTriangle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-interface Certificate {
+export interface Certificate {
   id: number;
   isin: string;
   issuer: string;
