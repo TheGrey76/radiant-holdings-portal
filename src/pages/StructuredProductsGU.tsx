@@ -3,12 +3,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Building2, TrendingUp, Shield, BarChart3, DollarSign, Target, Calendar, Percent, ExternalLink, Activity, RefreshCcw, FileText, AlertTriangle, Save, Loader2, History } from "lucide-react";
+import { Building2, TrendingUp, Shield, BarChart3, DollarSign, Target, Calendar, Percent, ExternalLink, Activity, RefreshCcw, FileText, AlertTriangle, Save, Loader2, History, Clock } from "lucide-react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { GUPortfolioAccessGate } from "@/components/GUPortfolioAccessGate";
 import { CertificateListManager, Certificate } from "@/components/CertificateListManager";
 import { PortfolioPDFExport } from "@/components/PortfolioPDFExport";
+import { PortfolioChangeHistory } from "@/components/PortfolioChangeHistory";
 import { usePortfolioGU } from "@/hooks/usePortfolioGU";
 import { toast } from "sonner";
 
@@ -159,14 +160,18 @@ const StructuredProductsGU = () => {
       <section className="py-8 px-4">
         <div className="container mx-auto max-w-6xl">
           <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid w-full max-w-md grid-cols-2 mb-8">
+            <TabsList className="grid w-full max-w-lg grid-cols-3 mb-8">
               <TabsTrigger value="portfolio" className="flex items-center gap-2">
                 <FileText className="h-4 w-4" />
-                Portafoglio Attuale
+                Portafoglio
               </TabsTrigger>
               <TabsTrigger value="certificates" className="flex items-center gap-2">
                 <RefreshCcw className="h-4 w-4" />
-                Lista Certificati
+                Certificati
+              </TabsTrigger>
+              <TabsTrigger value="history" className="flex items-center gap-2">
+                <Clock className="h-4 w-4" />
+                Storico
               </TabsTrigger>
             </TabsList>
 
@@ -175,6 +180,10 @@ const StructuredProductsGU = () => {
                 replacingIsin={replacingCert || undefined}
                 onSelectReplacement={handleSelectReplacement}
               />
+            </TabsContent>
+
+            <TabsContent value="history">
+              <PortfolioChangeHistory portfolioId={portfolio?.id || null} />
             </TabsContent>
 
             <TabsContent value="portfolio">

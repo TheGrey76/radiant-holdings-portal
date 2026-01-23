@@ -7,7 +7,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Upload, Search, ExternalLink, ArrowUpDown, Star, Filter, X, CheckCircle2, AlertTriangle } from 'lucide-react';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Upload, Search, ExternalLink, ArrowUpDown, Star, X, CheckCircle2, AlertTriangle, TrendingUp, Medal, Plus, Info } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export interface Certificate {
@@ -64,16 +65,46 @@ const certificateList: Certificate[] = [
   { id: 25, isin: 'XS3239537163', issuer: 'Barclays', theme: 'US Defensive Basket', type: 'Phoenix WO-4', couponPa: '14.04%', couponFrequency: 'Quarterly', couponBarrier: '65%', capitalBarrier: '65%', maturity: '3 Year', irr: '13.76%', ask: '100.4%', underlyings: 'Northrop Grumman, Lockheed, Axon, Boeing', isNew: true },
 ];
 
+// Calculate composite score for ranking (higher = better)
+const calculateScore = (cert: Certificate): number => {
+  const parsePercent = (val: string) => {
+    const num = parseFloat(val.replace('%', ''));
+    return isNaN(num) ? 0 : num;
+  };
+
+  const coupon = parsePercent(cert.couponPa);
+  const irr = parsePercent(cert.irr);
+  const capitalBarrier = parsePercent(cert.capitalBarrier);
+  const couponBarrier = parsePercent(cert.couponBarrier);
+  
+  // Score components (normalized 0-100)
+  const yieldScore = Math.min((irr > 0 ? irr : coupon) * 4, 100); // Max ~25% IRR = 100
+  const barrierScore = (100 - capitalBarrier) + (100 - couponBarrier); // Lower barrier = more protection = higher score
+  const safetyScore = Math.min(barrierScore, 100);
+  
+  // Weighted composite: 50% yield, 30% safety, 20% bonus for new products
+  const newBonus = cert.isNew ? 10 : 0;
+  
+  return yieldScore * 0.5 + safetyScore * 0.3 + newBonus;
+};
+
 interface CertificateListManagerProps {
   onSelectReplacement?: (cert: Certificate) => void;
+  onAddToPortfolio?: (cert: Certificate) => void;
   replacingIsin?: string;
+  showAddButton?: boolean;
 }
 
-export const CertificateListManager = ({ onSelectReplacement, replacingIsin }: CertificateListManagerProps) => {
+export const CertificateListManager = ({ 
+  onSelectReplacement, 
+  onAddToPortfolio,
+  replacingIsin,
+  showAddButton = false 
+}: CertificateListManagerProps) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [issuerFilter, setIssuerFilter] = useState<string>('all');
   const [typeFilter, setTypeFilter] = useState<string>('all');
-  const [sortBy, setSortBy] = useState<'couponPa' | 'irr' | 'maturity'>('couponPa');
+  const [sortBy, setSortBy] = useState<'score' | 'couponPa' | 'irr' | 'maturity'>('score');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [selectedCert, setSelectedCert] = useState<Certificate | null>(null);
   const [showOnlyNew, setShowOnlyNew] = useState(false);
@@ -107,7 +138,9 @@ export const CertificateListManager = ({ onSelectReplacement, replacingIsin }: C
         };
         
         let comparison = 0;
-        if (sortBy === 'couponPa') {
+        if (sortBy === 'score') {
+          comparison = calculateScore(a) - calculateScore(b);
+        } else if (sortBy === 'couponPa') {
           comparison = parsePercent(a.couponPa) - parsePercent(b.couponPa);
         } else if (sortBy === 'irr') {
           comparison = parsePercent(a.irr) - parsePercent(b.irr);
@@ -120,13 +153,27 @@ export const CertificateListManager = ({ onSelectReplacement, replacingIsin }: C
       });
   }, [searchTerm, issuerFilter, typeFilter, sortBy, sortOrder, showOnlyNew]);
   
-  const handleSort = (column: 'couponPa' | 'irr' | 'maturity') => {
+  const handleSort = (column: 'score' | 'couponPa' | 'irr' | 'maturity') => {
     if (sortBy === column) {
       setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
     } else {
       setSortBy(column);
       setSortOrder('desc');
     }
+  };
+  
+  const getRankBadge = (index: number) => {
+    if (index === 0) return <Badge className="bg-amber-500 text-white">🥇 #1</Badge>;
+    if (index === 1) return <Badge className="bg-slate-400 text-white">🥈 #2</Badge>;
+    if (index === 2) return <Badge className="bg-amber-700 text-white">🥉 #3</Badge>;
+    return <Badge variant="outline" className="text-slate-500">#{index + 1}</Badge>;
+  };
+  
+  const getScoreColor = (score: number) => {
+    if (score >= 40) return 'text-emerald-600';
+    if (score >= 30) return 'text-blue-600';
+    if (score >= 20) return 'text-amber-600';
+    return 'text-slate-500';
   };
   
   const getIssuerColor = (issuer: string) => {
@@ -239,10 +286,19 @@ export const CertificateListManager = ({ onSelectReplacement, replacingIsin }: C
           <Table>
             <TableHeader className="sticky top-0 bg-slate-50 z-10">
               <TableRow>
+                <TableHead 
+                  className="w-[80px] cursor-pointer hover:bg-slate-100"
+                  onClick={() => handleSort('score')}
+                >
+                  <div className="flex items-center gap-1">
+                    <Medal className="h-3 w-3" />
+                    Rank
+                    {sortBy === 'score' && <ArrowUpDown className="h-3 w-3" />}
+                  </div>
+                </TableHead>
                 <TableHead className="w-[120px]">ISIN</TableHead>
                 <TableHead>Emittente</TableHead>
-                <TableHead className="max-w-[200px]">Tema / Sottostanti</TableHead>
-                <TableHead>Tipo</TableHead>
+                <TableHead className="max-w-[180px]">Tema / Sottostanti</TableHead>
                 <TableHead 
                   className="cursor-pointer hover:bg-slate-100"
                   onClick={() => handleSort('couponPa')}
@@ -262,26 +318,44 @@ export const CertificateListManager = ({ onSelectReplacement, replacingIsin }: C
                     <ArrowUpDown className="h-3 w-3" />
                   </div>
                 </TableHead>
+                <TableHead className="w-[70px]">
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger className="flex items-center gap-1">
+                        Score
+                        <Info className="h-3 w-3" />
+                      </TooltipTrigger>
+                      <TooltipContent className="max-w-[200px]">
+                        <p className="text-xs">Score composito basato su: rendimento (50%), sicurezza barriere (30%), novità (20%)</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </TableHead>
                 <TableHead className="text-right">Azioni</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               <AnimatePresence>
-                {filteredCerts.map((cert, index) => (
+                {filteredCerts.map((cert, index) => {
+                  const score = calculateScore(cert);
+                  return (
                   <motion.tr
                     key={cert.isin}
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
                     transition={{ delay: index * 0.02 }}
-                    className={`group hover:bg-slate-50 ${selectedCert?.isin === cert.isin ? 'bg-blue-50' : ''}`}
+                    className={`group hover:bg-slate-50 ${selectedCert?.isin === cert.isin ? 'bg-blue-50' : ''} ${index < 3 ? 'bg-gradient-to-r from-amber-50/50 to-transparent' : ''}`}
                   >
+                    <TableCell>
+                      {getRankBadge(index)}
+                    </TableCell>
                     <TableCell className="font-mono text-sm">
                       <div className="flex items-center gap-2">
                         {cert.isNew && (
                           <Badge variant="default" className="bg-emerald-500 text-[10px] px-1">NEW</Badge>
                         )}
-                        {cert.isin}
+                        {cert.isin.slice(0, 12)}
                       </div>
                     </TableCell>
                     <TableCell>
@@ -289,16 +363,11 @@ export const CertificateListManager = ({ onSelectReplacement, replacingIsin }: C
                         {cert.issuer}
                       </Badge>
                     </TableCell>
-                    <TableCell className="max-w-[200px]">
+                    <TableCell className="max-w-[180px]">
                       <div className="space-y-1">
                         <p className="font-medium text-slate-900 text-sm">{cert.theme}</p>
                         <p className="text-xs text-slate-500 truncate">{cert.underlyings}</p>
                       </div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="secondary" className="text-xs">
-                        {cert.type}
-                      </Badge>
                     </TableCell>
                     <TableCell>
                       <span className={`font-semibold ${parseFloat(cert.couponPa) >= 12 ? 'text-emerald-600' : 'text-slate-700'}`}>
@@ -314,6 +383,11 @@ export const CertificateListManager = ({ onSelectReplacement, replacingIsin }: C
                         {cert.irr || '-'}
                       </span>
                     </TableCell>
+                    <TableCell>
+                      <span className={`font-bold ${getScoreColor(score)}`}>
+                        {score.toFixed(0)}
+                      </span>
+                    </TableCell>
                     <TableCell className="text-right">
                       <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                         <a
@@ -327,8 +401,8 @@ export const CertificateListManager = ({ onSelectReplacement, replacingIsin }: C
                         {onSelectReplacement && (
                           <Button 
                             size="sm" 
-                            variant="outline"
-                            className="h-7 text-xs"
+                            variant="default"
+                            className="h-7 text-xs bg-emerald-600 hover:bg-emerald-700"
                             onClick={() => {
                               setSelectedCert(cert);
                               onSelectReplacement(cert);
@@ -336,6 +410,17 @@ export const CertificateListManager = ({ onSelectReplacement, replacingIsin }: C
                           >
                             <CheckCircle2 className="h-3 w-3 mr-1" />
                             Seleziona
+                          </Button>
+                        )}
+                        {onAddToPortfolio && showAddButton && (
+                          <Button 
+                            size="sm" 
+                            variant="outline"
+                            className="h-7 text-xs"
+                            onClick={() => onAddToPortfolio(cert)}
+                          >
+                            <Plus className="h-3 w-3 mr-1" />
+                            Aggiungi
                           </Button>
                         )}
                         <Dialog>
@@ -424,7 +509,8 @@ export const CertificateListManager = ({ onSelectReplacement, replacingIsin }: C
                       </div>
                     </TableCell>
                   </motion.tr>
-                ))}
+                  );
+                })}
               </AnimatePresence>
             </TableBody>
           </Table>
