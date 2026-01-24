@@ -292,7 +292,10 @@ Quiet day in crypto markets. No significant developments in recent hours. We con
   }
 
   const newsItems = news.slice(0, 5).map((item, i) => {
-    return `<b>${i + 1}.</b> ${item.title}
+    const titleWithLink = item.url 
+      ? `<a href="${item.url}">${item.title}</a>` 
+      : item.title;
+    return `<b>${i + 1}.</b> ${titleWithLink}
 <i>— ${item.source}</i>`;
   }).join('\n\n');
 
