@@ -8,8 +8,6 @@ const corsHeaders = {
 
 const TELEGRAM_BOT_TOKEN = Deno.env.get('TELEGRAM_BOT_TOKEN');
 const CHANNEL_ID = '@aries76_bitcoin';
-// Banner URL - using the bitcoin OG image (works with Telegram)
-const BANNER_URL = 'https://www.aries76.com/bitcoin-2026-og.png';
 
 // Fetch live prices from CoinGecko (reliable, no rate limits for basic use)
 async function fetchLiveCryptoPrices(): Promise<{
@@ -45,7 +43,6 @@ async function fetchLiveCryptoPrices(): Promise<{
     };
   } catch (error) {
     console.error('Error fetching crypto prices:', error);
-    // Return fallback values
     return {
       bitcoin: { usd: 0, eur: 0, change24h: 0, marketCap: 0 },
       ethereum: { usd: 0, eur: 0, change24h: 0, marketCap: 0 },
@@ -64,10 +61,29 @@ function formatMarketCap(marketCap: number): string {
   return `$${billions.toFixed(0)}B`;
 }
 
-// Format percentage
+// Format percentage with arrow
 function formatChange(change: number): string {
-  const sign = change >= 0 ? '+' : '';
-  return `${sign}${change.toFixed(2)}%`;
+  const sign = change >= 0 ? '▲' : '▼';
+  return `${sign} ${Math.abs(change).toFixed(2)}%`;
+}
+
+// Get time-based greeting
+function getTimeGreeting(): string {
+  const hour = new Date().getUTCHours() + 1; // CET approximation
+  if (hour >= 5 && hour < 12) return '☀️ Good Morning';
+  if (hour >= 12 && hour < 18) return '🌤 Good Afternoon';
+  return '🌙 Good Evening';
+}
+
+// Get current date formatted
+function getFormattedDate(): string {
+  const now = new Date();
+  return now.toLocaleDateString('en-GB', { 
+    weekday: 'long', 
+    day: 'numeric', 
+    month: 'long', 
+    year: 'numeric' 
+  });
 }
 
 interface PublishRequest {
@@ -100,56 +116,86 @@ function generateBitcoinAnalysis(liveData?: {
   realRate?: number;
 }) {
   // Use live CoinGecko data for price
-  const price = liveData?.usd ? formatPrice(liveData.usd) : '$94,000';
-  const priceEur = liveData?.eur ? formatPrice(liveData.eur, '€') : '€86,500';
-  const change24h = liveData?.change24h ? formatChange(liveData.change24h) : '-0.74%';
+  const priceUsd = liveData?.usd || 0;
+  const priceEur = liveData?.eur || 0;
+  const change24h = liveData?.change24h || 0;
+  const marketCap = liveData?.marketCap || 0;
   
   // Use database data for regime/targets or defaults
   const regime = dbData?.regime || 'ACCUMULATION';
-  const regimeConfidence = dbData?.regimeConfidence ? `${dbData.regimeConfidence}%` : '60%';
-  const targetLow = dbData?.targetLow ? formatPrice(dbData.targetLow) : '$96,000';
-  const targetHigh = dbData?.targetHigh ? formatPrice(dbData.targetHigh) : '$132,000';
-  const institutionalTarget = dbData?.institutionalTarget ? formatPrice(dbData.institutionalTarget) : '$138,000';
-  const m2Value = dbData?.m2Value ? `$${(dbData.m2Value / 1_000_000_000_000).toFixed(1)}T` : '$22.3T';
-  const realRate = dbData?.realRate ? formatChange(dbData.realRate) : '+1.45%';
+  const regimeConfidence = dbData?.regimeConfidence || 60;
+  const targetLow = dbData?.targetLow || 96000;
+  const targetHigh = dbData?.targetHigh || 132000;
+  const institutionalTarget = dbData?.institutionalTarget || 138000;
+  const m2Value = dbData?.m2Value || 22300000000000;
+  const realRate = dbData?.realRate || 1.45;
 
   // Determine signal based on regime
-  let signal = 'HOLD 🟡';
-  if (regime === 'ACCUMULATION' || regime === 'EXPANSION') {
-    signal = 'BUY 🟢';
+  let signal = '◐ HOLD';
+  let signalDesc = 'Maintain current positions';
+  if (regime === 'ACCUMULATION') {
+    signal = '◉ ACCUMULATE';
+    signalDesc = 'Strategic entry opportunity';
+  } else if (regime === 'EXPANSION') {
+    signal = '● BUY';
+    signalDesc = 'Bullish momentum confirmed';
   } else if (regime === 'CONTRACTION') {
-    signal = 'SELL 🔴';
+    signal = '○ REDUCE';
+    signalDesc = 'Risk-off positioning';
   }
 
-  // Regime emoji
-  let regimeEmoji = '🟡';
-  if (regime === 'EXPANSION') regimeEmoji = '🟢';
-  else if (regime === 'ACCUMULATION') regimeEmoji = '🔵';
-  else if (regime === 'CONTRACTION') regimeEmoji = '🔴';
+  // Regime indicator
+  let regimeBar = '▓▓▓░░░░░░░';
+  if (regime === 'EXPANSION') regimeBar = '▓▓▓▓▓▓▓▓░░';
+  else if (regime === 'ACCUMULATION') regimeBar = '▓▓▓▓▓░░░░░';
+  else if (regime === 'CONTRACTION') regimeBar = '▓▓░░░░░░░░';
 
-  return `<b>📊 BITCOIN Q1 2026 ANALYSIS</b>
-<i>powered by ARIES76 Macro Model</i>
+  // Price change indicator
+  const changeIndicator = change24h >= 0 ? '📈' : '📉';
+  const changeColor = change24h >= 0 ? '🟢' : '🔴';
 
-<b>💰 Price:</b> ${price} | ${priceEur}
-<b>📉 24h:</b> ${change24h}
+  return `━━━━━━━━━━━━━━━━━━━━━━━━━━
+       <b>ARIES76 BITCOIN REPORT</b>
+━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-<b>🎯 Current Regime:</b> ${regime} ${regimeEmoji}
-<b>📈 Confidence:</b> ${regimeConfidence}
+${getTimeGreeting()}
+${getFormattedDate()}
 
-<b>🔮 Price Targets (12M):</b>
-├ Conservative: ${targetLow}
-├ Base Case: ${targetHigh}
-└ Institutional: ${institutionalTarget}
+┌─────────────────────────┐
+│  <b>MARKET SNAPSHOT</b>         │
+├─────────────────────────┤
+│  BTC/USD   <b>${formatPrice(priceUsd)}</b>     │
+│  BTC/EUR   <b>${formatPrice(priceEur, '€')}</b>     │
+│  24h       ${changeColor} ${formatChange(change24h)}      │
+│  Mkt Cap   ${formatMarketCap(marketCap)}          │
+└─────────────────────────┘
 
-<b>📊 Macro Indicators:</b>
-├ Global M2: ${m2Value}
-└ Real Rate: ${realRate}
+┌─────────────────────────┐
+│  <b>MACRO REGIME</b>            │
+├─────────────────────────┤
+│  Status: <b>${regime}</b>        │
+│  ${regimeBar} ${regimeConfidence}%    │
+│                         │
+│  Global M2: $${(m2Value / 1_000_000_000_000).toFixed(1)}T        │
+│  Real Rate: ${realRate >= 0 ? '+' : ''}${realRate.toFixed(2)}%        │
+└─────────────────────────┘
 
-<b>⚡ Signal:</b> ${signal}
+┌─────────────────────────┐
+│  <b>12M PRICE TARGETS</b>       │
+├─────────────────────────┤
+│  ▸ Conservative  ${formatPrice(targetLow)}  │
+│  ▸ Base Case     ${formatPrice(targetHigh)}  │
+│  ▸ Institutional ${formatPrice(institutionalTarget)}  │
+└─────────────────────────┘
 
-📖 <a href="https://www.aries76.com/bitcoin-2026-report-preview">Full Report →</a>
+<b>${signal}</b>
+<i>${signalDesc}</i>
 
-#Bitcoin #BTC #Crypto #MacroAnalysis #ARIES76`;
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+<a href="https://www.aries76.com/bitcoin-2026-report-preview">📊 Full Research Report</a>
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+#Bitcoin #BTC #Crypto #MacroAnalysis`;
 }
 
 function generateEthereumAnalysis(liveData?: {
@@ -158,79 +204,103 @@ function generateEthereumAnalysis(liveData?: {
   change24h: number;
   marketCap: number;
 }) {
-  // Use live data or defaults
-  const price = liveData?.usd ? formatPrice(liveData.usd) : '$3,100';
-  const priceEur = liveData?.eur ? formatPrice(liveData.eur, '€') : '€2,850';
-  const change24h = liveData?.change24h ? formatChange(liveData.change24h) : '+0.30%';
-  const marketCap = liveData?.marketCap ? formatMarketCap(liveData.marketCap) : '$370B';
+  const priceUsd = liveData?.usd || 0;
+  const priceEur = liveData?.eur || 0;
+  const change24h = liveData?.change24h || 0;
+  const marketCap = liveData?.marketCap || 0;
   
   // Determine sentiment and signal based on 24h change
-  let sentiment = 'NEUTRAL 🟡';
-  let signal = 'HOLD 🟡';
-  if (liveData?.change24h) {
-    if (liveData.change24h > 3) {
-      sentiment = 'BULLISH 🟢';
-      signal = 'BUY 🟢';
-    } else if (liveData.change24h < -3) {
-      sentiment = 'BEARISH 🔴';
-      signal = 'SELL 🔴';
-    }
+  let signal = '◐ HOLD';
+  let signalDesc = 'Neutral momentum';
+  if (change24h > 3) {
+    signal = '● BUY';
+    signalDesc = 'Strong bullish momentum';
+  } else if (change24h < -3) {
+    signal = '○ REDUCE';
+    signalDesc = 'Bearish pressure detected';
   }
   
-  // Calculate dynamic support/resistance (approximate)
+  // Calculate dynamic support/resistance
   const priceNum = liveData?.usd || 3100;
-  const resistance = formatPrice(Math.round(priceNum * 1.02));
-  const support = formatPrice(Math.round(priceNum * 0.98));
+  const resistance = Math.round(priceNum * 1.02);
+  const support = Math.round(priceNum * 0.98);
 
-  return `<b>📊 ETHEREUM ANALYSIS</b>
-<i>powered by ARIES76</i>
+  const changeColor = change24h >= 0 ? '🟢' : '🔴';
 
-<b>💰 Price:</b> ${price} | ${priceEur}
-<b>📉 24h:</b> ${change24h}
-<b>📊 Market Cap:</b> ${marketCap}
-<b>🎯 Sentiment:</b> ${sentiment}
+  return `━━━━━━━━━━━━━━━━━━━━━━━━━━
+      <b>ARIES76 ETHEREUM REPORT</b>
+━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-<b>Technical Levels:</b>
-🔴 Resistance: ${resistance}
-🟢 Support: ${support}
+${getTimeGreeting()}
+${getFormattedDate()}
 
-<b>⚡ Signal:</b> ${signal}
+┌─────────────────────────┐
+│  <b>MARKET SNAPSHOT</b>         │
+├─────────────────────────┤
+│  ETH/USD   <b>${formatPrice(priceUsd)}</b>      │
+│  ETH/EUR   <b>${formatPrice(priceEur, '€')}</b>      │
+│  24h       ${changeColor} ${formatChange(change24h)}       │
+│  Mkt Cap   ${formatMarketCap(marketCap)}          │
+└─────────────────────────┘
 
-📖 <a href="https://www.aries76.com/bitcoin-2026-report-preview">Full Report →</a>
+┌─────────────────────────┐
+│  <b>TECHNICAL LEVELS</b>        │
+├─────────────────────────┤
+│  ▲ Resistance  ${formatPrice(resistance)}     │
+│  ▼ Support     ${formatPrice(support)}     │
+└─────────────────────────┘
 
-#Ethereum #ETH #Crypto #Analysis #ARIES76`;
+<b>${signal}</b>
+<i>${signalDesc}</i>
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+<a href="https://www.aries76.com/bitcoin-2026-report-preview">📊 Full Research Report</a>
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+#Ethereum #ETH #Crypto #Analysis`;
 }
 
 function generateNewsDigest(news: Array<{ title: string; source: string; url?: string }>) {
   if (news.length === 0) {
-    return `<b>📰 DIGITAL ASSETS NEWS</b>
-<i>powered by ARIES76</i>
+    return `━━━━━━━━━━━━━━━━━━━━━━━━━━
+      <b>ARIES76 MARKET DIGEST</b>
+━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-No news available at the moment.
+${getFormattedDate()}
 
-📖 <a href="https://www.aries76.com/bitcoin-2026-report-preview">Full Report →</a>
+No significant news at this time.
 
-#Crypto #News #DigitalAssets #ARIES76`;
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+<a href="https://www.aries76.com/bitcoin-2026-report-preview">📊 Research Report</a>
+━━━━━━━━━━━━━━━━━━━━━━━━━━`;
   }
 
   const newsItems = news.slice(0, 5).map((item, i) => {
-    const emoji = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣'][i] || '▪️';
+    const num = i + 1;
     if (item.url) {
-      return `${emoji} <a href="${item.url}">${item.title}</a>\n<i>${item.source}</i>`;
+      return `<b>${num}.</b> <a href="${item.url}">${item.title}</a>
+   <i>— ${item.source}</i>`;
     }
-    return `${emoji} ${item.title}\n<i>${item.source}</i>`;
+    return `<b>${num}.</b> ${item.title}
+   <i>— ${item.source}</i>`;
   }).join('\n\n');
 
-  return `<b>📰 DIGITAL ASSETS NEWS</b>
-<i>powered by ARIES76</i>
+  return `━━━━━━━━━━━━━━━━━━━━━━━━━━
+      <b>ARIES76 MARKET DIGEST</b>
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+${getTimeGreeting()}
+${getFormattedDate()}
+
+<b>TOP STORIES</b>
 
 ${newsItems}
 
-━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+<a href="https://www.aries76.com/bitcoin-2026-report-preview">📊 Bitcoin 2026 Report</a>
+━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-📖 <a href="https://www.aries76.com/bitcoin-2026-report-preview">Bitcoin 2026 Report →</a>
-
-#Crypto #News #DigitalAssets #ARIES76`;
+#Crypto #News #DigitalAssets`;
 }
 
 // Fetch news from database with actual article URLs - excluding already published ones
@@ -290,38 +360,23 @@ async function fetchNewsFromDatabase(supabase: ReturnType<typeof createClient>):
   return freshNews;
 }
 
-async function publishToTelegram(message: string, withPhoto: boolean = true): Promise<{ success: boolean; messageId?: string; error?: string }> {
+async function publishToTelegram(message: string): Promise<{ success: boolean; messageId?: string; error?: string }> {
   if (!TELEGRAM_BOT_TOKEN) {
     console.error('TELEGRAM_BOT_TOKEN is not set');
     return { success: false, error: 'Telegram bot token not configured' };
   }
 
   console.log('Attempting to publish to Telegram channel:', CHANNEL_ID);
-  console.log('With photo:', withPhoto);
 
   try {
-    let url: string;
-    let body: Record<string, unknown>;
-
-    if (withPhoto) {
-      // Send photo with caption
-      url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`;
-      body = {
-        chat_id: CHANNEL_ID,
-        photo: BANNER_URL,
-        caption: message,
-        parse_mode: 'HTML',
-      };
-    } else {
-      // Send text only
-      url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-      body = {
-        chat_id: CHANNEL_ID,
-        text: message,
-        parse_mode: 'HTML',
-        disable_web_page_preview: true,
-      };
-    }
+    // Always send text-only messages (no images)
+    const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+    const body = {
+      chat_id: CHANNEL_ID,
+      text: message,
+      parse_mode: 'HTML',
+      disable_web_page_preview: false, // Allow link previews
+    };
     
     console.log('Request URL:', url.replace(TELEGRAM_BOT_TOKEN, 'BOT_TOKEN_HIDDEN'));
 
