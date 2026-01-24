@@ -9,11 +9,12 @@ const corsHeaders = {
 const TELEGRAM_BOT_TOKEN = Deno.env.get('TELEGRAM_BOT_TOKEN');
 const CHANNEL_ID = '@aries76_bitcoin';
 
-// Fetch live prices from CoinGecko
+// Fetch live prices from CoinGecko with retry and fallback
 async function fetchLiveCryptoPrices(): Promise<{
   bitcoin: { usd: number; eur: number; change24h: number; marketCap: number };
   ethereum: { usd: number; eur: number; change24h: number; marketCap: number };
 }> {
+  // Try CoinGecko first
   try {
     console.log('Fetching live crypto prices from CoinGecko...');
     const response = await fetch(
@@ -27,22 +28,64 @@ async function fetchLiveCryptoPrices(): Promise<{
     const data = await response.json();
     console.log('CoinGecko response:', JSON.stringify(data));
     
+    if (data.bitcoin?.usd > 0) {
+      return {
+        bitcoin: {
+          usd: data.bitcoin?.usd || 0,
+          eur: data.bitcoin?.eur || 0,
+          change24h: data.bitcoin?.usd_24h_change || 0,
+          marketCap: data.bitcoin?.usd_market_cap || 0,
+        },
+        ethereum: {
+          usd: data.ethereum?.usd || 0,
+          eur: data.ethereum?.eur || 0,
+          change24h: data.ethereum?.usd_24h_change || 0,
+          marketCap: data.ethereum?.usd_market_cap || 0,
+        },
+      };
+    }
+    throw new Error('CoinGecko returned invalid data');
+  } catch (error) {
+    console.error('CoinGecko failed, trying CoinCap fallback...', error);
+  }
+
+  // Fallback to CoinCap API (no rate limits)
+  try {
+    const btcResponse = await fetch('https://api.coincap.io/v2/assets/bitcoin');
+    const ethResponse = await fetch('https://api.coincap.io/v2/assets/ethereum');
+    
+    const btcData = await btcResponse.json();
+    const ethData = await ethResponse.json();
+    
+    const btcPriceUsd = parseFloat(btcData.data?.priceUsd) || 0;
+    const ethPriceUsd = parseFloat(ethData.data?.priceUsd) || 0;
+    const btcChange = parseFloat(btcData.data?.changePercent24Hr) || 0;
+    const ethChange = parseFloat(ethData.data?.changePercent24Hr) || 0;
+    const btcMarketCap = parseFloat(btcData.data?.marketCapUsd) || 0;
+    const ethMarketCap = parseFloat(ethData.data?.marketCapUsd) || 0;
+    
+    // Approximate EUR conversion (use fixed rate as fallback)
+    const eurRate = 0.92;
+    
+    console.log('CoinCap fallback successful:', { btcPriceUsd, ethPriceUsd });
+    
     return {
       bitcoin: {
-        usd: data.bitcoin?.usd || 0,
-        eur: data.bitcoin?.eur || 0,
-        change24h: data.bitcoin?.usd_24h_change || 0,
-        marketCap: data.bitcoin?.usd_market_cap || 0,
+        usd: btcPriceUsd,
+        eur: btcPriceUsd * eurRate,
+        change24h: btcChange,
+        marketCap: btcMarketCap,
       },
       ethereum: {
-        usd: data.ethereum?.usd || 0,
-        eur: data.ethereum?.eur || 0,
-        change24h: data.ethereum?.usd_24h_change || 0,
-        marketCap: data.ethereum?.usd_market_cap || 0,
+        usd: ethPriceUsd,
+        eur: ethPriceUsd * eurRate,
+        change24h: ethChange,
+        marketCap: ethMarketCap,
       },
     };
   } catch (error) {
-    console.error('Error fetching crypto prices:', error);
+    console.error('CoinCap fallback also failed:', error);
+    // Return zeros - the function will use database fallback
     return {
       bitcoin: { usd: 0, eur: 0, change24h: 0, marketCap: 0 },
       ethereum: { usd: 0, eur: 0, change24h: 0, marketCap: 0 },
@@ -125,11 +168,14 @@ function generateBitcoinAnalysis(liveData?: {
   const marketCap = liveData?.marketCap || 0;
   
   const regime = dbData?.regime || 'ACCUMULATION';
-  const regimeConfidence = dbData?.regimeConfidence || 60;
+  // Confidence comes as decimal (0.6 = 60%), convert to percentage
+  const regimeConfidenceRaw = dbData?.regimeConfidence || 0.6;
+  const regimeConfidence = regimeConfidenceRaw < 1 ? Math.round(regimeConfidenceRaw * 100) : Math.round(regimeConfidenceRaw);
   const targetLow = dbData?.targetLow || 96000;
   const targetHigh = dbData?.targetHigh || 132000;
   const institutionalTarget = dbData?.institutionalTarget || 138000;
-  const m2Value = dbData?.m2Value || 22300000000000;
+  // M2 value comes in billions from DB (22322.4 = $22.3T)
+  const m2ValueBillions = dbData?.m2Value || 22300;
   const realRate = dbData?.realRate || 1.45;
 
   // Determine narrative based on regime
@@ -150,7 +196,7 @@ function generateBitcoinAnalysis(liveData?: {
   }
 
   const changeDirection = change24h >= 0 ? 'in rialzo' : 'in ribasso';
-  const m2Trillion = (m2Value / 1_000_000_000_000).toFixed(1);
+  const m2Trillion = (m2ValueBillions / 1000).toFixed(1);
   const marketCapFormatted = formatMarketCap(marketCap);
 
   return `<b>ARIES76 — Bitcoin Analysis</b>
