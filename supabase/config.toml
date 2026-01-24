@@ -143,3 +143,6 @@ verify_jwt = false
 
 [functions.parse-advisory-document]
 verify_jwt = false
+
+[functions.bitcoin-research-signup]
+verify_jwt = false

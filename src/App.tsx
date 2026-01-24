@@ -70,6 +70,8 @@ import Bitcoin2026Report from "./pages/Bitcoin2026Report";
 import Bitcoin2026ReportCover from "./pages/Bitcoin2026ReportCover";
 import Bitcoin2026ReportPreview from "./pages/Bitcoin2026ReportPreview";
 import BitcoinResearch from "./pages/BitcoinResearch";
+import BitcoinResearchAdmin from "./pages/BitcoinResearchAdmin";
+import BitcoinResearchAccessGate from "./components/BitcoinResearchAccessGate";
 
 import UnderlyingMonitoring from "./pages/UnderlyingMonitoring";
 import CrossPostingAssistant from "./pages/CrossPostingAssistant";
@@ -158,7 +160,8 @@ const App = () => (
           {/* Bitcoin Dynamic Allocation - new naming */}
           <Route path="/bitcoin-dynamic-allocation" element={<Bitcoin2026Report />} />
           <Route path="/bitcoin-dynamic-allocation-preview" element={<Bitcoin2026ReportPreview />} />
-          <Route path="/bitcoin-research" element={<BitcoinResearch />} />
+          <Route path="/bitcoin-research" element={<BitcoinResearchAccessGate><BitcoinResearch /></BitcoinResearchAccessGate>} />
+          <Route path="/admin/bitcoin-research" element={<BitcoinResearchAdmin />} />
           
           {/* Legacy redirects for old URLs */}
           <Route path="/bitcoin-2026-report" element={<Navigate to="/bitcoin-dynamic-allocation" replace />} />
