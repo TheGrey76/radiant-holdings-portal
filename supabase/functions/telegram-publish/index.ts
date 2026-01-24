@@ -182,36 +182,36 @@ function generateBitcoinAnalysis(liveData?: {
   let regimeNarrative = '';
   let outlook = '';
   if (regime === 'ACCUMULATION') {
-    regimeNarrative = 'Il mercato si trova in fase di accumulazione. Gli indicatori macro suggeriscono che gli investitori istituzionali stanno costruendo posizioni in modo graduale, approfittando della volatilità per migliorare il prezzo medio di carico.';
-    outlook = 'moderatamente costruttivo';
+    regimeNarrative = 'The market is in an accumulation phase. Macro indicators suggest institutional investors are gradually building positions, taking advantage of volatility to improve their average entry price.';
+    outlook = 'moderately constructive';
   } else if (regime === 'EXPANSION') {
-    regimeNarrative = 'Siamo in piena fase espansiva. Il momentum è sostenuto da flussi consistenti sugli ETF spot e da una correlazione positiva con la liquidità globale.';
-    outlook = 'positivo';
+    regimeNarrative = 'We are in a full expansion phase. Momentum is supported by consistent ETF inflows and a positive correlation with global liquidity.';
+    outlook = 'positive';
   } else if (regime === 'CONTRACTION') {
-    regimeNarrative = 'Il mercato attraversa una fase di contrazione. I tassi reali elevati e la riduzione della liquidità globale pesano sugli asset risk-on.';
-    outlook = 'cauto';
+    regimeNarrative = 'The market is going through a contraction phase. Elevated real rates and declining global liquidity are weighing on risk-on assets.';
+    outlook = 'cautious';
   } else {
-    regimeNarrative = 'Il mercato si trova in una fase di transizione. I segnali sono misti e richiedono un approccio equilibrato.';
-    outlook = 'neutrale';
+    regimeNarrative = 'The market is in a transitional phase. Signals are mixed and require a balanced approach.';
+    outlook = 'neutral';
   }
 
-  const changeDirection = change24h >= 0 ? 'in rialzo' : 'in ribasso';
+  const changeDirection = change24h >= 0 ? 'up' : 'down';
   const m2Trillion = (m2ValueBillions / 1000).toFixed(1);
   const marketCapFormatted = formatMarketCap(marketCap);
 
   return `<b>ARIES76 — Bitcoin Analysis</b>
 ${getFormattedDate()}
 
-Bitcoin scambia a <b>${formatPrice(priceUsd)}</b> (${formatPrice(priceEur, '€')}), ${changeDirection} del ${Math.abs(change24h).toFixed(1)}% nelle ultime 24 ore. La capitalizzazione di mercato si attesta a ${marketCapFormatted}.
+Bitcoin is trading at <b>${formatPrice(priceUsd)}</b> (${formatPrice(priceEur, '€')}), ${changeDirection} ${Math.abs(change24h).toFixed(1)}% over the last 24 hours. Market cap stands at ${marketCapFormatted}.
 
 ${regimeNarrative}
 
-Sul fronte macro, la liquidità globale M2 è a $${m2Trillion}T mentre i tassi reali USA si mantengono al ${realRate >= 0 ? '+' : ''}${realRate.toFixed(2)}%. Il nostro modello indica un regime di <b>${regime}</b> con confidenza al ${regimeConfidence}%.
+On the macro front, global M2 liquidity is at $${m2Trillion}T while US real rates remain at ${realRate >= 0 ? '+' : ''}${realRate.toFixed(2)}%. Our model indicates a <b>${regime}</b> regime with ${regimeConfidence}% confidence.
 
-<b>Target 12 mesi:</b>
-• Conservativo: ${formatPrice(targetLow)}
+<b>12-month targets:</b>
+• Conservative: ${formatPrice(targetLow)}
 • Base case: ${formatPrice(targetHigh)}
-• Istituzionale: ${formatPrice(institutionalTarget)}
+• Institutional: ${formatPrice(institutionalTarget)}
 
 Outlook: <i>${outlook}</i>
 
@@ -232,38 +232,38 @@ function generateEthereumAnalysis(liveData?: {
   
   const resistance = Math.round(priceUsd * 1.05);
   const support = Math.round(priceUsd * 0.95);
-  const changeDirection = change24h >= 0 ? 'in rialzo' : 'in ribasso';
+  const changeDirection = change24h >= 0 ? 'up' : 'down';
   
   // Generate narrative based on momentum
   let narrative = '';
-  let outlook = 'neutrale';
+  let outlook = 'neutral';
   if (change24h > 5) {
-    narrative = 'Il momentum è decisamente positivo. Ethereum sta beneficiando di un sentiment risk-on e di flussi in ingresso significativi. La struttura tecnica supporta ulteriori rialzi nel breve termine.';
-    outlook = 'positivo';
+    narrative = 'Momentum is decidedly positive. Ethereum is benefiting from risk-on sentiment and significant inflows. The technical structure supports further upside in the short term.';
+    outlook = 'positive';
   } else if (change24h > 2) {
-    narrative = 'Il mercato mostra segni di forza con acquisti graduali. Il network continua a processare un volume elevato di transazioni, segnale di attività organica in crescita.';
-    outlook = 'moderatamente costruttivo';
+    narrative = 'The market is showing signs of strength with gradual buying. The network continues to process high transaction volumes, signaling growing organic activity.';
+    outlook = 'moderately constructive';
   } else if (change24h < -5) {
-    narrative = 'Pressione di vendita significativa nelle ultime ore. Il mercato sta testando livelli di supporto importanti. Raccomandiamo cautela e attenzione ai volumi.';
-    outlook = 'cauto';
+    narrative = 'Significant selling pressure in recent hours. The market is testing important support levels. We recommend caution and attention to volumes.';
+    outlook = 'cautious';
   } else if (change24h < -2) {
-    narrative = 'Leggera correzione in corso dopo la recente price action. I fondamentali rimangono solidi ma il sentiment di breve termine è debole.';
-    outlook = 'prudente';
+    narrative = 'Mild correction underway after recent price action. Fundamentals remain solid but short-term sentiment is weak.';
+    outlook = 'prudent';
   } else {
-    narrative = 'Consolidamento in corso con volatilità contenuta. Il mercato sembra in attesa di un catalizzatore per definire la prossima direzione.';
-    outlook = 'neutrale';
+    narrative = 'Consolidation underway with contained volatility. The market appears to be awaiting a catalyst to define the next direction.';
+    outlook = 'neutral';
   }
 
   return `<b>ARIES76 — Ethereum Analysis</b>
 ${getFormattedDate()}
 
-Ethereum scambia a <b>${formatPrice(priceUsd)}</b> (${formatPrice(priceEur, '€')}), ${changeDirection} del ${Math.abs(change24h).toFixed(1)}% nelle ultime 24 ore. La capitalizzazione di mercato si attesta a ${formatMarketCap(marketCap)}.
+Ethereum is trading at <b>${formatPrice(priceUsd)}</b> (${formatPrice(priceEur, '€')}), ${changeDirection} ${Math.abs(change24h).toFixed(1)}% over the last 24 hours. Market cap stands at ${formatMarketCap(marketCap)}.
 
 ${narrative}
 
-<b>Livelli tecnici:</b>
-• Resistenza: ${formatPrice(resistance)}
-• Supporto: ${formatPrice(support)}
+<b>Technical levels:</b>
+• Resistance: ${formatPrice(resistance)}
+• Support: ${formatPrice(support)}
 
 Outlook: <i>${outlook}</i>
 
@@ -276,7 +276,7 @@ function generateNewsDigest(news: Array<{ title: string; source: string; url?: s
     return `<b>ARIES76 — Market Digest</b>
 ${getFormattedDate()}
 
-Giornata tranquilla sui mercati crypto. Non si registrano sviluppi significativi nelle ultime ore. Continueremo a monitorare le principali fonti e vi aggiorneremo appena emergono notizie rilevanti.
+Quiet day in crypto markets. No significant developments in recent hours. We continue to monitor major sources and will update you as soon as relevant news emerges.
 
 —
 #Crypto #Markets`;
@@ -284,11 +284,11 @@ Giornata tranquilla sui mercati crypto. Non si registrano sviluppi significativi
 
   let intro = '';
   if (news.length === 1) {
-    intro = 'Una notizia da tenere d\'occhio oggi:';
+    intro = 'One story to watch today:';
   } else if (news.length <= 3) {
-    intro = `Le ${news.length} notizie principali di oggi dai mercati crypto:`;
+    intro = `Today's top ${news.length} stories from crypto markets:`;
   } else {
-    intro = 'Rassegna stampa: ecco cosa muove i mercati oggi.';
+    intro = 'Press roundup: here\'s what\'s moving markets today.';
   }
 
   const newsItems = news.slice(0, 5).map((item, i) => {
@@ -303,7 +303,7 @@ ${intro}
 
 ${newsItems}
 
-Buona lettura.
+Happy reading.
 
 —
 #Crypto #News #Markets`;
