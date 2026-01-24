@@ -34,13 +34,13 @@ const BitcoinResearchAccessGate = ({ children }: BitcoinResearchAccessGateProps)
 
   const handleRequestAccess = async () => {
     if (!email.trim()) {
-      toast.error('Inserisci la tua email');
+      toast.error('Please enter your email');
       return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      toast.error('Email non valida');
+      toast.error('Invalid email address');
       return;
     }
 
@@ -53,26 +53,26 @@ const BitcoinResearchAccessGate = ({ children }: BitcoinResearchAccessGateProps)
 
       if (error) {
         console.error('Error requesting access:', error);
-        toast.error('Errore nella richiesta');
+        toast.error('Request error');
         return;
       }
 
       if (data?.success) {
         setStep('verify');
-        toast.success('Codice di verifica inviato!', {
-          description: 'Controlla la tua casella email'
+        toast.success('Verification code sent!', {
+          description: 'Check your email inbox'
         });
       } else if (data?.alreadyVerified) {
         sessionStorage.setItem('bitcoin_research_email', email.trim().toLowerCase());
         sessionStorage.setItem('bitcoin_research_access', 'true');
         setHasAccess(true);
-        toast.success('Bentornato!');
+        toast.success('Welcome back!');
       } else {
-        toast.error(data?.error || 'Errore nella richiesta');
+        toast.error(data?.error || 'Request error');
       }
     } catch (err) {
       console.error('Request error:', err);
-      toast.error('Errore di connessione');
+      toast.error('Connection error');
     } finally {
       setIsLoading(false);
     }
@@ -80,7 +80,7 @@ const BitcoinResearchAccessGate = ({ children }: BitcoinResearchAccessGateProps)
 
   const handleVerifyCode = async () => {
     if (!verificationCode.trim()) {
-      toast.error('Inserisci il codice di verifica');
+      toast.error('Please enter the verification code');
       return;
     }
 
@@ -97,7 +97,7 @@ const BitcoinResearchAccessGate = ({ children }: BitcoinResearchAccessGateProps)
 
       if (error) {
         console.error('Error verifying:', error);
-        toast.error('Errore nella verifica');
+        toast.error('Verification error');
         return;
       }
 
@@ -105,13 +105,13 @@ const BitcoinResearchAccessGate = ({ children }: BitcoinResearchAccessGateProps)
         sessionStorage.setItem('bitcoin_research_email', email.trim().toLowerCase());
         sessionStorage.setItem('bitcoin_research_access', 'true');
         setHasAccess(true);
-        toast.success('Email verificata! Benvenuto');
+        toast.success('Email verified! Welcome');
       } else {
-        toast.error(data?.error || 'Codice non valido');
+        toast.error(data?.error || 'Invalid code');
       }
     } catch (err) {
       console.error('Verification error:', err);
-      toast.error('Errore di connessione');
+      toast.error('Connection error');
     } finally {
       setIsLoading(false);
     }
@@ -165,8 +165,8 @@ const BitcoinResearchAccessGate = ({ children }: BitcoinResearchAccessGateProps)
             <CardTitle className="text-2xl text-white">Bitcoin Research 2026</CardTitle>
             <CardDescription className="text-gray-400">
               {step === 'email' 
-                ? 'Inserisci la tua email per accedere al report completo'
-                : 'Inserisci il codice di verifica ricevuto via email'
+                ? 'Enter your email to access the full report'
+                : 'Enter the verification code sent to your email'
               }
             </CardDescription>
           </CardHeader>
@@ -180,7 +180,7 @@ const BitcoinResearchAccessGate = ({ children }: BitcoinResearchAccessGateProps)
                     <Input
                       id="email"
                       type="email"
-                      placeholder="tuaemail@esempio.com"
+                      placeholder="your@email.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       onKeyPress={handleKeyPress}
@@ -198,12 +198,12 @@ const BitcoinResearchAccessGate = ({ children }: BitcoinResearchAccessGateProps)
                   {isLoading ? (
                     <>
                       <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                      Invio in corso...
+                      Sending...
                     </>
                   ) : (
                     <>
                       <Sparkles className="h-4 w-4 mr-2" />
-                      Accedi al Report
+                      Access Report
                     </>
                   )}
                 </Button>
@@ -212,12 +212,12 @@ const BitcoinResearchAccessGate = ({ children }: BitcoinResearchAccessGateProps)
               <>
                 <div className="p-3 bg-orange-500/10 border border-orange-500/20 rounded-lg">
                   <p className="text-sm text-orange-300">
-                    Abbiamo inviato un codice di verifica a <strong>{email}</strong>
+                    We sent a verification code to <strong>{email}</strong>
                   </p>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="code" className="text-gray-300">Codice di Verifica</Label>
+                  <Label htmlFor="code" className="text-gray-300">Verification Code</Label>
                   <Input
                     id="code"
                     type="text"
@@ -239,31 +239,31 @@ const BitcoinResearchAccessGate = ({ children }: BitcoinResearchAccessGateProps)
                   {isLoading ? (
                     <>
                       <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                      Verifica in corso...
+                      Verifying...
                     </>
                   ) : (
                     <>
                       <CheckCircle className="h-4 w-4 mr-2" />
-                      Verifica Email
+                      Verify Email
                     </>
                   )}
                 </Button>
 
-                <Button 
+                <Button
                   variant="ghost" 
                   onClick={() => setStep('email')}
                   className="w-full text-gray-400 hover:text-white"
                 >
-                  ← Torna indietro
+                  ← Go back
                 </Button>
               </>
             )}
 
             <div className="pt-4 border-t border-gray-800">
               <p className="text-xs text-center text-gray-500">
-                Accesso gratuito per professionisti e investitori.
+                Free access for professionals and investors.
                 <br />
-                I tuoi dati sono protetti e non verranno condivisi.
+                Your data is protected and will not be shared.
               </p>
             </div>
           </CardContent>
