@@ -132,61 +132,45 @@ function generateBitcoinAnalysis(liveData?: {
   const m2Value = dbData?.m2Value || 22300000000000;
   const realRate = dbData?.realRate || 1.45;
 
-  // Determine signal based on regime
-  let signal = 'NEUTRAL';
-  let signalEmoji = '⚖️';
+  // Determine narrative based on regime
+  let regimeNarrative = '';
+  let outlook = '';
   if (regime === 'ACCUMULATION') {
-    signal = 'ACCUMULATE';
-    signalEmoji = '🟡';
+    regimeNarrative = 'Il mercato si trova in fase di accumulazione. Gli indicatori macro suggeriscono che gli investitori istituzionali stanno costruendo posizioni in modo graduale, approfittando della volatilità per migliorare il prezzo medio di carico.';
+    outlook = 'moderatamente costruttivo';
   } else if (regime === 'EXPANSION') {
-    signal = 'BULLISH';
-    signalEmoji = '🟢';
+    regimeNarrative = 'Siamo in piena fase espansiva. Il momentum è sostenuto da flussi consistenti sugli ETF spot e da una correlazione positiva con la liquidità globale.';
+    outlook = 'positivo';
   } else if (regime === 'CONTRACTION') {
-    signal = 'RISK-OFF';
-    signalEmoji = '🔴';
+    regimeNarrative = 'Il mercato attraversa una fase di contrazione. I tassi reali elevati e la riduzione della liquidità globale pesano sugli asset risk-on.';
+    outlook = 'cauto';
+  } else {
+    regimeNarrative = 'Il mercato si trova in una fase di transizione. I segnali sono misti e richiedono un approccio equilibrato.';
+    outlook = 'neutrale';
   }
 
-  const changeEmoji = change24h >= 0 ? '📈' : '📉';
+  const changeDirection = change24h >= 0 ? 'in rialzo' : 'in ribasso';
+  const m2Trillion = (m2Value / 1_000_000_000_000).toFixed(1);
+  const marketCapFormatted = formatMarketCap(marketCap);
 
-  return `
-<b>ARIES76</b>
-Bitcoin Market Intelligence
-
+  return `<b>ARIES76 — Bitcoin Analysis</b>
 ${getFormattedDate()}
-${getFormattedTime()}
 
+Bitcoin scambia a <b>${formatPrice(priceUsd)}</b> (${formatPrice(priceEur, '€')}), ${changeDirection} del ${Math.abs(change24h).toFixed(1)}% nelle ultime 24 ore. La capitalizzazione di mercato si attesta a ${marketCapFormatted}.
 
-<b>PRICE</b>
+${regimeNarrative}
 
-${formatPrice(priceUsd)} USD
-${formatPrice(priceEur, '€')} EUR
-${changeEmoji} ${formatChange(change24h)} (24h)
+Sul fronte macro, la liquidità globale M2 è a $${m2Trillion}T mentre i tassi reali USA si mantengono al ${realRate >= 0 ? '+' : ''}${realRate.toFixed(2)}%. Il nostro modello indica un regime di <b>${regime}</b> con confidenza al ${regimeConfidence}%.
 
+<b>Target 12 mesi:</b>
+• Conservativo: ${formatPrice(targetLow)}
+• Base case: ${formatPrice(targetHigh)}
+• Istituzionale: ${formatPrice(institutionalTarget)}
 
-<b>MARKET DATA</b>
-
-Market Cap: ${formatMarketCap(marketCap)}
-Global M2: $${(m2Value / 1_000_000_000_000).toFixed(1)}T
-Real Rate: ${realRate >= 0 ? '+' : ''}${realRate.toFixed(2)}%
-
-
-<b>REGIME ANALYSIS</b>
-
-${signalEmoji} ${regime}
-Confidence: ${regimeConfidence}%
-Signal: ${signal}
-
-
-<b>12-MONTH TARGETS</b>
-
-Conservative: ${formatPrice(targetLow)}
-Base Case: ${formatPrice(targetHigh)}
-Institutional: ${formatPrice(institutionalTarget)}
-
+Outlook: <i>${outlook}</i>
 
 —
-aries76.com/bitcoin-research
-#Bitcoin #BTC`;
+#Bitcoin #BTC #MacroAnalysis`;
 }
 
 function generateEthereumAnalysis(liveData?: {
@@ -200,92 +184,58 @@ function generateEthereumAnalysis(liveData?: {
   const change24h = liveData?.change24h || 0;
   const marketCap = liveData?.marketCap || 0;
   
-  let signal = 'NEUTRAL';
-  let signalEmoji = '⚖️';
-  if (change24h > 3) {
-    signal = 'BULLISH';
-    signalEmoji = '🟢';
-  } else if (change24h < -3) {
-    signal = 'BEARISH';
-    signalEmoji = '🔴';
-  }
-  
   const resistance = Math.round(priceUsd * 1.05);
   const support = Math.round(priceUsd * 0.95);
-  const changeEmoji = change24h >= 0 ? '📈' : '📉';
+  const changeDirection = change24h >= 0 ? 'in rialzo' : 'in ribasso';
+  
+  let outlook = 'neutrale';
+  if (change24h > 3) {
+    outlook = 'costruttivo, con momentum positivo';
+  } else if (change24h < -3) {
+    outlook = 'cauto, pressione ribassista in atto';
+  }
 
-  return `
-<b>ARIES76</b>
-Ethereum Market Intelligence
-
+  return `<b>ARIES76 — Ethereum Analysis</b>
 ${getFormattedDate()}
-${getFormattedTime()}
 
+Ethereum scambia a <b>${formatPrice(priceUsd)}</b> (${formatPrice(priceEur, '€')}), ${changeDirection} del ${Math.abs(change24h).toFixed(1)}% nelle ultime 24 ore.
 
-<b>PRICE</b>
+La capitalizzazione di mercato è di ${formatMarketCap(marketCap)}. I livelli tecnici chiave da monitorare sono la resistenza a ${formatPrice(resistance)} e il supporto a ${formatPrice(support)}.
 
-${formatPrice(priceUsd)} USD
-${formatPrice(priceEur, '€')} EUR
-${changeEmoji} ${formatChange(change24h)} (24h)
-
-
-<b>MARKET DATA</b>
-
-Market Cap: ${formatMarketCap(marketCap)}
-
-
-<b>TECHNICAL LEVELS</b>
-
-Resistance: ${formatPrice(resistance)}
-Support: ${formatPrice(support)}
-
-
-<b>SIGNAL</b>
-
-${signalEmoji} ${signal}
-
+Outlook: <i>${outlook}</i>
 
 —
-aries76.com/bitcoin-research
 #Ethereum #ETH`;
 }
 
 function generateNewsDigest(news: Array<{ title: string; source: string; url?: string }>) {
   if (news.length === 0) {
-    return `
-<b>ARIES76</b>
-Market Digest
-
+    return `<b>ARIES76 — Market Digest</b>
 ${getFormattedDate()}
-${getFormattedTime()}
 
-No significant news at this time.
+Nessuna notizia significativa in questo momento. Continueremo a monitorare i mercati e vi aggiorneremo appena emergono sviluppi rilevanti.
 
 —
-aries76.com/bitcoin-research`;
+#Crypto #Markets`;
   }
 
+  const newsIntro = news.length === 1 
+    ? 'Ecco la notizia più rilevante di oggi:' 
+    : `Ecco le ${news.length} notizie più rilevanti di oggi:`;
+
   const newsItems = news.slice(0, 5).map((item, i) => {
-    return `${i + 1}. ${item.title}
-   ${item.source}`;
+    return `<b>${i + 1}.</b> ${item.title} <i>(${item.source})</i>`;
   }).join('\n\n');
 
-  return `
-<b>ARIES76</b>
-Market Digest
-
+  return `<b>ARIES76 — Market Digest</b>
 ${getFormattedDate()}
-${getFormattedTime()}
 
-
-<b>TOP STORIES</b>
+${newsIntro}
 
 ${newsItems}
 
-
 —
-aries76.com/bitcoin-research
-#Crypto #News`;
+#Crypto #News #DigitalAssets`;
 }
 
 // Fetch news from database - excluding already published ones
