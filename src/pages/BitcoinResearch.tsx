@@ -312,7 +312,7 @@ const BitcoinResearch = () => {
               >
                 <span className="text-white">Bitcoin</span>
                 <br />
-                <span className="bg-gradient-to-r from-orange-400 via-amber-400 to-orange-500 bg-clip-text text-transparent">Research 2026</span>
+                <span className="bg-gradient-to-r from-orange-400 via-amber-400 to-orange-500 bg-clip-text text-transparent">Research</span>
               </motion.h1>
               
               <motion.p 
