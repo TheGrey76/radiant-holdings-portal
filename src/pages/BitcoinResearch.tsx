@@ -265,21 +265,26 @@ const BitcoinResearch = () => {
           <div className="absolute bottom-0 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-[120px]"></div>
           
           <motion.div 
-            className="absolute top-1/2 right-[10%] -translate-y-1/2 hidden lg:block"
+            className="absolute top-[15%] right-[5%] hidden lg:block"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ 
               opacity: 1, 
               scale: 1,
-              y: [0, -15, 0, 10, 0, -8, 0, 5, 0],
+              x: [0, 30, -20, 40, -10, 25, -30, 15, 0],
+              y: [0, -40, 20, -60, 30, -20, 50, -30, 0],
             }}
             transition={{ 
               opacity: { duration: 1, delay: 0.3 },
               scale: { duration: 1, delay: 0.3 },
-              y: { 
-                duration: 8,
+              x: { 
+                duration: 20,
                 repeat: Infinity,
                 ease: "easeInOut",
-                times: [0, 0.15, 0.3, 0.45, 0.55, 0.7, 0.8, 0.9, 1]
+              },
+              y: { 
+                duration: 25,
+                repeat: Infinity,
+                ease: "easeInOut",
               }
             }}
           >
