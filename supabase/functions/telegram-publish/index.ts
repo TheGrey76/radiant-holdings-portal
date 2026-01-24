@@ -312,8 +312,72 @@ Happy reading.
 #Crypto #News #Markets`;
 }
 
+// Fetch fresh news from external APIs before reading from database
+async function refreshNewsFromAPIs(supabase: ReturnType<typeof createClient>): Promise<void> {
+  console.log('Refreshing news from external APIs...');
+  
+  const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+  const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+  const finnhubApiKey = Deno.env.get('FINNHUB_API_KEY');
+  
+  // Fetch crypto news from Finnhub
+  if (finnhubApiKey) {
+    try {
+      console.log('Fetching crypto news from Finnhub...');
+      const finnhubUrl = `https://finnhub.io/api/v1/news?category=crypto&token=${finnhubApiKey}`;
+      const response = await fetch(finnhubUrl);
+      
+      if (response.ok) {
+        const newsItems = await response.json();
+        console.log(`Received ${newsItems.length} news items from Finnhub`);
+        
+        // Get or create Finnhub source
+        const { data: sourceData } = await supabase
+          .from('news_sources')
+          .select('id')
+          .eq('name', 'Finnhub API')
+          .single();
+        
+        const sourceId = sourceData?.id;
+        
+        // Insert fresh news items
+        for (const item of newsItems.slice(0, 20)) {
+          await supabase
+            .from('aggregated_news')
+            .upsert(
+              {
+                source_id: sourceId,
+                external_id: `finnhub_${item.id}`,
+                title: item.headline,
+                original_url: item.url,
+                original_content: item.summary,
+                image_url: item.image || null,
+                source_name: item.source || 'Finnhub',
+                category: 'digital_assets',
+                published_at: new Date(item.datetime * 1000).toISOString(),
+                fetched_at: new Date().toISOString(),
+              },
+              {
+                onConflict: 'external_id,source_id',
+                ignoreDuplicates: true,
+              }
+            );
+        }
+        console.log('Finnhub news refresh complete');
+      }
+    } catch (error) {
+      console.error('Error fetching Finnhub news:', error);
+    }
+  } else {
+    console.log('FINNHUB_API_KEY not configured, skipping Finnhub refresh');
+  }
+}
+
 // Fetch news from database - excluding already published ones
 async function fetchNewsFromDatabase(supabase: ReturnType<typeof createClient>): Promise<Array<{ title: string; source: string; url: string }>> {
+  // First refresh news from APIs
+  await refreshNewsFromAPIs(supabase);
+  
   const sevenDaysAgo = new Date();
   sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
   
@@ -337,10 +401,15 @@ async function fetchNewsFromDatabase(supabase: ReturnType<typeof createClient>):
   
   console.log(`Found ${publishedTitles.size} already published news titles`);
   
+  // Get news from last 48 hours only for freshness
+  const twoDaysAgo = new Date();
+  twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+  
   const { data, error } = await supabase
     .from('aggregated_news')
     .select('title, source_name, original_url')
     .or('category.eq.digital_assets,title.ilike.%bitcoin%,title.ilike.%btc%,title.ilike.%crypto%,title.ilike.%ethereum%,title.ilike.%eth%')
+    .gte('published_at', twoDaysAgo.toISOString())
     .order('published_at', { ascending: false })
     .limit(30);
 
