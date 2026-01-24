@@ -234,24 +234,41 @@ function generateEthereumAnalysis(liveData?: {
   const support = Math.round(priceUsd * 0.95);
   const changeDirection = change24h >= 0 ? 'in rialzo' : 'in ribasso';
   
+  // Generate narrative based on momentum
+  let narrative = '';
   let outlook = 'neutrale';
-  if (change24h > 3) {
-    outlook = 'costruttivo, con momentum positivo';
-  } else if (change24h < -3) {
-    outlook = 'cauto, pressione ribassista in atto';
+  if (change24h > 5) {
+    narrative = 'Il momentum è decisamente positivo. Ethereum sta beneficiando di un sentiment risk-on e di flussi in ingresso significativi. La struttura tecnica supporta ulteriori rialzi nel breve termine.';
+    outlook = 'positivo';
+  } else if (change24h > 2) {
+    narrative = 'Il mercato mostra segni di forza con acquisti graduali. Il network continua a processare un volume elevato di transazioni, segnale di attività organica in crescita.';
+    outlook = 'moderatamente costruttivo';
+  } else if (change24h < -5) {
+    narrative = 'Pressione di vendita significativa nelle ultime ore. Il mercato sta testando livelli di supporto importanti. Raccomandiamo cautela e attenzione ai volumi.';
+    outlook = 'cauto';
+  } else if (change24h < -2) {
+    narrative = 'Leggera correzione in corso dopo la recente price action. I fondamentali rimangono solidi ma il sentiment di breve termine è debole.';
+    outlook = 'prudente';
+  } else {
+    narrative = 'Consolidamento in corso con volatilità contenuta. Il mercato sembra in attesa di un catalizzatore per definire la prossima direzione.';
+    outlook = 'neutrale';
   }
 
   return `<b>ARIES76 — Ethereum Analysis</b>
 ${getFormattedDate()}
 
-Ethereum scambia a <b>${formatPrice(priceUsd)}</b> (${formatPrice(priceEur, '€')}), ${changeDirection} del ${Math.abs(change24h).toFixed(1)}% nelle ultime 24 ore.
+Ethereum scambia a <b>${formatPrice(priceUsd)}</b> (${formatPrice(priceEur, '€')}), ${changeDirection} del ${Math.abs(change24h).toFixed(1)}% nelle ultime 24 ore. La capitalizzazione di mercato si attesta a ${formatMarketCap(marketCap)}.
 
-La capitalizzazione di mercato è di ${formatMarketCap(marketCap)}. I livelli tecnici chiave da monitorare sono la resistenza a ${formatPrice(resistance)} e il supporto a ${formatPrice(support)}.
+${narrative}
+
+<b>Livelli tecnici:</b>
+• Resistenza: ${formatPrice(resistance)}
+• Supporto: ${formatPrice(support)}
 
 Outlook: <i>${outlook}</i>
 
 —
-#Ethereum #ETH`;
+#Ethereum #ETH #Crypto`;
 }
 
 function generateNewsDigest(news: Array<{ title: string; source: string; url?: string }>) {
@@ -259,29 +276,37 @@ function generateNewsDigest(news: Array<{ title: string; source: string; url?: s
     return `<b>ARIES76 — Market Digest</b>
 ${getFormattedDate()}
 
-Nessuna notizia significativa in questo momento. Continueremo a monitorare i mercati e vi aggiorneremo appena emergono sviluppi rilevanti.
+Giornata tranquilla sui mercati crypto. Non si registrano sviluppi significativi nelle ultime ore. Continueremo a monitorare le principali fonti e vi aggiorneremo appena emergono notizie rilevanti.
 
 —
 #Crypto #Markets`;
   }
 
-  const newsIntro = news.length === 1 
-    ? 'Ecco la notizia più rilevante di oggi:' 
-    : `Ecco le ${news.length} notizie più rilevanti di oggi:`;
+  let intro = '';
+  if (news.length === 1) {
+    intro = 'Una notizia da tenere d\'occhio oggi:';
+  } else if (news.length <= 3) {
+    intro = `Le ${news.length} notizie principali di oggi dai mercati crypto:`;
+  } else {
+    intro = 'Rassegna stampa: ecco cosa muove i mercati oggi.';
+  }
 
   const newsItems = news.slice(0, 5).map((item, i) => {
-    return `<b>${i + 1}.</b> ${item.title} <i>(${item.source})</i>`;
+    return `<b>${i + 1}.</b> ${item.title}
+<i>— ${item.source}</i>`;
   }).join('\n\n');
 
   return `<b>ARIES76 — Market Digest</b>
 ${getFormattedDate()}
 
-${newsIntro}
+${intro}
 
 ${newsItems}
 
+Buona lettura.
+
 —
-#Crypto #News #DigitalAssets`;
+#Crypto #News #Markets`;
 }
 
 // Fetch news from database - excluding already published ones
