@@ -90,7 +90,7 @@ serve(async (req) => {
           await resend.emails.send({
             from: "ARIES76 Research <research@aries76.com>",
             to: [normalizedEmail],
-            subject: "Il tuo codice di accesso — Bitcoin Research 2026",
+            subject: "Your access code — Bitcoin Research",
             html: `
               <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 40px 20px; background: #0d1117; color: #e5e5e5;">
                 <div style="text-align: center; margin-bottom: 30px;">
@@ -98,11 +98,11 @@ serve(async (req) => {
                 </div>
                 
                 <h1 style="color: white; font-size: 28px; text-align: center; margin-bottom: 20px;">
-                  Bitcoin Research 2026
+                  Bitcoin Research
                 </h1>
                 
                 <p style="color: #a1a1a1; font-size: 16px; text-align: center; margin-bottom: 30px;">
-                  Ecco il tuo codice di accesso:
+                  Here is your access code:
                 </p>
                 
                 <div style="background: linear-gradient(135deg, #f97316 0%, #fbbf24 100%); padding: 30px; border-radius: 16px; text-align: center; margin-bottom: 30px;">
@@ -112,7 +112,7 @@ serve(async (req) => {
                 </div>
                 
                 <p style="color: #a1a1a1; font-size: 14px; text-align: center; margin-bottom: 20px;">
-                  Inserisci questo codice nella pagina di accesso per continuare.
+                  Enter this code on the access page to continue.
                 </p>
                 
                 <hr style="border: none; border-top: 1px solid #333; margin: 30px 0;" />

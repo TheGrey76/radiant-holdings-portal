@@ -245,7 +245,7 @@ const BitcoinResearch = () => {
   return (
     <TooltipProvider>
       <Helmet>
-        <title>Bitcoin Research 2026 | ARIES76</title>
+        <title>Bitcoin Research | ARIES76</title>
         <meta name="description" content="Comprehensive Bitcoin research with real-time data, ETF flows, on-chain metrics, and institutional analysis. Full macro-liquidity framework, price scenarios, and technical analysis." />
       </Helmet>
 
@@ -865,7 +865,7 @@ const BitcoinResearch = () => {
                 <span className="text-xs font-bold text-primary uppercase tracking-widest">Chapter VII</span>
               </div>
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 leading-tight">
-                Bitcoin 2026 Pricing Projection
+                Bitcoin Pricing Projection
               </h2>
             </div>
 

@@ -186,7 +186,7 @@ const BitcoinResearchAccessGate = ({ children }: BitcoinResearchAccessGateProps)
             <div className="w-20 h-20 bg-gradient-to-br from-orange-500/20 to-amber-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-orange-500/30">
               <span className="text-4xl font-bold text-orange-400">₿</span>
             </div>
-            <CardTitle className="text-2xl text-white">Bitcoin Research 2026</CardTitle>
+            <CardTitle className="text-2xl text-white">Bitcoin Research</CardTitle>
             <CardDescription className="text-gray-400">
               {step === 'email' 
                 ? 'Enter your email to access the full report'
