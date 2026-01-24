@@ -12,6 +12,9 @@ interface BitcoinResearchAccessGateProps {
   children: React.ReactNode;
 }
 
+// Admin emails with permanent access
+const ADMIN_EMAILS = ["edoardo.grigione@aries76.com", "edoardo.grigione@gmail.com"];
+
 const BitcoinResearchAccessGate = ({ children }: BitcoinResearchAccessGateProps) => {
   const [email, setEmail] = useState('');
   const [verificationCode, setVerificationCode] = useState('');
@@ -21,9 +24,18 @@ const BitcoinResearchAccessGate = ({ children }: BitcoinResearchAccessGateProps)
   const [isCheckingStored, setIsCheckingStored] = useState(true);
 
   useEffect(() => {
-    // Check if already verified in session
+    // Check if already verified in session or if admin email in localStorage
     const storedEmail = sessionStorage.getItem('bitcoin_research_email');
     const storedAccess = sessionStorage.getItem('bitcoin_research_access');
+    const localEmail = localStorage.getItem('bitcoin_research_email');
+    
+    // Check admin emails first
+    if (localEmail && ADMIN_EMAILS.some(admin => admin.toLowerCase() === localEmail.toLowerCase())) {
+      setEmail(localEmail);
+      setHasAccess(true);
+      setIsCheckingStored(false);
+      return;
+    }
     
     if (storedEmail && storedAccess === 'true') {
       setEmail(storedEmail);
@@ -41,6 +53,18 @@ const BitcoinResearchAccessGate = ({ children }: BitcoinResearchAccessGateProps)
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       toast.error('Invalid email address');
+      return;
+    }
+
+    const normalizedEmail = email.trim().toLowerCase();
+    
+    // Check if admin email - grant immediate access
+    if (ADMIN_EMAILS.some(admin => admin.toLowerCase() === normalizedEmail)) {
+      localStorage.setItem('bitcoin_research_email', normalizedEmail);
+      sessionStorage.setItem('bitcoin_research_email', normalizedEmail);
+      sessionStorage.setItem('bitcoin_research_access', 'true');
+      setHasAccess(true);
+      toast.success('Welcome back!');
       return;
     }
 

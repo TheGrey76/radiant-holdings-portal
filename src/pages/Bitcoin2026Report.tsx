@@ -49,7 +49,7 @@ const Bitcoin2026Report = () => {
   const { models, commentary, loading: modelsLoading, lastUpdate: modelsLastUpdate, getCurrentQuarter } = useBitcoinAllocationModels();
 
   // Admin emails with permanent access
-  const ADMIN_EMAILS = ["edoardo.grigione@aries76.com"];
+  const ADMIN_EMAILS = ["edoardo.grigione@aries76.com", "edoardo.grigione@gmail.com"];
 
   // Check access
   useEffect(() => {
