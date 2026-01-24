@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { TrendingUp, TrendingDown, RefreshCw, Clock, DollarSign, Activity, Target, BarChart3 } from 'lucide-react';
 import { useBitcoinReportData } from '@/hooks/useBitcoinReportData';
+import { useTwelveDataBtc } from '@/hooks/useTwelveDataBtc';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useState } from 'react';
@@ -8,6 +9,7 @@ import { toast } from 'sonner';
 
 export const BitcoinReportLiveData = () => {
   const { data, loading, error, lastUpdate, refreshData } = useBitcoinReportData();
+  const { data: livePrice, isLoading: livePriceLoading } = useTwelveDataBtc();
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const handleRefresh = async () => {
@@ -99,7 +101,9 @@ export const BitcoinReportLiveData = () => {
     );
   }
 
-  const change24h = data.raw_data?.bitcoin?.change_24h || 0;
+  // Use live price data when available, fallback to database
+  const btcPriceUsd = livePrice?.bitcoin_price_usd || data.bitcoin_price_usd;
+  const change24h = livePrice?.change_24h ?? data.raw_data?.bitcoin?.change_24h ?? 0;
   const isPositive = change24h >= 0;
 
   return (
@@ -146,7 +150,7 @@ export const BitcoinReportLiveData = () => {
             <span>BTC Price</span>
           </div>
           <div className="text-2xl font-bold text-white">
-            {formatPrice(data.bitcoin_price_usd)}
+            {formatPrice(btcPriceUsd)}
           </div>
           <div className={`flex items-center gap-1 text-sm ${isPositive ? 'text-emerald-400' : 'text-red-400'}`}>
             {isPositive ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}

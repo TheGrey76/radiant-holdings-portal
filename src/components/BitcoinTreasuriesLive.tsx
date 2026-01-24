@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { ChartContainer } from './InstitutionalCharts';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+import { useTwelveDataBtc } from '@/hooks/useTwelveDataBtc';
 
 interface Treasury {
   id: string;
@@ -22,6 +23,7 @@ const BitcoinTreasuriesLive = () => {
   const [treasuries, setTreasuries] = useState<Treasury[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
+  const { data: livePrice } = useTwelveDataBtc();
 
   const fetchTreasuries = async () => {
     const { data, error } = await supabase
@@ -75,7 +77,8 @@ const BitcoinTreasuriesLive = () => {
   }));
 
   const totalBTC = treasuries.reduce((sum, t) => sum + t.bitcoin_holdings, 0);
-  const btcPrice = treasuries[0]?.btc_price_usd || 0;
+  // Use live price from TwelveData, fallback to database price
+  const btcPrice = livePrice?.bitcoin_price_usd || treasuries[0]?.btc_price_usd || 0;
 
   const CustomTooltip = ({ active, payload }: any) => {
     if (!active || !payload?.length) return null;
