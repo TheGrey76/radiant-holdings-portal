@@ -278,9 +278,20 @@ const BitcoinResearch = () => {
               >
                 <div className="absolute inset-4 rounded-full border border-orange-500/20"></div>
               </motion.div>
-              <div className="absolute inset-0 flex items-center justify-center">
+              <motion.div 
+                className="absolute inset-0 flex items-center justify-center"
+                animate={{ 
+                  y: [0, -12, 0, 8, 0, -6, 0, 4, 0],
+                }}
+                transition={{ 
+                  duration: 8,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  times: [0, 0.15, 0.3, 0.45, 0.55, 0.7, 0.8, 0.9, 1]
+                }}
+              >
                 <span className="text-7xl font-bold text-orange-500/80">₿</span>
-              </div>
+              </motion.div>
             </div>
           </motion.div>
           
