@@ -1373,6 +1373,39 @@ export type Database = {
         }
         Relationships: []
       }
+      bitcoin_research_signups: {
+        Row: {
+          created_at: string | null
+          email: string
+          id: string
+          source: string | null
+          updated_at: string | null
+          verification_code: string | null
+          verified: boolean | null
+          verified_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          id?: string
+          source?: string | null
+          updated_at?: string | null
+          verification_code?: string | null
+          verified?: boolean | null
+          verified_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          id?: string
+          source?: string | null
+          updated_at?: string | null
+          verification_code?: string | null
+          verified?: boolean | null
+          verified_at?: string | null
+        }
+        Relationships: []
+      }
       bitcoin_treasuries: {
         Row: {
           bitcoin_holdings: number
