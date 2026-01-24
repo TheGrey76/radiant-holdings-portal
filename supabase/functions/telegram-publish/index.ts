@@ -9,7 +9,7 @@ const corsHeaders = {
 const TELEGRAM_BOT_TOKEN = Deno.env.get('TELEGRAM_BOT_TOKEN');
 const CHANNEL_ID = '@aries76_bitcoin';
 
-// Fetch live prices from CoinGecko (reliable, no rate limits for basic use)
+// Fetch live prices from CoinGecko
 async function fetchLiveCryptoPrices(): Promise<{
   bitcoin: { usd: number; eur: number; change24h: number; marketCap: number };
   ethereum: { usd: number; eur: number; change24h: number; marketCap: number };
@@ -55,27 +55,21 @@ function formatPrice(price: number, currency: string = '$'): string {
   return `${currency}${price.toLocaleString('en-US', { maximumFractionDigits: 0 })}`;
 }
 
-// Format market cap in billions
+// Format market cap in billions/trillions
 function formatMarketCap(marketCap: number): string {
-  const billions = marketCap / 1_000_000_000;
-  return `$${billions.toFixed(0)}B`;
+  if (marketCap >= 1_000_000_000_000) {
+    return `$${(marketCap / 1_000_000_000_000).toFixed(2)}T`;
+  }
+  return `$${(marketCap / 1_000_000_000).toFixed(0)}B`;
 }
 
-// Format percentage with arrow
+// Format percentage change
 function formatChange(change: number): string {
-  const sign = change >= 0 ? '▲' : '▼';
-  return `${sign} ${Math.abs(change).toFixed(2)}%`;
+  const sign = change >= 0 ? '+' : '';
+  return `${sign}${change.toFixed(2)}%`;
 }
 
-// Get time-based greeting
-function getTimeGreeting(): string {
-  const hour = new Date().getUTCHours() + 1; // CET approximation
-  if (hour >= 5 && hour < 12) return '☀️ Good Morning';
-  if (hour >= 12 && hour < 18) return '🌤 Good Afternoon';
-  return '🌙 Good Evening';
-}
-
-// Get current date formatted
+// Get formatted date
 function getFormattedDate(): string {
   const now = new Date();
   return now.toLocaleDateString('en-GB', { 
@@ -84,6 +78,16 @@ function getFormattedDate(): string {
     month: 'long', 
     year: 'numeric' 
   });
+}
+
+// Get formatted time
+function getFormattedTime(): string {
+  const now = new Date();
+  return now.toLocaleTimeString('en-GB', { 
+    hour: '2-digit', 
+    minute: '2-digit',
+    timeZone: 'Europe/Rome'
+  }) + ' CET';
 }
 
 interface PublishRequest {
@@ -115,13 +119,11 @@ function generateBitcoinAnalysis(liveData?: {
   m2Value?: number;
   realRate?: number;
 }) {
-  // Use live CoinGecko data for price
   const priceUsd = liveData?.usd || 0;
   const priceEur = liveData?.eur || 0;
   const change24h = liveData?.change24h || 0;
   const marketCap = liveData?.marketCap || 0;
   
-  // Use database data for regime/targets or defaults
   const regime = dbData?.regime || 'ACCUMULATION';
   const regimeConfidence = dbData?.regimeConfidence || 60;
   const targetLow = dbData?.targetLow || 96000;
@@ -131,71 +133,60 @@ function generateBitcoinAnalysis(liveData?: {
   const realRate = dbData?.realRate || 1.45;
 
   // Determine signal based on regime
-  let signal = '◐ HOLD';
-  let signalDesc = 'Maintain current positions';
+  let signal = 'NEUTRAL';
+  let signalEmoji = '⚖️';
   if (regime === 'ACCUMULATION') {
-    signal = '◉ ACCUMULATE';
-    signalDesc = 'Strategic entry opportunity';
+    signal = 'ACCUMULATE';
+    signalEmoji = '🟡';
   } else if (regime === 'EXPANSION') {
-    signal = '● BUY';
-    signalDesc = 'Bullish momentum confirmed';
+    signal = 'BULLISH';
+    signalEmoji = '🟢';
   } else if (regime === 'CONTRACTION') {
-    signal = '○ REDUCE';
-    signalDesc = 'Risk-off positioning';
+    signal = 'RISK-OFF';
+    signalEmoji = '🔴';
   }
 
-  // Regime indicator
-  let regimeBar = '▓▓▓░░░░░░░';
-  if (regime === 'EXPANSION') regimeBar = '▓▓▓▓▓▓▓▓░░';
-  else if (regime === 'ACCUMULATION') regimeBar = '▓▓▓▓▓░░░░░';
-  else if (regime === 'CONTRACTION') regimeBar = '▓▓░░░░░░░░';
+  const changeEmoji = change24h >= 0 ? '📈' : '📉';
 
-  // Price change indicator
-  const changeIndicator = change24h >= 0 ? '📈' : '📉';
-  const changeColor = change24h >= 0 ? '🟢' : '🔴';
+  return `
+<b>ARIES76</b>
+Bitcoin Market Intelligence
 
-  return `━━━━━━━━━━━━━━━━━━━━━━━━━━
-       <b>ARIES76 BITCOIN REPORT</b>
-━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-${getTimeGreeting()}
 ${getFormattedDate()}
+${getFormattedTime()}
 
-┌─────────────────────────┐
-│  <b>MARKET SNAPSHOT</b>         │
-├─────────────────────────┤
-│  BTC/USD   <b>${formatPrice(priceUsd)}</b>     │
-│  BTC/EUR   <b>${formatPrice(priceEur, '€')}</b>     │
-│  24h       ${changeColor} ${formatChange(change24h)}      │
-│  Mkt Cap   ${formatMarketCap(marketCap)}          │
-└─────────────────────────┘
 
-┌─────────────────────────┐
-│  <b>MACRO REGIME</b>            │
-├─────────────────────────┤
-│  Status: <b>${regime}</b>        │
-│  ${regimeBar} ${regimeConfidence}%    │
-│                         │
-│  Global M2: $${(m2Value / 1_000_000_000_000).toFixed(1)}T        │
-│  Real Rate: ${realRate >= 0 ? '+' : ''}${realRate.toFixed(2)}%        │
-└─────────────────────────┘
+<b>PRICE</b>
 
-┌─────────────────────────┐
-│  <b>12M PRICE TARGETS</b>       │
-├─────────────────────────┤
-│  ▸ Conservative  ${formatPrice(targetLow)}  │
-│  ▸ Base Case     ${formatPrice(targetHigh)}  │
-│  ▸ Institutional ${formatPrice(institutionalTarget)}  │
-└─────────────────────────┘
+${formatPrice(priceUsd)} USD
+${formatPrice(priceEur, '€')} EUR
+${changeEmoji} ${formatChange(change24h)} (24h)
 
-<b>${signal}</b>
-<i>${signalDesc}</i>
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━
-<a href="https://www.aries76.com/bitcoin-2026-report-preview">📊 Full Research Report</a>
-━━━━━━━━━━━━━━━━━━━━━━━━━━
+<b>MARKET DATA</b>
 
-#Bitcoin #BTC #Crypto #MacroAnalysis`;
+Market Cap: ${formatMarketCap(marketCap)}
+Global M2: $${(m2Value / 1_000_000_000_000).toFixed(1)}T
+Real Rate: ${realRate >= 0 ? '+' : ''}${realRate.toFixed(2)}%
+
+
+<b>REGIME ANALYSIS</b>
+
+${signalEmoji} ${regime}
+Confidence: ${regimeConfidence}%
+Signal: ${signal}
+
+
+<b>12-MONTH TARGETS</b>
+
+Conservative: ${formatPrice(targetLow)}
+Base Case: ${formatPrice(targetHigh)}
+Institutional: ${formatPrice(institutionalTarget)}
+
+
+—
+aries76.com/bitcoin-research
+#Bitcoin #BTC`;
 }
 
 function generateEthereumAnalysis(liveData?: {
@@ -209,103 +200,96 @@ function generateEthereumAnalysis(liveData?: {
   const change24h = liveData?.change24h || 0;
   const marketCap = liveData?.marketCap || 0;
   
-  // Determine sentiment and signal based on 24h change
-  let signal = '◐ HOLD';
-  let signalDesc = 'Neutral momentum';
+  let signal = 'NEUTRAL';
+  let signalEmoji = '⚖️';
   if (change24h > 3) {
-    signal = '● BUY';
-    signalDesc = 'Strong bullish momentum';
+    signal = 'BULLISH';
+    signalEmoji = '🟢';
   } else if (change24h < -3) {
-    signal = '○ REDUCE';
-    signalDesc = 'Bearish pressure detected';
+    signal = 'BEARISH';
+    signalEmoji = '🔴';
   }
   
-  // Calculate dynamic support/resistance
-  const priceNum = liveData?.usd || 3100;
-  const resistance = Math.round(priceNum * 1.02);
-  const support = Math.round(priceNum * 0.98);
+  const resistance = Math.round(priceUsd * 1.05);
+  const support = Math.round(priceUsd * 0.95);
+  const changeEmoji = change24h >= 0 ? '📈' : '📉';
 
-  const changeColor = change24h >= 0 ? '🟢' : '🔴';
+  return `
+<b>ARIES76</b>
+Ethereum Market Intelligence
 
-  return `━━━━━━━━━━━━━━━━━━━━━━━━━━
-      <b>ARIES76 ETHEREUM REPORT</b>
-━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-${getTimeGreeting()}
 ${getFormattedDate()}
+${getFormattedTime()}
 
-┌─────────────────────────┐
-│  <b>MARKET SNAPSHOT</b>         │
-├─────────────────────────┤
-│  ETH/USD   <b>${formatPrice(priceUsd)}</b>      │
-│  ETH/EUR   <b>${formatPrice(priceEur, '€')}</b>      │
-│  24h       ${changeColor} ${formatChange(change24h)}       │
-│  Mkt Cap   ${formatMarketCap(marketCap)}          │
-└─────────────────────────┘
 
-┌─────────────────────────┐
-│  <b>TECHNICAL LEVELS</b>        │
-├─────────────────────────┤
-│  ▲ Resistance  ${formatPrice(resistance)}     │
-│  ▼ Support     ${formatPrice(support)}     │
-└─────────────────────────┘
+<b>PRICE</b>
 
-<b>${signal}</b>
-<i>${signalDesc}</i>
+${formatPrice(priceUsd)} USD
+${formatPrice(priceEur, '€')} EUR
+${changeEmoji} ${formatChange(change24h)} (24h)
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━
-<a href="https://www.aries76.com/bitcoin-2026-report-preview">📊 Full Research Report</a>
-━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-#Ethereum #ETH #Crypto #Analysis`;
+<b>MARKET DATA</b>
+
+Market Cap: ${formatMarketCap(marketCap)}
+
+
+<b>TECHNICAL LEVELS</b>
+
+Resistance: ${formatPrice(resistance)}
+Support: ${formatPrice(support)}
+
+
+<b>SIGNAL</b>
+
+${signalEmoji} ${signal}
+
+
+—
+aries76.com/bitcoin-research
+#Ethereum #ETH`;
 }
 
 function generateNewsDigest(news: Array<{ title: string; source: string; url?: string }>) {
   if (news.length === 0) {
-    return `━━━━━━━━━━━━━━━━━━━━━━━━━━
-      <b>ARIES76 MARKET DIGEST</b>
-━━━━━━━━━━━━━━━━━━━━━━━━━━
+    return `
+<b>ARIES76</b>
+Market Digest
 
 ${getFormattedDate()}
+${getFormattedTime()}
 
 No significant news at this time.
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━
-<a href="https://www.aries76.com/bitcoin-2026-report-preview">📊 Research Report</a>
-━━━━━━━━━━━━━━━━━━━━━━━━━━`;
+—
+aries76.com/bitcoin-research`;
   }
 
   const newsItems = news.slice(0, 5).map((item, i) => {
-    const num = i + 1;
-    if (item.url) {
-      return `<b>${num}.</b> <a href="${item.url}">${item.title}</a>
-   <i>— ${item.source}</i>`;
-    }
-    return `<b>${num}.</b> ${item.title}
-   <i>— ${item.source}</i>`;
+    return `${i + 1}. ${item.title}
+   ${item.source}`;
   }).join('\n\n');
 
-  return `━━━━━━━━━━━━━━━━━━━━━━━━━━
-      <b>ARIES76 MARKET DIGEST</b>
-━━━━━━━━━━━━━━━━━━━━━━━━━━
+  return `
+<b>ARIES76</b>
+Market Digest
 
-${getTimeGreeting()}
 ${getFormattedDate()}
+${getFormattedTime()}
+
 
 <b>TOP STORIES</b>
 
 ${newsItems}
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━
-<a href="https://www.aries76.com/bitcoin-2026-report-preview">📊 Bitcoin 2026 Report</a>
-━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-#Crypto #News #DigitalAssets`;
+—
+aries76.com/bitcoin-research
+#Crypto #News`;
 }
 
-// Fetch news from database with actual article URLs - excluding already published ones
+// Fetch news from database - excluding already published ones
 async function fetchNewsFromDatabase(supabase: ReturnType<typeof createClient>): Promise<Array<{ title: string; source: string; url: string }>> {
-  // First, get IDs of news already published to Telegram in the last 7 days
   const sevenDaysAgo = new Date();
   sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
   
@@ -316,24 +300,19 @@ async function fetchNewsFromDatabase(supabase: ReturnType<typeof createClient>):
     .eq('status', 'published')
     .gte('published_at', sevenDaysAgo.toISOString());
   
-  // Extract titles from already published messages
   const publishedTitles = new Set<string>();
   if (publishedLogs) {
     for (const log of publishedLogs) {
-      // Extract titles from the message content (they appear after emoji numbers)
-      const titleMatches = log.message_content?.match(/(?:1️⃣|2️⃣|3️⃣|4️⃣|5️⃣)\s*<a[^>]*>([^<]+)<\/a>/g) || [];
+      const titleMatches = log.message_content?.match(/\d+\.\s+([^\n]+)/g) || [];
       for (const match of titleMatches) {
-        const titleMatch = match.match(/>([^<]+)<\/a>/);
-        if (titleMatch) {
-          publishedTitles.add(titleMatch[1].trim().toLowerCase());
-        }
+        const title = match.replace(/^\d+\.\s+/, '').trim().toLowerCase();
+        publishedTitles.add(title);
       }
     }
   }
   
   console.log(`Found ${publishedTitles.size} already published news titles`);
   
-  // Fetch more news than needed to filter out already published ones
   const { data, error } = await supabase
     .from('aggregated_news')
     .select('title, source_name, original_url')
@@ -346,7 +325,6 @@ async function fetchNewsFromDatabase(supabase: ReturnType<typeof createClient>):
     return [];
   }
 
-  // Filter out already published news
   const freshNews = (data || [])
     .filter(item => !publishedTitles.has(item.title.trim().toLowerCase()))
     .slice(0, 5)
@@ -369,13 +347,12 @@ async function publishToTelegram(message: string): Promise<{ success: boolean; m
   console.log('Attempting to publish to Telegram channel:', CHANNEL_ID);
 
   try {
-    // Always send text-only messages (no images)
     const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
     const body = {
       chat_id: CHANNEL_ID,
       text: message,
       parse_mode: 'HTML',
-      disable_web_page_preview: false, // Allow link previews
+      disable_web_page_preview: true, // Disable all link previews
     };
     
     console.log('Request URL:', url.replace(TELEGRAM_BOT_TOKEN, 'BOT_TOKEN_HIDDEN'));
@@ -415,11 +392,9 @@ serve(async (req) => {
     const { action, type = 'bitcoin', data } = body;
 
     if (action === 'publish') {
-      // Fetch live prices from CoinGecko
       const livePrices = await fetchLiveCryptoPrices();
       console.log('Live prices fetched:', JSON.stringify(livePrices));
       
-      // Fetch regime data from database for Bitcoin
       let dbReportData = null;
       if (type === 'bitcoin') {
         const { data: reportData } = await supabase
@@ -430,7 +405,6 @@ serve(async (req) => {
         console.log('DB report data:', JSON.stringify(dbReportData));
       }
 
-      // Generate message based on type
       let message = '';
       switch (type) {
         case 'bitcoin':
@@ -448,7 +422,6 @@ serve(async (req) => {
           message = generateEthereumAnalysis(livePrices.ethereum);
           break;
         case 'news':
-          // Use provided news or fetch from database
           const providedNews = data?.news || [];
           const newsToPublish = providedNews.length > 0 ? providedNews : await fetchNewsFromDatabase(supabase);
           message = generateNewsDigest(newsToPublish);
@@ -457,10 +430,8 @@ serve(async (req) => {
           message = generateBitcoinAnalysis(livePrices.bitcoin);
       }
 
-      // Publish to Telegram
       const result = await publishToTelegram(message);
 
-      // Log the publication
       await supabase.from('telegram_publication_logs').insert({
         publication_type: type,
         message_content: message,
@@ -476,51 +447,59 @@ serve(async (req) => {
       });
     }
 
-    if (action === 'check-scheduled') {
-      // Get current time in HH:MM format
-      const now = new Date();
-      const currentTime = now.toTimeString().slice(0, 5);
-      
-      // Get scheduled publications that haven't been published today
-      const today = new Date().toISOString().split('T')[0];
-      
-      const { data: schedules, error } = await supabase
-        .from('telegram_scheduled_publications')
-        .select('*')
-        .eq('is_active', true)
-        .lte('scheduled_time', currentTime);
-
-      if (error) {
-        throw error;
+    if (action === 'schedule') {
+      const scheduleTime = body.scheduleTime;
+      if (!scheduleTime) {
+        return new Response(JSON.stringify({ error: 'scheduleTime is required' }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 400,
+        });
       }
 
-      // Fetch live prices once for all scheduled publications
-      const livePrices = await fetchLiveCryptoPrices();
-      console.log('Live prices for scheduled:', JSON.stringify(livePrices));
+      await supabase.from('telegram_scheduled_posts').insert({
+        publication_type: type,
+        scheduled_for: scheduleTime,
+        status: 'scheduled',
+        created_at: new Date().toISOString(),
+      });
+
+      return new Response(JSON.stringify({ success: true, message: `Scheduled ${type} post for ${scheduleTime}` }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    if (action === 'check-scheduled') {
+      const now = new Date().toISOString();
       
-      // Fetch DB report data once
-      const { data: dbReportData } = await supabase
-        .from('bitcoin_report_latest')
-        .select('current_regime, regime_confidence, price_target_low, price_target_high, institutional_target, m2_value, real_rate')
-        .single();
+      const { data: scheduledPosts, error } = await supabase
+        .from('telegram_scheduled_posts')
+        .select('*')
+        .eq('status', 'scheduled')
+        .lte('scheduled_for', now);
 
-      const published = [];
-      for (const schedule of schedules || []) {
-        // Check if already published today
-        const { data: recentLogs } = await supabase
-          .from('telegram_publication_logs')
-          .select('id')
-          .eq('publication_id', schedule.id)
-          .gte('published_at', `${today}T00:00:00Z`)
-          .limit(1);
+      if (error) {
+        console.error('Error fetching scheduled posts:', error);
+        return new Response(JSON.stringify({ error: error.message }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 500,
+        });
+      }
 
-        if (recentLogs && recentLogs.length > 0) {
-          continue; // Already published today
+      const results = [];
+      for (const post of scheduledPosts || []) {
+        const livePrices = await fetchLiveCryptoPrices();
+        
+        let dbReportData = null;
+        if (post.publication_type === 'bitcoin') {
+          const { data: reportData } = await supabase
+            .from('bitcoin_report_latest')
+            .select('current_regime, regime_confidence, price_target_low, price_target_high, institutional_target, m2_value, real_rate')
+            .single();
+          dbReportData = reportData;
         }
 
-        // Generate and publish with live data
         let message = '';
-        switch (schedule.publication_type) {
+        switch (post.publication_type) {
           case 'bitcoin':
             message = generateBitcoinAnalysis(livePrices.bitcoin, dbReportData ? {
               regime: dbReportData.current_regime,
@@ -536,38 +515,38 @@ serve(async (req) => {
             message = generateEthereumAnalysis(livePrices.ethereum);
             break;
           case 'news':
-            const scheduledNews = await fetchNewsFromDatabase(supabase);
-            message = generateNewsDigest(scheduledNews);
+            const newsItems = await fetchNewsFromDatabase(supabase);
+            message = generateNewsDigest(newsItems);
             break;
-          default:
-            message = generateBitcoinAnalysis(livePrices.bitcoin);
         }
 
-        const result = await publishToTelegram(message);
+        const publishResult = await publishToTelegram(message);
 
-        // Log the publication
+        await supabase
+          .from('telegram_scheduled_posts')
+          .update({ 
+            status: publishResult.success ? 'published' : 'failed',
+            published_at: new Date().toISOString(),
+          })
+          .eq('id', post.id);
+
         await supabase.from('telegram_publication_logs').insert({
-          publication_id: schedule.id,
-          publication_type: schedule.publication_type,
+          publication_type: post.publication_type,
           message_content: message,
-          telegram_message_id: result.messageId,
-          status: result.success ? 'published' : 'failed',
-          error_message: result.error,
+          telegram_message_id: publishResult.messageId,
+          status: publishResult.success ? 'published' : 'failed',
+          error_message: publishResult.error,
           published_at: new Date().toISOString(),
         });
 
-        if (result.success) {
-          // Update last_published_at
-          await supabase
-            .from('telegram_scheduled_publications')
-            .update({ last_published_at: new Date().toISOString() })
-            .eq('id', schedule.id);
-
-          published.push({ id: schedule.id, type: schedule.publication_type });
-        }
+        results.push({
+          postId: post.id,
+          type: post.publication_type,
+          success: publishResult.success,
+        });
       }
 
-      return new Response(JSON.stringify({ success: true, published }), {
+      return new Response(JSON.stringify({ processed: results.length, results }), {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
@@ -576,8 +555,9 @@ serve(async (req) => {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 400,
     });
+
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Edge function error:', error);
     return new Response(JSON.stringify({ error: error.message }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 500,
