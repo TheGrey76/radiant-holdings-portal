@@ -267,8 +267,21 @@ const BitcoinResearch = () => {
           <motion.div 
             className="absolute top-1/2 right-[10%] -translate-y-1/2 hidden lg:block"
             initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 0.3 }}
+            animate={{ 
+              opacity: 1, 
+              scale: 1,
+              y: [0, -15, 0, 10, 0, -8, 0, 5, 0],
+            }}
+            transition={{ 
+              opacity: { duration: 1, delay: 0.3 },
+              scale: { duration: 1, delay: 0.3 },
+              y: { 
+                duration: 8,
+                repeat: Infinity,
+                ease: "easeInOut",
+                times: [0, 0.15, 0.3, 0.45, 0.55, 0.7, 0.8, 0.9, 1]
+              }
+            }}
           >
             <div className="relative">
               <motion.div
@@ -278,20 +291,9 @@ const BitcoinResearch = () => {
               >
                 <div className="absolute inset-4 rounded-full border border-orange-500/20"></div>
               </motion.div>
-              <motion.div 
-                className="absolute inset-0 flex items-center justify-center"
-                animate={{ 
-                  y: [0, -12, 0, 8, 0, -6, 0, 4, 0],
-                }}
-                transition={{ 
-                  duration: 8,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                  times: [0, 0.15, 0.3, 0.45, 0.55, 0.7, 0.8, 0.9, 1]
-                }}
-              >
+              <div className="absolute inset-0 flex items-center justify-center">
                 <span className="text-7xl font-bold text-orange-500/80">₿</span>
-              </motion.div>
+              </div>
             </div>
           </motion.div>
           
