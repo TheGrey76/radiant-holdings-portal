@@ -758,6 +758,11 @@ const ABCCompanyConsole = () => {
                 setActiveTab('campaigns');
                 toast.success(`${reminders.length} investitori pronti per campagna reminder`);
               }}
+              onSelectTemplate={(subject, content, investorEmail) => {
+                setActiveTab('campaigns');
+                toast.info(`Template caricato per ${investorEmail}`);
+              }}
+              userEmail={currentUserEmail || "user@example.com"}
             />
 
             {/* Real-time Activity Feed */}
