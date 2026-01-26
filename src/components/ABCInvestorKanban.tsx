@@ -67,6 +67,8 @@ export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvest
   const [isBulkUpdating, setIsBulkUpdating] = useState(false);
   const [approvalFilter, setApprovalFilter] = useState<'all' | ApprovalStatus>('all');
   const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const handleViewProfile = (e: React.MouseEvent, investorId: string) => {
     e.stopPropagation();
@@ -97,8 +99,20 @@ export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvest
     ? localInvestors 
     : localInvestors.filter(inv => (inv.approvalStatus || 'pending') === approvalFilter);
 
+  // Pagination logic
+  const totalInvestors = filteredInvestors.length;
+  const totalPages = Math.ceil(totalInvestors / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedInvestors = filteredInvestors.slice(startIndex, endIndex);
+
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [approvalFilter, itemsPerPage]);
+
   const getInvestorsByStatus = (status: string) => {
-    return filteredInvestors.filter(inv => inv.status === status);
+    return paginatedInvestors.filter(inv => inv.status === status);
   };
 
   const isWorkable = (investor: Investor) => {
@@ -627,6 +641,52 @@ export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvest
           })}
         </div>
       </DragDropContext>
+
+      {/* Pagination Controls */}
+      <div className="flex items-center justify-between mt-4 pt-4 border-t border-border">
+        <div className="flex items-center gap-3">
+          <span className="text-sm text-muted-foreground">Show</span>
+          <Select 
+            value={itemsPerPage.toString()} 
+            onValueChange={(value) => setItemsPerPage(parseInt(value))}
+          >
+            <SelectTrigger className="w-20">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="10">10</SelectItem>
+              <SelectItem value="25">25</SelectItem>
+              <SelectItem value="50">50</SelectItem>
+              <SelectItem value="100">100</SelectItem>
+            </SelectContent>
+          </Select>
+          <span className="text-sm text-muted-foreground">of {totalInvestors}</span>
+        </div>
+        
+        {totalPages > 1 && (
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+              disabled={currentPage === 1}
+            >
+              Previous
+            </Button>
+            <span className="text-sm text-muted-foreground px-2">
+              Page {currentPage} of {totalPages}
+            </span>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+              disabled={currentPage === totalPages}
+            >
+              Next
+            </Button>
+          </div>
+        )}
+      </div>
 
       <EditABCInvestorDialog
         investor={editingInvestor}
