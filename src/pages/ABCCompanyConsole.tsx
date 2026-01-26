@@ -6,7 +6,8 @@ import {
   TrendingUp, Users, Calendar, CheckCircle, AlertCircle, AlertTriangle,
   Target, Clock, FileText, Settings, Search, Filter,
   Mail, Phone, Building, MapPin, Download, Share2, X, Plus,
-  ExternalLink, Paperclip, Edit, Trash2, LogOut, Send, Eye, Heart
+  ExternalLink, Paperclip, Edit, Trash2, LogOut, Send, Eye, Heart,
+  Shield, Lock, EyeOff
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -44,6 +45,230 @@ import { ABCCampaignStatsDialog } from "@/components/ABCCampaignStatsDialog";
 import { useKPIHistory } from "@/hooks/useKPIHistory";
 import { supabase } from "@/integrations/supabase/client";
 
+// Login Form Component (inline)
+const LoginForm = ({ onSuccess }: { onSuccess: (email: string) => void }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(false);
+
+  const handleForgotPassword = async () => {
+    const normalizedEmail = email.toLowerCase().trim();
+    const redirectTo = `${window.location.origin}/abc-reset-password`;
+    
+    if (!normalizedEmail) {
+      toast.error("Please enter your email address first.");
+      return;
+    }
+
+    setIsLoading(true);
+    
+    const { error } = await supabase.auth.resetPasswordForEmail(normalizedEmail, {
+      redirectTo,
+    });
+
+    if (error) {
+      toast.error(error.message);
+    } else {
+      toast.success("Password reset email sent! Check your inbox.");
+    }
+    
+    setIsLoading(false);
+  };
+
+  const addToAuthorizedUsers = async (userId: string, userEmail: string) => {
+    const { data: existing } = await supabase
+      .from('abc_authorized_users')
+      .select('id')
+      .eq('user_id', userId)
+      .maybeSingle();
+
+    if (!existing) {
+      await supabase
+        .from('abc_authorized_users')
+        .insert({
+          user_id: userId,
+          email: userEmail,
+          granted_by: 'self-registration'
+        });
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    const normalizedEmail = email.toLowerCase().trim();
+
+    try {
+      const { data: isAuthorized, error: accessError } = await supabase.rpc(
+        'check_abc_console_access',
+        { check_email: normalizedEmail }
+      );
+
+      if (accessError) {
+        console.error('Access verification error:', accessError);
+        toast.error("Verification failed. Please try again.");
+        setIsLoading(false);
+        return;
+      }
+
+      if (!isAuthorized) {
+        toast.error("Access denied. This email is not authorized.");
+        setIsLoading(false);
+        return;
+      }
+
+      if (isSignUp) {
+        const { data, error } = await supabase.auth.signUp({
+          email: normalizedEmail,
+          password: password,
+        });
+
+        if (error) {
+          if (error.message.includes('already registered')) {
+            toast.error("This email is already registered. Please sign in instead.");
+            setIsSignUp(false);
+          } else {
+            toast.error(error.message);
+          }
+          setIsLoading(false);
+          return;
+        }
+
+        if (data.user && !data.session) {
+          toast.success("Check your email to confirm your account, then sign in.");
+          setIsSignUp(false);
+        } else if (data.session) {
+          await addToAuthorizedUsers(data.user!.id, normalizedEmail);
+          toast.success("Account created! Access granted to ABC Company Console");
+          onSuccess(normalizedEmail);
+        }
+      } else {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: normalizedEmail,
+          password: password,
+        });
+
+        if (error) {
+          if (error.message.includes('Invalid login credentials')) {
+            toast.error("Invalid email or password. If you haven't signed up yet, click 'Create Account'.");
+          } else {
+            toast.error(error.message);
+          }
+          setIsLoading(false);
+          return;
+        }
+
+        if (data.user) {
+          await addToAuthorizedUsers(data.user.id, normalizedEmail);
+          toast.success("Access granted to ABC Company Console");
+          onSuccess(normalizedEmail);
+        }
+      }
+    } catch (err) {
+      console.error('Unexpected error:', err);
+      toast.error("An unexpected error occurred.");
+    }
+
+    setIsLoading(false);
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-[#1a2332] via-[#1a2332] to-[#2a3342] flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        <div className="bg-[#1e2838] border border-[#2a3a4a] rounded-lg shadow-2xl p-8">
+          <div className="text-center mb-8">
+            <div className="w-16 h-16 bg-orange-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Shield className="w-8 h-8 text-orange-500" />
+            </div>
+            <h1 className="text-2xl font-bold text-white mb-2">
+              ABC Company Console
+            </h1>
+            <p className="text-gray-400 text-sm">
+              Investor CRM & Fundraising Dashboard
+            </p>
+            <p className="text-gray-500 text-xs mt-2">
+              {isSignUp ? "Create your account" : "Sign in to access"}
+            </p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="relative">
+              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+              <Input
+                type="email"
+                placeholder="Email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="w-full pl-10 bg-[#2a3a4a] border-[#3a4a5a] text-white placeholder:text-gray-500"
+                disabled={isLoading}
+              />
+            </div>
+
+            <div className="relative">
+              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+              <Input
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                minLength={6}
+                className="w-full pl-10 pr-10 bg-[#2a3a4a] border-[#3a4a5a] text-white placeholder:text-gray-500"
+                disabled={isLoading}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300"
+              >
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
+
+            <Button
+              type="submit"
+              className="w-full bg-orange-500 hover:bg-orange-600 text-white"
+              disabled={isLoading}
+            >
+              {isLoading ? "Verifying..." : (isSignUp ? "Create Account" : "Sign In")}
+            </Button>
+          </form>
+
+          <div className="mt-4 text-center space-y-2">
+            <button
+              type="button"
+              onClick={() => setIsSignUp(!isSignUp)}
+              className="text-orange-400 hover:text-orange-300 text-sm block w-full"
+              disabled={isLoading}
+            >
+              {isSignUp ? "Already have an account? Sign in" : "Don't have an account? Create one"}
+            </button>
+            
+            {!isSignUp && (
+              <button
+                type="button"
+                onClick={handleForgotPassword}
+                className="text-gray-400 hover:text-gray-300 text-sm"
+                disabled={isLoading || !email}
+              >
+                Forgot password?
+              </button>
+            )}
+          </div>
+
+          <p className="text-center text-gray-600 text-xs mt-6">
+            This is a restricted area for authorized users only.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // All investor data is fetched dynamically from Supabase - funnel synced with live data
 
 const ABCCompanyConsole = () => {
@@ -60,7 +285,7 @@ const ABCCompanyConsole = () => {
       const { data: { session } } = await supabase.auth.getSession();
       
       if (!session?.user) {
-        navigate('/abc-company-console-access');
+        setIsCheckingAuth(false);
         return;
       }
 
@@ -77,7 +302,7 @@ const ABCCompanyConsole = () => {
       });
       
       if (!authUser && !isAdmin) {
-        navigate('/abc-company-console-access');
+        setIsCheckingAuth(false);
         return;
       }
 
@@ -91,17 +316,25 @@ const ABCCompanyConsole = () => {
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_OUT' || !session) {
-        navigate('/abc-company-console-access');
+        setIsAuthenticated(false);
+        setCurrentUserEmail(null);
       }
     });
 
     return () => subscription.unsubscribe();
-  }, [navigate]);
+  }, []);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    navigate('/abc-company-console-access');
+    setIsAuthenticated(false);
+    setCurrentUserEmail(null);
   };
+
+  const handleLoginSuccess = (email: string) => {
+    setCurrentUserEmail(email);
+    setIsAuthenticated(true);
+  };
+
   const [filterCategory, setFilterCategory] = useState("all");
   const [filterSource, setFilterSource] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
@@ -271,7 +504,7 @@ const ABCCompanyConsole = () => {
   }
 
   if (!isAuthenticated) {
-    return null;
+    return <LoginForm onSuccess={handleLoginSuccess} />;
   }
 
   const fetchUpcomingFollowUps = async () => {
