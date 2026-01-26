@@ -229,7 +229,35 @@ export function ImportABCInvestorsDialog({ onSuccess }: ImportABCInvestorsDialog
     
     setIsImporting(true);
     try {
-      const dataToInsert = parsedData.map(inv => ({
+      // Fetch existing investors to check for duplicates
+      const { data: existingInvestors, error: fetchError } = await supabase
+        .from('abc_investors')
+        .select('nome, azienda');
+      
+      if (fetchError) throw fetchError;
+      
+      // Create a Set of existing investor keys (nome + azienda normalized)
+      const existingKeys = new Set(
+        (existingInvestors || []).map(inv => 
+          `${inv.nome.toLowerCase().trim()}|${inv.azienda.toLowerCase().trim()}`
+        )
+      );
+      
+      // Filter out duplicates
+      const newInvestors = parsedData.filter(inv => {
+        const key = `${inv.nome.toLowerCase().trim()}|${inv.azienda.toLowerCase().trim()}`;
+        return !existingKeys.has(key);
+      });
+      
+      const duplicatesCount = parsedData.length - newInvestors.length;
+      
+      if (newInvestors.length === 0) {
+        toast.warning(`Tutti i ${parsedData.length} investitori sono già presenti nel database`);
+        setIsImporting(false);
+        return;
+      }
+      
+      const dataToInsert = newInvestors.map(inv => ({
         nome: inv.nome,
         azienda: inv.azienda,
         categoria: inv.categoria,
@@ -252,7 +280,12 @@ export function ImportABCInvestorsDialog({ onSuccess }: ImportABCInvestorsDialog
       
       if (error) throw error;
       
-      toast.success(`${parsedData.length} investitori importati con successo`);
+      if (duplicatesCount > 0) {
+        toast.success(`${newInvestors.length} nuovi investitori importati (${duplicatesCount} duplicati ignorati)`);
+      } else {
+        toast.success(`${newInvestors.length} investitori importati con successo`);
+      }
+      
       setIsOpen(false);
       setSelectedFile(null);
       setParsedData([]);
