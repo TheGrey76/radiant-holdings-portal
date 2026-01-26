@@ -131,7 +131,7 @@ const App = () => (
           <Route path="/alkemia-praesidium-proposal" element={<AlkemiaPraesidiumProposal />} />
           <Route path="/asset-gu-access" element={<AssetGUAccess />} />
           <Route path="/asset-gu-proposal" element={<AssetGUProposal />} />
-          <Route path="/abc-company-access" element={<Navigate to="/abc-company-proposal" replace />} />
+          
           <Route path="/abc-company-proposal" element={<ABCCompanyProposal />} />
           <Route path="/abc-company-investor" element={<ABCCompanyInvestor />} />
           <Route path="/abc-company-console" element={<ABCCompanyConsole />} />
