@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import jsPDF from "jspdf";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { 
   TrendingUp, Users, Calendar, CheckCircle, AlertCircle, AlertTriangle,
@@ -45,6 +45,129 @@ import { ABCCampaignStatsDialog } from "@/components/ABCCampaignStatsDialog";
 import { useKPIHistory } from "@/hooks/useKPIHistory";
 import { supabase } from "@/integrations/supabase/client";
 
+// Auth View type
+type AuthView = 'login' | 'signup' | 'forgot-password' | 'reset-password';
+
+// Password reset form component (inline)
+const ResetPasswordForm = ({ onBack }: { onBack: () => void }) => {
+  const [isSaving, setIsSaving] = useState(false);
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+
+  const handleUpdatePassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (password.length < 8) {
+      toast.error("Password must be at least 8 characters");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+
+    setIsSaving(true);
+
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session?.user) {
+      toast.error("Reset session missing. Please reopen the reset email link.");
+      setIsSaving(false);
+      return;
+    }
+
+    const { error } = await supabase.auth.updateUser({ password });
+
+    if (error) {
+      toast.error(error.message);
+      setIsSaving(false);
+      return;
+    }
+
+    toast.success("Password updated. Please sign in.");
+    await supabase.auth.signOut();
+    onBack();
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-[#1a2332] via-[#1a2332] to-[#2a3342] flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        <div className="bg-[#1e2838] border border-[#2a3a4a] rounded-lg shadow-2xl p-8">
+          <div className="text-center mb-8">
+            <div className="w-16 h-16 bg-orange-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Shield className="w-8 h-8 text-orange-500" />
+            </div>
+            <h1 className="text-2xl font-bold text-white mb-2">
+              Set a new password
+            </h1>
+            <p className="text-gray-400 text-sm">ABC Company Console</p>
+          </div>
+
+          <form onSubmit={handleUpdatePassword} className="space-y-4">
+            <div className="relative">
+              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+              <Input
+                type={showPassword ? "text" : "password"}
+                placeholder="New password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="w-full pl-10 pr-10 bg-[#2a3a4a] border-[#3a4a5a] text-white placeholder:text-gray-500"
+                disabled={isSaving}
+                autoComplete="new-password"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((v) => !v)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300"
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
+
+            <div className="relative">
+              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+              <Input
+                type={showConfirm ? "text" : "password"}
+                placeholder="Confirm new password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+                className="w-full pl-10 pr-10 bg-[#2a3a4a] border-[#3a4a5a] text-white placeholder:text-gray-500"
+                disabled={isSaving}
+                autoComplete="new-password"
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirm((v) => !v)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300"
+                aria-label={showConfirm ? "Hide password" : "Show password"}
+              >
+                {showConfirm ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
+
+            <Button
+              type="submit"
+              className="w-full bg-orange-500 hover:bg-orange-600 text-white"
+              disabled={isSaving}
+            >
+              {isSaving ? "Saving…" : "Update password"}
+            </Button>
+          </form>
+
+          <p className="text-center text-gray-600 text-xs mt-6">
+            If this page says the reset session is missing, reopen the most recent reset email link.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // Login Form Component (inline)
 const LoginForm = ({ onSuccess }: { onSuccess: (email: string) => void }) => {
   const [email, setEmail] = useState("");
@@ -52,10 +175,11 @@ const LoginForm = ({ onSuccess }: { onSuccess: (email: string) => void }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
+  const [showForgotMessage, setShowForgotMessage] = useState(false);
 
   const handleForgotPassword = async () => {
     const normalizedEmail = email.toLowerCase().trim();
-    const redirectTo = `${window.location.origin}/abc-reset-password`;
+    const redirectTo = `${window.location.origin}/abc-company-console?reset=true`;
     
     if (!normalizedEmail) {
       toast.error("Please enter your email address first.");
@@ -72,6 +196,7 @@ const LoginForm = ({ onSuccess }: { onSuccess: (email: string) => void }) => {
       toast.error(error.message);
     } else {
       toast.success("Password reset email sent! Check your inbox.");
+      setShowForgotMessage(true);
     }
     
     setIsLoading(false);
@@ -175,6 +300,30 @@ const LoginForm = ({ onSuccess }: { onSuccess: (email: string) => void }) => {
     setIsLoading(false);
   };
 
+  if (showForgotMessage) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-[#1a2332] via-[#1a2332] to-[#2a3342] flex items-center justify-center p-4">
+        <div className="w-full max-w-md">
+          <div className="bg-[#1e2838] border border-[#2a3a4a] rounded-lg shadow-2xl p-8 text-center">
+            <div className="w-16 h-16 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Mail className="w-8 h-8 text-green-500" />
+            </div>
+            <h1 className="text-2xl font-bold text-white mb-2">Check your email</h1>
+            <p className="text-gray-400 text-sm mb-6">
+              We've sent a password reset link to your email address. Click the link to set a new password.
+            </p>
+            <Button
+              onClick={() => setShowForgotMessage(false)}
+              className="w-full bg-orange-500 hover:bg-orange-600 text-white"
+            >
+              Back to Sign In
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#1a2332] via-[#1a2332] to-[#2a3342] flex items-center justify-center p-4">
       <div className="w-full max-w-md">
@@ -273,16 +422,32 @@ const LoginForm = ({ onSuccess }: { onSuccess: (email: string) => void }) => {
 
 const ABCCompanyConsole = () => {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState("dashboard");
   // KPI history is now automatically managed by Supabase
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const [currentUserEmail, setCurrentUserEmail] = useState<string | null>(null);
+  const [showResetPassword, setShowResetPassword] = useState(false);
+
+  // Check for reset password query param
+  useEffect(() => {
+    if (searchParams.get('reset') === 'true') {
+      setShowResetPassword(true);
+    }
+  }, [searchParams]);
 
   // Check authentication on mount via Supabase Auth
   useEffect(() => {
     const checkAuth = async () => {
       const { data: { session } } = await supabase.auth.getSession();
+      
+      // If reset mode and session exists, show reset form
+      if (searchParams.get('reset') === 'true' && session?.user) {
+        setShowResetPassword(true);
+        setIsCheckingAuth(false);
+        return;
+      }
       
       if (!session?.user) {
         setIsCheckingAuth(false);
@@ -318,11 +483,12 @@ const ABCCompanyConsole = () => {
       if (event === 'SIGNED_OUT' || !session) {
         setIsAuthenticated(false);
         setCurrentUserEmail(null);
+        setShowResetPassword(false);
       }
     });
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [searchParams]);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -500,6 +666,18 @@ const ABCCompanyConsole = () => {
       <div className="min-h-screen bg-gradient-to-br from-[#1a2332] via-[#1a2332] to-[#2a3342] flex items-center justify-center">
         <div className="text-white">Loading...</div>
       </div>
+    );
+  }
+
+  // Show reset password form when coming from reset email link
+  if (showResetPassword) {
+    return (
+      <ResetPasswordForm 
+        onBack={() => {
+          setShowResetPassword(false);
+          setSearchParams({});
+        }} 
+      />
     );
   }
 
