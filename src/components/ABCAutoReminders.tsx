@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Bell, AlertTriangle, Clock, Send, Calendar, ChevronRight, RefreshCw, CheckSquare, Filter } from "lucide-react";
+import { Bell, AlertTriangle, Clock, Send, Calendar, ChevronRight, RefreshCw, CheckSquare, X } from "lucide-react";
 import { differenceInDays, parseISO, format } from "date-fns";
 import { it } from "date-fns/locale";
 import { supabase } from "@/integrations/supabase/client";
@@ -43,7 +43,10 @@ export const ABCAutoReminders = ({ investors, onSelectInvestor, onSendReminders 
   const [loading, setLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [selectedReminders, setSelectedReminders] = useState<string[]>([]);
-  const [excludeResponded, setExcludeResponded] = useState(false);
+  const [excludedInvestors, setExcludedInvestors] = useState<string[]>(() => {
+    const saved = localStorage.getItem('abc_excluded_reminders');
+    return saved ? JSON.parse(saved) : [];
+  });
 
   // Threshold days for reminders
   const NO_CONTACT_THRESHOLD = 7; // Days without contact for active investors
@@ -76,17 +79,11 @@ export const ABCAutoReminders = ({ investors, onSelectInvestor, onSendReminders 
     const allReminders: Reminder[] = [];
     const now = new Date();
 
-    // Filter active investors (exclude Not Interested and Closed)
-    let activeInvestors = investors.filter(inv => 
-      !['Not Interested', 'Closed'].includes(inv.status)
+    // Filter active investors (exclude Not Interested, Closed, and manually excluded)
+    const activeInvestors = investors.filter(inv => 
+      !['Not Interested', 'Closed'].includes(inv.status) &&
+      !excludedInvestors.includes(inv.id)
     );
-
-    // Exclude investors who have responded if toggle is on
-    if (excludeResponded) {
-      activeInvestors = activeInvestors.filter(inv => 
-        !inv.emailResponsesCount || inv.emailResponsesCount === 0
-      );
-    }
 
     activeInvestors.forEach(investor => {
       // Check for no contact reminders
@@ -166,7 +163,20 @@ export const ABCAutoReminders = ({ investors, onSelectInvestor, onSendReminders 
       }
       return b.daysSince - a.daysSince;
     });
-  }, [investors, overdueFollowUps, excludeResponded]);
+  }, [investors, overdueFollowUps, excludedInvestors]);
+
+  const handleExcludeInvestor = (investorId: string) => {
+    const updated = [...excludedInvestors, investorId];
+    setExcludedInvestors(updated);
+    localStorage.setItem('abc_excluded_reminders', JSON.stringify(updated));
+    toast.success("Contatto escluso dai reminder");
+  };
+
+  const handleClearExcluded = () => {
+    setExcludedInvestors([]);
+    localStorage.removeItem('abc_excluded_reminders');
+    toast.success("Lista esclusioni resettata");
+  };
 
   const handleRefresh = async () => {
     setIsRefreshing(true);
@@ -280,22 +290,22 @@ export const ABCAutoReminders = ({ investors, onSelectInvestor, onSendReminders 
           </div>
         </CardTitle>
         
-        {/* Filter: Exclude Responded */}
-        <div className="flex items-center gap-2 mt-3 pt-2 border-t">
-          <div 
-            className="flex items-center gap-2 cursor-pointer"
-            onClick={() => setExcludeResponded(!excludeResponded)}
-          >
-            <Checkbox 
-              checked={excludeResponded}
-              onCheckedChange={(checked) => setExcludeResponded(checked === true)}
-            />
-            <Filter className="h-4 w-4 text-muted-foreground" />
+        {/* Excluded count and reset */}
+        {excludedInvestors.length > 0 && (
+          <div className="flex items-center justify-between mt-3 pt-2 border-t">
             <span className="text-sm text-muted-foreground">
-              Escludi chi ha già risposto
+              {excludedInvestors.length} contatti esclusi
             </span>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={handleClearExcluded}
+              className="text-xs"
+            >
+              Ripristina tutti
+            </Button>
           </div>
-        </div>
+        )}
       </CardHeader>
       <CardContent>
         {reminders.length === 0 ? (
@@ -357,7 +367,7 @@ export const ABCAutoReminders = ({ investors, onSelectInvestor, onSendReminders 
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1">
                     {!reminder.email && (
                       <Badge variant="outline" className="text-xs">
                         No email
@@ -374,6 +384,18 @@ export const ABCAutoReminders = ({ investors, onSelectInvestor, onSendReminders 
                       title="Vai al profilo"
                     >
                       <ChevronRight className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 w-8 p-0 text-muted-foreground hover:text-destructive"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleExcludeInvestor(reminder.investorId);
+                      }}
+                      title="Escludi dai reminder"
+                    >
+                      <X className="h-4 w-4" />
                     </Button>
                   </div>
                 </div>
