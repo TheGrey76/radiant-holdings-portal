@@ -56,7 +56,7 @@ import AlkemiaPraesidiumProposal from "./pages/AlkemiaPraesidiumProposal";
 import AssetGUProposal from "./pages/AssetGUProposal";
 import AssetGUAccess from "./pages/AssetGUAccess";
 
-import ABCCompanyInvestor from "./pages/ABCCompanyInvestor";
+
 import ABCCompanyConsole from "./pages/ABCCompanyConsole";
 import ABCInvestorProfile from "./pages/ABCInvestorProfile";
 import ABCCompanyConsoleAccess from "./pages/ABCCompanyConsoleAccess";
@@ -133,7 +133,7 @@ const App = () => (
           <Route path="/asset-gu-proposal" element={<AssetGUProposal />} />
           
           
-          <Route path="/abc-company-investor" element={<ABCCompanyInvestor />} />
+          
           <Route path="/abc-company-console" element={<ABCCompanyConsole />} />
           <Route path="/abc-company-console/investor/:id" element={<ABCInvestorProfile />} />
           <Route path="/abc-company-console-access" element={<ABCCompanyConsoleAccess />} />
