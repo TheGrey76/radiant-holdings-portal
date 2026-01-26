@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Bell, AlertTriangle, Clock, Send, Calendar, ChevronRight, RefreshCw, CheckSquare } from "lucide-react";
+import { Bell, AlertTriangle, Clock, Send, Calendar, ChevronRight, RefreshCw, CheckSquare, Filter } from "lucide-react";
 import { differenceInDays, parseISO, format } from "date-fns";
 import { it } from "date-fns/locale";
 import { supabase } from "@/integrations/supabase/client";
@@ -17,6 +17,7 @@ interface Investor {
   email: string | null;
   lastContactDate: string | null;
   engagementScore: number;
+  emailResponsesCount?: number;
 }
 
 interface ABCAutoRemindersProps {
@@ -42,6 +43,7 @@ export const ABCAutoReminders = ({ investors, onSelectInvestor, onSendReminders 
   const [loading, setLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [selectedReminders, setSelectedReminders] = useState<string[]>([]);
+  const [excludeResponded, setExcludeResponded] = useState(false);
 
   // Threshold days for reminders
   const NO_CONTACT_THRESHOLD = 7; // Days without contact for active investors
@@ -75,9 +77,16 @@ export const ABCAutoReminders = ({ investors, onSelectInvestor, onSendReminders 
     const now = new Date();
 
     // Filter active investors (exclude Not Interested and Closed)
-    const activeInvestors = investors.filter(inv => 
+    let activeInvestors = investors.filter(inv => 
       !['Not Interested', 'Closed'].includes(inv.status)
     );
+
+    // Exclude investors who have responded if toggle is on
+    if (excludeResponded) {
+      activeInvestors = activeInvestors.filter(inv => 
+        !inv.emailResponsesCount || inv.emailResponsesCount === 0
+      );
+    }
 
     activeInvestors.forEach(investor => {
       // Check for no contact reminders
@@ -157,7 +166,7 @@ export const ABCAutoReminders = ({ investors, onSelectInvestor, onSendReminders 
       }
       return b.daysSince - a.daysSince;
     });
-  }, [investors, overdueFollowUps]);
+  }, [investors, overdueFollowUps, excludeResponded]);
 
   const handleRefresh = async () => {
     setIsRefreshing(true);
@@ -270,6 +279,23 @@ export const ABCAutoReminders = ({ investors, onSelectInvestor, onSendReminders 
             </Button>
           </div>
         </CardTitle>
+        
+        {/* Filter: Exclude Responded */}
+        <div className="flex items-center gap-2 mt-3 pt-2 border-t">
+          <div 
+            className="flex items-center gap-2 cursor-pointer"
+            onClick={() => setExcludeResponded(!excludeResponded)}
+          >
+            <Checkbox 
+              checked={excludeResponded}
+              onCheckedChange={(checked) => setExcludeResponded(checked === true)}
+            />
+            <Filter className="h-4 w-4 text-muted-foreground" />
+            <span className="text-sm text-muted-foreground">
+              Escludi chi ha già risposto
+            </span>
+          </div>
+        </div>
       </CardHeader>
       <CardContent>
         {reminders.length === 0 ? (
