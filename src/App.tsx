@@ -132,7 +132,6 @@ const App = () => (
           
           
           <Route path="/abc-company-console" element={<ABCCompanyConsole />} />
-          <Route path="/abc-reset-password" element={<Navigate to="/abc-company-console?reset=true" replace />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/archive" element={<BlogArchive />} />
