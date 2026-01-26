@@ -58,8 +58,6 @@ import AssetGUAccess from "./pages/AssetGUAccess";
 
 
 import ABCCompanyConsole from "./pages/ABCCompanyConsole";
-
-import ABCResetPassword from "./pages/ABCResetPassword";
 import FinancialAdvisersPortal from "./pages/FinancialAdvisersPortal";
 import FamilyOfficeAdvisory from "./pages/FamilyOfficeAdvisory";
 import Partners from "./pages/Partners";
@@ -134,8 +132,7 @@ const App = () => (
           
           
           <Route path="/abc-company-console" element={<ABCCompanyConsole />} />
-          
-          <Route path="/abc-reset-password" element={<ABCResetPassword />} />
+          <Route path="/abc-reset-password" element={<Navigate to="/abc-company-console?reset=true" replace />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/archive" element={<BlogArchive />} />
