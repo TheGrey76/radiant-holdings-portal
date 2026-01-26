@@ -58,7 +58,6 @@ import AssetGUAccess from "./pages/AssetGUAccess";
 
 
 import ABCCompanyConsole from "./pages/ABCCompanyConsole";
-import ABCInvestorProfile from "./pages/ABCInvestorProfile";
 
 import ABCResetPassword from "./pages/ABCResetPassword";
 import FinancialAdvisersPortal from "./pages/FinancialAdvisersPortal";
@@ -135,7 +134,6 @@ const App = () => (
           
           
           <Route path="/abc-company-console" element={<ABCCompanyConsole />} />
-          <Route path="/abc-company-console/investor/:id" element={<ABCInvestorProfile />} />
           
           <Route path="/abc-reset-password" element={<ABCResetPassword />} />
           <Route path="/faq" element={<FAQ />} />
