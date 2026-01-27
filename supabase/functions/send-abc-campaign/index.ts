@@ -403,6 +403,15 @@ www.aries76.com
           subject: personalizedSubject,
           html: emailHtml,
           text: fullPlainText, // Plain text fallback improves deliverability
+          headers: {
+            // List-Unsubscribe header for better deliverability and compliance
+            "List-Unsubscribe": `<mailto:unsubscribe@aries76.com?subject=Unsubscribe%20${encodeURIComponent(recipient.email)}>`,
+            "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+            // Precedence header to indicate bulk mail
+            "Precedence": "bulk",
+            // X-Priority for normal priority (not spam-like urgent)
+            "X-Priority": "3",
+          },
         };
 
         // Add attachments if present

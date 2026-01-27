@@ -16,10 +16,11 @@ import {
   Mail, Send, Users, Filter, CheckCircle, Clock, AlertCircle, 
   Save, FileText, History, Trash2, Plus, Eye, AlertTriangle, Edit2,
   Paperclip, X, MailOpen, RefreshCw, Sparkles, MessageSquare, Reply,
-  ChevronLeft, ChevronRight, Bell
+  ChevronLeft, ChevronRight, Bell, Shield
 } from "lucide-react";
 import { format } from "date-fns";
 import { it } from "date-fns/locale";
+import { ABCEmailDeliverability, analyzeSpamScore } from "./ABCEmailDeliverability";
 
 interface Investor {
   id: string;
@@ -1226,9 +1227,14 @@ Il Team ABC Company`,
     }
   };
 
+  // Calculate content score for current email
+  const contentScore = emailForm.subject || emailForm.content 
+    ? analyzeSpamScore(emailForm.subject, emailForm.content)
+    : null;
+
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-      <TabsList className="mb-4">
+      <TabsList className="mb-4 flex flex-wrap">
         <TabsTrigger value="compose" className="flex items-center gap-2">
           <Mail className="h-4 w-4" />
           Componi
@@ -1244,6 +1250,10 @@ Il Team ABC Company`,
         <TabsTrigger value="tracking" className="flex items-center gap-2">
           <Eye className="h-4 w-4" />
           Tracking
+        </TabsTrigger>
+        <TabsTrigger value="deliverability" className="flex items-center gap-2">
+          <Shield className="h-4 w-4" />
+          Deliverability
         </TabsTrigger>
       </TabsList>
 
@@ -1514,6 +1524,51 @@ Team Aries76"
                   <p className="text-xs text-muted-foreground">
                     Un pulsante con il link verrà aggiunto alla fine dell'email
                   </p>
+                )}
+
+                {/* Content Score Indicator */}
+                {contentScore && (
+                  <div className={`flex items-center gap-3 p-3 rounded-lg border ${
+                    contentScore.score >= 80 ? 'bg-green-500/5 border-green-500/20' :
+                    contentScore.score >= 60 ? 'bg-yellow-500/5 border-yellow-500/20' :
+                    contentScore.score >= 40 ? 'bg-orange-500/5 border-orange-500/20' :
+                    'bg-red-500/5 border-red-500/20'
+                  }`}>
+                    <div className="flex items-center gap-2">
+                      <Shield className={`h-5 w-5 ${
+                        contentScore.score >= 80 ? 'text-green-500' :
+                        contentScore.score >= 60 ? 'text-yellow-500' :
+                        contentScore.score >= 40 ? 'text-orange-500' :
+                        'text-red-500'
+                      }`} />
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className={`font-bold ${
+                            contentScore.score >= 80 ? 'text-green-600' :
+                            contentScore.score >= 60 ? 'text-yellow-600' :
+                            contentScore.score >= 40 ? 'text-orange-600' :
+                            'text-red-600'
+                          }`}>
+                            {contentScore.score}/100
+                          </span>
+                          <span className="text-sm text-muted-foreground">Content Score</span>
+                        </div>
+                        {contentScore.issues.length > 0 && (
+                          <p className="text-xs text-muted-foreground">
+                            {contentScore.issues.length} {contentScore.issues.length === 1 ? 'problema' : 'problemi'} rilevato
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      onClick={() => setActiveTab('deliverability')}
+                      className="ml-auto"
+                    >
+                      Analizza
+                    </Button>
+                  </div>
                 )}
 
                 <div className="flex flex-wrap gap-2">
@@ -2480,6 +2535,11 @@ Team Aries76"
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* DELIVERABILITY TAB */}
+      <TabsContent value="deliverability">
+        <ABCEmailDeliverability />
+      </TabsContent>
     </Tabs>
   );
 }
