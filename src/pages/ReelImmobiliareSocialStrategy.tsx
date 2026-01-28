@@ -617,7 +617,7 @@ const SocialStrategyContent = () => {
         </Section>
 
         {/* KPI */}
-        <Section id="kpi" icon={BarChart3} title="KPI per Fase">
+        <Section id="kpi" icon={BarChart3} title="KPI per Fase (validazione KPI in elaborazione)">
           <div className="space-y-6">
             <div className="p-5 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-xl border border-emerald-200">
               <h5 className="font-semibold text-emerald-700 mb-4">FASE 1 - AWARENESS (primi 2 mesi)</h5>
