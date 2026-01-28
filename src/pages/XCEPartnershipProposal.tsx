@@ -976,7 +976,7 @@ const XCEPartnershipProposal = () => {
                 <p className="text-gray-400">Date: <span className="text-white">January 27, 2026</span></p>
               </div>
               <div>
-                <p className="text-gray-400">Recipient: <span className="text-white">Scott (XCE)</span></p>
+                <p className="text-gray-400">Recipient: <span className="text-white">Scott Ellam - Scott.Ellam@xce.io</span></p>
                 <p className="text-gray-400">Classification: <span className="text-accent">Confidential - Partnership Discussion</span></p>
               </div>
             </div>
