@@ -9,6 +9,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 // Authorized emails for this document
 const AUTHORIZED_EMAILS = [
   "edoardo.grigione@aries76.com",
+  "scott.ellam@xce.io",
   // Add more emails here as needed
 ];
 
