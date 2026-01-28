@@ -79,6 +79,7 @@ import ETFCertificatesPortfolio from "./pages/ETFCertificatesPortfolio";
 import AutomationMonitor from "./pages/AutomationMonitor";
 import StrategicAdvisoryAdmin from "./pages/StrategicAdvisoryAdmin";
 import AdvisoryDocument from "./pages/AdvisoryDocument";
+import XCEPartnershipProposal from "./pages/XCEPartnershipProposal";
 
 const queryClient = new QueryClient();
 
@@ -166,6 +167,7 @@ const App = () => (
           
           <Route path="/mazal-innovation" element={<MazalInnovation />} />
           <Route path="/reelimmobiliare" element={<ReelImmobiliare />} />
+          <Route path="/xce-partnership" element={<XCEPartnershipProposal />} />
           <Route path="/AF" element={<ETFCertificatesPortfolio />} />
           <Route path="/press" element={<Press />} />
           <Route path="*" element={<NotFound />} />
