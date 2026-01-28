@@ -430,7 +430,7 @@ const SocialStrategyContent = () => {
 
           <h4 className="font-semibold text-lg mb-3">3. Focus sui Reel</h4>
           <KeyInsight type="strength">
-            Formato giusto per il 2025. Coerente con il trend video-first.
+            Formato giusto per il 2026. Coerente con il trend video-first.
           </KeyInsight>
         </Section>
 
