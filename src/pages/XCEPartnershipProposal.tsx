@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { Shield, Mail, FileText, TrendingUp, Users, GraduationCap, Calendar, Target, CheckCircle2, AlertTriangle, ArrowRight, Building } from "lucide-react";
+import { Shield, Mail, FileText, TrendingUp, Users, GraduationCap, Calendar, Target, CheckCircle2, AlertTriangle, ArrowRight, Building, LogOut } from "lucide-react";
 import { motion } from "framer-motion";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, Legend, AreaChart, Area } from "recharts";
 
@@ -74,6 +75,7 @@ const scaleIn = {
 };
 
 const XCEPartnershipProposal = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [hasAccess, setHasAccess] = useState(false);
@@ -108,6 +110,13 @@ const XCEPartnershipProposal = () => {
     }
 
     setIsLoading(false);
+  };
+
+  const handleLogout = () => {
+    sessionStorage.removeItem("xce_partnership_access");
+    setHasAccess(false);
+    toast.success("Logged out successfully");
+    navigate("/");
   };
 
   const formatCurrency = (value: number) => {
@@ -197,6 +206,23 @@ const XCEPartnershipProposal = () => {
   // Document Content
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0a1628] via-[#0f1e36] to-[#1a2e4a]">
+      {/* Logout Button - Fixed position */}
+      <motion.div 
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="fixed top-4 right-4 z-50"
+      >
+        <Button
+          onClick={handleLogout}
+          variant="outline"
+          size="sm"
+          className="bg-[#0f1e36]/90 border-[#1e3a5f] text-gray-300 hover:text-white hover:bg-[#1e3a5f] backdrop-blur-sm"
+        >
+          <LogOut className="w-4 h-4 mr-2" />
+          Logout
+        </Button>
+      </motion.div>
+
       {/* Hero Section */}
       <section className="relative py-20 px-4 overflow-hidden">
         {/* Animated background orbs */}
