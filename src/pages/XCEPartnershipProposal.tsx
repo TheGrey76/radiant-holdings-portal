@@ -206,17 +206,17 @@ const XCEPartnershipProposal = () => {
   // Document Content
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0a1628] via-[#0f1e36] to-[#1a2e4a]">
-      {/* Logout Button - Fixed position */}
+      {/* Logout Button - Fixed position below navbar */}
       <motion.div 
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="fixed top-4 right-4 z-50"
+        className="fixed top-20 right-6 z-40"
       >
         <Button
           onClick={handleLogout}
           variant="outline"
           size="sm"
-          className="bg-[#0f1e36]/90 border-[#1e3a5f] text-gray-300 hover:text-white hover:bg-[#1e3a5f] backdrop-blur-sm"
+          className="bg-[#0f1e36]/90 border-[#1e3a5f] text-gray-300 hover:text-white hover:bg-[#1e3a5f] backdrop-blur-sm shadow-lg"
         >
           <LogOut className="w-4 h-4 mr-2" />
           Logout
