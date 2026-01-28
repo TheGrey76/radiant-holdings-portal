@@ -541,7 +541,7 @@ const SocialStrategyContent = () => {
               <strong>PROBLEMA 4:</strong> Zero strategia di engagement - manca playbook per commenti, DM automation, community activation
             </KeyInsight>
             <KeyInsight type="problem">
-              <strong>PROBLEMA 5:</strong> Nessuna strategia Paid - reach organica su Meta è &lt;5%. Budget minimo consigliato: €2000/mese
+              <strong>PROBLEMA 5:</strong> Nessuna strategia Paid - reach organica su Meta è &lt;5%. Budget minimo consigliato a regime: €1.500/mese
             </KeyInsight>
             <KeyInsight type="problem">
               <strong>PROBLEMA 6:</strong> KPI vaghi - il documento parla di "dati" e "performance" ma non definisce cosa misurare
@@ -653,30 +653,66 @@ const SocialStrategyContent = () => {
 
         {/* Budget */}
         <Section id="budget" icon={DollarSign} title="Budget Allocation">
-          <p className="text-muted-foreground mb-6">
-            Ipotesi budget €2000/mese fase iniziale
-          </p>
           
-          <div className="grid md:grid-cols-3 gap-4 mb-6">
-            <div className="p-5 bg-gradient-to-br from-pink-100 to-rose-100 rounded-xl border border-pink-200 text-center">
-              <p className="text-3xl font-bold text-pink-600">€800</p>
-              <p className="font-semibold mt-2">TikTok Ads (40%)</p>
-              <p className="text-xs text-muted-foreground mt-1">Spark Ads sui Reel organici più performanti</p>
+          {/* Budget di Test Iniziale */}
+          <div className="mb-8 p-5 bg-gradient-to-r from-amber-50 to-yellow-50 rounded-xl border-2 border-amber-200">
+            <h4 className="font-semibold text-amber-800 mb-4 flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5" />
+              📊 Budget di Test (primi 2 mesi)
+            </h4>
+            <p className="text-sm text-muted-foreground mb-4">
+              Per validare le risposte degli utenti e ottimizzare prima di scalare
+            </p>
+            <div className="grid md:grid-cols-3 gap-4">
+              <div className="p-4 bg-white rounded-lg border text-center">
+                <p className="text-2xl font-bold text-amber-600">€500</p>
+                <p className="font-medium text-sm">Test Minimo</p>
+                <p className="text-xs text-muted-foreground mt-1">Solo organic + boost contenuti top</p>
+              </div>
+              <div className="p-4 bg-white rounded-lg border-2 border-amber-400 text-center">
+                <p className="text-2xl font-bold text-amber-600">€800</p>
+                <p className="font-medium text-sm">Test Consigliato</p>
+                <p className="text-xs text-muted-foreground mt-1">Mix paid TikTok + Meta</p>
+              </div>
+              <div className="p-4 bg-white rounded-lg border text-center">
+                <p className="text-2xl font-bold text-amber-600">€1.000</p>
+                <p className="font-medium text-sm">Test Avanzato</p>
+                <p className="text-xs text-muted-foreground mt-1">A/B testing multi-piattaforma</p>
+              </div>
             </div>
-            <div className="p-5 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-xl border border-blue-200 text-center">
-              <p className="text-3xl font-bold text-blue-600">€800</p>
-              <p className="font-semibold mt-2">Meta Ads (40%)</p>
-              <p className="text-xs text-muted-foreground mt-1">Retargeting + Lead gen + Lookalike</p>
-            </div>
-            <div className="p-5 bg-gradient-to-br from-amber-100 to-orange-100 rounded-xl border border-amber-200 text-center">
-              <p className="text-3xl font-bold text-amber-600">€400</p>
-              <p className="font-semibold mt-2">Testing (20%)</p>
-              <p className="text-xs text-muted-foreground mt-1">A/B test su copy, visual, CTA</p>
+          </div>
+
+          {/* Budget a Regime */}
+          <div className="mb-6 p-5 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border-2 border-green-300">
+            <h4 className="font-semibold text-green-800 mb-4 flex items-center gap-2">
+              <TrendingUp className="h-5 w-5" />
+              🎯 Budget a Regime (dal mese 3)
+            </h4>
+            <p className="text-muted-foreground mb-4">
+              Budget minimo consigliato: <strong className="text-green-700 text-lg">€1.500/mese</strong>
+            </p>
+            
+            <div className="grid md:grid-cols-3 gap-4 mb-4">
+              <div className="p-5 bg-white rounded-xl border border-green-200 text-center">
+                <p className="text-3xl font-bold text-pink-600">€600</p>
+                <p className="font-semibold mt-2">TikTok Ads (40%)</p>
+                <p className="text-xs text-muted-foreground mt-1">Spark Ads sui Reel organici più performanti</p>
+              </div>
+              <div className="p-5 bg-white rounded-xl border border-green-200 text-center">
+                <p className="text-3xl font-bold text-blue-600">€600</p>
+                <p className="font-semibold mt-2">Meta Ads (40%)</p>
+                <p className="text-xs text-muted-foreground mt-1">Retargeting + Lead gen + Lookalike</p>
+              </div>
+              <div className="p-5 bg-white rounded-xl border border-green-200 text-center">
+                <p className="text-3xl font-bold text-amber-600">€300</p>
+                <p className="font-semibold mt-2">Testing (20%)</p>
+                <p className="text-xs text-muted-foreground mt-1">A/B test su copy, visual, CTA</p>
+              </div>
             </div>
           </div>
 
           <KeyInsight type="action">
-            <strong>Budget minimo consigliato:</strong> €2000-3000/mese (€1500 paid ads + €500-1000 tools + €500 contingency)
+            <strong>Budget minimo consigliato a regime:</strong> €1.500/mese (€1.200 paid ads + €200 tools + €100 contingency)
           </KeyInsight>
         </Section>
 
