@@ -3,10 +3,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
-import { Lock, Mail, CheckCircle, XCircle, ArrowRight, Lightbulb, Database, Video, Target, Building2, Zap, ChevronDown, ChevronUp, Layers, Eye, Settings, Shield, BarChart3, Calendar, Users, FileText, AlertTriangle, Briefcase } from "lucide-react";
+import { Lock, Mail, CheckCircle, XCircle, ArrowRight, Lightbulb, Database, Video, Target, Building2, Zap, ChevronDown, ChevronUp, Layers, Eye, Settings, Shield, BarChart3, Calendar, Users, FileText, AlertTriangle, Briefcase, Megaphone } from "lucide-react";
 import { toast } from "sonner";
 import { Helmet } from "react-helmet";
 import { motion, AnimatePresence } from "framer-motion";
+import { Link } from "react-router-dom";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 // Glossario termini tecnici
@@ -584,9 +585,27 @@ const ReelImmobiliareContent = () => {
               Da portale video replicabile a piattaforma tecnologica data-driven per il Real Estate
             </p>
 
-            <p className="text-sm text-slate-400">
+            <p className="text-sm text-slate-400 mb-6">
               02 January 2026
             </p>
+
+            {/* Link to Social Strategy */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+            >
+              <Link to="/reelimmobiliare-social">
+                <Button 
+                  variant="outline" 
+                  className="bg-white/10 border-white/30 text-white hover:bg-white/20 hover:border-white/50 backdrop-blur-sm"
+                >
+                  <Megaphone className="h-4 w-4 mr-2" />
+                  Strategia Social Media
+                  <ArrowRight className="h-4 w-4 ml-2" />
+                </Button>
+              </Link>
+            </motion.div>
           </motion.div>
         </div>
       </div>
