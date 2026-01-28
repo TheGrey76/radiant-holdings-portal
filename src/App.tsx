@@ -49,6 +49,7 @@ import GPCapitalAdvisoryTrends2025 from "./pages/blog/GPCapitalAdvisoryTrends202
 import PrivateEquityMomentum2026 from "./pages/blog/PrivateEquityMomentum2026";
 import MazalInnovation from "./pages/MazalInnovation";
 import ReelImmobiliare from "./pages/ReelImmobiliare";
+import ReelImmobiliareSocialStrategy from "./pages/ReelImmobiliareSocialStrategy";
 import WhyChooseAries from "./pages/WhyChooseAries";
 import LeadershipTeam from "./pages/LeadershipTeam";
 
@@ -167,6 +168,7 @@ const App = () => (
           
           <Route path="/mazal-innovation" element={<MazalInnovation />} />
           <Route path="/reelimmobiliare" element={<ReelImmobiliare />} />
+          <Route path="/reelimmobiliare-social" element={<ReelImmobiliareSocialStrategy />} />
           <Route path="/xce-partnership" element={<XCEPartnershipProposal />} />
           <Route path="/AF" element={<ETFCertificatesPortfolio />} />
           <Route path="/press" element={<Press />} />
