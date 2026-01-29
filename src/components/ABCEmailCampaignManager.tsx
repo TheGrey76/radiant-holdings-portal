@@ -37,6 +37,7 @@ interface Investor {
   engagement_score?: number;
   linkedin?: string | null;
   fonte?: string | null;
+  created_at?: string;
 }
 
 interface EmailTemplate {
@@ -96,6 +97,8 @@ export function ABCEmailCampaignManager({ investors, onInvestorsUpdated, pending
   const [selectedInvestors, setSelectedInvestors] = useState<string[]>([]);
   const [filterStatus, setFilterStatus] = useState<string>("all");
   const [filterCategory, setFilterCategory] = useState<string>("all");
+  const [filterApprovalDate, setFilterApprovalDate] = useState<string>("all");
+  const [filterNeverContacted, setFilterNeverContacted] = useState<boolean>(false);
   const [isSending, setIsSending] = useState(false);
   const [isSendingTest, setIsSendingTest] = useState(false);
   const [templates, setTemplates] = useState<EmailTemplate[]>([]);
@@ -514,12 +517,28 @@ Il Team ABC Company`,
   // Get unique categories from approved investors
   const categories = [...new Set(approvedInvestors.map(i => i.categoria))];
   const statuses = ['To Contact', 'Contacted', 'Interested', 'Meeting Scheduled', 'In Negotiation', 'Closed'];
+  
+  // Get unique approval dates for filter options
+  const approvalDates = [...new Set(approvedInvestors.map(i => {
+    const date = new Date(i.created_at || '');
+    return format(date, 'yyyy-MM-dd');
+  }))].sort((a, b) => b.localeCompare(a)); // Sort descending (most recent first)
 
   // Filter approved investors with email based on criteria
   const filteredInvestors = approvedWithEmail.filter(inv => {
     if (filterStatus === "not_contacted" && inv.status !== "To Contact") return false;
     if (filterStatus !== "all" && filterStatus !== "not_contacted" && inv.status !== filterStatus) return false;
     if (filterCategory !== "all" && inv.categoria !== filterCategory) return false;
+    
+    // Filter by approval date
+    if (filterApprovalDate !== "all") {
+      const invDate = format(new Date(inv.created_at || ''), 'yyyy-MM-dd');
+      if (invDate !== filterApprovalDate) return false;
+    }
+    
+    // Filter by never contacted
+    if (filterNeverContacted && inv.last_contact_date !== null) return false;
+    
     return true;
   });
 
@@ -1822,6 +1841,35 @@ Team Aries76"
                       ))}
                     </SelectContent>
                   </Select>
+                </div>
+                <div>
+                  <Label className="text-xs">Data Approvazione</Label>
+                  <Select value={filterApprovalDate} onValueChange={setFilterApprovalDate}>
+                    <SelectTrigger className="h-8 text-xs">
+                      <SelectValue placeholder="Tutte le date" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Tutte le date</SelectItem>
+                      {approvalDates.map(date => (
+                        <SelectItem key={date} value={date}>
+                          {format(new Date(date), 'dd MMM yyyy', { locale: it })}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="flex items-center space-x-2 pt-2">
+                  <Checkbox 
+                    id="neverContacted"
+                    checked={filterNeverContacted}
+                    onCheckedChange={(checked) => setFilterNeverContacted(checked as boolean)}
+                  />
+                  <label 
+                    htmlFor="neverContacted" 
+                    className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                  >
+                    Solo mai contattati
+                  </label>
                 </div>
               </CardContent>
             </Card>
