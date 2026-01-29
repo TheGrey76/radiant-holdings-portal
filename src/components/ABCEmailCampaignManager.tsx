@@ -1880,10 +1880,20 @@ Team Aries76"
                 <CardTitle className="flex items-center justify-between text-sm">
                   <span className="flex items-center">
                     <Users className="h-4 w-4 mr-2" />
-                    Destinatari Approved
+                    Investitori Approved
                   </span>
-                  <Badge variant="secondary">{filteredInvestors.length}</Badge>
+                  <div className="flex items-center gap-2">
+                    <Badge variant="secondary">{approvedInvestors.length}</Badge>
+                  </div>
                 </CardTitle>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {approvedWithEmail.length} con email · {approvedMissingEmail.length} senza email
+                </p>
+                {(filterStatus !== 'all' || filterCategory !== 'all' || filterApprovalDate !== 'all' || filterNeverContacted) && (
+                  <p className="text-xs text-primary mt-1">
+                    Filtrati: {filteredInvestors.length} contattabili
+                  </p>
+                )}
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
