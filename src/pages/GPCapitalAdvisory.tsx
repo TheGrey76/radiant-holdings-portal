@@ -1,133 +1,129 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Building2, Users2, TrendingUp, Scale, FileText, UserCheck, Target, Coins, BarChart3, Globe2, Network, Brain, Shield, Zap, CircleDollarSign, Handshake } from 'lucide-react';
+import { 
+  Search, 
+  Target, 
+  TrendingUp, 
+  BarChart3, 
+  Users, 
+  Handshake,
+  FileText,
+  Zap,
+  Globe2,
+  Brain,
+  Shield,
+  ArrowRight,
+  CheckCircle,
+  Building2,
+  Briefcase
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 
 const GPCapitalAdvisory = () => {
-  const pillars = [
+  const dealSourcingServices = [
     {
-      icon: CircleDollarSign,
-      title: 'GP Equity Investments',
-      description: 'Minority and majority stake structuring for strategic growth capital.'
+      title: 'Sector Monitoring Subscription',
+      description: 'Real-time intelligence on fintech/AI companies across Europe, delivered through regular briefings and alerts.',
+      features: [
+        'Weekly deal flow digest (15-25 companies)',
+        'Real-time alerts on funding rounds & key hires',
+        'Monthly sector trend analysis',
+        'Quarterly market map updates',
+        'Direct analyst access for ad-hoc questions'
+      ]
+    },
+    {
+      title: 'Qualified Deal Flow Partnership',
+      description: 'Proactive sourcing of investment opportunities matching your specific thesis, with full qualification before introduction.',
+      features: [
+        'Customized sourcing criteria development',
+        'Monthly pipeline of 10-20 pre-qualified opportunities',
+        'Investment memo summaries (2-3 pages)',
+        'Warm introductions to founders',
+        'Ongoing tracking of introduced companies'
+      ]
+    },
+    {
+      title: 'Exclusive First-Look Program',
+      description: 'Premium access to curated opportunities before they reach the broader market.',
+      features: [
+        '3-5 exclusive opportunities per quarter',
+        '2-week exclusivity window',
+        'Full investment memo with financial model',
+        'Management meeting facilitation',
+        'Deal structuring support'
+      ]
+    }
+  ];
+
+  const portfolioServices = [
+    {
+      icon: TrendingUp,
+      title: 'Follow-on Fundraising',
+      description: 'Full-service fundraising support for portfolio companies raising Series A through Series C.',
+      features: ['Strategy & timeline development', 'Investor targeting (200+ mapped)', 'Materials preparation', 'Process management through closing']
     },
     {
       icon: Handshake,
-      title: 'GP M&A Transactions',
-      description: 'Strategic acquisitions and consolidation opportunities for management companies.'
+      title: 'Strategic Partnership Development',
+      description: 'Identify and facilitate strategic partnerships—customers, distribution, technology partners.',
+      features: ['Partnership strategy workshop', 'Target mapping (50-100 partners)', 'Introduction facilitation', 'Deal structuring advisory']
     },
     {
-      icon: TrendingUp,
-      title: 'GP Financing',
-      description: 'Debt, preferred equity, and hybrid instruments tailored to management company needs.'
-    },
-    {
-      icon: Users2,
-      title: 'Minority Stakes & Liquidity Options',
-      description: 'Partial monetization and liquidity solutions for founding partners.'
-    },
-    {
-      icon: UserCheck,
-      title: 'Succession Planning & Partner Alignment',
-      description: 'Next-generation leadership transition and incentive restructuring.'
-    },
-    {
-      icon: Scale,
-      title: 'Valuation & Forecasting',
-      description: 'Independent management company valuation and performance modeling.'
+      icon: Target,
+      title: 'Exit Preparation & M&A',
+      description: 'Comprehensive preparation for portfolio exits—trade sale, secondary, or IPO track.',
+      features: ['Exit readiness assessment', 'Buyer landscape mapping', 'Data room preparation', 'Process execution & negotiation']
     }
   ];
 
-  const useCases = [
+  const intelligenceServices = [
     {
-      title: 'Geographic & Product Expansion',
-      description: 'GP-equity investment enabling multi-strategy platform development and cross-border presence.'
+      title: 'Sector Deep Dive Reports',
+      description: 'Comprehensive analysis of specific fintech/AI verticals with actionable investment intelligence.',
+      deliverables: ['Market sizing & projections', 'Competitive landscape (50-100 companies)', 'Investment activity & valuations', 'Target company profiles (10-15)']
     },
     {
-      title: 'Partial Divestiture & Governance Realignment',
-      description: 'Strategic sale to financial or industry buyer with governance optimization.'
+      title: 'Competitive Intelligence',
+      description: 'Detailed company analysis for investment evaluation or strategic planning.',
+      deliverables: ['Business model analysis', 'Financial estimates & metrics', 'Team & funding history', 'Competitive positioning']
     },
     {
-      title: 'Operational & Technology Enhancement',
-      description: 'Debt or preferred financing for infrastructure, technology, and talent investment.'
-    },
-    {
-      title: 'Succession & Partner Incentivization',
-      description: 'Structured succession program with refreshed partnership economics and retention mechanisms.'
-    },
-    {
-      title: 'Fee-Based Revenue Stabilization',
-      description: 'Partial monetization through structured liquidity while maintaining alignment with LP base.'
-    },
-    {
-      title: 'Multi-Strategy Platform Alignment',
-      description: 'GP/LP structural alignment across diverse fund vehicles and investment mandates.'
+      title: 'Valuation Benchmarking',
+      description: 'Comparable company analysis and valuation framework for investment decisions.',
+      deliverables: ['Comparable company set (10-20)', 'Trading & transaction multiples', 'Valuation range derivation', 'Key value driver analysis']
     }
   ];
 
-  const advisoryModules = [
-    {
-      title: 'Strategy & Positioning',
-      items: ['Management company narrative', 'Governance structure review', 'Incentive design optimization', 'Operating model assessment']
-    },
-    {
-      title: 'Structuring & Execution',
-      items: ['Capital structure options', 'Term sheet negotiation', 'Documentation coordination', 'Counterparty selection process']
-    },
-    {
-      title: 'Valuation & Investor Access',
-      items: ['GP valuation modeling', 'Benchmarking & metrics', 'Pipeline integration', 'Qualified investor outreach']
-    }
-  ];
-
-  const processSteps = [
-    'Diagnostics & Current State Assessment',
-    'Strategy Memo & Options Analysis',
-    'Market Soundings & Investor Engagement',
-    'Deal Structuring & Term Sheet',
-    'Execution & Negotiations',
-    'Closing & Transition Plan'
-  ];
-
-  const valuationDrivers = [
-    'Fee Income Quality & Recurring Revenue',
-    'Carry Economics & Realization Profile',
-    'Product Pipeline & Fund Launch Trajectory',
-    'Team Retention & Succession Readiness',
-    'Operating Leverage & Margin Efficiency',
-    'Governance & Compliance Infrastructure'
+  const quickWins = [
+    { title: 'Fund Positioning Audit', description: 'Assess messaging and materials resonance', timeline: '2 weeks' },
+    { title: 'LP Readiness Assessment', description: 'Evaluate institutional capital readiness', timeline: '3 weeks' },
+    { title: 'European Market Entry Brief', description: 'Landscape for funds entering Europe', timeline: '4 weeks' },
+    { title: 'Co-Investor Mapping', description: 'Identify syndication partners for deals', timeline: '10 days' },
   ];
 
   const whyAries = [
     {
-      icon: Globe2,
-      title: 'Global Network Access',
-      description: 'Direct reach to LPs, family offices, and allocators across UK, Europe, and MENA.'
+      icon: Brain,
+      title: 'AI-Powered Intelligence',
+      description: 'Our AIRES platform monitors 500+ companies continuously, delivering insights 3-6 months before market.'
     },
     {
-      icon: Network,
+      icon: Users,
+      title: '26+ Years Experience',
+      description: 'Deep capital markets relationships with proven execution across UK, Europe, and MENA.'
+    },
+    {
+      icon: Globe2,
       title: 'Cross-Border Expertise',
-      description: 'Proven execution experience in London, Zurich, Luxembourg, and Budapest.'
+      description: 'Track record in London, Zurich, Luxembourg, Paris, and Nordics.'
     },
     {
       icon: Shield,
-      title: 'Integrated Advisory Model',
-      description: 'Unified strategy, capital formation, and investor relations capability.'
-    },
-    {
-      icon: Brain,
-      title: 'AI-Powered Intelligence (AIRES)',
-      description: 'Advanced analytics for investor targeting, engagement optimization, and market intelligence.'
+      title: 'Partnership Approach',
+      description: 'Aligned incentives through flexible engagement models—retainer, project, or success-based.'
     }
-  ];
-
-  const sectors = [
-    'Digital Infrastructure & AI Infrastructure',
-    'Healthcare & Life Sciences',
-    'Sustainability & Energy Transition',
-    'Industrial Technology',
-    'Consumer & Luxury (Selective)'
   ];
 
   return (
@@ -148,14 +144,19 @@ const GPCapitalAdvisory = () => {
             transition={{ duration: 0.8 }}
             className="text-center"
           >
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/20 text-accent mb-8">
+              <Briefcase className="w-4 h-4" />
+              <span className="text-sm font-light uppercase tracking-wider">Services for Fund Managers</span>
+            </div>
+            
             <h1 className="text-5xl md:text-7xl font-light tracking-tight mb-6">
-              GP Capital Advisory
+              GP Services
             </h1>
             <p className="text-2xl md:text-3xl font-light text-white/90 mb-8">
-              Strategic advisory for management companies and GP platforms.
+              Technology-powered solutions for PE/VC funds
             </p>
-            <p className="text-xl font-light text-white/80 max-w-4xl mx-auto mb-12">
-              We advise leading private markets managers on GP equity, M&A, financing, valuation and succession—strengthening management companies to scale across Europe, the UK and select global regions.
+            <p className="text-xl font-light text-white/70 max-w-4xl mx-auto mb-12">
+              Deploy capital efficiently, differentiate your deal flow, support portfolio companies through exit—all while competing with funds that have deeper pockets. We help you punch above your weight.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link to="/contact">
@@ -163,15 +164,7 @@ const GPCapitalAdvisory = () => {
                   size="lg" 
                   className="bg-accent hover:bg-accent/90 text-white font-light uppercase tracking-wider px-8"
                 >
-                  Schedule an Introductory Call
-                </Button>
-              </Link>
-              <Link to="/gp-fundraising-economics">
-                <Button 
-                  size="lg"
-                  className="bg-white/10 text-white border border-white/30 hover:bg-white/20 hover:border-white/50 font-light uppercase tracking-wider px-8 transition-all"
-                >
-                  GP Fundraising Economics
+                  Schedule a Discovery Call
                 </Button>
               </Link>
             </div>
@@ -179,187 +172,51 @@ const GPCapitalAdvisory = () => {
         </div>
       </section>
 
-      {/* About Aries76 & Focus */}
-      <section className="py-20 px-6 md:px-10 bg-background">
+      {/* Deal Sourcing Section */}
+      <section className="py-24 px-6 md:px-10 bg-background" id="deal-sourcing">
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="text-center mb-12"
+            className="mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-light text-foreground mb-6 tracking-tight">
-              About Aries76 & <span className="text-accent">Our Focus</span>
-            </h2>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <Card className="border-border/50 bg-card h-full">
-                <CardContent className="p-10">
-                  <h3 className="text-2xl font-light text-foreground mb-6 tracking-tight">
-                    Who We Are
-                  </h3>
-                  <p className="text-lg font-light text-muted-foreground leading-relaxed">
-                    Aries76 Ltd is a London-based boutique advisory firm supporting international GPs in capital formation and investor access. We operate at the intersection of private markets, structured solutions, and investor relations, combining institutional rigor with boutique execution.
-                  </p>
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-            >
-              <Card className="border-border/50 bg-card h-full">
-                <CardContent className="p-10">
-                  <h3 className="text-2xl font-light text-foreground mb-6 tracking-tight">
-                    Our Target Clients
-                  </h3>
-                  <p className="text-lg font-light text-muted-foreground leading-relaxed mb-4">
-                    Second/later-generation GPs, typically managing €1–5bn in AUM.
-                  </p>
-                  <p className="text-sm font-light text-muted-foreground/80">
-                    <strong className="text-foreground">Geographies:</strong> Luxembourg, London, Paris, Nordics
-                  </p>
-                  <p className="text-sm font-light text-muted-foreground/80 mt-2">
-                    <strong className="text-foreground">Sectors:</strong> Digital infrastructure & AI, healthcare, sustainability/energy transition, industrial tech, selective consumer & luxury
-                  </p>
-                </CardContent>
-              </Card>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* What is GP Capital Advisory */}
-      <section className="py-20 px-6 md:px-10 bg-gradient-to-br from-[#0f1729] via-[#1a2744] to-[#0d1424] text-white">
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-4xl md:text-5xl font-light mb-6 tracking-tight">
-              What is <span className="text-accent">GP Capital Advisory</span>
-            </h2>
-            <p className="text-xl font-light text-white/80 max-w-4xl mx-auto">
-              Advisory dedicated to the management company of the GP: structuring, growth, capital attraction, and strategic options on the GP entity itself—not solely on the fund.
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center">
+                <Search className="w-6 h-6 text-accent" />
+              </div>
+              <h2 className="text-4xl md:text-5xl font-light text-foreground tracking-tight">
+                Deal Sourcing <span className="text-accent">as a Service</span>
+              </h2>
+            </div>
+            <p className="text-xl text-muted-foreground font-light max-w-3xl">
+              Stop relying on inbound. Start sourcing proactively with AI-powered intelligence and human qualification.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
-            {pillars.map((pillar, index) => (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {dealSourcingServices.map((service, index) => (
               <motion.div
-                key={index}
+                key={service.title}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
               >
-                <Card className="border-white/20 bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-all h-full">
-                  <CardContent className="p-6">
-                    <div className="w-12 h-12 rounded-lg bg-accent/20 flex items-center justify-center mb-4">
-                      <pillar.icon className="w-6 h-6 text-accent" />
-                    </div>
-                    <h3 className="text-lg font-light mb-3 tracking-tight text-white">
-                      {pillar.title}
-                    </h3>
-                    <p className="text-sm font-light text-white/70 leading-relaxed">
-                      {pillar.description}
-                    </p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Use Cases */}
-      <section className="py-20 px-6 md:px-10 bg-background">
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-4xl md:text-5xl font-light text-foreground mb-6 tracking-tight">
-              Representative <span className="text-accent">Use Cases</span>
-            </h2>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {useCases.map((useCase, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-              >
-                <Card className="border-border/50 bg-card hover:shadow-smooth-lg transition-shadow h-full">
+                <Card className="h-full border-border/50 bg-card hover:shadow-smooth-lg transition-all">
                   <CardContent className="p-8">
-                    <h3 className="text-xl font-light text-foreground mb-3 tracking-tight">
-                      {useCase.title}
+                    <h3 className="text-xl font-light text-foreground mb-4 tracking-tight">
+                      {service.title}
                     </h3>
-                    <p className="text-muted-foreground font-light leading-relaxed">
-                      {useCase.description}
+                    <p className="text-muted-foreground font-light leading-relaxed mb-6">
+                      {service.description}
                     </p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Advisory Modules */}
-      <section className="py-20 px-6 md:px-10 bg-gradient-to-br from-[#0f1729]/5 to-[#1a2744]/5">
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-4xl md:text-5xl font-light text-foreground mb-6 tracking-tight">
-              Advisory <span className="text-accent">Modules</span>
-            </h2>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {advisoryModules.map((module, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-              >
-                <Card className="border-border/50 bg-card h-full">
-                  <CardContent className="p-8">
-                    <h3 className="text-xl font-light text-foreground mb-6 tracking-tight">
-                      {module.title}
-                    </h3>
                     <ul className="space-y-3">
-                      {module.items.map((item, i) => (
-                        <li key={i} className="flex items-start gap-2">
-                          <span className="text-accent mt-1">•</span>
-                          <span className="text-muted-foreground font-light">{item}</span>
+                      {service.features.map((feature, i) => (
+                        <li key={i} className="flex items-start gap-3 text-sm text-muted-foreground">
+                          <CheckCircle className="w-4 h-4 text-accent mt-0.5 flex-shrink-0" />
+                          <span>{feature}</span>
                         </li>
                       ))}
                     </ul>
@@ -371,128 +228,115 @@ const GPCapitalAdvisory = () => {
         </div>
       </section>
 
-      {/* Process */}
-      <section className="py-20 px-6 md:px-10 bg-background">
+      {/* Portfolio Support Section */}
+      <section className="py-24 px-6 md:px-10 bg-muted/30" id="portfolio-support">
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="text-center mb-12"
+            className="mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-light text-foreground mb-6 tracking-tight">
-              Our <span className="text-accent">Process</span>
-            </h2>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <Card className="border-border/50 bg-card">
-              <CardContent className="p-10">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {processSteps.map((step, index) => (
-                    <div key={index} className="flex items-start gap-4">
-                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center">
-                        <span className="text-accent font-light">{index + 1}</span>
-                      </div>
-                      <div>
-                        <p className="text-foreground font-light">{step}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Valuation & Metrics */}
-      <section className="py-20 px-6 md:px-10 bg-gradient-to-br from-[#0f1729]/5 to-[#1a2744]/5">
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-4xl md:text-5xl font-light text-foreground mb-6 tracking-tight">
-              Valuation & <span className="text-accent">Key Metrics</span>
-            </h2>
-            <p className="text-lg font-light text-muted-foreground max-w-3xl mx-auto">
-              Data-driven approach integrating AIRES analytics for investor targeting and engagement optimization.
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center">
+                <TrendingUp className="w-6 h-6 text-accent" />
+              </div>
+              <h2 className="text-4xl md:text-5xl font-light text-foreground tracking-tight">
+                Portfolio <span className="text-accent">Value Creation</span>
+              </h2>
+            </div>
+            <p className="text-xl text-muted-foreground font-light max-w-3xl">
+              Maximize returns through your portfolio lifecycle with structured processes and 26 years of capital markets relationships.
             </p>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <Card className="border-border/50 bg-card">
-              <CardContent className="p-10">
-                <h3 className="text-2xl font-light text-foreground mb-8 text-center tracking-tight">
-                  Key Valuation Drivers
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {valuationDrivers.map((driver, index) => (
-                    <div key={index} className="flex items-start gap-3">
-                      <BarChart3 className="w-5 h-5 text-accent flex-shrink-0 mt-1" />
-                      <p className="text-muted-foreground font-light">{driver}</p>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Why Aries76 */}
-      <section className="py-20 px-6 md:px-10 bg-background">
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl md:text-5xl font-light text-foreground mb-6 tracking-tight">
-              Why <span className="text-accent">Aries76</span>
-            </h2>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {whyAries.map((item, index) => (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {portfolioServices.map((service, index) => (
               <motion.div
-                key={index}
+                key={service.title}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
               >
-                <Card className="border-border/50 bg-card hover:shadow-smooth-lg transition-shadow duration-300 h-full">
+                <Card className="h-full border-border/50 bg-card hover:shadow-smooth-lg transition-all">
                   <CardContent className="p-8">
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
-                        <item.icon className="w-6 h-6 text-accent" />
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-light text-foreground mb-3 tracking-tight">
-                          {item.title}
-                        </h3>
-                        <p className="text-muted-foreground font-light leading-relaxed">
-                          {item.description}
-                        </p>
-                      </div>
+                    <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center mb-6">
+                      <service.icon className="w-6 h-6 text-accent" />
+                    </div>
+                    <h3 className="text-xl font-light text-foreground mb-4 tracking-tight">
+                      {service.title}
+                    </h3>
+                    <p className="text-muted-foreground font-light leading-relaxed mb-6">
+                      {service.description}
+                    </p>
+                    <ul className="space-y-2">
+                      {service.features.map((feature, i) => (
+                        <li key={i} className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Market Intelligence Section */}
+      <section className="py-24 px-6 md:px-10 bg-background" id="market-intelligence">
+        <div className="max-w-6xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="mb-16"
+          >
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center">
+                <BarChart3 className="w-6 h-6 text-accent" />
+              </div>
+              <h2 className="text-4xl md:text-5xl font-light text-foreground tracking-tight">
+                Market <span className="text-accent">Intelligence</span>
+              </h2>
+            </div>
+            <p className="text-xl text-muted-foreground font-light max-w-3xl">
+              Make smarter investment decisions, faster. Proprietary data and methodology, not generic research.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {intelligenceServices.map((service, index) => (
+              <motion.div
+                key={service.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+              >
+                <Card className="h-full border-border/50 bg-card hover:shadow-smooth-lg transition-all">
+                  <CardContent className="p-8">
+                    <h3 className="text-xl font-light text-foreground mb-4 tracking-tight">
+                      {service.title}
+                    </h3>
+                    <p className="text-muted-foreground font-light leading-relaxed mb-6">
+                      {service.description}
+                    </p>
+                    <div className="pt-4 border-t border-border">
+                      <p className="text-xs uppercase tracking-wider text-accent mb-3">Deliverables</p>
+                      <ul className="space-y-2">
+                        {service.deliverables.map((item, i) => (
+                          <li key={i} className="flex items-center gap-2 text-sm text-muted-foreground">
+                            <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                   </CardContent>
                 </Card>
@@ -502,68 +346,156 @@ const GPCapitalAdvisory = () => {
         </div>
       </section>
 
-      {/* Sectors & Themes */}
-      <section className="py-20 px-6 md:px-10 bg-gradient-to-br from-[#0f1729]/5 to-[#1a2744]/5">
+      {/* Quick Wins Section */}
+      <section className="py-24 px-6 md:px-10 bg-muted/30">
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="text-center mb-12"
+            className="mb-12"
           >
-            <h2 className="text-4xl md:text-5xl font-light text-foreground mb-6 tracking-tight">
-              Sectors & <span className="text-accent">Investment Themes</span>
-            </h2>
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center">
+                <Zap className="w-6 h-6 text-accent" />
+              </div>
+              <h2 className="text-4xl md:text-5xl font-light text-foreground tracking-tight">
+                Quick-Win <span className="text-accent">Packages</span>
+              </h2>
+            </div>
+            <p className="text-xl text-muted-foreground font-light">
+              Fixed scope, fast delivery. Entry points for new relationships.
+            </p>
           </motion.div>
 
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {quickWins.map((item, index) => (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+              >
+                <Card className="h-full border-border/50 bg-card hover:border-accent/50 transition-colors">
+                  <CardContent className="p-6">
+                    <h3 className="text-lg font-light text-foreground mb-2">
+                      {item.title}
+                    </h3>
+                    <p className="text-sm text-muted-foreground font-light mb-4">
+                      {item.description}
+                    </p>
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 text-accent text-xs">
+                      {item.timeline}
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Why Aries76 Section */}
+      <section className="py-24 px-6 md:px-10 bg-gradient-to-br from-[#0f1729] via-[#1a2744] to-[#0d1424] text-white">
+        <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="flex flex-wrap justify-center gap-4"
+            transition={{ duration: 0.6 }}
+            className="text-center mb-16"
           >
-            {sectors.map((sector, index) => (
-              <Badge 
-                key={index} 
-                variant="outline"
-                className="px-6 py-3 text-sm font-light border-accent/30 text-foreground hover:bg-accent/10 transition-colors"
-              >
-                {sector}
-              </Badge>
-            ))}
+            <h2 className="text-4xl md:text-5xl font-light mb-6 tracking-tight">
+              Why <span className="text-accent">Aries76</span>
+            </h2>
           </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {whyAries.map((item, index) => (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="text-center"
+              >
+                <div className="w-16 h-16 rounded-full bg-accent/20 flex items-center justify-center mx-auto mb-6">
+                  <item.icon className="w-8 h-8 text-accent" strokeWidth={1.5} />
+                </div>
+                <h3 className="text-lg font-light text-white mb-3">
+                  {item.title}
+                </h3>
+                <p className="text-white/70 font-light text-sm leading-relaxed">
+                  {item.description}
+                </p>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="relative bg-gradient-to-br from-[#0f1729] via-[#1a2744] to-[#0d1424] text-white py-24 px-6 md:px-10">
+      {/* Ideal Client Section */}
+      <section className="py-24 px-6 md:px-10 bg-background">
         <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="text-center"
           >
-            <h2 className="text-4xl md:text-5xl font-light mb-6 tracking-tight">
-              Explore a <span className="text-accent">Strategic Partnership</span>
+            <Card className="border-border/50 bg-card">
+              <CardContent className="p-10">
+                <h2 className="text-3xl font-light text-foreground mb-6 tracking-tight">
+                  Ideal Client Profile
+                </h2>
+                <p className="text-lg text-muted-foreground font-light mb-6">
+                  We work best with:
+                </p>
+                <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {[
+                    'PE/VC funds with €50M+ AUM',
+                    'Focus on fintech, AI, or B2B software',
+                    'European investment mandate',
+                    'Appetite for process-driven approaches',
+                    'Teams that value quality over quantity',
+                    'Funds entering European market'
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-center gap-3 text-muted-foreground">
+                      <CheckCircle className="w-5 h-5 text-accent flex-shrink-0" />
+                      <span className="font-light">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-24 px-6 md:px-10 bg-muted/30">
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="text-4xl md:text-5xl font-light text-foreground mb-6 tracking-tight">
+              15-Minute <span className="text-accent">Discovery Call</span>
             </h2>
-            <p className="text-xl font-light text-white/80 mb-10 max-w-2xl mx-auto">
-              Let's discuss in confidence your GP growth plan: equity, M&A, financing, succession, and valuation strategies.
+            <p className="text-xl text-muted-foreground font-light mb-10 max-w-2xl mx-auto">
+              No pitch. No pressure. An honest conversation about your sourcing and portfolio challenges, and whether Aries76 is the right fit.
             </p>
             <Link to="/contact">
-              <Button 
-                size="lg" 
-                className="bg-accent hover:bg-accent/90 text-white font-light uppercase tracking-wider px-8 mb-8"
-              >
-                Arrange a 15-Minute Intro
+              <Button size="lg" className="bg-accent hover:bg-accent/90 text-white font-light uppercase tracking-wider px-8">
+                Schedule a Conversation
+                <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
-            <p className="text-white/60 font-light">
-              Contact: <a href="mailto:quinley.martini@aries76.com" className="text-accent hover:underline">quinley.martini@aries76.com</a>
-            </p>
           </motion.div>
         </div>
       </section>
