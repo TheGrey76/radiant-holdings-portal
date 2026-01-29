@@ -267,7 +267,15 @@ const handler = async (req: Request): Promise<Response> => {
           return `${baseUrl}${separator}${utmParams}`;
         };
 
-        const utmCtaLink = ctaLink ? buildUtmLink(ctaLink) : '';
+        // Build click tracking URL that wraps the CTA link
+        const clickTrackingBaseUrl = "https://dvwmyljnssspwfpwocof.supabase.co/functions/v1/track-email-click";
+        const buildTrackedLink = (targetUrl: string, label: string) => {
+          if (!targetUrl || !campaignId) return buildUtmLink(targetUrl);
+          const utmUrl = buildUtmLink(targetUrl);
+          return `${clickTrackingBaseUrl}?cid=${campaignId}&e=${encodeURIComponent(recipient.email)}&n=${encodeURIComponent(recipient.name || '')}&url=${encodeURIComponent(utmUrl)}&label=${encodeURIComponent(label)}`;
+        };
+
+        const trackedCtaLink = ctaLink ? buildTrackedLink(ctaLink, ctaText || 'CTA') : '';
 
         // Personalize preheader
         const personalizedPreheader = (preheader || '')
@@ -325,10 +333,10 @@ const handler = async (req: Request): Promise<Response> => {
                   <div style="font-size: 15px; line-height: 1.8; color: #333333;">
 ${personalizedContent}
                   </div>
-${utmCtaLink ? `
+${trackedCtaLink ? `
                   <!-- CTA Button -->
                   <div style="text-align: center; margin-top: 30px;">
-                    <a href="${utmCtaLink}" target="_blank" rel="noopener" style="display: inline-block; background: linear-gradient(135deg, #c77c4d 0%, #a66840 100%); color: #ffffff; font-size: 15px; font-weight: 600; text-decoration: none; padding: 14px 32px; border-radius: 6px; letter-spacing: 0.5px; mso-padding-alt: 0;">
+                    <a href="${trackedCtaLink}" target="_blank" rel="noopener" style="display: inline-block; background: linear-gradient(135deg, #c77c4d 0%, #a66840 100%); color: #ffffff; font-size: 15px; font-weight: 600; text-decoration: none; padding: 14px 32px; border-radius: 6px; letter-spacing: 0.5px; mso-padding-alt: 0;">
                       <!--[if mso]><i style="letter-spacing: 32px; mso-font-width: -100%; mso-text-raise: 26pt;">&nbsp;</i><![endif]-->
                       <span style="mso-text-raise: 13pt;">${ctaText || 'Scopri di più'}</span>
                       <!--[if mso]><i style="letter-spacing: 32px; mso-font-width: -100%;">&nbsp;</i><![endif]-->
@@ -394,7 +402,7 @@ www.aries76.com
 27, Old Gloucester Street, London WC1N 3AX, UK
 `;
 
-        const fullPlainText = `${plainTextContent}${utmCtaLink ? `\n\n${ctaText || 'Scopri di più'}: ${utmCtaLink}` : ''}${plainTextSignature}`;
+        const fullPlainText = `${plainTextContent}${trackedCtaLink ? `\n\n${ctaText || 'Scopri di più'}: ${ctaLink}` : ''}${plainTextSignature}`;
 
         const emailPayload: any = {
           from: "Edoardo Grigione - Aries76 <edoardo.grigione@aries76.com>",

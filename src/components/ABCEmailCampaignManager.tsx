@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,11 +12,13 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, Dialog
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useABCEngagementTracking } from "@/hooks/useABCEngagementTracking";
 import { 
   Mail, Send, Users, Filter, CheckCircle, Clock, AlertCircle, 
   Save, FileText, History, Trash2, Plus, Eye, AlertTriangle, Edit2,
   Paperclip, X, MailOpen, RefreshCw, Sparkles, MessageSquare, Reply,
-  ChevronLeft, ChevronRight, Bell, Shield
+  ChevronLeft, ChevronRight, Bell, Shield, MousePointerClick, Target,
+  UserCheck, UserX
 } from "lucide-react";
 import { format } from "date-fns";
 import { it } from "date-fns/locale";
@@ -99,6 +101,7 @@ export function ABCEmailCampaignManager({ investors, onInvestorsUpdated, pending
   const [filterCategory, setFilterCategory] = useState<string>("all");
   const [filterApprovalDate, setFilterApprovalDate] = useState<string>("all");
   const [filterNeverContacted, setFilterNeverContacted] = useState<boolean>(false);
+  const [filterEngagement, setFilterEngagement] = useState<string>("all"); // New: engagement filter
   const [isSending, setIsSending] = useState(false);
   const [isSendingTest, setIsSendingTest] = useState(false);
   const [templates, setTemplates] = useState<EmailTemplate[]>([]);
@@ -193,6 +196,20 @@ export function ABCEmailCampaignManager({ investors, onInvestorsUpdated, pending
   
   // Approved investors missing email
   const approvedMissingEmail = approvedInvestors.filter(inv => !inv.email);
+
+  // Build email to investor ID mapping for engagement tracking
+  const investorEmailMap = useMemo(() => {
+    const map = new Map<string, string>();
+    approvedWithEmail.forEach(inv => {
+      if (inv.email) {
+        map.set(inv.id, inv.email);
+      }
+    });
+    return map;
+  }, [approvedWithEmail]);
+
+  // Use engagement tracking hook
+  const { engagementData, loading: engagementLoading, refetch: refetchEngagement, getEngagementLabel, getInvestorStats } = useABCEngagementTracking(investorEmailMap);
 
   // Fetch templates and history on mount
   useEffect(() => {
@@ -537,8 +554,31 @@ Il Team ABC Company`,
       if (invDate !== filterApprovalDate) return false;
     }
     
-    // Filter by never contacted
+    // Filter by never contacted (legacy)
     if (filterNeverContacted && inv.last_contact_date !== null) return false;
+    
+    // NEW: Filter by engagement status
+    if (filterEngagement !== "all") {
+      const engagementLabel = getEngagementLabel(inv.id);
+      switch (filterEngagement) {
+        case "never_contacted":
+          if (engagementLabel !== 'never_contacted') return false;
+          break;
+        case "non_openers":
+          if (engagementLabel !== 'non_opener') return false;
+          break;
+        case "openers":
+          if (engagementLabel !== 'engaged' && engagementLabel !== 'clicked') return false;
+          break;
+        case "clickers":
+          if (engagementLabel !== 'clicked') return false;
+          break;
+        case "targetable":
+          // Mai contattati + Non-openers (as per user choice)
+          if (engagementLabel !== 'never_contacted' && engagementLabel !== 'non_opener') return false;
+          break;
+      }
+    }
     
     return true;
   });
@@ -1259,6 +1299,10 @@ Il Team ABC Company`,
           <Mail className="h-4 w-4" />
           Componi
         </TabsTrigger>
+        <TabsTrigger value="engaged" className="flex items-center gap-2 text-emerald-600">
+          <UserCheck className="h-4 w-4" />
+          Follow-up Engaged ({engagementData.openers.size + engagementData.clickers.size})
+        </TabsTrigger>
         <TabsTrigger value="templates" className="flex items-center gap-2">
           <FileText className="h-4 w-4" />
           Template ({templates.length})
@@ -1859,18 +1903,52 @@ Team Aries76"
                     </SelectContent>
                   </Select>
                 </div>
-                <div className="flex items-center space-x-2 pt-2">
-                  <Checkbox 
-                    id="neverContacted"
-                    checked={filterNeverContacted}
-                    onCheckedChange={(checked) => setFilterNeverContacted(checked as boolean)}
-                  />
-                  <label 
-                    htmlFor="neverContacted" 
-                    className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
-                  >
-                    Solo mai contattati
-                  </label>
+                
+                {/* NEW: Engagement Filter - Campaign Intelligence */}
+                <div className="pt-2 border-t">
+                  <Label className="text-xs flex items-center gap-1">
+                    <Target className="h-3 w-3" />
+                    Segmentazione Campagna
+                  </Label>
+                  <Select value={filterEngagement} onValueChange={setFilterEngagement}>
+                    <SelectTrigger className="h-8 text-xs mt-1">
+                      <SelectValue placeholder="Tutti" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Tutti gli investitori</SelectItem>
+                      <SelectItem value="targetable" className="text-primary font-medium">
+                        🎯 Nuova Campagna (mai contattati + non-openers)
+                      </SelectItem>
+                      <SelectItem value="never_contacted">
+                        📭 Mai contattati
+                      </SelectItem>
+                      <SelectItem value="non_openers">
+                        👁️‍🗨️ Non hanno aperto email
+                      </SelectItem>
+                      <SelectItem value="openers" className="text-emerald-600">
+                        ✅ Hanno aperto (Engaged)
+                      </SelectItem>
+                      <SelectItem value="clickers" className="text-emerald-700 font-medium">
+                        🔗 Hanno cliccato link (Hot)
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                  {!engagementLoading && (
+                    <div className="flex flex-wrap gap-1 mt-2 text-[10px]">
+                      <Badge variant="outline" className="text-[10px]">
+                        📭 {engagementData.neverContacted.size}
+                      </Badge>
+                      <Badge variant="outline" className="text-[10px]">
+                        👁️ {engagementData.nonOpeners.size}
+                      </Badge>
+                      <Badge variant="outline" className="text-[10px] border-emerald-500 text-emerald-600">
+                        ✅ {engagementData.openers.size}
+                      </Badge>
+                      <Badge variant="outline" className="text-[10px] border-emerald-700 text-emerald-700">
+                        🔗 {engagementData.clickers.size}
+                      </Badge>
+                    </div>
+                  )}
                 </div>
               </CardContent>
             </Card>
@@ -1917,24 +1995,50 @@ Team Aries76"
                         <p className="text-sm text-muted-foreground">Nessun investitore approved con email</p>
                       </div>
                     ) : (
-                      filteredInvestors.map(investor => (
-                        <label 
-                          key={investor.id} 
-                          className="flex items-center gap-2 p-2 hover:bg-muted/50 rounded cursor-pointer"
-                        >
-                          <Checkbox 
-                            checked={selectedInvestors.includes(investor.id)}
-                            onCheckedChange={() => handleSelectInvestor(investor.id)}
-                          />
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium truncate">{investor.nome}</p>
-                            <p className="text-xs text-muted-foreground truncate">{investor.azienda}</p>
-                          </div>
-                          {selectedInvestors.includes(investor.id) && (
-                            <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                          )}
-                        </label>
-                      ))
+                      filteredInvestors.map(investor => {
+                        const engLabel = getEngagementLabel(investor.id);
+                        const stats = getInvestorStats(investor.id);
+                        return (
+                          <label 
+                            key={investor.id} 
+                            className="flex items-center gap-2 p-2 hover:bg-muted/50 rounded cursor-pointer"
+                          >
+                            <Checkbox 
+                              checked={selectedInvestors.includes(investor.id)}
+                              onCheckedChange={() => handleSelectInvestor(investor.id)}
+                            />
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-1">
+                                <p className="text-sm font-medium truncate">{investor.nome}</p>
+                                {engLabel === 'clicked' && (
+                                  <span title="Ha cliccato link">
+                                    <MousePointerClick className="h-3 w-3 text-emerald-600 flex-shrink-0" />
+                                  </span>
+                                )}
+                                {engLabel === 'engaged' && (
+                                  <span title="Ha aperto email">
+                                    <MailOpen className="h-3 w-3 text-emerald-500 flex-shrink-0" />
+                                  </span>
+                                )}
+                                {engLabel === 'non_opener' && (
+                                  <span title="Non ha aperto">
+                                    <UserX className="h-3 w-3 text-amber-500 flex-shrink-0" />
+                                  </span>
+                                )}
+                              </div>
+                              <p className="text-xs text-muted-foreground truncate">{investor.azienda}</p>
+                              {stats && stats.opensCount > 0 && (
+                                <p className="text-[10px] text-emerald-600">
+                                  {stats.opensCount} aperture{stats.clicksCount > 0 ? ` · ${stats.clicksCount} click` : ''}
+                                </p>
+                              )}
+                            </div>
+                            {selectedInvestors.includes(investor.id) && (
+                              <CheckCircle className="h-4 w-4 text-emerald-500 flex-shrink-0" />
+                            )}
+                          </label>
+                        );
+                      })
                     )}
                   </div>
                 </div>
@@ -2024,6 +2128,166 @@ Team Aries76"
             )}
           </div>
         </div>
+      </TabsContent>
+
+      {/* ENGAGED FOLLOW-UP TAB */}
+      <TabsContent value="engaged">
+        <Card className="border-emerald-500/30">
+          <CardHeader>
+            <CardTitle className="flex items-center text-emerald-700">
+              <UserCheck className="h-5 w-5 mr-2" />
+              Investitori Engaged - Follow-up Dedicato
+            </CardTitle>
+            <CardDescription>
+              Contatti che hanno aperto le email o cliccato sui link - pronti per il follow-up
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {engagementLoading ? (
+              <div className="text-center py-8">
+                <RefreshCw className="h-8 w-8 mx-auto animate-spin text-muted-foreground" />
+                <p className="text-sm text-muted-foreground mt-2">Caricamento dati engagement...</p>
+              </div>
+            ) : (engagementData.openers.size + engagementData.clickers.size) === 0 ? (
+              <div className="text-center py-8">
+                <MailOpen className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+                <p className="text-muted-foreground">Nessun investitore engaged ancora</p>
+                <p className="text-sm text-muted-foreground">Invia campagne email per iniziare a tracciare engagement</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {/* Stats Summary */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                  <Card>
+                    <CardContent className="pt-4 text-center">
+                      <div className="text-2xl font-bold text-emerald-600">{engagementData.openers.size}</div>
+                      <p className="text-xs text-muted-foreground flex items-center justify-center gap-1">
+                        <MailOpen className="h-3 w-3" /> Hanno aperto
+                      </p>
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardContent className="pt-4 text-center">
+                      <div className="text-2xl font-bold text-emerald-700">{engagementData.clickers.size}</div>
+                      <p className="text-xs text-muted-foreground flex items-center justify-center gap-1">
+                        <MousePointerClick className="h-3 w-3" /> Hanno cliccato
+                      </p>
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardContent className="pt-4 text-center">
+                      <div className="text-2xl font-bold text-amber-600">{engagementData.nonOpeners.size}</div>
+                      <p className="text-xs text-muted-foreground flex items-center justify-center gap-1">
+                        <UserX className="h-3 w-3" /> Non aperto
+                      </p>
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardContent className="pt-4 text-center">
+                      <div className="text-2xl font-bold">{engagementData.neverContacted.size}</div>
+                      <p className="text-xs text-muted-foreground">Mai contattati</p>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                {/* Engaged Investors List */}
+                <div className="border rounded-lg">
+                  <div className="bg-emerald-50 dark:bg-emerald-950/20 px-4 py-2 border-b flex items-center justify-between">
+                    <h4 className="font-medium text-sm flex items-center gap-2">
+                      <Target className="h-4 w-4" />
+                      Pronti per Follow-up ({engagementData.openers.size + engagementData.clickers.size})
+                    </h4>
+                    <Button
+                      size="sm"
+                      onClick={() => {
+                        // Pre-select all engaged investors
+                        const engagedIds = approvedWithEmail
+                          .filter(inv => engagementData.openers.has(inv.id) || engagementData.clickers.has(inv.id))
+                          .map(inv => inv.id);
+                        setSelectedInvestors(engagedIds);
+                        setFilterEngagement("openers");
+                        setActiveTab("compose");
+                        toast({
+                          title: "Investitori selezionati",
+                          description: `${engagedIds.length} investitori engaged pronti per il follow-up`,
+                        });
+                      }}
+                    >
+                      <Send className="h-4 w-4 mr-2" />
+                      Campagna Follow-up
+                    </Button>
+                  </div>
+                  <div className="max-h-[400px] overflow-y-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Investitore</TableHead>
+                          <TableHead>Azienda</TableHead>
+                          <TableHead className="text-center">Aperture</TableHead>
+                          <TableHead className="text-center">Click</TableHead>
+                          <TableHead>Ultima Attività</TableHead>
+                          <TableHead></TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {approvedWithEmail
+                          .filter(inv => engagementData.openers.has(inv.id) || engagementData.clickers.has(inv.id))
+                          .map(investor => {
+                            const stats = getInvestorStats(investor.id);
+                            return (
+                              <TableRow key={investor.id}>
+                                <TableCell className="font-medium">
+                                  <div className="flex items-center gap-2">
+                                    {engagementData.clickers.has(investor.id) ? (
+                                      <MousePointerClick className="h-4 w-4 text-emerald-600" />
+                                    ) : (
+                                      <MailOpen className="h-4 w-4 text-emerald-500" />
+                                    )}
+                                    {investor.nome}
+                                  </div>
+                                </TableCell>
+                                <TableCell className="text-sm text-muted-foreground">{investor.azienda}</TableCell>
+                                <TableCell className="text-center">
+                                  <Badge variant="secondary">{stats?.opensCount || 0}</Badge>
+                                </TableCell>
+                                <TableCell className="text-center">
+                                  <Badge variant={stats?.clicksCount ? "default" : "outline"}>
+                                    {stats?.clicksCount || 0}
+                                  </Badge>
+                                </TableCell>
+                                <TableCell className="text-xs text-muted-foreground">
+                                  {stats?.lastOpenAt
+                                    ? format(new Date(stats.lastOpenAt), 'dd MMM HH:mm', { locale: it })
+                                    : '-'}
+                                </TableCell>
+                                <TableCell>
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => {
+                                      setSelectedInvestors([investor.id]);
+                                      setActiveTab("compose");
+                                      setEmailForm(prev => ({
+                                        ...prev,
+                                        campaignName: `Follow-up ${investor.nome}`,
+                                        subject: `Seguito alla nostra conversazione`,
+                                      }));
+                                    }}
+                                  >
+                                    <Mail className="h-4 w-4" />
+                                  </Button>
+                                </TableCell>
+                              </TableRow>
+                            );
+                          })}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </div>
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </TabsContent>
 
       {/* TEMPLATES TAB */}

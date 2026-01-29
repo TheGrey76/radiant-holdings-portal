@@ -131,11 +131,59 @@ export type Database = {
         }
         Relationships: []
       }
+      abc_email_clicks: {
+        Row: {
+          campaign_id: string | null
+          clicked_at: string
+          created_at: string
+          id: string
+          ip_address: string | null
+          link_label: string | null
+          link_url: string
+          recipient_email: string
+          recipient_name: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          campaign_id?: string | null
+          clicked_at?: string
+          created_at?: string
+          id?: string
+          ip_address?: string | null
+          link_label?: string | null
+          link_url: string
+          recipient_email: string
+          recipient_name?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          campaign_id?: string | null
+          clicked_at?: string
+          created_at?: string
+          id?: string
+          ip_address?: string | null
+          link_label?: string | null
+          link_url?: string
+          recipient_email?: string
+          recipient_name?: string | null
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "abc_email_clicks_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "abc_email_campaign_history"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       abc_email_opens: {
         Row: {
           campaign_id: string | null
           created_at: string
           id: string
+          investor_id: string | null
           ip_address: string | null
           opened_at: string
           recipient_email: string
@@ -146,6 +194,7 @@ export type Database = {
           campaign_id?: string | null
           created_at?: string
           id?: string
+          investor_id?: string | null
           ip_address?: string | null
           opened_at?: string
           recipient_email: string
@@ -156,6 +205,7 @@ export type Database = {
           campaign_id?: string | null
           created_at?: string
           id?: string
+          investor_id?: string | null
           ip_address?: string | null
           opened_at?: string
           recipient_email?: string
@@ -168,6 +218,13 @@ export type Database = {
             columns: ["campaign_id"]
             isOneToOne: false
             referencedRelation: "abc_email_campaign_history"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "abc_email_opens_investor_id_fkey"
+            columns: ["investor_id"]
+            isOneToOne: false
+            referencedRelation: "abc_investors"
             referencedColumns: ["id"]
           },
         ]
