@@ -144,23 +144,25 @@ const ABCAIEnrichment: React.FC<ABCAIEnrichmentProps> = ({ onDataUpdated }) => {
     }
   };
 
-  const enrichAllInvestors = async () => {
+  const enrichPercentage = async (percentage: number) => {
     setBulkEnriching(true);
     setBulkProgress(0);
     
     const toEnrich = investorsToEnrich.filter(i => !results[i.id]);
+    const count = Math.max(1, Math.ceil(toEnrich.length * (percentage / 100)));
+    const subset = toEnrich.slice(0, count);
     let completed = 0;
 
-    for (const investor of toEnrich) {
+    for (const investor of subset) {
       await enrichInvestor(investor);
       completed++;
-      setBulkProgress(Math.round((completed / toEnrich.length) * 100));
+      setBulkProgress(Math.round((completed / subset.length) * 100));
       // Delay to avoid rate limiting
       await new Promise(resolve => setTimeout(resolve, 2000));
     }
 
     setBulkEnriching(false);
-    toast.success('Arricchimento completato');
+    toast.success(`Arricchimento completato: ${completed} investitori`);
   };
 
   const toggleExpanded = (id: string) => {
@@ -205,7 +207,7 @@ const ABCAIEnrichment: React.FC<ABCAIEnrichmentProps> = ({ onDataUpdated }) => {
             <CardTitle className="text-lg">AI Enrichment</CardTitle>
             <Badge variant="secondary">{investorsToEnrich.length} da arricchire</Badge>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap">
             <Button
               variant="outline"
               size="sm"
@@ -215,8 +217,24 @@ const ABCAIEnrichment: React.FC<ABCAIEnrichmentProps> = ({ onDataUpdated }) => {
               <RefreshCw className="h-4 w-4" />
             </Button>
             <Button
+              variant="outline"
               size="sm"
-              onClick={enrichAllInvestors}
+              onClick={() => enrichPercentage(25)}
+              disabled={bulkEnriching || investorsToEnrich.length === 0}
+            >
+              {bulkEnriching ? <Loader2 className="h-4 w-4 animate-spin" /> : '25%'}
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => enrichPercentage(50)}
+              disabled={bulkEnriching || investorsToEnrich.length === 0}
+            >
+              {bulkEnriching ? <Loader2 className="h-4 w-4 animate-spin" /> : '50%'}
+            </Button>
+            <Button
+              size="sm"
+              onClick={() => enrichPercentage(100)}
               disabled={bulkEnriching || investorsToEnrich.length === 0}
               className="bg-gradient-to-r from-primary to-primary/80"
             >
@@ -228,7 +246,7 @@ const ABCAIEnrichment: React.FC<ABCAIEnrichmentProps> = ({ onDataUpdated }) => {
               ) : (
                 <>
                   <Sparkles className="h-4 w-4 mr-2" />
-                  Arricchisci Tutti
+                  100%
                 </>
               )}
             </Button>
