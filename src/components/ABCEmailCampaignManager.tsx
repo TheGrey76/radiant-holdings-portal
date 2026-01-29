@@ -518,11 +518,11 @@ Il Team ABC Company`,
   const categories = [...new Set(approvedInvestors.map(i => i.categoria))];
   const statuses = ['To Contact', 'Contacted', 'Interested', 'Meeting Scheduled', 'In Negotiation', 'Closed'];
   
-  // Get unique approval dates for filter options
-  const approvalDates = [...new Set(approvedInvestors.map(i => {
-    const date = new Date(i.created_at || '');
-    return format(date, 'yyyy-MM-dd');
-  }))].sort((a, b) => b.localeCompare(a)); // Sort descending (most recent first)
+  // Get unique approval dates for filter options (filter out invalid dates)
+  const approvalDates = [...new Set(approvedInvestors
+    .filter(i => i.created_at && !isNaN(new Date(i.created_at).getTime()))
+    .map(i => format(new Date(i.created_at!), 'yyyy-MM-dd'))
+  )].sort((a, b) => b.localeCompare(a)); // Sort descending (most recent first)
 
   // Filter approved investors with email based on criteria
   const filteredInvestors = approvedWithEmail.filter(inv => {
@@ -532,7 +532,8 @@ Il Team ABC Company`,
     
     // Filter by approval date
     if (filterApprovalDate !== "all") {
-      const invDate = format(new Date(inv.created_at || ''), 'yyyy-MM-dd');
+      if (!inv.created_at || isNaN(new Date(inv.created_at).getTime())) return false;
+      const invDate = format(new Date(inv.created_at), 'yyyy-MM-dd');
       if (invDate !== filterApprovalDate) return false;
     }
     
