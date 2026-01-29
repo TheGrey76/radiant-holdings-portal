@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
 export interface EngagementData {
@@ -37,8 +37,18 @@ export const useABCEngagementTracking = (investorEmails: Map<string, string>) =>
     investorStats: new Map(),
   });
   const [loading, setLoading] = useState(true);
+  
+  // Use ref to track investorEmails changes without causing re-renders
+  const investorEmailsRef = useRef(investorEmails);
+  const hasFetchedRef = useRef(false);
+  
+  // Update ref when map changes (but don't trigger effect)
+  useEffect(() => {
+    investorEmailsRef.current = investorEmails;
+  }, [investorEmails]);
 
   const fetchEngagementData = useCallback(async () => {
+    const currentEmails = investorEmailsRef.current;
     try {
       setLoading(true);
 
@@ -61,7 +71,7 @@ export const useABCEngagementTracking = (investorEmails: Map<string, string>) =>
 
       // Build email to investor ID mapping
       const emailToId = new Map<string, string>();
-      investorEmails.forEach((email, investorId) => {
+      currentEmails.forEach((email, investorId) => {
         if (email) {
           emailToId.set(email.toLowerCase(), investorId);
         }
@@ -154,7 +164,7 @@ export const useABCEngagementTracking = (investorEmails: Map<string, string>) =>
 
       // Calculate never contacted
       const neverContactedIds = new Set<string>();
-      investorEmails.forEach((email, investorId) => {
+      currentEmails.forEach((email, investorId) => {
         if (email && !contactedEmails.has(email.toLowerCase())) {
           neverContactedIds.add(investorId);
         }
@@ -193,13 +203,15 @@ export const useABCEngagementTracking = (investorEmails: Map<string, string>) =>
     } finally {
       setLoading(false);
     }
-  }, [investorEmails]);
+  }, []);
 
+  // Fetch only once on mount, then rely on manual refetch
   useEffect(() => {
-    if (investorEmails.size > 0) {
+    if (investorEmailsRef.current.size > 0 && !hasFetchedRef.current) {
+      hasFetchedRef.current = true;
       fetchEngagementData();
     }
-  }, [fetchEngagementData, investorEmails]);
+  }, [fetchEngagementData]);
 
   const refetch = useCallback(() => {
     fetchEngagementData();
