@@ -9,12 +9,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Building2, Target, Users, Mail, Plus, X, Save, 
   Euro, Calendar, Briefcase, Globe, Phone, MapPin,
-  UserCog, Shield, Bell, Loader2, RefreshCw, Pencil, Check
+  UserCog, Shield, Bell, Loader2, RefreshCw, Pencil, Check, History
 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import type { Json } from "@/integrations/supabase/types";
 import { useOnlineUsers } from "@/hooks/useOnlineUsers";
+import { ABCImportHistory } from "@/components/ABCImportHistory";
 
 interface TeamMember {
   email: string;
@@ -358,7 +359,7 @@ export const ABCSettingsTab = () => {
   return (
     <Tabs defaultValue="company" className="space-y-6">
       <div className="flex items-center justify-between">
-        <TabsList className="grid grid-cols-5 w-full max-w-3xl">
+        <TabsList className="grid grid-cols-6 w-full max-w-4xl">
           <TabsTrigger value="company" className="text-xs gap-1">
             <Building2 className="h-3.5 w-3.5" /> Azienda
           </TabsTrigger>
@@ -373,6 +374,9 @@ export const ABCSettingsTab = () => {
           </TabsTrigger>
           <TabsTrigger value="notifications" className="text-xs gap-1">
             <Bell className="h-3.5 w-3.5" /> Notifiche
+          </TabsTrigger>
+          <TabsTrigger value="imports" className="text-xs gap-1">
+            <History className="h-3.5 w-3.5" /> Cronologia
           </TabsTrigger>
         </TabsList>
         <Button variant="ghost" size="sm" onClick={fetchSettings}>
@@ -899,6 +903,11 @@ export const ABCSettingsTab = () => {
             </div>
           </CardContent>
         </Card>
+      </TabsContent>
+
+      {/* IMPORT HISTORY TAB */}
+      <TabsContent value="imports" className="space-y-6">
+        <ABCImportHistory />
       </TabsContent>
     </Tabs>
   );

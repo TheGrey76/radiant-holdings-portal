@@ -295,6 +295,45 @@ export type Database = {
         }
         Relationships: []
       }
+      abc_import_batches: {
+        Row: {
+          batch_name: string
+          created_at: string
+          duplicates_skipped: number
+          file_name: string | null
+          id: string
+          imported_at: string
+          imported_by: string
+          new_records: number
+          status: string
+          total_records: number
+        }
+        Insert: {
+          batch_name: string
+          created_at?: string
+          duplicates_skipped?: number
+          file_name?: string | null
+          id?: string
+          imported_at?: string
+          imported_by: string
+          new_records?: number
+          status?: string
+          total_records?: number
+        }
+        Update: {
+          batch_name?: string
+          created_at?: string
+          duplicates_skipped?: number
+          file_name?: string | null
+          id?: string
+          imported_at?: string
+          imported_by?: string
+          new_records?: number
+          status?: string
+          total_records?: number
+        }
+        Relationships: []
+      }
       abc_investor_activities: {
         Row: {
           activity_date: string
@@ -488,6 +527,7 @@ export type Database = {
           expected_close: string | null
           fonte: string | null
           id: string
+          import_batch_id: string | null
           last_contact_date: string | null
           linkedin: string | null
           meetings_count: number | null
@@ -517,6 +557,7 @@ export type Database = {
           expected_close?: string | null
           fonte?: string | null
           id?: string
+          import_batch_id?: string | null
           last_contact_date?: string | null
           linkedin?: string | null
           meetings_count?: number | null
@@ -546,6 +587,7 @@ export type Database = {
           expected_close?: string | null
           fonte?: string | null
           id?: string
+          import_batch_id?: string | null
           last_contact_date?: string | null
           linkedin?: string | null
           meetings_count?: number | null
@@ -562,7 +604,15 @@ export type Database = {
           status?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "abc_investors_import_batch_id_fkey"
+            columns: ["import_batch_id"]
+            isOneToOne: false
+            referencedRelation: "abc_import_batches"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       abc_kpi_snapshots: {
         Row: {
