@@ -568,23 +568,24 @@ export function ABCFollowUpSequences({ investors, onSendCampaign }: ABCFollowUpS
 
       {/* Active Sequences */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {isLoading ? (
-          <Card className="col-span-full">
+        {isLoading && (
+          <Card key="loading-card" className="col-span-full">
             <CardContent className="py-8 text-center text-muted-foreground">
               Caricamento...
             </CardContent>
           </Card>
-        ) : sequences.length === 0 ? (
-          <Card className="col-span-full">
+        )}
+        {!isLoading && sequences.length === 0 && (
+          <Card key="empty-card" className="col-span-full">
             <CardContent className="py-8 text-center text-muted-foreground">
               <Zap className="h-8 w-8 mx-auto mb-2 opacity-50" />
               <p>Nessuna sequenza configurata</p>
               <p className="text-sm">Crea sequenze per follow-up automatici basati su engagement</p>
             </CardContent>
           </Card>
-        ) : (
-          sequences.map(sequence => (
-            <Card key={sequence.id} className={`${sequence.isActive ? 'border-green-500/30' : 'border-muted'}`}>
+        )}
+        {!isLoading && sequences.length > 0 && sequences.map(sequence => (
+          <Card key={sequence.id} className={`${sequence.isActive ? 'border-green-500/30' : 'border-muted'}`}>
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-2">
@@ -664,9 +665,8 @@ export function ABCFollowUpSequences({ investors, onSendCampaign }: ABCFollowUpS
                   </Button>
                 </div>
               </CardContent>
-            </Card>
-          ))
-        )}
+          </Card>
+        ))}
       </div>
 
       {/* Enrolled Investors Queue */}

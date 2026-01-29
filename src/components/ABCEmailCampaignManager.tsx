@@ -1851,8 +1851,8 @@ Team Aries76"
                   <Filter className="h-4 w-4 mr-2" />
                   Filtri
                 </CardTitle>
-                <CardDescription className="text-xs">
-                  Solo investitori <Badge variant="default" className="bg-green-500 text-xs ml-1">Approved</Badge>
+                <CardDescription className="text-xs flex items-center gap-1">
+                  Solo investitori <span className="bg-green-500 text-white text-xs px-1.5 py-0.5 rounded ml-1">Approved</span>
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
