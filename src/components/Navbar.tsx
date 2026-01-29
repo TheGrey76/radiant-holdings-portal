@@ -26,7 +26,33 @@ const Navbar = () => {
   const handleNavigation = (path: string) => {
     setOpenMenu(null);
     setMobileMenuOpen(false);
-    navigate(path);
+    
+    // Handle hash navigation
+    if (path.includes('#')) {
+      const [basePath, hash] = path.split('#');
+      const currentPath = window.location.pathname;
+      
+      if (currentPath === basePath || basePath === '') {
+        // Same page - scroll directly to element
+        setTimeout(() => {
+          const element = document.getElementById(hash);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+          }
+        }, 100);
+      } else {
+        // Different page - navigate first, then scroll
+        navigate(path);
+        setTimeout(() => {
+          const element = document.getElementById(hash);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+          }
+        }, 300);
+      }
+    } else {
+      navigate(path);
+    }
   };
 
   const menuStructure = {
