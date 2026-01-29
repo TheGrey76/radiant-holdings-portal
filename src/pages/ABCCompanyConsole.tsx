@@ -36,6 +36,7 @@ import { ABCSettingsTab } from "@/components/ABCSettingsTab";
 import ABCEmailEnrichment from "@/components/ABCEmailEnrichment";
 import ABCAIEnrichment from "@/components/ABCAIEnrichment";
 import ABCAIEnrichmentDialog from "@/components/ABCAIEnrichmentDialog";
+import ABCDataQualityAlert from "@/components/ABCDataQualityAlert";
 import { ABCRelationshipIntelligence } from "@/components/ABCRelationshipIntelligence";
 import { ABCPipelineVelocity } from "@/components/ABCPipelineVelocity";
 import { ABCAnimatedFunnel } from "@/components/ABCAnimatedFunnel";
@@ -547,6 +548,11 @@ const ABCCompanyConsole = () => {
   });
   const [statsDialogOpen, setStatsDialogOpen] = useState(false);
   const [statsDialogType, setStatsDialogType] = useState<'campaigns' | 'sent' | 'opens' | 'success'>('campaigns');
+  
+  // Data quality alert state
+  const [showDataQualityAlert, setShowDataQualityAlert] = useState(true);
+  const [lastImportCount, setLastImportCount] = useState(0);
+  const [showImportAlert, setShowImportAlert] = useState(false);
 
   // Settings state
   const [notificationPrefs, setNotificationPrefs] = useState({
@@ -1025,7 +1031,14 @@ const ABCCompanyConsole = () => {
             </div>
             <div className="flex items-center gap-4">
               <ABCAIEnrichmentDialog onDataUpdated={fetchInvestors} />
-              <ImportABCInvestorsDialog onSuccess={fetchInvestors} />
+              <ImportABCInvestorsDialog onSuccess={(count) => {
+                fetchInvestors();
+                if (count > 0) {
+                  setLastImportCount(count);
+                  setShowImportAlert(true);
+                  setShowDataQualityAlert(true);
+                }
+              }} />
               <OnlineUsersIndicator />
               <NotificationBell />
               <span className="text-sm text-muted-foreground">User: {currentUserEmail}</span>
@@ -1066,6 +1079,22 @@ const ABCCompanyConsole = () => {
                 </span>
               </div>
             </div>
+
+            {/* Data Quality Alert - Shows when email/LinkedIn missing */}
+            {showDataQualityAlert && (
+              <ABCDataQualityAlert 
+                onEnrichmentComplete={() => {
+                  fetchInvestors();
+                  setShowImportAlert(false);
+                }}
+                showAfterImport={showImportAlert}
+                importedCount={lastImportCount}
+                onDismissImportAlert={() => {
+                  setShowImportAlert(false);
+                  setShowDataQualityAlert(false);
+                }}
+              />
+            )}
 
             {/* KPI Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

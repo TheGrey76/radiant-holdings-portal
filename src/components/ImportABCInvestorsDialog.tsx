@@ -73,7 +73,7 @@ const mapColumnToField = (header: string): string | null => {
 };
 
 interface ImportABCInvestorsDialogProps {
-  onSuccess?: () => void;
+  onSuccess?: (importedCount: number) => void;
 }
 
 export function ImportABCInvestorsDialog({ onSuccess }: ImportABCInvestorsDialogProps) {
@@ -318,9 +318,9 @@ export function ImportABCInvestorsDialog({ onSuccess }: ImportABCInvestorsDialog
       setParsedData([]);
       setDetectedColumns([]);
       
-      // Call the onSuccess callback to refresh the dashboard
+      // Call the onSuccess callback with the count of imported investors
       if (onSuccess) {
-        onSuccess();
+        onSuccess(newInvestors.length);
       }
     } catch (error: any) {
       console.error('Import error:', error);
