@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -11,18 +11,23 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogC
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useABCEngagementTracking } from "@/hooks/useABCEngagementTracking";
 import { 
   Play, Pause, Plus, Trash2, Edit2, Clock, Mail, Users, 
-  CheckCircle, AlertCircle, RefreshCw, Zap, ArrowRight
+  CheckCircle, AlertCircle, RefreshCw, Zap, ArrowRight,
+  MousePointerClick, MailOpen, UserX, Target, Flame
 } from "lucide-react";
 import { format, addDays, differenceInDays } from "date-fns";
 import { it } from "date-fns/locale";
+
+// Updated trigger types based on engagement intelligence
+type SequenceTrigger = 'non_openers' | 'openers_no_click' | 'clickers' | 'never_contacted';
 
 interface Sequence {
   id: string;
   name: string;
   description: string;
-  trigger: 'no_open' | 'no_response' | 'new_investor' | 'status_change';
+  trigger: SequenceTrigger;
   triggerDays: number;
   steps: SequenceStep[];
   isActive: boolean;
@@ -36,7 +41,7 @@ interface SequenceStep {
   dayDelay: number;
   subject: string;
   content: string;
-  condition?: 'if_no_open' | 'if_no_response' | 'always';
+  condition?: 'if_no_open' | 'if_no_click' | 'always';
 }
 
 interface EnrolledInvestor {
@@ -72,18 +77,40 @@ export function ABCFollowUpSequences({ investors, onSendCampaign }: ABCFollowUpS
   const [isSaving, setIsSaving] = useState(false);
   const { toast } = useToast();
 
+  // Build email to investor ID mapping for engagement tracking
+  const investorEmailMap = useMemo(() => {
+    const map = new Map<string, string>();
+    investors.forEach(inv => {
+      if (inv.email) {
+        map.set(inv.id, inv.email);
+      }
+    });
+    return map;
+  }, [investors]);
+
+  // Use engagement tracking hook
+  const { engagementData, loading: engagementLoading, refetch: refetchEngagement, getEngagementLabel } = useABCEngagementTracking(investorEmailMap);
+
+  // Calculate segment counts
+  const segmentCounts = useMemo(() => ({
+    never_contacted: engagementData.neverContacted.size,
+    non_openers: engagementData.nonOpeners.size,
+    openers: engagementData.openers.size,
+    clickers: engagementData.clickers.size,
+  }), [engagementData]);
+
   // Form state for creating/editing sequences
   const [formData, setFormData] = useState<{
     name: string;
     description: string;
-    trigger: Sequence['trigger'];
+    trigger: SequenceTrigger;
     triggerDays: number;
     steps: SequenceStep[];
     isActive: boolean;
   }>({
     name: '',
     description: '',
-    trigger: 'no_open',
+    trigger: 'non_openers',
     triggerDays: 3,
     steps: [
       { id: '1', dayDelay: 0, subject: 'Follow-up: ABC Company', content: 'Gentile {nome},\n\nMi permetto di ricontattarLa...', condition: 'always' }
@@ -110,7 +137,7 @@ export function ABCFollowUpSequences({ investors, onSendCampaign }: ABCFollowUpS
         id: seq.id,
         name: seq.name,
         description: seq.description || '',
-        trigger: seq.trigger_type,
+        trigger: seq.trigger_type as SequenceTrigger,
         triggerDays: seq.trigger_days,
         steps: seq.steps || [],
         isActive: seq.is_active,
@@ -234,17 +261,37 @@ export function ABCFollowUpSequences({ investors, onSendCampaign }: ABCFollowUpS
     }
   };
 
+  // Process sequences based on ENGAGEMENT data (not just time-based)
   const handleProcessSequences = async () => {
-    // Check for investors that should be enrolled in sequences
-    const noOpenSequences = sequences.filter(s => s.trigger === 'no_open' && s.isActive);
-    const noResponseSequences = sequences.filter(s => s.trigger === 'no_response' && s.isActive);
+    await refetchEngagement(); // Refresh engagement data first
     
     let enrolledCount = 0;
 
-    for (const sequence of [...noOpenSequences, ...noResponseSequences]) {
-      // Find investors that match the trigger criteria
+    for (const sequence of sequences.filter(s => s.isActive)) {
+      // Get investors based on engagement segment
+      let eligibleInvestorIds: string[] = [];
+      
+      switch (sequence.trigger) {
+        case 'never_contacted':
+          eligibleInvestorIds = Array.from(engagementData.neverContacted);
+          break;
+        case 'non_openers':
+          eligibleInvestorIds = Array.from(engagementData.nonOpeners);
+          break;
+        case 'openers_no_click':
+          // Openers who haven't clicked
+          eligibleInvestorIds = Array.from(engagementData.openers)
+            .filter(id => !engagementData.clickers.has(id));
+          break;
+        case 'clickers':
+          eligibleInvestorIds = Array.from(engagementData.clickers);
+          break;
+      }
+
+      // Filter by trigger days (days since last contact)
       const eligibleInvestors = investors.filter(inv => {
         if (!inv.email) return false;
+        if (!eligibleInvestorIds.includes(inv.id)) return false;
         
         // Check if already enrolled in this sequence
         const alreadyEnrolled = enrolledInvestors.some(
@@ -252,14 +299,13 @@ export function ABCFollowUpSequences({ investors, onSendCampaign }: ABCFollowUpS
         );
         if (alreadyEnrolled) return false;
 
-        // Check trigger condition
-        if (sequence.trigger === 'no_open' || sequence.trigger === 'no_response') {
-          if (!inv.last_contact_date) return true;
+        // Check time since last contact
+        if (inv.last_contact_date) {
           const daysSinceContact = differenceInDays(new Date(), new Date(inv.last_contact_date));
           return daysSinceContact >= sequence.triggerDays;
         }
         
-        return false;
+        return true; // Never contacted, eligible immediately if in segment
       });
 
       // Enroll eligible investors
@@ -287,17 +333,9 @@ export function ABCFollowUpSequences({ investors, onSendCampaign }: ABCFollowUpS
     if (enrolledCount > 0) {
       toast({ title: `${enrolledCount} investitori aggiunti alle sequenze` });
       loadEnrolledInvestors();
-      
-      // Update sequence counts
-      for (const seq of sequences) {
-        await supabase
-          .from('abc_followup_sequences')
-          .update({ enrolled_count: enrolledInvestors.filter(e => e.sequenceId === seq.id).length + enrolledCount })
-          .eq('id', seq.id);
-      }
       loadSequences();
     } else {
-      toast({ title: "Nessun nuovo investitore da aggiungere" });
+      toast({ title: "Nessun nuovo investitore idoneo" });
     }
   };
 
@@ -323,6 +361,28 @@ export function ABCFollowUpSequences({ investors, onSendCampaign }: ABCFollowUpS
         await supabase
           .from('abc_sequence_enrollments')
           .update({ status: 'completed' })
+          .eq('id', enrollment.id);
+        continue;
+      }
+
+      // Check step condition against current engagement
+      const engagementLabel = getEngagementLabel(enrollment.investorId);
+      
+      // Skip if condition not met
+      if (step.condition === 'if_no_open' && (engagementLabel === 'engaged' || engagementLabel === 'clicked')) {
+        // They opened/clicked, mark as exited (success)
+        await supabase
+          .from('abc_sequence_enrollments')
+          .update({ status: 'exited' })
+          .eq('id', enrollment.id);
+        continue;
+      }
+      
+      if (step.condition === 'if_no_click' && engagementLabel === 'clicked') {
+        // They clicked, mark as exited (success)
+        await supabase
+          .from('abc_sequence_enrollments')
+          .update({ status: 'exited' })
           .eq('id', enrollment.id);
         continue;
       }
@@ -363,7 +423,7 @@ export function ABCFollowUpSequences({ investors, onSendCampaign }: ABCFollowUpS
     setFormData({
       name: '',
       description: '',
-      trigger: 'no_open',
+      trigger: 'non_openers',
       triggerDays: 3,
       steps: [
         { id: '1', dayDelay: 0, subject: 'Follow-up: ABC Company', content: 'Gentile {nome},\n\nMi permetto di ricontattarLa...', condition: 'always' }
@@ -394,13 +454,33 @@ export function ABCFollowUpSequences({ investors, onSendCampaign }: ABCFollowUpS
     }));
   };
 
-  const getTriggerLabel = (trigger: Sequence['trigger']) => {
+  const getTriggerLabel = (trigger: SequenceTrigger) => {
     switch (trigger) {
-      case 'no_open': return 'Nessuna apertura';
-      case 'no_response': return 'Nessuna risposta';
-      case 'new_investor': return 'Nuovo investitore';
-      case 'status_change': return 'Cambio status';
+      case 'non_openers': return 'Non hanno aperto';
+      case 'openers_no_click': return 'Hanno aperto (no click)';
+      case 'clickers': return 'Hanno cliccato';
+      case 'never_contacted': return 'Mai contattati';
       default: return trigger;
+    }
+  };
+
+  const getTriggerIcon = (trigger: SequenceTrigger) => {
+    switch (trigger) {
+      case 'non_openers': return <UserX className="h-4 w-4" />;
+      case 'openers_no_click': return <MailOpen className="h-4 w-4" />;
+      case 'clickers': return <MousePointerClick className="h-4 w-4" />;
+      case 'never_contacted': return <Target className="h-4 w-4" />;
+      default: return <Mail className="h-4 w-4" />;
+    }
+  };
+
+  const getTriggerColor = (trigger: SequenceTrigger) => {
+    switch (trigger) {
+      case 'non_openers': return 'text-orange-500';
+      case 'openers_no_click': return 'text-blue-500';
+      case 'clickers': return 'text-green-500';
+      case 'never_contacted': return 'text-gray-500';
+      default: return 'text-muted-foreground';
     }
   };
 
@@ -419,17 +499,60 @@ export function ABCFollowUpSequences({ investors, onSendCampaign }: ABCFollowUpS
 
   return (
     <div className="space-y-6">
+      {/* Engagement Intelligence Overview */}
+      <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-base flex items-center gap-2">
+            <Flame className="h-5 w-5 text-orange-500" />
+            Campaign Intelligence
+          </CardTitle>
+          <CardDescription>Segmenti basati su engagement reale</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="text-center p-3 bg-background/80 rounded-lg">
+              <div className="flex justify-center mb-1">
+                <Target className="h-5 w-5 text-gray-500" />
+              </div>
+              <div className="text-2xl font-bold">{segmentCounts.never_contacted}</div>
+              <div className="text-xs text-muted-foreground">Mai Contattati</div>
+            </div>
+            <div className="text-center p-3 bg-background/80 rounded-lg">
+              <div className="flex justify-center mb-1">
+                <UserX className="h-5 w-5 text-orange-500" />
+              </div>
+              <div className="text-2xl font-bold">{segmentCounts.non_openers}</div>
+              <div className="text-xs text-muted-foreground">Non Aperture</div>
+            </div>
+            <div className="text-center p-3 bg-background/80 rounded-lg">
+              <div className="flex justify-center mb-1">
+                <MailOpen className="h-5 w-5 text-blue-500" />
+              </div>
+              <div className="text-2xl font-bold">{segmentCounts.openers}</div>
+              <div className="text-xs text-muted-foreground">Hanno Aperto</div>
+            </div>
+            <div className="text-center p-3 bg-background/80 rounded-lg">
+              <div className="flex justify-center mb-1">
+                <MousePointerClick className="h-5 w-5 text-green-500" />
+              </div>
+              <div className="text-2xl font-bold">{segmentCounts.clickers}</div>
+              <div className="text-xs text-muted-foreground">Hanno Cliccato</div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h3 className="text-lg font-semibold">Sequenze Follow-up Automatiche</h3>
           <p className="text-sm text-muted-foreground">
-            Crea sequenze di email automatiche basate su trigger specifici
+            Crea sequenze basate su engagement (aperture, click, inattività)
           </p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" size="sm" onClick={handleProcessSequences}>
-            <RefreshCw className="h-4 w-4 mr-2" />
+          <Button variant="outline" size="sm" onClick={handleProcessSequences} disabled={engagementLoading}>
+            <RefreshCw className={`h-4 w-4 mr-2 ${engagementLoading ? 'animate-spin' : ''}`} />
             Elabora Sequenze
           </Button>
           <Button variant="outline" size="sm" onClick={handleSendPendingEmails}>
@@ -456,7 +579,7 @@ export function ABCFollowUpSequences({ investors, onSendCampaign }: ABCFollowUpS
             <CardContent className="py-8 text-center text-muted-foreground">
               <Zap className="h-8 w-8 mx-auto mb-2 opacity-50" />
               <p>Nessuna sequenza configurata</p>
-              <p className="text-sm">Crea la tua prima sequenza di follow-up automatica</p>
+              <p className="text-sm">Crea sequenze per follow-up automatici basati su engagement</p>
             </CardContent>
           </Card>
         ) : (
@@ -464,11 +587,16 @@ export function ABCFollowUpSequences({ investors, onSendCampaign }: ABCFollowUpS
             <Card key={sequence.id} className={`${sequence.isActive ? 'border-green-500/30' : 'border-muted'}`}>
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between">
-                  <div>
-                    <CardTitle className="text-base">{sequence.name}</CardTitle>
-                    <CardDescription className="text-xs mt-1">
-                      {sequence.description || getTriggerLabel(sequence.trigger)}
-                    </CardDescription>
+                  <div className="flex items-center gap-2">
+                    <span className={getTriggerColor(sequence.trigger)}>
+                      {getTriggerIcon(sequence.trigger)}
+                    </span>
+                    <div>
+                      <CardTitle className="text-base">{sequence.name}</CardTitle>
+                      <CardDescription className="text-xs mt-1">
+                        {sequence.description || getTriggerLabel(sequence.trigger)}
+                      </CardDescription>
+                    </div>
                   </div>
                   <Badge variant={sequence.isActive ? "default" : "secondary"} className="text-xs">
                     {sequence.isActive ? "Attiva" : "Pausa"}
@@ -479,7 +607,7 @@ export function ABCFollowUpSequences({ investors, onSendCampaign }: ABCFollowUpS
                 <div className="flex items-center gap-4 text-sm">
                   <div className="flex items-center gap-1">
                     <Clock className="h-3.5 w-3.5 text-muted-foreground" />
-                    <span>{sequence.triggerDays}g trigger</span>
+                    <span>{sequence.triggerDays}g delay</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <Mail className="h-3.5 w-3.5 text-muted-foreground" />
@@ -546,7 +674,7 @@ export function ABCFollowUpSequences({ investors, onSendCampaign }: ABCFollowUpS
         <Card>
           <CardHeader>
             <CardTitle className="text-base">Coda Email Programmati</CardTitle>
-            <CardDescription>Investitori in attesa di ricevere email automatiche</CardDescription>
+            <CardDescription>Investitori in coda per ricevere email automatiche</CardDescription>
           </CardHeader>
           <CardContent>
             <Table>
@@ -554,6 +682,7 @@ export function ABCFollowUpSequences({ investors, onSendCampaign }: ABCFollowUpS
                 <TableRow>
                   <TableHead>Investitore</TableHead>
                   <TableHead>Sequenza</TableHead>
+                  <TableHead>Engagement</TableHead>
                   <TableHead>Step</TableHead>
                   <TableHead>Prossima Email</TableHead>
                   <TableHead>Status</TableHead>
@@ -562,10 +691,30 @@ export function ABCFollowUpSequences({ investors, onSendCampaign }: ABCFollowUpS
               <TableBody>
                 {enrolledInvestors.slice(0, 10).map(enrollment => {
                   const sequence = sequences.find(s => s.id === enrollment.sequenceId);
+                  const engLabel = getEngagementLabel(enrollment.investorId);
                   return (
                     <TableRow key={enrollment.id}>
                       <TableCell className="font-medium">{enrollment.investorName}</TableCell>
                       <TableCell>{sequence?.name || '-'}</TableCell>
+                      <TableCell>
+                        <Badge 
+                          variant="outline" 
+                          className={`text-xs ${
+                            engLabel === 'clicked' ? 'border-green-500 text-green-600' :
+                            engLabel === 'engaged' ? 'border-blue-500 text-blue-600' :
+                            engLabel === 'non_opener' ? 'border-orange-500 text-orange-600' :
+                            'border-gray-400 text-gray-500'
+                          }`}
+                        >
+                          {engLabel === 'clicked' && <MousePointerClick className="h-3 w-3 mr-1" />}
+                          {engLabel === 'engaged' && <MailOpen className="h-3 w-3 mr-1" />}
+                          {engLabel === 'non_opener' && <UserX className="h-3 w-3 mr-1" />}
+                          {engLabel === 'clicked' ? 'Cliccato' :
+                           engLabel === 'engaged' ? 'Aperto' :
+                           engLabel === 'non_opener' ? 'Non aperto' :
+                           'Mai contattato'}
+                        </Badge>
+                      </TableCell>
                       <TableCell>
                         <Badge variant="outline" className="text-xs">
                           {enrollment.currentStep + 1}/{sequence?.steps.length || 0}
@@ -607,23 +756,43 @@ export function ABCFollowUpSequences({ investors, onSendCampaign }: ABCFollowUpS
                 <Input
                   value={formData.name}
                   onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                  placeholder="Es. Follow-up non aperture"
+                  placeholder="Es. Re-engagement Non Aperture"
                 />
               </div>
               <div>
-                <Label>Trigger</Label>
+                <Label>Segmento Target</Label>
                 <Select 
                   value={formData.trigger} 
-                  onValueChange={(v: Sequence['trigger']) => setFormData(prev => ({ ...prev, trigger: v }))}
+                  onValueChange={(v: SequenceTrigger) => setFormData(prev => ({ ...prev, trigger: v }))}
                 >
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="no_open">Nessuna apertura email</SelectItem>
-                    <SelectItem value="no_response">Nessuna risposta</SelectItem>
-                    <SelectItem value="new_investor">Nuovo investitore aggiunto</SelectItem>
-                    <SelectItem value="status_change">Cambio status pipeline</SelectItem>
+                    <SelectItem value="never_contacted">
+                      <span className="flex items-center gap-2">
+                        <Target className="h-4 w-4 text-gray-500" />
+                        Mai Contattati ({segmentCounts.never_contacted})
+                      </span>
+                    </SelectItem>
+                    <SelectItem value="non_openers">
+                      <span className="flex items-center gap-2">
+                        <UserX className="h-4 w-4 text-orange-500" />
+                        Non Hanno Aperto ({segmentCounts.non_openers})
+                      </span>
+                    </SelectItem>
+                    <SelectItem value="openers_no_click">
+                      <span className="flex items-center gap-2">
+                        <MailOpen className="h-4 w-4 text-blue-500" />
+                        Hanno Aperto (no click)
+                      </span>
+                    </SelectItem>
+                    <SelectItem value="clickers">
+                      <span className="flex items-center gap-2">
+                        <MousePointerClick className="h-4 w-4 text-green-500" />
+                        Hanno Cliccato ({segmentCounts.clickers})
+                      </span>
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -631,7 +800,7 @@ export function ABCFollowUpSequences({ investors, onSendCampaign }: ABCFollowUpS
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label>Giorni prima del trigger</Label>
+                <Label>Giorni di inattività prima di attivare</Label>
                 <Input
                   type="number"
                   min={1}
@@ -691,7 +860,7 @@ export function ABCFollowUpSequences({ investors, onSendCampaign }: ABCFollowUpS
                         />
                       </div>
                       <div>
-                        <Label className="text-xs">Condizione</Label>
+                        <Label className="text-xs">Condizione di Invio</Label>
                         <Select 
                           value={step.condition || 'always'}
                           onValueChange={v => updateStep(step.id, 'condition', v)}
@@ -701,8 +870,8 @@ export function ABCFollowUpSequences({ investors, onSendCampaign }: ABCFollowUpS
                           </SelectTrigger>
                           <SelectContent>
                             <SelectItem value="always">Sempre</SelectItem>
-                            <SelectItem value="if_no_open">Se non ha aperto</SelectItem>
-                            <SelectItem value="if_no_response">Se non ha risposto</SelectItem>
+                            <SelectItem value="if_no_open">Solo se non ha ancora aperto</SelectItem>
+                            <SelectItem value="if_no_click">Solo se non ha ancora cliccato</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
