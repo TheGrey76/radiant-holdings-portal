@@ -229,6 +229,10 @@ export function ImportABCInvestorsDialog({ onSuccess }: ImportABCInvestorsDialog
     
     setIsImporting(true);
     try {
+      // Get current user email for import tracking
+      const { data: { user } } = await supabase.auth.getUser();
+      const importedBy = user?.email || 'Unknown';
+      
       // Fetch existing investors to check for duplicates
       const { data: existingInvestors, error: fetchError } = await supabase
         .from('abc_investors')
@@ -257,6 +261,28 @@ export function ImportABCInvestorsDialog({ onSuccess }: ImportABCInvestorsDialog
         return;
       }
       
+      // Create import batch record first
+      const batchName = `Import ${new Date().toLocaleDateString('it-IT')} ${new Date().toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' })}`;
+      
+      const { data: batchData, error: batchError } = await supabase
+        .from('abc_import_batches')
+        .insert({
+          batch_name: batchName,
+          file_name: selectedFile?.name || null,
+          imported_by: importedBy,
+          total_records: parsedData.length,
+          new_records: newInvestors.length,
+          duplicates_skipped: duplicatesCount,
+          status: 'completed'
+        })
+        .select()
+        .single();
+      
+      if (batchError) throw batchError;
+      
+      const batchId = batchData.id;
+      
+      // Insert investors with batch reference
       const dataToInsert = newInvestors.map(inv => ({
         nome: inv.nome,
         azienda: inv.azienda,
@@ -271,7 +297,8 @@ export function ImportABCInvestorsDialog({ onSuccess }: ImportABCInvestorsDialog
         pipeline_value: inv.pipeline_value || 0,
         probability: inv.probability || 50,
         status: 'To Contact',
-        relationship_owner: 'Edoardo Grigione'
+        relationship_owner: 'Edoardo Grigione',
+        import_batch_id: batchId
       }));
       
       const { error } = await supabase
