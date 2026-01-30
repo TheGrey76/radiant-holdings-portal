@@ -35,7 +35,7 @@ import { OnlineUsersIndicator } from "@/components/OnlineUsersIndicator";
 import { ABCSettingsTab } from "@/components/ABCSettingsTab";
 import ABCEmailEnrichment from "@/components/ABCEmailEnrichment";
 import ABCAIEnrichment from "@/components/ABCAIEnrichment";
-import ABCAIEnrichmentDialog from "@/components/ABCAIEnrichmentDialog";
+
 import ABCDataQualityAlert from "@/components/ABCDataQualityAlert";
 import { ABCRelationshipIntelligence } from "@/components/ABCRelationshipIntelligence";
 import { ABCPipelineVelocity } from "@/components/ABCPipelineVelocity";
@@ -1039,7 +1039,6 @@ const ABCCompanyConsole = () => {
               <p className="text-sm text-muted-foreground">Target: €10,000,000 | Deadline: June 30, 2026</p>
             </div>
             <div className="flex items-center gap-4">
-              <ABCAIEnrichmentDialog onDataUpdated={() => { fetchInvestors(); fetchCampaignStats(); }} />
               <ImportABCInvestorsDialog onSuccess={(count) => {
                 fetchInvestors();
                 if (count > 0) {
