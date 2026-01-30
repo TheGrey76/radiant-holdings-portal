@@ -9,7 +9,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Building2, MapPin, Euro, Linkedin, Pencil, Trash2, CheckCircle, Clock, XCircle, ChevronDown, X, Filter, Eye, Plus } from "lucide-react";
+import { Building2, MapPin, Euro, Linkedin, Pencil, Trash2, CheckCircle, Clock, XCircle, ChevronDown, X, Filter, Eye, Plus, Sparkles, Mail } from "lucide-react";
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from "sonner";
 import { EditABCInvestorDialog } from './EditABCInvestorDialog';
@@ -66,6 +66,7 @@ export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvest
   const [selectedInvestors, setSelectedInvestors] = useState<Set<string>>(new Set());
   const [isBulkUpdating, setIsBulkUpdating] = useState(false);
   const [approvalFilter, setApprovalFilter] = useState<'all' | ApprovalStatus>('all');
+  const [enrichedFilter, setEnrichedFilter] = useState<'all' | 'enriched' | 'missing'>('all');
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
@@ -94,10 +95,22 @@ export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvest
     }
   };
 
-  // Filter investors by approval status
-  const filteredInvestors = approvalFilter === 'all' 
-    ? localInvestors 
-    : localInvestors.filter(inv => (inv.approvalStatus || 'pending') === approvalFilter);
+  // Helper to check if investor has enriched data
+  const isEnriched = (inv: Investor) => {
+    const hasEmail = inv.email && inv.email.trim() !== '' && inv.email.trim().toLowerCase() !== 'null';
+    const hasLinkedin = inv.linkedin && inv.linkedin.trim() !== '' && inv.linkedin.trim().toLowerCase() !== 'null';
+    return hasEmail || hasLinkedin;
+  };
+
+  // Filter investors by approval status and enrichment
+  const filteredInvestors = localInvestors
+    .filter(inv => approvalFilter === 'all' || (inv.approvalStatus || 'pending') === approvalFilter)
+    .filter(inv => {
+      if (enrichedFilter === 'all') return true;
+      if (enrichedFilter === 'enriched') return isEnriched(inv);
+      if (enrichedFilter === 'missing') return !isEnriched(inv);
+      return true;
+    });
 
   // Pagination logic
   const totalInvestors = filteredInvestors.length;
@@ -109,7 +122,7 @@ export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvest
   // Reset to page 1 when filters change
   useEffect(() => {
     setCurrentPage(1);
-  }, [approvalFilter, itemsPerPage]);
+  }, [approvalFilter, enrichedFilter, itemsPerPage]);
 
   const getInvestorsByStatus = (status: string) => {
     return paginatedInvestors.filter(inv => inv.status === status);
@@ -338,14 +351,15 @@ export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvest
 
   return (
     <>
-      {/* Approval Status Filter + Add Button */}
-      <div className="mb-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
+      {/* Filters + Add Button */}
+      <div className="mb-4 flex items-center justify-between flex-wrap gap-3">
+        <div className="flex items-center gap-3 flex-wrap">
           <Filter className="h-4 w-4 text-muted-foreground" />
-          <span className="text-sm text-muted-foreground">Filtra per approvazione:</span>
+          
+          {/* Approval Filter */}
           <Select value={approvalFilter} onValueChange={(value) => setApprovalFilter(value as 'all' | ApprovalStatus)}>
-            <SelectTrigger className="w-48">
-              <SelectValue />
+            <SelectTrigger className="w-44">
+              <SelectValue placeholder="Approvazione" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">
@@ -371,9 +385,34 @@ export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvest
               </SelectItem>
             </SelectContent>
           </Select>
-          {approvalFilter !== 'all' && (
-            <Button variant="ghost" size="sm" onClick={() => setApprovalFilter('all')}>
-              <X className="h-4 w-4 mr-1" /> Rimuovi filtro
+
+          {/* Enriched Filter */}
+          <Select value={enrichedFilter} onValueChange={(value) => setEnrichedFilter(value as 'all' | 'enriched' | 'missing')}>
+            <SelectTrigger className="w-44">
+              <SelectValue placeholder="Dati" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">
+                <span className="flex items-center gap-2">Tutti i dati</span>
+              </SelectItem>
+              <SelectItem value="enriched">
+                <span className="flex items-center gap-2">
+                  <Sparkles className="h-3.5 w-3.5 text-primary" />
+                  Arricchiti ({localInvestors.filter(i => isEnriched(i)).length})
+                </span>
+              </SelectItem>
+              <SelectItem value="missing">
+                <span className="flex items-center gap-2">
+                  <Mail className="h-3.5 w-3.5 text-amber-500" />
+                  Dati mancanti ({localInvestors.filter(i => !isEnriched(i)).length})
+                </span>
+              </SelectItem>
+            </SelectContent>
+          </Select>
+
+          {(approvalFilter !== 'all' || enrichedFilter !== 'all') && (
+            <Button variant="ghost" size="sm" onClick={() => { setApprovalFilter('all'); setEnrichedFilter('all'); }}>
+              <X className="h-4 w-4 mr-1" /> Rimuovi filtri
             </Button>
           )}
         </div>
