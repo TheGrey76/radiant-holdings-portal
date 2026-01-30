@@ -168,10 +168,12 @@ export const ABCDataQualityAlert: React.FC<ABCDataQualityAlertProps> = ({
     setIsEnriching(false);
     stopEnrichmentRef.current = false;
     
+    // Always refresh stats after enrichment to update counts
+    await fetchMissingDataStats();
+    
     if (enriched > 0) {
       toast.success(`${enriched} investitori arricchiti con successo!`);
       onEnrichmentComplete?.();
-      fetchMissingDataStats();
     } else if (!stopEnrichmentRef.current) {
       toast.info('Nessun nuovo dato trovato tramite AI');
     }
