@@ -76,8 +76,8 @@ export const ABCDataQualityAlert: React.FC<ABCDataQualityAlertProps> = ({
           id: inv.id,
           nome: inv.nome,
           azienda: inv.azienda,
-          missingEmail: !inv.email || inv.email.trim() === '',
-          missingLinkedin: !inv.linkedin || inv.linkedin.trim() === ''
+          missingEmail: !inv.email || inv.email.trim() === '' || inv.email.trim().toLowerCase() === 'null',
+          missingLinkedin: !inv.linkedin || inv.linkedin.trim() === '' || inv.linkedin.trim().toLowerCase() === 'null'
         }))
         .filter(inv => inv.missingEmail || inv.missingLinkedin);
 
@@ -173,10 +173,12 @@ export const ABCDataQualityAlert: React.FC<ABCDataQualityAlertProps> = ({
     
     if (enriched > 0) {
       toast.success(`${enriched} investitori arricchiti con successo!`);
-      onEnrichmentComplete?.();
     } else if (!stopEnrichmentRef.current) {
       toast.info('Nessun nuovo dato trovato tramite AI');
     }
+
+    // Let parent refresh other sections (Campaigns/Dashboard) regardless of whether new data was found
+    onEnrichmentComplete?.();
   };
 
   const handleDismiss = () => {
