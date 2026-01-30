@@ -60,8 +60,8 @@ const generateOverviewPDF = () => {
   let y = margin;
   let pageNumber = 1;
 
-  const darkBlue = [10, 22, 40];
-  const accentGold = [212, 175, 55];
+  const darkNavy = [26, 29, 46];
+  const accentOrange = [255, 122, 61];
   const textWhite = [255, 255, 255];
   const textGray = [156, 163, 175];
 
@@ -84,16 +84,16 @@ const generateOverviewPDF = () => {
   };
 
   // Cover Page
-  pdf.setFillColor(darkBlue[0], darkBlue[1], darkBlue[2]);
+  pdf.setFillColor(darkNavy[0], darkNavy[1], darkNavy[2]);
   pdf.rect(0, 0, pageWidth, pageHeight, 'F');
-  pdf.setFillColor(accentGold[0], accentGold[1], accentGold[2]);
+  pdf.setFillColor(accentOrange[0], accentOrange[1], accentOrange[2]);
   pdf.rect(0, pageHeight / 2 - 40, 8, 80, 'F');
   pdf.setFontSize(36);
   pdf.setFont('helvetica', 'bold');
   pdf.setTextColor(textWhite[0], textWhite[1], textWhite[2]);
   pdf.text('ARIES76', pageWidth / 2, pageHeight / 2 - 25, { align: 'center' });
   pdf.setFontSize(14);
-  pdf.setTextColor(accentGold[0], accentGold[1], accentGold[2]);
+  pdf.setTextColor(accentOrange[0], accentOrange[1], accentOrange[2]);
   pdf.text('CAPITAL INTELLIGENCE', pageWidth / 2, pageHeight / 2 - 10, { align: 'center' });
   pdf.setFontSize(20);
   pdf.setTextColor(textWhite[0], textWhite[1], textWhite[2]);
@@ -110,11 +110,11 @@ const generateOverviewPDF = () => {
   pageNumber++;
   y = margin;
 
-  pdf.setFillColor(15, 30, 54);
+  pdf.setFillColor(darkNavy[0], darkNavy[1], darkNavy[2]);
   pdf.roundedRect(margin, y - 3, contentWidth, 14, 2, 2, 'F');
   pdf.setFontSize(12);
   pdf.setFont('helvetica', 'bold');
-  pdf.setTextColor(accentGold[0], accentGold[1], accentGold[2]);
+  pdf.setTextColor(accentOrange[0], accentOrange[1], accentOrange[2]);
   pdf.text('The Aries76 Advantage', margin + 5, y + 6);
   y += 20;
 
@@ -136,7 +136,7 @@ const generateOverviewPDF = () => {
   ];
 
   bullets.forEach(bullet => {
-    pdf.setFillColor(accentGold[0], accentGold[1], accentGold[2]);
+    pdf.setFillColor(accentOrange[0], accentOrange[1], accentOrange[2]);
     pdf.circle(margin + 3, y - 1, 2, 'F');
     pdf.setFontSize(10);
     pdf.setFont('helvetica', 'bold');
@@ -172,7 +172,7 @@ const generateOverviewPDF = () => {
   stats.forEach((stat) => {
     pdf.setFontSize(16);
     pdf.setFont('helvetica', 'bold');
-    pdf.setTextColor(accentGold[0], accentGold[1], accentGold[2]);
+    pdf.setTextColor(accentOrange[0], accentOrange[1], accentOrange[2]);
     pdf.text(stat.value, statX, y + 22);
     pdf.setFontSize(8);
     pdf.setFont('helvetica', 'normal');
@@ -194,8 +194,8 @@ const generateGPServicesPDF = () => {
   let y = margin;
   let pageNumber = 1;
 
-  const darkBlue = [10, 22, 40];
-  const accentGold = [212, 175, 55];
+  const darkNavy = [26, 29, 46];
+  const accentOrange = [255, 122, 61];
   const textWhite = [255, 255, 255];
   const textGray = [156, 163, 175];
 
@@ -207,9 +207,9 @@ const generateGPServicesPDF = () => {
   };
 
   // Cover Page
-  pdf.setFillColor(darkBlue[0], darkBlue[1], darkBlue[2]);
+  pdf.setFillColor(darkNavy[0], darkNavy[1], darkNavy[2]);
   pdf.rect(0, 0, pageWidth, pageHeight, 'F');
-  pdf.setFillColor(accentGold[0], accentGold[1], accentGold[2]);
+  pdf.setFillColor(accentOrange[0], accentOrange[1], accentOrange[2]);
   pdf.rect(0, pageHeight / 2 - 40, 8, 80, 'F');
   pdf.setFontSize(32);
   pdf.setFont('helvetica', 'bold');
@@ -217,7 +217,7 @@ const generateGPServicesPDF = () => {
   pdf.text('Services for', pageWidth / 2, pageHeight / 2 - 20, { align: 'center' });
   pdf.text('Fund Managers', pageWidth / 2, pageHeight / 2, { align: 'center' });
   pdf.setFontSize(14);
-  pdf.setTextColor(accentGold[0], accentGold[1], accentGold[2]);
+  pdf.setTextColor(accentOrange[0], accentOrange[1], accentOrange[2]);
   pdf.text('AI-POWERED SOLUTIONS FOR PE/VC FUNDS', pageWidth / 2, pageHeight / 2 + 20, { align: 'center' });
   pdf.setFontSize(10);
   pdf.setTextColor(textGray[0], textGray[1], textGray[2]);
@@ -230,11 +230,11 @@ const generateGPServicesPDF = () => {
   y = margin;
 
   const drawTable = (title: string, headers: string[], data: string[][], colWidths: number[]) => {
-    pdf.setFillColor(15, 30, 54);
+    pdf.setFillColor(darkNavy[0], darkNavy[1], darkNavy[2]);
     pdf.roundedRect(margin, y - 3, contentWidth, 14, 2, 2, 'F');
     pdf.setFontSize(12);
     pdf.setFont('helvetica', 'bold');
-    pdf.setTextColor(accentGold[0], accentGold[1], accentGold[2]);
+    pdf.setTextColor(accentOrange[0], accentOrange[1], accentOrange[2]);
     pdf.text(title, margin + 5, y + 6);
     y += 20;
 
@@ -313,8 +313,8 @@ const generateLPServicesPDF = () => {
   let y = margin;
   let pageNumber = 1;
 
-  const darkBlue = [10, 22, 40];
-  const accentGold = [212, 175, 55];
+  const darkNavy = [26, 29, 46];
+  const accentOrange = [255, 122, 61];
   const textWhite = [255, 255, 255];
   const textGray = [156, 163, 175];
 
@@ -326,9 +326,9 @@ const generateLPServicesPDF = () => {
   };
 
   // Cover Page
-  pdf.setFillColor(darkBlue[0], darkBlue[1], darkBlue[2]);
+  pdf.setFillColor(darkNavy[0], darkNavy[1], darkNavy[2]);
   pdf.rect(0, 0, pageWidth, pageHeight, 'F');
-  pdf.setFillColor(accentGold[0], accentGold[1], accentGold[2]);
+  pdf.setFillColor(accentOrange[0], accentOrange[1], accentOrange[2]);
   pdf.rect(0, pageHeight / 2 - 40, 8, 80, 'F');
   pdf.setFontSize(32);
   pdf.setFont('helvetica', 'bold');
@@ -336,7 +336,7 @@ const generateLPServicesPDF = () => {
   pdf.text('Services for', pageWidth / 2, pageHeight / 2 - 20, { align: 'center' });
   pdf.text('Limited Partners', pageWidth / 2, pageHeight / 2, { align: 'center' });
   pdf.setFontSize(14);
-  pdf.setTextColor(accentGold[0], accentGold[1], accentGold[2]);
+  pdf.setTextColor(accentOrange[0], accentOrange[1], accentOrange[2]);
   pdf.text('INSTITUTIONAL-GRADE ADVISORY', pageWidth / 2, pageHeight / 2 + 20, { align: 'center' });
   pdf.setFontSize(10);
   pdf.setTextColor(textGray[0], textGray[1], textGray[2]);
@@ -349,11 +349,11 @@ const generateLPServicesPDF = () => {
   y = margin;
 
   const drawTable = (title: string, headers: string[], data: string[][], colWidths: number[]) => {
-    pdf.setFillColor(15, 30, 54);
+    pdf.setFillColor(darkNavy[0], darkNavy[1], darkNavy[2]);
     pdf.roundedRect(margin, y - 3, contentWidth, 14, 2, 2, 'F');
     pdf.setFontSize(12);
     pdf.setFont('helvetica', 'bold');
-    pdf.setTextColor(accentGold[0], accentGold[1], accentGold[2]);
+    pdf.setTextColor(accentOrange[0], accentOrange[1], accentOrange[2]);
     pdf.text(title, margin + 5, y + 6);
     y += 20;
 
@@ -432,8 +432,8 @@ const generateServiceCatalogPDF = () => {
   let y = margin;
   let pageNumber = 1;
 
-  const darkBlue = [10, 22, 40];
-  const accentGold = [212, 175, 55];
+  const darkNavy = [26, 29, 46];
+  const accentOrange = [255, 122, 61];
   const textWhite = [255, 255, 255];
   const textGray = [156, 163, 175];
 
@@ -456,12 +456,12 @@ const generateServiceCatalogPDF = () => {
   };
 
   // Cover Page
-  pdf.setFillColor(darkBlue[0], darkBlue[1], darkBlue[2]);
+  pdf.setFillColor(darkNavy[0], darkNavy[1], darkNavy[2]);
   pdf.rect(0, 0, pageWidth, pageHeight, 'F');
-  pdf.setFillColor(accentGold[0], accentGold[1], accentGold[2]);
+  pdf.setFillColor(accentOrange[0], accentOrange[1], accentOrange[2]);
   pdf.rect(0, pageHeight / 2 - 40, 8, 80, 'F');
   pdf.setFontSize(14);
-  pdf.setTextColor(accentGold[0], accentGold[1], accentGold[2]);
+  pdf.setTextColor(accentOrange[0], accentOrange[1], accentOrange[2]);
   pdf.text('ARIES76', pageWidth / 2, pageHeight / 2 - 35, { align: 'center' });
   pdf.setFontSize(32);
   pdf.setFont('helvetica', 'bold');
@@ -486,11 +486,11 @@ const generateServiceCatalogPDF = () => {
 
   const drawTable = (title: string, headers: string[], data: string[][], colWidths: number[]) => {
     checkPageBreak(50);
-    pdf.setFillColor(15, 30, 54);
+    pdf.setFillColor(darkNavy[0], darkNavy[1], darkNavy[2]);
     pdf.roundedRect(margin, y - 3, contentWidth, 14, 2, 2, 'F');
     pdf.setFontSize(11);
     pdf.setFont('helvetica', 'bold');
-    pdf.setTextColor(accentGold[0], accentGold[1], accentGold[2]);
+    pdf.setTextColor(accentOrange[0], accentOrange[1], accentOrange[2]);
     pdf.text(title, margin + 5, y + 6);
     y += 18;
 
@@ -595,11 +595,11 @@ const generateServiceCatalogPDF = () => {
   pageNumber++;
   y = margin;
 
-  pdf.setFillColor(15, 30, 54);
+  pdf.setFillColor(darkNavy[0], darkNavy[1], darkNavy[2]);
   pdf.roundedRect(margin, y - 3, contentWidth, 14, 2, 2, 'F');
   pdf.setFontSize(12);
   pdf.setFont('helvetica', 'bold');
-  pdf.setTextColor(accentGold[0], accentGold[1], accentGold[2]);
+  pdf.setTextColor(accentOrange[0], accentOrange[1], accentOrange[2]);
   pdf.text('Why Aries76 Works', margin + 5, y + 6);
   y += 25;
 
@@ -611,7 +611,7 @@ const generateServiceCatalogPDF = () => {
   ];
 
   valueProps.forEach((prop) => {
-    pdf.setFillColor(accentGold[0], accentGold[1], accentGold[2]);
+    pdf.setFillColor(accentOrange[0], accentOrange[1], accentOrange[2]);
     pdf.circle(margin + 3, y - 1, 2, 'F');
     pdf.setFontSize(10);
     pdf.setFont('helvetica', 'bold');
@@ -626,7 +626,7 @@ const generateServiceCatalogPDF = () => {
   });
 
   y += 10;
-  pdf.setFillColor(15, 30, 54);
+  pdf.setFillColor(darkNavy[0], darkNavy[1], darkNavy[2]);
   pdf.roundedRect(margin, y, contentWidth, 35, 3, 3, 'F');
   pdf.setFontSize(14);
   pdf.setFont('helvetica', 'bold');
@@ -637,7 +637,7 @@ const generateServiceCatalogPDF = () => {
   pdf.setTextColor(textGray[0], textGray[1], textGray[2]);
   pdf.text('15-minute discovery call. No pitch. No pressure.', margin + 10, y + 22);
   pdf.setFont('helvetica', 'bold');
-  pdf.setTextColor(accentGold[0], accentGold[1], accentGold[2]);
+  pdf.setTextColor(accentOrange[0], accentOrange[1], accentOrange[2]);
   pdf.text('www.aries76.com/contact', pageWidth - margin - 10, y + 22, { align: 'right' });
 
   addFooter();
@@ -720,13 +720,13 @@ const MarketingMaterials = () => {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20 mb-6">
-              <FileText className="w-4 h-4 text-amber-400" />
-              <span className="text-amber-400 text-sm font-medium">Marketing Materials</span>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-500/10 border border-orange-500/20 mb-6">
+              <FileText className="w-4 h-4 text-orange-400" />
+              <span className="text-orange-400 text-sm font-medium">Marketing Materials</span>
             </div>
             
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
-              Aries76 <span className="text-amber-400">Collateral</span>
+              Aries76 <span className="text-orange-400">Collateral</span>
             </h1>
             
             <p className="text-lg text-slate-300 max-w-2xl mx-auto">
@@ -742,15 +742,15 @@ const MarketingMaterials = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                <Card className="bg-slate-900/50 border-slate-700/50 hover:border-amber-500/30 transition-all duration-300 h-full">
+                <Card className="bg-slate-900/50 border-slate-700/50 hover:border-orange-500/30 transition-all duration-300 h-full">
                   <CardHeader>
                     <div className="flex items-start justify-between">
                       <div className="flex items-center gap-3">
-                        <div className="p-3 rounded-lg bg-amber-500/10">
-                          <material.icon className="w-6 h-6 text-amber-400" />
+                        <div className="p-3 rounded-lg bg-orange-500/10">
+                          <material.icon className="w-6 h-6 text-orange-400" />
                         </div>
                         <div>
-                          <span className="text-xs text-amber-400 font-medium uppercase tracking-wider">
+                          <span className="text-xs text-orange-400 font-medium uppercase tracking-wider">
                             {material.category}
                           </span>
                           <CardTitle className="text-white text-lg mt-1">
@@ -772,7 +772,7 @@ const MarketingMaterials = () => {
                       <Button
                         variant="outline"
                         size="sm"
-                        className="flex-1 border-slate-600 hover:border-amber-500/50 hover:bg-amber-500/10"
+                        className="flex-1 border-slate-600 hover:border-orange-500/50 hover:bg-orange-500/10"
                         onClick={() => handlePreview(material.id, material.title)}
                         disabled={loadingPreview === material.id}
                       >
@@ -791,7 +791,7 @@ const MarketingMaterials = () => {
                       
                       <Button
                         size="sm"
-                        className="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-900"
+                        className="flex-1 bg-orange-500 hover:bg-orange-600 text-slate-900"
                         onClick={() => handleDownload(material.id, material.title)}
                         disabled={downloading === material.id}
                       >
@@ -827,7 +827,7 @@ const MarketingMaterials = () => {
               { label: "Offices", value: "London • Milan" }
             ].map((stat, index) => (
               <div key={index} className="text-center p-6 rounded-xl bg-slate-900/30 border border-slate-700/30">
-                <div className="text-2xl md:text-3xl font-bold text-amber-400 mb-2">
+                <div className="text-2xl md:text-3xl font-bold text-orange-400 mb-2">
                   {stat.value}
                 </div>
                 <div className="text-sm text-slate-400">{stat.label}</div>
@@ -839,7 +839,7 @@ const MarketingMaterials = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.5 }}
-            className="mt-16 text-center p-8 rounded-2xl bg-gradient-to-r from-amber-500/10 to-blue-500/10 border border-amber-500/20"
+            className="mt-16 text-center p-8 rounded-2xl bg-gradient-to-r from-orange-500/10 to-blue-500/10 border border-orange-500/20"
           >
             <h3 className="text-2xl font-bold text-white mb-4">
               Ready to Explore Partnership Opportunities?
@@ -850,7 +850,7 @@ const MarketingMaterials = () => {
             <Button
               size="lg"
               variant="outline"
-              className="border-amber-500/50 text-amber-400 hover:bg-amber-500/10"
+              className="border-orange-500/50 text-orange-400 hover:bg-orange-500/10"
               onClick={() => window.location.href = '/contact'}
             >
               Schedule a Call
@@ -863,7 +863,7 @@ const MarketingMaterials = () => {
         <DialogContent className="max-w-5xl h-[90vh] bg-slate-900 border-slate-700 p-0 flex flex-col">
           <DialogHeader className="p-4 border-b border-slate-700 flex flex-row items-center justify-between shrink-0">
             <DialogTitle className="text-white flex items-center gap-2">
-              <FileText className="w-5 h-5 text-amber-400" />
+              <FileText className="w-5 h-5 text-orange-400" />
               {previewTitle}
             </DialogTitle>
             <Button
@@ -884,7 +884,7 @@ const MarketingMaterials = () => {
               />
             ) : (
               <div className="flex items-center justify-center h-full">
-                <Loader2 className="w-8 h-8 text-amber-400 animate-spin" />
+                <Loader2 className="w-8 h-8 text-orange-400 animate-spin" />
               </div>
             )}
           </div>
