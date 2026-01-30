@@ -1030,7 +1030,7 @@ const ABCCompanyConsole = () => {
               <p className="text-sm text-muted-foreground">Target: €10,000,000 | Deadline: June 30, 2026</p>
             </div>
             <div className="flex items-center gap-4">
-              <ABCAIEnrichmentDialog onDataUpdated={fetchInvestors} />
+              <ABCAIEnrichmentDialog onDataUpdated={() => { fetchInvestors(); fetchCampaignStats(); }} />
               <ImportABCInvestorsDialog onSuccess={(count) => {
                 fetchInvestors();
                 if (count > 0) {
@@ -1558,7 +1558,7 @@ const ABCCompanyConsole = () => {
             />
 
             <ABCEmailCampaignManager 
-              key={`campaign-manager-${investors.filter(i => i.email).length}-${pendingReminders.length}`}
+              key={`campaign-manager-${investors.filter(i => i.email).length}-${pendingReminders.length}-${lastDataUpdate?.getTime() || 0}`}
               investors={investors.map(i => ({ 
                 id: i.id, 
                 nome: i.nome, 
@@ -1602,8 +1602,8 @@ const ABCCompanyConsole = () => {
                   setActiveTab("investors");
                 }}
               />
-              <ABCEmailEnrichment onEmailUpdated={fetchInvestors} />
-              <ABCAIEnrichment onDataUpdated={fetchInvestors} />
+              <ABCEmailEnrichment onEmailUpdated={() => { fetchInvestors(); fetchCampaignStats(); }} />
+              <ABCAIEnrichment onDataUpdated={() => { fetchInvestors(); fetchCampaignStats(); }} />
             </div>
           </TabsContent>
 

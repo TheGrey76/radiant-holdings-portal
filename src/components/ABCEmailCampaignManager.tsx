@@ -211,11 +211,11 @@ export function ABCEmailCampaignManager({ investors, onInvestorsUpdated, pending
   // Use engagement tracking hook
   const { engagementData, loading: engagementLoading, refetch: refetchEngagement, getEngagementLabel, getInvestorStats } = useABCEngagementTracking(investorEmailMap);
 
-  // Fetch templates and history on mount
+  // Fetch templates and history on mount and when investors change
   useEffect(() => {
     fetchTemplates();
     fetchCampaignHistory();
-  }, []);
+  }, [investors.length]);
 
   // Handle pending reminders from auto-reminders
   useEffect(() => {
