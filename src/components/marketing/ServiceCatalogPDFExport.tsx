@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { FileDown, Loader2 } from 'lucide-react';
+import { FileDown, Loader2, Eye } from 'lucide-react';
 import { useState } from 'react';
 import jsPDF from 'jspdf';
 import { toast } from 'sonner';
@@ -7,12 +7,14 @@ import { toast } from 'sonner';
 interface ServiceCatalogPDFExportProps {
   variant?: 'default' | 'outline' | 'ghost';
   size?: 'default' | 'sm' | 'lg';
+  mode?: 'download' | 'preview';
+  onPreviewReady?: (blobUrl: string) => void;
 }
 
-export const ServiceCatalogPDFExport = ({ variant = 'default', size = 'sm' }: ServiceCatalogPDFExportProps) => {
+export const ServiceCatalogPDFExport = ({ variant = 'default', size = 'sm', mode = 'download', onPreviewReady }: ServiceCatalogPDFExportProps) => {
   const [generating, setGenerating] = useState(false);
 
-  const generatePDF = async () => {
+  const generatePDF = async (forPreview = false) => {
     setGenerating(true);
 
     try {
@@ -164,7 +166,6 @@ export const ServiceCatalogPDFExport = ({ variant = 'default', size = 'sm' }: Se
         [42, 50, 48, 30]
       );
 
-      // GP Quick-Wins
       checkPageBreak(35);
       pdf.setFillColor(240, 253, 244);
       pdf.roundedRect(margin, y, contentWidth, 30, 2, 2, 'F');
@@ -214,7 +215,6 @@ export const ServiceCatalogPDFExport = ({ variant = 'default', size = 'sm' }: Se
         [38, 50, 50, 32]
       );
 
-      // DD Tiers box
       checkPageBreak(28);
       pdf.setFillColor(239, 246, 255);
       pdf.roundedRect(margin, y, contentWidth, 22, 2, 2, 'F');
@@ -251,7 +251,6 @@ export const ServiceCatalogPDFExport = ({ variant = 'default', size = 'sm' }: Se
         [45, 55, 30, 40]
       );
 
-      // LP Quick-Wins
       checkPageBreak(35);
       pdf.setFillColor(240, 253, 244);
       pdf.roundedRect(margin, y, contentWidth, 35, 2, 2, 'F');
@@ -288,7 +287,6 @@ export const ServiceCatalogPDFExport = ({ variant = 'default', size = 'sm' }: Se
 
       drawSectionHeader('Why Aries76 Works');
 
-      // Value Props
       const valueProps = [
         { title: 'AI Platform', desc: 'Monitors 500+ European fintech/AI companies in real-time' },
         { title: 'Human Qualification', desc: 'Ensures thesis alignment and quality opportunities' },
@@ -314,7 +312,6 @@ export const ServiceCatalogPDFExport = ({ variant = 'default', size = 'sm' }: Se
 
       y += 5;
 
-      // Contact CTA
       checkPageBreak(40);
       pdf.setFillColor(15, 30, 54);
       pdf.roundedRect(margin, y, contentWidth, 35, 3, 3, 'F');
@@ -337,8 +334,14 @@ export const ServiceCatalogPDFExport = ({ variant = 'default', size = 'sm' }: Se
 
       addFooter();
 
-      pdf.save('Aries76_Service_Catalog_2026.pdf');
-      toast.success('PDF downloaded successfully');
+      if (forPreview && onPreviewReady) {
+        const blob = pdf.output('blob');
+        const blobUrl = URL.createObjectURL(blob);
+        onPreviewReady(blobUrl);
+      } else {
+        pdf.save('Aries76_Service_Catalog_2026.pdf');
+        toast.success('PDF downloaded successfully');
+      }
     } catch (error) {
       console.error('PDF generation failed:', error);
       toast.error('Failed to generate PDF');
@@ -347,18 +350,34 @@ export const ServiceCatalogPDFExport = ({ variant = 'default', size = 'sm' }: Se
     }
   };
 
+  const handleClick = () => {
+    if (mode === 'preview' && onPreviewReady) {
+      generatePDF(true);
+    } else {
+      generatePDF(false);
+    }
+  };
+
   return (
     <Button
       variant={variant}
       size={size}
-      onClick={generatePDF}
+      onClick={handleClick}
       disabled={generating}
-      className="bg-amber-500 hover:bg-amber-600 text-slate-900"
+      className={mode === 'preview' 
+        ? "border-slate-600 hover:border-amber-500/50 hover:bg-amber-500/10" 
+        : "bg-amber-500 hover:bg-amber-600 text-slate-900"
+      }
     >
       {generating ? (
         <>
           <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-          Generating...
+          {mode === 'preview' ? 'Loading...' : 'Generating...'}
+        </>
+      ) : mode === 'preview' ? (
+        <>
+          <Eye className="w-4 h-4 mr-2" />
+          Preview
         </>
       ) : (
         <>

@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { FileDown, Loader2 } from 'lucide-react';
+import { FileDown, Loader2, Eye } from 'lucide-react';
 import { useState } from 'react';
 import jsPDF from 'jspdf';
 import { toast } from 'sonner';
@@ -7,12 +7,14 @@ import { toast } from 'sonner';
 interface GPServicesPDFExportProps {
   variant?: 'default' | 'outline' | 'ghost';
   size?: 'default' | 'sm' | 'lg';
+  mode?: 'download' | 'preview';
+  onPreviewReady?: (blobUrl: string) => void;
 }
 
-export const GPServicesPDFExport = ({ variant = 'default', size = 'sm' }: GPServicesPDFExportProps) => {
+export const GPServicesPDFExport = ({ variant = 'default', size = 'sm', mode = 'download', onPreviewReady }: GPServicesPDFExportProps) => {
   const [generating, setGenerating] = useState(false);
 
-  const generatePDF = async () => {
+  const generatePDF = async (forPreview = false) => {
     setGenerating(true);
 
     try {
@@ -63,7 +65,6 @@ export const GPServicesPDFExport = ({ variant = 'default', size = 'sm' }: GPServ
         
         checkPageBreak(rowHeight * (data.length + 1) + 10);
         
-        // Header
         pdf.setFillColor(30, 41, 59);
         pdf.rect(margin, y - 3, contentWidth, rowHeight, 'F');
         pdf.setFontSize(8);
@@ -76,7 +77,6 @@ export const GPServicesPDFExport = ({ variant = 'default', size = 'sm' }: GPServ
         });
         y += rowHeight;
 
-        // Rows
         data.forEach((row, rowIdx) => {
           checkPageBreak(rowHeight + 2);
           if (rowIdx % 2 === 0) {
@@ -163,7 +163,6 @@ export const GPServicesPDFExport = ({ variant = 'default', size = 'sm' }: GPServ
         [42, 55, 45, 28]
       );
 
-      // Quick-Win Packages
       checkPageBreak(50);
       drawSectionHeader('Quick-Win Packages');
 
@@ -194,7 +193,6 @@ export const GPServicesPDFExport = ({ variant = 'default', size = 'sm' }: GPServ
 
       y += 50;
 
-      // Aries76 Difference
       checkPageBreak(50);
       pdf.setFillColor(254, 249, 195);
       pdf.roundedRect(margin, y, contentWidth, 45, 2, 2, 'F');
@@ -225,8 +223,14 @@ export const GPServicesPDFExport = ({ variant = 'default', size = 'sm' }: GPServ
 
       addFooter();
 
-      pdf.save('Aries76_GP_Services.pdf');
-      toast.success('PDF downloaded successfully');
+      if (forPreview && onPreviewReady) {
+        const blob = pdf.output('blob');
+        const blobUrl = URL.createObjectURL(blob);
+        onPreviewReady(blobUrl);
+      } else {
+        pdf.save('Aries76_GP_Services.pdf');
+        toast.success('PDF downloaded successfully');
+      }
     } catch (error) {
       console.error('PDF generation failed:', error);
       toast.error('Failed to generate PDF');
@@ -235,18 +239,34 @@ export const GPServicesPDFExport = ({ variant = 'default', size = 'sm' }: GPServ
     }
   };
 
+  const handleClick = () => {
+    if (mode === 'preview' && onPreviewReady) {
+      generatePDF(true);
+    } else {
+      generatePDF(false);
+    }
+  };
+
   return (
     <Button
       variant={variant}
       size={size}
-      onClick={generatePDF}
+      onClick={handleClick}
       disabled={generating}
-      className="bg-amber-500 hover:bg-amber-600 text-slate-900"
+      className={mode === 'preview' 
+        ? "border-slate-600 hover:border-amber-500/50 hover:bg-amber-500/10" 
+        : "bg-amber-500 hover:bg-amber-600 text-slate-900"
+      }
     >
       {generating ? (
         <>
           <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-          Generating...
+          {mode === 'preview' ? 'Loading...' : 'Generating...'}
+        </>
+      ) : mode === 'preview' ? (
+        <>
+          <Eye className="w-4 h-4 mr-2" />
+          Preview
         </>
       ) : (
         <>

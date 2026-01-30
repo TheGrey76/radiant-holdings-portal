@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { FileDown, Loader2 } from 'lucide-react';
+import { FileDown, Loader2, Eye } from 'lucide-react';
 import { useState } from 'react';
 import jsPDF from 'jspdf';
 import { toast } from 'sonner';
@@ -7,12 +7,14 @@ import { toast } from 'sonner';
 interface OverviewPDFExportProps {
   variant?: 'default' | 'outline' | 'ghost';
   size?: 'default' | 'sm' | 'lg';
+  mode?: 'download' | 'preview';
+  onPreviewReady?: (blobUrl: string) => void;
 }
 
-export const OverviewPDFExport = ({ variant = 'default', size = 'sm' }: OverviewPDFExportProps) => {
+export const OverviewPDFExport = ({ variant = 'default', size = 'sm', mode = 'download', onPreviewReady }: OverviewPDFExportProps) => {
   const [generating, setGenerating] = useState(false);
 
-  const generatePDF = async () => {
+  const generatePDF = async (forPreview = false) => {
     setGenerating(true);
 
     try {
@@ -24,13 +26,11 @@ export const OverviewPDFExport = ({ variant = 'default', size = 'sm' }: Overview
       let y = margin;
       let pageNumber = 1;
 
-      // Colors
       const darkBlue = [10, 22, 40];
       const accentGold = [212, 175, 55];
       const textWhite = [255, 255, 255];
       const textGray = [156, 163, 175];
 
-      // Helper: Check page break
       const checkPageBreak = (neededSpace: number): boolean => {
         if (y + neededSpace > pageHeight - 30) {
           addFooter();
@@ -42,7 +42,6 @@ export const OverviewPDFExport = ({ variant = 'default', size = 'sm' }: Overview
         return false;
       };
 
-      // Helper: Add footer
       const addFooter = () => {
         pdf.setFontSize(8);
         pdf.setTextColor(100, 100, 100);
@@ -50,7 +49,6 @@ export const OverviewPDFExport = ({ variant = 'default', size = 'sm' }: Overview
         pdf.text(`Page ${pageNumber}`, pageWidth - margin, pageHeight - 10, { align: 'right' });
       };
 
-      // Helper: Draw section header
       const drawSectionHeader = (title: string) => {
         checkPageBreak(25);
         pdf.setFillColor(15, 30, 54);
@@ -62,7 +60,6 @@ export const OverviewPDFExport = ({ variant = 'default', size = 'sm' }: Overview
         y += 20;
       };
 
-      // Helper: Draw text block
       const drawTextBlock = (text: string, fontSize: number = 10) => {
         pdf.setFontSize(fontSize);
         pdf.setFont('helvetica', 'normal');
@@ -77,7 +74,6 @@ export const OverviewPDFExport = ({ variant = 'default', size = 'sm' }: Overview
         y += 5;
       };
 
-      // Helper: Draw bullet
       const drawBullet = (title: string, description: string) => {
         checkPageBreak(18);
         pdf.setFillColor(accentGold[0], accentGold[1], accentGold[2]);
@@ -102,11 +98,9 @@ export const OverviewPDFExport = ({ variant = 'default', size = 'sm' }: Overview
       pdf.setFillColor(darkBlue[0], darkBlue[1], darkBlue[2]);
       pdf.rect(0, 0, pageWidth, pageHeight, 'F');
 
-      // Decorative element
       pdf.setFillColor(accentGold[0], accentGold[1], accentGold[2]);
       pdf.rect(0, pageHeight / 2 - 40, 8, 80, 'F');
 
-      // Title
       pdf.setFontSize(36);
       pdf.setFont('helvetica', 'bold');
       pdf.setTextColor(textWhite[0], textWhite[1], textWhite[2]);
@@ -125,12 +119,11 @@ export const OverviewPDFExport = ({ variant = 'default', size = 'sm' }: Overview
       pdf.text('AI-amplified capital formation and investor intelligence', pageWidth / 2, pageHeight / 2 + 35, { align: 'center' });
       pdf.text('for the European private markets ecosystem', pageWidth / 2, pageHeight / 2 + 45, { align: 'center' });
 
-      // Footer info
       pdf.setFontSize(10);
       pdf.text('London • Milan', pageWidth / 2, pageHeight - 40, { align: 'center' });
       pdf.text('www.aries76.com', pageWidth / 2, pageHeight - 30, { align: 'center' });
 
-      // ===== PAGE 2: Content =====
+      // ===== PAGE 2 =====
       pdf.addPage();
       pageNumber++;
       y = margin;
@@ -147,7 +140,6 @@ export const OverviewPDFExport = ({ variant = 'default', size = 'sm' }: Overview
 
       y += 8;
 
-      // Track Record Box
       checkPageBreak(45);
       pdf.setFillColor(248, 250, 252);
       pdf.roundedRect(margin, y, contentWidth, 40, 3, 3, 'F');
@@ -180,10 +172,8 @@ export const OverviewPDFExport = ({ variant = 'default', size = 'sm' }: Overview
 
       drawSectionHeader('How We Help');
 
-      // Two column layout
       checkPageBreak(60);
       
-      // GP Column
       pdf.setFillColor(240, 253, 244);
       pdf.roundedRect(margin, y, contentWidth / 2 - 5, 55, 2, 2, 'F');
       pdf.setFontSize(10);
@@ -199,7 +189,6 @@ export const OverviewPDFExport = ({ variant = 'default', size = 'sm' }: Overview
         pdf.text(service, margin + 5, y + 20 + (idx * 7));
       });
 
-      // LP Column
       pdf.setFillColor(239, 246, 255);
       pdf.roundedRect(margin + contentWidth / 2 + 5, y, contentWidth / 2 - 5, 55, 2, 2, 'F');
       pdf.setFontSize(10);
@@ -217,7 +206,6 @@ export const OverviewPDFExport = ({ variant = 'default', size = 'sm' }: Overview
 
       y += 65;
 
-      // Sector Expertise
       checkPageBreak(35);
       drawSectionHeader('Sector Expertise');
       
@@ -241,7 +229,6 @@ export const OverviewPDFExport = ({ variant = 'default', size = 'sm' }: Overview
 
       y += 35;
 
-      // CTA
       checkPageBreak(25);
       pdf.setFillColor(15, 30, 54);
       pdf.roundedRect(margin, y, contentWidth, 20, 2, 2, 'F');
@@ -256,8 +243,14 @@ export const OverviewPDFExport = ({ variant = 'default', size = 'sm' }: Overview
 
       addFooter();
 
-      pdf.save('Aries76_Overview.pdf');
-      toast.success('PDF downloaded successfully');
+      if (forPreview && onPreviewReady) {
+        const blob = pdf.output('blob');
+        const blobUrl = URL.createObjectURL(blob);
+        onPreviewReady(blobUrl);
+      } else {
+        pdf.save('Aries76_Overview.pdf');
+        toast.success('PDF downloaded successfully');
+      }
     } catch (error) {
       console.error('PDF generation failed:', error);
       toast.error('Failed to generate PDF');
@@ -266,18 +259,34 @@ export const OverviewPDFExport = ({ variant = 'default', size = 'sm' }: Overview
     }
   };
 
+  const handleClick = () => {
+    if (mode === 'preview' && onPreviewReady) {
+      generatePDF(true);
+    } else {
+      generatePDF(false);
+    }
+  };
+
   return (
     <Button
       variant={variant}
       size={size}
-      onClick={generatePDF}
+      onClick={handleClick}
       disabled={generating}
-      className="bg-amber-500 hover:bg-amber-600 text-slate-900"
+      className={mode === 'preview' 
+        ? "border-slate-600 hover:border-amber-500/50 hover:bg-amber-500/10" 
+        : "bg-amber-500 hover:bg-amber-600 text-slate-900"
+      }
     >
       {generating ? (
         <>
           <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-          Generating...
+          {mode === 'preview' ? 'Loading...' : 'Generating...'}
+        </>
+      ) : mode === 'preview' ? (
+        <>
+          <Eye className="w-4 h-4 mr-2" />
+          Preview
         </>
       ) : (
         <>
