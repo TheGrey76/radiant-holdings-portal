@@ -26,8 +26,8 @@ export const LPServicesPDFExport = ({ variant = 'default', size = 'sm', mode = '
       let y = margin;
       let pageNumber = 1;
 
-      const darkBlue = [10, 22, 40];
-      const accentGold = [212, 175, 55];
+      const darkNavy = [26, 29, 46];
+      const accentOrange = [255, 122, 61];
       const textWhite = [255, 255, 255];
       const textGray = [156, 163, 175];
 
@@ -51,11 +51,11 @@ export const LPServicesPDFExport = ({ variant = 'default', size = 'sm', mode = '
 
       const drawSectionHeader = (title: string) => {
         checkPageBreak(25);
-        pdf.setFillColor(15, 30, 54);
+        pdf.setFillColor(darkNavy[0], darkNavy[1], darkNavy[2]);
         pdf.roundedRect(margin, y - 3, contentWidth, 14, 2, 2, 'F');
         pdf.setFontSize(12);
         pdf.setFont('helvetica', 'bold');
-        pdf.setTextColor(accentGold[0], accentGold[1], accentGold[2]);
+        pdf.setTextColor(accentOrange[0], accentOrange[1], accentOrange[2]);
         pdf.text(title, margin + 5, y + 6);
         y += 20;
       };
@@ -98,10 +98,10 @@ export const LPServicesPDFExport = ({ variant = 'default', size = 'sm', mode = '
       };
 
       // ===== COVER PAGE =====
-      pdf.setFillColor(darkBlue[0], darkBlue[1], darkBlue[2]);
+      pdf.setFillColor(darkNavy[0], darkNavy[1], darkNavy[2]);
       pdf.rect(0, 0, pageWidth, pageHeight, 'F');
 
-      pdf.setFillColor(accentGold[0], accentGold[1], accentGold[2]);
+      pdf.setFillColor(accentOrange[0], accentOrange[1], accentOrange[2]);
       pdf.rect(0, pageHeight / 2 - 40, 8, 80, 'F');
 
       pdf.setFontSize(32);
@@ -111,7 +111,7 @@ export const LPServicesPDFExport = ({ variant = 'default', size = 'sm', mode = '
       pdf.text('Limited Partners', pageWidth / 2, pageHeight / 2, { align: 'center' });
 
       pdf.setFontSize(14);
-      pdf.setTextColor(accentGold[0], accentGold[1], accentGold[2]);
+      pdf.setTextColor(accentOrange[0], accentOrange[1], accentOrange[2]);
       pdf.text('INSTITUTIONAL-GRADE ADVISORY', pageWidth / 2, pageHeight / 2 + 20, { align: 'center' });
 
       pdf.setFontSize(10);
@@ -280,8 +280,8 @@ export const LPServicesPDFExport = ({ variant = 'default', size = 'sm', mode = '
       onClick={handleClick}
       disabled={generating}
       className={mode === 'preview' 
-        ? "border-slate-600 hover:border-amber-500/50 hover:bg-amber-500/10" 
-        : "bg-amber-500 hover:bg-amber-600 text-slate-900"
+        ? "border-slate-600 hover:border-orange-500/50 hover:bg-orange-500/10" 
+        : "bg-orange-500 hover:bg-orange-600 text-slate-900"
       }
     >
       {generating ? (
