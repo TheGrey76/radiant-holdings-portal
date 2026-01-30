@@ -30,26 +30,70 @@ interface HunterResponse {
   errors?: Array<{ details: string }>;
 }
 
+// Known Italian company domain mappings
+const ITALIAN_COMPANY_DOMAINS: Record<string, string> = {
+  'banca investis': 'investissgr.com',
+  'bnp paribas': 'bnpparibas.it',
+  'intesa sanpaolo': 'intesasanpaolo.com',
+  'unicredit': 'unicredit.it',
+  'generali': 'generali.com',
+  'mediolanum': 'mediolanum.it',
+  'azimut': 'azimut.it',
+  'banca mediolanum': 'bancamediolanum.it',
+  'fideuram': 'fideuram.it',
+  'fineco': 'finecobank.com',
+  'banca aletti': 'alettibank.it',
+  'bper': 'bper.it',
+  'credem': 'credem.it',
+  'credito emiliano': 'credem.it',
+  'banco bpm': 'bancobpm.it',
+  'mps': 'mps.it',
+  'monte dei paschi': 'mps.it',
+  'cdp venture': 'cdpventurecapital.it',
+  'cdp': 'cdp.it',
+  'cassa depositi': 'cdp.it',
+  'amundi': 'amundi.it',
+  'eurizon': 'eurizoncapital.it',
+  'anima': 'animasgr.it',
+  'algebris': 'algebris.com',
+  'kairos': 'kairospartners.com',
+  'quadrivio': 'quadriviogroup.com',
+  'tamburi': 'tamburi.it',
+  'tip': 'tipspa.it',
+  'ipo challenger': 'ipochallenger.it',
+};
+
 // Extract domain from company name/website
-function extractDomain(azienda: string): string | null {
-  const suffixes = [' S.p.A.', ' S.p.a.', ' SpA', ' SPA', ' S.r.l.', ' Srl', ' SRL', ' Ltd', ' Limited', ' GmbH', ' AG', ' Inc', ' Corp', ' LLC', ' SGR', ' SIM', ' S.A.'];
+function extractDomains(azienda: string): string[] {
+  const suffixes = [' S.p.A.', ' S.p.a.', ' SpA', ' SPA', ' S.r.l.', ' Srl', ' SRL', ' Ltd', ' Limited', ' GmbH', ' AG', ' Inc', ' Corp', ' LLC', ' SGR', ' SIM', ' S.A.', ' Private Banking', ' Asset Management', ' Investment', ' Investments', ' Capital', ' Partners', ' Group', ' Holding'];
   let cleanName = azienda;
   
   for (const suffix of suffixes) {
     cleanName = cleanName.replace(new RegExp(suffix + '$', 'i'), '');
   }
+  cleanName = cleanName.trim();
   
-  if (azienda.includes('.') && !azienda.includes(' ')) {
-    return azienda.toLowerCase();
+  // Check known mappings first
+  const lowerAzienda = azienda.toLowerCase();
+  for (const [key, domain] of Object.entries(ITALIAN_COMPANY_DOMAINS)) {
+    if (lowerAzienda.includes(key)) {
+      return [domain];
+    }
   }
   
-  const domain = cleanName
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]/g, '')
-    + '.com';
+  // If it's already a domain
+  if (azienda.includes('.') && !azienda.includes(' ')) {
+    return [azienda.toLowerCase()];
+  }
   
-  return domain;
+  // Generate multiple possible domains (Italian companies often use .it)
+  const baseName = cleanName.toLowerCase().replace(/[^a-z0-9]/g, '');
+  return [
+    baseName + '.it',
+    baseName + '.com',
+    baseName + 'group.it',
+    baseName + 'group.com',
+  ];
 }
 
 // Split full name into first and last name
@@ -90,12 +134,8 @@ async function scrapeCompanyForEmails(azienda: string, nome: string): Promise<{ 
     return { email: null, confidence: 0 };
   }
 
-  // Try common domain patterns for the company
-  const domainPatterns = [
-    extractDomain(azienda),
-    azienda.toLowerCase().replace(/[^a-z0-9]/g, '') + '.it',
-    azienda.toLowerCase().replace(/[^a-z0-9]/g, '') + '.com',
-  ].filter(Boolean);
+  // Use the improved domain extraction
+  const domainPatterns = extractDomains(azienda);
 
   for (const domain of domainPatterns) {
     try {
@@ -194,36 +234,41 @@ serve(async (req) => {
     let hunterLinkedin: string | null = null;
     let hunterConfidence: number = 0;
 
-    // Step 1: Try Hunter.io for email lookup
+    // Step 1: Try Hunter.io for email lookup (try multiple domains)
     if (HUNTER_API_KEY) {
-      const domain = extractDomain(azienda);
+      const domains = extractDomains(azienda);
       const { firstName, lastName } = splitName(nome);
 
-      if (domain && firstName && lastName) {
-        console.log(`Hunter.io lookup: ${firstName} ${lastName} @ ${domain}`);
-        
-        try {
-          const hunterUrl = new URL('https://api.hunter.io/v2/email-finder');
-          hunterUrl.searchParams.set('domain', domain);
-          hunterUrl.searchParams.set('first_name', firstName);
-          hunterUrl.searchParams.set('last_name', lastName);
-          hunterUrl.searchParams.set('api_key', HUNTER_API_KEY);
+      if (domains.length > 0 && firstName && lastName) {
+        for (const domain of domains) {
+          if (hunterEmail) break; // Stop if we found an email
+          
+          console.log(`Hunter.io lookup: ${firstName} ${lastName} @ ${domain}`);
+          
+          try {
+            const hunterUrl = new URL('https://api.hunter.io/v2/email-finder');
+            hunterUrl.searchParams.set('domain', domain);
+            hunterUrl.searchParams.set('first_name', firstName);
+            hunterUrl.searchParams.set('last_name', lastName);
+            hunterUrl.searchParams.set('api_key', HUNTER_API_KEY);
 
-          const hunterResponse = await fetch(hunterUrl.toString());
-          const hunterData: HunterResponse = await hunterResponse.json();
+            const hunterResponse = await fetch(hunterUrl.toString());
+            const hunterData: HunterResponse = await hunterResponse.json();
 
-          if (hunterData.data?.email) {
-            hunterEmail = hunterData.data.email;
-            hunterConfidence = hunterData.data.score || 0;
-            hunterLinkedin = hunterData.data.linkedin || null;
-            console.log(`Hunter found email: ${hunterEmail} (score: ${hunterConfidence})`);
-          } else if (hunterData.errors) {
-            console.log(`Hunter error: ${hunterData.errors[0]?.details}`);
+            if (hunterData.data?.email) {
+              hunterEmail = hunterData.data.email;
+              hunterConfidence = hunterData.data.score || 0;
+              hunterLinkedin = hunterData.data.linkedin || null;
+              console.log(`Hunter found email: ${hunterEmail} (score: ${hunterConfidence})`);
+              break;
+            } else if (hunterData.errors) {
+              console.log(`Hunter error for ${domain}: ${hunterData.errors[0]?.details}`);
+            }
+          } catch (hunterError) {
+            console.error(`Hunter.io API error for ${domain}:`, hunterError);
           }
-        } catch (hunterError) {
-          console.error("Hunter.io API error:", hunterError);
         }
-      } else if (domain && firstName) {
+      } else if (domains.length > 0 && firstName) {
         console.log(`Hunter: Skipping - need both first and last name (have: ${firstName})`);
       }
     }
