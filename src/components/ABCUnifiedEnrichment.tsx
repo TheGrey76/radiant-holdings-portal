@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -7,7 +7,6 @@ import {
   AlertTriangle, Mail, Linkedin, Sparkles, X, 
   RefreshCw, StopCircle
 } from 'lucide-react';
-import { toast } from 'sonner';
 import {
   Dialog,
   DialogContent,
@@ -16,171 +15,49 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { supabase } from '@/integrations/supabase/client';
-
-interface MissingDataStats {
-  totalInvestors: number;
-  missingEmail: number;
-  missingLinkedin: number;
-  investorsWithMissingData: Array<{
-    id: string;
-    nome: string;
-    azienda: string;
-    ruolo?: string;
-    categoria: string;
-    missingEmail: boolean;
-    missingLinkedin: boolean;
-  }>;
-}
+import { useABCData } from '@/contexts/ABCDataContext';
 
 interface ABCUnifiedEnrichmentProps {
   showAfterImport?: boolean;
   importedCount?: number;
   onDismissImportAlert?: () => void;
-  onEnrichmentComplete?: () => void;
 }
 
 export const ABCUnifiedEnrichment: React.FC<ABCUnifiedEnrichmentProps> = ({
   showAfterImport = false,
   importedCount = 0,
   onDismissImportAlert,
-  onEnrichmentComplete
 }) => {
-  const [stats, setStats] = useState<MissingDataStats | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [dismissed, setDismissed] = useState(false);
-  const [showDetailDialog, setShowDetailDialog] = useState(false);
-  const [isEnriching, setIsEnriching] = useState(false);
-  const [enrichProgress, setEnrichProgress] = useState(0);
-  const [enrichedCount, setEnrichedCount] = useState(0);
-  
-  const stopEnrichmentRef = useRef(false);
+  const {
+    missingDataStats,
+    isLoadingInvestors,
+    isEnriching,
+    enrichProgress,
+    enrichInvestors,
+    stopEnrichment,
+    refreshAll,
+  } = useABCData();
 
-  const fetchMissingDataStats = useCallback(async () => {
-    try {
-      setLoading(true);
-      
-      const { data: investors, error } = await supabase
-        .from('abc_investors')
-        .select('id, nome, azienda, email, linkedin, ruolo, categoria')
-        .order('nome');
-
-      if (error) throw error;
-
-      const investorList = investors || [];
-      const totalInvestors = investorList.length;
-      
-      const investorsWithMissingData = investorList
-        .map(inv => ({
-          id: inv.id,
-          nome: inv.nome,
-          azienda: inv.azienda,
-          ruolo: inv.ruolo,
-          categoria: inv.categoria,
-          missingEmail: !inv.email || inv.email.trim() === '' || inv.email.trim().toLowerCase() === 'null',
-          missingLinkedin: !inv.linkedin || inv.linkedin.trim() === '' || inv.linkedin.trim().toLowerCase() === 'null'
-        }))
-        .filter(inv => inv.missingEmail || inv.missingLinkedin);
-
-      const missingEmail = investorsWithMissingData.filter(i => i.missingEmail).length;
-      const missingLinkedin = investorsWithMissingData.filter(i => i.missingLinkedin).length;
-
-      setStats({
-        totalInvestors,
-        missingEmail,
-        missingLinkedin,
-        investorsWithMissingData
-      });
-    } catch (error) {
-      console.error('Error fetching missing data stats:', error);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchMissingDataStats();
-  }, [fetchMissingDataStats]);
-
-  const handleStopEnrichment = () => {
-    stopEnrichmentRef.current = true;
-    toast.info('Arresto enrichment in corso...');
-  };
-
-  const handleEnrichPercentage = async (percentage: number) => {
-    if (!stats || stats.investorsWithMissingData.length === 0) return;
-
-    setIsEnriching(true);
-    setEnrichProgress(0);
-    setEnrichedCount(0);
-    stopEnrichmentRef.current = false;
-
-    const allToEnrich = stats.investorsWithMissingData;
-    const count = Math.max(1, Math.ceil(allToEnrich.length * (percentage / 100)));
-    const toEnrich = allToEnrich.slice(0, count);
-    
-    let completed = 0;
-    let enriched = 0;
-
-    for (const investor of toEnrich) {
-      if (stopEnrichmentRef.current) {
-        toast.warning(`Enrichment interrotto. ${enriched} investitori arricchiti su ${completed} processati.`);
-        break;
-      }
-
-      try {
-        const { data, error } = await supabase.functions.invoke('ai-investor-enrichment', {
-          body: {
-            investorId: investor.id,
-            nome: investor.nome,
-            azienda: investor.azienda,
-            ruolo: investor.ruolo,
-            categoria: investor.categoria,
-          },
-        });
-
-        if (!error && data?.updated) {
-          enriched++;
-          setEnrichedCount(enriched);
-        }
-      } catch (err) {
-        console.error('Error enriching investor:', investor.nome, err);
-      }
-
-      completed++;
-      setEnrichProgress(Math.round((completed / toEnrich.length) * 100));
-      
-      // Delay to avoid rate limiting
-      await new Promise(resolve => setTimeout(resolve, 2000));
-    }
-
-    setIsEnriching(false);
-    stopEnrichmentRef.current = false;
-    
-    // Refresh stats
-    await fetchMissingDataStats();
-    
-    if (enriched > 0 && !stopEnrichmentRef.current) {
-      toast.success(`${enriched} investitori arricchiti con successo!`);
-    } else if (!stopEnrichmentRef.current) {
-      toast.info('Nessun nuovo dato trovato tramite AI');
-    }
-
-    // Notify parent to refresh
-    onEnrichmentComplete?.();
-  };
+  const [dismissed, setDismissed] = React.useState(false);
+  const [showDetailDialog, setShowDetailDialog] = React.useState(false);
+  const [enrichedCount, setEnrichedCount] = React.useState(0);
 
   const handleDismiss = () => {
     setDismissed(true);
     onDismissImportAlert?.();
   };
 
-  // Don't show if dismissed, loading, or no missing data
-  if (dismissed || loading) return null;
-  if (!stats || (stats.missingEmail === 0 && stats.missingLinkedin === 0)) return null;
+  const handleEnrichPercentage = async (percentage: number) => {
+    setEnrichedCount(0);
+    await enrichInvestors(percentage);
+  };
 
-  const totalMissing = stats.investorsWithMissingData.length;
-  const completenessPercent = Math.round(((stats.totalInvestors - totalMissing) / stats.totalInvestors) * 100);
+  // Don't show if dismissed, loading, or no missing data
+  if (dismissed || isLoadingInvestors) return null;
+  if (!missingDataStats || (missingDataStats.missingEmail === 0 && missingDataStats.missingLinkedin === 0)) return null;
+
+  const totalMissing = missingDataStats.investorsWithMissingData.length;
+  const completenessPercent = Math.round(((missingDataStats.totalInvestors - totalMissing) / missingDataStats.totalInvestors) * 100);
 
   return (
     <>
@@ -207,11 +84,11 @@ export const ABCUnifiedEnrichment: React.FC<ABCUnifiedEnrichmentProps> = ({
                 <div className="flex flex-wrap gap-4 text-sm text-muted-foreground mb-3">
                   <div className="flex items-center gap-1.5">
                     <Mail className="h-4 w-4 text-amber-500" />
-                    <span><strong>{stats.missingEmail}</strong> senza email</span>
+                    <span><strong>{missingDataStats.missingEmail}</strong> senza email</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <Linkedin className="h-4 w-4 text-amber-500" />
-                    <span><strong>{stats.missingLinkedin}</strong> senza LinkedIn</span>
+                    <span><strong>{missingDataStats.missingLinkedin}</strong> senza LinkedIn</span>
                   </div>
                 </div>
 
@@ -222,9 +99,6 @@ export const ABCUnifiedEnrichment: React.FC<ABCUnifiedEnrichmentProps> = ({
                       <span className="text-xs font-medium">{enrichProgress}%</span>
                     </div>
                     <Progress value={enrichProgress} className="h-2" />
-                    <p className="text-xs text-muted-foreground mt-1">
-                      {enrichedCount} dati trovati finora
-                    </p>
                   </div>
                 )}
 
@@ -240,7 +114,7 @@ export const ABCUnifiedEnrichment: React.FC<ABCUnifiedEnrichmentProps> = ({
                     <Button
                       size="sm"
                       variant="destructive"
-                      onClick={handleStopEnrichment}
+                      onClick={stopEnrichment}
                     >
                       <StopCircle className="h-4 w-4 mr-2" />
                       Stop ({enrichProgress}%)
@@ -300,9 +174,6 @@ export const ABCUnifiedEnrichment: React.FC<ABCUnifiedEnrichmentProps> = ({
                 <span className="text-sm text-muted-foreground">{enrichProgress}%</span>
               </div>
               <Progress value={enrichProgress} className="h-2" />
-              <p className="text-xs text-muted-foreground mt-2">
-                {enrichedCount} dati trovati finora
-              </p>
             </div>
           )}
 
@@ -310,18 +181,18 @@ export const ABCUnifiedEnrichment: React.FC<ABCUnifiedEnrichmentProps> = ({
             <div className="flex gap-4 text-sm">
               <Badge variant="outline" className="gap-1">
                 <Mail className="h-3 w-3" />
-                {stats.missingEmail} email mancanti
+                {missingDataStats.missingEmail} email mancanti
               </Badge>
               <Badge variant="outline" className="gap-1">
                 <Linkedin className="h-3 w-3" />
-                {stats.missingLinkedin} LinkedIn mancanti
+                {missingDataStats.missingLinkedin} LinkedIn mancanti
               </Badge>
             </div>
             <div className="flex gap-2 flex-wrap">
               <Button
                 size="sm"
                 variant="outline"
-                onClick={fetchMissingDataStats}
+                onClick={refreshAll}
                 disabled={isEnriching}
               >
                 <RefreshCw className="h-4 w-4" />
@@ -330,7 +201,7 @@ export const ABCUnifiedEnrichment: React.FC<ABCUnifiedEnrichmentProps> = ({
                 <Button
                   size="sm"
                   variant="destructive"
-                  onClick={handleStopEnrichment}
+                  onClick={stopEnrichment}
                 >
                   <StopCircle className="h-4 w-4 mr-2" />
                   Stop ({enrichProgress}%)
@@ -369,7 +240,7 @@ export const ABCUnifiedEnrichment: React.FC<ABCUnifiedEnrichmentProps> = ({
 
           <ScrollArea className="h-[400px] border rounded-lg">
             <div className="divide-y">
-              {stats.investorsWithMissingData.map(investor => (
+              {missingDataStats.investorsWithMissingData.map(investor => (
                 <div key={investor.id} className="flex items-center justify-between p-3 hover:bg-accent/50">
                   <div>
                     <p className="font-medium">{investor.nome}</p>
