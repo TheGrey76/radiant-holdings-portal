@@ -1,7 +1,9 @@
 import { motion } from "framer-motion";
-import { FileText, Download, Building2, Users, Briefcase, BookOpen } from "lucide-react";
+import { FileText, Download, Building2, Users, Briefcase, BookOpen, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { OverviewPDFExport, GPServicesPDFExport, LPServicesPDFExport, ServiceCatalogPDFExport } from "@/components/marketing";
 
 const materials = [
   {
@@ -9,57 +11,68 @@ const materials = [
     title: "Aries76 Overview",
     description: "Company introduction and value proposition for PE/VC funds and institutional investors",
     icon: Building2,
-    file: "/marketing/Aries76_Overview.pdf",
     pages: 2,
-    category: "Company"
+    category: "Company",
+    ExportComponent: OverviewPDFExport,
+    preview: [
+      "The Aries76 Advantage",
+      "• AI-Powered Intelligence - Technology-driven sourcing",
+      "• Process, Not Introductions - Structured methodologies",
+      "• Partnership Model - Aligned incentives",
+      "Track Record: 26+ years, 500+ companies, €3B+ capital markets"
+    ]
   },
   {
     id: "gp-services",
     title: "Services for Fund Managers",
     description: "AI-powered solutions for PE/VC funds: deal sourcing, portfolio value creation, and market intelligence",
     icon: Briefcase,
-    file: "/marketing/Aries76_GP_Services.pdf",
     pages: 2,
-    category: "GP Services"
+    category: "GP Services",
+    ExportComponent: GPServicesPDFExport,
+    preview: [
+      "Section 1: Deal Sourcing as a Service",
+      "• Sector Monitoring: €3,000 - €8,000/mo",
+      "• Qualified Deal Flow: €5,000/mo + 1.5% success",
+      "Section 2: Portfolio Value Creation",
+      "Section 3: Market Intelligence"
+    ]
   },
   {
     id: "lp-services",
     title: "Services for Limited Partners",
     description: "Institutional-grade advisory: fund selection, due diligence, portfolio management, and strategic advisory",
     icon: Users,
-    file: "/marketing/Aries76_LP_Services.pdf",
     pages: 2,
-    category: "LP Services"
+    category: "LP Services",
+    ExportComponent: LPServicesPDFExport,
+    preview: [
+      "Section 1: Fund Selection & Due Diligence",
+      "• GP Screening: €6,000 - €15,000/mo",
+      "• Fund Due Diligence: €12,000 - €40,000/fund",
+      "Section 2: Portfolio Management Support",
+      "Section 3: Strategic Advisory"
+    ]
   },
   {
     id: "service-catalog",
     title: "Service Catalog 2026",
     description: "Complete pricing and service breakdown for GPs and LPs with quick-win packages",
     icon: BookOpen,
-    file: "/marketing/Aries76_Service_Catalog.pdf",
     pages: 4,
-    category: "Pricing"
+    category: "Pricing",
+    ExportComponent: ServiceCatalogPDFExport,
+    preview: [
+      "Complete GP & LP Service Breakdown",
+      "• All pricing tiers and packages",
+      "• Quick-Win Packages for fast delivery",
+      "• Due Diligence tier options",
+      "• Contact information"
+    ]
   }
 ];
 
 const MarketingMaterials = () => {
-  const handleDownload = (file: string, title: string) => {
-    const link = document.createElement("a");
-    link.href = file;
-    link.download = title.replace(/\s+/g, "_") + ".pdf";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
-  const handleDownloadAll = () => {
-    materials.forEach((material, index) => {
-      setTimeout(() => {
-        handleDownload(material.file, material.title);
-      }, index * 500);
-    });
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950/50 to-slate-950">
       {/* Hero Section */}
@@ -84,17 +97,8 @@ const MarketingMaterials = () => {
             
             <p className="text-lg text-slate-300 max-w-2xl mx-auto mb-8">
               Professional marketing materials for fund managers and institutional investors. 
-              Download individual documents or the complete package.
+              Properly formatted PDFs with clean pagination.
             </p>
-
-            <Button 
-              onClick={handleDownloadAll}
-              size="lg"
-              className="bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold"
-            >
-              <Download className="w-5 h-5 mr-2" />
-              Download All Materials
-            </Button>
           </motion.div>
 
           {/* Materials Grid */}
@@ -133,23 +137,40 @@ const MarketingMaterials = () => {
                     </CardDescription>
                     
                     <div className="flex gap-3">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="flex-1 border-slate-600 hover:border-amber-500/50 hover:bg-amber-500/10"
-                        onClick={() => window.open(material.file, '_blank')}
-                      >
-                        <FileText className="w-4 h-4 mr-2" />
-                        View PDF
-                      </Button>
-                      <Button
-                        size="sm"
-                        className="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-900"
-                        onClick={() => handleDownload(material.file, material.title)}
-                      >
-                        <Download className="w-4 h-4 mr-2" />
-                        Download
-                      </Button>
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="flex-1 border-slate-600 hover:border-amber-500/50 hover:bg-amber-500/10"
+                          >
+                            <Eye className="w-4 h-4 mr-2" />
+                            Preview
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent className="bg-slate-900 border-slate-700 max-w-lg">
+                          <DialogHeader>
+                            <DialogTitle className="text-white flex items-center gap-2">
+                              <material.icon className="w-5 h-5 text-amber-400" />
+                              {material.title}
+                            </DialogTitle>
+                          </DialogHeader>
+                          <div className="space-y-3 py-4">
+                            <p className="text-slate-400 text-sm">{material.description}</p>
+                            <div className="bg-slate-800/50 rounded-lg p-4 space-y-2">
+                              <p className="text-xs text-amber-400 font-medium uppercase">Contents Preview:</p>
+                              {material.preview.map((line, idx) => (
+                                <p key={idx} className="text-slate-300 text-sm">{line}</p>
+                              ))}
+                            </div>
+                            <div className="pt-4">
+                              <material.ExportComponent size="default" />
+                            </div>
+                          </div>
+                        </DialogContent>
+                      </Dialog>
+                      
+                      <material.ExportComponent size="sm" />
                     </div>
                   </CardContent>
                 </Card>
