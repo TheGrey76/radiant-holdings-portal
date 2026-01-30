@@ -687,7 +687,10 @@ const MarketingMaterials = () => {
     try {
       const generator = getPDFGenerator(materialId);
       const pdf = generator();
-      const blob = pdf.output('blob');
+      // jsPDF may return a Blob without a proper MIME type depending on output mode.
+      // Build an explicit application/pdf Blob for reliable in-browser rendering.
+      const arrayBuffer = pdf.output('arraybuffer');
+      const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
       const url = URL.createObjectURL(blob);
       setPreviewUrl(url);
     } catch (error) {
@@ -881,18 +884,11 @@ const MarketingMaterials = () => {
           </DialogHeader>
           <div className="flex-1 p-4 min-h-0">
             {previewUrl ? (
-              <object
-                data={previewUrl}
-                type="application/pdf"
+              <iframe
+                src={previewUrl}
                 className="w-full h-full rounded-lg border border-slate-700"
                 title={`Preview: ${previewTitle}`}
-              >
-                <div className="flex flex-col items-center justify-center h-full text-slate-400">
-                  <FileText className="w-12 h-12 mb-4" />
-                  <p>Unable to display PDF preview.</p>
-                  <p className="text-sm">Your browser may not support embedded PDFs.</p>
-                </div>
-              </object>
+              />
             ) : (
               <div className="flex items-center justify-center h-full">
                 <Loader2 className="w-8 h-8 text-orange-400 animate-spin" />
