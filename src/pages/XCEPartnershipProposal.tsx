@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { Shield, Mail, FileText, TrendingUp, Users, GraduationCap, Calendar, Target, CheckCircle2, AlertTriangle, ArrowRight, Building, LogOut } from "lucide-react";
 import { motion } from "framer-motion";
+import { XCEPartnershipPDFExport } from "@/components/XCEPartnershipPDFExport";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, Legend, AreaChart, Area } from "recharts";
 
 // Authorized emails for this document
@@ -206,12 +207,13 @@ const XCEPartnershipProposal = () => {
   // Document Content
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0a1628] via-[#0f1e36] to-[#1a2e4a]">
-      {/* Logout Button - Fixed position below navbar */}
+      {/* Action Buttons - Fixed position below navbar */}
       <motion.div 
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="fixed top-20 right-6 z-40"
+        className="fixed top-20 right-6 z-40 flex gap-2"
       >
+        <XCEPartnershipPDFExport variant="default" size="sm" />
         <Button
           onClick={handleLogout}
           variant="outline"
