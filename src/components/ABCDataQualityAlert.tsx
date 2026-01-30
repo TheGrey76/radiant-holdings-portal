@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { 
   AlertTriangle, Mail, Linkedin, Sparkles, X, ChevronDown, ChevronUp,
-  Loader2, Check, RefreshCw
+  Loader2, Check, RefreshCw, StopCircle
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -52,6 +52,9 @@ export const ABCDataQualityAlert: React.FC<ABCDataQualityAlertProps> = ({
   const [isEnriching, setIsEnriching] = useState(false);
   const [enrichProgress, setEnrichProgress] = useState(0);
   const [enrichedCount, setEnrichedCount] = useState(0);
+  
+  // Ref to track if enrichment should be stopped
+  const stopEnrichmentRef = useRef(false);
 
   const fetchMissingDataStats = useCallback(async () => {
     try {
@@ -100,18 +103,33 @@ export const ABCDataQualityAlert: React.FC<ABCDataQualityAlertProps> = ({
     fetchMissingDataStats();
   }, [fetchMissingDataStats]);
 
-  const handleEnrichAll = async () => {
+  const handleStopEnrichment = () => {
+    stopEnrichmentRef.current = true;
+    toast.info('Arresto enrichment in corso...');
+  };
+
+  const handleEnrichPercentage = async (percentage: number) => {
     if (!stats || stats.investorsWithMissingData.length === 0) return;
 
     setIsEnriching(true);
     setEnrichProgress(0);
     setEnrichedCount(0);
+    stopEnrichmentRef.current = false;
 
-    const toEnrich = stats.investorsWithMissingData;
+    const allToEnrich = stats.investorsWithMissingData;
+    const count = Math.max(1, Math.ceil(allToEnrich.length * (percentage / 100)));
+    const toEnrich = allToEnrich.slice(0, count);
+    
     let completed = 0;
     let enriched = 0;
 
     for (const investor of toEnrich) {
+      // Check if stop was requested
+      if (stopEnrichmentRef.current) {
+        toast.warning(`Enrichment interrotto. ${enriched} investitori arricchiti su ${completed} processati.`);
+        break;
+      }
+
       try {
         // Get full investor data
         const { data: fullInvestor } = await supabase
@@ -148,16 +166,15 @@ export const ABCDataQualityAlert: React.FC<ABCDataQualityAlertProps> = ({
     }
 
     setIsEnriching(false);
+    stopEnrichmentRef.current = false;
     
     if (enriched > 0) {
       toast.success(`${enriched} investitori arricchiti con successo!`);
       onEnrichmentComplete?.();
       fetchMissingDataStats();
-    } else {
+    } else if (!stopEnrichmentRef.current) {
       toast.info('Nessun nuovo dato trovato tramite AI');
     }
-    
-    setShowDetailDialog(false);
   };
 
   const handleDismiss = () => {
@@ -279,7 +296,7 @@ export const ABCDataQualityAlert: React.FC<ABCDataQualityAlertProps> = ({
                 {stats.missingLinkedin} LinkedIn mancanti
               </Badge>
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 flex-wrap">
               <Button
                 size="sm"
                 variant="outline"
@@ -288,24 +305,44 @@ export const ABCDataQualityAlert: React.FC<ABCDataQualityAlertProps> = ({
               >
                 <RefreshCw className="h-4 w-4" />
               </Button>
-              <Button
-                size="sm"
-                onClick={handleEnrichAll}
-                disabled={isEnriching}
-                className="bg-gradient-to-r from-primary to-primary/80"
-              >
-                {isEnriching ? (
-                  <>
-                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    {enrichProgress}%
-                  </>
-                ) : (
-                  <>
+              {isEnriching ? (
+                <Button
+                  size="sm"
+                  variant="destructive"
+                  onClick={handleStopEnrichment}
+                >
+                  <StopCircle className="h-4 w-4 mr-2" />
+                  Stop ({enrichProgress}%)
+                </Button>
+              ) : (
+                <>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => handleEnrichPercentage(25)}
+                    disabled={isEnriching}
+                  >
+                    25%
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => handleEnrichPercentage(50)}
+                    disabled={isEnriching}
+                  >
+                    50%
+                  </Button>
+                  <Button
+                    size="sm"
+                    onClick={() => handleEnrichPercentage(100)}
+                    disabled={isEnriching}
+                    className="bg-gradient-to-r from-primary to-primary/80"
+                  >
                     <Sparkles className="h-4 w-4 mr-2" />
-                    Arricchisci Tutti ({totalMissing})
-                  </>
-                )}
-              </Button>
+                    100% ({totalMissing})
+                  </Button>
+                </>
+              )}
             </div>
           </div>
 
