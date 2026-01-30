@@ -551,6 +551,9 @@ const ABCCompanyConsole = () => {
   const [showDataQualityAlert, setShowDataQualityAlert] = useState(true);
   const [lastImportCount, setLastImportCount] = useState(0);
   const [showImportAlert, setShowImportAlert] = useState(false);
+  
+  // Refresh key - incrementato dopo enrichment per forzare re-render dei componenti engagement
+  const [dataRefreshKey, setDataRefreshKey] = useState(0);
 
   // Settings state
   const [notificationPrefs, setNotificationPrefs] = useState({
@@ -1098,6 +1101,8 @@ const ABCCompanyConsole = () => {
                 onEnrichmentComplete={() => {
                   fetchInvestors();
                   fetchCampaignStats();
+                  // Incrementa refresh key per forzare re-render dei componenti engagement
+                  setDataRefreshKey(prev => prev + 1);
                 }}
               />
             )}
@@ -1542,6 +1547,7 @@ const ABCCompanyConsole = () => {
 
             {/* Follow-up Sequences */}
             <ABCFollowUpSequences 
+              key={`followup-seq-${dataRefreshKey}`}
               investors={investors.map(i => ({
                 id: i.id,
                 nome: i.nome,
@@ -1564,7 +1570,7 @@ const ABCCompanyConsole = () => {
             />
 
             <ABCEmailCampaignManager 
-              key={`campaign-manager-${investors.filter(i => i.email).length}-${pendingReminders.length}-${lastDataUpdate?.getTime() || 0}`}
+              key={`campaign-manager-${investors.filter(i => i.email).length}-${pendingReminders.length}-${lastDataUpdate?.getTime() || 0}-${dataRefreshKey}`}
               investors={investors.map(i => ({ 
                 id: i.id, 
                 nome: i.nome, 
