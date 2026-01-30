@@ -776,19 +776,19 @@ export const XCEPartnershipPDFExport = ({ variant = 'default', size = 'default' 
       checkPageBreak(80);
       drawSectionHeader('Appendix B: Risk Mitigation & Success Factors');
       
-      // Success factors box
-      pdf.setFillColor(34, 197, 94, 0.1);
+      // Success factors box - Light background with dark text for readability
+      pdf.setFillColor(240, 253, 244); // Very light green background
       pdf.setDrawColor(34, 197, 94);
       pdf.roundedRect(margin, y - 3, contentWidth, 35, 2, 2, 'FD');
       
       pdf.setFontSize(10);
       pdf.setFont('helvetica', 'bold');
-      pdf.setTextColor(34, 197, 94);
+      pdf.setTextColor(22, 101, 52); // Dark green for title
       pdf.text('Key Success Factors', margin + 5, y + 4);
       
       pdf.setFontSize(8);
       pdf.setFont('helvetica', 'normal');
-      pdf.setTextColor(60, 60, 60);
+      pdf.setTextColor(30, 30, 30); // Very dark text for maximum readability
       const successText = pdf.splitTextToSize('The success of this partnership depends on maintaining alignment between Aries76 Ltd. and XCE on strategy, messaging, and client engagement. We must deliver exceptional service quality to our early clients, as their testimonials will be instrumental in attracting subsequent clients. We must remain agile and responsive to market feedback.', contentWidth - 10);
       successText.forEach((line: string, idx: number) => {
         pdf.text(line, margin + 5, y + 12 + (idx * 4));
@@ -796,20 +796,20 @@ export const XCEPartnershipPDFExport = ({ variant = 'default', size = 'default' 
       
       y += 45;
       
-      // Risk mitigation box
+      // Risk mitigation box - Light background with dark text for readability
       checkPageBreak(40);
-      pdf.setFillColor(234, 179, 8, 0.1);
-      pdf.setDrawColor(234, 179, 8);
+      pdf.setFillColor(254, 249, 195); // Very light yellow/amber background
+      pdf.setDrawColor(202, 138, 4); // Darker amber border
       pdf.roundedRect(margin, y - 3, contentWidth, 35, 2, 2, 'FD');
       
       pdf.setFontSize(10);
       pdf.setFont('helvetica', 'bold');
-      pdf.setTextColor(234, 179, 8);
+      pdf.setTextColor(146, 64, 14); // Dark amber/brown for title
       pdf.text('Risk Mitigation Strategies', margin + 5, y + 4);
       
       pdf.setFontSize(8);
       pdf.setFont('helvetica', 'normal');
-      pdf.setTextColor(60, 60, 60);
+      pdf.setTextColor(30, 30, 30); // Very dark text for maximum readability
       const riskText = pdf.splitTextToSize('The primary risk is that competitors may enter the market. To mitigate this, we will focus on building strong client relationships and creating high switching costs through our integrated service model. A secondary risk is that demand may not materialize as quickly as projected. We will maintain flexibility in our cost structure and be prepared to adjust targets.', contentWidth - 10);
       riskText.forEach((line: string, idx: number) => {
         pdf.text(line, margin + 5, y + 12 + (idx * 4));
