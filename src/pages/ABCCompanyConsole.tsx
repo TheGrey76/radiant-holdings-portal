@@ -43,6 +43,7 @@ import { ABCFollowUpSequences } from "@/components/ABCFollowUpSequences";
 import { ABCCampaignStatsDialog } from "@/components/ABCCampaignStatsDialog";
 import { useKPIHistory } from "@/hooks/useKPIHistory";
 import { supabase } from "@/integrations/supabase/client";
+import { ABCDataProvider } from "@/contexts/ABCDataContext";
 
 // Auth View type
 type AuthView = 'login' | 'signup' | 'forgot-password' | 'reset-password';
@@ -1097,12 +1098,6 @@ const ABCCompanyConsole = () => {
                 onDismissImportAlert={() => {
                   setShowImportAlert(false);
                   setShowDataQualityAlert(false);
-                }}
-                onEnrichmentComplete={() => {
-                  fetchInvestors();
-                  fetchCampaignStats();
-                  // Incrementa refresh key per forzare re-render dei componenti engagement
-                  setDataRefreshKey(prev => prev + 1);
                 }}
               />
             )}
@@ -2500,4 +2495,11 @@ const ABCCompanyConsole = () => {
   );
 };
 
-export default ABCCompanyConsole;
+// Wrap with ABCDataProvider
+const ABCCompanyConsoleWithProvider = () => (
+  <ABCDataProvider>
+    <ABCCompanyConsole />
+  </ABCDataProvider>
+);
+
+export default ABCCompanyConsoleWithProvider;
