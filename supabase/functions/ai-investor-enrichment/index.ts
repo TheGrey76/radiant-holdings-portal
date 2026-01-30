@@ -288,10 +288,18 @@ Find their LinkedIn profile, professional background, investment preferences, an
               if (cleanContent.endsWith("```")) {
                 cleanContent = cleanContent.slice(0, -3);
               }
-              aiData = JSON.parse(cleanContent.trim());
-              console.log("AI enrichment successful");
+              const parsedData = JSON.parse(cleanContent.trim());
+              // Ensure aiData is always an object, never null
+              if (parsedData && typeof parsedData === 'object' && !Array.isArray(parsedData)) {
+                aiData = parsedData;
+                console.log("AI enrichment successful");
+              } else {
+                console.warn("AI returned non-object data, using empty object");
+                aiData = {};
+              }
             } catch (parseError) {
               console.error("Failed to parse AI response:", parseError);
+              aiData = {};
             }
           }
         } else if (response.status === 429) {
