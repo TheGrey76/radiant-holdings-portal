@@ -34,7 +34,7 @@ const ABCEmailEnrichment: React.FC<ABCEmailEnrichmentProps> = ({ onEmailUpdated 
       const { data, error } = await supabase
         .from('abc_investors')
         .select('id, nome, azienda, email, ruolo, categoria')
-        .or('email.is.null,email.eq.')
+        .or('email.is.null,email.eq.,email.eq.null')
         .order('nome');
 
       if (error) throw error;

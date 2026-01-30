@@ -722,6 +722,15 @@ const ABCCompanyConsole = () => {
 
       if (error) throw error;
       
+      const normalizeNullableString = (v: unknown): string | null => {
+        if (v === null || v === undefined) return null;
+        if (typeof v !== 'string') return String(v);
+        const t = v.trim();
+        if (!t) return null;
+        if (t.toLowerCase() === 'null') return null;
+        return t;
+      };
+
       // Transform to match component interface
       const transformedInvestors = (data || []).map((inv: any) => ({
         id: inv.id,
@@ -731,9 +740,9 @@ const ABCCompanyConsole = () => {
         categoria: inv.categoria,
         citta: inv.citta,
         fonte: inv.fonte,
-        linkedin: inv.linkedin,
-        email: inv.email,
-        phone: inv.phone,
+        linkedin: normalizeNullableString(inv.linkedin),
+        email: normalizeNullableString(inv.email),
+        phone: normalizeNullableString(inv.phone),
         priorita: inv.priorita,
         status: inv.status,
         pipelineValue: Number(inv.pipeline_value),
@@ -1085,6 +1094,7 @@ const ABCCompanyConsole = () => {
               <ABCDataQualityAlert 
                 onEnrichmentComplete={() => {
                   fetchInvestors();
+                  fetchCampaignStats();
                   setShowImportAlert(false);
                 }}
                 showAfterImport={showImportAlert}
