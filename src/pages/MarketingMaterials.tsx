@@ -1,9 +1,10 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { FileText, Download, Building2, Users, Briefcase, BookOpen, Eye, X, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { PDFViewer } from "@/components/PDFViewer";
 import jsPDF from 'jspdf';
 
 type MaterialId = 'overview' | 'gp-services' | 'lp-services' | 'service-catalog';
@@ -646,18 +647,10 @@ const generateServiceCatalogPDF = () => {
 
 const MarketingMaterials = () => {
   const [previewOpen, setPreviewOpen] = useState(false);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [previewData, setPreviewData] = useState<ArrayBuffer | null>(null);
   const [previewTitle, setPreviewTitle] = useState("");
   const [loadingPreview, setLoadingPreview] = useState<MaterialId | null>(null);
   const [downloading, setDownloading] = useState<MaterialId | null>(null);
-
-  useEffect(() => {
-    return () => {
-      if (previewUrl) {
-        URL.revokeObjectURL(previewUrl);
-      }
-    };
-  }, [previewUrl]);
 
   const getPDFGenerator = (id: MaterialId) => {
     switch (id) {
@@ -671,12 +664,7 @@ const MarketingMaterials = () => {
   const handlePreview = useCallback(async (materialId: MaterialId, title: string) => {
     setLoadingPreview(materialId);
     setPreviewTitle(title);
-    
-    // Revoke old URL first
-    if (previewUrl) {
-      URL.revokeObjectURL(previewUrl);
-      setPreviewUrl(null);
-    }
+    setPreviewData(null);
     
     // Open dialog immediately with loading state
     setPreviewOpen(true);
@@ -687,19 +675,15 @@ const MarketingMaterials = () => {
     try {
       const generator = getPDFGenerator(materialId);
       const pdf = generator();
-      // jsPDF may return a Blob without a proper MIME type depending on output mode.
-      // Build an explicit application/pdf Blob for reliable in-browser rendering.
       const arrayBuffer = pdf.output('arraybuffer');
-      const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
-      const url = URL.createObjectURL(blob);
-      setPreviewUrl(url);
+      setPreviewData(arrayBuffer);
     } catch (error) {
       console.error('PDF preview failed:', error);
       setPreviewOpen(false);
     } finally {
       setLoadingPreview(null);
     }
-  }, [previewUrl]);
+  }, []);
 
   const handleDownload = useCallback(async (materialId: MaterialId, title: string) => {
     setDownloading(materialId);
@@ -882,13 +866,9 @@ const MarketingMaterials = () => {
               <X className="w-5 h-5" />
             </Button>
           </DialogHeader>
-          <div className="flex-1 p-4 min-h-0">
-            {previewUrl ? (
-              <iframe
-                src={previewUrl}
-                className="w-full h-full rounded-lg border border-slate-700"
-                title={`Preview: ${previewTitle}`}
-              />
+          <div className="flex-1 min-h-0">
+            {previewData ? (
+              <PDFViewer pdfData={previewData} className="h-full rounded-lg" />
             ) : (
               <div className="flex items-center justify-center h-full">
                 <Loader2 className="w-8 h-8 text-orange-400 animate-spin" />
