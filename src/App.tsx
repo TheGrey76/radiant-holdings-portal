@@ -81,6 +81,7 @@ import AutomationMonitor from "./pages/AutomationMonitor";
 import StrategicAdvisoryAdmin from "./pages/StrategicAdvisoryAdmin";
 import AdvisoryDocument from "./pages/AdvisoryDocument";
 import XCEPartnershipProposal from "./pages/XCEPartnershipProposal";
+import MarketingMaterials from "./pages/MarketingMaterials";
 
 const queryClient = new QueryClient();
 
@@ -170,6 +171,7 @@ const App = () => (
           <Route path="/reelimmobiliare" element={<ReelImmobiliare />} />
           <Route path="/reelimmobiliare-social" element={<ReelImmobiliareSocialStrategy />} />
           <Route path="/xce-partnership" element={<XCEPartnershipProposal />} />
+          <Route path="/marketing-materials" element={<MarketingMaterials />} />
           <Route path="/AF" element={<ETFCertificatesPortfolio />} />
           <Route path="/press" element={<Press />} />
           <Route path="*" element={<NotFound />} />
