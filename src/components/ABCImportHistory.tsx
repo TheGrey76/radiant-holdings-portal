@@ -17,10 +17,22 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { History, FileSpreadsheet, Users, AlertCircle, Eye, Sparkles } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { History, FileSpreadsheet, Users, AlertCircle, Eye, Sparkles, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
 import { it } from "date-fns/locale";
+import { toast } from "sonner";
 
 interface ImportBatch {
   id: string;
@@ -92,6 +104,32 @@ export function ABCImportHistory() {
   const handleViewBatch = (batch: ImportBatch) => {
     setSelectedBatch(batch);
     fetchBatchInvestors(batch.id);
+  };
+
+  const handleDeleteBatch = async (batchId: string) => {
+    try {
+      // First delete investors linked to this batch
+      const { error: investorsError } = await supabase
+        .from('abc_investors')
+        .delete()
+        .eq('import_batch_id', batchId);
+
+      if (investorsError) throw investorsError;
+
+      // Then delete the batch itself
+      const { error: batchError } = await supabase
+        .from('abc_import_batches')
+        .delete()
+        .eq('id', batchId);
+
+      if (batchError) throw batchError;
+
+      toast.success('Import eliminato con successo');
+      fetchBatches();
+    } catch (error) {
+      console.error('Error deleting batch:', error);
+      toast.error('Errore durante l\'eliminazione');
+    }
   };
 
   const getApprovalBadge = (status: string) => {
@@ -176,20 +214,21 @@ export function ABCImportHistory() {
                     </div>
                   </div>
                   
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        onClick={() => handleViewBatch(batch)}
-                      >
-                        <Eye className="h-4 w-4 mr-1" />
-                        Dettagli
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="max-w-3xl max-h-[80vh] overflow-hidden flex flex-col">
-                      <DialogHeader>
-                        <DialogTitle className="flex items-center gap-2">
+                  <div className="flex gap-2">
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => handleViewBatch(batch)}
+                        >
+                          <Eye className="h-4 w-4 mr-1" />
+                          Dettagli
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="max-w-3xl max-h-[80vh] overflow-hidden flex flex-col">
+                        <DialogHeader>
+                          <DialogTitle className="flex items-center gap-2">
                           <FileSpreadsheet className="h-5 w-5" />
                           {selectedBatch?.batch_name}
                         </DialogTitle>
@@ -235,6 +274,36 @@ export function ABCImportHistory() {
                       </div>
                     </DialogContent>
                   </Dialog>
+                  
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Eliminare questo import?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          Questa azione eliminerà il batch "{batch.batch_name}" e tutti i {batch.new_records} investitori associati. L'azione non può essere annullata.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Annulla</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={() => handleDeleteBatch(batch.id)}
+                          className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                        >
+                          Elimina
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                  </div>
                 </div>
               </div>
             ))}
