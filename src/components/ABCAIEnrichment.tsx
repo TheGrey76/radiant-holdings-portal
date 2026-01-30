@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -48,6 +48,7 @@ const ABCAIEnrichment: React.FC<ABCAIEnrichmentProps> = ({ onDataUpdated }) => {
   const [bulkEnriching, setBulkEnriching] = useState(false);
   const [bulkProgress, setBulkProgress] = useState(0);
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
+  const stopRef = useRef(false);
 
   const fetchInvestorsToEnrich = async () => {
     setLoading(true);
@@ -147,6 +148,7 @@ const ABCAIEnrichment: React.FC<ABCAIEnrichmentProps> = ({ onDataUpdated }) => {
   const enrichPercentage = async (percentage: number) => {
     setBulkEnriching(true);
     setBulkProgress(0);
+    stopRef.current = false;
     
     const toEnrich = investorsToEnrich.filter(i => !results[i.id]);
     const count = Math.max(1, Math.ceil(toEnrich.length * (percentage / 100)));
@@ -154,6 +156,12 @@ const ABCAIEnrichment: React.FC<ABCAIEnrichmentProps> = ({ onDataUpdated }) => {
     let completed = 0;
 
     for (const investor of subset) {
+      // Check if user requested stop
+      if (stopRef.current) {
+        toast.info(`Enrichment interrotto dopo ${completed} investitori`);
+        break;
+      }
+      
       await enrichInvestor(investor);
       completed++;
       setBulkProgress(Math.round((completed / subset.length) * 100));
@@ -162,7 +170,15 @@ const ABCAIEnrichment: React.FC<ABCAIEnrichmentProps> = ({ onDataUpdated }) => {
     }
 
     setBulkEnriching(false);
-    toast.success(`Arricchimento completato: ${completed} investitori`);
+    if (!stopRef.current) {
+      toast.success(`Arricchimento completato: ${completed} investitori`);
+    }
+    stopRef.current = false;
+  };
+
+  const stopEnrichment = () => {
+    stopRef.current = true;
+    toast.info('Interruzione in corso...');
   };
 
   const toggleExpanded = (id: string) => {
@@ -232,24 +248,26 @@ const ABCAIEnrichment: React.FC<ABCAIEnrichmentProps> = ({ onDataUpdated }) => {
             >
               {bulkEnriching ? <Loader2 className="h-4 w-4 animate-spin" /> : '50%'}
             </Button>
-            <Button
-              size="sm"
-              onClick={() => enrichPercentage(100)}
-              disabled={bulkEnriching || investorsToEnrich.length === 0}
-              className="bg-gradient-to-r from-primary to-primary/80"
-            >
-              {bulkEnriching ? (
-                <>
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  {bulkProgress}%
-                </>
-              ) : (
-                <>
-                  <Sparkles className="h-4 w-4 mr-2" />
-                  100%
-                </>
-              )}
-            </Button>
+            {bulkEnriching ? (
+              <Button
+                size="sm"
+                variant="destructive"
+                onClick={stopEnrichment}
+              >
+                <X className="h-4 w-4 mr-2" />
+                Stop
+              </Button>
+            ) : (
+              <Button
+                size="sm"
+                onClick={() => enrichPercentage(100)}
+                disabled={investorsToEnrich.length === 0}
+                className="bg-gradient-to-r from-primary to-primary/80"
+              >
+                <Sparkles className="h-4 w-4 mr-2" />
+                100%
+              </Button>
+            )}
           </div>
         </div>
         {bulkEnriching && (
