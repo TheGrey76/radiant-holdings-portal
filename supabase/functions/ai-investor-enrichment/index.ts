@@ -53,15 +53,29 @@ function extractDomain(azienda: string): string | null {
 }
 
 // Split full name into first and last name
+// Handles various Italian formats: "Nome Cognome", "Cognome, Nome", "Cognome" (solo)
 function splitName(fullName: string): { firstName: string; lastName: string } {
-  const parts = fullName.trim().split(/[\s,]+/).filter(p => p.length > 0);
-  if (parts.length === 1) {
-    return { firstName: parts[0], lastName: '' };
-  }
+  const cleaned = fullName.trim();
+  
   // Handle "Surname, Name" format common in Italian
-  if (fullName.includes(',')) {
-    return { firstName: parts[1] || '', lastName: parts[0] || '' };
+  if (cleaned.includes(',')) {
+    const [lastName, firstName] = cleaned.split(',').map(s => s.trim());
+    return { firstName: firstName || '', lastName: lastName || '' };
   }
+  
+  const parts = cleaned.split(/\s+/).filter(p => p.length > 0);
+  
+  // Single word - could be either first or last name, treat as lastName for Hunter
+  if (parts.length === 1) {
+    return { firstName: '', lastName: parts[0] };
+  }
+  
+  // Two words - assume "FirstName LastName"
+  if (parts.length === 2) {
+    return { firstName: parts[0], lastName: parts[1] };
+  }
+  
+  // Multiple words - first word is firstName, rest is lastName
   return {
     firstName: parts[0],
     lastName: parts.slice(1).join(' ')
@@ -225,18 +239,21 @@ serve(async (req) => {
       firecrawlConfidence = firecrawlResult.confidence;
     }
 
-    // Step 3: Use AI for additional enrichment (LinkedIn, bio, investment focus, etc.)
+    // Step 3: Use AI for additional enrichment (bio, investment focus, etc.)
+    // IMPORTANT: Do NOT use AI to generate LinkedIn URLs - they are unreliable and often invented
     let aiData: any = {};
     
     if (LOVABLE_API_KEY) {
       const systemPrompt = `You are a professional investor research assistant for private equity fundraising. 
-Your task is to find and return structured information about an investor contact.
+Your task is to provide structured information about an investor contact based on your knowledge.
 
-IMPORTANT: Return ONLY a valid JSON object with no additional text. Do not include markdown code blocks.
+CRITICAL RULES:
+1. DO NOT invent or guess LinkedIn profile URLs - leave linkedin as null
+2. Only provide information you are confident about
+3. Return ONLY a valid JSON object with no additional text or markdown
 
 The JSON must have this exact structure:
 {
-  "linkedin": "LinkedIn profile URL or null",
   "bio": "Brief professional bio (max 100 words) or null",
   "investmentFocus": ["array", "of", "focus", "areas"] or null,
   "ticketSize": "typical investment range or null",
@@ -245,8 +262,7 @@ The JSON must have this exact structure:
   "confidence": "high/medium/low based on data quality"
 }
 
-If you cannot find specific information, use null for that field.
-Base your research on the investor's name, company, role, and category provided.`;
+If you cannot find specific information, use null for that field.`;
 
       const userPrompt = `Research this investor for private equity fundraising:
 
@@ -255,7 +271,7 @@ Company: ${azienda}
 ${ruolo ? `Role: ${ruolo}` : ''}
 ${categoria ? `Category: ${categoria}` : ''}
 
-Find their LinkedIn profile, professional background, investment preferences, and any relevant details.`;
+Provide professional background and investment preferences. DO NOT guess LinkedIn URLs.`;
 
       try {
         const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
@@ -312,7 +328,8 @@ Find their LinkedIn profile, professional background, investment preferences, an
       }
     }
 
-    // Step 4: Combine results (Hunter > Firecrawl > AI priority for email)
+    // Step 4: Combine results (Hunter > Firecrawl priority for email)
+    // IMPORTANT: Only use LinkedIn from Hunter.io (verified) - never from AI (invented)
     const finalEmail = hunterEmail || firecrawlEmail || null;
     const finalConfidence = hunterEmail ? hunterConfidence : firecrawlConfidence;
     
@@ -321,7 +338,7 @@ Find their LinkedIn profile, professional background, investment preferences, an
       emailConfidence: finalConfidence,
       emailSource: hunterEmail ? 'hunter.io' : firecrawlEmail ? 'firecrawl' : null,
       phone: null,
-      linkedin: hunterLinkedin || aiData.linkedin || null,
+      linkedin: hunterLinkedin || null, // Only from Hunter.io - never from AI
       bio: aiData.bio || null,
       investmentFocus: aiData.investmentFocus || null,
       ticketSize: aiData.ticketSize || null,
