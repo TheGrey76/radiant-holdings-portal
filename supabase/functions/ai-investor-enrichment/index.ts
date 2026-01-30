@@ -14,90 +14,20 @@ interface EnrichmentRequest {
   categoria?: string;
 }
 
-interface HunterResponse {
-  data?: {
+interface ApolloSearchResponse {
+  people?: Array<{
     email?: string;
-    score?: number;
-    domain?: string;
+    linkedin_url?: string;
     first_name?: string;
     last_name?: string;
-    position?: string;
-    linkedin?: string;
-    verification?: {
-      status?: string;
+    title?: string;
+    organization?: {
+      name?: string;
     };
-  };
-  errors?: Array<{ details: string }>;
-}
-
-// Known Italian company domain mappings
-const ITALIAN_COMPANY_DOMAINS: Record<string, string> = {
-  'banca investis': 'investissgr.com',
-  'bnp paribas': 'bnpparibas.it',
-  'intesa sanpaolo': 'intesasanpaolo.com',
-  'unicredit': 'unicredit.it',
-  'generali': 'generali.com',
-  'mediolanum': 'mediolanum.it',
-  'azimut': 'azimut.it',
-  'banca mediolanum': 'bancamediolanum.it',
-  'fideuram': 'fideuram.it',
-  'fineco': 'finecobank.com',
-  'banca aletti': 'alettibank.it',
-  'bper': 'bper.it',
-  'credem': 'credem.it',
-  'credito emiliano': 'credem.it',
-  'banco bpm': 'bancobpm.it',
-  'mps': 'mps.it',
-  'monte dei paschi': 'mps.it',
-  'cdp venture': 'cdpventurecapital.it',
-  'cdp': 'cdp.it',
-  'cassa depositi': 'cdp.it',
-  'amundi': 'amundi.it',
-  'eurizon': 'eurizoncapital.it',
-  'anima': 'animasgr.it',
-  'algebris': 'algebris.com',
-  'kairos': 'kairospartners.com',
-  'quadrivio': 'quadriviogroup.com',
-  'tamburi': 'tamburi.it',
-  'tip': 'tipspa.it',
-  'ipo challenger': 'ipochallenger.it',
-};
-
-// Extract domain from company name/website
-function extractDomains(azienda: string): string[] {
-  const suffixes = [' S.p.A.', ' S.p.a.', ' SpA', ' SPA', ' S.r.l.', ' Srl', ' SRL', ' Ltd', ' Limited', ' GmbH', ' AG', ' Inc', ' Corp', ' LLC', ' SGR', ' SIM', ' S.A.', ' Private Banking', ' Asset Management', ' Investment', ' Investments', ' Capital', ' Partners', ' Group', ' Holding'];
-  let cleanName = azienda;
-  
-  for (const suffix of suffixes) {
-    cleanName = cleanName.replace(new RegExp(suffix + '$', 'i'), '');
-  }
-  cleanName = cleanName.trim();
-  
-  // Check known mappings first
-  const lowerAzienda = azienda.toLowerCase();
-  for (const [key, domain] of Object.entries(ITALIAN_COMPANY_DOMAINS)) {
-    if (lowerAzienda.includes(key)) {
-      return [domain];
-    }
-  }
-  
-  // If it's already a domain
-  if (azienda.includes('.') && !azienda.includes(' ')) {
-    return [azienda.toLowerCase()];
-  }
-  
-  // Generate multiple possible domains (Italian companies often use .it)
-  const baseName = cleanName.toLowerCase().replace(/[^a-z0-9]/g, '');
-  return [
-    baseName + '.it',
-    baseName + '.com',
-    baseName + 'group.it',
-    baseName + 'group.com',
-  ];
+  }>;
 }
 
 // Split full name into first and last name
-// Handles various Italian formats: "Nome Cognome", "Cognome, Nome", "Cognome" (solo)
 function splitName(fullName: string): { firstName: string; lastName: string } {
   const cleaned = fullName.trim();
   
@@ -109,108 +39,103 @@ function splitName(fullName: string): { firstName: string; lastName: string } {
   
   const parts = cleaned.split(/\s+/).filter(p => p.length > 0);
   
-  // Single word - could be either first or last name, treat as lastName for Hunter
   if (parts.length === 1) {
     return { firstName: '', lastName: parts[0] };
   }
   
-  // Two words - assume "FirstName LastName"
   if (parts.length === 2) {
     return { firstName: parts[0], lastName: parts[1] };
   }
   
-  // Multiple words - first word is firstName, rest is lastName
   return {
     firstName: parts[0],
     lastName: parts.slice(1).join(' ')
   };
 }
 
-// Scrape company website using Firecrawl to find email patterns
-async function scrapeCompanyForEmails(azienda: string, nome: string): Promise<{ email: string | null; confidence: number }> {
-  const FIRECRAWL_API_KEY = Deno.env.get("FIRECRAWL_API_KEY");
-  if (!FIRECRAWL_API_KEY) {
-    console.log("FIRECRAWL_API_KEY not configured, skipping website scraping");
-    return { email: null, confidence: 0 };
+// Clean company name for Apollo search
+function cleanCompanyName(azienda: string): string {
+  const suffixes = [' S.p.A.', ' S.p.a.', ' SpA', ' SPA', ' S.r.l.', ' Srl', ' SRL', ' Ltd', ' Limited', ' GmbH', ' AG', ' Inc', ' Corp', ' LLC', ' SGR', ' SIM', ' S.A.', ' Private Banking', ' Asset Management'];
+  let cleanName = azienda;
+  
+  for (const suffix of suffixes) {
+    cleanName = cleanName.replace(new RegExp(suffix + '$', 'i'), '');
+  }
+  return cleanName.trim();
+}
+
+// Apollo.io People Search - Primary enrichment source
+async function searchApolloForPerson(
+  nome: string, 
+  azienda: string, 
+  ruolo?: string
+): Promise<{ email: string | null; linkedin: string | null; confidence: number }> {
+  const APOLLO_API_KEY = Deno.env.get("APOLLO_API_KEY");
+  
+  if (!APOLLO_API_KEY) {
+    console.log("APOLLO_API_KEY not configured, skipping Apollo enrichment");
+    return { email: null, linkedin: null, confidence: 0 };
   }
 
-  // Use the improved domain extraction
-  const domainPatterns = extractDomains(azienda);
+  const { firstName, lastName } = splitName(nome);
+  const cleanedCompany = cleanCompanyName(azienda);
 
-  for (const domain of domainPatterns) {
-    try {
-      // Search for contact page
-      const searchUrl = `https://${domain}/contatti`;
-      console.log(`Firecrawl: Trying to scrape ${searchUrl}`);
+  console.log(`Apollo search: ${firstName} ${lastName} at ${cleanedCompany}`);
 
-      const response = await fetch('https://api.firecrawl.dev/v1/scrape', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${FIRECRAWL_API_KEY}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          url: `https://${domain}`,
-          formats: ['markdown'],
-          onlyMainContent: true,
-        }),
-      });
+  try {
+    // Use Apollo People Search API
+    const response = await fetch('https://api.apollo.io/v1/mixed_people/search', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-cache',
+        'X-Api-Key': APOLLO_API_KEY,
+      },
+      body: JSON.stringify({
+        q_person_name: `${firstName} ${lastName}`.trim(),
+        q_organization_name: cleanedCompany,
+        per_page: 5,
+        page: 1,
+      }),
+    });
 
-      if (!response.ok) {
-        console.log(`Firecrawl: Failed to scrape ${domain}: ${response.status}`);
-        continue;
-      }
-
-      const data = await response.json();
-      const content = data.data?.markdown || data.markdown || '';
-      
-      if (!content) continue;
-
-      // Extract email patterns from content
-      const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
-      const foundEmails = content.match(emailRegex) || [];
-      
-      // Filter out generic emails
-      const genericPatterns = ['info@', 'contact@', 'support@', 'noreply@', 'privacy@', 'legal@'];
-      const personalEmails = foundEmails.filter(email => 
-        !genericPatterns.some(pattern => email.toLowerCase().startsWith(pattern))
-      );
-
-      if (personalEmails.length > 0) {
-        console.log(`Firecrawl: Found ${personalEmails.length} potential emails on ${domain}`);
-        
-        // Try to match with investor name
-        const { firstName, lastName } = splitName(nome);
-        const nameParts = [firstName.toLowerCase(), lastName.toLowerCase()].filter(p => p);
-        
-        for (const email of personalEmails) {
-          const emailLower = email.toLowerCase();
-          if (nameParts.some(part => emailLower.includes(part))) {
-            console.log(`Firecrawl: Found matching email ${email} for ${nome}`);
-            return { email, confidence: 70 };
-          }
-        }
-        
-        // If no name match, try to infer email pattern
-        const domainEmails = personalEmails.filter(e => e.includes(domain!.replace('.com', '').replace('.it', '')));
-        if (domainEmails.length > 0 && firstName && lastName) {
-          // Common patterns: name.surname@, nsurname@, name_surname@
-          const patterns = [
-            `${firstName.toLowerCase()}.${lastName.toLowerCase()}@${domain}`,
-            `${firstName.toLowerCase()[0]}${lastName.toLowerCase()}@${domain}`,
-            `${firstName.toLowerCase()}_${lastName.toLowerCase()}@${domain}`,
-            `${lastName.toLowerCase()}.${firstName.toLowerCase()}@${domain}`,
-          ];
-          console.log(`Firecrawl: Inferring email patterns for ${nome}`);
-          return { email: patterns[0], confidence: 50 };
-        }
-      }
-    } catch (error) {
-      console.error(`Firecrawl error for ${domain}:`, error);
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`Apollo API error: ${response.status} - ${errorText}`);
+      return { email: null, linkedin: null, confidence: 0 };
     }
-  }
 
-  return { email: null, confidence: 0 };
+    const data: ApolloSearchResponse = await response.json();
+
+    if (data.people && data.people.length > 0) {
+      // Find best match
+      const bestMatch = data.people.find(p => {
+        const matchesName = 
+          (p.first_name?.toLowerCase() === firstName.toLowerCase() || 
+           p.last_name?.toLowerCase() === lastName.toLowerCase());
+        const matchesCompany = 
+          p.organization?.name?.toLowerCase().includes(cleanedCompany.toLowerCase().slice(0, 6)) ||
+          cleanedCompany.toLowerCase().includes(p.organization?.name?.toLowerCase().slice(0, 6) || '');
+        return matchesName || matchesCompany;
+      }) || data.people[0];
+
+      if (bestMatch) {
+        console.log(`Apollo found: ${bestMatch.email || 'no email'}, LinkedIn: ${bestMatch.linkedin_url || 'no linkedin'}`);
+        return {
+          email: bestMatch.email || null,
+          linkedin: bestMatch.linkedin_url || null,
+          confidence: bestMatch.email ? 90 : 50,
+        };
+      }
+    }
+
+    console.log("Apollo: No matches found");
+    return { email: null, linkedin: null, confidence: 0 };
+
+  } catch (error) {
+    console.error("Apollo API error:", error);
+    return { email: null, linkedin: null, confidence: 0 };
+  }
 }
 
 serve(async (req) => {
@@ -219,73 +144,16 @@ serve(async (req) => {
   }
 
   try {
-    const HUNTER_API_KEY = Deno.env.get("HUNTER_API_KEY");
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     
-    if (!HUNTER_API_KEY) {
-      console.warn("HUNTER_API_KEY not configured, falling back to Firecrawl + AI");
-    }
-
     const { investorId, nome, azienda, ruolo, categoria }: EnrichmentRequest = await req.json();
 
     console.log(`Enrichment for: ${nome} at ${azienda}`);
 
-    let hunterEmail: string | null = null;
-    let hunterLinkedin: string | null = null;
-    let hunterConfidence: number = 0;
+    // Step 1: Use Apollo.io as primary source (best for B2B contacts)
+    const apolloResult = await searchApolloForPerson(nome, azienda, ruolo);
 
-    // Step 1: Try Hunter.io for email lookup (try multiple domains)
-    if (HUNTER_API_KEY) {
-      const domains = extractDomains(azienda);
-      const { firstName, lastName } = splitName(nome);
-
-      if (domains.length > 0 && firstName && lastName) {
-        for (const domain of domains) {
-          if (hunterEmail) break; // Stop if we found an email
-          
-          console.log(`Hunter.io lookup: ${firstName} ${lastName} @ ${domain}`);
-          
-          try {
-            const hunterUrl = new URL('https://api.hunter.io/v2/email-finder');
-            hunterUrl.searchParams.set('domain', domain);
-            hunterUrl.searchParams.set('first_name', firstName);
-            hunterUrl.searchParams.set('last_name', lastName);
-            hunterUrl.searchParams.set('api_key', HUNTER_API_KEY);
-
-            const hunterResponse = await fetch(hunterUrl.toString());
-            const hunterData: HunterResponse = await hunterResponse.json();
-
-            if (hunterData.data?.email) {
-              hunterEmail = hunterData.data.email;
-              hunterConfidence = hunterData.data.score || 0;
-              hunterLinkedin = hunterData.data.linkedin || null;
-              console.log(`Hunter found email: ${hunterEmail} (score: ${hunterConfidence})`);
-              break;
-            } else if (hunterData.errors) {
-              console.log(`Hunter error for ${domain}: ${hunterData.errors[0]?.details}`);
-            }
-          } catch (hunterError) {
-            console.error(`Hunter.io API error for ${domain}:`, hunterError);
-          }
-        }
-      } else if (domains.length > 0 && firstName) {
-        console.log(`Hunter: Skipping - need both first and last name (have: ${firstName})`);
-      }
-    }
-
-    // Step 2: If Hunter didn't find email, try Firecrawl
-    let firecrawlEmail: string | null = null;
-    let firecrawlConfidence: number = 0;
-    
-    if (!hunterEmail) {
-      console.log("Hunter did not find email, trying Firecrawl...");
-      const firecrawlResult = await scrapeCompanyForEmails(azienda, nome);
-      firecrawlEmail = firecrawlResult.email;
-      firecrawlConfidence = firecrawlResult.confidence;
-    }
-
-    // Step 3: Use AI for additional enrichment (bio, investment focus, etc.)
-    // IMPORTANT: Do NOT use AI to generate LinkedIn URLs - they are unreliable and often invented
+    // Step 2: Use AI for additional enrichment (bio, investment focus, etc.)
     let aiData: any = {};
     
     if (LOVABLE_API_KEY) {
@@ -350,52 +218,43 @@ Provide professional background and investment preferences. DO NOT guess LinkedI
                 cleanContent = cleanContent.slice(0, -3);
               }
               const parsedData = JSON.parse(cleanContent.trim());
-              // Ensure aiData is always an object, never null
               if (parsedData && typeof parsedData === 'object' && !Array.isArray(parsedData)) {
                 aiData = parsedData;
                 console.log("AI enrichment successful");
-              } else {
-                console.warn("AI returned non-object data, using empty object");
-                aiData = {};
               }
             } catch (parseError) {
               console.error("Failed to parse AI response:", parseError);
-              aiData = {};
             }
           }
         } else if (response.status === 429) {
-          console.log("AI rate limited, continuing with other data");
+          console.log("AI rate limited, continuing with Apollo data");
         } else if (response.status === 402) {
-          console.log("AI credits exhausted, continuing with other data");
+          console.log("AI credits exhausted, continuing with Apollo data");
         }
       } catch (aiError) {
         console.error("AI enrichment error:", aiError);
       }
     }
 
-    // Step 4: Combine results (Hunter > Firecrawl priority for email)
-    // IMPORTANT: Only use LinkedIn from Hunter.io (verified) - never from AI (invented)
-    const finalEmail = hunterEmail || firecrawlEmail || null;
-    const finalConfidence = hunterEmail ? hunterConfidence : firecrawlConfidence;
-    
+    // Step 3: Combine results - Apollo is primary source
     const enrichedData = {
-      email: finalEmail,
-      emailConfidence: finalConfidence,
-      emailSource: hunterEmail ? 'hunter.io' : firecrawlEmail ? 'firecrawl' : null,
+      email: apolloResult.email,
+      emailConfidence: apolloResult.confidence,
+      emailSource: apolloResult.email ? 'apollo.io' : null,
       phone: null,
-      linkedin: hunterLinkedin || null, // Only from Hunter.io - never from AI
+      linkedin: apolloResult.linkedin,
       bio: aiData.bio || null,
       investmentFocus: aiData.investmentFocus || null,
       ticketSize: aiData.ticketSize || null,
       recentDeals: aiData.recentDeals || null,
       notes: aiData.notes || null,
-      confidence: finalEmail && finalConfidence >= 80 ? 'high' : 
-                  finalEmail && finalConfidence >= 50 ? 'medium' : 
+      confidence: apolloResult.email && apolloResult.confidence >= 80 ? 'high' : 
+                  apolloResult.email && apolloResult.confidence >= 50 ? 'medium' : 
                   aiData.confidence || 'low',
-      source: hunterEmail ? 'hunter.io' : firecrawlEmail ? 'firecrawl' : 'ai'
+      source: apolloResult.email ? 'apollo.io' : 'ai'
     };
 
-    // Step 5: Update Supabase if we found useful data
+    // Step 4: Update Supabase if we found useful data
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
