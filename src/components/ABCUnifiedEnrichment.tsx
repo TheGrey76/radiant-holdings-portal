@@ -4,10 +4,9 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { 
-  AlertTriangle, Mail, Linkedin, Sparkles, X, ChevronDown, ChevronUp,
-  Loader2, Check, RefreshCw, StopCircle
+  AlertTriangle, Mail, Linkedin, Sparkles, X, 
+  RefreshCw, StopCircle
 } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import {
   Dialog,
@@ -17,33 +16,35 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { supabase } from '@/integrations/supabase/client';
 
 interface MissingDataStats {
   totalInvestors: number;
   missingEmail: number;
   missingLinkedin: number;
-  missingBoth: number;
   investorsWithMissingData: Array<{
     id: string;
     nome: string;
     azienda: string;
+    ruolo?: string;
+    categoria: string;
     missingEmail: boolean;
     missingLinkedin: boolean;
   }>;
 }
 
-interface ABCDataQualityAlertProps {
-  onEnrichmentComplete?: () => void;
+interface ABCUnifiedEnrichmentProps {
   showAfterImport?: boolean;
   importedCount?: number;
   onDismissImportAlert?: () => void;
+  onEnrichmentComplete?: () => void;
 }
 
-export const ABCDataQualityAlert: React.FC<ABCDataQualityAlertProps> = ({
-  onEnrichmentComplete,
+export const ABCUnifiedEnrichment: React.FC<ABCUnifiedEnrichmentProps> = ({
   showAfterImport = false,
   importedCount = 0,
-  onDismissImportAlert
+  onDismissImportAlert,
+  onEnrichmentComplete
 }) => {
   const [stats, setStats] = useState<MissingDataStats | null>(null);
   const [loading, setLoading] = useState(true);
@@ -53,17 +54,15 @@ export const ABCDataQualityAlert: React.FC<ABCDataQualityAlertProps> = ({
   const [enrichProgress, setEnrichProgress] = useState(0);
   const [enrichedCount, setEnrichedCount] = useState(0);
   
-  // Ref to track if enrichment should be stopped
   const stopEnrichmentRef = useRef(false);
 
   const fetchMissingDataStats = useCallback(async () => {
     try {
       setLoading(true);
       
-      // Fetch all investors
       const { data: investors, error } = await supabase
         .from('abc_investors')
-        .select('id, nome, azienda, email, linkedin')
+        .select('id, nome, azienda, email, linkedin, ruolo, categoria')
         .order('nome');
 
       if (error) throw error;
@@ -76,6 +75,8 @@ export const ABCDataQualityAlert: React.FC<ABCDataQualityAlertProps> = ({
           id: inv.id,
           nome: inv.nome,
           azienda: inv.azienda,
+          ruolo: inv.ruolo,
+          categoria: inv.categoria,
           missingEmail: !inv.email || inv.email.trim() === '' || inv.email.trim().toLowerCase() === 'null',
           missingLinkedin: !inv.linkedin || inv.linkedin.trim() === '' || inv.linkedin.trim().toLowerCase() === 'null'
         }))
@@ -83,13 +84,11 @@ export const ABCDataQualityAlert: React.FC<ABCDataQualityAlertProps> = ({
 
       const missingEmail = investorsWithMissingData.filter(i => i.missingEmail).length;
       const missingLinkedin = investorsWithMissingData.filter(i => i.missingLinkedin).length;
-      const missingBoth = investorsWithMissingData.filter(i => i.missingEmail && i.missingLinkedin).length;
 
       setStats({
         totalInvestors,
         missingEmail,
         missingLinkedin,
-        missingBoth,
         investorsWithMissingData
       });
     } catch (error) {
@@ -124,35 +123,25 @@ export const ABCDataQualityAlert: React.FC<ABCDataQualityAlertProps> = ({
     let enriched = 0;
 
     for (const investor of toEnrich) {
-      // Check if stop was requested
       if (stopEnrichmentRef.current) {
         toast.warning(`Enrichment interrotto. ${enriched} investitori arricchiti su ${completed} processati.`);
         break;
       }
 
       try {
-        // Get full investor data
-        const { data: fullInvestor } = await supabase
-          .from('abc_investors')
-          .select('*')
-          .eq('id', investor.id)
-          .single();
+        const { data, error } = await supabase.functions.invoke('ai-investor-enrichment', {
+          body: {
+            investorId: investor.id,
+            nome: investor.nome,
+            azienda: investor.azienda,
+            ruolo: investor.ruolo,
+            categoria: investor.categoria,
+          },
+        });
 
-        if (fullInvestor) {
-          const { data, error } = await supabase.functions.invoke('ai-investor-enrichment', {
-            body: {
-              investorId: investor.id,
-              nome: fullInvestor.nome,
-              azienda: fullInvestor.azienda,
-              ruolo: fullInvestor.ruolo,
-              categoria: fullInvestor.categoria,
-            },
-          });
-
-          if (!error && data?.updated) {
-            enriched++;
-            setEnrichedCount(enriched);
-          }
+        if (!error && data?.updated) {
+          enriched++;
+          setEnrichedCount(enriched);
         }
       } catch (err) {
         console.error('Error enriching investor:', investor.nome, err);
@@ -168,16 +157,16 @@ export const ABCDataQualityAlert: React.FC<ABCDataQualityAlertProps> = ({
     setIsEnriching(false);
     stopEnrichmentRef.current = false;
     
-    // Always refresh stats after enrichment to update counts
+    // Refresh stats
     await fetchMissingDataStats();
     
-    if (enriched > 0) {
+    if (enriched > 0 && !stopEnrichmentRef.current) {
       toast.success(`${enriched} investitori arricchiti con successo!`);
     } else if (!stopEnrichmentRef.current) {
       toast.info('Nessun nuovo dato trovato tramite AI');
     }
 
-    // Let parent refresh other sections (Campaigns/Dashboard) regardless of whether new data was found
+    // Notify parent to refresh
     onEnrichmentComplete?.();
   };
 
@@ -186,7 +175,7 @@ export const ABCDataQualityAlert: React.FC<ABCDataQualityAlertProps> = ({
     onDismissImportAlert?.();
   };
 
-  // Don't show if dismissed or no missing data
+  // Don't show if dismissed, loading, or no missing data
   if (dismissed || loading) return null;
   if (!stats || (stats.missingEmail === 0 && stats.missingLinkedin === 0)) return null;
 
@@ -226,27 +215,55 @@ export const ABCDataQualityAlert: React.FC<ABCDataQualityAlertProps> = ({
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 mb-2">
-                  <Progress value={completenessPercent} className="h-2 flex-1 max-w-[200px]" />
-                  <span className="text-xs text-muted-foreground">{completenessPercent}% completo</span>
-                </div>
+                {isEnriching && (
+                  <div className="mb-3">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs text-muted-foreground">Arricchimento in corso...</span>
+                      <span className="text-xs font-medium">{enrichProgress}%</span>
+                    </div>
+                    <Progress value={enrichProgress} className="h-2" />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {enrichedCount} dati trovati finora
+                    </p>
+                  </div>
+                )}
+
+                {!isEnriching && (
+                  <div className="flex items-center gap-2 mb-2">
+                    <Progress value={completenessPercent} className="h-2 flex-1 max-w-[200px]" />
+                    <span className="text-xs text-muted-foreground">{completenessPercent}% completo</span>
+                  </div>
+                )}
 
                 <div className="flex items-center gap-2">
-                  <Button
-                    size="sm"
-                    onClick={() => setShowDetailDialog(true)}
-                    className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white"
-                  >
-                    <Sparkles className="h-4 w-4 mr-2" />
-                    Arricchisci con AI
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => setShowDetailDialog(true)}
-                  >
-                    Vedi dettagli
-                  </Button>
+                  {isEnriching ? (
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      onClick={handleStopEnrichment}
+                    >
+                      <StopCircle className="h-4 w-4 mr-2" />
+                      Stop ({enrichProgress}%)
+                    </Button>
+                  ) : (
+                    <>
+                      <Button
+                        size="sm"
+                        onClick={() => setShowDetailDialog(true)}
+                        className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white"
+                      >
+                        <Sparkles className="h-4 w-4 mr-2" />
+                        Arricchisci con AI
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => setShowDetailDialog(true)}
+                      >
+                        Vedi dettagli
+                      </Button>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
@@ -382,4 +399,4 @@ export const ABCDataQualityAlert: React.FC<ABCDataQualityAlertProps> = ({
   );
 };
 
-export default ABCDataQualityAlert;
+export default ABCUnifiedEnrichment;

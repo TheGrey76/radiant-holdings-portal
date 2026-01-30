@@ -34,9 +34,7 @@ import { NotificationBell } from "@/components/NotificationBell";
 import { OnlineUsersIndicator } from "@/components/OnlineUsersIndicator";
 import { ABCSettingsTab } from "@/components/ABCSettingsTab";
 import ABCEmailEnrichment from "@/components/ABCEmailEnrichment";
-import ABCAIEnrichment from "@/components/ABCAIEnrichment";
-
-import ABCDataQualityAlert from "@/components/ABCDataQualityAlert";
+import ABCUnifiedEnrichment from "@/components/ABCUnifiedEnrichment";
 import { ABCRelationshipIntelligence } from "@/components/ABCRelationshipIntelligence";
 import { ABCPipelineVelocity } from "@/components/ABCPipelineVelocity";
 import { ABCAnimatedFunnel } from "@/components/ABCAnimatedFunnel";
@@ -1090,17 +1088,16 @@ const ABCCompanyConsole = () => {
 
             {/* Data Quality Alert - Shows when email/LinkedIn missing */}
             {showDataQualityAlert && (
-              <ABCDataQualityAlert 
-                onEnrichmentComplete={() => {
-                  fetchInvestors();
-                  fetchCampaignStats();
-                  setShowImportAlert(false);
-                }}
+              <ABCUnifiedEnrichment 
                 showAfterImport={showImportAlert}
                 importedCount={lastImportCount}
                 onDismissImportAlert={() => {
                   setShowImportAlert(false);
                   setShowDataQualityAlert(false);
+                }}
+                onEnrichmentComplete={() => {
+                  fetchInvestors();
+                  fetchCampaignStats();
                 }}
               />
             )}
@@ -1612,7 +1609,6 @@ const ABCCompanyConsole = () => {
                 }}
               />
               <ABCEmailEnrichment onEmailUpdated={() => { fetchInvestors(); fetchCampaignStats(); }} />
-              <ABCAIEnrichment onDataUpdated={() => { fetchInvestors(); fetchCampaignStats(); }} />
             </div>
           </TabsContent>
 
