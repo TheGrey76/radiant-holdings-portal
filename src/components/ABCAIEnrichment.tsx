@@ -111,12 +111,9 @@ const ABCAIEnrichment: React.FC<ABCAIEnrichmentProps> = ({ onDataUpdated }) => {
         }));
 
         if (data.updated) {
-          toast.success(`Dati arricchiti per ${investor.nome}`);
-          // Refresh the list
+          // Don't show individual toasts during bulk enrichment - only update UI
           fetchInvestorsToEnrich();
           onDataUpdated?.();
-        } else {
-          toast.info(`Nessun nuovo dato trovato per ${investor.nome}`);
         }
       }
     } catch (error: any) {
@@ -128,14 +125,7 @@ const ABCAIEnrichment: React.FC<ABCAIEnrichmentProps> = ({ onDataUpdated }) => {
           status: 'error' 
         },
       }));
-      
-      if (error.message?.includes('429')) {
-        toast.error('Rate limit raggiunto. Riprova tra poco.');
-      } else if (error.message?.includes('402')) {
-        toast.error('Crediti AI esauriti. Ricarica il workspace.');
-      } else {
-        toast.error(`Errore nell'arricchimento per ${investor.nome}`);
-      }
+      // Don't show individual error toasts - only show summary at the end
     } finally {
       setEnrichingIds(prev => {
         const next = new Set(prev);
