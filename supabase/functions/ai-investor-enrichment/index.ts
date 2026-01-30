@@ -83,17 +83,18 @@ async function searchApolloForPerson(
   console.log(`Apollo search: ${firstName} ${lastName} at ${cleanedCompany}`);
 
   try {
-    // Use Apollo People Search API
-    const response = await fetch('https://api.apollo.io/v1/mixed_people/search', {
+    // Use Apollo People API Search (correct endpoint per Apollo docs)
+    const response = await fetch('https://api.apollo.io/api/v1/mixed_people/search', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Cache-Control': 'no-cache',
-        'X-Api-Key': APOLLO_API_KEY,
+        'x-api-key': APOLLO_API_KEY,
       },
       body: JSON.stringify({
-        q_person_name: `${firstName} ${lastName}`.trim(),
-        q_organization_name: cleanedCompany,
+        person_titles: ruolo ? [ruolo] : undefined,
+        q_keywords: `${firstName} ${lastName}`.trim(),
+        organization_names: [cleanedCompany, azienda],
         per_page: 5,
         page: 1,
       }),
