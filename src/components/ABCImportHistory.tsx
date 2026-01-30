@@ -33,6 +33,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
 import { it } from "date-fns/locale";
 import { toast } from "sonner";
+import { useABCData } from "@/contexts/ABCDataContext";
 
 interface ImportBatch {
   id: string;
@@ -62,6 +63,7 @@ export function ABCImportHistory() {
   const [selectedBatch, setSelectedBatch] = useState<ImportBatch | null>(null);
   const [batchInvestors, setBatchInvestors] = useState<BatchInvestor[]>([]);
   const [loadingInvestors, setLoadingInvestors] = useState(false);
+  const { refreshAll } = useABCData();
 
   useEffect(() => {
     fetchBatches();
@@ -126,6 +128,8 @@ export function ABCImportHistory() {
 
       toast.success('Import eliminato con successo');
       fetchBatches();
+      // Refresh investors and stats across the entire console
+      refreshAll();
     } catch (error) {
       console.error('Error deleting batch:', error);
       toast.error('Errore durante l\'eliminazione');
