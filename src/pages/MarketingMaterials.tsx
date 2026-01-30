@@ -670,25 +670,29 @@ const MarketingMaterials = () => {
 
   const handlePreview = useCallback(async (materialId: MaterialId, title: string) => {
     setLoadingPreview(materialId);
+    setPreviewTitle(title);
     
-    // Small delay to show loading state
-    await new Promise(resolve => setTimeout(resolve, 100));
+    // Revoke old URL first
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl);
+      setPreviewUrl(null);
+    }
+    
+    // Open dialog immediately with loading state
+    setPreviewOpen(true);
+    
+    // Small delay to allow dialog to render
+    await new Promise(resolve => setTimeout(resolve, 50));
     
     try {
       const generator = getPDFGenerator(materialId);
       const pdf = generator();
       const blob = pdf.output('blob');
-      
-      if (previewUrl) {
-        URL.revokeObjectURL(previewUrl);
-      }
-      
       const url = URL.createObjectURL(blob);
       setPreviewUrl(url);
-      setPreviewTitle(title);
-      setPreviewOpen(true);
     } catch (error) {
       console.error('PDF preview failed:', error);
+      setPreviewOpen(false);
     } finally {
       setLoadingPreview(null);
     }
@@ -877,11 +881,18 @@ const MarketingMaterials = () => {
           </DialogHeader>
           <div className="flex-1 p-4 min-h-0">
             {previewUrl ? (
-              <iframe
-                src={previewUrl}
+              <object
+                data={previewUrl}
+                type="application/pdf"
                 className="w-full h-full rounded-lg border border-slate-700"
                 title={`Preview: ${previewTitle}`}
-              />
+              >
+                <div className="flex flex-col items-center justify-center h-full text-slate-400">
+                  <FileText className="w-12 h-12 mb-4" />
+                  <p>Unable to display PDF preview.</p>
+                  <p className="text-sm">Your browser may not support embedded PDFs.</p>
+                </div>
+              </object>
             ) : (
               <div className="flex items-center justify-center h-full">
                 <Loader2 className="w-8 h-8 text-orange-400 animate-spin" />
