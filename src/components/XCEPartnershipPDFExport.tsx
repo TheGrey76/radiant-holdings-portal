@@ -194,12 +194,13 @@ export const XCEPartnershipPDFExport = ({ variant = 'default', size = 'default' 
       y += 5;
       checkPageBreak(25);
       
-      pdf.setFillColor(249, 115, 22, 0.1);
+      // Integrated offering highlight box - Light background for readability
+      pdf.setFillColor(255, 247, 237); // Very light orange background
       pdf.setDrawColor(accentOrange[0], accentOrange[1], accentOrange[2]);
       pdf.roundedRect(margin, y - 3, contentWidth, 20, 2, 2, 'FD');
       pdf.setFontSize(9);
       pdf.setFont('helvetica', 'normal');
-      pdf.setTextColor(80, 80, 80);
+      pdf.setTextColor(30, 30, 30); // Dark text for readability
       const integratedText = pdf.splitTextToSize('This integrated model provides a powerful, one-stop solution that de-risks and accelerates the adoption of Bitcoin treasury strategies for fund managers. For our firms, it creates a highly defensible market position and a pipeline of high-value, strategic mandates.', contentWidth - 10);
       integratedText.forEach((line: string, idx: number) => {
         pdf.text(line, margin + 5, y + 3 + (idx * 4));
@@ -317,14 +318,14 @@ export const XCEPartnershipPDFExport = ({ variant = 'default', size = 'default' 
       
       y += 8;
       
-      // Highlight box
+      // Highlight box - Light green background for readability
       checkPageBreak(18);
-      pdf.setFillColor(34, 197, 94, 0.1);
+      pdf.setFillColor(240, 253, 244); // Very light green background
       pdf.setDrawColor(34, 197, 94);
       pdf.roundedRect(margin, y - 3, contentWidth, 15, 2, 2, 'FD');
       pdf.setFontSize(9);
       pdf.setFont('helvetica', 'normal');
-      pdf.setTextColor(60, 60, 60);
+      pdf.setTextColor(30, 30, 30); // Dark text for readability
       pdf.text('By positioning our fees 20-30% below market rates, we can accelerate client acquisition', margin + 5, y + 3);
       pdf.text('and build a defensible moat based on our unique, integrated service model.', margin + 5, y + 8);
       
@@ -515,7 +516,7 @@ export const XCEPartnershipPDFExport = ({ variant = 'default', size = 'default' 
         
         pdf.setFontSize(8);
         pdf.setFont('helvetica', 'normal');
-        pdf.setTextColor(120, 120, 120);
+        pdf.setTextColor(180, 180, 180); // Light gray for label on dark background
         pdf.text(kpi.label, kpiX + kpiWidth / 2, y + 4, { align: 'center' });
         
         pdf.setFontSize(14);
@@ -523,7 +524,7 @@ export const XCEPartnershipPDFExport = ({ variant = 'default', size = 'default' 
         if (idx === 2) {
           pdf.setTextColor(accentOrange[0], accentOrange[1], accentOrange[2]);
         } else {
-          pdf.setTextColor(40, 40, 40);
+          pdf.setTextColor(255, 255, 255); // White text on dark background
         }
         pdf.text(kpi.value, kpiX + kpiWidth / 2, y + 15, { align: 'center' });
         
@@ -534,15 +535,15 @@ export const XCEPartnershipPDFExport = ({ variant = 'default', size = 'default' 
       
       y += 38;
       
-      // 3-Year Summary
+      // 3-Year Summary - Light background for readability
       checkPageBreak(35);
-      pdf.setFillColor(249, 115, 22, 0.1);
+      pdf.setFillColor(255, 247, 237); // Very light orange background
       pdf.setDrawColor(accentOrange[0], accentOrange[1], accentOrange[2]);
       pdf.roundedRect(margin, y - 3, contentWidth, 30, 2, 2, 'FD');
       
       pdf.setFontSize(10);
       pdf.setFont('helvetica', 'bold');
-      pdf.setTextColor(40, 40, 40);
+      pdf.setTextColor(30, 30, 30); // Dark text for readability
       pdf.text('3-Year Cumulative Summary', margin + contentWidth / 2, y + 3, { align: 'center' });
       
       const summaryItems = [
@@ -557,15 +558,15 @@ export const XCEPartnershipPDFExport = ({ variant = 'default', size = 'default' 
         
         pdf.setFontSize(8);
         pdf.setFont('helvetica', 'normal');
-        pdf.setTextColor(100, 100, 100);
+        pdf.setTextColor(80, 80, 80); // Darker gray for labels
         pdf.text(item.label, sumX + summaryWidth / 2, y + 13, { align: 'center' });
         
         pdf.setFontSize(14);
         pdf.setFont('helvetica', 'bold');
         if (idx === 2) {
-          pdf.setTextColor(accentOrange[0], accentOrange[1], accentOrange[2]);
+          pdf.setTextColor(194, 65, 12); // Dark orange for emphasis
         } else {
-          pdf.setTextColor(40, 40, 40);
+          pdf.setTextColor(30, 30, 30); // Dark text
         }
         pdf.text(item.value, sumX + summaryWidth / 2, y + 22, { align: 'center' });
       });
@@ -718,12 +719,13 @@ export const XCEPartnershipPDFExport = ({ variant = 'default', size = 'default' 
       
       y += 10;
       checkPageBreak(20);
-      pdf.setFillColor(249, 115, 22, 0.1);
+      // Closing quote box - Light background for readability
+      pdf.setFillColor(255, 247, 237); // Very light orange background
       pdf.setDrawColor(accentOrange[0], accentOrange[1], accentOrange[2]);
       pdf.roundedRect(margin, y - 3, contentWidth, 18, 2, 2, 'FD');
       pdf.setFontSize(9);
       pdf.setFont('helvetica', 'italic');
-      pdf.setTextColor(80, 80, 80);
+      pdf.setTextColor(30, 30, 30); // Dark text for readability
       pdf.text('I am confident that together, we can create significant value for our clients and our firms.', margin + contentWidth / 2, y + 5, { align: 'center' });
       pdf.text('I look forward to discussing this with you further.', margin + contentWidth / 2, y + 11, { align: 'center' });
       
