@@ -40,13 +40,13 @@ const PortfolioAnalysis = () => {
               transition={{ duration: 0.8 }}
             >
               <motion.div 
-                className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-gradient-to-r from-primary/20 to-orange-500/10 border border-primary/30 mb-8 backdrop-blur-sm"
+                className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-primary/30 border border-primary/50 mb-8 backdrop-blur-sm"
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
-                <Target className="w-4 h-4 text-primary" />
-                <span className="text-sm font-semibold text-primary uppercase tracking-wider">AI-Powered Analysis</span>
+                <Target className="w-4 h-4 text-orange-400" />
+                <span className="text-sm font-semibold text-orange-300 uppercase tracking-wider">AI-Powered Analysis</span>
               </motion.div>
               
               <motion.h1 
@@ -57,11 +57,11 @@ const PortfolioAnalysis = () => {
               >
                 <span className="text-white">Portfolio</span>
                 <br />
-                <span className="bg-gradient-to-r from-primary via-orange-400 to-primary bg-clip-text text-transparent">Optimization</span>
+                <span className="text-orange-400">Optimization</span>
               </motion.h1>
               
               <motion.p 
-                className="text-xl md:text-2xl text-gray-400 mb-8 leading-relaxed max-w-2xl font-light"
+                className="text-xl md:text-2xl text-gray-200 mb-8 leading-relaxed max-w-2xl font-light"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
@@ -83,7 +83,7 @@ const PortfolioAnalysis = () => {
                 ].map((item, index) => (
                   <div 
                     key={index}
-                    className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-gray-400 text-sm"
+                    className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/10 border border-white/20 text-white text-sm font-medium"
                   >
                     <item.icon className="w-4 h-4 text-primary" />
                     <span>{item.label}</span>
