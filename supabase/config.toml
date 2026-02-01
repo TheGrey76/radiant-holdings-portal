@@ -146,3 +146,15 @@ verify_jwt = false
 
 [functions.bitcoin-research-signup]
 verify_jwt = false
+
+[functions.portfolio-mini-scan]
+verify_jwt = false
+
+[functions.portfolio-email-capture]
+verify_jwt = false
+
+[functions.portfolio-checkout]
+verify_jwt = false
+
+[functions.portfolio-webhook]
+verify_jwt = false

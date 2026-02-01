@@ -2557,6 +2557,45 @@ export type Database = {
           },
         ]
       }
+      portfolio_leads: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          ip_address: string | null
+          source: string
+          updated_at: string
+          user_agent: string | null
+          utm_campaign: string | null
+          utm_medium: string | null
+          utm_source: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          ip_address?: string | null
+          source?: string
+          updated_at?: string
+          user_agent?: string | null
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          ip_address?: string | null
+          source?: string
+          updated_at?: string
+          user_agent?: string | null
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+        }
+        Relationships: []
+      }
       portfolio_metrics: {
         Row: {
           assets: string[]
@@ -2584,6 +2623,107 @@ export type Database = {
           timeframe?: string
           updated_at?: string | null
           weights?: number[]
+        }
+        Relationships: []
+      }
+      portfolio_purchases: {
+        Row: {
+          amount_paid: number
+          created_at: string
+          currency: string
+          email: string
+          expires_at: string | null
+          id: string
+          paid_at: string | null
+          report_url: string | null
+          scan_id: string | null
+          status: string
+          stripe_payment_intent: string | null
+          stripe_session_id: string | null
+          tier: string
+          updated_at: string
+        }
+        Insert: {
+          amount_paid: number
+          created_at?: string
+          currency?: string
+          email: string
+          expires_at?: string | null
+          id?: string
+          paid_at?: string | null
+          report_url?: string | null
+          scan_id?: string | null
+          status?: string
+          stripe_payment_intent?: string | null
+          stripe_session_id?: string | null
+          tier?: string
+          updated_at?: string
+        }
+        Update: {
+          amount_paid?: number
+          created_at?: string
+          currency?: string
+          email?: string
+          expires_at?: string | null
+          id?: string
+          paid_at?: string | null
+          report_url?: string | null
+          scan_id?: string | null
+          status?: string
+          stripe_payment_intent?: string | null
+          stripe_session_id?: string | null
+          tier?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "portfolio_purchases_scan_id_fkey"
+            columns: ["scan_id"]
+            isOneToOne: false
+            referencedRelation: "portfolio_scans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      portfolio_scans: {
+        Row: {
+          analysis_results: Json | null
+          created_at: string
+          currency: string
+          email: string
+          holdings: Json
+          id: string
+          processed_at: string | null
+          risk_score: number | null
+          status: string
+          total_value: number | null
+          updated_at: string
+        }
+        Insert: {
+          analysis_results?: Json | null
+          created_at?: string
+          currency?: string
+          email: string
+          holdings?: Json
+          id?: string
+          processed_at?: string | null
+          risk_score?: number | null
+          status?: string
+          total_value?: number | null
+          updated_at?: string
+        }
+        Update: {
+          analysis_results?: Json | null
+          created_at?: string
+          currency?: string
+          email?: string
+          holdings?: Json
+          id?: string
+          processed_at?: string | null
+          risk_score?: number | null
+          status?: string
+          total_value?: number | null
+          updated_at?: string
         }
         Relationships: []
       }
