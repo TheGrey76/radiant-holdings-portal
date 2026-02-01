@@ -19,7 +19,7 @@ import { ModelBacktesting } from "@/components/ModelBacktesting";
 import { CorrelationMatrix } from "@/components/CorrelationMatrix";
 import { useBitcoinReportData } from "@/hooks/useBitcoinReportData";
 import { useTwelveDataBtc } from "@/hooks/useTwelveDataBtc";
-import { PortfolioSimulator, AIInsightsTeaser, PricingCard, StickyBanner } from "@/components/portfolio-report";
+
 
 // Glossary definitions
 const glossary: Record<string, string> = {
@@ -1592,27 +1592,6 @@ const BitcoinResearch = () => {
 
         </div>
 
-        {/* Portfolio Integration Section */}
-        <div className="container max-w-6xl mx-auto px-6 py-16">
-          <ChapterSection id="portfolio-integration" dataSection="portfolio-integration">
-            <PortfolioSimulator />
-          </ChapterSection>
-        </div>
-
-        {/* AI Insights Teaser Section */}
-        <div className="container max-w-6xl mx-auto px-6 pb-16">
-          <ChapterSection id="ai-insights" dataSection="ai-insights">
-            <AIInsightsTeaser />
-          </ChapterSection>
-        </div>
-
-        {/* Pricing Section */}
-        <div className="container max-w-6xl mx-auto px-6 py-16 bg-gradient-to-br from-muted/20 to-background">
-          <ChapterSection id="portfolio-pricing-section" dataSection="portfolio-pricing">
-            <PricingCard />
-          </ChapterSection>
-        </div>
-
         {/* Disclaimer */}
         <div className="container max-w-6xl mx-auto px-6 pb-16">
           <div className="p-8 rounded-2xl bg-gradient-to-br from-muted/50 to-muted/30 border border-border/40">
@@ -1629,8 +1608,6 @@ const BitcoinResearch = () => {
           </div>
         </div>
 
-        {/* Sticky Banner */}
-        <StickyBanner />
 
         {/* Back to Top */}
         <button
