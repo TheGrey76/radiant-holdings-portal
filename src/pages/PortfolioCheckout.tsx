@@ -112,7 +112,14 @@ const PortfolioCheckout: React.FC = () => {
       if (error) throw error;
 
       if (data?.url) {
-        window.location.href = data.url;
+        // In Lovable preview (iframe) full-page navigation to Stripe can be blocked.
+        // Prefer opening Checkout in a new tab.
+        const opened = window.open(data.url, '_blank', 'noopener,noreferrer');
+
+        if (!opened) {
+          // Popup blocked: fall back to same-tab navigation.
+          window.location.href = data.url;
+        }
       } else {
         throw new Error('No checkout URL received');
       }
