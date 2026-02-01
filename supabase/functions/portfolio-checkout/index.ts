@@ -7,20 +7,23 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Pricing tiers
+// Pricing tiers with Stripe price IDs
 const PRICING = {
   essentials: {
-    price: 14900, // £149 in pence
+    priceId: 'price_1SvycMCw0HM6oDqD9bZkGCGi',
+    price: 14900,
     name: 'Essentials Report',
     features: ['Risk Analysis', 'Allocation Analysis', 'Basic Recommendations'],
   },
   professional: {
-    price: 34900, // £349 in pence
+    priceId: 'price_1SvycuCw0HM6oDqD8QQ2pGS6',
+    price: 34900,
     name: 'Professional Report',
     features: ['All Essentials features', 'Monte Carlo Simulations', 'Tax Optimization', 'Scenario Analysis'],
   },
   enterprise: {
-    price: 74900, // £749 in pence
+    priceId: 'price_1SvyC4Cw0HM6oDqD3x64dzgk',
+    price: 74900,
     name: 'Enterprise Report',
     features: ['All Professional features', 'AI Recommendations', 'Custom Constraints', 'Priority Support'],
   },
@@ -80,21 +83,13 @@ serve(async (req: Request): Promise<Response> => {
       customerId = newCustomer.id;
     }
 
-    // Create checkout session
+    // Create checkout session using Stripe price ID
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       payment_method_types: ['card'],
       line_items: [
         {
-          price_data: {
-            currency: 'gbp',
-            product_data: {
-              name: pricingTier.name,
-              description: `Portfolio Optimization Report - ${pricingTier.features.join(', ')}`,
-              images: ['https://aries76.com/aries76-og-logo.png'],
-            },
-            unit_amount: pricingTier.price,
-          },
+          price: pricingTier.priceId,
           quantity: 1,
         },
       ],
