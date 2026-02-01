@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Check, ArrowRight, Loader2, Sparkles } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
-import { toast } from 'sonner';
+import { Check, ArrowRight, Sparkles } from 'lucide-react';
 import { MiniScanModal } from './MiniScanModal';
 
 interface PricingTier {
@@ -66,40 +65,11 @@ interface PricingCardProps {
 }
 
 export const PricingCard: React.FC<PricingCardProps> = ({ email: initialEmail }) => {
-  const [loadingTier, setLoadingTier] = useState<string | null>(null);
+  const navigate = useNavigate();
   const [showMiniScan, setShowMiniScan] = useState(false);
 
-  const handleCheckout = async (tier: PricingTier) => {
-    const email = initialEmail || prompt('Enter your email to continue:');
-    
-    if (!email || !email.includes('@')) {
-      toast.error('Please enter a valid email');
-      return;
-    }
-
-    setLoadingTier(tier.id);
-
-    try {
-      const { data, error } = await supabase.functions.invoke('portfolio-checkout', {
-        body: {
-          email,
-          tier: tier.id,
-        },
-      });
-
-      if (error) throw error;
-
-      if (data?.url) {
-        window.location.href = data.url;
-      } else {
-        throw new Error('No checkout URL received');
-      }
-    } catch (err: any) {
-      console.error('Checkout error:', err);
-      toast.error('Error creating checkout. Please try again.');
-    } finally {
-      setLoadingTier(null);
-    }
+  const handleSelectPlan = (tier: PricingTier) => {
+    navigate(`/checkout?plan=${tier.id}`);
   };
 
   return (
@@ -156,20 +126,10 @@ export const PricingCard: React.FC<PricingCardProps> = ({ email: initialEmail })
                       : ''
                   }`}
                   variant={tier.highlighted ? 'default' : 'outline'}
-                  onClick={() => handleCheckout(tier)}
-                  disabled={loadingTier !== null}
+                  onClick={() => handleSelectPlan(tier)}
                 >
-                  {loadingTier === tier.id ? (
-                    <>
-                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                      Loading...
-                    </>
-                  ) : (
-                    <>
-                      Get Your Report
-                      <ArrowRight className="h-4 w-4 ml-2" />
-                    </>
-                  )}
+                  Get Your Report
+                  <ArrowRight className="h-4 w-4 ml-2" />
                 </Button>
               </CardContent>
             </Card>
