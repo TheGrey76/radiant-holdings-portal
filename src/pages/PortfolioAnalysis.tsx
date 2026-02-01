@@ -1,6 +1,8 @@
 import { Helmet } from "react-helmet";
 import { motion } from "framer-motion";
-import { Target, TrendingUp, Shield, BarChart3 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Target, TrendingUp, Shield, BarChart3, Sparkles, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { 
   PortfolioSimulator, 
@@ -10,6 +12,8 @@ import {
 } from "@/components/portfolio-report";
 
 const PortfolioAnalysis = () => {
+  const navigate = useNavigate();
+  
   return (
     <>
       <Helmet>
@@ -89,6 +93,35 @@ const PortfolioAnalysis = () => {
                     <span>{item.label}</span>
                   </div>
                 ))}
+              </motion.div>
+
+              {/* Hero CTAs */}
+              <motion.div 
+                className="flex flex-wrap gap-4 mt-8"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+              >
+                <Button 
+                  size="lg"
+                  className="bg-gradient-to-r from-primary to-orange-500 hover:from-primary/90 hover:to-orange-500/90"
+                  onClick={() => navigate('/portfolio-scan')}
+                >
+                  <Sparkles className="h-4 w-4 mr-2" />
+                  Get Free Scan
+                </Button>
+                <Button 
+                  size="lg"
+                  variant="outline"
+                  className="border-white/30 text-white hover:bg-white/10"
+                  onClick={() => {
+                    const pricingSection = document.getElementById('portfolio-pricing');
+                    pricingSection?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                >
+                  View Reports
+                  <ArrowRight className="h-4 w-4 ml-2" />
+                </Button>
               </motion.div>
             </motion.div>
           </div>
