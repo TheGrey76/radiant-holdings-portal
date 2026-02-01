@@ -113,7 +113,7 @@ const PortfolioAnalysis = () => {
                 <Button 
                   size="lg"
                   variant="outline"
-                  className="border-white/30 text-white hover:bg-white/10"
+                  className="border-white/70 text-white hover:bg-white/20 bg-white/10"
                   onClick={() => {
                     const pricingSection = document.getElementById('portfolio-pricing');
                     pricingSection?.scrollIntoView({ behavior: 'smooth' });
