@@ -82,6 +82,7 @@ import StrategicAdvisoryAdmin from "./pages/StrategicAdvisoryAdmin";
 import AdvisoryDocument from "./pages/AdvisoryDocument";
 import XCEPartnershipProposal from "./pages/XCEPartnershipProposal";
 import MarketingMaterials from "./pages/MarketingMaterials";
+import PortfolioAnalysis from "./pages/PortfolioAnalysis";
 
 const queryClient = new QueryClient();
 
@@ -158,6 +159,7 @@ const App = () => (
           <Route path="/bitcoin-dynamic-allocation" element={<Bitcoin2026Report />} />
           <Route path="/bitcoin-dynamic-allocation-preview" element={<Bitcoin2026ReportPreview />} />
           <Route path="/bitcoin-research" element={<BitcoinResearchAccessGate><BitcoinResearch /></BitcoinResearchAccessGate>} />
+          <Route path="/portfolio-analysis" element={<PortfolioAnalysis />} />
           <Route path="/admin/bitcoin-research" element={<BitcoinResearchAdmin />} />
           
           {/* Legacy redirects for old URLs */}

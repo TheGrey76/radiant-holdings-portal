@@ -77,6 +77,7 @@ const Navbar = () => {
       { name: 'Articles & Analysis', path: '/blog' },
       { name: 'Case Studies', path: '/press' },
       { name: 'Bitcoin Research', path: '/bitcoin-research' },
+      { name: 'Portfolio Analysis', path: '/portfolio-analysis' },
     ],
   };
 
@@ -101,6 +102,7 @@ const Navbar = () => {
     { name: 'Articles & Analysis', path: '/blog', indent: true },
     { name: 'Case Studies', path: '/press', indent: true },
     { name: 'Bitcoin Research', path: '/bitcoin-research', indent: true },
+    { name: 'Portfolio Analysis', path: '/portfolio-analysis', indent: true },
     { name: 'Contact', path: '/contact' },
   ];
 
