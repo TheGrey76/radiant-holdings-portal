@@ -158,3 +158,6 @@ verify_jwt = false
 
 [functions.portfolio-webhook]
 verify_jwt = false
+
+[functions.portfolio-essentials-report]
+verify_jwt = false
