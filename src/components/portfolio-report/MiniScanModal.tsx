@@ -25,7 +25,13 @@ interface ScanResults {
   riskLevel: string;
   expectedReturn: string;
   volatilityImpact: string;
+  sharpeRatio?: string;
+  maxDrawdown?: string;
+  var95?: string;
   insights: string[];
+  liveDataUsed?: number;
+  holdingsAnalyzed?: number;
+  dataSource?: string;
 }
 
 interface MiniScanModalProps {
@@ -202,30 +208,53 @@ export const MiniScanModal: React.FC<MiniScanModalProps> = ({ open, onOpenChange
               <DialogTitle className="flex items-center gap-2">
                 <CheckCircle className="h-5 w-5 text-emerald-500" />
                 Your Portfolio Analysis
+                {results.liveDataUsed && results.liveDataUsed > 0 && (
+                  <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/30 text-[10px]">
+                    LIVE DATA
+                  </Badge>
+                )}
               </DialogTitle>
             </DialogHeader>
 
             <div className="py-4 space-y-6">
-              {/* Score Cards */}
-              <div className="grid grid-cols-3 gap-3">
+              {/* Score Cards - 2 rows */}
+              <div className="grid grid-cols-3 gap-2">
                 <div className="bg-card rounded-lg p-3 text-center border">
-                  <Shield className="h-5 w-5 mx-auto mb-1 text-muted-foreground" />
-                  <p className="text-2xl font-bold">{results.riskScore}</p>
-                  <Badge className={`mt-1 ${getRiskColor(results.riskLevel)}`}>
+                  <Shield className="h-4 w-4 mx-auto mb-1 text-muted-foreground" />
+                  <p className="text-xl font-bold">{results.riskScore}</p>
+                  <Badge className={`mt-1 text-[10px] ${getRiskColor(results.riskLevel)}`}>
                     {results.riskLevel}
                   </Badge>
                 </div>
                 <div className="bg-card rounded-lg p-3 text-center border">
-                  <TrendingUp className="h-5 w-5 mx-auto mb-1 text-emerald-400" />
-                  <p className="text-2xl font-bold text-emerald-400">{results.expectedReturn}</p>
-                  <p className="text-xs text-muted-foreground">Expected Return</p>
+                  <TrendingUp className="h-4 w-4 mx-auto mb-1 text-emerald-400" />
+                  <p className="text-xl font-bold text-emerald-400">{results.expectedReturn}</p>
+                  <p className="text-[10px] text-muted-foreground">Exp. Return</p>
                 </div>
                 <div className="bg-card rounded-lg p-3 text-center border">
-                  <Zap className="h-5 w-5 mx-auto mb-1 text-amber-400" />
-                  <p className="text-2xl font-bold text-amber-400">{results.volatilityImpact}</p>
-                  <p className="text-xs text-muted-foreground">Volatility</p>
+                  <Zap className="h-4 w-4 mx-auto mb-1 text-amber-400" />
+                  <p className="text-xl font-bold text-amber-400">{results.volatilityImpact}</p>
+                  <p className="text-[10px] text-muted-foreground">Volatility</p>
                 </div>
               </div>
+              
+              {/* Additional metrics row */}
+              {results.sharpeRatio && (
+                <div className="grid grid-cols-3 gap-2">
+                  <div className="bg-muted/30 rounded-lg p-2 text-center border border-border/50">
+                    <p className="text-lg font-bold">{results.sharpeRatio}</p>
+                    <p className="text-[10px] text-muted-foreground">Sharpe Ratio</p>
+                  </div>
+                  <div className="bg-muted/30 rounded-lg p-2 text-center border border-border/50">
+                    <p className="text-lg font-bold text-red-400">{results.maxDrawdown}</p>
+                    <p className="text-[10px] text-muted-foreground">Max Drawdown</p>
+                  </div>
+                  <div className="bg-muted/30 rounded-lg p-2 text-center border border-border/50">
+                    <p className="text-lg font-bold text-orange-400">{results.var95}</p>
+                    <p className="text-[10px] text-muted-foreground">VaR 95%</p>
+                  </div>
+                </div>
+              )}
 
               {/* Insights */}
               <div className="bg-muted/50 rounded-lg p-4">
