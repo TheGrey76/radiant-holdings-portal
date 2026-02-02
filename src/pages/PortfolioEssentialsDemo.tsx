@@ -1,12 +1,13 @@
 import { useState, useCallback } from 'react';
 import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Loader2, Play, FileText, Sparkles } from 'lucide-react';
+import { Loader2, Play, FileText, Sparkles, Building2, Check, Lock, TrendingUp, PieChart, Shield, Target, BarChart3, LineChart } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { 
@@ -16,18 +17,76 @@ import {
   PortfolioHolding 
 } from '@/components/portfolio-report';
 
+type ReportTier = 'essentials' | 'professional' | 'enterprise';
+
+const tierFeatures = {
+  essentials: {
+    title: 'Essentials Report',
+    price: '£149',
+    icon: Sparkles,
+    color: 'text-primary',
+    bgColor: 'bg-primary/10',
+    features: [
+      { icon: LineChart, text: 'Monte Carlo simulations (1,000 iterations)' },
+      { icon: TrendingUp, text: '5-year return projections' },
+      { icon: BarChart3, text: 'Risk metrics (Sharpe, Sortino, VaR)' },
+      { icon: Target, text: 'Benchmark comparison (S&P 500, 60/40)' },
+    ],
+    canDemo: true,
+  },
+  professional: {
+    title: 'Professional Report',
+    price: '£349',
+    icon: FileText,
+    color: 'text-blue-500',
+    bgColor: 'bg-blue-500/10',
+    features: [
+      { icon: Check, text: 'All Essentials features included' },
+      { icon: PieChart, text: 'Sector concentration analysis' },
+      { icon: BarChart3, text: '5 market scenario stress tests' },
+      { icon: TrendingUp, text: 'Recession, inflation, rate shock simulations' },
+    ],
+    canDemo: true,
+  },
+  enterprise: {
+    title: 'Enterprise Report',
+    price: '£749',
+    icon: Building2,
+    color: 'text-amber-500',
+    bgColor: 'bg-amber-500/10',
+    features: [
+      { icon: Check, text: 'All Professional features included' },
+      { icon: Shield, text: 'Institutional stress testing (2008, COVID)' },
+      { icon: Target, text: 'Custom scenario modelling' },
+      { icon: FileText, text: 'Tax optimization strategies' },
+      { icon: Lock, text: 'Regulatory compliance check' },
+      { icon: Sparkles, text: 'Bespoke AI recommendations' },
+    ],
+    canDemo: false,
+  },
+};
+
 const PortfolioEssentialsDemo = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('demo@aries76.com');
   const [holdings, setHoldings] = useState<PortfolioHolding[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [reportType, setReportType] = useState<'essentials' | 'professional' | 'enterprise'>('essentials');
+  const [reportType, setReportType] = useState<ReportTier>('essentials');
   const [report, setReport] = useState<any>(null);
 
   const handlePortfolioChange = useCallback((newHoldings: PortfolioHolding[]) => {
     setHoldings(newHoldings);
   }, []);
 
+  const currentTier = tierFeatures[reportType];
+
   const generateReport = async () => {
+    if (!currentTier.canDemo) {
+      toast.info('Enterprise reports require a subscription. Redirecting to pricing...');
+      navigate('/portfolio-analysis');
+      return;
+    }
+
     const validHoldings = holdings.filter(h => h.ticker.trim() && h.weight > 0);
     
     if (validHoldings.length === 0) {
@@ -75,6 +134,8 @@ const PortfolioEssentialsDemo = () => {
     }
   };
 
+  const TierIcon = currentTier.icon;
+
   return (
     <>
       <Helmet>
@@ -95,8 +156,8 @@ const PortfolioEssentialsDemo = () => {
               Portfolio Report Demo
             </h1>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Test our institutional-grade portfolio analysis with Monte Carlo simulations, 
-              sector breakdown, and stress test scenarios.
+              Explore our three report tiers. Try Essentials and Professional live, 
+              or preview Enterprise features.
             </p>
           </motion.div>
 
@@ -108,72 +169,100 @@ const PortfolioEssentialsDemo = () => {
               transition={{ delay: 0.1 }}
               className="space-y-6"
             >
-              {/* Report Type Selector */}
-              <Tabs value={reportType} onValueChange={(v) => setReportType(v as any)} className="max-w-lg mx-auto">
-                <TabsList className="grid w-full grid-cols-3">
-                  <TabsTrigger value="essentials">
-                    <Sparkles className="h-4 w-4 mr-2" />
-                    Essentials (£149)
+              {/* Report Type Selector with TabsContent */}
+              <Tabs value={reportType} onValueChange={(v) => setReportType(v as ReportTier)} className="w-full">
+                <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-3">
+                  <TabsTrigger value="essentials" className="gap-2">
+                    <Sparkles className="h-4 w-4" />
+                    <span className="hidden sm:inline">Essentials</span> £149
                   </TabsTrigger>
-                  <TabsTrigger value="professional">
-                    <FileText className="h-4 w-4 mr-2" />
-                    Professional (£349)
+                  <TabsTrigger value="professional" className="gap-2">
+                    <FileText className="h-4 w-4" />
+                    <span className="hidden sm:inline">Professional</span> £349
                   </TabsTrigger>
-                  <TabsTrigger value="enterprise">
-                    <FileText className="h-4 w-4 mr-2" />
-                    Enterprise (£749)
+                  <TabsTrigger value="enterprise" className="gap-2">
+                    <Building2 className="h-4 w-4" />
+                    <span className="hidden sm:inline">Enterprise</span> £749
                   </TabsTrigger>
                 </TabsList>
+
+                {/* Feature Cards for each tier */}
+                <div className="mt-6">
+                  <TabsContent value="essentials" className="mt-0">
+                    <TierFeatureCard tier="essentials" />
+                  </TabsContent>
+                  <TabsContent value="professional" className="mt-0">
+                    <TierFeatureCard tier="professional" />
+                  </TabsContent>
+                  <TabsContent value="enterprise" className="mt-0">
+                    <TierFeatureCard tier="enterprise" />
+                  </TabsContent>
+                </div>
               </Tabs>
 
-              {/* Email Input */}
-              <Card className="max-w-md mx-auto">
-                <CardContent className="pt-6">
-                  <Label htmlFor="email">Email for Report</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="your@email.com"
-                    className="mt-1"
-                  />
-                </CardContent>
-              </Card>
+              {/* Portfolio Input - Only show for demo-able tiers */}
+              {currentTier.canDemo && (
+                <>
+                  {/* Email Input */}
+                  <Card className="max-w-md mx-auto">
+                    <CardContent className="pt-6">
+                      <Label htmlFor="email">Email for Report</Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="your@email.com"
+                        className="mt-1"
+                      />
+                    </CardContent>
+                  </Card>
 
-              {/* Enhanced Portfolio Input */}
-              <div className="max-w-2xl mx-auto">
-                <EnhancedPortfolioInput onPortfolioChange={handlePortfolioChange} />
-              </div>
+                  {/* Enhanced Portfolio Input */}
+                  <div className="max-w-2xl mx-auto">
+                    <EnhancedPortfolioInput onPortfolioChange={handlePortfolioChange} />
+                  </div>
 
-              {/* Generate Button */}
-              <div className="max-w-md mx-auto">
-                <Button
-                  className="w-full bg-gradient-to-r from-primary to-orange-500"
-                  size="lg"
-                  onClick={generateReport}
-                  disabled={isLoading || holdings.length === 0}
-                >
-                  {isLoading ? (
-                    <>
-                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                      Analyzing Portfolio...
-                    </>
-                  ) : (
-                    <>
-                      <Play className="h-4 w-4 mr-2" />
-                      Generate {reportType === 'professional' ? 'Professional' : 'Essentials'} Report
-                    </>
-                  )}
-                </Button>
-                <p className="text-xs text-muted-foreground text-center mt-3">
-                  {reportType === 'enterprise' 
-                    ? 'Includes institutional stress testing, tax optimization & bespoke recommendations'
-                    : reportType === 'professional' 
-                    ? 'Includes sector breakdown, scenario analysis & stress testing'
-                    : 'Includes Monte Carlo simulations & 5-year projections'}
-                </p>
-              </div>
+                  {/* Generate Button */}
+                  <div className="max-w-md mx-auto">
+                    <Button
+                      className="w-full"
+                      size="lg"
+                      onClick={generateReport}
+                      disabled={isLoading || holdings.length === 0}
+                    >
+                      {isLoading ? (
+                        <>
+                          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                          Analyzing Portfolio...
+                        </>
+                      ) : (
+                        <>
+                          <Play className="h-4 w-4 mr-2" />
+                          Generate {currentTier.title}
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                </>
+              )}
+
+              {/* Enterprise CTA */}
+              {!currentTier.canDemo && (
+                <div className="max-w-md mx-auto text-center space-y-4">
+                  <p className="text-muted-foreground">
+                    Enterprise reports are custom-built by our research team within 24-48 hours.
+                  </p>
+                  <Button 
+                    size="lg" 
+                    onClick={() => navigate('/portfolio-analysis')}
+                    className="bg-amber-500 hover:bg-amber-600"
+                  >
+                    <Building2 className="h-4 w-4 mr-2" />
+                    Purchase Enterprise Report
+                  </Button>
+                </div>
+              )}
             </motion.div>
           )}
 
@@ -199,6 +288,52 @@ const PortfolioEssentialsDemo = () => {
         </div>
       </div>
     </>
+  );
+};
+
+// Feature card component for each tier
+const TierFeatureCard = ({ tier }: { tier: ReportTier }) => {
+  const config = tierFeatures[tier];
+  const TierIcon = config.icon;
+
+  return (
+    <Card className="max-w-2xl mx-auto">
+      <CardHeader className="pb-4">
+        <CardTitle className="flex items-center gap-3">
+          <div className={`p-2 rounded-lg ${config.bgColor}`}>
+            <TierIcon className={`h-5 w-5 ${config.color}`} />
+          </div>
+          <div>
+            <span className={config.color}>{config.title}</span>
+            <span className="ml-2 text-muted-foreground font-normal">({config.price})</span>
+          </div>
+          {config.canDemo && (
+            <span className="ml-auto text-xs bg-green-500/10 text-green-600 px-2 py-1 rounded-full">
+              Live Demo Available
+            </span>
+          )}
+          {!config.canDemo && (
+            <span className="ml-auto text-xs bg-amber-500/10 text-amber-600 px-2 py-1 rounded-full flex items-center gap-1">
+              <Lock className="h-3 w-3" />
+              Premium Only
+            </span>
+          )}
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <ul className="grid sm:grid-cols-2 gap-3">
+          {config.features.map((feature, idx) => {
+            const FeatureIcon = feature.icon;
+            return (
+              <li key={idx} className="flex items-start gap-2 text-sm">
+                <FeatureIcon className={`h-4 w-4 mt-0.5 ${config.color} shrink-0`} />
+                <span>{feature.text}</span>
+              </li>
+            );
+          })}
+        </ul>
+      </CardContent>
+    </Card>
   );
 };
 
