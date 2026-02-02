@@ -161,3 +161,6 @@ verify_jwt = false
 
 [functions.portfolio-essentials-report]
 verify_jwt = false
+
+[functions.portfolio-professional-report]
+verify_jwt = false
