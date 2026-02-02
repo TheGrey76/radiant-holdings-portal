@@ -165,5 +165,8 @@ verify_jwt = false
 [functions.portfolio-professional-report]
 verify_jwt = false
 
+[functions.portfolio-enterprise-report]
+verify_jwt = false
+
 [functions.check-portfolio-tier]
 verify_jwt = false
