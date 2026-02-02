@@ -20,7 +20,7 @@ const PortfolioEssentialsDemo = () => {
   const [email, setEmail] = useState('demo@aries76.com');
   const [holdings, setHoldings] = useState<PortfolioHolding[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [reportType, setReportType] = useState<'essentials' | 'professional'>('essentials');
+  const [reportType, setReportType] = useState<'essentials' | 'professional' | 'enterprise'>('essentials');
   const [report, setReport] = useState<any>(null);
 
   const handlePortfolioChange = useCallback((newHoldings: PortfolioHolding[]) => {
@@ -109,8 +109,8 @@ const PortfolioEssentialsDemo = () => {
               className="space-y-6"
             >
               {/* Report Type Selector */}
-              <Tabs value={reportType} onValueChange={(v) => setReportType(v as any)} className="max-w-md mx-auto">
-                <TabsList className="grid w-full grid-cols-2">
+              <Tabs value={reportType} onValueChange={(v) => setReportType(v as any)} className="max-w-lg mx-auto">
+                <TabsList className="grid w-full grid-cols-3">
                   <TabsTrigger value="essentials">
                     <Sparkles className="h-4 w-4 mr-2" />
                     Essentials (£149)
@@ -118,6 +118,10 @@ const PortfolioEssentialsDemo = () => {
                   <TabsTrigger value="professional">
                     <FileText className="h-4 w-4 mr-2" />
                     Professional (£349)
+                  </TabsTrigger>
+                  <TabsTrigger value="enterprise">
+                    <FileText className="h-4 w-4 mr-2" />
+                    Enterprise (£749)
                   </TabsTrigger>
                 </TabsList>
               </Tabs>
@@ -163,7 +167,9 @@ const PortfolioEssentialsDemo = () => {
                   )}
                 </Button>
                 <p className="text-xs text-muted-foreground text-center mt-3">
-                  {reportType === 'professional' 
+                  {reportType === 'enterprise' 
+                    ? 'Includes institutional stress testing, tax optimization & bespoke recommendations'
+                    : reportType === 'professional' 
                     ? 'Includes sector breakdown, scenario analysis & stress testing'
                     : 'Includes Monte Carlo simulations & 5-year projections'}
                 </p>
