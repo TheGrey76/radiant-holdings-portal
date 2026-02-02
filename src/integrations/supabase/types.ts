@@ -2768,6 +2768,48 @@ export type Database = {
         }
         Relationships: []
       }
+      portfolio_subscriptions: {
+        Row: {
+          created_at: string
+          email: string
+          expires_at: string | null
+          id: string
+          is_active: boolean
+          purchased_at: string
+          stripe_customer_id: string | null
+          stripe_payment_id: string | null
+          tier: Database["public"]["Enums"]["portfolio_tier"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean
+          purchased_at?: string
+          stripe_customer_id?: string | null
+          stripe_payment_id?: string | null
+          tier: Database["public"]["Enums"]["portfolio_tier"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean
+          purchased_at?: string
+          stripe_customer_id?: string | null
+          stripe_payment_id?: string | null
+          tier?: Database["public"]["Enums"]["portfolio_tier"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           company: string | null
@@ -3369,11 +3411,22 @@ export type Database = {
         Args: { p_email: string; p_page_slug: string }
         Returns: boolean
       }
+      check_portfolio_tier: {
+        Args: {
+          p_tier: Database["public"]["Enums"]["portfolio_tier"]
+          p_user_id: string
+        }
+        Returns: boolean
+      }
       check_report_access: {
         Args: { p_report_slug: string; p_user_email: string }
         Returns: boolean
       }
       get_current_user_role: { Args: never; Returns: string }
+      get_user_portfolio_tiers: {
+        Args: { p_user_id: string }
+        Returns: Database["public"]["Enums"]["portfolio_tier"][]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -3398,6 +3451,7 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
+      portfolio_tier: "essentials" | "professional" | "enterprise"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -3526,6 +3580,7 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "moderator", "user"],
+      portfolio_tier: ["essentials", "professional", "enterprise"],
     },
   },
 } as const

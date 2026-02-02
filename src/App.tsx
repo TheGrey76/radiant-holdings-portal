@@ -87,6 +87,9 @@ import PortfolioScan from "./pages/PortfolioScan";
 import PortfolioCheckout from "./pages/PortfolioCheckout";
 import PortfolioDashboard from "./pages/PortfolioDashboard";
 import PortfolioEssentialsDemo from "./pages/PortfolioEssentialsDemo";
+import PortfolioEssentials from "./pages/PortfolioEssentials";
+import PortfolioProfessional from "./pages/PortfolioProfessional";
+import PortfolioEnterprise from "./pages/PortfolioEnterprise";
 
 const queryClient = new QueryClient();
 
@@ -166,6 +169,9 @@ const App = () => (
           <Route path="/portfolio-analysis" element={<PortfolioAnalysis />} />
           <Route path="/portfolio-scan" element={<PortfolioScan />} />
           <Route path="/portfolio-essentials-demo" element={<PortfolioEssentialsDemo />} />
+          <Route path="/portfolio-essentials" element={<PortfolioEssentials />} />
+          <Route path="/portfolio-professional" element={<PortfolioProfessional />} />
+          <Route path="/portfolio-enterprise" element={<PortfolioEnterprise />} />
           <Route path="/checkout" element={<PortfolioCheckout />} />
           <Route path="/dashboard" element={<PortfolioDashboard />} />
           <Route path="/admin/bitcoin-research" element={<BitcoinResearchAdmin />} />
