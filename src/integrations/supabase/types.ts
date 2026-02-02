@@ -2685,6 +2685,47 @@ export type Database = {
           },
         ]
       }
+      portfolio_reports: {
+        Row: {
+          created_at: string
+          email: string
+          generated_at: string
+          id: string
+          report_data: Json
+          report_type: string
+          scan_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          generated_at?: string
+          id?: string
+          report_data?: Json
+          report_type: string
+          scan_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          generated_at?: string
+          id?: string
+          report_data?: Json
+          report_type?: string
+          scan_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "portfolio_reports_scan_id_fkey"
+            columns: ["scan_id"]
+            isOneToOne: false
+            referencedRelation: "portfolio_scans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       portfolio_scans: {
         Row: {
           analysis_results: Json | null
