@@ -90,6 +90,7 @@ import PortfolioEssentialsDemo from "./pages/PortfolioEssentialsDemo";
 import PortfolioEssentials from "./pages/PortfolioEssentials";
 import PortfolioProfessional from "./pages/PortfolioProfessional";
 import PortfolioEnterprise from "./pages/PortfolioEnterprise";
+import PortfolioSubscriptionsAdmin from "./pages/PortfolioSubscriptionsAdmin";
 
 const queryClient = new QueryClient();
 
@@ -174,6 +175,7 @@ const App = () => (
           <Route path="/portfolio-enterprise" element={<PortfolioEnterprise />} />
           <Route path="/checkout" element={<PortfolioCheckout />} />
           <Route path="/dashboard" element={<PortfolioDashboard />} />
+          <Route path="/admin/portfolio-subscriptions" element={<PortfolioSubscriptionsAdmin />} />
           <Route path="/admin/bitcoin-research" element={<BitcoinResearchAdmin />} />
           
           {/* Legacy redirects for old URLs */}
