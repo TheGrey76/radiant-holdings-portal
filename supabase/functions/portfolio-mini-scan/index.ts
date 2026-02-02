@@ -1,10 +1,14 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { Resend } from "npm:resend@2.0.0";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
 };
+
+const resendApiKey = Deno.env.get("RESEND_API_KEY") ?? "";
+const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
 interface Holding {
   ticker: string;
@@ -115,6 +119,9 @@ serve(async (req: Request): Promise<Response> => {
 
     const { email, holdings, source = 'mini_scan' }: MiniScanRequest = await req.json();
 
+    const requestId = crypto.randomUUID();
+    console.log(`[portfolio-mini-scan] requestId=${requestId} source=${source}`);
+
     if (!email || !holdings || holdings.length === 0) {
       throw new Error('Email and holdings are required');
     }
@@ -147,6 +154,85 @@ serve(async (req: Request): Promise<Response> => {
       generatedAt: new Date().toISOString(),
     };
 
+    // Send email with results (best-effort; do not fail scan if email fails)
+    try {
+      if (!resend) {
+        console.warn(`[portfolio-mini-scan] requestId=${requestId} RESEND_API_KEY missing; skipping email send`);
+      } else {
+        const normalizedEmail = email.toLowerCase().trim();
+        const holdingsSummary = holdings
+          .slice(0, 10)
+          .map((h) => `${(h.ticker ?? '').toUpperCase()} (${h.weight}%)`)
+          .join(", ");
+
+        const emailResponse = await resend.emails.send({
+          from: 'Aries76 <research@aries76.com>',
+          to: [normalizedEmail],
+          subject: `Your Portfolio Mini-Scan: Risk Score ${riskScore} (${analysisResults.riskLevel})`,
+          html: `
+            <!DOCTYPE html>
+            <html>
+              <head>
+                <meta charset="utf-8" />
+                <meta name="viewport" content="width=device-width, initial-scale=1" />
+                <style>
+                  body { font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif; color: #0f172a; line-height: 1.6; }
+                  .container { max-width: 640px; margin: 0 auto; padding: 28px 18px; }
+                  .card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 22px; }
+                  .kpis { display: flex; gap: 10px; flex-wrap: wrap; margin: 14px 0; }
+                  .kpi { flex: 1 1 160px; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; }
+                  .kpiTitle { font-size: 12px; color: #64748b; margin: 0 0 6px; }
+                  .kpiValue { font-size: 22px; font-weight: 800; margin: 0; }
+                  .muted { color: #64748b; font-size: 14px; }
+                  .cta { display: inline-block; padding: 12px 18px; border-radius: 10px; background: #0f172a; color: #fff !important; text-decoration: none; font-weight: 700; }
+                  ul { margin: 10px 0 0 18px; }
+                  .footer { margin-top: 14px; font-size: 12px; color: #64748b; }
+                </style>
+              </head>
+              <body>
+                <div class="container">
+                  <div class="card">
+                    <p class="muted" style="margin-top:0">Aries76 Capital Intelligence</p>
+                    <h2 style="margin: 6px 0 4px">Your Portfolio Mini‑Scan</h2>
+                    <p class="muted" style="margin: 0 0 12px">Holdings analyzed: ${analysisResults.holdingsAnalyzed}${holdingsSummary ? ` • ${holdingsSummary}` : ''}</p>
+                    <div class="kpis">
+                      <div class="kpi">
+                        <p class="kpiTitle">Risk Score</p>
+                        <p class="kpiValue">${analysisResults.riskScore}</p>
+                        <p class="muted" style="margin:0">${analysisResults.riskLevel}</p>
+                      </div>
+                      <div class="kpi">
+                        <p class="kpiTitle">Expected Return</p>
+                        <p class="kpiValue">${analysisResults.expectedReturn}</p>
+                      </div>
+                      <div class="kpi">
+                        <p class="kpiTitle">Volatility Impact</p>
+                        <p class="kpiValue">${analysisResults.volatilityImpact}</p>
+                      </div>
+                    </div>
+
+                    <h3 style="margin: 16px 0 8px">Key insights</h3>
+                    <ul>
+                      ${analysisResults.insights.map((i) => `<li>${i}</li>`).join('')}
+                    </ul>
+
+                    <div style="margin-top: 18px">
+                      <a class="cta" href="https://aries76.com/portfolio-analysis" target="_blank" rel="noreferrer">Get the full report</a>
+                      <p class="footer">If you didn't request this scan, you can ignore this email.</p>
+                    </div>
+                  </div>
+                </div>
+              </body>
+            </html>
+          `,
+        });
+
+        console.log(`[portfolio-mini-scan] requestId=${requestId} email sent to=${normalizedEmail} resendId=${emailResponse?.id ?? 'n/a'}`);
+      }
+    } catch (emailErr) {
+      console.error(`[portfolio-mini-scan] requestId=${requestId} email send failed`, emailErr);
+    }
+
     // Save to portfolio_leads
     await supabase.from('portfolio_leads').insert({
       email: email.toLowerCase(),
@@ -173,7 +259,7 @@ serve(async (req: Request): Promise<Response> => {
       console.error('Error saving scan:', scanError);
     }
 
-    console.log(`Mini-scan completed for ${email}: Risk Score ${riskScore}`);
+    console.log(`[portfolio-mini-scan] requestId=${requestId} completed email=${email} riskScore=${riskScore}`);
 
     return new Response(
       JSON.stringify({
