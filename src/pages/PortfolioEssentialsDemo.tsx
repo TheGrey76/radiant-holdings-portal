@@ -9,8 +9,6 @@ import { Loader2, Play, FileText } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { EssentialsReportView } from '@/components/portfolio-report/EssentialsReportView';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
 
 interface Holding {
   ticker: string;
@@ -92,8 +90,6 @@ const PortfolioEssentialsDemo = () => {
         <title>Essentials Report Demo | ARIES76</title>
         <meta name="description" content="Test the Portfolio Essentials Report with Monte Carlo simulations and advanced risk metrics." />
       </Helmet>
-
-      <Navbar />
 
       <div className="min-h-screen bg-background pt-24 pb-16">
         <div className="container max-w-6xl mx-auto px-6">
@@ -231,8 +227,6 @@ const PortfolioEssentialsDemo = () => {
           )}
         </div>
       </div>
-
-      <Footer />
     </>
   );
 };
