@@ -5,3 +5,4 @@ export { AIInsightsTeaser } from './AIInsightsTeaser';
 export { PricingCard } from './PricingCard';
 export { StickyBanner } from './StickyBanner';
 export { EmailGateModal } from './EmailGateModal';
+export { EssentialsReportView } from './EssentialsReportView';
