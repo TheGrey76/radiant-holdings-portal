@@ -3,6 +3,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { 
   TrendingUp, 
   TrendingDown, 
@@ -13,7 +19,8 @@ import {
   ArrowUpRight,
   ArrowDownRight,
   Info,
-  Download
+  Download,
+  HelpCircle
 } from 'lucide-react';
 import {
   LineChart,
@@ -21,12 +28,48 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
-  Tooltip,
+  Tooltip as RechartsTooltip,
   ResponsiveContainer,
   Area,
   AreaChart,
   ReferenceLine,
 } from 'recharts';
+
+// Metric tooltips in English
+const METRIC_TOOLTIPS = {
+  riskScore: "Overall portfolio risk score from 0-100. Higher values indicate more aggressive portfolios with greater volatility.",
+  expectedReturn: "Annualized expected return based on historical performance and current market conditions.",
+  volatility: "Annualized standard deviation of returns. Measures how much the portfolio value fluctuates.",
+  sharpeRatio: "Risk-adjusted return metric. Values above 1.0 are good, above 2.0 are excellent. Measures excess return per unit of risk.",
+  sortinoRatio: "Similar to Sharpe but only penalizes downside volatility. Higher is better for asymmetric return profiles.",
+  maxDrawdown: "Largest peak-to-trough decline in portfolio value. Shows worst-case historical loss scenario.",
+  var95: "Value at Risk (95%): Maximum expected annual loss with 95% confidence. 5% chance of losing more than this.",
+  cvar95: "Conditional VaR: Average loss in the worst 5% of scenarios. More conservative than VaR.",
+  diversificationRatio: "Ratio of weighted average volatility to portfolio volatility. Higher values indicate better diversification.",
+  probabilityOfLoss: "Probability of ending with less than initial investment over the projection period.",
+  p5: "5th percentile: Only 5% of simulations performed worse than this outcome.",
+  p25: "25th percentile: Conservative outcome, 25% of simulations performed worse.",
+  p50: "Median outcome: 50% of simulations performed better, 50% worse. Most likely scenario.",
+  p75: "75th percentile: Optimistic outcome, only 25% of simulations performed better.",
+  p95: "95th percentile: Best case scenario, only 5% of simulations performed better.",
+  contribution: "This asset's contribution to overall portfolio return, based on weight and expected return."
+};
+
+const MetricLabel: React.FC<{ label: string; tooltipKey: keyof typeof METRIC_TOOLTIPS }> = ({ label, tooltipKey }) => (
+  <TooltipProvider>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <span className="text-muted-foreground flex items-center gap-1 cursor-help">
+          {label}
+          <HelpCircle className="h-3 w-3 opacity-50" />
+        </span>
+      </TooltipTrigger>
+      <TooltipContent side="top" className="max-w-xs">
+        <p className="text-sm">{METRIC_TOOLTIPS[tooltipKey]}</p>
+      </TooltipContent>
+    </Tooltip>
+  </TooltipProvider>
+);
 
 interface MonteCarloResults {
   simulationsRun: number;
@@ -177,7 +220,7 @@ export const EssentialsReportView: React.FC<EssentialsReportViewProps> = ({ repo
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">Risk Score</p>
+                <MetricLabel label="Risk Score" tooltipKey="riskScore" />
                 <p className="text-4xl font-bold">{metrics.riskScore}</p>
                 <Badge className={`mt-2 ${getRiskColor(metrics.riskLevel)}`}>
                   {metrics.riskLevel}
@@ -215,7 +258,7 @@ export const EssentialsReportView: React.FC<EssentialsReportViewProps> = ({ repo
           <CardContent className="pt-6 text-center">
             <TrendingUp className="h-5 w-5 mx-auto mb-2 text-emerald-400" />
             <p className="text-2xl font-bold text-emerald-400">{metrics.expectedReturn}</p>
-            <p className="text-xs text-muted-foreground">Expected Return</p>
+            <MetricLabel label="Expected Return" tooltipKey="expectedReturn" />
           </CardContent>
         </Card>
 
@@ -223,7 +266,7 @@ export const EssentialsReportView: React.FC<EssentialsReportViewProps> = ({ repo
           <CardContent className="pt-6 text-center">
             <Activity className="h-5 w-5 mx-auto mb-2 text-amber-400" />
             <p className="text-2xl font-bold text-amber-400">{metrics.volatility}</p>
-            <p className="text-xs text-muted-foreground">Volatility</p>
+            <MetricLabel label="Volatility" tooltipKey="volatility" />
           </CardContent>
         </Card>
 
@@ -231,7 +274,7 @@ export const EssentialsReportView: React.FC<EssentialsReportViewProps> = ({ repo
           <CardContent className="pt-6 text-center">
             <Target className="h-5 w-5 mx-auto mb-2 text-blue-400" />
             <p className="text-2xl font-bold">{metrics.sharpeRatio}</p>
-            <p className="text-xs text-muted-foreground">Sharpe Ratio</p>
+            <MetricLabel label="Sharpe Ratio" tooltipKey="sharpeRatio" />
           </CardContent>
         </Card>
 
@@ -239,7 +282,7 @@ export const EssentialsReportView: React.FC<EssentialsReportViewProps> = ({ repo
           <CardContent className="pt-6 text-center">
             <BarChart3 className="h-5 w-5 mx-auto mb-2 text-purple-400" />
             <p className="text-2xl font-bold">{metrics.sortinoRatio}</p>
-            <p className="text-xs text-muted-foreground">Sortino Ratio</p>
+            <MetricLabel label="Sortino Ratio" tooltipKey="sortinoRatio" />
           </CardContent>
         </Card>
       </div>
@@ -282,7 +325,7 @@ export const EssentialsReportView: React.FC<EssentialsReportViewProps> = ({ repo
                   tickFormatter={(v) => `${v.toFixed(0)}`}
                   className="text-xs"
                 />
-                <Tooltip 
+                <RechartsTooltip 
                   content={({ active, payload }) => {
                     if (!active || !payload?.length) return null;
                     const data = payload[0].payload;
@@ -385,23 +428,23 @@ export const EssentialsReportView: React.FC<EssentialsReportViewProps> = ({ repo
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex justify-between items-center py-2 border-b">
-              <span className="text-muted-foreground">Max Drawdown</span>
+              <MetricLabel label="Max Drawdown" tooltipKey="maxDrawdown" />
               <span className="font-bold text-red-400">{metrics.maxDrawdown}</span>
             </div>
             <div className="flex justify-between items-center py-2 border-b">
-              <span className="text-muted-foreground">Value at Risk (95%)</span>
+              <MetricLabel label="Value at Risk (95%)" tooltipKey="var95" />
               <span className="font-bold text-orange-400">{metrics.var95}</span>
             </div>
             <div className="flex justify-between items-center py-2 border-b">
-              <span className="text-muted-foreground">Conditional VaR (95%)</span>
+              <MetricLabel label="Conditional VaR (95%)" tooltipKey="cvar95" />
               <span className="font-bold text-red-400">{metrics.cvar95}</span>
             </div>
             <div className="flex justify-between items-center py-2 border-b">
-              <span className="text-muted-foreground">Diversification Ratio</span>
+              <MetricLabel label="Diversification Ratio" tooltipKey="diversificationRatio" />
               <span className="font-bold">{metrics.diversificationRatio}</span>
             </div>
             <div className="flex justify-between items-center py-2">
-              <span className="text-muted-foreground">Probability of Loss (5yr)</span>
+              <MetricLabel label="Probability of Loss (5yr)" tooltipKey="probabilityOfLoss" />
               <span className="font-bold text-amber-400">{monteCarlo.probabilityOfLoss}</span>
             </div>
           </CardContent>
