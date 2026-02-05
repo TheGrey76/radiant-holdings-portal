@@ -370,7 +370,7 @@ const AriesAICourses = () => {
                 <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">
                   AI Literacy is Essential for Today's Finance Professionals
                 </h2>
-                <p className="text-gray-300 text-lg mb-8 leading-relaxed">
+                <p className="text-white/90 text-lg mb-8 leading-relaxed">
                   My courses bridge the gap between complex AI concepts and practical business applications, 
                   empowering students to leverage artificial intelligence in their daily work.
                 </p>
@@ -384,7 +384,7 @@ const AriesAICourses = () => {
                   ].map((item, index) => (
                     <div key={index} className="flex items-center gap-3">
                       <div className="w-2 h-2 rounded-full bg-[#FF7A3D]" />
-                      <span className="text-gray-300">{item}</span>
+                      <span className="text-white/85">{item}</span>
                     </div>
                   ))}
                 </div>
