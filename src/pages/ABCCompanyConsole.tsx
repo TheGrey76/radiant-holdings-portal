@@ -41,6 +41,7 @@ import { ABCAnimatedFunnel } from "@/components/ABCAnimatedFunnel";
 import { ABCAutoReminders, Reminder } from "@/components/ABCAutoReminders";
 import { ABCFollowUpSequences } from "@/components/ABCFollowUpSequences";
 import { ABCCampaignStatsDialog } from "@/components/ABCCampaignStatsDialog";
+ import { ABCLinkedInOutreach } from "@/components/ABCLinkedInOutreach";
 import { useKPIHistory } from "@/hooks/useKPIHistory";
 import { supabase } from "@/integrations/supabase/client";
 import { ABCDataProvider } from "@/contexts/ABCDataContext";
@@ -1067,7 +1068,7 @@ const ABCCompanyConsole = () => {
           <TabsList className="grid w-full grid-cols-10 mb-8">
             <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
             <TabsTrigger value="investors">Investors</TabsTrigger>
-            <TabsTrigger value="relationships">Relationships</TabsTrigger>
+             <TabsTrigger value="linkedin">LinkedIn</TabsTrigger>
             <TabsTrigger value="commitments">Commitments</TabsTrigger>
             <TabsTrigger value="campaigns">Campaigns</TabsTrigger>
             <TabsTrigger value="prospecting">Prospecting</TabsTrigger>
@@ -1454,29 +1455,18 @@ const ABCCompanyConsole = () => {
             )}
           </TabsContent>
 
-          {/* RELATIONSHIPS TAB - Affinity-style Relationship Intelligence */}
-          <TabsContent value="relationships" className="space-y-6">
-            <ABCRelationshipIntelligence 
-              investors={investors.map(i => ({
-                id: i.id,
-                nome: i.nome,
-                azienda: i.azienda,
-                email: i.email,
-                status: i.status,
-                lastContactDate: i.lastContactDate,
-                engagementScore: i.engagementScore,
-                emailOpensCount: i.emailOpensCount,
-                emailResponsesCount: i.emailResponsesCount,
-                meetingsCount: i.meetingsCount,
-                notesCount: i.notesCount,
-                relationshipOwner: i.relationshipOwner,
-                createdAt: i.createdAt,
-                pipelineValue: i.pipelineValue,
-                approvalStatus: i.approvalStatus,
-              }))}
-              onInvestorSelect={(id) => setEditInvestorId(id)}
-            />
-          </TabsContent>
+           {/* LINKEDIN TAB - LinkedIn Outreach & Warm Intro */}
+           <TabsContent value="linkedin" className="space-y-6">
+             <ABCLinkedInOutreach 
+               investors={investors.map(i => ({
+                 id: i.id,
+                 nome: i.nome,
+                 azienda: i.azienda,
+                 linkedin: i.linkedin,
+                 email: i.email,
+               }))}
+             />
+           </TabsContent>
 
           <TabsContent value="commitments" className="space-y-6">
             <ABCCommitmentTracker investors={investors.map(i => ({ id: i.id, nome: i.nome, azienda: i.azienda }))} />
