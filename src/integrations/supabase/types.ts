@@ -737,6 +737,110 @@ export type Database = {
         }
         Relationships: []
       }
+      abc_linkedin_outreach: {
+        Row: {
+          assigned_to: string | null
+          created_at: string
+          id: string
+          investor_id: string | null
+          investor_name: string
+          linkedin_url: string | null
+          message_content: string | null
+          notes: string | null
+          outreach_type: string
+          replied_at: string | null
+          sent_at: string | null
+          status: string
+          template_used: string | null
+          updated_at: string
+        }
+        Insert: {
+          assigned_to?: string | null
+          created_at?: string
+          id?: string
+          investor_id?: string | null
+          investor_name: string
+          linkedin_url?: string | null
+          message_content?: string | null
+          notes?: string | null
+          outreach_type?: string
+          replied_at?: string | null
+          sent_at?: string | null
+          status?: string
+          template_used?: string | null
+          updated_at?: string
+        }
+        Update: {
+          assigned_to?: string | null
+          created_at?: string
+          id?: string
+          investor_id?: string | null
+          investor_name?: string
+          linkedin_url?: string | null
+          message_content?: string | null
+          notes?: string | null
+          outreach_type?: string
+          replied_at?: string | null
+          sent_at?: string | null
+          status?: string
+          template_used?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "abc_linkedin_outreach_investor_id_fkey"
+            columns: ["investor_id"]
+            isOneToOne: false
+            referencedRelation: "abc_investors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      abc_linkedin_templates: {
+        Row: {
+          content: string
+          created_at: string
+          created_by: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          subject: string | null
+          success_rate: number | null
+          template_type: string
+          updated_at: string
+          usage_count: number | null
+          variables: string[] | null
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          subject?: string | null
+          success_rate?: number | null
+          template_type?: string
+          updated_at?: string
+          usage_count?: number | null
+          variables?: string[] | null
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          subject?: string | null
+          success_rate?: number | null
+          template_type?: string
+          updated_at?: string
+          usage_count?: number | null
+          variables?: string[] | null
+        }
+        Relationships: []
+      }
       abc_notifications: {
         Row: {
           created_at: string
@@ -831,6 +935,62 @@ export type Database = {
             columns: ["sequence_id"]
             isOneToOne: false
             referencedRelation: "abc_followup_sequences"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      abc_warm_connections: {
+        Row: {
+          connection_strength: string | null
+          connector_linkedin: string | null
+          connector_name: string
+          connector_relationship: string | null
+          created_at: string
+          id: string
+          intro_made_at: string | null
+          intro_requested_at: string | null
+          intro_status: string | null
+          investor_id: string | null
+          investor_name: string
+          notes: string | null
+          updated_at: string
+        }
+        Insert: {
+          connection_strength?: string | null
+          connector_linkedin?: string | null
+          connector_name: string
+          connector_relationship?: string | null
+          created_at?: string
+          id?: string
+          intro_made_at?: string | null
+          intro_requested_at?: string | null
+          intro_status?: string | null
+          investor_id?: string | null
+          investor_name: string
+          notes?: string | null
+          updated_at?: string
+        }
+        Update: {
+          connection_strength?: string | null
+          connector_linkedin?: string | null
+          connector_name?: string
+          connector_relationship?: string | null
+          created_at?: string
+          id?: string
+          intro_made_at?: string | null
+          intro_requested_at?: string | null
+          intro_status?: string | null
+          investor_id?: string | null
+          investor_name?: string
+          notes?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "abc_warm_connections_investor_id_fkey"
+            columns: ["investor_id"]
+            isOneToOne: false
+            referencedRelation: "abc_investors"
             referencedColumns: ["id"]
           },
         ]
