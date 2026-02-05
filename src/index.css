@@ -99,5 +99,26 @@
 @layer components {
   .glass-card {
     @apply backdrop-blur-lg bg-white/10 border border-white/20 shadow-glass;
+    -webkit-backdrop-filter: blur(16px);
+  }
+}
+
+/* Safari iOS fixes */
+@supports (-webkit-touch-callout: none) {
+  /* Fix backdrop-blur on Safari iOS */
+  .backdrop-blur-sm {
+    -webkit-backdrop-filter: blur(4px);
+  }
+  .backdrop-blur-md {
+    -webkit-backdrop-filter: blur(12px);
+  }
+  .backdrop-blur-lg {
+    -webkit-backdrop-filter: blur(16px);
+  }
+  
+  /* Improve transform performance on Safari */
+  * {
+    -webkit-transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
   }
 }
