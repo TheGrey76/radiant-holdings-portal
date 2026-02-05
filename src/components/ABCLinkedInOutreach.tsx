@@ -475,16 +475,24 @@
  
                    {selectedInvestor?.linkedin && (
                      <div className="p-3 rounded-lg bg-blue-500/10 border border-blue-500/20">
-                       <div className="flex items-center gap-2 text-sm">
-                         <Linkedin className="h-4 w-4 text-blue-400" />
-                         <a 
-                           href={selectedInvestor.linkedin} 
-                           target="_blank" 
-                           rel="noopener noreferrer"
-                           className="text-blue-400 hover:underline"
+                       <div className="flex items-center justify-between text-sm">
+                         <div className="flex items-center gap-2">
+                           <Linkedin className="h-4 w-4 text-blue-400" />
+                           <span className="text-muted-foreground truncate max-w-[280px]">
+                             {selectedInvestor.linkedin}
+                           </span>
+                         </div>
+                         <Button
+                           variant="outline"
+                           size="sm"
+                           onClick={() => {
+                             navigator.clipboard.writeText(selectedInvestor.linkedin!);
+                             toast.success('URL LinkedIn copiato - incollalo in una nuova tab');
+                           }}
                          >
-                           Apri profilo LinkedIn
-                         </a>
+                           <Copy className="h-3 w-3 mr-1" />
+                           Copia URL
+                         </Button>
                        </div>
                      </div>
                    )}
@@ -546,15 +554,17 @@
                        <TableCell>
                          <div className="font-medium">{outreach.investor_name}</div>
                          {outreach.linkedin_url && (
-                           <a 
-                             href={outreach.linkedin_url} 
-                             target="_blank" 
-                             rel="noopener noreferrer"
-                             className="text-xs text-blue-400 hover:underline flex items-center gap-1"
+                           <button
+                             onClick={() => {
+                               navigator.clipboard.writeText(outreach.linkedin_url!);
+                               toast.success('URL LinkedIn copiato');
+                             }}
+                             className="text-xs text-blue-400 hover:text-blue-300 flex items-center gap-1"
+                             title="Copia URL LinkedIn"
                            >
                              <Linkedin className="h-3 w-3" />
-                             LinkedIn
-                           </a>
+                             <Copy className="h-2.5 w-2.5" />
+                           </button>
                          )}
                        </TableCell>
                        <TableCell>
@@ -738,15 +748,17 @@
                        <TableCell>
                          <div>{conn.connector_name}</div>
                          {conn.connector_linkedin && (
-                           <a 
-                             href={conn.connector_linkedin} 
-                             target="_blank" 
-                             rel="noopener noreferrer"
-                             className="text-xs text-blue-400 hover:underline flex items-center gap-1"
+                           <button
+                             onClick={() => {
+                               navigator.clipboard.writeText(conn.connector_linkedin!);
+                               toast.success('URL LinkedIn copiato');
+                             }}
+                             className="text-xs text-blue-400 hover:text-blue-300 flex items-center gap-1"
+                             title="Copia URL LinkedIn"
                            >
                              <Linkedin className="h-3 w-3" />
-                             Profilo
-                           </a>
+                             <Copy className="h-2.5 w-2.5" />
+                           </button>
                          )}
                        </TableCell>
                        <TableCell className="text-sm text-muted-foreground">
