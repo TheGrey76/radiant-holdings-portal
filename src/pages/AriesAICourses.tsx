@@ -82,13 +82,23 @@ const AriesAICourses = () => {
               </p>
               
               <div className="flex flex-wrap gap-4">
-                <Button size="lg" className="bg-[#FF7A3D] hover:bg-[#FF7A3D]/90 text-white">
+                <Button 
+                  size="lg" 
+                  className="bg-[#FF7A3D] hover:bg-[#FF7A3D]/90 text-white"
+                  onClick={() => document.getElementById('courses')?.scrollIntoView({ behavior: 'smooth' })}
+                >
                   Explore Courses
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
-                <Button size="lg" variant="outline" className="border-white/50 text-white hover:bg-white/20 bg-white/10">
-                  View Profile
-                </Button>
+                <a 
+                  href="https://www.linkedin.com/in/edoardogrigione/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                >
+                  <Button size="lg" variant="outline" className="border-white/50 text-white hover:bg-white/20 bg-white/10">
+                    View Profile
+                  </Button>
+                </a>
               </div>
             </motion.div>
             
