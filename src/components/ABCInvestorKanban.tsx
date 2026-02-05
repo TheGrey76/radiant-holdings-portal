@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 import { Card, CardContent } from "@/components/ui/card";
@@ -6,16 +6,17 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Building2, MapPin, Euro, Linkedin, Pencil, Trash2, CheckCircle, Clock, XCircle, ChevronDown, X, Filter, Eye, Plus, Sparkles, Mail } from "lucide-react";
+import { Building2, MapPin, Euro, Linkedin, Pencil, Trash2, CheckCircle, Clock, XCircle, ChevronDown, X, Filter, Eye, Plus, Sparkles, Mail, Send, UserCheck, UserX, UserMinus, Loader2 } from "lucide-react";
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from "sonner";
 import { EditABCInvestorDialog } from './EditABCInvestorDialog';
 import { AddABCInvestorDialog } from './AddABCInvestorDialog';
 
 type ApprovalStatus = 'pending' | 'approved' | 'not_approved';
+type LinkedInConnectionStatus = 'unknown' | 'connected' | 'not_connected' | 'pending_request';
 
 interface Investor {
   id: string;
@@ -32,6 +33,7 @@ interface Investor {
   email?: string;
   phone?: string;
   approvalStatus?: ApprovalStatus;
+  linkedinConnectionStatus?: LinkedInConnectionStatus;
 }
 
 interface ABCInvestorKanbanProps {
@@ -57,6 +59,13 @@ const approvalStatusConfig: Record<ApprovalStatus, { label: string; icon: typeof
   not_approved: { label: 'Not Approved', icon: XCircle, className: 'bg-red-500/10 text-red-600 border-red-200' },
 };
 
+const linkedinConnectionConfig: Record<LinkedInConnectionStatus, { label: string; icon: typeof UserCheck; className: string }> = {
+  unknown: { label: 'Unknown', icon: UserMinus, className: 'bg-slate-100 text-slate-600' },
+  connected: { label: 'Connected', icon: UserCheck, className: 'bg-green-100 text-green-700' },
+  not_connected: { label: 'Not Connected', icon: UserX, className: 'bg-amber-100 text-amber-700' },
+  pending_request: { label: 'Pending Request', icon: Clock, className: 'bg-blue-100 text-blue-700' },
+};
+
 export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvestorId, onEditDialogClosed }: ABCInvestorKanbanProps) => {
   const navigate = useNavigate();
   const [localInvestors, setLocalInvestors] = useState(investors);
@@ -67,9 +76,11 @@ export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvest
   const [isBulkUpdating, setIsBulkUpdating] = useState(false);
   const [approvalFilter, setApprovalFilter] = useState<'all' | ApprovalStatus>('all');
   const [enrichedFilter, setEnrichedFilter] = useState<'all' | 'enriched' | 'missing'>('all');
+  const [connectionFilter, setConnectionFilter] = useState<'all' | LinkedInConnectionStatus>('all');
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isSendingToProsp, setIsSendingToProsp] = useState(false);
 
   const handleViewProfile = (e: React.MouseEvent, investorId: string) => {
     e.stopPropagation();
@@ -102,7 +113,7 @@ export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvest
     return hasEmail || hasLinkedin;
   };
 
-  // Filter investors by approval status and enrichment
+  // Filter investors by approval status, enrichment, and connection status
   const filteredInvestors = localInvestors
     .filter(inv => approvalFilter === 'all' || (inv.approvalStatus || 'pending') === approvalFilter)
     .filter(inv => {
@@ -110,6 +121,10 @@ export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvest
       if (enrichedFilter === 'enriched') return isEnriched(inv);
       if (enrichedFilter === 'missing') return !isEnriched(inv);
       return true;
+    })
+    .filter(inv => {
+      if (connectionFilter === 'all') return true;
+      return (inv.linkedinConnectionStatus || 'unknown') === connectionFilter;
     });
 
   // Pagination logic
@@ -122,7 +137,7 @@ export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvest
   // Reset to page 1 when filters change
   useEffect(() => {
     setCurrentPage(1);
-  }, [approvalFilter, enrichedFilter, itemsPerPage]);
+  }, [approvalFilter, enrichedFilter, connectionFilter, itemsPerPage]);
 
   const getInvestorsByStatus = (status: string) => {
     return paginatedInvestors.filter(inv => inv.status === status);
@@ -345,6 +360,123 @@ export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvest
     }
   };
 
+  // Bulk connection status change
+  const handleBulkConnectionStatusChange = async (newStatus: LinkedInConnectionStatus) => {
+    if (selectedInvestors.size === 0) return;
+    
+    setIsBulkUpdating(true);
+    const selectedIds = Array.from(selectedInvestors);
+    
+    // Optimistic update
+    setLocalInvestors(prev => prev.map(inv => 
+      selectedIds.includes(inv.id) ? { ...inv, linkedinConnectionStatus: newStatus } : inv
+    ));
+
+    const statusLabels: Record<LinkedInConnectionStatus, string> = {
+      unknown: 'sconosciuto',
+      connected: 'connesso',
+      not_connected: 'non connesso',
+      pending_request: 'richiesta inviata',
+    };
+    toast.success(`${selectedIds.length} investitori aggiornati: ${statusLabels[newStatus]}`);
+    clearSelection();
+
+    try {
+      const { error } = await supabase
+        .from('abc_investors' as any)
+        .update({ linkedin_connection_status: newStatus })
+        .in('id', selectedIds);
+
+      if (error) throw error;
+      onStatusChange();
+    } catch (error) {
+      console.error('Error bulk updating connection status:', error);
+      toast.error('Errore durante l\'aggiornamento');
+      onStatusChange();
+    } finally {
+      setIsBulkUpdating(false);
+    }
+  };
+
+  // Send selected investors to Prosp.ai
+  const handleSendToProsp = async () => {
+    if (selectedInvestors.size === 0) {
+      toast.error('Seleziona almeno un investitore');
+      return;
+    }
+
+    // Get selected investors with LinkedIn
+    const selectedList = Array.from(selectedInvestors)
+      .map(id => localInvestors.find(inv => inv.id === id))
+      .filter((inv): inv is Investor => !!inv && !!inv.linkedin);
+
+    if (selectedList.length === 0) {
+      toast.error('Gli investitori selezionati non hanno profili LinkedIn');
+      return;
+    }
+
+    // Check if Prosp settings exist in localStorage
+    const savedSettings = localStorage.getItem('prosp_settings');
+    if (!savedSettings) {
+      toast.error('Configura Campaign ID e List ID nelle impostazioni LinkedIn Outreach');
+      return;
+    }
+
+    const settings = JSON.parse(savedSettings);
+    if (!settings.campaignId || !settings.listId) {
+      toast.error('Configura Campaign ID e List ID nelle impostazioni LinkedIn Outreach');
+      return;
+    }
+
+    setIsSendingToProsp(true);
+    let success = 0;
+    let failed = 0;
+
+    for (const investor of selectedList) {
+      try {
+        const { error } = await supabase.functions.invoke('prosp-add-lead', {
+          body: {
+            investorId: investor.id,
+            linkedinUrl: investor.linkedin,
+            campaignId: settings.campaignId,
+            listId: settings.listId,
+            investorName: investor.nome,
+            investorEmail: investor.email,
+            investorCompany: investor.azienda,
+          },
+        });
+
+        if (error) {
+          console.error(`Error sending ${investor.nome}:`, error);
+          failed++;
+        } else {
+          success++;
+          // Update connection status to pending_request
+          await supabase
+            .from('abc_investors' as any)
+            .update({ linkedin_connection_status: 'pending_request' })
+            .eq('id', investor.id);
+        }
+      } catch (err) {
+        console.error(`Error sending ${investor.nome}:`, err);
+        failed++;
+      }
+
+      // Small delay to avoid rate limiting
+      await new Promise(resolve => setTimeout(resolve, 500));
+    }
+
+    setIsSendingToProsp(false);
+    clearSelection();
+    
+    if (success > 0) {
+      toast.success(`${success} investitori inviati a Prosp.ai${failed > 0 ? `, ${failed} falliti` : ''}`);
+      onStatusChange();
+    } else {
+      toast.error('Nessun investitore inviato a Prosp.ai');
+    }
+  };
+
   useEffect(() => {
     setLocalInvestors(investors);
   }, [investors]);
@@ -410,8 +542,38 @@ export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvest
             </SelectContent>
           </Select>
 
-          {(approvalFilter !== 'all' || enrichedFilter !== 'all') && (
-            <Button variant="ghost" size="sm" onClick={() => { setApprovalFilter('all'); setEnrichedFilter('all'); }}>
+          {/* LinkedIn Connection Filter */}
+          <Select value={connectionFilter} onValueChange={(value) => setConnectionFilter(value as 'all' | LinkedInConnectionStatus)}>
+            <SelectTrigger className="w-48">
+              <SelectValue placeholder="Connessione LI" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">
+                <span className="flex items-center gap-2">Tutti</span>
+              </SelectItem>
+              <SelectItem value="connected">
+                <span className="flex items-center gap-2">
+                  <UserCheck className="h-3.5 w-3.5 text-green-600" />
+                  Connessi ({localInvestors.filter(i => i.linkedinConnectionStatus === 'connected').length})
+                </span>
+              </SelectItem>
+              <SelectItem value="not_connected">
+                <span className="flex items-center gap-2">
+                  <UserX className="h-3.5 w-3.5 text-amber-600" />
+                  Non Connessi ({localInvestors.filter(i => i.linkedinConnectionStatus === 'not_connected' || !i.linkedinConnectionStatus || i.linkedinConnectionStatus === 'unknown').length})
+                </span>
+              </SelectItem>
+              <SelectItem value="pending_request">
+                <span className="flex items-center gap-2">
+                  <Clock className="h-3.5 w-3.5 text-blue-600" />
+                  Richiesta Inviata ({localInvestors.filter(i => i.linkedinConnectionStatus === 'pending_request').length})
+                </span>
+              </SelectItem>
+            </SelectContent>
+          </Select>
+
+          {(approvalFilter !== 'all' || enrichedFilter !== 'all' || connectionFilter !== 'all') && (
+            <Button variant="ghost" size="sm" onClick={() => { setApprovalFilter('all'); setEnrichedFilter('all'); setConnectionFilter('all'); }}>
               <X className="h-4 w-4 mr-1" /> Rimuovi filtri
             </Button>
           )}
@@ -470,6 +632,47 @@ export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvest
               <XCircle className="h-3.5 w-3.5 text-red-600" />
               Non Approvare
             </Button>
+            
+            <div className="h-4 w-px bg-border mx-2" />
+            
+            {/* LinkedIn Connection Actions */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button size="sm" variant="outline" className="gap-1.5" disabled={isBulkUpdating}>
+                  <Linkedin className="h-3.5 w-3.5 text-[#0A66C2]" />
+                  Stato LinkedIn
+                  <ChevronDown className="h-3 w-3" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => handleBulkConnectionStatusChange('connected')}>
+                  <UserCheck className="h-4 w-4 mr-2 text-green-600" />
+                  Segna come Connesso
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleBulkConnectionStatusChange('not_connected')}>
+                  <UserX className="h-4 w-4 mr-2 text-amber-600" />
+                  Segna come Non Connesso
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleBulkConnectionStatusChange('pending_request')}>
+                  <Clock className="h-4 w-4 mr-2 text-blue-600" />
+                  Segna come Richiesta Inviata
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem 
+                  onClick={handleSendToProsp}
+                  disabled={isSendingToProsp}
+                  className="text-[#0A66C2]"
+                >
+                  {isSendingToProsp ? (
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  ) : (
+                    <Send className="h-4 w-4 mr-2" />
+                  )}
+                  Invia a Prosp.ai
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            
             <Button
               size="sm"
               variant="ghost"
@@ -652,6 +855,7 @@ export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvest
                                       </div>
                                     </div>
 
+                                    {/* Pipeline Value and LinkedIn Connection Status */}
                                     <div className="flex items-center justify-between pt-1">
                                       <div className="flex items-center gap-1">
                                         <Euro className="h-3.5 w-3.5 text-primary" />
@@ -659,9 +863,48 @@ export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvest
                                           €{investor.pipelineValue.toLocaleString()}
                                         </span>
                                       </div>
-                                      <Badge variant="outline" className="text-[10px] px-1.5 py-0">
-                                        {investor.categoria}
-                                      </Badge>
+                                      <div className="flex items-center gap-1">
+                                        {investor.linkedin && (
+                                          <TooltipProvider>
+                                            <Tooltip>
+                                              <TooltipTrigger asChild>
+                                                <Badge 
+                                                  variant="outline" 
+                                                  className={`text-[10px] px-1.5 py-0 cursor-pointer ${linkedinConnectionConfig[investor.linkedinConnectionStatus || 'unknown'].className}`}
+                                                  onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    // Cycle through statuses
+                                                    const statuses: LinkedInConnectionStatus[] = ['not_connected', 'pending_request', 'connected'];
+                                                    const currentIndex = statuses.indexOf(investor.linkedinConnectionStatus || 'not_connected');
+                                                    const nextStatus = statuses[(currentIndex + 1) % statuses.length];
+                                                    supabase
+                                                      .from('abc_investors' as any)
+                                                      .update({ linkedin_connection_status: nextStatus })
+                                                      .eq('id', investor.id)
+                                                      .then(() => {
+                                                        setLocalInvestors(prev => prev.map(inv => 
+                                                          inv.id === investor.id ? { ...inv, linkedinConnectionStatus: nextStatus } : inv
+                                                        ));
+                                                      });
+                                                  }}
+                                                >
+                                                  {React.createElement(linkedinConnectionConfig[investor.linkedinConnectionStatus || 'unknown'].icon, { className: 'h-2.5 w-2.5' })}
+                                                </Badge>
+                                              </TooltipTrigger>
+                                              <TooltipContent side="bottom">
+                                                <p className="text-xs">
+                                                  LinkedIn: {linkedinConnectionConfig[investor.linkedinConnectionStatus || 'unknown'].label}
+                                                  <br />
+                                                  <span className="text-muted-foreground">Clicca per cambiare</span>
+                                                </p>
+                                              </TooltipContent>
+                                            </Tooltip>
+                                          </TooltipProvider>
+                                        )}
+                                        <Badge variant="outline" className="text-[10px] px-1.5 py-0">
+                                          {investor.categoria}
+                                        </Badge>
+                                      </div>
                                     </div>
                                   </CardContent>
                                   </Card>

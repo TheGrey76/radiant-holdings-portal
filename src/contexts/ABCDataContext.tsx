@@ -2,6 +2,8 @@ import React, { createContext, useContext, useState, useCallback, useEffect, use
 import { supabase } from '@/integrations/supabase/client';
 
 // Types
+export type LinkedInConnectionStatus = 'unknown' | 'connected' | 'not_connected' | 'pending_request';
+
 export interface Investor {
   id: string;
   nome: string;
@@ -22,6 +24,7 @@ export interface Investor {
   engagementScore?: number;
   expectedClose?: string;
   probability?: number;
+  linkedinConnectionStatus?: LinkedInConnectionStatus;
 }
 
 export interface MissingDataStats {
@@ -150,6 +153,7 @@ export const ABCDataProvider: React.FC<ABCDataProviderProps> = ({ children }) =>
         engagementScore: inv.engagement_score,
         expectedClose: inv.expected_close,
         probability: inv.probability,
+        linkedinConnectionStatus: (inv as any).linkedin_connection_status as LinkedInConnectionStatus || 'unknown',
       }));
 
       setInvestors(mapped);
