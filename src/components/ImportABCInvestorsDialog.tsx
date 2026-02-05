@@ -233,32 +233,79 @@ export function ImportABCInvestorsDialog({ onSuccess }: ImportABCInvestorsDialog
       const { data: { user } } = await supabase.auth.getUser();
       const importedBy = user?.email || 'Unknown';
       
-      // Fetch existing investors to check for duplicates
+      // Fetch existing investors with all fields to enable smart upsert
       const { data: existingInvestors, error: fetchError } = await supabase
         .from('abc_investors')
-        .select('nome, azienda');
+        .select('id, nome, azienda, email, linkedin, phone, ruolo, citta, fonte, priorita');
       
       if (fetchError) throw fetchError;
       
-      // Create a Set of existing investor keys (nome + azienda normalized)
-      const existingKeys = new Set(
-        (existingInvestors || []).map(inv => 
-          `${inv.nome.toLowerCase().trim()}|${inv.azienda.toLowerCase().trim()}`
-        )
-      );
-      
-      // Filter out duplicates
-      const newInvestors = parsedData.filter(inv => {
+      // Create a Map of existing investors keyed by (nome + azienda normalized)
+      const existingMap = new Map<string, typeof existingInvestors[0]>();
+      (existingInvestors || []).forEach(inv => {
         const key = `${inv.nome.toLowerCase().trim()}|${inv.azienda.toLowerCase().trim()}`;
-        return !existingKeys.has(key);
+        existingMap.set(key, inv);
       });
       
-      const duplicatesCount = parsedData.length - newInvestors.length;
+      // Separate into new records vs. updates
+      const newInvestors: InvestorRow[] = [];
+      const investorsToUpdate: Array<{ id: string; updates: Record<string, any> }> = [];
       
-      if (newInvestors.length === 0) {
-        toast.warning(`Tutti i ${parsedData.length} investitori sono già presenti nel database`);
-        setIsImporting(false);
-        return;
+      for (const inv of parsedData) {
+        const key = `${inv.nome.toLowerCase().trim()}|${inv.azienda.toLowerCase().trim()}`;
+        const existing = existingMap.get(key);
+        
+        if (existing) {
+          // Investor exists - check if there are new fields to update
+          const updates: Record<string, any> = {};
+          
+          // Update email if new one provided and existing is empty/null
+          if (inv.email && inv.email.trim() && inv.email.trim().toLowerCase() !== 'null') {
+            const existingEmail = existing.email?.trim().toLowerCase();
+            if (!existingEmail || existingEmail === 'null') {
+              updates.email = inv.email.trim();
+            }
+          }
+          
+          // Update linkedin if new one provided and existing is empty/null
+          if (inv.linkedin && inv.linkedin.trim() && inv.linkedin.trim().toLowerCase() !== 'null') {
+            const existingLinkedin = existing.linkedin?.trim().toLowerCase();
+            if (!existingLinkedin || existingLinkedin === 'null') {
+              updates.linkedin = inv.linkedin.trim();
+            }
+          }
+          
+          // Update phone if new one provided and existing is empty/null
+          if (inv.phone && inv.phone.trim() && inv.phone.trim().toLowerCase() !== 'null') {
+            const existingPhone = existing.phone?.trim().toLowerCase();
+            if (!existingPhone || existingPhone === 'null') {
+              updates.phone = inv.phone.trim();
+            }
+          }
+          
+          // Update ruolo if new one provided and existing is empty/null
+          if (inv.ruolo && inv.ruolo.trim()) {
+            if (!existing.ruolo?.trim()) {
+              updates.ruolo = inv.ruolo.trim();
+            }
+          }
+          
+          // Update citta if new one provided and existing is empty/null
+          if (inv.citta && inv.citta.trim()) {
+            if (!existing.citta?.trim()) {
+              updates.citta = inv.citta.trim();
+            }
+          }
+          
+          // If there are updates, add to update list
+          if (Object.keys(updates).length > 0) {
+            updates.updated_at = new Date().toISOString();
+            investorsToUpdate.push({ id: existing.id, updates });
+          }
+        } else {
+          // New investor
+          newInvestors.push(inv);
+        }
       }
       
       // Create import batch record first
@@ -272,7 +319,7 @@ export function ImportABCInvestorsDialog({ onSuccess }: ImportABCInvestorsDialog
           imported_by: importedBy,
           total_records: parsedData.length,
           new_records: newInvestors.length,
-          duplicates_skipped: duplicatesCount,
+          duplicates_skipped: investorsToUpdate.length, // Now this represents "updated" records
           status: 'completed'
         })
         .select()
@@ -282,35 +329,61 @@ export function ImportABCInvestorsDialog({ onSuccess }: ImportABCInvestorsDialog
       
       const batchId = batchData.id;
       
-      // Insert investors with batch reference
-      const dataToInsert = newInvestors.map(inv => ({
-        nome: inv.nome,
-        azienda: inv.azienda,
-        categoria: inv.categoria,
-        ruolo: inv.ruolo || null,
-        citta: inv.citta || null,
-        fonte: inv.fonte || null,
-        priorita: inv.priorita || 'medium',
-        email: inv.email || null,
-        phone: inv.phone || null,
-        linkedin: inv.linkedin || null,
-        pipeline_value: inv.pipeline_value || 0,
-        probability: inv.probability || 50,
-        status: 'To Contact',
-        relationship_owner: 'Edoardo Grigione',
-        import_batch_id: batchId
-      }));
+      // Insert new investors
+      if (newInvestors.length > 0) {
+        const dataToInsert = newInvestors.map(inv => ({
+          nome: inv.nome,
+          azienda: inv.azienda,
+          categoria: inv.categoria,
+          ruolo: inv.ruolo || null,
+          citta: inv.citta || null,
+          fonte: inv.fonte || null,
+          priorita: inv.priorita || 'medium',
+          email: inv.email || null,
+          phone: inv.phone || null,
+          linkedin: inv.linkedin || null,
+          pipeline_value: inv.pipeline_value || 0,
+          probability: inv.probability || 50,
+          status: 'To Contact',
+          relationship_owner: 'Edoardo Grigione',
+          import_batch_id: batchId
+        }));
+        
+        const { error } = await supabase
+          .from('abc_investors')
+          .insert(dataToInsert);
+        
+        if (error) throw error;
+      }
       
-      const { error } = await supabase
-        .from('abc_investors')
-        .insert(dataToInsert);
+      // Update existing investors with new data
+      let updatedCount = 0;
+      for (const { id, updates } of investorsToUpdate) {
+        const { error } = await supabase
+          .from('abc_investors')
+          .update(updates)
+          .eq('id', id);
+        
+        if (!error) {
+          updatedCount++;
+        } else {
+          console.error('Error updating investor:', id, error);
+        }
+      }
       
-      if (error) throw error;
+      // Build success message
+      const messages: string[] = [];
+      if (newInvestors.length > 0) {
+        messages.push(`${newInvestors.length} nuovi investitori`);
+      }
+      if (updatedCount > 0) {
+        messages.push(`${updatedCount} profili aggiornati con nuove info`);
+      }
       
-      if (duplicatesCount > 0) {
-        toast.success(`${newInvestors.length} nuovi investitori importati (${duplicatesCount} duplicati ignorati)`);
+      if (messages.length > 0) {
+        toast.success(`Importazione completata: ${messages.join(', ')}`);
       } else {
-        toast.success(`${newInvestors.length} investitori importati con successo`);
+        toast.info('Nessun nuovo dato da importare - tutti i profili sono già aggiornati');
       }
       
       setIsOpen(false);
@@ -318,9 +391,9 @@ export function ImportABCInvestorsDialog({ onSuccess }: ImportABCInvestorsDialog
       setParsedData([]);
       setDetectedColumns([]);
       
-      // Call the onSuccess callback with the count of imported investors
+      // Call the onSuccess callback with the total count of changes
       if (onSuccess) {
-        onSuccess(newInvestors.length);
+        onSuccess(newInvestors.length + updatedCount);
       }
     } catch (error: any) {
       console.error('Import error:', error);
