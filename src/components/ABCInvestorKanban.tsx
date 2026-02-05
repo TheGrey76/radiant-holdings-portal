@@ -865,63 +865,38 @@ export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvest
                                       </div>
                                       <div className="flex items-center gap-1">
                                         {investor.linkedin && (
-                                          <>
-                                            {/* LinkedIn Profile Link */}
-                                            <TooltipProvider>
-                                              <Tooltip>
-                                                <TooltipTrigger asChild>
-                                                  <a
-                                                    href={investor.linkedin}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    onClick={(e) => e.stopPropagation()}
-                                                    className="flex items-center justify-center h-5 w-5 rounded bg-[#0A66C2] hover:bg-[#004182] transition-colors"
-                                                  >
-                                                    <Linkedin className="h-3 w-3 text-white" />
-                                                  </a>
-                                                </TooltipTrigger>
-                                                <TooltipContent side="bottom">
-                                                  <p className="text-xs">Apri profilo LinkedIn</p>
-                                                </TooltipContent>
-                                              </Tooltip>
-                                            </TooltipProvider>
-                                            {/* Connection Status Badge */}
-                                            <TooltipProvider>
-                                              <Tooltip>
-                                                <TooltipTrigger asChild>
-                                                  <Badge 
-                                                    variant="outline" 
-                                                    className={`text-[10px] px-1.5 py-0 cursor-pointer ${linkedinConnectionConfig[investor.linkedinConnectionStatus || 'unknown'].className}`}
-                                                    onClick={(e) => {
-                                                      e.stopPropagation();
-                                                      // Cycle through statuses
-                                                      const statuses: LinkedInConnectionStatus[] = ['not_connected', 'pending_request', 'connected'];
-                                                      const currentIndex = statuses.indexOf(investor.linkedinConnectionStatus || 'not_connected');
-                                                      const nextStatus = statuses[(currentIndex + 1) % statuses.length];
-                                                      supabase
-                                                        .from('abc_investors' as any)
-                                                        .update({ linkedin_connection_status: nextStatus })
-                                                        .eq('id', investor.id)
-                                                        .then(() => {
-                                                          setLocalInvestors(prev => prev.map(inv => 
-                                                            inv.id === investor.id ? { ...inv, linkedinConnectionStatus: nextStatus } : inv
-                                                          ));
-                                                        });
-                                                    }}
-                                                  >
-                                                    {React.createElement(linkedinConnectionConfig[investor.linkedinConnectionStatus || 'unknown'].icon, { className: 'h-2.5 w-2.5' })}
-                                                  </Badge>
-                                                </TooltipTrigger>
-                                                <TooltipContent side="bottom">
-                                                  <p className="text-xs">
-                                                    LinkedIn: {linkedinConnectionConfig[investor.linkedinConnectionStatus || 'unknown'].label}
-                                                    <br />
-                                                    <span className="text-muted-foreground">Clicca per cambiare</span>
-                                                  </p>
-                                                </TooltipContent>
-                                              </Tooltip>
-                                            </TooltipProvider>
-                                          </>
+                                          <TooltipProvider>
+                                            <Tooltip>
+                                              <TooltipTrigger asChild>
+                                                <a
+                                                  href={investor.linkedin}
+                                                  target="_blank"
+                                                  rel="noopener noreferrer"
+                                                  onClick={(e) => e.stopPropagation()}
+                                                  className={`flex items-center justify-center h-5 w-5 rounded transition-colors ${
+                                                    investor.linkedinConnectionStatus === 'connected' 
+                                                      ? 'bg-green-600 hover:bg-green-700' 
+                                                      : investor.linkedinConnectionStatus === 'pending_request'
+                                                      ? 'bg-amber-500 hover:bg-amber-600'
+                                                      : investor.linkedinConnectionStatus === 'not_connected'
+                                                      ? 'bg-red-500 hover:bg-red-600'
+                                                      : 'bg-[#0A66C2] hover:bg-[#004182]'
+                                                  }`}
+                                                >
+                                                  <Linkedin className="h-3 w-3 text-white" />
+                                                </a>
+                                              </TooltipTrigger>
+                                              <TooltipContent side="bottom">
+                                                <p className="text-xs">
+                                                  Apri profilo LinkedIn
+                                                  <br />
+                                                  <span className="text-muted-foreground">
+                                                    Stato: {linkedinConnectionConfig[investor.linkedinConnectionStatus || 'unknown'].label}
+                                                  </span>
+                                                </p>
+                                              </TooltipContent>
+                                            </Tooltip>
+                                          </TooltipProvider>
                                         )}
                                         <Badge variant="outline" className="text-[10px] px-1.5 py-0">
                                           {investor.categoria}
