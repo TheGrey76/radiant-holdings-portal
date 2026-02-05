@@ -176,3 +176,6 @@ verify_jwt = false
 
 [functions.prosp-add-lead]
 verify_jwt = false
+
+[functions.prosp-sync]
+verify_jwt = false

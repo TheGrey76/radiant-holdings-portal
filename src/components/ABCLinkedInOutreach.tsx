@@ -25,7 +25,10 @@
    TrendingUp,
    Target,
    ExternalLink,
-   Check
+   Check,
+   ArrowDownUp,
+   BarChart3,
+   Download
  } from 'lucide-react';
  import { format } from 'date-fns';
  import { it } from 'date-fns/locale';
@@ -104,7 +107,7 @@
    declined: 'bg-red-500/20 text-red-400',
  };
  
- export const ABCLinkedInOutreach = ({ investors }: ABCLinkedInOutreachProps) => {
+export const ABCLinkedInOutreach = ({ investors }: ABCLinkedInOutreachProps) => {
    const [outreachList, setOutreachList] = useState<LinkedInOutreach[]>([]);
    const [warmConnections, setWarmConnections] = useState<WarmConnection[]>([]);
    const [templates, setTemplates] = useState<LinkedInTemplate[]>([]);
@@ -114,6 +117,12 @@
    const [generatedMessage, setGeneratedMessage] = useState('');
    const [showNewOutreachDialog, setShowNewOutreachDialog] = useState(false);
    const [showWarmIntroDialog, setShowWarmIntroDialog] = useState(false);
+   const [showProspSyncDialog, setShowProspSyncDialog] = useState(false);
+   const [prospCampaigns, setProspCampaigns] = useState<Array<{ campaign_id: string; campaign_name: string }>>([]);
+   const [selectedProspCampaign, setSelectedProspCampaign] = useState('');
+   const [syncing, setSyncing] = useState(false);
+   const [syncStats, setSyncStats] = useState<{ total: number; new: number; updated: number; skipped: number } | null>(null);
+   const [prospAnalytics, setProspAnalytics] = useState<{ connection_requests: number; connections_accepted: number; messages_sent: number; replies: number } | null>(null);
    
    // Warm intro form state
    const [warmIntroForm, setWarmIntroForm] = useState({
@@ -147,8 +156,94 @@
      } finally {
        setLoading(false);
      }
-   };
- 
+    };
+
+  // Prosp.ai sync functions
+  const fetchProspCampaigns = async () => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        toast.error('Sessione scaduta, effettua il login');
+        return;
+      }
+
+      const { data, error } = await supabase.functions.invoke('prosp-sync', {
+        body: { action: 'list-campaigns' },
+      });
+
+      if (error) throw error;
+      
+      if (data.campaigns) {
+        setProspCampaigns(data.campaigns);
+        if (data.campaigns.length > 0 && !selectedProspCampaign) {
+          setSelectedProspCampaign(data.campaigns[0].campaign_id);
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching Prosp campaigns:', error);
+      toast.error('Errore nel caricamento campagne Prosp.ai');
+    }
+  };
+
+  const syncFromProsp = async () => {
+    if (!selectedProspCampaign) {
+      toast.error('Seleziona una campagna');
+      return;
+    }
+
+    try {
+      setSyncing(true);
+      setSyncStats(null);
+      
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        toast.error('Sessione scaduta, effettua il login');
+        return;
+      }
+
+      const { data, error } = await supabase.functions.invoke('prosp-sync', {
+        body: { action: 'sync-from-prosp', campaignId: selectedProspCampaign },
+      });
+
+      if (error) throw error;
+      
+      setSyncStats(data.stats);
+      toast.success(`Sincronizzazione completata: ${data.stats.new} nuovi, ${data.stats.updated} aggiornati`);
+      
+      // Refresh data
+      fetchData();
+    } catch (error) {
+      console.error('Error syncing from Prosp:', error);
+      toast.error('Errore nella sincronizzazione');
+    } finally {
+      setSyncing(false);
+    }
+  };
+
+  const fetchProspAnalytics = async () => {
+    if (!selectedProspCampaign) return;
+
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return;
+
+      const { data, error } = await supabase.functions.invoke('prosp-sync', {
+        body: { action: 'get-analytics', campaignId: selectedProspCampaign },
+      });
+
+      if (error) throw error;
+      setProspAnalytics(data.analytics);
+    } catch (error) {
+      console.error('Error fetching Prosp analytics:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (selectedProspCampaign) {
+      fetchProspAnalytics();
+    }
+  }, [selectedProspCampaign]);
+
    const generateMessage = (template: LinkedInTemplate, investor: Investor, connectorName?: string) => {
      let message = template.content;
      message = message.replace(/\{\{investor_name\}\}/g, investor.nome);
@@ -409,21 +504,158 @@
          </CardContent>
        </Card>
  
-       <Tabs defaultValue="outreach" className="space-y-4">
-         <TabsList className="bg-muted/50">
-           <TabsTrigger value="outreach" className="flex items-center gap-2">
-             <Linkedin className="h-4 w-4" />
-             LinkedIn Outreach
-           </TabsTrigger>
-           <TabsTrigger value="warm-intro" className="flex items-center gap-2">
-             <Users className="h-4 w-4" />
-             Warm Intro
-           </TabsTrigger>
-           <TabsTrigger value="templates" className="flex items-center gap-2">
-             <MessageSquare className="h-4 w-4" />
-             Templates
-           </TabsTrigger>
-         </TabsList>
+        <Tabs defaultValue="prosp-sync" className="space-y-4">
+          <TabsList className="bg-muted/50">
+            <TabsTrigger value="prosp-sync" className="flex items-center gap-2">
+              <ArrowDownUp className="h-4 w-4" />
+              Prosp.ai Sync
+            </TabsTrigger>
+            <TabsTrigger value="outreach" className="flex items-center gap-2">
+              <Linkedin className="h-4 w-4" />
+              LinkedIn Outreach
+            </TabsTrigger>
+            <TabsTrigger value="warm-intro" className="flex items-center gap-2">
+              <Users className="h-4 w-4" />
+              Warm Intro
+            </TabsTrigger>
+            <TabsTrigger value="templates" className="flex items-center gap-2">
+              <MessageSquare className="h-4 w-4" />
+              Templates
+            </TabsTrigger>
+          </TabsList>
+
+          {/* Prosp.ai Sync Tab */}
+          <TabsContent value="prosp-sync" className="space-y-4">
+            <div className="flex justify-between items-center">
+              <div>
+                <h3 className="text-lg font-semibold">Sincronizzazione Prosp.ai</h3>
+                <p className="text-sm text-muted-foreground">
+                  Importa lead da Prosp.ai e visualizza analytics delle campagne
+                </p>
+              </div>
+              <Button 
+                variant="outline" 
+                onClick={fetchProspCampaigns}
+                className="flex items-center gap-2"
+              >
+                <RefreshCw className="h-4 w-4" />
+                Carica Campagne
+              </Button>
+            </div>
+
+            {/* Campaign Selector */}
+            <Card className="p-4">
+              <div className="space-y-4">
+                <div className="flex items-center gap-4">
+                  <div className="flex-1 space-y-2">
+                    <label className="text-sm font-medium">Campagna Prosp.ai</label>
+                    <Select value={selectedProspCampaign} onValueChange={setSelectedProspCampaign}>
+                      <SelectTrigger>
+                        <SelectValue placeholder={prospCampaigns.length === 0 ? "Clicca 'Carica Campagne' per iniziare" : "Seleziona campagna"} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {prospCampaigns.map(c => (
+                          <SelectItem key={c.campaign_id} value={c.campaign_id}>
+                            {c.campaign_name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <Button 
+                    onClick={syncFromProsp}
+                    disabled={!selectedProspCampaign || syncing}
+                    className="mt-6"
+                  >
+                    {syncing ? (
+                      <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                    ) : (
+                      <Download className="h-4 w-4 mr-2" />
+                    )}
+                    {syncing ? 'Sincronizzazione...' : 'Importa Lead'}
+                  </Button>
+                </div>
+
+                {/* Sync Stats */}
+                {syncStats && (
+                  <div className="p-3 rounded-lg bg-green-500/10 border border-green-500/20">
+                    <div className="flex items-center gap-2 mb-2">
+                      <CheckCircle className="h-4 w-4 text-green-400" />
+                      <span className="font-medium text-green-400">Sincronizzazione Completata</span>
+                    </div>
+                    <div className="grid grid-cols-4 gap-4 text-sm">
+                      <div>
+                        <p className="text-muted-foreground">Totale Lead</p>
+                        <p className="text-lg font-bold">{syncStats.total}</p>
+                      </div>
+                      <div>
+                        <p className="text-muted-foreground">Nuovi</p>
+                        <p className="text-lg font-bold text-green-400">{syncStats.new}</p>
+                      </div>
+                      <div>
+                        <p className="text-muted-foreground">Aggiornati</p>
+                        <p className="text-lg font-bold text-blue-400">{syncStats.updated}</p>
+                      </div>
+                      <div>
+                        <p className="text-muted-foreground">Già Presenti</p>
+                        <p className="text-lg font-bold text-muted-foreground">{syncStats.skipped}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </Card>
+
+            {/* Prosp Analytics */}
+            {prospAnalytics && (
+              <Card className="p-4">
+                <div className="flex items-center gap-2 mb-4">
+                  <BarChart3 className="h-5 w-5 text-primary" />
+                  <h4 className="font-medium">Analytics Campagna (ultimi 30 giorni)</h4>
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="p-3 rounded-lg bg-muted/50">
+                    <p className="text-xs text-muted-foreground">Richieste Connessione</p>
+                    <p className="text-2xl font-bold">{prospAnalytics.connection_requests}</p>
+                  </div>
+                  <div className="p-3 rounded-lg bg-muted/50">
+                    <p className="text-xs text-muted-foreground">Connessioni Accettate</p>
+                    <p className="text-2xl font-bold text-green-400">{prospAnalytics.connections_accepted}</p>
+                  </div>
+                  <div className="p-3 rounded-lg bg-muted/50">
+                    <p className="text-xs text-muted-foreground">Messaggi Inviati</p>
+                    <p className="text-2xl font-bold text-blue-400">{prospAnalytics.messages_sent}</p>
+                  </div>
+                  <div className="p-3 rounded-lg bg-muted/50">
+                    <p className="text-xs text-muted-foreground">Risposte</p>
+                    <p className="text-2xl font-bold text-emerald-400">{prospAnalytics.replies}</p>
+                  </div>
+                </div>
+                {prospAnalytics.connection_requests > 0 && (
+                  <div className="mt-3 text-sm text-muted-foreground">
+                    Tasso di accettazione: {((prospAnalytics.connections_accepted / prospAnalytics.connection_requests) * 100).toFixed(1)}%
+                    {prospAnalytics.messages_sent > 0 && (
+                      <> • Tasso risposta: {((prospAnalytics.replies / prospAnalytics.messages_sent) * 100).toFixed(1)}%</>
+                    )}
+                  </div>
+                )}
+              </Card>
+            )}
+
+            {/* Info Card */}
+            <Card className="p-4 bg-gradient-to-r from-purple-500/10 to-blue-500/10 border-purple-500/20">
+              <div className="flex items-start gap-3">
+                <ArrowDownUp className="h-5 w-5 text-purple-400 mt-0.5" />
+                <div>
+                  <h4 className="font-medium">Sincronizzazione Bidirezionale</h4>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    <strong>Console → Prosp:</strong> Usa la tab "Investors" per inviare lead selezionati a Prosp.ai<br/>
+                    <strong>Prosp → Console:</strong> Importa lead da Prosp.ai qui sopra per tracciare tutto centralmente
+                  </p>
+                </div>
+              </div>
+            </Card>
+          </TabsContent>
  
          {/* LinkedIn Outreach Tab */}
          <TabsContent value="outreach" className="space-y-4">
