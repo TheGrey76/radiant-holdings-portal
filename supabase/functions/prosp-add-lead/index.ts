@@ -79,8 +79,14 @@ Deno.serve(async (req) => {
       }
     }
     
-    // Ensure it's a valid LinkedIn URL
-    const linkedinPattern = /^https?:\/\/(www\.)?linkedin\.com\/in\/[a-zA-Z0-9\-_%]+\/?$/i;
+    // Remove query parameters if present
+    normalizedLinkedinUrl = normalizedLinkedinUrl.split('?')[0];
+    
+    // Remove trailing slashes again after query param removal
+    normalizedLinkedinUrl = normalizedLinkedinUrl.replace(/\/+$/, '');
+    
+    // Ensure it's a valid LinkedIn URL (supports regional domains like fr., it., de., lu., sg., etc.)
+    const linkedinPattern = /^https?:\/\/([a-z]{2}\.)?linkedin\.com\/in\/[a-zA-Z0-9\-_%]+\/?$/i;
     const isValidLinkedIn = linkedinPattern.test(normalizedLinkedinUrl) || 
                             normalizedLinkedinUrl.includes('linkedin.com/in/');
     
