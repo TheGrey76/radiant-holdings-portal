@@ -40,12 +40,15 @@ const AriesAICourses = () => {
   ];
 
   const careerHighlights = [
-    { role: 'Founder & Strategic Advisor', company: 'Aries76 Ltd', period: 'Current', highlight: true },
-    { role: 'CEO', company: 'Pop Economy', period: '' },
-    { role: 'Branch Manager Italy', company: 'Abalone Asset Management Ltd', period: '' },
-    { role: 'CEO & Portfolio Manager', company: 'Gry Capital Management, New York', period: '2003–2012', detail: 'Raised and managed over $180 million in assets' },
-    { role: 'CEO & Founder', company: 'Private Equity Firm, Italy', period: 'Since 2001' },
-    { role: 'Co-Founder', company: 'Bi-Different', period: '', detail: 'Fintech startup focused on alternative currencies' },
+    { role: 'Founder', company: 'Aries76 Ltd', period: 'Dec 2023 – Present', highlight: true, detail: 'Independent advisory firm for international fundraising and strategic investor relations' },
+    { role: 'Founder', company: 'AIRES Data Driven Decisions', period: 'Jul 2024 – Present', detail: 'AI-powered capital raising and predictive analytics platform' },
+    { role: 'Advisor & Capital Raiser', company: 'FARO Value', period: 'Oct 2024 – Present' },
+    { role: 'Senior Relationship Manager', company: 'Run Capital Partners Ltd', period: 'Jan 2024 – Present' },
+    { role: 'Branch Manager Italy', company: 'ABALONE Group', period: 'Nov 2021 – Present' },
+    { role: 'Founder', company: 'Gry Capital Advisor', period: '2016 – 2019', detail: 'Innovative financial advisory firm' },
+    { role: 'Co-Founder', company: 'Bi-Different S.r.l.', period: '2014 – 2016', detail: 'Fintech startup focused on alternative currencies' },
+    { role: 'CEO & Founder', company: 'Gry Capital Management LLC, New York', period: '2007 – 2013', detail: 'Portfolio management and capital raising' },
+    { role: 'Founder & Portfolio Manager', company: 'COFIN S.r.l.', period: '2001 – 2007', detail: 'Investment advisory for Italian private clients' },
   ];
 
   return (
