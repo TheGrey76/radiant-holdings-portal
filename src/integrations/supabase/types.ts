@@ -587,6 +587,7 @@ export type Database = {
           import_batch_id: string | null
           last_contact_date: string | null
           linkedin: string | null
+          linkedin_connection_status: string | null
           meetings_count: number | null
           next_follow_up_date: string | null
           nome: string
@@ -617,6 +618,7 @@ export type Database = {
           import_batch_id?: string | null
           last_contact_date?: string | null
           linkedin?: string | null
+          linkedin_connection_status?: string | null
           meetings_count?: number | null
           next_follow_up_date?: string | null
           nome: string
@@ -647,6 +649,7 @@ export type Database = {
           import_batch_id?: string | null
           last_contact_date?: string | null
           linkedin?: string | null
+          linkedin_connection_status?: string | null
           meetings_count?: number | null
           next_follow_up_date?: string | null
           nome?: string

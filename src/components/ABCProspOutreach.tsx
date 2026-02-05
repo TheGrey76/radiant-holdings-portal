@@ -52,9 +52,17 @@ interface ProspAnalytics {
 
 export const ABCProspOutreach: React.FC<ABCProspOutreachProps> = ({ investors, onRefresh }) => {
   const [selectedInvestors, setSelectedInvestors] = useState<Set<string>>(new Set());
-  const [settings, setSettings] = useState<ProspSettings>({
-    campaignId: '',
-    listId: '',
+  const [settings, setSettings] = useState<ProspSettings>(() => {
+    // Load settings from localStorage
+    const saved = localStorage.getItem('prosp_settings');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch {
+        return { campaignId: '', listId: '' };
+      }
+    }
+    return { campaignId: '', listId: '' };
   });
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isSending, setIsSending] = useState(false);
@@ -67,6 +75,11 @@ export const ABCProspOutreach: React.FC<ABCProspOutreachProps> = ({ investors, o
   const [syncStats, setSyncStats] = useState<SyncStats | null>(null);
   const [prospAnalytics, setProspAnalytics] = useState<ProspAnalytics | null>(null);
   const [loadingCampaigns, setLoadingCampaigns] = useState(false);
+
+  // Save settings to localStorage when they change
+  useEffect(() => {
+    localStorage.setItem('prosp_settings', JSON.stringify(settings));
+  }, [settings]);
 
   // Filter investors with LinkedIn URLs
   const investorsWithLinkedIn = investors.filter(inv => inv.linkedin && inv.linkedin.trim() !== '');
