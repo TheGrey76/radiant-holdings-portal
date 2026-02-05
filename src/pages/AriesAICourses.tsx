@@ -18,7 +18,14 @@ import {
   MapPin,
   Calendar,
   ArrowRight,
-  Sparkles
+  Sparkles,
+  Rocket,
+  Globe,
+  Handshake,
+  Users,
+  LineChart,
+  Coins,
+  LucideIcon
 } from 'lucide-react';
 import edoardoPhoto from '@/assets/edoardo-grigione.jpg';
 
@@ -39,16 +46,16 @@ const AriesAICourses = () => {
     { icon: BarChart3, title: 'From Data to Decisions: AI-Powered Investment Strategies' },
   ];
 
-  const careerHighlights = [
-    { role: 'Founder', company: 'Aries76 Ltd', period: 'Dec 2023 – Present', highlight: true, detail: 'Independent advisory firm for international fundraising and strategic investor relations' },
-    { role: 'Founder', company: 'AIRES Data Driven Decisions', period: 'Jul 2024 – Present', detail: 'AI-powered capital raising and predictive analytics platform' },
-    { role: 'Advisor & Capital Raiser', company: 'FARO Value', period: 'Oct 2024 – Present' },
-    { role: 'Senior Relationship Manager', company: 'Run Capital Partners Ltd', period: 'Jan 2024 – Present' },
-    { role: 'Branch Manager Italy', company: 'ABALONE Group', period: 'Nov 2021 – Present' },
-    { role: 'Founder', company: 'Gry Capital Advisor', period: '2016 – 2019', detail: 'Innovative financial advisory firm' },
-    { role: 'Co-Founder', company: 'Bi-Different S.r.l.', period: '2014 – 2016', detail: 'Fintech startup focused on alternative currencies' },
-    { role: 'CEO & Founder', company: 'Gry Capital Management LLC, New York', period: '2007 – 2013', detail: 'Portfolio management and capital raising' },
-    { role: 'Founder & Portfolio Manager', company: 'COFIN S.r.l.', period: '2001 – 2007', detail: 'Investment advisory for Italian private clients' },
+  const careerHighlights: { role: string; company: string; period: string; highlight?: boolean; detail?: string; icon: LucideIcon }[] = [
+    { role: 'Founder', company: 'Aries76 Ltd', period: 'Dec 2023 – Present', highlight: true, detail: 'Independent advisory firm for international fundraising and strategic investor relations', icon: Rocket },
+    { role: 'Founder', company: 'AIRES Data Driven Decisions', period: 'Jul 2024 – Present', detail: 'AI-powered capital raising and predictive analytics platform', icon: Brain },
+    { role: 'Advisor & Capital Raiser', company: 'FARO Value', period: 'Oct 2024 – Present', icon: Handshake },
+    { role: 'Senior Relationship Manager', company: 'Run Capital Partners Ltd', period: 'Jan 2024 – Present', icon: Users },
+    { role: 'Branch Manager Italy', company: 'ABALONE Group', period: 'Nov 2021 – Present', icon: Globe },
+    { role: 'Founder', company: 'Gry Capital Advisor', period: '2016 – 2019', detail: 'Innovative financial advisory firm', icon: LineChart },
+    { role: 'Co-Founder', company: 'Bi-Different S.r.l.', period: '2014 – 2016', detail: 'Fintech startup focused on alternative currencies', icon: Bitcoin },
+    { role: 'CEO & Founder', company: 'Gry Capital Management LLC, New York', period: '2007 – 2013', detail: 'Portfolio management and capital raising', icon: TrendingUp },
+    { role: 'Founder & Portfolio Manager', company: 'COFIN S.r.l.', period: '2001 – 2007', detail: 'Investment advisory for Italian private clients', icon: Coins },
   ];
 
   return (
@@ -286,7 +293,7 @@ const AriesAICourses = () => {
                   <CardContent className="p-5">
                     <div className="flex items-start gap-4">
                       <div className={`p-2 rounded-lg ${item.highlight ? 'bg-[#FF7A3D]/20' : 'bg-white/5'}`}>
-                        <Briefcase className={`w-5 h-5 ${item.highlight ? 'text-[#FF7A3D]' : 'text-gray-400'}`} />
+                        <item.icon className={`w-5 h-5 ${item.highlight ? 'text-[#FF7A3D]' : 'text-gray-400'}`} />
                       </div>
                       <div className="flex-1">
                         <div className="flex flex-wrap items-center gap-2 mb-1">
