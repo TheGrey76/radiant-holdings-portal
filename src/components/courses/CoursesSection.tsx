@@ -181,128 +181,124 @@ const CoursesSection = () => {
         </motion.div>
 
         {/* Individual Workshop Sections */}
-        <div className="space-y-24 max-w-6xl mx-auto">
+        <div className="space-y-16 md:space-y-24 max-w-6xl mx-auto">
           {workshops.map((workshop, index) => {
             const Icon = workshop.icon;
-            const isEven = index % 2 === 0;
             
             return (
               <motion.div
                 key={workshop.number}
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
+                viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.6 }}
                 className="relative"
               >
-                {/* Workshop Number Badge - Large */}
-                <div className="absolute -top-8 left-0 md:left-auto md:right-0 text-[120px] md:text-[180px] font-bold text-white/[0.03] leading-none select-none pointer-events-none">
+                {/* Workshop Number Badge - Hidden on mobile */}
+                <div className="hidden md:block absolute -top-8 right-0 text-[140px] lg:text-[180px] font-bold text-white/[0.03] leading-none select-none pointer-events-none">
                   0{workshop.number}
                 </div>
 
-                <div className={`grid lg:grid-cols-2 gap-8 lg:gap-12 items-start ${isEven ? '' : 'lg:grid-flow-dense'}`}>
-                  {/* Content Side */}
-                  <div className={`relative z-10 ${isEven ? '' : 'lg:col-start-2'}`}>
-                    <div className="flex items-center gap-4 mb-6">
-                      <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#FF7A3D] to-[#FF7A3D]/70 flex items-center justify-center shadow-lg shadow-[#FF7A3D]/20">
-                        <Icon className="w-8 h-8 text-white" />
-                      </div>
-                      <div>
-                        <Badge className="bg-white/10 text-gray-300 border-white/20 mb-1">
-                          Workshop {workshop.number}
-                        </Badge>
-                        <h3 className="text-2xl md:text-3xl font-bold text-white">{workshop.title}</h3>
-                      </div>
+                {/* Header - Always at top on mobile */}
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 mb-6">
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br from-[#FF7A3D] to-[#FF7A3D]/70 flex items-center justify-center shadow-lg shadow-[#FF7A3D]/20 shrink-0">
+                    <Icon className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
+                  </div>
+                  <div>
+                    <Badge className="bg-white/10 text-gray-300 border-white/20 mb-1">
+                      Workshop {workshop.number}
+                    </Badge>
+                    <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white">{workshop.title}</h3>
+                  </div>
+                </div>
+
+                <p className="text-base sm:text-lg text-[#FF7A3D] font-medium mb-6">{workshop.subtitle}</p>
+
+                {/* Content Grid - Stack on mobile */}
+                <div className="grid lg:grid-cols-2 gap-6 lg:gap-12">
+                  {/* Problem & Solution - First on mobile */}
+                  <div className="space-y-4 sm:space-y-6">
+                    <div className="bg-red-500/5 border border-red-500/20 rounded-xl p-4 sm:p-5">
+                      <p className="text-xs uppercase tracking-wider text-red-400 font-semibold mb-2 flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-red-400"></span>
+                        The Problem
+                      </p>
+                      <p className="text-sm sm:text-base text-gray-300 leading-relaxed">{workshop.problem}</p>
                     </div>
-
-                    <p className="text-lg text-[#FF7A3D] font-medium mb-4">{workshop.subtitle}</p>
-
-                    {/* Problem & Solution */}
-                    <div className="space-y-6 mb-8">
-                      <div className="bg-red-500/5 border border-red-500/20 rounded-xl p-5">
-                        <p className="text-xs uppercase tracking-wider text-red-400 font-semibold mb-2 flex items-center gap-2">
-                          <span className="w-2 h-2 rounded-full bg-red-400"></span>
-                          The Problem
-                        </p>
-                        <p className="text-gray-300 leading-relaxed">{workshop.problem}</p>
-                      </div>
-                      
-                      <div className="bg-emerald-500/5 border border-emerald-500/20 rounded-xl p-5">
-                        <p className="text-xs uppercase tracking-wider text-emerald-400 font-semibold mb-2 flex items-center gap-2">
-                          <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
-                          The AI Solution
-                        </p>
-                        <p className="text-gray-200 leading-relaxed">{workshop.solution}</p>
-                      </div>
+                    
+                    <div className="bg-emerald-500/5 border border-emerald-500/20 rounded-xl p-4 sm:p-5">
+                      <p className="text-xs uppercase tracking-wider text-emerald-400 font-semibold mb-2 flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+                        The AI Solution
+                      </p>
+                      <p className="text-sm sm:text-base text-gray-200 leading-relaxed">{workshop.solution}</p>
                     </div>
                   </div>
 
-                  {/* Sessions Side */}
-                  <div className={`relative z-10 ${isEven ? '' : 'lg:col-start-1 lg:row-start-1'}`}>
-                    <Card className="bg-[#1a1d2e]/80 border-white/10 backdrop-blur-sm overflow-hidden">
-                      <CardContent className="p-0">
-                        {/* Session 1 */}
-                        <div className="p-6 border-b border-white/5">
-                          <div className="flex items-center gap-3 mb-4">
-                            <div className="px-3 py-1 bg-[#FF7A3D]/10 rounded-full">
-                              <span className="text-xs font-medium text-[#FF7A3D]">09:00 - 10:30</span>
-                            </div>
-                            <span className="text-sm text-gray-500">Session 1</span>
+                  {/* Sessions Card - Second on mobile */}
+                  <Card className="bg-[#1a1d2e]/80 border-white/10 backdrop-blur-sm overflow-hidden">
+                    <CardContent className="p-0">
+                      {/* Session 1 */}
+                      <div className="p-4 sm:p-6 border-b border-white/5">
+                        <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+                          <div className="px-2.5 sm:px-3 py-1 bg-[#FF7A3D]/10 rounded-full">
+                            <span className="text-xs font-medium text-[#FF7A3D]">09:00 - 10:30</span>
                           </div>
-                          <h4 className="text-lg font-semibold text-white mb-3">{workshop.session1.title}</h4>
-                          <ul className="space-y-2">
-                            {workshop.session1.points.map((point, i) => (
-                              <li key={i} className="flex items-start gap-2 text-gray-400">
-                                <CheckCircle2 className="w-4 h-4 text-[#FF7A3D] mt-0.5 shrink-0" />
-                                <span className="text-sm">{point}</span>
-                              </li>
-                            ))}
-                          </ul>
+                          <span className="text-xs sm:text-sm text-gray-500">Session 1</span>
                         </div>
+                        <h4 className="text-base sm:text-lg font-semibold text-white mb-2 sm:mb-3">{workshop.session1.title}</h4>
+                        <ul className="space-y-2">
+                          {workshop.session1.points.map((point, i) => (
+                            <li key={i} className="flex items-start gap-2 text-gray-400">
+                              <CheckCircle2 className="w-4 h-4 text-[#FF7A3D] mt-0.5 shrink-0" />
+                              <span className="text-xs sm:text-sm">{point}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
 
-                        {/* Coffee Break */}
-                        <div className="px-6 py-3 bg-white/[0.02] border-b border-white/5">
-                          <div className="flex items-center gap-2 text-gray-500 text-sm">
-                            <span className="text-xs">☕</span>
-                            <span>10:30 - 11:00 Coffee Break & Networking</span>
-                          </div>
+                      {/* Coffee Break */}
+                      <div className="px-4 sm:px-6 py-2.5 sm:py-3 bg-white/[0.02] border-b border-white/5">
+                        <div className="flex items-center gap-2 text-gray-500 text-xs sm:text-sm">
+                          <span className="text-xs">☕</span>
+                          <span>10:30 - 11:00 Coffee Break & Networking</span>
                         </div>
+                      </div>
 
-                        {/* Session 2 */}
-                        <div className="p-6">
-                          <div className="flex items-center gap-3 mb-4">
-                            <div className="px-3 py-1 bg-[#FF7A3D]/10 rounded-full">
-                              <span className="text-xs font-medium text-[#FF7A3D]">11:00 - 12:30</span>
-                            </div>
-                            <span className="text-sm text-gray-500">Session 2</span>
+                      {/* Session 2 */}
+                      <div className="p-4 sm:p-6">
+                        <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+                          <div className="px-2.5 sm:px-3 py-1 bg-[#FF7A3D]/10 rounded-full">
+                            <span className="text-xs font-medium text-[#FF7A3D]">11:00 - 12:30</span>
                           </div>
-                          <h4 className="text-lg font-semibold text-white mb-3">{workshop.session2.title}</h4>
-                          <ul className="space-y-2">
-                            {workshop.session2.points.map((point, i) => (
-                              <li key={i} className="flex items-start gap-2 text-gray-400">
-                                <ArrowRight className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
-                                <span className="text-sm">{point}</span>
-                              </li>
-                            ))}
-                          </ul>
+                          <span className="text-xs sm:text-sm text-gray-500">Session 2</span>
                         </div>
+                        <h4 className="text-base sm:text-lg font-semibold text-white mb-2 sm:mb-3">{workshop.session2.title}</h4>
+                        <ul className="space-y-2">
+                          {workshop.session2.points.map((point, i) => (
+                            <li key={i} className="flex items-start gap-2 text-gray-400">
+                              <ArrowRight className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
+                              <span className="text-xs sm:text-sm">{point}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
 
-                        {/* Q&A */}
-                        <div className="px-6 py-3 bg-white/[0.02]">
-                          <div className="flex items-center gap-2 text-gray-500 text-sm">
-                            <span className="text-xs">💬</span>
-                            <span>12:30 - 13:00 Q&A, Discussion & Wrap-up</span>
-                          </div>
+                      {/* Q&A */}
+                      <div className="px-4 sm:px-6 py-2.5 sm:py-3 bg-white/[0.02]">
+                        <div className="flex items-center gap-2 text-gray-500 text-xs sm:text-sm">
+                          <span className="text-xs">💬</span>
+                          <span>12:30 - 13:00 Q&A & Wrap-up</span>
                         </div>
-                      </CardContent>
-                    </Card>
-                  </div>
+                      </div>
+                    </CardContent>
+                  </Card>
                 </div>
 
                 {/* Divider */}
                 {index < workshops.length - 1 && (
-                  <div className="mt-24 flex items-center justify-center">
-                    <div className="w-24 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+                  <div className="mt-12 md:mt-24 flex items-center justify-center">
+                    <div className="w-16 sm:w-24 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
                   </div>
                 )}
               </motion.div>
