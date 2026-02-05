@@ -85,7 +85,7 @@ const AriesAICourses = () => {
                   Explore Courses
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
-                <Button size="lg" variant="outline" className="border-white/20 text-white hover:bg-white/10">
+                <Button size="lg" variant="outline" className="border-white/50 text-white hover:bg-white/20 bg-white/10">
                   View Profile
                 </Button>
               </div>
@@ -108,7 +108,7 @@ const AriesAICourses = () => {
                       <img 
                         src={edoardoPhoto} 
                         alt="Edoardo Grigione" 
-                        className="w-full h-80 object-cover object-top"
+                        className="w-full h-80 object-cover object-center"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-[#1a1d2e] via-transparent to-transparent" />
                     </div>
@@ -408,7 +408,7 @@ const AriesAICourses = () => {
                 target="_blank" 
                 rel="noopener noreferrer"
               >
-                <Button size="lg" variant="outline" className="border-white/20 text-white hover:bg-white/10">
+                <Button size="lg" variant="outline" className="border-white/50 text-white hover:bg-white/20 bg-white/10">
                   <Linkedin className="mr-2 h-5 w-5" />
                   Connect on LinkedIn
                 </Button>
