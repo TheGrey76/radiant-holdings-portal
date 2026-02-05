@@ -785,6 +785,18 @@ export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvest
                                         </span>
                                       </div>
                                       <div className="flex items-center gap-1">
+                                        {investor.linkedin && (
+                                          <a
+                                            href={investor.linkedin}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            onClick={(e) => e.stopPropagation()}
+                                            className="text-[#0A66C2] hover:text-[#004182] transition-colors"
+                                            title="Apri profilo LinkedIn"
+                                          >
+                                            <Linkedin className="h-4 w-4" />
+                                          </a>
+                                        )}
                                         <Badge variant="outline" className="text-[10px] px-1.5 py-0">
                                           {investor.categoria}
                                         </Badge>
