@@ -91,6 +91,7 @@ import PortfolioEssentials from "./pages/PortfolioEssentials";
 import PortfolioProfessional from "./pages/PortfolioProfessional";
 import PortfolioEnterprise from "./pages/PortfolioEnterprise";
 import PortfolioSubscriptionsAdmin from "./pages/PortfolioSubscriptionsAdmin";
+import AriesAICourses from "./pages/AriesAICourses";
 
 const queryClient = new QueryClient();
 
@@ -191,6 +192,7 @@ const App = () => (
           <Route path="/xce-partnership" element={<XCEPartnershipProposal />} />
           <Route path="/marketing-materials" element={<MarketingMaterials />} />
           <Route path="/AF" element={<ETFCertificatesPortfolio />} />
+          <Route path="/aries-ai-courses" element={<AriesAICourses />} />
           <Route path="/press" element={<Press />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
