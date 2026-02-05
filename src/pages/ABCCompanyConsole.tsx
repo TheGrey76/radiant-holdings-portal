@@ -44,6 +44,7 @@ import { ABCCampaignStatsDialog } from "@/components/ABCCampaignStatsDialog";
 import { useKPIHistory } from "@/hooks/useKPIHistory";
 import { supabase } from "@/integrations/supabase/client";
 import { ABCDataProvider } from "@/contexts/ABCDataContext";
+import { ABCProspOutreach } from "@/components/ABCProspOutreach";
 
 // Auth View type
 type AuthView = 'login' | 'signup' | 'forgot-password' | 'reset-password';
@@ -1064,9 +1065,10 @@ const ABCCompanyConsole = () => {
       <main className="container mx-auto px-4 py-8">
         {/* Main Navigation Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-10 mb-8">
+          <TabsList className="grid w-full grid-cols-11 mb-8">
             <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
             <TabsTrigger value="investors">Investors</TabsTrigger>
+            <TabsTrigger value="linkedin">LinkedIn</TabsTrigger>
             <TabsTrigger value="commitments">Commitments</TabsTrigger>
             <TabsTrigger value="campaigns">Campaigns</TabsTrigger>
             <TabsTrigger value="prospecting">Prospecting</TabsTrigger>
@@ -1451,6 +1453,19 @@ const ABCCompanyConsole = () => {
                 onEditDialogClosed={() => setEditInvestorId(null)}
               />
             )}
+          </TabsContent>
+
+          {/* LINKEDIN TAB - Prosp.ai Integration */}
+          <TabsContent value="linkedin" className="space-y-6">
+            <ABCProspOutreach 
+              investors={investors.map(i => ({
+                id: i.id,
+                nome: i.nome,
+                azienda: i.azienda,
+                linkedin: i.linkedin,
+                email: i.email,
+              }))}
+            />
           </TabsContent>
 
           <TabsContent value="commitments" className="space-y-6">
