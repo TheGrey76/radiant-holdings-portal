@@ -9,12 +9,9 @@ import {
   Bitcoin, 
   BarChart3,
   Linkedin,
-  BookOpen,
-  PenLine,
   Quote,
   GraduationCap,
   Award,
-  Briefcase,
   MapPin,
   Calendar,
   ArrowRight,
@@ -28,6 +25,7 @@ import {
   LucideIcon
 } from 'lucide-react';
 import edoardoPhoto from '@/assets/edoardo-grigione.jpg';
+import CoursesSection from '@/components/courses/CoursesSection';
 
 const AriesAICourses = () => {
   const expertise = [
@@ -38,13 +36,6 @@ const AriesAICourses = () => {
     { icon: BarChart3, title: 'Risk Management', desc: 'Intuitive approaches to managing market risk and generating alpha' },
   ];
 
-  const featuredTopics = [
-    { icon: Building2, title: 'AI in Banking: Promise and Disruption' },
-    { icon: Brain, title: 'ChatGPT for Financial Professionals' },
-    { icon: TrendingUp, title: 'The Future of Private Markets in the AI Era' },
-    { icon: Bitcoin, title: 'Blockchain, Bitcoin & the New Financial Order' },
-    { icon: BarChart3, title: 'From Data to Decisions: AI-Powered Investment Strategies' },
-  ];
 
   const careerHighlights: { role: string; company: string; period: string; highlight?: boolean; detail?: string; icon: LucideIcon }[] = [
     { role: 'Founder', company: 'Aries76 Ltd', period: 'Dec 2023 – Present', highlight: true, detail: 'Independent advisory firm for international fundraising and strategic investor relations', icon: Rocket },
@@ -315,44 +306,8 @@ const AriesAICourses = () => {
         </div>
       </section>
 
-      {/* Featured Topics */}
-      <section className="py-20 bg-gradient-to-b from-[#1a1d2e]/30 to-[#0f1219]">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <Badge className="bg-[#FF7A3D]/10 text-[#FF7A3D] border-[#FF7A3D]/30 mb-4">Coming Soon</Badge>
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Featured Course Topics</h2>
-            <p className="text-gray-400 max-w-2xl mx-auto">
-              Practical, hands-on courses designed for finance professionals ready to master AI.
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
-            {featuredTopics.map((topic, index) => (
-              <motion.div
-                key={topic.title}
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-              >
-                <Card className="bg-[#0f1219] border-white/5 hover:border-[#FF7A3D]/30 transition-all cursor-pointer group">
-                  <CardContent className="p-5 flex items-center gap-4">
-                    <div className="p-2 rounded-lg bg-[#FF7A3D]/10 group-hover:bg-[#FF7A3D]/20 transition-colors">
-                      <topic.icon className="w-5 h-5 text-[#FF7A3D]" />
-                    </div>
-                    <span className="text-white font-medium">{topic.title}</span>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Courses Section */}
+      <CoursesSection />
 
       {/* Teaching Philosophy */}
       <section className="py-20">
