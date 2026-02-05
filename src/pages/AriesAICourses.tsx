@@ -363,33 +363,39 @@ const AriesAICourses = () => {
             viewport={{ once: true }}
             className="max-w-4xl mx-auto"
           >
-            <Card className="bg-gradient-to-br from-[#FF7A3D]/10 to-[#1a1d2e] border-[#FF7A3D]/20 overflow-hidden relative">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-[#FF7A3D]/5 rounded-full blur-3xl" />
-              <CardContent className="p-8 md:p-12 relative">
-                <Badge className="bg-[#FF7A3D]/20 text-[#FF7A3D] border-0 mb-6">Teaching Philosophy</Badge>
-                <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">
-                  AI Literacy is Essential for Today's Finance Professionals
-                </h2>
-                <p className="text-white/90 text-lg mb-8 leading-relaxed">
-                  My courses bridge the gap between complex AI concepts and practical business applications, 
-                  empowering students to leverage artificial intelligence in their daily work.
-                </p>
-                
-                <div className="grid md:grid-cols-2 gap-4">
-                  {[
-                    'Understand how AI is reshaping the financial industry',
-                    'Apply generative AI tools to enhance productivity',
-                    'Navigate ethical and strategic implications of AI',
-                    'Make data-driven decisions with confidence'
-                  ].map((item, index) => (
-                    <div key={index} className="flex items-center gap-3">
-                      <div className="w-2 h-2 rounded-full bg-[#FF7A3D]" />
-                      <span className="text-white/85">{item}</span>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+            <div className="relative">
+              {/* Glow effect behind */}
+              <div className="absolute -inset-1 bg-gradient-to-r from-[#FF7A3D]/30 via-[#FF7A3D]/10 to-transparent rounded-2xl blur-xl opacity-50" />
+              
+              <Card className="relative backdrop-blur-xl bg-white/5 border border-white/10 overflow-hidden">
+                <CardContent className="p-8 md:p-12">
+                  <Badge className="bg-white/10 text-[#FF7A3D] border border-[#FF7A3D]/30 mb-6 backdrop-blur-sm">
+                    Teaching Philosophy
+                  </Badge>
+                  <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">
+                    AI Literacy is Essential for Today's Finance Professionals
+                  </h2>
+                  <p className="text-white/80 text-lg mb-8 leading-relaxed">
+                    My courses bridge the gap between complex AI concepts and practical business applications, 
+                    empowering students to leverage artificial intelligence in their daily work.
+                  </p>
+                  
+                  <div className="grid md:grid-cols-2 gap-4">
+                    {[
+                      'Understand how AI is reshaping the financial industry',
+                      'Apply generative AI tools to enhance productivity',
+                      'Navigate ethical and strategic implications of AI',
+                      'Make data-driven decisions with confidence'
+                    ].map((item, index) => (
+                      <div key={index} className="flex items-center gap-3 bg-white/5 rounded-lg px-4 py-3 border border-white/5">
+                        <div className="w-2 h-2 rounded-full bg-[#FF7A3D] shrink-0" />
+                        <span className="text-white/90">{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </motion.div>
         </div>
       </section>
