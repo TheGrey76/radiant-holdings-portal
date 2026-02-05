@@ -542,38 +542,9 @@ export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvest
             </SelectContent>
           </Select>
 
-          {/* LinkedIn Connection Filter */}
-          <Select value={connectionFilter} onValueChange={(value) => setConnectionFilter(value as 'all' | LinkedInConnectionStatus)}>
-            <SelectTrigger className="w-48">
-              <SelectValue placeholder="Connessione LI" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">
-                <span className="flex items-center gap-2">Tutti</span>
-              </SelectItem>
-              <SelectItem value="connected">
-                <span className="flex items-center gap-2">
-                  <UserCheck className="h-3.5 w-3.5 text-green-600" />
-                  Connessi ({localInvestors.filter(i => i.linkedinConnectionStatus === 'connected').length})
-                </span>
-              </SelectItem>
-              <SelectItem value="not_connected">
-                <span className="flex items-center gap-2">
-                  <UserX className="h-3.5 w-3.5 text-amber-600" />
-                  Non Connessi ({localInvestors.filter(i => i.linkedinConnectionStatus === 'not_connected' || !i.linkedinConnectionStatus || i.linkedinConnectionStatus === 'unknown').length})
-                </span>
-              </SelectItem>
-              <SelectItem value="pending_request">
-                <span className="flex items-center gap-2">
-                  <Clock className="h-3.5 w-3.5 text-blue-600" />
-                  Richiesta Inviata ({localInvestors.filter(i => i.linkedinConnectionStatus === 'pending_request').length})
-                </span>
-              </SelectItem>
-            </SelectContent>
-          </Select>
 
-          {(approvalFilter !== 'all' || enrichedFilter !== 'all' || connectionFilter !== 'all') && (
-            <Button variant="ghost" size="sm" onClick={() => { setApprovalFilter('all'); setEnrichedFilter('all'); setConnectionFilter('all'); }}>
+          {(approvalFilter !== 'all' || enrichedFilter !== 'all') && (
+            <Button variant="ghost" size="sm" onClick={() => { setApprovalFilter('all'); setEnrichedFilter('all'); }}>
               <X className="h-4 w-4 mr-1" /> Rimuovi filtri
             </Button>
           )}
@@ -632,46 +603,6 @@ export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvest
               <XCircle className="h-3.5 w-3.5 text-red-600" />
               Non Approvare
             </Button>
-            
-            <div className="h-4 w-px bg-border mx-2" />
-            
-            {/* LinkedIn Connection Actions */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button size="sm" variant="outline" className="gap-1.5" disabled={isBulkUpdating}>
-                  <Linkedin className="h-3.5 w-3.5 text-[#0A66C2]" />
-                  Stato LinkedIn
-                  <ChevronDown className="h-3 w-3" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => handleBulkConnectionStatusChange('connected')}>
-                  <UserCheck className="h-4 w-4 mr-2 text-green-600" />
-                  Segna come Connesso
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleBulkConnectionStatusChange('not_connected')}>
-                  <UserX className="h-4 w-4 mr-2 text-amber-600" />
-                  Segna come Non Connesso
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleBulkConnectionStatusChange('pending_request')}>
-                  <Clock className="h-4 w-4 mr-2 text-blue-600" />
-                  Segna come Richiesta Inviata
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem 
-                  onClick={handleSendToProsp}
-                  disabled={isSendingToProsp}
-                  className="text-[#0A66C2]"
-                >
-                  {isSendingToProsp ? (
-                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  ) : (
-                    <Send className="h-4 w-4 mr-2" />
-                  )}
-                  Invia a Prosp.ai
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
             
             <Button
               size="sm"
@@ -854,40 +785,6 @@ export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvest
                                         </span>
                                       </div>
                                       <div className="flex items-center gap-1">
-                                        {investor.linkedin && (
-                                          <TooltipProvider>
-                                            <Tooltip>
-                                              <TooltipTrigger asChild>
-                                                <a
-                                                  href={investor.linkedin}
-                                                  target="_blank"
-                                                  rel="noopener noreferrer"
-                                                  onClick={(e) => e.stopPropagation()}
-                                                  className={`flex items-center justify-center h-5 w-5 rounded transition-colors ${
-                                                    investor.linkedinConnectionStatus === 'connected' 
-                                                      ? 'bg-green-600 hover:bg-green-700' 
-                                                      : investor.linkedinConnectionStatus === 'pending_request'
-                                                      ? 'bg-amber-500 hover:bg-amber-600'
-                                                      : investor.linkedinConnectionStatus === 'not_connected'
-                                                      ? 'bg-red-500 hover:bg-red-600'
-                                                      : 'bg-[#0A66C2] hover:bg-[#004182]'
-                                                  }`}
-                                                >
-                                                  <Linkedin className="h-3 w-3 text-white" />
-                                                </a>
-                                              </TooltipTrigger>
-                                              <TooltipContent side="bottom">
-                                                <p className="text-xs">
-                                                  Apri profilo LinkedIn
-                                                  <br />
-                                                  <span className="text-muted-foreground">
-                                                    Stato: {linkedinConnectionConfig[investor.linkedinConnectionStatus || 'unknown'].label}
-                                                  </span>
-                                                </p>
-                                              </TooltipContent>
-                                            </Tooltip>
-                                          </TooltipProvider>
-                                        )}
                                         <Badge variant="outline" className="text-[10px] px-1.5 py-0">
                                           {investor.categoria}
                                         </Badge>
