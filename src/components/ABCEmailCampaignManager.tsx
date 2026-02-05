@@ -188,8 +188,10 @@ export function ABCEmailCampaignManager({ investors, onInvestorsUpdated, pending
 
   const currentUserEmail = sessionStorage.getItem('abc_authorized_email') || 'admin@aries76.com';
 
-  // Filter only approved investors
-  const approvedInvestors = investors.filter(inv => inv.approval_status === 'approved');
+  // Filter only approved investors (exclude Not Interested - they declined)
+  const approvedInvestors = investors.filter(inv => 
+    inv.approval_status === 'approved' && inv.status !== 'Not Interested'
+  );
   
   // Approved investors with email
   const approvedWithEmail = approvedInvestors.filter(inv => inv.email);
