@@ -58,6 +58,44 @@ Deno.serve(async (req) => {
       );
     }
 
+    // Normalize and validate LinkedIn URL
+    let normalizedLinkedinUrl = linkedinUrl.trim();
+    
+    // Remove trailing slashes
+    normalizedLinkedinUrl = normalizedLinkedinUrl.replace(/\/+$/, '');
+    
+    // If it's just a username/path, add the full URL
+    if (!normalizedLinkedinUrl.startsWith('http')) {
+      // Check if it's a path like /in/username or in/username
+      if (normalizedLinkedinUrl.startsWith('/in/') || normalizedLinkedinUrl.startsWith('in/')) {
+        normalizedLinkedinUrl = 'https://www.linkedin.com' + (normalizedLinkedinUrl.startsWith('/') ? '' : '/') + normalizedLinkedinUrl;
+      } else if (normalizedLinkedinUrl.startsWith('linkedin.com')) {
+        normalizedLinkedinUrl = 'https://www.' + normalizedLinkedinUrl;
+      } else if (normalizedLinkedinUrl.startsWith('www.linkedin.com')) {
+        normalizedLinkedinUrl = 'https://' + normalizedLinkedinUrl;
+      } else {
+        // Assume it's just a username
+        normalizedLinkedinUrl = 'https://www.linkedin.com/in/' + normalizedLinkedinUrl;
+      }
+    }
+    
+    // Ensure it's a valid LinkedIn URL
+    const linkedinPattern = /^https?:\/\/(www\.)?linkedin\.com\/in\/[a-zA-Z0-9\-_%]+\/?$/i;
+    const isValidLinkedIn = linkedinPattern.test(normalizedLinkedinUrl) || 
+                            normalizedLinkedinUrl.includes('linkedin.com/in/');
+    
+    if (!isValidLinkedIn) {
+      console.error(`Invalid LinkedIn URL format: ${linkedinUrl} -> ${normalizedLinkedinUrl}`);
+      return new Response(
+        JSON.stringify({ 
+          error: 'Invalid LinkedIn URL format', 
+          original: linkedinUrl,
+          normalized: normalizedLinkedinUrl 
+        }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     const prospApiKey = Deno.env.get('PROSP_API_KEY');
     if (!prospApiKey) {
       console.error('PROSP_API_KEY not configured');
@@ -67,7 +105,13 @@ Deno.serve(async (req) => {
       );
     }
 
-    console.log(`Adding lead to Prosp.ai: ${investorName || linkedinUrl}`);
+    console.log(`Adding lead to Prosp.ai:`);
+    console.log(`  - Original LinkedIn URL: ${linkedinUrl}`);
+    console.log(`  - Normalized LinkedIn URL: ${normalizedLinkedinUrl}`);
+    console.log(`  - Name: ${investorName}`);
+    console.log(`  - Company: ${investorCompany}`);
+    console.log(`  - Campaign ID: ${campaignId}`);
+    console.log(`  - List ID: ${listId}`);
 
     // Call Prosp.ai API to add lead
     // Build data array with custom properties (Prosp API uses "property" not "key")
@@ -82,18 +126,22 @@ Deno.serve(async (req) => {
       dataArray.push({ property: 'company', value: investorCompany });
     }
 
+    const requestBody = {
+      api_key: prospApiKey,
+      campaign_id: campaignId,
+      list_id: listId,
+      linkedin_url: normalizedLinkedinUrl,
+      data: dataArray,
+    };
+    
+    console.log('Prosp.ai request body (without api_key):', JSON.stringify({ ...requestBody, api_key: '[REDACTED]' }, null, 2));
+
     const prospResponse = await fetch('https://prosp.ai/api/v1/leads', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        api_key: prospApiKey,
-        campaign_id: campaignId,
-        list_id: listId,
-        linkedin_url: linkedinUrl,
-        data: dataArray,
-      }),
+      body: JSON.stringify(requestBody),
     });
 
     const prospData = await prospResponse.json();
