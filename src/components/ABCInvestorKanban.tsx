@@ -813,16 +813,6 @@ export const ABCInvestorKanban = ({ investors, onStatusChange, initialEditInvest
                                         </TooltipProvider>
                                       </div>
                                       <div className="flex items-center gap-0.5 ml-1">
-                                        {investor.linkedin && (
-                                          <Button
-                                            variant="ghost"
-                                            size="icon"
-                                            className="h-6 w-6 text-[#0A66C2] hover:text-[#0A66C2]/80"
-                                            onClick={(e) => handleLinkedInClick(e, investor.linkedin!)}
-                                          >
-                                            <Linkedin className="h-3.5 w-3.5" />
-                                          </Button>
-                                        )}
                                         <Button
                                           variant="ghost"
                                           size="icon"
