@@ -41,7 +41,6 @@ import { ABCAnimatedFunnel } from "@/components/ABCAnimatedFunnel";
 import { ABCAutoReminders, Reminder } from "@/components/ABCAutoReminders";
 import { ABCFollowUpSequences } from "@/components/ABCFollowUpSequences";
 import { ABCCampaignStatsDialog } from "@/components/ABCCampaignStatsDialog";
- import { ABCLinkedInOutreach } from "@/components/ABCLinkedInOutreach";
 import { useKPIHistory } from "@/hooks/useKPIHistory";
 import { supabase } from "@/integrations/supabase/client";
 import { ABCDataProvider } from "@/contexts/ABCDataContext";
@@ -1068,7 +1067,6 @@ const ABCCompanyConsole = () => {
           <TabsList className="grid w-full grid-cols-10 mb-8">
             <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
             <TabsTrigger value="investors">Investors</TabsTrigger>
-             <TabsTrigger value="linkedin">LinkedIn</TabsTrigger>
             <TabsTrigger value="commitments">Commitments</TabsTrigger>
             <TabsTrigger value="campaigns">Campaigns</TabsTrigger>
             <TabsTrigger value="prospecting">Prospecting</TabsTrigger>
@@ -1454,19 +1452,6 @@ const ABCCompanyConsole = () => {
               />
             )}
           </TabsContent>
-
-           {/* LINKEDIN TAB - LinkedIn Outreach & Warm Intro */}
-           <TabsContent value="linkedin" className="space-y-6">
-             <ABCLinkedInOutreach 
-               investors={investors.map(i => ({
-                 id: i.id,
-                 nome: i.nome,
-                 azienda: i.azienda,
-                 linkedin: i.linkedin,
-                 email: i.email,
-               }))}
-             />
-           </TabsContent>
 
           <TabsContent value="commitments" className="space-y-6">
             <ABCCommitmentTracker investors={investors.map(i => ({ id: i.id, nome: i.nome, azienda: i.azienda }))} />
