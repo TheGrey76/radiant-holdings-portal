@@ -157,20 +157,20 @@ const AriesAICourses = () => {
                           <Linkedin className="w-5 h-5 text-[#0077B5]" />
                         </a>
                         <a 
-                          href="https://edogrigione.substack.com/" 
+                          href="https://aries76.com" 
                           target="_blank" 
                           rel="noopener noreferrer"
                           className="p-2 bg-white/5 hover:bg-white/10 rounded-lg transition-colors"
                         >
-                          <BookOpen className="w-5 h-5 text-[#FF6719]" />
+                          <Globe className="w-5 h-5 text-[#FF7A3D]" />
                         </a>
                         <a 
-                          href="https://medium.com/@edogrigione" 
+                          href="https://www.raiseplatform.eu" 
                           target="_blank" 
                           rel="noopener noreferrer"
                           className="p-2 bg-white/5 hover:bg-white/10 rounded-lg transition-colors"
                         >
-                          <PenLine className="w-5 h-5 text-white" />
+                          <Rocket className="w-5 h-5 text-[#FF7A3D]" />
                         </a>
                       </div>
                     </div>
