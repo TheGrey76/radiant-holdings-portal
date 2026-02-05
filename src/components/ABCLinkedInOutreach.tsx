@@ -23,7 +23,9 @@
    RefreshCw,
    Sparkles,
    TrendingUp,
-   Target
+   Target,
+   ExternalLink,
+   Check
  } from 'lucide-react';
  import { format } from 'date-fns';
  import { it } from 'date-fns/locale';
@@ -77,6 +79,10 @@
    azienda: string;
    linkedin: string | null;
    email: string | null;
+ }
+ 
+ interface WorkflowStep {
+   completed: boolean;
  }
  
  interface ABCLinkedInOutreachProps {
@@ -473,30 +479,6 @@
                      </div>
                    </div>
  
-                   {selectedInvestor?.linkedin && (
-                     <div className="p-3 rounded-lg bg-blue-500/10 border border-blue-500/20">
-                       <div className="flex items-center justify-between text-sm">
-                         <div className="flex items-center gap-2">
-                           <Linkedin className="h-4 w-4 text-blue-400" />
-                           <span className="text-muted-foreground truncate max-w-[280px]">
-                             {selectedInvestor.linkedin}
-                           </span>
-                         </div>
-                         <Button
-                           variant="outline"
-                           size="sm"
-                           onClick={() => {
-                             navigator.clipboard.writeText(selectedInvestor.linkedin!);
-                             toast.success('URL LinkedIn copiato - incollalo in una nuova tab');
-                           }}
-                         >
-                           <Copy className="h-3 w-3 mr-1" />
-                           Copia URL
-                         </Button>
-                       </div>
-                     </div>
-                   )}
- 
                    <div className="space-y-2">
                      <label className="text-sm font-medium">Messaggio</label>
                      <Textarea
@@ -511,18 +493,90 @@
                      </p>
                    </div>
  
-                   <div className="flex gap-2 justify-end">
-                     <Button variant="outline" onClick={copyToClipboard} disabled={!generatedMessage}>
-                       <Copy className="h-4 w-4 mr-2" />
-                       Copia
-                     </Button>
-                     <Button variant="outline" onClick={() => saveOutreach('pending')} disabled={!selectedInvestor}>
+                   {/* Workflow Guidato Step-by-Step */}
+                   <div className="space-y-3 p-4 rounded-lg bg-muted/50 border">
+                     <div className="flex items-center gap-2 mb-3">
+                       <Target className="h-4 w-4 text-primary" />
+                       <span className="font-medium text-sm">Workflow Invio Messaggio</span>
+                     </div>
+                     
+                     {/* Step 1: Copia Messaggio */}
+                     <div className="flex items-center gap-3">
+                       <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary text-primary-foreground text-xs font-bold">
+                         1
+                       </div>
+                       <Button 
+                         variant="outline" 
+                         size="sm"
+                         className="flex-1 justify-start"
+                         onClick={() => {
+                           if (generatedMessage) {
+                             navigator.clipboard.writeText(generatedMessage);
+                             toast.success('✅ Messaggio copiato! Ora apri LinkedIn');
+                           }
+                         }}
+                         disabled={!generatedMessage}
+                       >
+                         <Copy className="h-4 w-4 mr-2" />
+                         Copia Messaggio negli Appunti
+                       </Button>
+                     </div>
+                     
+                     {/* Step 2: Apri LinkedIn */}
+                     <div className="flex items-center gap-3">
+                       <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary text-primary-foreground text-xs font-bold">
+                         2
+                       </div>
+                       <Button 
+                         variant="outline" 
+                         size="sm"
+                         className="flex-1 justify-start"
+                         onClick={() => {
+                           if (selectedInvestor?.linkedin) {
+                             window.open(selectedInvestor.linkedin, '_blank', 'noopener,noreferrer');
+                             toast.success('✅ LinkedIn aperto! Incolla il messaggio e invia');
+                           } else {
+                             toast.error('Nessun URL LinkedIn disponibile');
+                           }
+                         }}
+                         disabled={!selectedInvestor?.linkedin}
+                       >
+                         <ExternalLink className="h-4 w-4 mr-2" />
+                         Apri Profilo LinkedIn
+                         {selectedInvestor?.linkedin && (
+                           <span className="ml-auto text-xs text-muted-foreground truncate max-w-[150px]">
+                             {selectedInvestor.linkedin.replace('https://www.linkedin.com/', '')}
+                           </span>
+                         )}
+                       </Button>
+                     </div>
+                     
+                     {/* Step 3: Conferma Invio */}
+                     <div className="flex items-center gap-3">
+                       <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary text-primary-foreground text-xs font-bold">
+                         3
+                       </div>
+                       <Button 
+                         size="sm"
+                         className="flex-1 justify-start bg-green-600 hover:bg-green-700"
+                         onClick={() => saveOutreach('sent')}
+                         disabled={!selectedInvestor}
+                       >
+                         <Check className="h-4 w-4 mr-2" />
+                         Ho Inviato il Messaggio - Conferma
+                       </Button>
+                     </div>
+                     
+                     <p className="text-xs text-muted-foreground mt-2 pl-9">
+                       💡 Suggerimento: Dopo aver incollato il messaggio su LinkedIn, torna qui per confermare l'invio
+                     </p>
+                   </div>
+                   
+                   {/* Azioni secondarie */}
+                   <div className="flex gap-2 justify-end pt-2 border-t">
+                     <Button variant="ghost" size="sm" onClick={() => saveOutreach('pending')} disabled={!selectedInvestor}>
                        <Clock className="h-4 w-4 mr-2" />
-                       Salva Bozza
-                     </Button>
-                     <Button onClick={() => saveOutreach('sent')} disabled={!selectedInvestor}>
-                       <Send className="h-4 w-4 mr-2" />
-                       Segna come Inviato
+                       Salva come Bozza
                      </Button>
                    </div>
                  </div>
