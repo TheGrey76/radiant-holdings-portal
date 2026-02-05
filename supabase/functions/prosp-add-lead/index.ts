@@ -70,6 +70,18 @@ Deno.serve(async (req) => {
     console.log(`Adding lead to Prosp.ai: ${investorName || linkedinUrl}`);
 
     // Call Prosp.ai API to add lead
+    // Build data array with custom properties (Prosp API uses "property" not "key")
+    const dataArray: Array<{ property: string; value: string }> = [];
+    if (investorEmail) {
+      dataArray.push({ property: 'email', value: investorEmail });
+    }
+    if (investorName) {
+      dataArray.push({ property: 'name', value: investorName });
+    }
+    if (investorCompany) {
+      dataArray.push({ property: 'company', value: investorCompany });
+    }
+
     const prospResponse = await fetch('https://prosp.ai/api/v1/leads', {
       method: 'POST',
       headers: {
@@ -80,11 +92,7 @@ Deno.serve(async (req) => {
         campaign_id: campaignId,
         list_id: listId,
         linkedin_url: linkedinUrl,
-        data: investorEmail || investorName ? [
-          ...(investorEmail ? [{ key: 'email', value: investorEmail }] : []),
-          ...(investorName ? [{ key: 'name', value: investorName }] : []),
-          ...(investorCompany ? [{ key: 'company', value: investorCompany }] : []),
-        ] : [],
+        data: dataArray,
       }),
     });
 
