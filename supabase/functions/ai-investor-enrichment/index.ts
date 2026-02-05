@@ -116,22 +116,52 @@ async function searchApolloForPerson(
     const data = await response.json();
 
     if (data.people && data.people.length > 0) {
-      const bestMatch = data.people.find((p: any) => {
-        const matchesName = 
-          (p.first_name?.toLowerCase() === firstName.toLowerCase() || 
-           p.last_name?.toLowerCase() === lastName.toLowerCase());
-        const matchesCompany = 
-          p.organization?.name?.toLowerCase().includes(cleanedCompany.toLowerCase().slice(0, 6)) ||
-          cleanedCompany.toLowerCase().includes(p.organization?.name?.toLowerCase().slice(0, 6) || '');
-        return matchesName || matchesCompany;
-      }) || data.people[0];
+      // Strict matching: require BOTH first name AND last name match, PLUS company match
+      const strictMatch = data.people.find((p: any) => {
+        const firstNameMatches = firstName && p.first_name && 
+          p.first_name.toLowerCase().trim() === firstName.toLowerCase().trim();
+        const lastNameMatches = lastName && p.last_name && 
+          p.last_name.toLowerCase().trim() === lastName.toLowerCase().trim();
+        
+        // Check company with partial match (first 6 chars minimum)
+        const orgName = p.organization?.name?.toLowerCase() || '';
+        const companyMatches = 
+          orgName.includes(cleanedCompany.toLowerCase().slice(0, 6)) ||
+          cleanedCompany.toLowerCase().includes(orgName.slice(0, 6));
+        
+        // For LinkedIn, we need a HIGH confidence match: both names + company
+        return (firstNameMatches && lastNameMatches && companyMatches);
+      });
 
-      if (bestMatch) {
-        console.log(`Apollo found: ${bestMatch.email || 'no email'}, LinkedIn: ${bestMatch.linkedin_url || 'no linkedin'}`);
+      // Looser match for email only (just last name + company)
+      const looseMatch = data.people.find((p: any) => {
+        const lastNameMatches = lastName && p.last_name && 
+          p.last_name.toLowerCase().trim() === lastName.toLowerCase().trim();
+        const orgName = p.organization?.name?.toLowerCase() || '';
+        const companyMatches = 
+          orgName.includes(cleanedCompany.toLowerCase().slice(0, 6)) ||
+          cleanedCompany.toLowerCase().includes(orgName.slice(0, 6));
+        return lastNameMatches && companyMatches;
+      });
+
+      if (strictMatch) {
+        // High confidence - use both email and LinkedIn
+        console.log(`Apollo strict match: ${strictMatch.first_name} ${strictMatch.last_name} at ${strictMatch.organization?.name}`);
+        console.log(`  -> Email: ${strictMatch.email || 'none'}, LinkedIn: ${strictMatch.linkedin_url || 'none'}`);
         return {
-          email: bestMatch.email || null,
-          linkedin: bestMatch.linkedin_url || null,
-          confidence: bestMatch.email ? 90 : 50,
+          email: strictMatch.email || null,
+          linkedin: strictMatch.linkedin_url || null,
+          confidence: 95,
+          rateLimited: false,
+        };
+      } else if (looseMatch) {
+        // Medium confidence - only email, NO LinkedIn (too risky)
+        console.log(`Apollo loose match (email only): ${looseMatch.first_name} ${looseMatch.last_name} at ${looseMatch.organization?.name}`);
+        console.log(`  -> Email: ${looseMatch.email || 'none'}, LinkedIn: SKIPPED (low confidence)`);
+        return {
+          email: looseMatch.email || null,
+          linkedin: null, // Don't return LinkedIn for loose matches
+          confidence: 70,
           rateLimited: false,
         };
       }
