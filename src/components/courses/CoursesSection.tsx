@@ -222,8 +222,9 @@ const CoursesSection = () => {
 
                 {/* Content Grid - Stack on mobile */}
                 <div className="grid lg:grid-cols-2 gap-6 lg:gap-12">
-                  {/* Problem & Solution - First on mobile */}
+                  {/* Problem, Solution & Takeaways - Traffic Light Design */}
                   <div className="space-y-4 sm:space-y-6">
+                    {/* Red - The Problem */}
                     <div className="bg-red-500/5 border border-red-500/20 rounded-xl p-4 sm:p-5">
                       <p className="text-xs uppercase tracking-wider text-red-400 font-semibold mb-2 flex items-center gap-2">
                         <span className="w-2 h-2 rounded-full bg-red-400"></span>
@@ -232,12 +233,29 @@ const CoursesSection = () => {
                       <p className="text-sm sm:text-base text-gray-300 leading-relaxed">{workshop.problem}</p>
                     </div>
                     
-                    <div className="bg-emerald-500/5 border border-emerald-500/20 rounded-xl p-4 sm:p-5">
-                      <p className="text-xs uppercase tracking-wider text-emerald-400 font-semibold mb-2 flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+                    {/* Orange - The AI Solution */}
+                    <div className="bg-[#FF7A3D]/5 border border-[#FF7A3D]/20 rounded-xl p-4 sm:p-5">
+                      <p className="text-xs uppercase tracking-wider text-[#FF7A3D] font-semibold mb-2 flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-[#FF7A3D]"></span>
                         The AI Solution
                       </p>
                       <p className="text-sm sm:text-base text-gray-200 leading-relaxed">{workshop.solution}</p>
+                    </div>
+
+                    {/* Green - Key Takeaways */}
+                    <div className="bg-emerald-500/5 border border-emerald-500/20 rounded-xl p-4 sm:p-5">
+                      <p className="text-xs uppercase tracking-wider text-emerald-400 font-semibold mb-2 flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+                        Key Takeaways
+                      </p>
+                      <ul className="space-y-2">
+                        {workshop.takeaways.map((takeaway, i) => (
+                          <li key={i} className="flex items-start gap-2 text-gray-200">
+                            <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
+                            <span className="text-sm sm:text-base">{takeaway}</span>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                   </div>
 
