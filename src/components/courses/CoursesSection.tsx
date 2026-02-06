@@ -23,6 +23,7 @@ const workshops = [
     icon: Lightbulb,
     problem: 'Traditional innovation processes are slow, expensive, and high-risk. Managers struggle to identify the most promising ideas, validate them quickly, and allocate resources efficiently, resulting in low ROI on innovation initiatives.',
     solution: 'Use AI to analyze large volumes of data (market trends, customer feedback, patents) to identify non-obvious opportunities, automate validation tests, and predict the success potential of an initiative.',
+    takeaways: ['Ability to use AI tools for rapid idea validation', 'Framework for data-driven innovation prioritization', 'Reduced time-to-insight by up to 70%'],
     session1: {
       title: 'From Idea to Insight',
       points: ['Analysis of traditional innovation failures', 'AI as a discovery engine: using data to find hidden opportunities', 'Case Study: How Netflix uses AI to guide content creation']
@@ -40,6 +41,7 @@ const workshops = [
     icon: Truck,
     problem: 'Lack of real-time visibility, logistical inefficiencies, and vulnerability to unexpected supply chain disruptions. Managers struggle with inaccurate demand forecasts, high transportation costs, and suboptimal inventory management.',
     solution: 'Implement predictive models for demand, optimize logistics routes in real-time, monitor goods conditions, and anticipate disruption risks to create a resilient and proactive supply chain.',
+    takeaways: ['Predictive demand forecasting capabilities', 'Real-time risk monitoring strategies', 'Cost reduction through AI-optimized logistics'],
     session1: {
       title: 'The Intelligent Supply Chain',
       points: ['Weaknesses of traditional supply chains', 'AI for demand forecasting and inventory optimization', 'Case Study: Ocado\'s autonomous supply chain']
@@ -57,6 +59,7 @@ const workshops = [
     icon: Globe,
     problem: 'Expansion into new markets and M&A operations are complex and full of uncertainties. Managers need more powerful tools to assess market attractiveness, identify the right acquisition targets, and manage post-merger integration.',
     solution: 'Leverage AI to analyze macroeconomic and industry data for market selection, conduct faster and more thorough due diligence on M&A targets, and identify integration synergies and risks.',
+    takeaways: ['AI-powered market intelligence skills', 'Accelerated due diligence methodology', 'Data-driven M&A target screening'],
     session1: {
       title: 'Data-Driven Growth Strategies',
       points: ['Limitations of traditional market analysis', 'AI for competitive analysis and market intelligence', 'Case Study: How Private Equity firms use AI for due diligence']
@@ -74,6 +77,7 @@ const workshops = [
     icon: Coins,
     problem: 'The capital raising process is long, competitive, and often inefficient. Managers and entrepreneurs struggle to identify the right investors, prepare data-driven compelling documentation, and manage the due diligence process quickly.',
     solution: 'Use AI to identify and qualify potential investors (investor matching), analyze company data to build more robust financial projections, and automate due diligence documentation preparation.',
+    takeaways: ['AI-driven investor targeting techniques', 'Automated pitch deck optimization', 'Faster due diligence preparation'],
     session1: {
       title: 'Intelligent Fundraising',
       points: ['Inefficiencies of traditional fundraising', 'AI for investor targeting and pitch preparation', 'Case Study: The evolution of capital raising platforms']
@@ -91,6 +95,7 @@ const workshops = [
     icon: Users2,
     problem: 'The introduction of AI creates new managerial challenges: how to lead hybrid human-machine teams, how to manage fears and resistance to change, and how to develop a corporate culture that embraces data-driven innovation.',
     solution: 'Provide managers with frameworks to redesign roles and processes, manage the ethical and social impact of AI, and develop the leadership competencies necessary to guide digital transformation.',
+    takeaways: ['Hybrid team leadership frameworks', 'Change management playbook for AI adoption', 'Ethical AI governance guidelines'],
     session1: {
       title: 'Guiding the Transformation',
       points: ['The human challenges of AI', 'Framework for change management and skills reskilling', 'Discussion: Ethics and responsibility in the age of AI']
@@ -108,6 +113,7 @@ const workshops = [
     icon: Wrench,
     problem: 'There is a significant gap between theoretical understanding of AI and the ability to implement a practical solution. Managers lack the confidence and practical experience to launch a pilot project.',
     solution: 'Guide participants, step by step, in using no-code/low-code AI tools to build a working prototype that addresses one of the challenges discussed in previous modules, transforming knowledge into applied competency.',
+    takeaways: ['Working AI prototype for your business', 'No-code/low-code implementation skills', 'Confidence to launch AI pilot projects'],
     session1: {
       title: 'From Problem to Prototype',
       points: ['Work individually or in small groups', 'Build an AI prototype that addresses real challenges', 'Using no-code platforms for rapid development']
@@ -216,8 +222,9 @@ const CoursesSection = () => {
 
                 {/* Content Grid - Stack on mobile */}
                 <div className="grid lg:grid-cols-2 gap-6 lg:gap-12">
-                  {/* Problem & Solution - First on mobile */}
+                  {/* Problem, Solution & Takeaways - Traffic Light Design */}
                   <div className="space-y-4 sm:space-y-6">
+                    {/* Red - The Problem */}
                     <div className="bg-red-500/5 border border-red-500/20 rounded-xl p-4 sm:p-5">
                       <p className="text-xs uppercase tracking-wider text-red-400 font-semibold mb-2 flex items-center gap-2">
                         <span className="w-2 h-2 rounded-full bg-red-400"></span>
@@ -226,12 +233,29 @@ const CoursesSection = () => {
                       <p className="text-sm sm:text-base text-gray-300 leading-relaxed">{workshop.problem}</p>
                     </div>
                     
-                    <div className="bg-emerald-500/5 border border-emerald-500/20 rounded-xl p-4 sm:p-5">
-                      <p className="text-xs uppercase tracking-wider text-emerald-400 font-semibold mb-2 flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+                    {/* Orange - The AI Solution */}
+                    <div className="bg-[#FF7A3D]/5 border border-[#FF7A3D]/20 rounded-xl p-4 sm:p-5">
+                      <p className="text-xs uppercase tracking-wider text-[#FF7A3D] font-semibold mb-2 flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-[#FF7A3D]"></span>
                         The AI Solution
                       </p>
                       <p className="text-sm sm:text-base text-gray-200 leading-relaxed">{workshop.solution}</p>
+                    </div>
+
+                    {/* Green - Key Takeaways */}
+                    <div className="bg-emerald-500/5 border border-emerald-500/20 rounded-xl p-4 sm:p-5">
+                      <p className="text-xs uppercase tracking-wider text-emerald-400 font-semibold mb-2 flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+                        Key Takeaways
+                      </p>
+                      <ul className="space-y-2">
+                        {workshop.takeaways.map((takeaway, i) => (
+                          <li key={i} className="flex items-start gap-2 text-gray-200">
+                            <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
+                            <span className="text-sm sm:text-base">{takeaway}</span>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                   </div>
 
