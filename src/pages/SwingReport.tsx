@@ -88,7 +88,7 @@ export default function SwingReport() {
 
   const copyUploadLink = (token: string) => {
     const baseUrl = window.location.origin;
-    const link = `${baseUrl}/swingreport/upload?token=${token}`;
+    const link = `${baseUrl}/STD/upload?token=${token}`;
     navigator.clipboard.writeText(link);
     setCopiedToken(token);
     toast.success("Link copiato!");

@@ -195,8 +195,8 @@ const App = () => (
           <Route path="/marketing-materials" element={<MarketingMaterials />} />
           <Route path="/AF" element={<ETFCertificatesPortfolio />} />
           <Route path="/aries-ai-courses" element={<AriesAICourses />} />
-          <Route path="/swingreport" element={<SwingReport />} />
-          <Route path="/swingreport/upload" element={<SwingReportUpload />} />
+          <Route path="/STD" element={<SwingReport />} />
+          <Route path="/STD/upload" element={<SwingReportUpload />} />
           <Route path="/press" element={<Press />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
