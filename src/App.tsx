@@ -65,7 +65,7 @@ import Partners from "./pages/Partners";
 import StrategicPartnerships from "./pages/StrategicPartnerships";
 import StructuredProductsGU from "./pages/StructuredProductsGU";
 import Bitcoin2026Report from "./pages/Bitcoin2026Report";
-import Bitcoin2026ReportCover from "./pages/Bitcoin2026ReportCover";
+
 import Bitcoin2026ReportPreview from "./pages/Bitcoin2026ReportPreview";
 import BitcoinResearch from "./pages/BitcoinResearch";
 import BitcoinResearchAdmin from "./pages/BitcoinResearchAdmin";
@@ -183,7 +183,7 @@ const App = () => (
           {/* Legacy redirects for old URLs */}
           <Route path="/bitcoin-2026-report" element={<Navigate to="/bitcoin-dynamic-allocation" replace />} />
           <Route path="/bitcoin-2026-report-preview" element={<Navigate to="/bitcoin-dynamic-allocation-preview" replace />} />
-          <Route path="/bitcoin-2026-report-cover" element={<Bitcoin2026ReportCover />} />
+          
           
           <Route path="/funnel-bitcoin-report" element={<BitcoinFunnelDashboard />} />
           
