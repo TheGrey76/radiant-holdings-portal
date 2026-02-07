@@ -94,6 +94,7 @@ import PortfolioSubscriptionsAdmin from "./pages/PortfolioSubscriptionsAdmin";
 import AriesAICourses from "./pages/AriesAICourses";
 import SwingReport from "./pages/SwingReport";
 import SwingReportUpload from "./pages/SwingReportUpload";
+import SwingAccessGate from "./components/swing/SwingAccessGate";
 
 const queryClient = new QueryClient();
 
@@ -195,7 +196,7 @@ const App = () => (
           <Route path="/marketing-materials" element={<MarketingMaterials />} />
           <Route path="/AF" element={<ETFCertificatesPortfolio />} />
           <Route path="/aries-ai-courses" element={<AriesAICourses />} />
-          <Route path="/STD" element={<SwingReport />} />
+          <Route path="/STD" element={<SwingAccessGate><SwingReport /></SwingAccessGate>} />
           <Route path="/STD/upload" element={<SwingReportUpload />} />
           <Route path="/press" element={<Press />} />
           <Route path="*" element={<NotFound />} />
