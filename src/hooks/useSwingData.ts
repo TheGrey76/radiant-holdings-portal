@@ -78,10 +78,71 @@ export function useUploadReport() {
     mutationFn: async ({
       content,
       fileName,
+      isJson,
+      jsonData,
     }: {
       content: string;
       fileName: string;
+      isJson?: boolean;
+      jsonData?: { report: Record<string, any>; positions: Record<string, any>[] };
     }) => {
+      if (isJson && jsonData) {
+        // JSON path: insert report directly from structured data
+        const report = jsonData.report;
+        const { data, error } = await (supabase as any)
+          .from("swing_reports")
+          .insert({
+            client_name: report.client_name || "Unknown",
+            capital: report.capital || null,
+            risk_profile: report.risk_profile || null,
+            sectors: report.sectors || null,
+            horizon: report.horizon || null,
+            report_date: report.report_date || null,
+            week_range: report.week_range || null,
+            raw_content: content,
+            file_name: fileName,
+            uploaded_by: "admin",
+          })
+          .select()
+          .single();
+
+        if (error) throw error;
+
+        // Insert positions from JSON
+        const positions = jsonData.positions.map((p) => ({
+          report_id: data.id,
+          ticker: p.ticker,
+          name: p.name || null,
+          sector: p.sector || null,
+          status: p.status || "PASS",
+          entry_zone_low: p.entry_zone_low ?? null,
+          entry_zone_high: p.entry_zone_high ?? null,
+          stop_loss: p.stop_loss ?? null,
+          target_1: p.target_1 ?? null,
+          target_2: p.target_2 ?? null,
+          target_3: p.target_3 ?? null,
+          risk_reward: p.risk_reward ?? null,
+          allocation_pct: p.allocation_pct ?? null,
+          allocation_amount: p.allocation_amount ?? null,
+          confidence: p.confidence || null,
+          is_active: p.is_active !== undefined ? p.is_active : true,
+          notes: p.notes || null,
+        }));
+
+        if (positions.length > 0) {
+          const { error: posError } = await (supabase as any)
+            .from("swing_positions")
+            .insert(positions);
+          if (posError) {
+            console.error("Error inserting positions:", posError);
+            throw new Error(`Report salvato ma errore posizioni: ${posError.message}`);
+          }
+        }
+
+        return { report: data as SwingReport, positionsCount: positions.length };
+      }
+
+      // Markdown path (legacy)
       const metadata = parseReportMetadata(content);
       const { data, error } = await (supabase as any)
         .from("swing_reports")
@@ -102,7 +163,6 @@ export function useUploadReport() {
 
       if (error) throw error;
 
-      // Parse and insert positions
       const positions = parsePositionsFromMarkdown(content, data.id);
       if (positions.length > 0) {
         const { error: posError } = await (supabase as any)
