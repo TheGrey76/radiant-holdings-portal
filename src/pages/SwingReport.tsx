@@ -52,8 +52,7 @@ export default function SwingReport() {
   const handleLogout = async () => {
     try {
       await supabase.auth.signOut();
-      toast.success("Logout effettuato");
-      navigate('/');
+      window.location.href = 'https://aries76.lovable.app/';
     } catch {
       toast.error("Errore durante il logout");
     }
