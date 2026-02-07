@@ -120,7 +120,7 @@ export default function SwingReport() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-foreground">
-            📊 Swing Trading Dashboard
+            Swing Trading Dashboard
           </h1>
           <p className="text-muted-foreground mt-1">
             Gestione report, portafoglio live e tracking P&L
@@ -129,16 +129,13 @@ export default function SwingReport() {
 
         <Tabs defaultValue="portfolio" className="space-y-6">
           <TabsList>
-            <TabsTrigger value="portfolio" className="gap-2">
-              <BarChart3 className="h-4 w-4" />
+            <TabsTrigger value="portfolio">
               Portafoglio
             </TabsTrigger>
-            <TabsTrigger value="reports" className="gap-2">
-              <FileText className="h-4 w-4" />
+            <TabsTrigger value="reports">
               Report
             </TabsTrigger>
-            <TabsTrigger value="links" className="gap-2">
-              <LinkIcon className="h-4 w-4" />
+            <TabsTrigger value="links">
               Link Upload
             </TabsTrigger>
           </TabsList>
