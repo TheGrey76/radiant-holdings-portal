@@ -26,8 +26,11 @@ import {
   Eye,
   ChevronDown,
   ChevronUp,
+  LogOut,
 } from "lucide-react";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import SwingPortfolioTable from "@/components/swing/SwingPortfolioTable";
 import {
   useSwingReports,
@@ -44,6 +47,17 @@ export default function SwingReport() {
   const { data: tokens = [] } = useSwingUploadTokens();
   const uploadReport = useUploadReport();
   const createToken = useCreateUploadToken();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut();
+      toast.success("Logout effettuato");
+      navigate('/');
+    } catch {
+      toast.error("Errore durante il logout");
+    }
+  };
 
   const [viewingReport, setViewingReport] = useState<SwingReportType | null>(null);
   const [showTokenDialog, setShowTokenDialog] = useState(false);
@@ -128,17 +142,28 @@ export default function SwingReport() {
         </div>
 
         <Tabs defaultValue="portfolio" className="space-y-6">
-          <TabsList>
-            <TabsTrigger value="portfolio">
-              Portafoglio
-            </TabsTrigger>
-            <TabsTrigger value="reports">
-              Report
-            </TabsTrigger>
-            <TabsTrigger value="links">
-              Link Upload
-            </TabsTrigger>
-          </TabsList>
+          <div className="flex items-center gap-3">
+            <TabsList>
+              <TabsTrigger value="portfolio">
+                Portafoglio
+              </TabsTrigger>
+              <TabsTrigger value="reports">
+                Report
+              </TabsTrigger>
+              <TabsTrigger value="links">
+                Link Upload
+              </TabsTrigger>
+            </TabsList>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleLogout}
+              className="flex items-center gap-2 border-destructive/30 text-destructive hover:bg-destructive/10"
+            >
+              <LogOut size={16} />
+              Logout
+            </Button>
+          </div>
 
           {/* ===== PORTFOLIO TAB ===== */}
           <TabsContent value="portfolio">
