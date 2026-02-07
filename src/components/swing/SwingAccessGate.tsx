@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Lock, Loader2, AlertCircle } from "lucide-react";
+import { Lock, Loader2, AlertCircle, LogOut } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 interface SwingAccessGateProps {
   children: React.ReactNode;
@@ -12,6 +14,17 @@ export default function SwingAccessGate({ children }: SwingAccessGateProps) {
   const [authorized, setAuthorized] = useState(false);
   const [checking, setChecking] = useState(true);
   const [errorReason, setErrorReason] = useState<string | null>(null);
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut();
+      toast.success("Logout effettuato");
+      navigate('/');
+    } catch {
+      toast.error("Errore durante il logout");
+    }
+  };
 
   useEffect(() => {
     verifyAccess();
@@ -58,7 +71,22 @@ export default function SwingAccessGate({ children }: SwingAccessGateProps) {
     );
   }
 
-  if (authorized) return <>{children}</>;
+  if (authorized) return (
+    <>
+      <div className="fixed top-4 right-4 z-50">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={handleLogout}
+          className="flex items-center gap-2 border-destructive/30 text-destructive hover:bg-destructive/10"
+        >
+          <LogOut size={16} />
+          Logout
+        </Button>
+      </div>
+      {children}
+    </>
+  );
 
   const errorMessages: Record<string, { title: string; desc: string }> = {
     login_required: {
