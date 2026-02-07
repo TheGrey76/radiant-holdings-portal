@@ -282,6 +282,10 @@ export default function SwingReport() {
                             <span>
                               {new Date(report.created_at).toLocaleDateString(
                                 "it-IT"
+                              )}{" "}
+                              {new Date(report.created_at).toLocaleTimeString(
+                                "it-IT",
+                                { hour: "2-digit", minute: "2-digit" }
                               )}
                             </span>
                           </div>
