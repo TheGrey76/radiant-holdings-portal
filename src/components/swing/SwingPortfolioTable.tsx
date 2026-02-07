@@ -25,7 +25,14 @@ import {
   X,
   RefreshCw,
   Loader2,
+  HelpCircle,
 } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import type { SwingPosition } from "@/hooks/useSwingData";
 import { useUpdatePosition } from "@/hooks/useSwingData";
 import { useSwingPrices } from "@/hooks/useSwingPrices";
@@ -157,23 +164,33 @@ export default function SwingPortfolioTable({
   };
 
   return (
+    <TooltipProvider delayDuration={200}>
     <div className="space-y-4">
       {/* Summary cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div className="rounded-lg border bg-card p-4">
-          <p className="text-xs text-muted-foreground">Posizioni Attive</p>
+          <div className="flex items-center gap-1">
+            <p className="text-xs text-muted-foreground">Posizioni Attive</p>
+            <InfoTip text="Numero di operazioni attualmente aperte nel portafoglio." />
+          </div>
           <p className="text-2xl font-bold text-foreground">
             {positions.filter((p) => p.is_active).length}
           </p>
         </div>
         <div className="rounded-lg border bg-card p-4">
-          <p className="text-xs text-muted-foreground">Investito</p>
+          <div className="flex items-center gap-1">
+            <p className="text-xs text-muted-foreground">Investito</p>
+            <InfoTip text="Capitale totale impiegato nelle posizioni aperte (prezzo di carico × shares + commissioni)." />
+          </div>
           <p className="text-2xl font-bold text-foreground">
             {formatCurrency(totals.totalInvested)}
           </p>
         </div>
         <div className="rounded-lg border bg-card p-4">
-          <p className="text-xs text-muted-foreground">P&L Non Realizzato</p>
+          <div className="flex items-center gap-1">
+            <p className="text-xs text-muted-foreground">P&L Non Realizzato</p>
+            <InfoTip text="Profitto o perdita sulle posizioni ancora aperte, calcolato rispetto al prezzo di mercato corrente." />
+          </div>
           <p
             className={`text-2xl font-bold ${
               totals.totalUnrealized >= 0
@@ -185,7 +202,10 @@ export default function SwingPortfolioTable({
           </p>
         </div>
         <div className="rounded-lg border bg-card p-4">
-          <p className="text-xs text-muted-foreground">P&L Realizzato</p>
+          <div className="flex items-center gap-1">
+            <p className="text-xs text-muted-foreground">P&L Realizzato</p>
+            <InfoTip text="Profitto o perdita effettivo sulle posizioni già chiuse, al netto delle commissioni." />
+          </div>
           <p
             className={`text-2xl font-bold ${
               totals.totalRealized >= 0
@@ -225,18 +245,40 @@ export default function SwingPortfolioTable({
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-20">Ticker</TableHead>
+              <TableHead className="w-20">
+                <HeaderTip label="Ticker" tip="Simbolo di borsa del titolo (es. AAPL, MSFT)." />
+              </TableHead>
               <TableHead>Nome</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead className="text-right">Entry Zone</TableHead>
-              <TableHead className="text-right">Prezzo Carico</TableHead>
-              <TableHead className="text-right">Prezzo Live</TableHead>
-              <TableHead className="text-right">Chg%</TableHead>
-              <TableHead className="text-right">Shares</TableHead>
-              <TableHead className="text-right">Fees</TableHead>
-              <TableHead className="text-right">Stop</TableHead>
-              <TableHead className="text-right">T1 / T2</TableHead>
-              <TableHead className="text-right">P&L</TableHead>
+              <TableHead>
+                <HeaderTip label="Status" tip="PASS = pronto per l'ingresso, WATCHLIST = in osservazione." />
+              </TableHead>
+              <TableHead className="text-right">
+                <HeaderTip label="Entry Zone" tip="Range di prezzo consigliato per l'acquisto." align="right" />
+              </TableHead>
+              <TableHead className="text-right">
+                <HeaderTip label="Prezzo Carico" tip="Prezzo effettivo a cui è stata aperta la posizione." align="right" />
+              </TableHead>
+              <TableHead className="text-right">
+                <HeaderTip label="Prezzo Live" tip="Prezzo di mercato corrente del titolo." align="right" />
+              </TableHead>
+              <TableHead className="text-right">
+                <HeaderTip label="Chg%" tip="Variazione percentuale giornaliera del prezzo." align="right" />
+              </TableHead>
+              <TableHead className="text-right">
+                <HeaderTip label="Shares" tip="Numero di azioni/quote detenute." align="right" />
+              </TableHead>
+              <TableHead className="text-right">
+                <HeaderTip label="Fees" tip="Commissioni di acquisto pagate al broker." align="right" />
+              </TableHead>
+              <TableHead className="text-right">
+                <HeaderTip label="Stop" tip="Stop-loss: prezzo sotto il quale si chiude la posizione per limitare le perdite." align="right" />
+              </TableHead>
+              <TableHead className="text-right">
+                <HeaderTip label="T1 / T2" tip="Target 1 e Target 2: livelli di prezzo obiettivo per la presa di profitto." align="right" />
+              </TableHead>
+              <TableHead className="text-right">
+                <HeaderTip label="P&L" tip="Profit & Loss: guadagno o perdita della posizione (realizzato o non realizzato)." align="right" />
+              </TableHead>
               <TableHead className="w-16"></TableHead>
             </TableRow>
           </TableHeader>
@@ -475,6 +517,38 @@ export default function SwingPortfolioTable({
           </DialogFooter>
         </DialogContent>
       </Dialog>
+    </div>
+    </TooltipProvider>
+  );
+}
+
+/* ---- Small helper components for tooltips ---- */
+
+function InfoTip({ text }: { text: string }) {
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <HelpCircle className="h-3 w-3 text-muted-foreground/60 cursor-help" />
+      </TooltipTrigger>
+      <TooltipContent side="top" className="max-w-[240px] text-xs">
+        {text}
+      </TooltipContent>
+    </Tooltip>
+  );
+}
+
+function HeaderTip({ label, tip, align = "left" }: { label: string; tip: string; align?: "left" | "right" }) {
+  return (
+    <div className={`flex items-center gap-1 ${align === "right" ? "justify-end" : ""}`}>
+      <span>{label}</span>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <HelpCircle className="h-3 w-3 text-muted-foreground/50 cursor-help" />
+        </TooltipTrigger>
+        <TooltipContent side="top" className="max-w-[240px] text-xs">
+          {tip}
+        </TooltipContent>
+      </Tooltip>
     </div>
   );
 }
