@@ -16,18 +16,51 @@ const ETFPortfolioAccessGate = ({ children }: ETFPortfolioAccessGateProps) => {
   const [isVerifying, setIsVerifying] = useState(false);
   const [hasAccess, setHasAccess] = useState<boolean | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [errorReason, setErrorReason] = useState<string | null>(null);
 
   useEffect(() => {
-    // Check if already verified in session
     const storedEmail = sessionStorage.getItem('etf_portfolio_email');
     const storedAccess = sessionStorage.getItem('etf_portfolio_access');
     
     if (storedEmail && storedAccess === 'true') {
-      setEmail(storedEmail);
-      setHasAccess(true);
+      // Re-validate stored email against whitelist on every reload
+      revalidateAccess(storedEmail);
+    } else {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   }, []);
+
+  const revalidateAccess = async (storedEmail: string) => {
+    try {
+      const { data, error } = await supabase.functions.invoke('check-page-access', {
+        body: { email: storedEmail, page_slug: 'af' }
+      });
+
+      if (error || !data?.hasAccess) {
+        // Access revoked or expired — clear cached session
+        sessionStorage.removeItem('etf_portfolio_email');
+        sessionStorage.removeItem('etf_portfolio_access');
+        setHasAccess(false);
+
+        if (data?.reason === 'expired') {
+          setErrorReason('Accesso scaduto. Contatta il tuo consulente per rinnovare.');
+        } else {
+          setErrorReason('Accesso revocato. Contatta il tuo consulente.');
+        }
+      } else {
+        setEmail(storedEmail);
+        setHasAccess(true);
+      }
+    } catch {
+      // Network error — clear session for safety
+      sessionStorage.removeItem('etf_portfolio_email');
+      sessionStorage.removeItem('etf_portfolio_access');
+      setHasAccess(false);
+      setErrorReason('Errore di connessione. Riprova.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const verifyAccess = async () => {
     if (!email.trim()) {
@@ -36,34 +69,47 @@ const ETFPortfolioAccessGate = ({ children }: ETFPortfolioAccessGateProps) => {
     }
 
     setIsVerifying(true);
+    setErrorReason(null);
     
     try {
+      const normalizedEmail = email.trim().toLowerCase();
+
       const { data, error } = await supabase.functions.invoke('check-page-access', {
-        body: { email: email.trim().toLowerCase(), page_slug: 'af' }
+        body: { email: normalizedEmail, page_slug: 'af' }
       });
 
       if (error) {
         console.error('Error checking access:', error);
         toast.error('Errore nella verifica');
         setHasAccess(false);
+        setErrorReason('Errore di connessione. Riprova.');
         return;
       }
 
       if (data?.hasAccess) {
-        sessionStorage.setItem('etf_portfolio_email', email.trim().toLowerCase());
+        sessionStorage.setItem('etf_portfolio_email', normalizedEmail);
         sessionStorage.setItem('etf_portfolio_access', 'true');
         setHasAccess(true);
+        setErrorReason(null);
         toast.success('Accesso autorizzato');
       } else {
         setHasAccess(false);
-        toast.error('Email non autorizzata', {
-          description: 'Contatta il tuo consulente per richiedere accesso'
-        });
+        if (data?.reason === 'expired') {
+          setErrorReason('Accesso scaduto. Contatta il tuo consulente per rinnovare.');
+          toast.error('Accesso scaduto');
+        } else if (data?.reason === 'no_access_record') {
+          setErrorReason('Email non autorizzata. Contatta il tuo consulente per richiedere accesso.');
+          toast.error('Email non autorizzata');
+        } else {
+          setErrorReason('Accesso negato. Contatta il tuo consulente.');
+          toast.error('Accesso negato');
+        }
       }
     } catch (err) {
       console.error('Verification error:', err);
       toast.error('Errore di connessione');
       setHasAccess(false);
+      setErrorReason('Errore di connessione. Riprova.');
     } finally {
       setIsVerifying(false);
     }
@@ -109,7 +155,7 @@ const ETFPortfolioAccessGate = ({ children }: ETFPortfolioAccessGateProps) => {
                 type="email"
                 placeholder="tuaemail@esempio.com"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => { setEmail(e.target.value); setErrorReason(null); }}
                 onKeyPress={handleKeyPress}
                 className="pl-10"
                 disabled={isVerifying}
@@ -117,10 +163,10 @@ const ETFPortfolioAccessGate = ({ children }: ETFPortfolioAccessGateProps) => {
             </div>
           </div>
 
-          {hasAccess === false && (
+          {errorReason && (
             <div className="flex items-center gap-2 p-3 bg-destructive/10 text-destructive rounded-lg text-sm">
               <AlertCircle className="h-4 w-4 flex-shrink-0" />
-              <p>Email non autorizzata. Contatta il tuo consulente.</p>
+              <p>{errorReason}</p>
             </div>
           )}
 

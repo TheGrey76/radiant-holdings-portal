@@ -14,45 +14,86 @@ interface SwingAccessGateProps {
 
 export default function SwingAccessGate({ children }: SwingAccessGateProps) {
   const [password, setPassword] = useState("");
-  const [authorized, setAuthorized] = useState(() => {
-    return sessionStorage.getItem("swing_access") === "granted";
-  });
+  const [authorized, setAuthorized] = useState(false);
   const [checking, setChecking] = useState(true);
 
-  // Auto-authorize if user is logged in and has page_access
   useEffect(() => {
-    if (authorized) {
+    const storedAccess = sessionStorage.getItem("swing_access");
+
+    if (storedAccess !== "granted") {
+      // No stored session — check if logged-in user has page_access
+      checkLoggedInUser();
+      return;
+    }
+
+    // Stored session exists — re-validate against whitelist
+    revalidateStoredAccess();
+  }, []);
+
+  const checkLoggedInUser = async () => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user?.email) {
+        const { data } = await supabase.rpc("check_page_access", {
+          p_email: session.user.email,
+          p_page_slug: "STD",
+        });
+        if (data) {
+          sessionStorage.setItem("swing_access", "granted");
+          sessionStorage.setItem("swing_access_method", "email");
+          setAuthorized(true);
+        }
+      }
+    } catch {
+      // ignore – fallback to password
+    } finally {
+      setChecking(false);
+    }
+  };
+
+  const revalidateStoredAccess = async () => {
+    const method = sessionStorage.getItem("swing_access_method");
+
+    if (method === "password") {
+      // Password access doesn't need re-validation against DB
+      setAuthorized(true);
       setChecking(false);
       return;
     }
 
-    const checkEmailAccess = async () => {
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session?.user?.email) {
-          const { data } = await supabase.rpc("check_page_access", {
-            p_email: session.user.email,
-            p_page_slug: "STD",
-          });
-          if (data) {
-            sessionStorage.setItem("swing_access", "granted");
-            setAuthorized(true);
-          }
+    // Email-based access — re-verify against whitelist
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user?.email) {
+        const { data } = await supabase.rpc("check_page_access", {
+          p_email: session.user.email,
+          p_page_slug: "STD",
+        });
+        if (data) {
+          setAuthorized(true);
+          setChecking(false);
+          return;
         }
-      } catch {
-        // ignore – fallback to password
-      } finally {
-        setChecking(false);
       }
-    };
-
-    checkEmailAccess();
-  }, [authorized]);
+      // Access revoked or user logged out — clear session
+      sessionStorage.removeItem("swing_access");
+      sessionStorage.removeItem("swing_access_method");
+      setAuthorized(false);
+    } catch {
+      // Network error — clear for safety
+      sessionStorage.removeItem("swing_access");
+      sessionStorage.removeItem("swing_access_method");
+      setAuthorized(false);
+    } finally {
+      setChecking(false);
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (password === SWING_PASSWORD) {
       sessionStorage.setItem("swing_access", "granted");
+      sessionStorage.setItem("swing_access_method", "password");
       setAuthorized(true);
     } else {
       toast.error("Password errata");
