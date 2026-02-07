@@ -13,16 +13,16 @@ serve(async (req) => {
   }
 
   try {
-    const { token, content, file_name, client_name } = await req.json();
+    const body = await req.json();
+    const { token, format } = body;
 
-    if (!token || !content) {
-      return new Response(JSON.stringify({ error: 'Token and content are required' }), {
+    if (!token) {
+      return new Response(JSON.stringify({ error: 'Token is required' }), {
         status: 400,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
-    // Create supabase client with service role for bypassing RLS
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -43,38 +43,112 @@ serve(async (req) => {
       });
     }
 
-    console.log(`Valid upload token: ${tokenData.label}, uploading report...`);
+    console.log(`Valid upload token: ${tokenData.label}, format: ${format || 'markdown'}`);
 
-    // Parse metadata from the markdown content
-    const metadata = parseReportMetadata(content);
+    let reportData: any;
+    let positions: any[] = [];
 
-    // Insert the report
-    const { data: report, error: insertError } = await supabase
-      .from('swing_reports')
-      .insert({
-        client_name: client_name || metadata.client_name || 'Unknown',
-        capital: metadata.capital,
-        risk_profile: metadata.risk_profile,
-        sectors: metadata.sectors,
-        horizon: metadata.horizon,
-        report_date: metadata.report_date,
-        week_range: metadata.week_range,
-        raw_content: content,
-        file_name: file_name || 'uploaded-report.md',
-        uploaded_by: tokenData.label,
-      })
-      .select()
-      .single();
+    // ========== JSON FORMAT ==========
+    if (format === 'json') {
+      const { report, positions: jsonPositions } = body;
 
-    if (insertError) {
-      console.error('Error inserting report:', insertError);
-      throw new Error(`Failed to save report: ${insertError.message}`);
+      if (!report || !jsonPositions || !Array.isArray(jsonPositions)) {
+        return new Response(JSON.stringify({ error: 'JSON format requires "report" object and "positions" array' }), {
+          status: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+
+      console.log(`JSON upload: ${report.client_name}, ${jsonPositions.length} positions`);
+
+      // Insert report
+      const { data: insertedReport, error: insertError } = await supabase
+        .from('swing_reports')
+        .insert({
+          client_name: report.client_name || 'Unknown',
+          capital: report.capital || null,
+          risk_profile: report.risk_profile || null,
+          sectors: report.sectors || null,
+          horizon: report.horizon || null,
+          report_date: report.report_date || null,
+          week_range: report.week_range || null,
+          raw_content: JSON.stringify(body, null, 2),
+          file_name: report.file_name || 'json-upload.json',
+          uploaded_by: tokenData.label,
+        })
+        .select()
+        .single();
+
+      if (insertError) {
+        console.error('Error inserting report:', insertError);
+        throw new Error(`Failed to save report: ${insertError.message}`);
+      }
+
+      reportData = insertedReport;
+
+      // Map JSON positions to DB schema
+      positions = jsonPositions.map((p: any) => ({
+        report_id: insertedReport.id,
+        ticker: p.ticker,
+        name: p.name || null,
+        sector: p.sector || null,
+        status: p.status || 'PASS',
+        entry_zone_low: p.entry_zone_low ?? null,
+        entry_zone_high: p.entry_zone_high ?? null,
+        stop_loss: p.stop_loss ?? null,
+        target_1: p.target_1 ?? null,
+        target_2: p.target_2 ?? null,
+        target_3: p.target_3 ?? null,
+        risk_reward: p.risk_reward ?? null,
+        allocation_pct: p.allocation_pct ?? null,
+        allocation_amount: p.allocation_amount ?? null,
+        confidence: p.confidence || null,
+        is_active: p.is_active !== undefined ? p.is_active : true,
+        notes: p.notes || null,
+      }));
+
+    // ========== MARKDOWN FORMAT (legacy) ==========
+    } else {
+      const { content, file_name, client_name } = body;
+
+      if (!content) {
+        return new Response(JSON.stringify({ error: 'Content is required for markdown format' }), {
+          status: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+
+      const metadata = parseReportMetadata(content);
+
+      const { data: insertedReport, error: insertError } = await supabase
+        .from('swing_reports')
+        .insert({
+          client_name: client_name || metadata.client_name || 'Unknown',
+          capital: metadata.capital,
+          risk_profile: metadata.risk_profile,
+          sectors: metadata.sectors,
+          horizon: metadata.horizon,
+          report_date: metadata.report_date,
+          week_range: metadata.week_range,
+          raw_content: content,
+          file_name: file_name || 'uploaded-report.md',
+          uploaded_by: tokenData.label,
+        })
+        .select()
+        .single();
+
+      if (insertError) {
+        console.error('Error inserting report:', insertError);
+        throw new Error(`Failed to save report: ${insertError.message}`);
+      }
+
+      reportData = insertedReport;
+      positions = parsePositions(content, insertedReport.id);
     }
 
-    console.log('Report saved:', report.id);
+    console.log('Report saved:', reportData.id);
 
-    // Parse and insert positions
-    const positions = parsePositions(content, report.id);
+    // Insert positions
     if (positions.length > 0) {
       const { error: posError } = await supabase
         .from('swing_positions')
@@ -95,21 +169,26 @@ serve(async (req) => {
         const notificationEmail = tokenData.notification_email || 'info@aries76.com';
         
         const positionsSummary = positions
-          .filter(p => p.status === 'PASS' || p.status === 'WATCHLIST')
-          .map(p => `${p.status === 'PASS' ? '✅' : '⚠️'} ${p.ticker} — ${p.name} (${p.sector})`)
+          .filter((p: any) => p.status === 'PASS' || p.status === 'WATCHLIST')
+          .map((p: any) => `${p.status === 'PASS' ? '✅' : '⚠️'} ${p.ticker} — ${p.name || ''} (${p.sector || ''})`)
           .join('<br/>');
+
+        const reportName = reportData.client_name || 'Report';
+        const weekRange = reportData.week_range || 'N/A';
+        const uploadFormat = format === 'json' ? '📋 JSON' : '📄 Markdown';
 
         await resend.emails.send({
           from: 'Aries76 Swing <noreply@aries76.com>',
           to: [notificationEmail],
-          subject: `📊 Nuovo Swing Report: ${metadata.client_name || client_name || 'Report'} — ${metadata.week_range || 'N/A'}`,
+          subject: `📊 Nuovo Swing Report: ${reportName} — ${weekRange}`,
           html: `
             <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto;">
               <h2 style="color: #1a365d;">Nuovo Swing Report Caricato</h2>
               <table style="width: 100%; border-collapse: collapse; margin: 16px 0;">
-                <tr><td style="padding: 8px; border-bottom: 1px solid #e2e8f0; font-weight: 600;">Cliente</td><td style="padding: 8px; border-bottom: 1px solid #e2e8f0;">${metadata.client_name || client_name || 'N/A'}</td></tr>
-                <tr><td style="padding: 8px; border-bottom: 1px solid #e2e8f0; font-weight: 600;">Capitale</td><td style="padding: 8px; border-bottom: 1px solid #e2e8f0;">$${metadata.capital?.toLocaleString() || 'N/A'}</td></tr>
-                <tr><td style="padding: 8px; border-bottom: 1px solid #e2e8f0; font-weight: 600;">Settimana</td><td style="padding: 8px; border-bottom: 1px solid #e2e8f0;">${metadata.week_range || 'N/A'}</td></tr>
+                <tr><td style="padding: 8px; border-bottom: 1px solid #e2e8f0; font-weight: 600;">Cliente</td><td style="padding: 8px; border-bottom: 1px solid #e2e8f0;">${reportName}</td></tr>
+                <tr><td style="padding: 8px; border-bottom: 1px solid #e2e8f0; font-weight: 600;">Capitale</td><td style="padding: 8px; border-bottom: 1px solid #e2e8f0;">$${reportData.capital?.toLocaleString() || 'N/A'}</td></tr>
+                <tr><td style="padding: 8px; border-bottom: 1px solid #e2e8f0; font-weight: 600;">Settimana</td><td style="padding: 8px; border-bottom: 1px solid #e2e8f0;">${weekRange}</td></tr>
+                <tr><td style="padding: 8px; border-bottom: 1px solid #e2e8f0; font-weight: 600;">Formato</td><td style="padding: 8px; border-bottom: 1px solid #e2e8f0;">${uploadFormat}</td></tr>
                 <tr><td style="padding: 8px; border-bottom: 1px solid #e2e8f0; font-weight: 600;">Caricato da</td><td style="padding: 8px; border-bottom: 1px solid #e2e8f0;">${tokenData.label}</td></tr>
                 <tr><td style="padding: 8px; border-bottom: 1px solid #e2e8f0; font-weight: 600;">Posizioni</td><td style="padding: 8px; border-bottom: 1px solid #e2e8f0;">${positions.length} totali</td></tr>
               </table>
@@ -128,8 +207,9 @@ serve(async (req) => {
 
     return new Response(JSON.stringify({
       success: true,
-      report_id: report.id,
+      report_id: reportData.id,
       positions_count: positions.length,
+      format: format || 'markdown',
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
@@ -144,6 +224,8 @@ serve(async (req) => {
     });
   }
 });
+
+// ========== Markdown parsing (legacy) ==========
 
 function parseReportMetadata(content: string) {
   const clientMatch = content.match(/\*\*Cliente:\*\*\s*(.+)/);
@@ -168,7 +250,6 @@ function parseReportMetadata(content: string) {
 function parsePositions(content: string, reportId: string) {
   const positions: any[] = [];
 
-  // Match PASS table rows
   const passSection = content.match(/### ✅ PASS.*?\n\n([\s\S]*?)(?=\n###|\n## )/);
   if (passSection) {
     const rows = passSection[1].match(/\|\s*\*\*(\w+)\*\*\s*\|(.+)\|/g);
@@ -180,7 +261,6 @@ function parsePositions(content: string, reportId: string) {
     }
   }
 
-  // Match WATCHLIST table rows
   const watchSection = content.match(/### ⚠️ WATCHLIST.*?\n\n([\s\S]*?)(?=\n>|\n## )/);
   if (watchSection) {
     const rows = watchSection[1].match(/\|\s*\*\*(\w+)\*\*\s*\|(.+)\|/g);
@@ -203,7 +283,6 @@ function parsePositionRow(row: string, status: string, reportId: string) {
   const name = cells[1].trim();
   const sector = cells[2].trim();
   
-  // Parse entry zone (e.g., "$78.00 - $80.00" or "Solo se > $160")
   const entryText = cells[4];
   const entryMatch = entryText.match(/\$?([\d.]+)\s*-\s*\$?([\d.]+)/);
   const singleEntry = entryText.match(/\$?([\d.]+)/);
@@ -216,8 +295,6 @@ function parsePositionRow(row: string, status: string, reportId: string) {
   const t2Match = cells[7].match(/\$?([\d.]+)/);
   const t3Match = cells[8].match(/\$?([\d.]+)/);
   const rrMatch = cells[9].match(/([\d.]+)/);
-  
-  // Parse size: "6% ($42,000)"
   const sizeMatch = cells[10].match(/([\d.]+)%\s*\(\$([\d,]+)\)/);
   const confidenceText = cells[11] || '';
 

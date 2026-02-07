@@ -70,7 +70,18 @@ export default function SwingReport() {
       const reader = new FileReader();
       reader.onload = (ev) => {
         const content = ev.target?.result as string;
-        uploadReport.mutate({ content, fileName: file.name });
+        const isJson = file.name.endsWith('.json');
+        
+        if (isJson) {
+          try {
+            const jsonData = JSON.parse(content);
+            uploadReport.mutate({ content, fileName: file.name, isJson: true, jsonData });
+          } catch {
+            toast.error("File JSON non valido");
+          }
+        } else {
+          uploadReport.mutate({ content, fileName: file.name });
+        }
       };
       reader.readAsText(file);
       e.target.value = "";
@@ -87,7 +98,18 @@ export default function SwingReport() {
       const reader = new FileReader();
       reader.onload = (ev) => {
         const content = ev.target?.result as string;
-        uploadReport.mutate({ content, fileName: file.name });
+        const isJson = file.name.endsWith('.json');
+        
+        if (isJson) {
+          try {
+            const jsonData = JSON.parse(content);
+            uploadReport.mutate({ content, fileName: file.name, isJson: true, jsonData });
+          } catch {
+            toast.error("File JSON non valido");
+          }
+        } else {
+          uploadReport.mutate({ content, fileName: file.name });
+        }
       };
       reader.readAsText(file);
     },
@@ -214,7 +236,7 @@ export default function SwingReport() {
                   <input
                     ref={fileInputRef}
                     type="file"
-                    accept=".md,.txt,.markdown"
+                    accept=".md,.txt,.markdown,.json"
                     className="hidden"
                     onChange={handleFileUpload}
                   />
@@ -227,7 +249,10 @@ export default function SwingReport() {
                     <div>
                       <Upload className="h-8 w-8 mx-auto text-muted-foreground mb-2" />
                       <p className="text-muted-foreground">
-                        Trascina il file .md qui o clicca per selezionare
+                        Trascina file .md o .json qui, oppure clicca per selezionare
+                      </p>
+                      <p className="text-xs text-muted-foreground/60 mt-1">
+                        Supporta Markdown (legacy) e JSON
                       </p>
                     </div>
                   )}
