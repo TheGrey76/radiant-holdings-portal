@@ -3516,6 +3516,24 @@ export type Database = {
           },
         ]
       }
+      swing_price_cache: {
+        Row: {
+          fetched_at: string
+          price_data: Json
+          ticker: string
+        }
+        Insert: {
+          fetched_at?: string
+          price_data: Json
+          ticker: string
+        }
+        Update: {
+          fetched_at?: string
+          price_data?: Json
+          ticker?: string
+        }
+        Relationships: []
+      }
       swing_reports: {
         Row: {
           capital: number | null
