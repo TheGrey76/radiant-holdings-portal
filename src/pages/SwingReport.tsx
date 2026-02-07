@@ -170,7 +170,6 @@ export default function SwingReport() {
                 {positions.length === 0 && (
                   <Card>
                     <CardContent className="py-12 text-center text-muted-foreground">
-                      <BarChart3 className="h-12 w-12 mx-auto mb-4 opacity-30" />
                       <p>Nessuna posizione nel portafoglio.</p>
                       <p className="text-sm mt-1">
                         Carica un report nella tab "Report" per iniziare.
