@@ -182,3 +182,9 @@ verify_jwt = false
 
 [functions.prosp-sync]
 verify_jwt = false
+
+[functions.fetch-swing-prices]
+verify_jwt = false
+
+[functions.swing-report-upload]
+verify_jwt = false

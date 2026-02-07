@@ -3421,6 +3421,173 @@ export type Database = {
         }
         Relationships: []
       }
+      swing_positions: {
+        Row: {
+          allocation_amount: number | null
+          allocation_pct: number | null
+          confidence: string | null
+          created_at: string
+          entry_price: number | null
+          entry_zone_high: number | null
+          entry_zone_low: number | null
+          exit_date: string | null
+          exit_price: number | null
+          fees: number | null
+          id: string
+          is_active: boolean | null
+          name: string | null
+          notes: string | null
+          realized_pnl: number | null
+          report_id: string | null
+          risk_reward: number | null
+          sector: string | null
+          shares: number | null
+          status: string
+          stop_loss: number | null
+          target_1: number | null
+          target_2: number | null
+          target_3: number | null
+          ticker: string
+          updated_at: string
+        }
+        Insert: {
+          allocation_amount?: number | null
+          allocation_pct?: number | null
+          confidence?: string | null
+          created_at?: string
+          entry_price?: number | null
+          entry_zone_high?: number | null
+          entry_zone_low?: number | null
+          exit_date?: string | null
+          exit_price?: number | null
+          fees?: number | null
+          id?: string
+          is_active?: boolean | null
+          name?: string | null
+          notes?: string | null
+          realized_pnl?: number | null
+          report_id?: string | null
+          risk_reward?: number | null
+          sector?: string | null
+          shares?: number | null
+          status?: string
+          stop_loss?: number | null
+          target_1?: number | null
+          target_2?: number | null
+          target_3?: number | null
+          ticker: string
+          updated_at?: string
+        }
+        Update: {
+          allocation_amount?: number | null
+          allocation_pct?: number | null
+          confidence?: string | null
+          created_at?: string
+          entry_price?: number | null
+          entry_zone_high?: number | null
+          entry_zone_low?: number | null
+          exit_date?: string | null
+          exit_price?: number | null
+          fees?: number | null
+          id?: string
+          is_active?: boolean | null
+          name?: string | null
+          notes?: string | null
+          realized_pnl?: number | null
+          report_id?: string | null
+          risk_reward?: number | null
+          sector?: string | null
+          shares?: number | null
+          status?: string
+          stop_loss?: number | null
+          target_1?: number | null
+          target_2?: number | null
+          target_3?: number | null
+          ticker?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "swing_positions_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "swing_reports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      swing_reports: {
+        Row: {
+          capital: number | null
+          client_name: string
+          created_at: string
+          file_name: string | null
+          horizon: string | null
+          id: string
+          raw_content: string
+          report_date: string | null
+          risk_profile: string | null
+          sectors: string[] | null
+          uploaded_by: string
+          week_range: string | null
+        }
+        Insert: {
+          capital?: number | null
+          client_name: string
+          created_at?: string
+          file_name?: string | null
+          horizon?: string | null
+          id?: string
+          raw_content: string
+          report_date?: string | null
+          risk_profile?: string | null
+          sectors?: string[] | null
+          uploaded_by?: string
+          week_range?: string | null
+        }
+        Update: {
+          capital?: number | null
+          client_name?: string
+          created_at?: string
+          file_name?: string | null
+          horizon?: string | null
+          id?: string
+          raw_content?: string
+          report_date?: string | null
+          risk_profile?: string | null
+          sectors?: string[] | null
+          uploaded_by?: string
+          week_range?: string | null
+        }
+        Relationships: []
+      }
+      swing_upload_tokens: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean | null
+          label: string
+          notification_email: string
+          token: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          label?: string
+          notification_email?: string
+          token?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          label?: string
+          notification_email?: string
+          token?: string
+        }
+        Relationships: []
+      }
       telegram_post_templates: {
         Row: {
           assets_to_track: string[] | null
