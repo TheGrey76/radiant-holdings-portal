@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Lock } from "lucide-react";
+import { Lock, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const SWING_PASSWORD = "SwingA76!";
 
@@ -16,6 +17,37 @@ export default function SwingAccessGate({ children }: SwingAccessGateProps) {
   const [authorized, setAuthorized] = useState(() => {
     return sessionStorage.getItem("swing_access") === "granted";
   });
+  const [checking, setChecking] = useState(true);
+
+  // Auto-authorize if user is logged in and has page_access
+  useEffect(() => {
+    if (authorized) {
+      setChecking(false);
+      return;
+    }
+
+    const checkEmailAccess = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session?.user?.email) {
+          const { data } = await supabase.rpc("check_page_access", {
+            p_email: session.user.email,
+            p_page_slug: "STD",
+          });
+          if (data) {
+            sessionStorage.setItem("swing_access", "granted");
+            setAuthorized(true);
+          }
+        }
+      } catch {
+        // ignore – fallback to password
+      } finally {
+        setChecking(false);
+      }
+    };
+
+    checkEmailAccess();
+  }, [authorized]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,6 +59,14 @@ export default function SwingAccessGate({ children }: SwingAccessGateProps) {
       setPassword("");
     }
   };
+
+  if (checking) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
 
   if (authorized) return <>{children}</>;
 
