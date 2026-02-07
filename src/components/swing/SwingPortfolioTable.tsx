@@ -142,6 +142,7 @@ export default function SwingPortfolioTable({
     let totalUnrealized = 0;
     let totalRealized = 0;
     let totalInvested = 0;
+    let totalMtM = 0;
 
     for (const pos of positions) {
       if (pos.entry_price && pos.shares) {
@@ -150,6 +151,7 @@ export default function SwingPortfolioTable({
         if (pos.is_active) {
           const currentPrice = prices[pos.ticker]?.price;
           if (currentPrice) {
+            totalMtM += currentPrice * pos.shares;
             totalUnrealized +=
               (currentPrice - pos.entry_price) * pos.shares - (pos.fees || 0);
           }
@@ -161,7 +163,7 @@ export default function SwingPortfolioTable({
       }
     }
 
-    return { totalUnrealized, totalRealized, totalInvested };
+    return { totalUnrealized, totalRealized, totalInvested, totalMtM };
   }, [positions, prices]);
 
   const formatCurrency = (val: number | null | undefined) => {
@@ -185,7 +187,7 @@ export default function SwingPortfolioTable({
     <TooltipProvider delayDuration={200}>
     <div className="space-y-4">
       {/* Summary cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         <div className="rounded-lg border bg-card p-4">
           <div className="flex items-center gap-1">
             <p className="text-xs text-muted-foreground">Posizioni Attive</p>
@@ -206,7 +208,16 @@ export default function SwingPortfolioTable({
         </div>
         <div className="rounded-lg border bg-card p-4">
           <div className="flex items-center gap-1">
-            <p className="text-xs text-muted-foreground">P&L Non Realizzato</p>
+            <p className="text-xs text-muted-foreground">MtM Live</p>
+            <InfoTip text="Mark-to-Market: valore di mercato corrente di tutte le posizioni aperte (prezzo live × shares)." />
+          </div>
+          <p className="text-2xl font-bold text-foreground">
+            {totals.totalMtM > 0 ? formatCurrency(totals.totalMtM) : "—"}
+          </p>
+        </div>
+        <div className="rounded-lg border bg-card p-4">
+          <div className="flex items-center gap-1">
+            <p className="text-xs text-muted-foreground">Unrealized P&L</p>
             <InfoTip text="Profitto o perdita sulle posizioni ancora aperte, calcolato rispetto al prezzo di mercato corrente." />
           </div>
           <p
@@ -221,7 +232,7 @@ export default function SwingPortfolioTable({
         </div>
         <div className="rounded-lg border bg-card p-4">
           <div className="flex items-center gap-1">
-            <p className="text-xs text-muted-foreground">P&L Realizzato</p>
+            <p className="text-xs text-muted-foreground">Realized P&L</p>
             <InfoTip text="Profitto o perdita effettivo sulle posizioni già chiuse, al netto delle commissioni." />
           </div>
           <p
@@ -295,7 +306,13 @@ export default function SwingPortfolioTable({
                 <HeaderTip label="T1 / T2" tip="Target 1 e Target 2: livelli di prezzo obiettivo per la presa di profitto." align="right" />
               </TableHead>
               <TableHead className="text-right">
-                <HeaderTip label="P&L" tip="Profit & Loss: guadagno o perdita della posizione (realizzato o non realizzato)." align="right" />
+                <HeaderTip label="MtM Live" tip="Mark-to-Market: valore di mercato corrente della posizione (prezzo live × shares)." align="right" />
+              </TableHead>
+              <TableHead className="text-right">
+                <HeaderTip label="Unrealized P&L" tip="Profitto o perdita non realizzato sulle posizioni aperte, calcolato rispetto al prezzo di mercato corrente." align="right" />
+              </TableHead>
+              <TableHead className="text-right">
+                <HeaderTip label="Realized P&L" tip="Profitto o perdita effettivo sulle posizioni già chiuse, al netto delle commissioni." align="right" />
               </TableHead>
               <TableHead className="w-16"></TableHead>
             </TableRow>
@@ -304,7 +321,7 @@ export default function SwingPortfolioTable({
             {positions.length === 0 && (
               <TableRow>
                 <TableCell
-                  colSpan={13}
+                  colSpan={15}
                   className="text-center text-muted-foreground py-8"
                 >
                   Nessuna posizione. Carica un report per iniziare.
@@ -315,6 +332,10 @@ export default function SwingPortfolioTable({
               const livePrice = prices[pos.ticker]?.price;
               const livePctChange = prices[pos.ticker]?.percent_change;
               const hasEntry = pos.entry_price != null && pos.shares != null;
+              const mtmValue =
+                hasEntry && livePrice
+                  ? livePrice * pos.shares!
+                  : null;
               const unrealizedPnl =
                 hasEntry && livePrice
                   ? (livePrice - pos.entry_price!) * pos.shares! -
@@ -325,7 +346,7 @@ export default function SwingPortfolioTable({
                   ? ((livePrice - pos.entry_price) / pos.entry_price) * 100
                   : null;
 
-              const displayPnl = pos.is_active ? unrealizedPnl : pos.realized_pnl;
+              // removed displayPnl - now showing MtM, unrealized, and realized separately
 
               return (
                 <TableRow
@@ -410,30 +431,52 @@ export default function SwingPortfolioTable({
                       ? `$${pos.target_1} / $${pos.target_2}`
                       : "—"}
                   </TableCell>
+                  {/* MtM Live (current market value) */}
+                  <TableCell className="text-right font-mono text-sm">
+                    {pos.is_active && mtmValue != null
+                      ? formatCurrency(mtmValue)
+                      : !pos.is_active
+                      ? <span className="text-xs text-muted-foreground">chiusa</span>
+                      : "—"}
+                  </TableCell>
+                  {/* Unrealized P&L */}
                   <TableCell className="text-right">
-                    {displayPnl != null ? (
+                    {pos.is_active && unrealizedPnl != null ? (
                       <div>
                         <span
                           className={`font-mono font-bold ${
-                            displayPnl >= 0
+                            unrealizedPnl >= 0
                               ? "text-green-600"
                               : "text-destructive"
                           }`}
                         >
-                          {formatPnL(displayPnl)}
+                          {formatPnL(unrealizedPnl)}
                         </span>
-                        {unrealizedPct != null && pos.is_active && (
+                        {unrealizedPct != null && (
                           <div className="text-xs text-muted-foreground">
                             {unrealizedPct >= 0 ? "+" : ""}
                             {unrealizedPct.toFixed(2)}%
                           </div>
                         )}
-                        {!pos.is_active && (
-                          <div className="text-xs text-muted-foreground">
-                            chiusa
-                          </div>
-                        )}
                       </div>
+                    ) : pos.is_active ? (
+                      "—"
+                    ) : (
+                      <span className="text-xs text-muted-foreground">chiusa</span>
+                    )}
+                  </TableCell>
+                  {/* Realized P&L */}
+                  <TableCell className="text-right">
+                    {pos.realized_pnl != null ? (
+                      <span
+                        className={`font-mono font-bold ${
+                          pos.realized_pnl >= 0
+                            ? "text-green-600"
+                            : "text-destructive"
+                        }`}
+                      >
+                        {formatPnL(pos.realized_pnl)}
+                      </span>
                     ) : (
                       "—"
                     )}
