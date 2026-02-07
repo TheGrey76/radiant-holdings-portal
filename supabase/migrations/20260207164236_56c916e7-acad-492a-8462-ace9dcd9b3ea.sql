@@ -1,0 +1,1 @@
+INSERT INTO public.page_access (email, page_slug, access_type) VALUES ('avvrobertomattana@studiomattana.eu', 'STD', 'whitelist');
