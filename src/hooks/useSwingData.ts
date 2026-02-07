@@ -231,6 +231,11 @@ function parseReportMetadata(content: string) {
   const dateMatch = content.match(/\*\*Data Report:\*\*\s*(.+)/);
   const weekMatch = content.match(/Settimana\s+([\d]+-[\d]+\s+\w+\s+\d{4})/);
 
+  let reportDate: string | null = null;
+  if (dateMatch) {
+    reportDate = parseItalianDate(dateMatch[1].trim());
+  }
+
   return {
     client_name: clientMatch?.[1]?.trim() || null,
     capital: capitalMatch
@@ -241,9 +246,31 @@ function parseReportMetadata(content: string) {
       ? sectorsMatch[1].split(/\s*\+\s*/).map((s) => s.trim())
       : null,
     horizon: horizonMatch?.[1]?.trim() || null,
-    report_date: dateMatch?.[1]?.trim() || null,
+    report_date: reportDate,
     week_range: weekMatch?.[1]?.trim() || null,
   };
+}
+
+const ITALIAN_MONTHS: Record<string, string> = {
+  gennaio: "01", febbraio: "02", marzo: "03", aprile: "04",
+  maggio: "05", giugno: "06", luglio: "07", agosto: "08",
+  settembre: "09", ottobre: "10", novembre: "11", dicembre: "12",
+};
+
+function parseItalianDate(raw: string): string | null {
+  // Remove time/timezone parts like "ore 19:30 CET"
+  const cleaned = raw.replace(/,?\s*ore\s+[\d:]+\s*\w*/i, "").trim();
+  // Match "6 Febbraio 2026" or similar
+  const match = cleaned.match(/(\d{1,2})\s+(\w+)\s+(\d{4})/);
+  if (!match) return null;
+
+  const day = match[1].padStart(2, "0");
+  const monthName = match[2].toLowerCase();
+  const year = match[3];
+  const month = ITALIAN_MONTHS[monthName];
+
+  if (!month) return null;
+  return `${year}-${month}-${day}`;
 }
 
 function parsePositionsFromMarkdown(content: string, reportId: string) {
