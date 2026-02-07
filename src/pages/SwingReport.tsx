@@ -49,13 +49,8 @@ export default function SwingReport() {
   const createToken = useCreateUploadToken();
   const navigate = useNavigate();
 
-  const handleLogout = async () => {
-    try {
-      await supabase.auth.signOut();
-      window.location.href = 'https://aries76.lovable.app/';
-    } catch {
-      toast.error("Errore durante il logout");
-    }
+  const handleLogout = () => {
+    window.location.href = '/';
   };
 
   const [viewingReport, setViewingReport] = useState<SwingReportType | null>(null);
