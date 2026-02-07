@@ -129,7 +129,6 @@ const App = () => (
           <Route path="/auth" element={<Auth />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/proposal-links" element={<ProposalLinkGenerator />} />
-          <Route path="/proposal-link-generator" element={<ProposalLinkGenerator />} />
           <Route path="/admin/newsletter" element={<NewsletterComposer />} />
           
           <Route path="/admin/cross-posting" element={<CrossPostingAssistant />} />
@@ -140,7 +139,6 @@ const App = () => (
           <Route path="/advisory/:slug" element={<AdvisoryDocument />} />
           <Route path="/financial-advisers" element={<FinancialAdvisersPortal />} />
           
-          <Route path="/alkemia-praesidium-access" element={<Navigate to="/alkemia-praesidium-proposal" replace />} />
           <Route path="/alkemia-praesidium-proposal" element={<AlkemiaPraesidiumProposal />} />
           <Route path="/asset-gu-access" element={<AssetGUAccess />} />
           <Route path="/asset-gu-proposal" element={<AssetGUProposal />} />
