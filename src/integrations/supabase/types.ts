@@ -3421,6 +3421,48 @@ export type Database = {
         }
         Relationships: []
       }
+      telegram_post_templates: {
+        Row: {
+          assets_to_track: string[] | null
+          created_at: string
+          description: string | null
+          display_name: string
+          id: string
+          is_active: boolean
+          post_type: string
+          schedule_hour: number
+          schedule_minute: number
+          template_format: string | null
+          updated_at: string
+        }
+        Insert: {
+          assets_to_track?: string[] | null
+          created_at?: string
+          description?: string | null
+          display_name: string
+          id?: string
+          is_active?: boolean
+          post_type: string
+          schedule_hour: number
+          schedule_minute?: number
+          template_format?: string | null
+          updated_at?: string
+        }
+        Update: {
+          assets_to_track?: string[] | null
+          created_at?: string
+          description?: string | null
+          display_name?: string
+          id?: string
+          is_active?: boolean
+          post_type?: string
+          schedule_hour?: number
+          schedule_minute?: number
+          template_format?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       telegram_publication_logs: {
         Row: {
           created_at: string

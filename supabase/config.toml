@@ -96,6 +96,9 @@ verify_jwt = false
 [functions.telegram-publish]
 verify_jwt = false
 
+[functions.telegram-multi-asset]
+verify_jwt = false
+
 [functions.check-bitcoin-report-access]
 verify_jwt = false
 
