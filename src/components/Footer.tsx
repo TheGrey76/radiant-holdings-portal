@@ -3,7 +3,7 @@ import { Linkedin } from 'lucide-react';
 
 const Footer = () => {
   return (
-    <footer className="bg-[#1a1d2e] text-white py-16">
+    <footer className="bg-gradient-to-br from-[#0f1729] via-[#1a2744] to-[#0d1424] text-white py-16">
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           <div>
