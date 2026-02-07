@@ -108,7 +108,10 @@ export function useUploadReport() {
         const { error: posError } = await (supabase as any)
           .from("swing_positions")
           .insert(positions);
-        if (posError) console.error("Error inserting positions:", posError);
+        if (posError) {
+          console.error("Error inserting positions:", posError);
+          throw new Error(`Report salvato ma errore posizioni: ${posError.message}`);
+        }
       }
 
       return { report: data as SwingReport, positionsCount: positions.length };
@@ -275,32 +278,41 @@ function parseItalianDate(raw: string): string | null {
 
 function parsePositionsFromMarkdown(content: string, reportId: string) {
   const positions: any[] = [];
+  // Normalize line endings to \n
+  const normalized = content.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
 
-  // Match PASS table rows
-  const passSection = content.match(
-    /### ✅ PASS.*?\n\n([\s\S]*?)(?=\n###|\n## )/
-  );
-  if (passSection) {
-    const rows = passSection[1].match(/\|\s*\*\*(\w+)\*\*\s*\|(.+)\|/g);
-    if (rows) {
-      for (const row of rows) {
-        const pos = parsePositionRow(row, "PASS", reportId);
-        if (pos) positions.push(pos);
-      }
+  // Find all table rows with bold tickers like | **FTNT** | ... |
+  // across the entire document — categorize by nearest section header
+  const lines = normalized.split("\n");
+  let currentSection: string | null = null;
+
+  for (const line of lines) {
+    // Detect section headers
+    if (/###\s*✅\s*PASS/i.test(line)) {
+      currentSection = "PASS";
+      continue;
     }
-  }
+    if (/###\s*⚠️\s*WATCHLIST/i.test(line)) {
+      currentSection = "WATCHLIST";
+      continue;
+    }
+    if (/###\s*❌\s*FAIL/i.test(line)) {
+      currentSection = "FAIL";
+      continue;
+    }
+    // Reset section on new ## header (but not ###)
+    if (/^##\s+[^#]/.test(line) && !/^###/.test(line)) {
+      currentSection = null;
+      continue;
+    }
 
-  // Match WATCHLIST table rows
-  const watchSection = content.match(
-    /### ⚠️ WATCHLIST.*?\n\n([\s\S]*?)(?=\n>|\n## )/
-  );
-  if (watchSection) {
-    const rows = watchSection[1].match(/\|\s*\*\*(\w+)\*\*\s*\|(.+)\|/g);
-    if (rows) {
-      for (const row of rows) {
-        const pos = parsePositionRow(row, "WATCHLIST", reportId);
-        if (pos) positions.push(pos);
-      }
+    // Only parse PASS and WATCHLIST rows
+    if (!currentSection || currentSection === "FAIL") continue;
+
+    // Match table data rows with bold ticker
+    if (/\|\s*\*\*\w+\*\*\s*\|/.test(line)) {
+      const pos = parsePositionRow(line, currentSection, reportId);
+      if (pos) positions.push(pos);
     }
   }
 
@@ -322,6 +334,7 @@ function parsePositionRow(
   const name = cells[1].trim();
   const sector = cells[2].trim();
 
+  // cells[3] is "Tema" — skip it
   const entryText = cells[4];
   const entryMatch = entryText.match(/\$?([\d.]+)\s*-\s*\$?([\d.]+)/);
   const singleEntry = entryText.match(/\$?([\d.]+)/);
@@ -336,9 +349,9 @@ function parsePositionRow(
   const stopMatch = cells[5].match(/\$?([\d.]+)/);
   const t1Match = cells[6].match(/\$?([\d.]+)/);
   const t2Match = cells[7].match(/\$?([\d.]+)/);
-  const t3Match = cells[8].match(/\$?([\d.]+)/);
-  const rrMatch = cells[9].match(/([\d.]+)/);
-  const sizeMatch = cells[10].match(/([\d.]+)%\s*\(\$([\d,]+)\)/);
+  const t3Match = cells[8]?.match(/\$?([\d.]+)/);
+  const rrMatch = cells[9]?.match(/([\d.]+)/);
+  const sizeMatch = cells[10]?.match(/([\d.]+)%\s*\(\$([\d,]+)\)/);
 
   return {
     report_id: reportId,
