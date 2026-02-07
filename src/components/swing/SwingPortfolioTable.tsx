@@ -61,12 +61,30 @@ export default function SwingPortfolioTable({
 
   const { prices, loading: pricesLoading, lastUpdated, refetch } = useSwingPrices(tickers);
 
+  const ALLOCATION_PER_POSITION = 50000;
+
   const openEdit = (pos: SwingPosition) => {
     setEditingPosition(pos);
-    setEntryPrice(pos.entry_price?.toString() || "");
+    const ep = pos.entry_price?.toString() || "";
+    setEntryPrice(ep);
     setFees(pos.fees?.toString() || "0");
-    setShares(pos.shares?.toString() || "");
+    // Auto-calc shares if not already set
+    if (pos.shares) {
+      setShares(pos.shares.toString());
+    } else if (pos.entry_price) {
+      setShares(Math.floor(ALLOCATION_PER_POSITION / pos.entry_price).toString());
+    } else {
+      setShares("");
+    }
     setExitPrice(pos.exit_price?.toString() || "");
+  };
+
+  const handleEntryPriceChange = (val: string) => {
+    setEntryPrice(val);
+    const price = parseFloat(val);
+    if (price > 0) {
+      setShares(Math.floor(ALLOCATION_PER_POSITION / price).toString());
+    }
   };
 
   const handleSave = () => {
@@ -469,18 +487,21 @@ export default function SwingPortfolioTable({
                   type="number"
                   step="0.01"
                   value={entryPrice}
-                  onChange={(e) => setEntryPrice(e.target.value)}
+                  onChange={(e) => handleEntryPriceChange(e.target.value)}
                   placeholder="es. 78.50"
                 />
               </div>
               <div>
-                <Label>Shares</Label>
+                <Label>Shares (auto: $50K / prezzo)</Label>
                 <Input
                   type="number"
                   value={shares}
                   onChange={(e) => setShares(e.target.value)}
-                  placeholder="es. 532"
+                  placeholder="auto-calcolato"
                 />
+                <p className="text-xs text-muted-foreground mt-1">
+                  Allocazione: {formatCurrency(ALLOCATION_PER_POSITION)} per posizione
+                </p>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
