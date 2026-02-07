@@ -60,18 +60,11 @@ const Navbar = () => {
       { name: 'Who We Are', path: '/about' },
       { name: 'Leadership Team', path: '/leadership-team' },
     ],
-    forGPs: [
-      { name: 'GP Services Overview', path: '/gp-capital-advisory' },
-      { name: 'Deal Sourcing', path: '/gp-capital-advisory#deal-sourcing' },
-      { name: 'Portfolio Value Creation', path: '/gp-capital-advisory#portfolio-support' },
-      { name: 'Market Intelligence', path: '/gp-capital-advisory#market-intelligence' },
+    expertise: [
+      { name: 'Services Overview', path: '/services' },
+      { name: 'For Fund Managers', path: '/gp-capital-advisory' },
+      { name: 'For Limited Partners', path: '/for-limited-partners' },
       { name: 'Fund Placement', path: '/private-equity-funds' },
-    ],
-    forLPs: [
-      { name: 'LP Services Overview', path: '/for-limited-partners' },
-      { name: 'Fund Selection & Due Diligence', path: '/for-limited-partners#fund-selection' },
-      { name: 'Portfolio Management', path: '/for-limited-partners#portfolio-management' },
-      { name: 'Strategic Advisory', path: '/for-limited-partners#strategic-advisory' },
     ],
     insights: [
       { name: 'Articles & Analysis', path: '/blog' },
@@ -86,17 +79,11 @@ const Navbar = () => {
     { name: 'About', path: '#', section: 'about' },
     { name: 'Who We Are', path: '/about', indent: true },
     { name: 'Leadership Team', path: '/leadership-team', indent: true },
-    { name: 'For GPs', path: '#', section: 'forGPs' },
-    { name: 'GP Services Overview', path: '/gp-capital-advisory', indent: true },
-    { name: 'Deal Sourcing', path: '/gp-capital-advisory#deal-sourcing', indent: true },
-    { name: 'Portfolio Value Creation', path: '/gp-capital-advisory#portfolio-support', indent: true },
-    { name: 'Market Intelligence', path: '/gp-capital-advisory#market-intelligence', indent: true },
+    { name: 'Expertise', path: '#', section: 'expertise' },
+    { name: 'Services Overview', path: '/services', indent: true },
+    { name: 'For Fund Managers', path: '/gp-capital-advisory', indent: true },
+    { name: 'For Limited Partners', path: '/for-limited-partners', indent: true },
     { name: 'Fund Placement', path: '/private-equity-funds', indent: true },
-    { name: 'For LPs', path: '#', section: 'forLPs' },
-    { name: 'LP Services Overview', path: '/for-limited-partners', indent: true },
-    { name: 'Fund Selection & Due Diligence', path: '/for-limited-partners#fund-selection', indent: true },
-    { name: 'Portfolio Management', path: '/for-limited-partners#portfolio-management', indent: true },
-    { name: 'Strategic Advisory', path: '/for-limited-partners#strategic-advisory', indent: true },
     { name: 'Partnerships', path: '/strategic-partnerships' },
     { name: 'Insights', path: '#', section: 'insights' },
     { name: 'Articles & Analysis', path: '/blog', indent: true },
@@ -163,54 +150,20 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* For GPs Dropdown */}
+          {/* Expertise Dropdown */}
           <div 
             className="relative"
-            onMouseEnter={() => setOpenMenu('forGPs')}
+            onMouseEnter={() => setOpenMenu('expertise')}
             onMouseLeave={() => setOpenMenu(null)}
           >
             <button className="flex items-center gap-1 text-xs uppercase tracking-widest text-foreground/70 hover:text-accent transition-colors font-light px-4 py-2">
-              For GPs
-              <ChevronDown className={`h-3 w-3 transition-transform ${openMenu === 'forGPs' ? 'rotate-180' : ''}`} />
+              Expertise
+              <ChevronDown className={`h-3 w-3 transition-transform ${openMenu === 'expertise' ? 'rotate-180' : ''}`} />
             </button>
-            {openMenu === 'forGPs' && (
-              <div className="absolute top-full left-0 w-72 p-4 bg-background border border-border shadow-lg z-50">
-                <div className="mb-3 pb-3 border-b border-border">
-                  <p className="text-xs text-accent uppercase tracking-wider font-medium px-4">Services for Fund Managers</p>
-                </div>
+            {openMenu === 'expertise' && (
+              <div className="absolute top-full left-0 w-64 p-4 bg-background border border-border shadow-lg z-50">
                 <ul>
-                  {menuStructure.forGPs.map((item) => (
-                    <li key={item.path}>
-                      <button
-                        onClick={() => handleNavigation(item.path)}
-                        className="block w-full text-left px-4 py-3 text-sm text-foreground/80 hover:text-accent hover:bg-muted/50 transition-colors rounded font-light"
-                      >
-                        {item.name}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
-
-          {/* For LPs Dropdown */}
-          <div 
-            className="relative"
-            onMouseEnter={() => setOpenMenu('forLPs')}
-            onMouseLeave={() => setOpenMenu(null)}
-          >
-            <button className="flex items-center gap-1 text-xs uppercase tracking-widest text-foreground/70 hover:text-accent transition-colors font-light px-4 py-2">
-              For LPs
-              <ChevronDown className={`h-3 w-3 transition-transform ${openMenu === 'forLPs' ? 'rotate-180' : ''}`} />
-            </button>
-            {openMenu === 'forLPs' && (
-              <div className="absolute top-full left-0 w-72 p-4 bg-background border border-border shadow-lg z-50">
-                <div className="mb-3 pb-3 border-b border-border">
-                  <p className="text-xs text-accent uppercase tracking-wider font-medium px-4">Services for Limited Partners</p>
-                </div>
-                <ul>
-                  {menuStructure.forLPs.map((item) => (
+                  {menuStructure.expertise.map((item) => (
                     <li key={item.path}>
                       <button
                         onClick={() => handleNavigation(item.path)}
