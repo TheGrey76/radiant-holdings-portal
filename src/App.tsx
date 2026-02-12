@@ -95,6 +95,7 @@ import AriesAICourses from "./pages/AriesAICourses";
 import SwingReport from "./pages/SwingReport";
 import SwingReportUpload from "./pages/SwingReportUpload";
 import SwingAccessGate from "./components/swing/SwingAccessGate";
+import AdminDatabase from "./pages/AdminDatabase";
 
 const queryClient = new QueryClient();
 
@@ -136,6 +137,7 @@ const App = () => (
           <Route path="/admin/research-hub" element={<ResearchHubAdmin />} />
           <Route path="/admin/automations" element={<AutomationMonitor />} />
           <Route path="/admin/strategic-advisory" element={<StrategicAdvisoryAdmin />} />
+          <Route path="/admin-database" element={<AdminDatabase />} />
           <Route path="/advisory/:slug" element={<AdvisoryDocument />} />
           <Route path="/financial-advisers" element={<FinancialAdvisersPortal />} />
           
