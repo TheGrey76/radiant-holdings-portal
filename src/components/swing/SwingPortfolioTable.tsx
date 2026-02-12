@@ -314,7 +314,7 @@ export default function SwingPortfolioTable({
               <TableHead className="text-right">
                 <HeaderTip label="Realized P&L" tip="Profitto o perdita effettivo sulle posizioni già chiuse, al netto delle commissioni." align="right" />
               </TableHead>
-              <TableHead className="w-20">Azioni</TableHead>
+              <TableHead className="w-12"></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -493,27 +493,17 @@ export default function SwingPortfolioTable({
                     )}
                   </TableCell>
                   <TableCell>
-                    <div className="flex gap-1">
+                    {pos.is_active && hasEntry && livePrice && (
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="h-7 w-7"
-                        onClick={() => openEdit(pos)}
+                        className="h-7 w-7 text-destructive"
+                        onClick={() => closePosition(pos)}
+                        title="Chiudi posizione al prezzo corrente"
                       >
-                        <Pencil className="h-3 w-3" />
+                        <X className="h-3 w-3" />
                       </Button>
-                      {pos.is_active && hasEntry && livePrice && (
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-7 w-7 text-destructive"
-                          onClick={() => closePosition(pos)}
-                          title="Chiudi posizione al prezzo corrente"
-                        >
-                          <X className="h-3 w-3" />
-                        </Button>
-                      )}
-                    </div>
+                    )}
                   </TableCell>
                 </TableRow>
               );
