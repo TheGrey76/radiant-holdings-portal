@@ -73,7 +73,7 @@ import BitcoinResearchAccessGate from "./components/BitcoinResearchAccessGate";
 
 import UnderlyingMonitoring from "./pages/UnderlyingMonitoring";
 import CrossPostingAssistant from "./pages/CrossPostingAssistant";
-import InsightsAdmin from "./pages/InsightsAdmin";
+
 import ResearchHubAdmin from "./pages/ResearchHubAdmin";
 import BitcoinFunnelDashboard from "./pages/BitcoinFunnelDashboard";
 import ETFCertificatesPortfolio from "./pages/ETFCertificatesPortfolio";
@@ -133,7 +133,7 @@ const App = () => (
           <Route path="/admin/newsletter" element={<NewsletterComposer />} />
           
           <Route path="/admin/cross-posting" element={<CrossPostingAssistant />} />
-          <Route path="/admin/insights" element={<InsightsAdmin />} />
+          
           <Route path="/admin/research-hub" element={<ResearchHubAdmin />} />
           <Route path="/admin/automations" element={<AutomationMonitor />} />
           <Route path="/admin/strategic-advisory" element={<StrategicAdvisoryAdmin />} />
