@@ -6,6 +6,12 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+function safeStringify(obj: any): string {
+  return JSON.stringify(obj, (_key, value) =>
+    typeof value === "bigint" ? Number(value) : value
+  );
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -65,7 +71,7 @@ serve(async (req) => {
         ORDER BY table_name;
       `;
       const result = await executeSql(dbUrl!, sql);
-      return new Response(JSON.stringify({ data: result }), {
+      return new Response(safeStringify({ data: result }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
@@ -79,7 +85,7 @@ serve(async (req) => {
         ORDER BY ordinal_position;
       `;
       const result = await executeSql(dbUrl!, sql);
-      return new Response(JSON.stringify({ data: result }), {
+      return new Response(safeStringify({ data: result }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
@@ -87,7 +93,7 @@ serve(async (req) => {
     if (action === "table_count") {
       const sql = `SELECT count(*)::int as total FROM public."${sanitize(table)}";`;
       const result = await executeSql(dbUrl!, sql);
-      return new Response(JSON.stringify({ data: result }), {
+      return new Response(safeStringify({ data: result }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
@@ -114,7 +120,7 @@ serve(async (req) => {
       }
       const sql = `SELECT * FROM public."${sanitize(table)}" ${where} ${order} LIMIT ${lim} OFFSET ${off};`;
       const result = await executeSql(dbUrl!, sql);
-      return new Response(JSON.stringify({ data: result }), {
+      return new Response(safeStringify({ data: result }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
@@ -124,7 +130,7 @@ serve(async (req) => {
       const vals = Object.values(data).map(v => v === null ? 'NULL' : `'${String(v).replace(/'/g, "''")}'`).join(', ');
       const sql = `INSERT INTO public."${sanitize(table)}" (${cols}) VALUES (${vals}) RETURNING *;`;
       const result = await executeSql(dbUrl!, sql);
-      return new Response(JSON.stringify({ data: result }), {
+      return new Response(safeStringify({ data: result }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
@@ -135,7 +141,7 @@ serve(async (req) => {
         .join(', ');
       const sql = `UPDATE public."${sanitize(table)}" SET ${sets} WHERE id = '${sanitize(id)}' RETURNING *;`;
       const result = await executeSql(dbUrl!, sql);
-      return new Response(JSON.stringify({ data: result }), {
+      return new Response(safeStringify({ data: result }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
@@ -143,7 +149,7 @@ serve(async (req) => {
     if (action === "delete") {
       const sql = `DELETE FROM public."${sanitize(table)}" WHERE id = '${sanitize(id)}' RETURNING id;`;
       const result = await executeSql(dbUrl!, sql);
-      return new Response(JSON.stringify({ data: result }), {
+      return new Response(safeStringify({ data: result }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
@@ -161,7 +167,7 @@ serve(async (req) => {
         }
       }
       const result = await executeSql(dbUrl!, query);
-      return new Response(JSON.stringify({ data: result }), {
+      return new Response(safeStringify({ data: result }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
@@ -212,7 +218,7 @@ serve(async (req) => {
         components: { schemas },
       };
 
-      return new Response(JSON.stringify({ data: openapi }), {
+      return new Response(safeStringify({ data: openapi }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
