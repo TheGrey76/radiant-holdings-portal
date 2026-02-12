@@ -274,7 +274,7 @@ export default function SwingPortfolioTable({
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-20">
+              <TableHead className="w-24">
                 <HeaderTip label="Ticker" tip="Simbolo di borsa del titolo (es. AAPL, MSFT)." />
               </TableHead>
               <TableHead>Nome</TableHead>
@@ -314,7 +314,7 @@ export default function SwingPortfolioTable({
               <TableHead className="text-right">
                 <HeaderTip label="Realized P&L" tip="Profitto o perdita effettivo sulle posizioni già chiuse, al netto delle commissioni." align="right" />
               </TableHead>
-              <TableHead className="w-16"></TableHead>
+              <TableHead className="w-20">Azioni</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -354,7 +354,18 @@ export default function SwingPortfolioTable({
                   className={!pos.is_active ? "opacity-50" : ""}
                 >
                   <TableCell className="font-mono font-bold">
-                    {pos.ticker}
+                    <div className="flex items-center gap-1.5">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-6 w-6 shrink-0 text-muted-foreground hover:text-primary"
+                        onClick={() => openEdit(pos)}
+                        title="Modifica prezzo di carico"
+                      >
+                        <Pencil className="h-3 w-3" />
+                      </Button>
+                      {pos.ticker}
+                    </div>
                   </TableCell>
                   <TableCell className="text-sm">
                     <div>{pos.name}</div>
@@ -386,7 +397,7 @@ export default function SwingPortfolioTable({
                   <TableCell className="text-right font-mono">
                     {pos.entry_price
                       ? formatCurrency(pos.entry_price)
-                      : <span className="text-muted-foreground text-xs">da inserire</span>}
+                      : <button onClick={() => openEdit(pos)} className="text-primary text-xs underline underline-offset-2 hover:text-primary/80 cursor-pointer">da inserire</button>}
                   </TableCell>
                   <TableCell className="text-right font-mono">
                     {pricesLoading ? (
