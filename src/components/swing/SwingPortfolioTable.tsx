@@ -62,6 +62,7 @@ export default function SwingPortfolioTable({
   const { prices, loading: pricesLoading, lastUpdated, refetch } = useSwingPrices(tickers);
 
   const ALLOCATION_PER_POSITION = 50000;
+  const PERF_FEE_RATE = 0.15; // 15% performance fee
 
   const openEdit = (pos: SwingPosition) => {
     setEditingPosition(pos);
@@ -163,7 +164,11 @@ export default function SwingPortfolioTable({
       }
     }
 
-    return { totalUnrealized, totalRealized, totalInvested, totalMtM };
+    const totalGross = totalUnrealized + totalRealized;
+    const perfFee = totalGross > 0 ? totalGross * PERF_FEE_RATE : 0;
+    const netOfFees = totalGross - perfFee;
+
+    return { totalUnrealized, totalRealized, totalInvested, totalMtM, totalGross, perfFee, netOfFees };
   }, [positions, prices]);
 
   const formatCurrency = (val: number | null | undefined) => {
@@ -243,6 +248,37 @@ export default function SwingPortfolioTable({
             }`}
           >
             {formatPnL(totals.totalRealized)}
+          </p>
+        </div>
+      </div>
+
+      {/* Performance fees summary */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="rounded-lg border bg-card p-4">
+          <div className="flex items-center gap-1">
+            <p className="text-xs text-muted-foreground">Gross P&L</p>
+            <InfoTip text="Somma di Unrealized + Realized P&L." />
+          </div>
+          <p className={`text-lg font-bold ${totals.totalGross >= 0 ? "text-green-600" : "text-destructive"}`}>
+            {formatPnL(totals.totalGross)}
+          </p>
+        </div>
+        <div className="rounded-lg border bg-card p-4">
+          <div className="flex items-center gap-1">
+            <p className="text-xs text-muted-foreground">Performance Fee (15%)</p>
+            <InfoTip text="15% sul P&L lordo positivo. Nessuna fee se il P&L è negativo." />
+          </div>
+          <p className="text-lg font-bold text-amber-500">
+            {totals.perfFee > 0 ? `-${formatCurrency(totals.perfFee)}` : "$0.00"}
+          </p>
+        </div>
+        <div className="rounded-lg border bg-card p-4 border-primary/30">
+          <div className="flex items-center gap-1">
+            <p className="text-xs text-muted-foreground font-semibold">Net of Fees</p>
+            <InfoTip text="P&L netto dopo la deduzione della performance fee del 15%." />
+          </div>
+          <p className={`text-lg font-bold ${totals.netOfFees >= 0 ? "text-green-600" : "text-destructive"}`}>
+            {formatPnL(totals.netOfFees)}
           </p>
         </div>
       </div>
