@@ -96,8 +96,27 @@ export function useUploadReport() {
         } else if (Array.isArray(jsonData.positions)) {
           positionsArray = jsonData.positions;
           reportMeta = jsonData.report || jsonData;
+        } else if (Array.isArray(jsonData.ideas)) {
+          // Synth response format with abbreviated keys
+          positionsArray = jsonData.ideas.map((idea: any) => ({
+            ticker: idea.t,
+            name: idea.t,
+            entry_zone_low: idea.e?.[0] ?? null,
+            entry_zone_high: idea.e?.[1] ?? null,
+            stop_loss: idea.inv ?? null,
+            target_1: idea.tg?.[0] ?? null,
+            target_2: idea.tg?.[1] ?? null,
+            target_3: idea.tg?.[2] ?? null,
+            risk_reward: idea.rr ?? null,
+            allocation_pct: idea.sz ?? null,
+            confidence: idea.s != null ? `${idea.s}/5` : null,
+            entry_price: idea.cp ?? null,
+            notes: idea.sum || null,
+            is_active: true,
+            status: "PASS",
+          }));
         } else {
-          throw new Error("JSON non valido: deve contenere un array di posizioni");
+          throw new Error("JSON non valido: deve contenere un array di posizioni o ideas");
         }
 
         // Insert report record
