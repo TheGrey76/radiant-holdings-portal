@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import DOMPurify from "dompurify";
 import { Tables } from "@/integrations/supabase/types";
 import { ReportChart } from "./ReportChart";
 import { ReportTable } from "./ReportTable";
@@ -60,7 +61,10 @@ export const ReportSection = ({ section, hasAccess = false, index = 0 }: ReportS
             {section.content_md && (
               <div 
                 className="text-muted-foreground leading-relaxed"
-                dangerouslySetInnerHTML={{ __html: section.content_md }}
+                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(section.content_md, {
+                  ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'u', 'a', 'ul', 'ol', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'div', 'span', 'blockquote', 'table', 'thead', 'tbody', 'tr', 'th', 'td'],
+                  ALLOWED_ATTR: ['href', 'target', 'class', 'style']
+                }) }}
               />
             )}
           </div>
