@@ -1,9 +1,12 @@
 import { motion } from "framer-motion";
-import { TrendingUp, TrendingDown, Minus, ExternalLink, AlertTriangle, Shield, Cpu, Coins, Globe, Brain, Image, Layers, Landmark, DollarSign } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { TrendingUp, TrendingDown, Minus, ExternalLink, AlertTriangle, Shield, Cpu, Coins, Globe, Brain, Image, Layers, Landmark, DollarSign, Loader2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Separator } from "@/components/ui/separator";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface CryptoAsset {
   symbol: string;
@@ -19,6 +22,41 @@ interface CryptoAsset {
   risks: string[];
   links: { label: string; url: string }[];
 }
+
+interface LivePrice {
+  price_usd: number | null;
+  price_eur: number | null;
+  change_24h: number | null;
+  market_cap_usd: number | null;
+  volume_24h_usd: number | null;
+}
+
+const useCryptoPrices = () => {
+  return useQuery({
+    queryKey: ["crypto-prices"],
+    queryFn: async () => {
+      const { data, error } = await supabase.functions.invoke("fetch-crypto-prices");
+      if (error) throw new Error(error.message);
+      return data?.results as Record<string, LivePrice> | undefined;
+    },
+    refetchInterval: 60000,
+    refetchOnWindowFocus: false,
+  });
+};
+
+const formatUsd = (v: number | null | undefined) =>
+  v != null ? `$${v.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: v < 1 ? 6 : 2 })}` : "—";
+const formatEur = (v: number | null | undefined) =>
+  v != null ? `€${v.toLocaleString("it-IT", { minimumFractionDigits: 2, maximumFractionDigits: v < 1 ? 6 : 2 })}` : "—";
+const formatMcap = (v: number | null | undefined) => {
+  if (v == null) return "—";
+  if (v >= 1e9) return `$${(v / 1e9).toFixed(2)}B`;
+  if (v >= 1e6) return `$${(v / 1e6).toFixed(1)}M`;
+  return `$${v.toLocaleString()}`;
+};
+const formatVol = formatMcap;
+const formatChange = (v: number | null | undefined) =>
+  v != null ? `${v >= 0 ? "+" : ""}${v.toFixed(2)}%` : "—";
 
 const cryptoAssets: CryptoAsset[] = [
   {
@@ -205,6 +243,17 @@ const cryptoAssets: CryptoAsset[] = [
   }
 ];
 
+const useCaseMap: Record<string, string> = {
+  TON: "Layer-1 con Telegram integrato",
+  LINK: "Oracle infrastrutturale",
+  ONDO: "Tokenizzazione RWAs",
+  TAO: "AI marketplace",
+  RENDER: "Rendering compute",
+  SUI: "Layer-1 scalabile",
+  AAVE: "DeFi lending",
+  RSR: "Stablecoin support",
+};
+
 const sentimentColor = (s: string) => {
   switch (s) {
     case "bullish": return "bg-emerald-500/10 text-emerald-400 border-emerald-500/30";
@@ -233,7 +282,70 @@ const sentimentLabel = (s: string) => {
   }
 };
 
+const PriceTooltipContent = ({ price }: { price: LivePrice }) => (
+  <div className="space-y-1.5 text-xs min-w-[180px]">
+    <div className="flex justify-between">
+      <span className="text-muted-foreground">USD</span>
+      <span className="font-mono font-semibold">{formatUsd(price.price_usd)}</span>
+    </div>
+    <div className="flex justify-between">
+      <span className="text-muted-foreground">EUR</span>
+      <span className="font-mono font-semibold">{formatEur(price.price_eur)}</span>
+    </div>
+    <Separator className="bg-border/30" />
+    <div className="flex justify-between">
+      <span className="text-muted-foreground">24h</span>
+      <span className={`font-mono font-semibold ${(price.change_24h ?? 0) >= 0 ? "text-emerald-400" : "text-red-400"}`}>
+        {formatChange(price.change_24h)}
+      </span>
+    </div>
+    <div className="flex justify-between">
+      <span className="text-muted-foreground">Mkt Cap</span>
+      <span className="font-mono">{formatMcap(price.market_cap_usd)}</span>
+    </div>
+    <div className="flex justify-between">
+      <span className="text-muted-foreground">Vol 24h</span>
+      <span className="font-mono">{formatVol(price.volume_24h_usd)}</span>
+    </div>
+  </div>
+);
+
+const LivePriceBadge = ({ price, loading }: { price?: LivePrice; loading: boolean }) => {
+  if (loading) {
+    return (
+      <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+        <Loader2 className="w-3 h-3 animate-spin" />
+      </div>
+    );
+  }
+  if (!price?.price_usd) return null;
+  
+  const change = price.change_24h ?? 0;
+  const isUp = change >= 0;
+
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <div className="flex items-center gap-1.5 cursor-help">
+          <span className="font-mono text-sm font-semibold text-foreground">
+            {formatUsd(price.price_usd)}
+          </span>
+          <span className={`text-xs font-mono ${isUp ? "text-emerald-400" : "text-red-400"}`}>
+            {isUp ? <TrendingUp className="w-3 h-3 inline mr-0.5" /> : <TrendingDown className="w-3 h-3 inline mr-0.5" />}
+            {formatChange(price.change_24h)}
+          </span>
+        </div>
+      </TooltipTrigger>
+      <TooltipContent side="bottom" className="bg-popover border-border p-3">
+        <PriceTooltipContent price={price} />
+      </TooltipContent>
+    </Tooltip>
+  );
+};
+
 const CriptosPortfolio = () => {
+  const { data: prices, isLoading: pricesLoading } = useCryptoPrices();
+
   return (
     <div className="min-h-screen bg-background">
       {/* Hero */}
@@ -279,6 +391,7 @@ const CriptosPortfolio = () => {
                   <TableHeader>
                     <TableRow className="border-border/30">
                       <TableHead className="text-muted-foreground font-semibold">Token</TableHead>
+                      <TableHead className="text-muted-foreground font-semibold">Prezzo Live</TableHead>
                       <TableHead className="text-muted-foreground font-semibold">Caso d'uso</TableHead>
                       <TableHead className="text-muted-foreground font-semibold">Medio periodo</TableHead>
                       <TableHead className="text-muted-foreground font-semibold">Lungo periodo</TableHead>
@@ -288,15 +401,11 @@ const CriptosPortfolio = () => {
                     {cryptoAssets.map((asset) => (
                       <TableRow key={asset.symbol} className="border-border/20 hover:bg-muted/30">
                         <TableCell className="font-bold text-foreground">{asset.symbol}</TableCell>
+                        <TableCell>
+                          <LivePriceBadge price={prices?.[asset.symbol]} loading={pricesLoading} />
+                        </TableCell>
                         <TableCell className="text-muted-foreground text-sm max-w-[200px]">
-                          {asset.symbol === "TON" && "Layer-1 con Telegram integrato"}
-                          {asset.symbol === "LINK" && "Oracle infrastrutturale"}
-                          {asset.symbol === "ONDO" && "Tokenizzazione RWAs"}
-                          {asset.symbol === "TAO" && "AI marketplace"}
-                          {asset.symbol === "RENDER" && "Rendering compute"}
-                          {asset.symbol === "SUI" && "Layer-1 scalabile"}
-                          {asset.symbol === "AAVE" && "DeFi lending"}
-                          {asset.symbol === "RSR" && "Stablecoin support"}
+                          {useCaseMap[asset.symbol]}
                         </TableCell>
                         <TableCell>
                           <Badge variant="outline" className={`text-xs ${sentimentColor(asset.mediumSentiment)}`}>
@@ -323,108 +432,112 @@ const CriptosPortfolio = () => {
       {/* Individual Cards */}
       <section className="container mx-auto px-4 pb-16">
         <div className="max-w-4xl mx-auto space-y-8">
-          {cryptoAssets.map((asset, index) => (
-            <motion.div
-              key={asset.symbol}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.05 }}
-            >
-              <Card className="border-border/50 bg-card/80 backdrop-blur-sm overflow-hidden">
-                <CardHeader className="pb-4">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2.5 rounded-lg bg-primary/10 text-primary">
-                      {asset.icon}
+          {cryptoAssets.map((asset, index) => {
+            const livePrice = prices?.[asset.symbol];
+            return (
+              <motion.div
+                key={asset.symbol}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.05 }}
+              >
+                <Card className="border-border/50 bg-card/80 backdrop-blur-sm overflow-hidden">
+                  <CardHeader className="pb-4">
+                    <div className="flex items-center gap-3 flex-wrap">
+                      <div className="p-2.5 rounded-lg bg-primary/10 text-primary">
+                        {asset.icon}
+                      </div>
+                      <div>
+                        <CardTitle className="text-2xl">{asset.symbol}</CardTitle>
+                        <p className="text-sm text-muted-foreground">{asset.name}</p>
+                      </div>
+                      <div className="ml-auto flex items-center gap-3 flex-wrap">
+                        <LivePriceBadge price={livePrice} loading={pricesLoading} />
+                        <Badge variant="outline" className={`text-xs ${sentimentColor(asset.mediumSentiment)}`}>
+                          MP: {sentimentLabel(asset.mediumSentiment)}
+                        </Badge>
+                        <Badge variant="outline" className={`text-xs ${sentimentColor(asset.longSentiment)}`}>
+                          LP: {sentimentLabel(asset.longSentiment)}
+                        </Badge>
+                      </div>
                     </div>
+                  </CardHeader>
+                  <CardContent className="space-y-5">
+                    {/* Description */}
                     <div>
-                      <CardTitle className="text-2xl">{asset.symbol}</CardTitle>
-                      <p className="text-sm text-muted-foreground">{asset.name}</p>
+                      <h4 className="text-sm font-semibold text-foreground mb-1.5">Descrizione fondamentale</h4>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{asset.description}</p>
                     </div>
-                    <div className="ml-auto flex gap-2">
-                      <Badge variant="outline" className={`text-xs ${sentimentColor(asset.mediumSentiment)}`}>
-                        MP: {sentimentLabel(asset.mediumSentiment)}
-                      </Badge>
-                      <Badge variant="outline" className={`text-xs ${sentimentColor(asset.longSentiment)}`}>
-                        LP: {sentimentLabel(asset.longSentiment)}
-                      </Badge>
+
+                    {/* Current Status */}
+                    <div>
+                      <h4 className="text-sm font-semibold text-foreground mb-1.5">Situazione attuale</h4>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{asset.currentStatus}</p>
                     </div>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-5">
-                  {/* Description */}
-                  <div>
-                    <h4 className="text-sm font-semibold text-foreground mb-1.5">Descrizione fondamentale</h4>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{asset.description}</p>
-                  </div>
 
-                  {/* Current Status */}
-                  <div>
-                    <h4 className="text-sm font-semibold text-foreground mb-1.5">Situazione attuale</h4>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{asset.currentStatus}</p>
-                  </div>
+                    <Separator className="bg-border/30" />
 
-                  <Separator className="bg-border/30" />
-
-                  {/* Drivers */}
-                  <div>
-                    <h4 className="text-sm font-semibold text-foreground mb-2">Driver fondamentali</h4>
-                    <ul className="space-y-1.5">
-                      {asset.drivers.map((driver, i) => (
-                        <li key={i} className="text-sm text-muted-foreground flex items-start gap-2">
-                          <span className="text-primary mt-1">•</span>
-                          {driver}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Outlook */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="p-4 rounded-lg bg-muted/30 border border-border/30">
-                      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Medio periodo</p>
-                      <p className="text-sm text-foreground">{asset.mediumTerm}</p>
+                    {/* Drivers */}
+                    <div>
+                      <h4 className="text-sm font-semibold text-foreground mb-2">Driver fondamentali</h4>
+                      <ul className="space-y-1.5">
+                        {asset.drivers.map((driver, i) => (
+                          <li key={i} className="text-sm text-muted-foreground flex items-start gap-2">
+                            <span className="text-primary mt-1">•</span>
+                            {driver}
+                          </li>
+                        ))}
+                      </ul>
                     </div>
-                    <div className="p-4 rounded-lg bg-muted/30 border border-border/30">
-                      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Lungo periodo</p>
-                      <p className="text-sm text-foreground">{asset.longTerm}</p>
-                    </div>
-                  </div>
 
-                  {/* Risks */}
-                  <div className="p-4 rounded-lg bg-destructive/5 border border-destructive/20">
-                    <div className="flex items-center gap-2 mb-2">
-                      <AlertTriangle className="w-4 h-4 text-destructive" />
-                      <p className="text-xs font-semibold text-destructive uppercase tracking-wider">Rischi</p>
+                    {/* Outlook */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="p-4 rounded-lg bg-muted/30 border border-border/30">
+                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Medio periodo</p>
+                        <p className="text-sm text-foreground">{asset.mediumTerm}</p>
+                      </div>
+                      <div className="p-4 rounded-lg bg-muted/30 border border-border/30">
+                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Lungo periodo</p>
+                        <p className="text-sm text-foreground">{asset.longTerm}</p>
+                      </div>
                     </div>
-                    <ul className="space-y-1">
-                      {asset.risks.map((risk, i) => (
-                        <li key={i} className="text-sm text-muted-foreground">{risk}</li>
-                      ))}
-                    </ul>
-                  </div>
 
-                  {/* Links */}
-                  {asset.links.length > 0 && (
-                    <div className="flex flex-wrap gap-2">
-                      {asset.links.map((link, i) => (
-                        <a
-                          key={i}
-                          href={link.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 text-xs text-primary hover:text-primary/80 transition-colors"
-                        >
-                          <ExternalLink className="w-3 h-3" />
-                          {link.label}
-                        </a>
-                      ))}
+                    {/* Risks */}
+                    <div className="p-4 rounded-lg bg-destructive/5 border border-destructive/20">
+                      <div className="flex items-center gap-2 mb-2">
+                        <AlertTriangle className="w-4 h-4 text-destructive" />
+                        <p className="text-xs font-semibold text-destructive uppercase tracking-wider">Rischi</p>
+                      </div>
+                      <ul className="space-y-1">
+                        {asset.risks.map((risk, i) => (
+                          <li key={i} className="text-sm text-muted-foreground">{risk}</li>
+                        ))}
+                      </ul>
                     </div>
-                  )}
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
+
+                    {/* Links */}
+                    {asset.links.length > 0 && (
+                      <div className="flex flex-wrap gap-2">
+                        {asset.links.map((link, i) => (
+                          <a
+                            key={i}
+                            href={link.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-xs text-primary hover:text-primary/80 transition-colors"
+                          >
+                            <ExternalLink className="w-3 h-3" />
+                            {link.label}
+                          </a>
+                        ))}
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </motion.div>
+            );
+          })}
         </div>
       </section>
 
