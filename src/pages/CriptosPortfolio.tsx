@@ -400,7 +400,11 @@ const CriptosPortfolio = () => {
                   <TableBody>
                     {cryptoAssets.map((asset) => (
                       <TableRow key={asset.symbol} className="border-border/20 hover:bg-muted/30">
-                        <TableCell className="font-bold text-foreground">{asset.symbol}</TableCell>
+                        <TableCell>
+                          <a href={`#${asset.symbol}`} className="font-bold text-primary hover:underline cursor-pointer">
+                            {asset.symbol}
+                          </a>
+                        </TableCell>
                         <TableCell>
                           <LivePriceBadge price={prices?.[asset.symbol]} loading={pricesLoading} />
                         </TableCell>
@@ -437,6 +441,7 @@ const CriptosPortfolio = () => {
             return (
               <motion.div
                 key={asset.symbol}
+                id={asset.symbol}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
