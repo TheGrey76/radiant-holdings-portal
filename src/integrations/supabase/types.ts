@@ -1865,6 +1865,66 @@ export type Database = {
         }
         Relationships: []
       }
+      crypto_portfolio_outlook: {
+        Row: {
+          ai_commentary: string | null
+          change_24h_at_update: number | null
+          created_at: string
+          current_status: string | null
+          description: string | null
+          drivers: string[] | null
+          fear_greed_at_update: number | null
+          id: string
+          last_updated_at: string
+          long_term_outlook: string | null
+          long_term_sentiment: string | null
+          medium_term_outlook: string | null
+          medium_term_sentiment: string | null
+          name: string
+          price_usd_at_update: number | null
+          risks: string[] | null
+          symbol: string
+        }
+        Insert: {
+          ai_commentary?: string | null
+          change_24h_at_update?: number | null
+          created_at?: string
+          current_status?: string | null
+          description?: string | null
+          drivers?: string[] | null
+          fear_greed_at_update?: number | null
+          id?: string
+          last_updated_at?: string
+          long_term_outlook?: string | null
+          long_term_sentiment?: string | null
+          medium_term_outlook?: string | null
+          medium_term_sentiment?: string | null
+          name: string
+          price_usd_at_update?: number | null
+          risks?: string[] | null
+          symbol: string
+        }
+        Update: {
+          ai_commentary?: string | null
+          change_24h_at_update?: number | null
+          created_at?: string
+          current_status?: string | null
+          description?: string | null
+          drivers?: string[] | null
+          fear_greed_at_update?: number | null
+          id?: string
+          last_updated_at?: string
+          long_term_outlook?: string | null
+          long_term_sentiment?: string | null
+          medium_term_outlook?: string | null
+          medium_term_sentiment?: string | null
+          name?: string
+          price_usd_at_update?: number | null
+          risks?: string[] | null
+          symbol?: string
+        }
+        Relationships: []
+      }
       curated_content: {
         Row: {
           ai_commentary: string | null

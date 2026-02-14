@@ -191,3 +191,6 @@ verify_jwt = false
 
 [functions.fetch-crypto-prices]
 verify_jwt = false
+
+[functions.update-crypto-outlook]
+verify_jwt = false
