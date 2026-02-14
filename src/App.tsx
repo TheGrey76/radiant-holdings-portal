@@ -96,6 +96,7 @@ import SwingReport from "./pages/SwingReport";
 import SwingReportUpload from "./pages/SwingReportUpload";
 import SwingAccessGate from "./components/swing/SwingAccessGate";
 import AdminDatabase from "./pages/AdminDatabase";
+import CriptosPortfolio from "./pages/CriptosPortfolio";
 
 const queryClient = new QueryClient();
 
@@ -199,6 +200,7 @@ const App = () => (
           <Route path="/STD" element={<SwingAccessGate><SwingReport /></SwingAccessGate>} />
           <Route path="/STD/upload" element={<SwingReportUpload />} />
           <Route path="/press" element={<Press />} />
+          <Route path="/criptos-portfolio" element={<CriptosPortfolio />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />
