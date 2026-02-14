@@ -1,18 +1,20 @@
 import { useState, useRef, useCallback } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Upload, Loader2, LogOut } from "lucide-react";
+import { Upload, Loader2, LogOut, Archive } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import SwingPortfolioTable from "@/components/swing/SwingPortfolioTable";
 import {
   useSwingPositions,
   useUploadReport,
+  useArchiveClosedPositions,
 } from "@/hooks/useSwingData";
 
 export default function SwingReport() {
   const { data: positions = [], isLoading: positionsLoading } = useSwingPositions(false);
   const uploadReport = useUploadReport();
+  const archiveClosed = useArchiveClosedPositions();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -140,9 +142,25 @@ export default function SwingReport() {
             )}
             {closedPositions.length > 0 && (
               <div>
-                <h2 className="text-lg font-semibold mb-4 text-muted-foreground">
-                  Posizioni Chiuse
-                </h2>
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-lg font-semibold text-muted-foreground">
+                    Posizioni Chiuse
+                  </h2>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => archiveClosed.mutate()}
+                    disabled={archiveClosed.isPending}
+                    className="text-muted-foreground"
+                  >
+                    {archiveClosed.isPending ? (
+                      <Loader2 className="h-3 w-3 animate-spin mr-2" />
+                    ) : (
+                      <Archive className="h-3 w-3 mr-2" />
+                    )}
+                    Archivia chiuse
+                  </Button>
+                </div>
                 <SwingPortfolioTable positions={closedPositions} />
               </div>
             )}

@@ -84,21 +84,33 @@ export function useUploadReport() {
       content: string;
       fileName: string;
       isJson?: boolean;
-      jsonData?: { report: Record<string, any>; positions: Record<string, any>[] };
+      jsonData?: any;
     }) => {
       if (isJson && jsonData) {
-        // JSON path: insert report directly from structured data
-        const report = jsonData.report;
+        // Flexible JSON: accept array of positions OR { report, positions } OR { positions }
+        let positionsArray: any[] = [];
+        let reportMeta: Record<string, any> = {};
+
+        if (Array.isArray(jsonData)) {
+          positionsArray = jsonData;
+        } else if (Array.isArray(jsonData.positions)) {
+          positionsArray = jsonData.positions;
+          reportMeta = jsonData.report || jsonData;
+        } else {
+          throw new Error("JSON non valido: deve contenere un array di posizioni");
+        }
+
+        // Insert report record
         const { data, error } = await (supabase as any)
           .from("swing_reports")
           .insert({
-            client_name: report.client_name || "Unknown",
-            capital: report.capital || null,
-            risk_profile: report.risk_profile || null,
-            sectors: report.sectors || null,
-            horizon: report.horizon || null,
-            report_date: report.report_date || null,
-            week_range: report.week_range || null,
+            client_name: reportMeta.client_name || "Import JSON",
+            capital: reportMeta.capital || null,
+            risk_profile: reportMeta.risk_profile || null,
+            sectors: reportMeta.sectors || null,
+            horizon: reportMeta.horizon || null,
+            report_date: reportMeta.report_date || null,
+            week_range: reportMeta.week_range || null,
             raw_content: content,
             file_name: fileName,
             uploaded_by: "admin",
@@ -108,38 +120,54 @@ export function useUploadReport() {
 
         if (error) throw error;
 
-        // Insert positions from JSON
-        const positions = jsonData.positions.map((p) => ({
-          report_id: data.id,
-          ticker: p.ticker,
-          name: p.name || null,
-          sector: p.sector || null,
-          status: p.status || "PASS",
-          entry_zone_low: p.entry_zone_low ?? null,
-          entry_zone_high: p.entry_zone_high ?? null,
-          stop_loss: p.stop_loss ?? null,
-          target_1: p.target_1 ?? null,
-          target_2: p.target_2 ?? null,
-          target_3: p.target_3 ?? null,
-          risk_reward: p.risk_reward ?? null,
-          allocation_pct: p.allocation_pct ?? null,
-          allocation_amount: p.allocation_amount ?? null,
-          confidence: p.confidence || null,
-          is_active: p.is_active !== undefined ? p.is_active : true,
-          notes: p.notes || null,
-        }));
+        // Fetch existing active positions to avoid duplicates
+        const { data: existingPositions } = await (supabase as any)
+          .from("swing_positions")
+          .select("ticker")
+          .eq("is_active", true);
 
-        if (positions.length > 0) {
+        const existingTickers = new Set(
+          (existingPositions || []).map((p: any) => p.ticker?.toUpperCase())
+        );
+
+        // Only add positions with new tickers
+        const newPositions = positionsArray
+          .filter((p) => p.ticker && !existingTickers.has(p.ticker.toUpperCase()))
+          .map((p) => ({
+            report_id: data.id,
+            ticker: p.ticker?.toUpperCase(),
+            name: p.name || null,
+            sector: p.sector || null,
+            status: p.status || "PASS",
+            entry_zone_low: p.entry_zone_low ?? null,
+            entry_zone_high: p.entry_zone_high ?? null,
+            stop_loss: p.stop_loss ?? null,
+            target_1: p.target_1 ?? null,
+            target_2: p.target_2 ?? null,
+            target_3: p.target_3 ?? null,
+            risk_reward: p.risk_reward ?? null,
+            allocation_pct: p.allocation_pct ?? null,
+            allocation_amount: p.allocation_amount ?? null,
+            confidence: p.confidence || null,
+            entry_price: p.entry_price ?? null,
+            shares: p.shares ?? null,
+            fees: p.fees ?? null,
+            exit_price: p.exit_price ?? null,
+            realized_pnl: p.realized_pnl ?? null,
+            is_active: p.is_active !== undefined ? p.is_active : true,
+            notes: p.notes || null,
+          }));
+
+        const skipped = positionsArray.length - newPositions.length;
+
+        if (newPositions.length > 0) {
           const { error: posError } = await (supabase as any)
             .from("swing_positions")
-            .insert(positions);
-          if (posError) {
-            console.error("Error inserting positions:", posError);
-            throw new Error(`Report salvato ma errore posizioni: ${posError.message}`);
-          }
+            .insert(newPositions);
+          if (posError) throw new Error(`Errore posizioni: ${posError.message}`);
         }
 
-        return { report: data as SwingReport, positionsCount: positions.length };
+        return { added: newPositions.length, skipped };
       }
 
       // Markdown path (legacy)
@@ -168,23 +196,45 @@ export function useUploadReport() {
         const { error: posError } = await (supabase as any)
           .from("swing_positions")
           .insert(positions);
-        if (posError) {
-          console.error("Error inserting positions:", posError);
-          throw new Error(`Report salvato ma errore posizioni: ${posError.message}`);
-        }
+        if (posError) throw new Error(`Errore posizioni: ${posError.message}`);
       }
 
-      return { report: data as SwingReport, positionsCount: positions.length };
+      return { added: positions.length, skipped: 0 };
     },
     onSuccess: (result) => {
       queryClient.invalidateQueries({ queryKey: ["swing-reports"] });
       queryClient.invalidateQueries({ queryKey: ["swing-positions"] });
-      toast.success(
-        `Report caricato con ${result.positionsCount} posizioni estratte`
-      );
+      const msg = result.skipped > 0
+        ? `${result.added} nuove posizioni aggiunte, ${result.skipped} già presenti (ignorate)`
+        : `${result.added} posizioni importate`;
+      toast.success(msg);
     },
     onError: (err: Error) => {
       toast.error(`Errore upload: ${err.message}`);
+    },
+  });
+}
+
+// ---- Archive closed positions ----
+export function useArchiveClosedPositions() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async () => {
+      const { data, error } = await (supabase as any)
+        .from("swing_positions")
+        .delete()
+        .eq("is_active", false)
+        .select("id");
+      if (error) throw error;
+      return data?.length || 0;
+    },
+    onSuccess: (count) => {
+      queryClient.invalidateQueries({ queryKey: ["swing-positions"] });
+      toast.success(`${count} posizioni chiuse archiviate`);
+    },
+    onError: (err: Error) => {
+      toast.error(`Errore: ${err.message}`);
     },
   });
 }
