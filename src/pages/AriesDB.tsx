@@ -75,16 +75,21 @@ interface EnrichedConnection extends Connection {
 // ── Classification helpers (unchanged) ──────────────────
 
 const INDUSTRY_KEYWORDS: Record<string, string[]> = {
-  "Private Equity": ["private equity", "pe ", "buyout", "lbo", "growth equity"],
-  "Venture Capital": ["venture capital", "vc ", "startup", "seed", "series a", "series b"],
-  "Asset Management": ["asset management", "fund manager", "portfolio manager", "investment manager", "sgr", "sicav"],
-  "Banking": ["bank", "banco", "banca", "credit", "lending"],
-  "Family Office": ["family office", "single family", "multi family", "wealth"],
-  "Real Estate": ["real estate", "immobili", "property", "reit"],
-  "Insurance": ["insurance", "assicuraz", "underwriting"],
-  "Advisory": ["advisory", "advisor", "consulen", "consulting"],
-  "Fintech": ["fintech", "blockchain", "crypto", "defi", "web3"],
-  "Corporate": ["ceo", "cfo", "coo", "managing director", "general manager", "founder"],
+  "Private Equity": ["private equity", "pe ", "buyout", "lbo", "growth equity", "leveraged"],
+  "Venture Capital": ["venture capital", "vc ", "startup", "seed", "series a", "series b", "early stage", "incubat", "accelerat"],
+  "Asset Management": ["asset management", "fund manager", "portfolio manager", "investment manager", "sgr", "sicav", "gestione fondi", "chief investment", "cio ", "investment officer", "hedge fund", "quant", "aum"],
+  "Banking": ["bank", "banco", "banca", "credit", "lending", "capital market", "fixed income", "equity research", "trading", "treasury", "poste italiane"],
+  "Family Office": ["family office", "single family", "multi family", "wealth management", "wealth advisory", "private wealth", "patrimoni"],
+  "Real Estate": ["real estate", "immobili", "property", "reit", "costruzion"],
+  "Insurance": ["insurance", "assicuraz", "underwriting", "vita "],
+  "Advisory": ["advisory", "advisor", "consulen", "consulting", "m&a", "corporate finance", "investment banking", "strategic", "due diligence"],
+  "Fintech": ["fintech", "blockchain", "crypto", "defi", "web3", "bitcoin", "digital asset", "regtech"],
+  "Corporate": ["ceo", "cfo", "coo", "managing director", "general manager", "founder", "co-founder", "amministratore delegato", "direttore generale"],
+  "Technology": ["software", "engineer", "developer", "saas", "cloud", "ai ", "artificial intelligence", "machine learning", "data scien", "product manager", "cto", "google", "microsoft", "amazon"],
+  "Legal": ["avvocato", "lawyer", "attorney", "legal", "law firm", "studio legale", "notai"],
+  "Sales & Marketing": ["sales", "marketing", "business develop", "commercial", "key account", "account manager", "relationship manager", "vendite", "commerciale"],
+  "HR & Recruiting": ["recruiter", "recruiting", "talent", "human resources", "hr ", "people", "hiring"],
+  "Media & Communication": ["journalist", "media", "communication", "editorial", "press", "pr ", "content", "newsletter"],
 };
 
 function classifyIndustry(c: Connection): string {
@@ -229,7 +234,7 @@ function dbToEnriched(db: DBContact): EnrichedConnection {
     linkedinUrl: db.linkedin_url || "",
     connectedOn: db.connected_on || "",
     year: db.year || "Unknown",
-    industry: db.industry || "Other",
+    industry: classifyIndustry({ name: db.name, email: db.email || "", phone: db.phone || "", headline: db.headline || "", jobTitle: db.job_title || "", location: db.location || "", company: db.company || "", website: db.website || "", linkedinUrl: db.linkedin_url || "", connectedOn: db.connected_on || "", year: db.year || "Unknown" }),
     region: extractRegion(db.location || ""),
     enrichedEmail: db.enriched_email,
     enrichedPhone: db.enriched_phone,
