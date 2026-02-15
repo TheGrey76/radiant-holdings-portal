@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import * as XLSX from "xlsx";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -102,7 +102,20 @@ function deduplicateConnections(all: Connection[]): Connection[] {
 }
 
 export default function AriesDB() {
-  const [connections, setConnections] = useState<Connection[]>([]);
+  const [connections, setConnectionsRaw] = useState<Connection[]>(() => {
+    try {
+      const saved = localStorage.getItem("ariesdb_connections");
+      return saved ? JSON.parse(saved) : [];
+    } catch { return []; }
+  });
+
+  const setConnections = useCallback((updater: Connection[] | ((prev: Connection[]) => Connection[])) => {
+    setConnectionsRaw(prev => {
+      const next = typeof updater === "function" ? updater(prev) : updater;
+      localStorage.setItem("ariesdb_connections", JSON.stringify(next));
+      return next;
+    });
+  }, []);
   const [uploading, setUploading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [industryFilter, setIndustryFilter] = useState("all");
