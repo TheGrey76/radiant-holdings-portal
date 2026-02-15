@@ -52,6 +52,7 @@ interface DBContact {
   enriched_location: string | null;
   enrichment_status: string;
   enrichment_source: string | null;
+  enriched_at: string | null;
   dedup_key: string;
 }
 
@@ -63,8 +64,11 @@ interface EnrichedConnection extends Connection {
   enrichedPhone?: string | null;
   enrichedLinkedinUrl?: string | null;
   enrichedTitle?: string | null;
+  enrichedCompany?: string | null;
+  enrichedLocation?: string | null;
   enrichmentStatus?: string;
   enrichmentSource?: string | null;
+  enrichedAt?: string | null;
 }
 
 // ── Classification helpers (unchanged) ──────────────────
@@ -169,8 +173,11 @@ function dbToEnriched(db: DBContact): EnrichedConnection {
     enrichedPhone: db.enriched_phone,
     enrichedLinkedinUrl: db.enriched_linkedin_url,
     enrichedTitle: db.enriched_title,
+    enrichedCompany: db.enriched_company,
+    enrichedLocation: db.enriched_location,
     enrichmentStatus: db.enrichment_status,
     enrichmentSource: db.enrichment_source,
+    enrichedAt: db.enriched_at,
   };
 }
 
@@ -185,9 +192,10 @@ export default function AriesDB() {
   const [industryFilter, setIndustryFilter] = useState("all");
   const [regionFilter, setRegionFilter] = useState("all");
   const [yearFilter, setYearFilter] = useState("all");
-  const [sortField, setSortField] = useState<keyof Connection>("name");
+  const [sortField, setSortField] = useState<string>("name");
   const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
   const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [enrichmentFilter, setEnrichmentFilter] = useState("all");
 
   const getKey = (c: EnrichedConnection) => c.linkedinUrl || `${c.name}|${c.company}`;
 
@@ -415,13 +423,24 @@ export default function AriesDB() {
     if (industryFilter !== "all") data = data.filter(c => c.industry === industryFilter);
     if (regionFilter !== "all") data = data.filter(c => c.region === regionFilter);
     if (yearFilter !== "all") data = data.filter(c => c.year === yearFilter);
+    if (enrichmentFilter !== "all") {
+      if (enrichmentFilter === "enriched") data = data.filter(c => c.enrichmentStatus === "enriched");
+      else if (enrichmentFilter === "pending") data = data.filter(c => !c.enrichmentStatus || c.enrichmentStatus === "pending");
+      else if (enrichmentFilter === "not_found") data = data.filter(c => c.enrichmentStatus === "not_found");
+      else if (enrichmentFilter === "with_email") data = data.filter(c => c.enrichedEmail || c.email);
+    }
     data = [...data].sort((a, b) => {
-      const av = a[sortField] || "";
-      const bv = b[sortField] || "";
+      if (sortField === "enrichedAt") {
+        const av = a.enrichedAt || "";
+        const bv = b.enrichedAt || "";
+        return sortDir === "asc" ? av.localeCompare(bv) : bv.localeCompare(av);
+      }
+      const av = (a as any)[sortField] || "";
+      const bv = (b as any)[sortField] || "";
       return sortDir === "asc" ? av.localeCompare(bv) : bv.localeCompare(av);
     });
     return data;
-  }, [contacts, searchTerm, industryFilter, regionFilter, yearFilter, sortField, sortDir]);
+  }, [contacts, searchTerm, industryFilter, regionFilter, yearFilter, enrichmentFilter, sortField, sortDir]);
 
   const stats = useMemo(() => {
     const industryMap: Record<string, number> = {};
@@ -462,7 +481,7 @@ export default function AriesDB() {
     URL.revokeObjectURL(url);
   }, [filtered]);
 
-  const toggleSort = (field: keyof Connection) => {
+  const toggleSort = (field: string) => {
     if (sortField === field) setSortDir(d => d === "asc" ? "desc" : "asc");
     else { setSortField(field); setSortDir("asc"); }
   };
@@ -472,6 +491,7 @@ export default function AriesDB() {
     setIndustryFilter("all");
     setRegionFilter("all");
     setYearFilter("all");
+    setEnrichmentFilter("all");
   };
 
   // ── Enrichment status badge ──
@@ -654,6 +674,16 @@ export default function AriesDB() {
                         {years.map(y => <SelectItem key={y} value={y}>{y}</SelectItem>)}
                       </SelectContent>
                     </Select>
+                    <Select value={enrichmentFilter} onValueChange={setEnrichmentFilter}>
+                      <SelectTrigger className="w-[160px]"><SelectValue placeholder="Enrichment" /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">Tutti gli status</SelectItem>
+                        <SelectItem value="enriched">✅ Enriched</SelectItem>
+                        <SelectItem value="pending">⏳ Pending</SelectItem>
+                        <SelectItem value="not_found">❌ Not found</SelectItem>
+                        <SelectItem value="with_email">📧 Con email</SelectItem>
+                      </SelectContent>
+                    </Select>
                     <Button variant="ghost" size="sm" onClick={clearFilters}><X className="h-4 w-4" /></Button>
                     <Button variant="outline" size="sm" onClick={exportCSV}><Download className="h-4 w-4 mr-1" />CSV</Button>
                   </div>
@@ -681,8 +711,7 @@ export default function AriesDB() {
                             <TableHead className="cursor-pointer" onClick={() => toggleSort("company")}><span className="flex items-center gap-1">Azienda <ArrowUpDown className="h-3 w-3" /></span></TableHead>
                             <TableHead>Email</TableHead>
                             <TableHead>Settore</TableHead>
-                            <TableHead>Regione</TableHead>
-                            <TableHead>Status</TableHead>
+                            <TableHead className="cursor-pointer" onClick={() => toggleSort("enrichedAt")}><span className="flex items-center gap-1">Enriched <ArrowUpDown className="h-3 w-3" /></span></TableHead>
                             <TableHead className="w-20"></TableHead>
                             <TableHead className="w-10"></TableHead>
                           </TableRow>
@@ -717,8 +746,16 @@ export default function AriesDB() {
                                   )}
                                 </TableCell>
                                 <TableCell><Badge variant="outline" className="text-xs">{c.industry}</Badge></TableCell>
-                                <TableCell><Badge variant="secondary" className="text-xs">{c.region}</Badge></TableCell>
-                                <TableCell><EnrichmentBadge status={c.enrichmentStatus} /></TableCell>
+                                <TableCell>
+                                  <div className="flex items-center gap-1.5">
+                                    <EnrichmentBadge status={c.enrichmentStatus} />
+                                    {c.enrichedAt && (
+                                      <span className="text-xs text-muted-foreground">
+                                        {new Date(c.enrichedAt).toLocaleDateString("it-IT", { day: "2-digit", month: "short" })}
+                                      </span>
+                                    )}
+                                  </div>
+                                </TableCell>
                                 <TableCell>
                                   <div className="flex items-center gap-1">
                                     {displayLinkedin && (
