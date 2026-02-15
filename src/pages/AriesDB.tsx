@@ -75,27 +75,30 @@ interface EnrichedConnection extends Connection {
 // ── Classification helpers (unchanged) ──────────────────
 
 const INDUSTRY_KEYWORDS: Record<string, string[]> = {
-  "Private Equity": ["private equity", "pe ", "buyout", "lbo", "growth equity", "leveraged"],
-  "Venture Capital": ["venture capital", "vc ", "startup", "seed", "series a", "series b", "early stage", "incubat", "accelerat"],
-  "Asset Management": ["asset management", "fund manager", "portfolio manager", "investment manager", "sgr", "sicav", "gestione fondi", "chief investment", "cio ", "investment officer", "hedge fund", "quant", "aum"],
-  "Banking": ["bank", "banco", "banca", "credit", "lending", "capital market", "fixed income", "equity research", "trading", "treasury", "poste italiane"],
-  "Family Office": ["family office", "single family", "multi family", "wealth management", "wealth advisory", "private wealth", "patrimoni"],
+  "Private Equity": ["private equity", "pe fund", "buyout", "lbo", "growth equity", "leveraged", "tdr capital", "palatine", "operating partner"],
+  "Venture Capital": ["venture capital", "vc fund", "startup", "seed fund", "series a", "series b", "early stage", "incubat", "accelerat", "venture partner", "page one ventures", "sent ventures"],
+  "Asset Management": ["asset management", "fund manager", "portfolio manager", "investment manager", "sgr", "sicav", "gestione fondi", "chief investment", "investment officer", "hedge fund", "quant", "aum", "blackrock", "fidelity", "ark invest", "vanguard", "pimco", "amundi", "schroders", "invesco", "franklin templeton", "investor", "investment associate", "private debt", "public equity", "head of distribution", "fund", "capital", "invest"],
+  "Banking": ["bank", "banco", "banca", "credit", "lending", "capital market", "fixed income", "equity research", "trading", "treasury", "poste italiane", "mizuho", "goldman", "morgan stanley", "jp morgan", "ubs", "barclays", "deutsche bank", "hsbc", "bnp", "societe generale", "global markets", "financial planner", "chartered financial"],
+  "Family Office": ["family office", "single family", "multi family", "wealth management", "wealth advisory", "private wealth", "patrimoni", "fiduciaria", "unione fiduciaria"],
   "Real Estate": ["real estate", "immobili", "property", "reit", "costruzion"],
   "Insurance": ["insurance", "assicuraz", "underwriting", "vita "],
-  "Advisory": ["advisory", "advisor", "consulen", "consulting", "m&a", "corporate finance", "investment banking", "strategic", "due diligence"],
-  "Fintech": ["fintech", "blockchain", "crypto", "defi", "web3", "bitcoin", "digital asset", "regtech"],
-  "Corporate": ["ceo", "cfo", "coo", "managing director", "general manager", "founder", "co-founder", "amministratore delegato", "direttore generale"],
-  "Technology": ["software", "engineer", "developer", "saas", "cloud", "ai ", "artificial intelligence", "machine learning", "data scien", "product manager", "cto", "google", "microsoft", "amazon"],
-  "Legal": ["avvocato", "lawyer", "attorney", "legal", "law firm", "studio legale", "notai"],
-  "Sales & Marketing": ["sales", "marketing", "business develop", "commercial", "key account", "account manager", "relationship manager", "vendite", "commerciale"],
-  "HR & Recruiting": ["recruiter", "recruiting", "talent", "human resources", "hr ", "people", "hiring"],
-  "Media & Communication": ["journalist", "media", "communication", "editorial", "press", "pr ", "content", "newsletter"],
+  "Advisory": ["advisory", "advisor", "consulen", "consulting", "m&a", "corporate finance", "investment banking", "strategic", "due diligence", "ey-parthenon", "ey ", "parthenon", "mckinsey", "bain", "bcg", "deloitte", "kpmg", "pwc", "forvis mazars", "valuation", "strategy and transaction"],
+  "Fintech": ["fintech", "blockchain", "crypto", "defi", "web3", "bitcoin", "digital asset", "regtech", "qonto", "binance"],
+  "Corporate": ["ceo", "cfo", "coo", "managing director", "general manager", "founder", "co-founder", "amministratore delegato", "direttore generale", "chief executive", "president", "head of finance", "responsabile amministrativo"],
+  "Technology": ["software", "engineer", "developer", "saas", "cloud", "ai ", "artificial intelligence", "machine learning", "data scien", "product manager", "cto", "google", "microsoft", "amazon", "computer science", "data engineer"],
+  "Legal": ["avvocato", "lawyer", "attorney", "legal", "law firm", "studio legale", "notai", "advocate"],
+  "Sales & Marketing": ["sales", "marketing", "business develop", "commercial", "key account", "account manager", "relationship manager", "vendite", "commerciale", "partnership manager", "head of business growth"],
+  "HR & Recruiting": ["recruiter", "recruiting", "talent", "human resources", "hr business partner", "people", "hiring"],
+  "Media & Communication": ["journalist", "media", "communication", "editorial", "press", "pr manager", "content", "newsletter", "editore", "publisher"],
 };
 
 function classifyIndustry(c: Connection): string {
   const text = `${c.headline} ${c.jobTitle} ${c.company}`.toLowerCase();
-  for (const [industry, keywords] of Object.entries(INDUSTRY_KEYWORDS)) {
-    if (keywords.some(k => text.includes(k))) return industry;
+  // Check specific industries first, then broader ones
+  const orderedKeys = ["Private Equity", "Venture Capital", "Family Office", "Fintech", "Real Estate", "Insurance", "Legal", "HR & Recruiting", "Media & Communication", "Advisory", "Banking", "Technology", "Sales & Marketing", "Corporate", "Asset Management"];
+  for (const industry of orderedKeys) {
+    const keywords = INDUSTRY_KEYWORDS[industry];
+    if (keywords && keywords.some(k => text.includes(k))) return industry;
   }
   return "Other";
 }
