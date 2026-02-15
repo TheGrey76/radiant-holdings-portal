@@ -16,6 +16,7 @@ interface RegionData {
 
 interface WorldMapChartProps {
   regionData: RegionData[];
+  activeRegion?: string;
   onRegionClick?: (region: string) => void;
 }
 
@@ -158,7 +159,7 @@ function getColorForPercentage(pct: number): string {
   return "hsl(var(--muted))";
 }
 
-export default function WorldMapChart({ regionData, onRegionClick }: WorldMapChartProps) {
+export default function WorldMapChart({ regionData, activeRegion, onRegionClick }: WorldMapChartProps) {
   const [tooltipContent, setTooltipContent] = useState("");
 
   const regionMap = useMemo(() => {
@@ -236,28 +237,36 @@ export default function WorldMapChart({ regionData, onRegionClick }: WorldMapCha
       </div>
 
       {/* Legend */}
+      <p className="text-sm text-muted-foreground">Clicca una regione per filtrare i contatti</p>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
         {regionData
           .filter((r) => r.count > 0)
           .sort((a, b) => b.count - a.count)
-          .map((r) => (
-            <button
-              key={r.region}
-              onClick={() => onRegionClick?.(r.region)}
-              className="flex items-center gap-2 p-2.5 rounded-lg border bg-card hover:border-primary transition-colors text-left"
-            >
-              <div
-                className="w-3.5 h-3.5 rounded flex-shrink-0"
-                style={{ backgroundColor: REGION_COLORS[r.region] || getColorForPercentage(r.percentage) }}
-              />
-              <div className="min-w-0">
-                <p className="text-sm font-semibold text-foreground truncate">{r.region}</p>
-                <p className="text-xs text-muted-foreground">
-                  {r.count} ({r.percentage.toFixed(1)}%)
-                </p>
-              </div>
-            </button>
-          ))}
+          .map((r) => {
+            const isActive = activeRegion === r.region;
+            return (
+              <button
+                key={r.region}
+                onClick={() => onRegionClick?.(r.region)}
+                className={`flex items-center gap-2 p-2.5 rounded-lg border transition-colors text-left ${
+                  isActive
+                    ? "border-primary bg-primary/10 ring-2 ring-primary/30"
+                    : "bg-card hover:border-primary"
+                }`}
+              >
+                <div
+                  className="w-3.5 h-3.5 rounded flex-shrink-0"
+                  style={{ backgroundColor: REGION_COLORS[r.region] || getColorForPercentage(r.percentage) }}
+                />
+                <div className="min-w-0">
+                  <p className="text-sm font-semibold text-foreground truncate">{r.region}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {r.count} ({r.percentage.toFixed(1)}%)
+                  </p>
+                </div>
+              </button>
+            );
+          })}
       </div>
     </div>
   );
