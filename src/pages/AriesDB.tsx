@@ -7,8 +7,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Upload, Users, MapPin, Building2, Search, Download, BarChart3, Globe, Filter, ArrowUpDown, Linkedin, X } from "lucide-react";
+import { Upload, Users, MapPin, Building2, Search, Download, BarChart3, Globe, Filter, ArrowUpDown, Linkedin, X, Trash2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface Connection {
   name: string;
@@ -109,6 +110,39 @@ export default function AriesDB() {
   const [yearFilter, setYearFilter] = useState("all");
   const [sortField, setSortField] = useState<keyof Connection>("name");
   const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+
+  const getKey = (c: Connection) => c.linkedinUrl || `${c.name}|${c.company}`;
+
+  const toggleSelect = (key: string) => {
+    setSelected(prev => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key); else next.add(key);
+      return next;
+    });
+  };
+
+  const toggleSelectAll = () => {
+    if (selected.size === filtered.length) {
+      setSelected(new Set());
+    } else {
+      setSelected(new Set(filtered.map(c => getKey(c))));
+    }
+  };
+
+  const deleteSelected = () => {
+    if (selected.size === 0) return;
+    setConnections(prev => prev.filter(c => !selected.has(getKey(c))));
+    toast({ title: "Eliminati", description: `${selected.size} contatti rimossi.` });
+    setSelected(new Set());
+  };
+
+  const deleteSingle = (c: Connection) => {
+    const key = getKey(c);
+    setConnections(prev => prev.filter(conn => getKey(conn) !== key));
+    setSelected(prev => { const next = new Set(prev); next.delete(key); return next; });
+    toast({ title: "Eliminato", description: `${c.name} rimosso.` });
+  };
 
   const handleFileUpload = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -387,7 +421,14 @@ export default function AriesDB() {
                     <Button variant="ghost" size="sm" onClick={clearFilters}><X className="h-4 w-4" /></Button>
                     <Button variant="outline" size="sm" onClick={exportCSV}><Download className="h-4 w-4 mr-1" />CSV</Button>
                   </div>
-                  <p className="text-xs text-muted-foreground mt-2">{filtered.length.toLocaleString()} risultati</p>
+                  <div className="flex items-center justify-between mt-2">
+                    <p className="text-xs text-muted-foreground">{filtered.length.toLocaleString()} risultati</p>
+                    {selected.size > 0 && (
+                      <Button variant="destructive" size="sm" onClick={deleteSelected}>
+                        <Trash2 className="h-4 w-4 mr-1" />Elimina {selected.size} selezionati
+                      </Button>
+                    )}
+                  </div>
                 </CardContent>
               </Card>
 
@@ -398,6 +439,7 @@ export default function AriesDB() {
                     <Table>
                       <TableHeader>
                         <TableRow>
+                          <TableHead className="w-10"><Checkbox checked={filtered.length > 0 && selected.size === filtered.length} onCheckedChange={toggleSelectAll} /></TableHead>
                           <TableHead className="cursor-pointer" onClick={() => toggleSort("name")}><span className="flex items-center gap-1">Nome <ArrowUpDown className="h-3 w-3" /></span></TableHead>
                           <TableHead className="cursor-pointer" onClick={() => toggleSort("jobTitle")}><span className="flex items-center gap-1">Ruolo <ArrowUpDown className="h-3 w-3" /></span></TableHead>
                           <TableHead className="cursor-pointer" onClick={() => toggleSort("company")}><span className="flex items-center gap-1">Azienda <ArrowUpDown className="h-3 w-3" /></span></TableHead>
@@ -405,12 +447,16 @@ export default function AriesDB() {
                           <TableHead className="cursor-pointer" onClick={() => toggleSort("location")}><span className="flex items-center gap-1">Località <ArrowUpDown className="h-3 w-3" /></span></TableHead>
                           <TableHead>Regione</TableHead>
                           <TableHead>Anno</TableHead>
+                          <TableHead className="w-10"></TableHead>
                           <TableHead></TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        {filtered.slice(0, 200).map((c, i) => (
-                          <TableRow key={i}>
+                        {filtered.slice(0, 200).map((c, i) => {
+                          const key = getKey(c);
+                          return (
+                          <TableRow key={i} className={selected.has(key) ? "bg-muted/50" : ""}>
+                            <TableCell><Checkbox checked={selected.has(key)} onCheckedChange={() => toggleSelect(key)} /></TableCell>
                             <TableCell className="font-medium text-foreground max-w-[180px] truncate">{c.name}</TableCell>
                             <TableCell className="text-sm text-muted-foreground max-w-[200px] truncate">{c.jobTitle}</TableCell>
                             <TableCell className="text-sm text-foreground max-w-[160px] truncate">{c.company}</TableCell>
@@ -425,8 +471,14 @@ export default function AriesDB() {
                                 </a>
                               )}
                             </TableCell>
+                            <TableCell>
+                              <Button variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground hover:text-destructive" onClick={() => deleteSingle(c)}>
+                                <Trash2 className="h-3.5 w-3.5" />
+                              </Button>
+                            </TableCell>
                           </TableRow>
-                        ))}
+                          );
+                        })}
                       </TableBody>
                     </Table>
                     {filtered.length > 200 && (
