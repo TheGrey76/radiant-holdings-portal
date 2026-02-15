@@ -98,20 +98,81 @@ function classifyIndustry(c: Connection): string {
 function extractRegion(location: string): string {
   if (!location) return "Unknown";
   const loc = location.toLowerCase();
-  if (loc.includes("milan") || loc.includes("rome") || loc.includes("turin") || loc.includes("italy") || loc.includes("italia") || loc.includes("napl") || loc.includes("florence") || loc.includes("bologna") || loc.includes("genoa") || loc.includes("biella") || loc.includes("bergamo") || loc.includes("brescia") || loc.includes("padova") || loc.includes("verona") || loc.includes("venezia") || loc.includes("ancona") || loc.includes("puglia") || loc.includes("sicil") || loc.includes("sardegna") || loc.includes("rovigo") || loc.includes("bolzano") || loc.includes("greater milan") || loc.includes("greater rome")) return "Italy";
-  if (loc.includes("london") || loc.includes("united kingdom") || loc.includes("uk") || loc.includes("manchester") || loc.includes("edinburgh") || loc.includes("cambridge")) return "UK";
-  if (loc.includes("new york") || loc.includes("san francisco") || loc.includes("california") || loc.includes("texas") || loc.includes("chicago") || loc.includes("boston") || loc.includes("miami") || loc.includes("los angeles") || loc.includes("washington") || loc.includes("usa") || loc.includes("united states")) return "USA";
-  if (loc.includes("switzerland") || loc.includes("zurich") || loc.includes("geneva") || loc.includes("lugano")) return "Switzerland";
-  if (loc.includes("dubai") || loc.includes("abu dhabi") || loc.includes("uae") || loc.includes("qatar") || loc.includes("saudi") || loc.includes("riyadh") || loc.includes("bahrain")) return "Middle East";
-  if (loc.includes("paris") || loc.includes("france")) return "France";
-  if (loc.includes("germany") || loc.includes("berlin") || loc.includes("munich") || loc.includes("frankfurt")) return "Germany";
-  if (loc.includes("spain") || loc.includes("madrid") || loc.includes("barcelona")) return "Spain";
-  if (loc.includes("singapore") || loc.includes("hong kong") || loc.includes("tokyo") || loc.includes("shanghai") || loc.includes("china") || loc.includes("india") || loc.includes("mumbai") || loc.includes("japan")) return "Asia-Pacific";
+
+  // Italy – comprehensive list of cities, provinces and regions
+  const italyCities = ["milan","rome","turin","italy","italia","napl","florence","bologna","genoa","biella","bergamo","brescia","padova","padua","verona","venezia","venice","ancona","puglia","sicil","sardegna","cagliari","rovigo","bolzano","greater milan","greater rome","monza","brianza","varese","vicenza","pavia","forlì","forli","cesena","ravenna","pisa","trento","bari","lecce","modena","parma","reggio emilia","ferrara","pistoia","lucca","cuneo","aosta","ivrea","lodi","frosinone","benevento","treviso","trieste","catania","palermo","altamura","martina franca","erba","cernusco","cerro maggiore","cinisello","brugherio","melzo","merate","pieve emanuele","busseto","casalecchio","castel bolognese","camisano","colle umberto","conegliano","cortina","modigliana","fano","inverigo","manerbio","palestrina","bonvicino","borgomanero","buja","calvizzano","busto arsizio","reggio nell","asiago","arpino","andora"];
+  if (italyCities.some(c => loc.includes(c))) return "Italy";
+
+  // UK
+  const ukCities = ["london","united kingdom","manchester","edinburgh","cambridge","leeds","bristol","belfast","glasgow","oxford","brighton","derby","gloucester","harrogate","cirencester","kensington","guernsey","isle of man"];
+  if (ukCities.some(c => loc.includes(c))) return "UK";
+
+  // USA
+  const usaCities = ["new york","san francisco","california","texas","chicago","boston","miami","los angeles","washington","usa","united states","atlanta","austin","dallas","denver","philadelphia","fort lauderdale","boca raton","hartford","fairfield, ct","darien, ct","little falls, nj","palo alto","pasadena","tuscaloosa","oklahoma","bangor, ca"];
+  if (usaCities.some(c => loc.includes(c))) return "USA";
+
+  // Switzerland
+  if (loc.includes("switzerland") || loc.includes("zurich") || loc.includes("zürich") || loc.includes("geneva") || loc.includes("lugano") || loc.includes("basel") || loc.includes("zug") || loc.includes("locarno") || loc.includes("feusisberg")) return "Switzerland";
+
+  // Middle East
+  if (loc.includes("dubai") || loc.includes("abu dhabi") || loc.includes("uae") || loc.includes("united arab emirates") || loc.includes("qatar") || loc.includes("saudi") || loc.includes("riyadh") || loc.includes("bahrain") || loc.includes("israel") || loc.includes("tel aviv") || loc.includes("jordan") || loc.includes("amman") || loc.includes("kuwait")) return "Middle East";
+
+  // France
+  if (loc.includes("paris") || loc.includes("france") || loc.includes("lyon") || loc.includes("montpellier")) return "France";
+
+  // Germany
+  if (loc.includes("germany") || loc.includes("berlin") || loc.includes("munich") || loc.includes("frankfurt") || loc.includes("hamburg") || loc.includes("cologne") || loc.includes("düsseldorf") || loc.includes("hagen") || loc.includes("eberswalde")) return "Germany";
+
+  // Spain
+  if (loc.includes("spain") || loc.includes("madrid") || loc.includes("barcelona") || loc.includes("las palmas") || loc.includes("palma de mallorca") || loc.includes("pozuelo")) return "Spain";
+
+  // Asia-Pacific
+  if (loc.includes("singapore") || loc.includes("hong kong") || loc.includes("tokyo") || loc.includes("shanghai") || loc.includes("china") || loc.includes("india") || loc.includes("mumbai") || loc.includes("japan") || loc.includes("beijing") || loc.includes("ho chi minh") || loc.includes("vietnam") || loc.includes("manila") || loc.includes("indonesia") || loc.includes("noida") || loc.includes("new zealand") || loc.includes("australia") || loc.includes("hope island") || loc.includes("nepal")) return "Asia-Pacific";
+
   if (loc.includes("luxembourg")) return "Luxembourg";
-  if (loc.includes("netherlands") || loc.includes("amsterdam")) return "Netherlands";
-  if (loc.includes("brazil") || loc.includes("são paulo") || loc.includes("mexico") || loc.includes("argentina") || loc.includes("colombia")) return "LATAM";
-  if (loc.includes("africa") || loc.includes("nigeria") || loc.includes("kenya") || loc.includes("south africa") || loc.includes("zambia")) return "Africa";
-  return "Other Europe";
+
+  // Netherlands / Benelux
+  if (loc.includes("netherlands") || loc.includes("amsterdam") || loc.includes("rotterdam") || loc.includes("groningen")) return "Netherlands";
+
+  // LATAM
+  if (loc.includes("brazil") || loc.includes("são paulo") || loc.includes("mexico") || loc.includes("argentina") || loc.includes("colombia") || loc.includes("uruguay") || loc.includes("panama")) return "LATAM";
+
+  // Africa
+  if (loc.includes("africa") || loc.includes("nigeria") || loc.includes("kenya") || loc.includes("south africa") || loc.includes("zambia") || loc.includes("johannesburg") || loc.includes("kimberley") || loc.includes("dakar") || loc.includes("senegal") || loc.includes("mauritius") || loc.includes("port louis") || loc.includes("ballito")) return "Africa";
+
+  // Canada
+  if (loc.includes("canada") || loc.includes("toronto") || loc.includes("montreal") || loc.includes("calgary")) return "Canada";
+
+  // Scandinavia
+  if (loc.includes("copenhagen") || loc.includes("denmark") || loc.includes("helsinki") || loc.includes("finland") || loc.includes("espoo") || loc.includes("stockholm") || loc.includes("sweden") || loc.includes("oslo") || loc.includes("norway")) return "Scandinavia";
+
+  // CEE (Central & Eastern Europe)
+  if (loc.includes("budapest") || loc.includes("hungary") || loc.includes("prague") || loc.includes("czechia") || loc.includes("czech") || loc.includes("warsaw") || loc.includes("poland") || loc.includes("lodz") || loc.includes("bratislava") || loc.includes("slovakia") || loc.includes("romania") || loc.includes("buftea") || loc.includes("lithuania") || loc.includes("vilnius") || loc.includes("latvia") || loc.includes("kyiv") || loc.includes("ukraine") || loc.includes("kragujevac") || loc.includes("serbia") || loc.includes("athens") || loc.includes("greece") || loc.includes("istanbul") || loc.includes("türkiye") || loc.includes("turkey")) return "CEE";
+
+  // Benelux / Belgium
+  if (loc.includes("belgium") || loc.includes("brussels") || loc.includes("herent")) return "Belgium";
+
+  // Other small states
+  if (loc.includes("monaco") || loc.includes("monte carlo")) return "Monaco";
+  if (loc.includes("malta")) return "Malta";
+  if (loc.includes("cyprus") || loc.includes("limassol") || loc.includes("paralimni")) return "Cyprus";
+  if (loc.includes("gibraltar")) return "Gibraltar";
+  if (loc.includes("andorra")) return "Andorra";
+  if (loc.includes("san marino")) return "San Marino";
+
+  // Ireland
+  if (loc.includes("ireland") || loc.includes("dublin")) return "Ireland";
+
+  // Portugal
+  if (loc.includes("portugal") || loc.includes("lisbon") || loc.includes("cascais")) return "Portugal";
+
+  // Austria
+  if (loc.includes("austria") || loc.includes("vienna") || loc.includes("innsbruck")) return "Austria";
+
+  // Offshore / Caribbean
+  if (loc.includes("cayman") || loc.includes("nassau") || loc.includes("bahamas")) return "Offshore";
+
+  return "Other";
 }
 
 function parseExcel(data: ArrayBuffer): Connection[] {
@@ -169,7 +230,7 @@ function dbToEnriched(db: DBContact): EnrichedConnection {
     connectedOn: db.connected_on || "",
     year: db.year || "Unknown",
     industry: db.industry || "Other",
-    region: db.region || "Unknown",
+    region: extractRegion(db.location || ""),
     enrichedEmail: db.enriched_email,
     enrichedPhone: db.enriched_phone,
     enrichedLinkedinUrl: db.enriched_linkedin_url,

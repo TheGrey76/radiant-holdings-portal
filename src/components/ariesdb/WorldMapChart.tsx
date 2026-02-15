@@ -5,7 +5,6 @@ import {
   Geography,
   ZoomableGroup,
 } from "react-simple-maps";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 const GEO_URL = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 
@@ -31,6 +30,8 @@ const COUNTRY_TO_REGION: Record<string, string> = {
   Luxembourg: "Luxembourg",
   Netherlands: "Netherlands",
   "United States of America": "USA",
+  Canada: "Canada",
+  // Middle East
   "United Arab Emirates": "Middle East",
   Qatar: "Middle East",
   "Saudi Arabia": "Middle East",
@@ -40,25 +41,30 @@ const COUNTRY_TO_REGION: Record<string, string> = {
   Israel: "Middle East",
   Jordan: "Middle East",
   Lebanon: "Middle East",
+  // Asia-Pacific
   China: "Asia-Pacific",
   Japan: "Asia-Pacific",
   "South Korea": "Asia-Pacific",
   India: "Asia-Pacific",
   Singapore: "Asia-Pacific",
-  "Hong Kong": "Asia-Pacific",
   Australia: "Asia-Pacific",
   Indonesia: "Asia-Pacific",
   Thailand: "Asia-Pacific",
   Malaysia: "Asia-Pacific",
   Vietnam: "Asia-Pacific",
   Philippines: "Asia-Pacific",
-  Taiwan: "Asia-Pacific",
+  "New Zealand": "Asia-Pacific",
+  Nepal: "Asia-Pacific",
+  // LATAM
   Brazil: "LATAM",
   Mexico: "LATAM",
   Argentina: "LATAM",
   Colombia: "LATAM",
   Chile: "LATAM",
   Peru: "LATAM",
+  Uruguay: "LATAM",
+  Panama: "LATAM",
+  // Africa
   Nigeria: "Africa",
   "South Africa": "Africa",
   Kenya: "Africa",
@@ -67,44 +73,88 @@ const COUNTRY_TO_REGION: Record<string, string> = {
   Ghana: "Africa",
   Ethiopia: "Africa",
   Tanzania: "Africa",
-  // European countries → Other Europe
-  Portugal: "Other Europe",
-  Belgium: "Other Europe",
-  Austria: "Other Europe",
-  Sweden: "Other Europe",
-  Norway: "Other Europe",
-  Denmark: "Other Europe",
-  Finland: "Other Europe",
-  Ireland: "Other Europe",
-  Poland: "Other Europe",
-  "Czech Republic": "Other Europe",
-  Czechia: "Other Europe",
-  Romania: "Other Europe",
-  Hungary: "Other Europe",
-  Greece: "Other Europe",
-  Croatia: "Other Europe",
-  Bulgaria: "Other Europe",
-  Slovakia: "Other Europe",
-  Slovenia: "Other Europe",
-  Lithuania: "Other Europe",
-  Latvia: "Other Europe",
-  Estonia: "Other Europe",
-  Serbia: "Other Europe",
-  Monaco: "Other Europe",
-  Malta: "Other Europe",
-  Cyprus: "Other Europe",
-  Iceland: "Other Europe",
-  Turkey: "Other Europe",
-  Ukraine: "Other Europe",
-  Russia: "Other Europe",
+  Senegal: "Africa",
+  Mauritius: "Africa",
+  // Scandinavia
+  Sweden: "Scandinavia",
+  Norway: "Scandinavia",
+  Denmark: "Scandinavia",
+  Finland: "Scandinavia",
+  Iceland: "Scandinavia",
+  // CEE
+  Poland: "CEE",
+  "Czech Republic": "CEE",
+  Czechia: "CEE",
+  Hungary: "CEE",
+  Romania: "CEE",
+  Slovakia: "CEE",
+  Bulgaria: "CEE",
+  Serbia: "CEE",
+  Croatia: "CEE",
+  Slovenia: "CEE",
+  Lithuania: "CEE",
+  Latvia: "CEE",
+  Estonia: "CEE",
+  Ukraine: "CEE",
+  Greece: "CEE",
+  Turkey: "CEE",
+  // Small European states
+  Belgium: "Belgium",
+  Ireland: "Ireland",
+  Portugal: "Portugal",
+  Austria: "Austria",
+  Monaco: "Monaco",
+  Malta: "Malta",
+  Cyprus: "Cyprus",
+  Andorra: "Andorra",
+  Russia: "CEE",
+  // Offshore
+  "Cayman Islands": "Offshore",
 };
 
+const REGION_COLORS: Record<string, string> = {
+  Italy: "hsl(210, 85%, 30%)",
+  UK: "hsl(210, 75%, 40%)",
+  USA: "hsl(200, 70%, 42%)",
+  Switzerland: "hsl(150, 60%, 38%)",
+  "Middle East": "hsl(35, 70%, 45%)",
+  France: "hsl(220, 65%, 48%)",
+  Germany: "hsl(0, 0%, 35%)",
+  Spain: "hsl(15, 70%, 48%)",
+  "Asia-Pacific": "hsl(340, 60%, 45%)",
+  Luxembourg: "hsl(195, 55%, 50%)",
+  Netherlands: "hsl(25, 80%, 50%)",
+  LATAM: "hsl(130, 55%, 40%)",
+  Africa: "hsl(45, 65%, 42%)",
+  Canada: "hsl(0, 65%, 48%)",
+  Scandinavia: "hsl(200, 60%, 55%)",
+  CEE: "hsl(270, 45%, 50%)",
+  Belgium: "hsl(50, 60%, 45%)",
+  Ireland: "hsl(140, 65%, 35%)",
+  Portugal: "hsl(10, 55%, 45%)",
+  Austria: "hsl(0, 50%, 42%)",
+  Monaco: "hsl(330, 55%, 50%)",
+  Malta: "hsl(180, 50%, 45%)",
+  Cyprus: "hsl(170, 45%, 48%)",
+  Offshore: "hsl(280, 40%, 55%)",
+  "San Marino": "hsl(215, 50%, 55%)",
+  Gibraltar: "hsl(5, 55%, 50%)",
+  Andorra: "hsl(250, 40%, 52%)",
+  Unknown: "hsl(0, 0%, 50%)",
+  Other: "hsl(0, 0%, 45%)",
+};
+
+function getColorForRegion(region: string, pct: number): string {
+  if (pct === 0) return "hsl(var(--muted) / 0.4)";
+  return REGION_COLORS[region] || "hsl(210, 40%, 60%)";
+}
+
 function getColorForPercentage(pct: number): string {
-  if (pct >= 20) return "hsl(210, 80%, 35%)";
-  if (pct >= 10) return "hsl(210, 70%, 45%)";
-  if (pct >= 5) return "hsl(210, 60%, 55%)";
-  if (pct >= 2) return "hsl(210, 50%, 65%)";
-  if (pct > 0) return "hsl(210, 40%, 75%)";
+  if (pct >= 20) return "hsl(210, 85%, 30%)";
+  if (pct >= 10) return "hsl(210, 75%, 40%)";
+  if (pct >= 5) return "hsl(210, 60%, 48%)";
+  if (pct >= 2) return "hsl(210, 50%, 58%)";
+  if (pct > 0) return "hsl(210, 40%, 68%)";
   return "hsl(var(--muted))";
 }
 
@@ -198,7 +248,7 @@ export default function WorldMapChart({ regionData, onRegionClick }: WorldMapCha
             >
               <div
                 className="w-3.5 h-3.5 rounded flex-shrink-0"
-                style={{ backgroundColor: getColorForPercentage(r.percentage) }}
+                style={{ backgroundColor: REGION_COLORS[r.region] || getColorForPercentage(r.percentage) }}
               />
               <div className="min-w-0">
                 <p className="text-sm font-semibold text-foreground truncate">{r.region}</p>
