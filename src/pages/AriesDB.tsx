@@ -8,6 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Upload, Users, MapPin, Building2, Search, Download, BarChart3, Globe, Filter, ArrowUpDown, Linkedin, X, Trash2, Mail, Phone, Loader2, RefreshCw } from "lucide-react";
+import WorldMapChart from "@/components/ariesdb/WorldMapChart";
 import { toast } from "@/hooks/use-toast";
 import { Checkbox } from "@/components/ui/checkbox";
 import { supabase } from "@/integrations/supabase/client";
@@ -796,26 +797,14 @@ export default function AriesDB() {
 
             {/* GEO TAB */}
             <TabsContent value="geo" className="space-y-4">
-              <div className="grid md:grid-cols-2 gap-4">
-                {stats.topRegions.map(([region, count]) => (
-                  <Card key={region} className="cursor-pointer hover:border-primary transition-colors" onClick={() => { setRegionFilter(region); }}>
-                    <CardContent className="pt-4 flex justify-between items-center">
-                      <div>
-                        <p className="font-semibold text-foreground">{region}</p>
-                        <p className="text-sm text-muted-foreground">{count} connessioni ({((count / stats.total) * 100).toFixed(1)}%)</p>
-                      </div>
-                      <div className="flex flex-col items-end gap-1">
-                        <div className="h-3 bg-primary/20 rounded-full w-32 overflow-hidden">
-                          <div className="h-full bg-primary rounded-full" style={{ width: `${(count / stats.total) * 100}%` }} />
-                        </div>
-                        <p className="text-xs text-muted-foreground">
-                          {contacts.filter(c => c.region === region).reduce((acc, c) => { acc.add(c.industry); return acc; }, new Set<string>()).size} settori
-                        </p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+              <WorldMapChart
+                regionData={stats.topRegions.map(([region, count]) => ({
+                  region,
+                  count,
+                  percentage: (count / stats.total) * 100,
+                }))}
+                onRegionClick={(region) => setRegionFilter(region)}
+              />
             </TabsContent>
 
             {/* INDUSTRY TAB */}
