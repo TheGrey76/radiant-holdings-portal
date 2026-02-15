@@ -258,6 +258,7 @@ export default function AriesDB() {
   const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [enrichmentFilter, setEnrichmentFilter] = useState("all");
+  const [activeTab, setActiveTab] = useState("overview");
 
   const getKey = (c: EnrichedConnection) => c.linkedinUrl || `${c.name}|${c.company}`;
 
@@ -627,7 +628,7 @@ export default function AriesDB() {
             </CardContent>
           </Card>
         ) : (
-          <Tabs defaultValue="overview" className="space-y-4">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
             <TabsList className="flex-wrap h-auto gap-1">
               <TabsTrigger value="overview"><BarChart3 className="h-4 w-4 mr-1" />Overview</TabsTrigger>
               <TabsTrigger value="contacts"><Users className="h-4 w-4 mr-1" />Contatti</TabsTrigger>
@@ -864,7 +865,15 @@ export default function AriesDB() {
                   count,
                   percentage: (count / stats.total) * 100,
                 }))}
-                onRegionClick={(region) => setRegionFilter(region)}
+                activeRegion={regionFilter !== "all" ? regionFilter : undefined}
+                onRegionClick={(region) => {
+                  if (regionFilter === region) {
+                    setRegionFilter("all");
+                  } else {
+                    setRegionFilter(region);
+                    setActiveTab("contacts");
+                  }
+                }}
               />
             </TabsContent>
 
