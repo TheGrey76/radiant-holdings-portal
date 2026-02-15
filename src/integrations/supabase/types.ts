@@ -1057,6 +1057,93 @@ export type Database = {
           },
         ]
       }
+      ariesdb_contacts: {
+        Row: {
+          company: string | null
+          connected_on: string | null
+          created_at: string
+          dedup_key: string
+          email: string | null
+          enriched_at: string | null
+          enriched_company: string | null
+          enriched_email: string | null
+          enriched_linkedin_url: string | null
+          enriched_location: string | null
+          enriched_phone: string | null
+          enriched_title: string | null
+          enrichment_source: string | null
+          enrichment_status: string
+          headline: string | null
+          id: string
+          industry: string | null
+          job_title: string | null
+          linkedin_url: string | null
+          location: string | null
+          name: string
+          phone: string | null
+          region: string | null
+          updated_at: string
+          website: string | null
+          year: string | null
+        }
+        Insert: {
+          company?: string | null
+          connected_on?: string | null
+          created_at?: string
+          dedup_key: string
+          email?: string | null
+          enriched_at?: string | null
+          enriched_company?: string | null
+          enriched_email?: string | null
+          enriched_linkedin_url?: string | null
+          enriched_location?: string | null
+          enriched_phone?: string | null
+          enriched_title?: string | null
+          enrichment_source?: string | null
+          enrichment_status?: string
+          headline?: string | null
+          id?: string
+          industry?: string | null
+          job_title?: string | null
+          linkedin_url?: string | null
+          location?: string | null
+          name: string
+          phone?: string | null
+          region?: string | null
+          updated_at?: string
+          website?: string | null
+          year?: string | null
+        }
+        Update: {
+          company?: string | null
+          connected_on?: string | null
+          created_at?: string
+          dedup_key?: string
+          email?: string | null
+          enriched_at?: string | null
+          enriched_company?: string | null
+          enriched_email?: string | null
+          enriched_linkedin_url?: string | null
+          enriched_location?: string | null
+          enriched_phone?: string | null
+          enriched_title?: string | null
+          enrichment_source?: string | null
+          enrichment_status?: string
+          headline?: string | null
+          id?: string
+          industry?: string | null
+          job_title?: string | null
+          linkedin_url?: string | null
+          location?: string | null
+          name?: string
+          phone?: string | null
+          region?: string | null
+          updated_at?: string
+          website?: string | null
+          year?: string | null
+        }
+        Relationships: []
+      }
       assessment_bookings: {
         Row: {
           client_type: string

@@ -194,3 +194,6 @@ verify_jwt = false
 
 [functions.update-crypto-outlook]
 verify_jwt = false
+
+[functions.enrich-ariesdb-contacts]
+verify_jwt = false
