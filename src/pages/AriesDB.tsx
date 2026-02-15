@@ -7,9 +7,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Upload, Users, MapPin, Building2, Search, Download, BarChart3, Globe, Filter, ArrowUpDown, Linkedin, X, Trash2 } from "lucide-react";
+import { Upload, Users, MapPin, Building2, Search, Download, BarChart3, Globe, Filter, ArrowUpDown, Linkedin, X, Trash2, Mail, Phone, Loader2, RefreshCw } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { Checkbox } from "@/components/ui/checkbox";
+import { supabase } from "@/integrations/supabase/client";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+
+// ── Types ──────────────────────────────────────────────
 
 interface Connection {
   name: string;
@@ -24,6 +28,46 @@ interface Connection {
   connectedOn: string;
   year: string;
 }
+
+interface DBContact {
+  id: string;
+  name: string;
+  email: string | null;
+  phone: string | null;
+  headline: string | null;
+  job_title: string | null;
+  location: string | null;
+  company: string | null;
+  website: string | null;
+  linkedin_url: string | null;
+  connected_on: string | null;
+  year: string | null;
+  industry: string | null;
+  region: string | null;
+  enriched_email: string | null;
+  enriched_phone: string | null;
+  enriched_linkedin_url: string | null;
+  enriched_title: string | null;
+  enriched_company: string | null;
+  enriched_location: string | null;
+  enrichment_status: string;
+  enrichment_source: string | null;
+  dedup_key: string;
+}
+
+interface EnrichedConnection extends Connection {
+  id?: string;
+  industry: string;
+  region: string;
+  enrichedEmail?: string | null;
+  enrichedPhone?: string | null;
+  enrichedLinkedinUrl?: string | null;
+  enrichedTitle?: string | null;
+  enrichmentStatus?: string;
+  enrichmentSource?: string | null;
+}
+
+// ── Classification helpers (unchanged) ──────────────────
 
 const INDUSTRY_KEYWORDS: Record<string, string[]> = {
   "Private Equity": ["private equity", "pe ", "buyout", "lbo", "growth equity"],
@@ -92,31 +136,51 @@ function parseExcel(data: ArrayBuffer): Connection[] {
     });
 }
 
+function getDedupeKey(c: Connection): string {
+  return c.linkedinUrl || `${c.name}|${c.company}`;
+}
+
 function deduplicateConnections(all: Connection[]): Connection[] {
   const seen = new Map<string, Connection>();
   for (const c of all) {
-    const key = c.linkedinUrl || `${c.name}|${c.company}`;
+    const key = getDedupeKey(c);
     if (!seen.has(key)) seen.set(key, c);
   }
   return Array.from(seen.values());
 }
 
-export default function AriesDB() {
-  const [connections, setConnectionsRaw] = useState<Connection[]>(() => {
-    try {
-      const saved = localStorage.getItem("ariesdb_connections");
-      return saved ? JSON.parse(saved) : [];
-    } catch { return []; }
-  });
+function dbToEnriched(db: DBContact): EnrichedConnection {
+  return {
+    id: db.id,
+    name: db.name,
+    email: db.email || "",
+    phone: db.phone || "",
+    headline: db.headline || "",
+    jobTitle: db.job_title || "",
+    location: db.location || "",
+    company: db.company || "",
+    website: db.website || "",
+    linkedinUrl: db.linkedin_url || "",
+    connectedOn: db.connected_on || "",
+    year: db.year || "Unknown",
+    industry: db.industry || "Other",
+    region: db.region || "Unknown",
+    enrichedEmail: db.enriched_email,
+    enrichedPhone: db.enriched_phone,
+    enrichedLinkedinUrl: db.enriched_linkedin_url,
+    enrichedTitle: db.enriched_title,
+    enrichmentStatus: db.enrichment_status,
+    enrichmentSource: db.enrichment_source,
+  };
+}
 
-  const setConnections = useCallback((updater: Connection[] | ((prev: Connection[]) => Connection[])) => {
-    setConnectionsRaw(prev => {
-      const next = typeof updater === "function" ? updater(prev) : updater;
-      localStorage.setItem("ariesdb_connections", JSON.stringify(next));
-      return next;
-    });
-  }, []);
+// ── Component ──────────────────────────────────────────
+
+export default function AriesDB() {
+  const [contacts, setContacts] = useState<EnrichedConnection[]>([]);
   const [uploading, setUploading] = useState(false);
+  const [enriching, setEnriching] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [industryFilter, setIndustryFilter] = useState("all");
   const [regionFilter, setRegionFilter] = useState("all");
@@ -125,8 +189,176 @@ export default function AriesDB() {
   const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
   const [selected, setSelected] = useState<Set<string>>(new Set());
 
-  const getKey = (c: Connection) => c.linkedinUrl || `${c.name}|${c.company}`;
+  const getKey = (c: EnrichedConnection) => c.linkedinUrl || `${c.name}|${c.company}`;
 
+  // ── Load from Supabase on mount ──
+  const loadFromDB = useCallback(async () => {
+    setLoading(true);
+    try {
+      // Fetch in batches to handle >1000 rows
+      let allData: DBContact[] = [];
+      let from = 0;
+      const batchSize = 1000;
+      let hasMore = true;
+      while (hasMore) {
+        const { data, error } = await supabase
+          .from("ariesdb_contacts")
+          .select("*")
+          .range(from, from + batchSize - 1)
+          .order("name");
+        if (error) throw error;
+        if (data && data.length > 0) {
+          allData = [...allData, ...(data as unknown as DBContact[])];
+          from += batchSize;
+          if (data.length < batchSize) hasMore = false;
+        } else {
+          hasMore = false;
+        }
+      }
+      setContacts(allData.map(dbToEnriched));
+    } catch (err) {
+      console.error("Error loading contacts:", err);
+      // Fallback to localStorage
+      try {
+        const saved = localStorage.getItem("ariesdb_connections");
+        if (saved) {
+          const parsed: Connection[] = JSON.parse(saved);
+          setContacts(parsed.map(c => ({
+            ...c,
+            industry: classifyIndustry(c),
+            region: extractRegion(c.location),
+          })));
+        }
+      } catch { /* ignore */ }
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => { loadFromDB(); }, [loadFromDB]);
+
+  // ── Save connections to Supabase ──
+  const saveToSupabase = useCallback(async (connections: Connection[]): Promise<number> => {
+    const rows = connections.map(c => ({
+      name: c.name,
+      email: c.email || null,
+      phone: c.phone || null,
+      headline: c.headline || null,
+      job_title: c.jobTitle || null,
+      location: c.location || null,
+      company: c.company || null,
+      website: c.website || null,
+      linkedin_url: c.linkedinUrl || null,
+      connected_on: c.connectedOn || null,
+      year: c.year || null,
+      industry: classifyIndustry(c),
+      region: extractRegion(c.location),
+      dedup_key: getDedupeKey(c),
+      enrichment_status: "pending",
+    }));
+
+    // Upsert in batches of 100
+    let inserted = 0;
+    for (let i = 0; i < rows.length; i += 100) {
+      const batch = rows.slice(i, i + 100);
+      const { error, data } = await supabase
+        .from("ariesdb_contacts")
+        .upsert(batch as any, { onConflict: "dedup_key", ignoreDuplicates: true })
+        .select("id");
+      if (error) {
+        console.error("Upsert error:", error);
+      } else {
+        inserted += data?.length || 0;
+      }
+    }
+    return inserted;
+  }, []);
+
+  // ── Auto-enrich after upload ──
+  const triggerEnrichment = useCallback(async () => {
+    setEnriching(true);
+    try {
+      let totalEnriched = 0;
+      let hasMore = true;
+      while (hasMore) {
+        const { data, error } = await supabase.functions.invoke("enrich-ariesdb-contacts", {
+          body: { batch_size: 20 },
+        });
+        if (error) {
+          console.error("Enrichment error:", error);
+          break;
+        }
+        totalEnriched += data?.enriched || 0;
+        if (!data?.total || data.total < 20) hasMore = false;
+        // Update UI periodically
+        await loadFromDB();
+      }
+      if (totalEnriched > 0) {
+        toast({ title: "Enrichment completato", description: `${totalEnriched} contatti arricchiti con successo.` });
+      } else {
+        toast({ title: "Enrichment", description: "Nessun nuovo contatto da arricchire." });
+      }
+    } catch (err) {
+      console.error("Enrichment failed:", err);
+      toast({ title: "Errore enrichment", description: String(err), variant: "destructive" });
+    } finally {
+      setEnriching(false);
+      await loadFromDB();
+    }
+  }, [loadFromDB]);
+
+  // ── File upload → save → enrich ──
+  const handleFileUpload = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files?.length) return;
+    setUploading(true);
+    try {
+      const allConns: Connection[] = [];
+      for (const file of Array.from(files)) {
+        const buf = await file.arrayBuffer();
+        allConns.push(...parseExcel(buf));
+      }
+      const deduped = deduplicateConnections(allConns);
+      const inserted = await saveToSupabase(deduped);
+      toast({ title: "Upload completato", description: `${deduped.length} connessioni processate, ${inserted} nuove salvate.` });
+      // Also keep in localStorage as backup
+      localStorage.setItem("ariesdb_connections", JSON.stringify(deduped));
+      await loadFromDB();
+      // Auto-enrich
+      triggerEnrichment();
+    } catch (err) {
+      toast({ title: "Errore upload", description: String(err), variant: "destructive" });
+    } finally {
+      setUploading(false);
+      e.target.value = "";
+    }
+  }, [saveToSupabase, loadFromDB, triggerEnrichment]);
+
+  const loadPreloaded = useCallback(async () => {
+    setUploading(true);
+    try {
+      const files = ["/data/LinkedIn_Connections_2023.xlsx", "/data/LinkedIn_Connections_2024.xlsx", "/data/LinkedIn_Connections_2025_2026.xlsx"];
+      const allConns: Connection[] = [];
+      for (const url of files) {
+        const res = await fetch(url);
+        const buf = await res.arrayBuffer();
+        allConns.push(...parseExcel(buf));
+      }
+      const deduped = deduplicateConnections(allConns);
+      const inserted = await saveToSupabase(deduped);
+      toast({ title: "Dati caricati", description: `${deduped.length} connessioni, ${inserted} nuove salvate su DB.` });
+      localStorage.setItem("ariesdb_connections", JSON.stringify(deduped));
+      await loadFromDB();
+      // Auto-enrich
+      triggerEnrichment();
+    } catch (err) {
+      toast({ title: "Errore", description: String(err), variant: "destructive" });
+    } finally {
+      setUploading(false);
+    }
+  }, [saveToSupabase, loadFromDB, triggerEnrichment]);
+
+  // ── Delete ──
   const toggleSelect = (key: string) => {
     setSelected(prev => {
       const next = new Set(prev);
@@ -143,70 +375,32 @@ export default function AriesDB() {
     }
   };
 
-  const deleteSelected = () => {
+  const deleteSelected = async () => {
     if (selected.size === 0) return;
-    setConnections(prev => prev.filter(c => !selected.has(getKey(c))));
+    const idsToDelete = contacts.filter(c => selected.has(getKey(c)) && c.id).map(c => c.id!);
+    if (idsToDelete.length > 0) {
+      for (let i = 0; i < idsToDelete.length; i += 100) {
+        await supabase.from("ariesdb_contacts").delete().in("id", idsToDelete.slice(i, i + 100) as any);
+      }
+    }
+    setContacts(prev => prev.filter(c => !selected.has(getKey(c))));
     toast({ title: "Eliminati", description: `${selected.size} contatti rimossi.` });
     setSelected(new Set());
   };
 
-  const deleteSingle = (c: Connection) => {
+  const deleteSingle = async (c: EnrichedConnection) => {
+    if (c.id) {
+      await supabase.from("ariesdb_contacts").delete().eq("id", c.id as any);
+    }
     const key = getKey(c);
-    setConnections(prev => prev.filter(conn => getKey(conn) !== key));
+    setContacts(prev => prev.filter(conn => getKey(conn) !== key));
     setSelected(prev => { const next = new Set(prev); next.delete(key); return next; });
     toast({ title: "Eliminato", description: `${c.name} rimosso.` });
   };
 
-  const handleFileUpload = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (!files?.length) return;
-    setUploading(true);
-    try {
-      const allConns: Connection[] = [];
-      for (const file of Array.from(files)) {
-        const buf = await file.arrayBuffer();
-        const parsed = parseExcel(buf);
-        allConns.push(...parsed);
-      }
-      const deduped = deduplicateConnections([...connections, ...allConns]);
-      setConnections(deduped);
-      toast({ title: "Upload completato", description: `${allConns.length} connessioni caricate, ${deduped.length} totali dopo dedup.` });
-    } catch (err) {
-      toast({ title: "Errore upload", description: String(err), variant: "destructive" });
-    } finally {
-      setUploading(false);
-      e.target.value = "";
-    }
-  }, [connections]);
-
-  const loadPreloaded = useCallback(async () => {
-    setUploading(true);
-    try {
-      const files = ["/data/LinkedIn_Connections_2023.xlsx", "/data/LinkedIn_Connections_2024.xlsx", "/data/LinkedIn_Connections_2025_2026.xlsx"];
-      const allConns: Connection[] = [];
-      for (const url of files) {
-        const res = await fetch(url);
-        const buf = await res.arrayBuffer();
-        allConns.push(...parseExcel(buf));
-      }
-      const deduped = deduplicateConnections(allConns);
-      setConnections(deduped);
-      toast({ title: "Dati caricati", description: `${deduped.length} connessioni uniche caricate.` });
-    } catch (err) {
-      toast({ title: "Errore", description: String(err), variant: "destructive" });
-    } finally {
-      setUploading(false);
-    }
-  }, []);
-
-  const enriched = useMemo(() => connections.map(c => ({
-    ...c,
-    industry: classifyIndustry(c),
-    region: extractRegion(c.location),
-  })), [connections]);
-
+  // ── Derived data ──
   const filtered = useMemo(() => {
-    let data = enriched;
+    let data = contacts;
     if (searchTerm) {
       const s = searchTerm.toLowerCase();
       data = data.filter(c =>
@@ -214,46 +408,50 @@ export default function AriesDB() {
         c.company.toLowerCase().includes(s) ||
         c.jobTitle.toLowerCase().includes(s) ||
         c.headline.toLowerCase().includes(s) ||
-        c.location.toLowerCase().includes(s)
+        c.location.toLowerCase().includes(s) ||
+        (c.enrichedEmail || "").toLowerCase().includes(s)
       );
     }
     if (industryFilter !== "all") data = data.filter(c => c.industry === industryFilter);
     if (regionFilter !== "all") data = data.filter(c => c.region === regionFilter);
     if (yearFilter !== "all") data = data.filter(c => c.year === yearFilter);
-    data.sort((a, b) => {
+    data = [...data].sort((a, b) => {
       const av = a[sortField] || "";
       const bv = b[sortField] || "";
       return sortDir === "asc" ? av.localeCompare(bv) : bv.localeCompare(av);
     });
     return data;
-  }, [enriched, searchTerm, industryFilter, regionFilter, yearFilter, sortField, sortDir]);
+  }, [contacts, searchTerm, industryFilter, regionFilter, yearFilter, sortField, sortDir]);
 
-  // Stats
   const stats = useMemo(() => {
     const industryMap: Record<string, number> = {};
     const regionMap: Record<string, number> = {};
     const yearMap: Record<string, number> = {};
     const companyMap: Record<string, number> = {};
-    for (const c of enriched) {
+    let enrichedCount = 0;
+    let withEmail = 0;
+    for (const c of contacts) {
       industryMap[c.industry] = (industryMap[c.industry] || 0) + 1;
       regionMap[c.region] = (regionMap[c.region] || 0) + 1;
       yearMap[c.year] = (yearMap[c.year] || 0) + 1;
       if (c.company) companyMap[c.company] = (companyMap[c.company] || 0) + 1;
+      if (c.enrichmentStatus === "enriched") enrichedCount++;
+      if (c.email || c.enrichedEmail) withEmail++;
     }
     const topCompanies = Object.entries(companyMap).sort((a, b) => b[1] - a[1]).slice(0, 15);
     const topIndustries = Object.entries(industryMap).sort((a, b) => b[1] - a[1]);
     const topRegions = Object.entries(regionMap).sort((a, b) => b[1] - a[1]);
-    return { industryMap, regionMap, yearMap, topCompanies, topIndustries, topRegions, total: enriched.length };
-  }, [enriched]);
+    return { industryMap, regionMap, yearMap, topCompanies, topIndustries, topRegions, total: contacts.length, enrichedCount, withEmail };
+  }, [contacts]);
 
-  const industries = useMemo(() => [...new Set(enriched.map(c => c.industry))].sort(), [enriched]);
-  const regions = useMemo(() => [...new Set(enriched.map(c => c.region))].sort(), [enriched]);
-  const years = useMemo(() => [...new Set(enriched.map(c => c.year))].sort(), [enriched]);
+  const industries = useMemo(() => [...new Set(contacts.map(c => c.industry))].sort(), [contacts]);
+  const regions = useMemo(() => [...new Set(contacts.map(c => c.region))].sort(), [contacts]);
+  const years = useMemo(() => [...new Set(contacts.map(c => c.year))].sort(), [contacts]);
 
   const exportCSV = useCallback(() => {
     if (!filtered.length) return;
-    const headers = ["Name", "Email", "Job Title", "Company", "Location", "Region", "Industry", "LinkedIn URL", "Connected On"];
-    const rows = filtered.map(c => [c.name, c.email, c.jobTitle, c.company, c.location, c.region, c.industry, c.linkedinUrl, c.connectedOn]);
+    const headers = ["Name", "Email", "Enriched Email", "Phone", "Enriched Phone", "Job Title", "Company", "Location", "Region", "Industry", "LinkedIn URL", "Enriched LinkedIn", "Connected On", "Enrichment Status"];
+    const rows = filtered.map(c => [c.name, c.email, c.enrichedEmail || "", c.phone, c.enrichedPhone || "", c.jobTitle, c.company, c.location, c.region, c.industry, c.linkedinUrl, c.enrichedLinkedinUrl || "", c.connectedOn, c.enrichmentStatus || ""]);
     const csv = [headers, ...rows].map(r => r.map(v => `"${(v || "").replace(/"/g, '""')}"`).join(",")).join("\n");
     const blob = new Blob([csv], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
@@ -276,6 +474,25 @@ export default function AriesDB() {
     setYearFilter("all");
   };
 
+  // ── Enrichment status badge ──
+  const EnrichmentBadge = ({ status }: { status?: string }) => {
+    if (!status || status === "pending") return <Badge variant="outline" className="text-xs bg-muted/50">Pending</Badge>;
+    if (status === "enriched") return <Badge className="text-xs bg-green-500/20 text-green-700 border-green-300">Enriched</Badge>;
+    if (status === "not_found") return <Badge variant="outline" className="text-xs text-muted-foreground">Not found</Badge>;
+    return null;
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background pt-20 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-3">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          <p className="text-muted-foreground">Caricamento contatti...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background pt-20">
       <div className="max-w-[1400px] mx-auto px-4 py-8 space-y-6">
@@ -283,9 +500,21 @@ export default function AriesDB() {
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
             <h1 className="text-3xl font-bold text-foreground">Aries76 Network Database</h1>
-            <p className="text-muted-foreground mt-1">Deal & Geo Best Fit Dashboard — {stats.total.toLocaleString()} connections</p>
+            <p className="text-muted-foreground mt-1">
+              Deal & Geo Best Fit Dashboard — {stats.total.toLocaleString()} connections
+              {stats.enrichedCount > 0 && <span className="text-green-600 ml-2">• {stats.enrichedCount} enriched</span>}
+              {stats.withEmail > 0 && <span className="text-primary ml-2">• {stats.withEmail} con email</span>}
+            </p>
           </div>
           <div className="flex gap-2 flex-wrap">
+            {enriching && (
+              <Badge variant="outline" className="h-9 px-3 flex items-center gap-2 animate-pulse">
+                <Loader2 className="h-3.5 w-3.5 animate-spin" /> Enriching...
+              </Badge>
+            )}
+            <Button variant="outline" size="sm" onClick={triggerEnrichment} disabled={enriching || uploading}>
+              <RefreshCw className={`h-4 w-4 mr-1 ${enriching ? "animate-spin" : ""}`} /> Enrich
+            </Button>
             <Button variant="outline" onClick={loadPreloaded} disabled={uploading}>
               <Upload className="h-4 w-4 mr-1" /> Carica Precaricati
             </Button>
@@ -298,7 +527,7 @@ export default function AriesDB() {
           </div>
         </div>
 
-        {connections.length === 0 ? (
+        {contacts.length === 0 ? (
           <Card className="border-dashed border-2">
             <CardContent className="py-16 text-center">
               <Upload className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
@@ -326,15 +555,15 @@ export default function AriesDB() {
 
             {/* OVERVIEW TAB */}
             <TabsContent value="overview" className="space-y-4">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                 <Card><CardHeader className="pb-2"><CardTitle className="text-sm text-muted-foreground">Totale Connessioni</CardTitle></CardHeader><CardContent><p className="text-3xl font-bold text-foreground">{stats.total.toLocaleString()}</p></CardContent></Card>
+                <Card><CardHeader className="pb-2"><CardTitle className="text-sm text-muted-foreground">Enriched</CardTitle></CardHeader><CardContent><p className="text-3xl font-bold text-green-600">{stats.enrichedCount}</p></CardContent></Card>
+                <Card><CardHeader className="pb-2"><CardTitle className="text-sm text-muted-foreground">Con Email</CardTitle></CardHeader><CardContent><p className="text-3xl font-bold text-primary">{stats.withEmail}</p></CardContent></Card>
                 <Card><CardHeader className="pb-2"><CardTitle className="text-sm text-muted-foreground">Regioni</CardTitle></CardHeader><CardContent><p className="text-3xl font-bold text-foreground">{stats.topRegions.length}</p></CardContent></Card>
                 <Card><CardHeader className="pb-2"><CardTitle className="text-sm text-muted-foreground">Settori</CardTitle></CardHeader><CardContent><p className="text-3xl font-bold text-foreground">{stats.topIndustries.length}</p></CardContent></Card>
-                <Card><CardHeader className="pb-2"><CardTitle className="text-sm text-muted-foreground">Aziende</CardTitle></CardHeader><CardContent><p className="text-3xl font-bold text-foreground">{Object.keys(stats.yearMap).length} anni</p></CardContent></Card>
               </div>
 
               <div className="grid md:grid-cols-3 gap-4">
-                {/* By Year */}
                 <Card>
                   <CardHeader><CardTitle className="text-base">Per Anno</CardTitle></CardHeader>
                   <CardContent className="space-y-2">
@@ -349,8 +578,6 @@ export default function AriesDB() {
                     ))}
                   </CardContent>
                 </Card>
-
-                {/* Top Industries */}
                 <Card>
                   <CardHeader><CardTitle className="text-base">Top Settori</CardTitle></CardHeader>
                   <CardContent className="space-y-2">
@@ -365,8 +592,6 @@ export default function AriesDB() {
                     ))}
                   </CardContent>
                 </Card>
-
-                {/* Top Regions */}
                 <Card>
                   <CardHeader><CardTitle className="text-base">Top Regioni</CardTitle></CardHeader>
                   <CardContent className="space-y-2">
@@ -383,7 +608,6 @@ export default function AriesDB() {
                 </Card>
               </div>
 
-              {/* Top Companies */}
               <Card>
                 <CardHeader><CardTitle className="text-base">Top 15 Aziende per Connessioni</CardTitle></CardHeader>
                 <CardContent>
@@ -400,14 +624,13 @@ export default function AriesDB() {
 
             {/* CONTACTS TAB */}
             <TabsContent value="contacts" className="space-y-4">
-              {/* Filters */}
               <Card>
                 <CardContent className="pt-4">
                   <div className="flex flex-wrap gap-3 items-end">
                     <div className="flex-1 min-w-[200px]">
                       <div className="relative">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                        <Input placeholder="Cerca nome, azienda, ruolo, città..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-9" />
+                        <Input placeholder="Cerca nome, azienda, ruolo, email..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-9" />
                       </div>
                     </div>
                     <Select value={industryFilter} onValueChange={setIndustryFilter}>
@@ -445,55 +668,87 @@ export default function AriesDB() {
                 </CardContent>
               </Card>
 
-              {/* Table */}
               <Card>
                 <CardContent className="p-0">
                   <div className="max-h-[600px] overflow-auto">
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead className="w-10"><Checkbox checked={filtered.length > 0 && selected.size === filtered.length} onCheckedChange={toggleSelectAll} /></TableHead>
-                          <TableHead className="cursor-pointer" onClick={() => toggleSort("name")}><span className="flex items-center gap-1">Nome <ArrowUpDown className="h-3 w-3" /></span></TableHead>
-                          <TableHead className="cursor-pointer" onClick={() => toggleSort("jobTitle")}><span className="flex items-center gap-1">Ruolo <ArrowUpDown className="h-3 w-3" /></span></TableHead>
-                          <TableHead className="cursor-pointer" onClick={() => toggleSort("company")}><span className="flex items-center gap-1">Azienda <ArrowUpDown className="h-3 w-3" /></span></TableHead>
-                          <TableHead>Settore</TableHead>
-                          <TableHead className="cursor-pointer" onClick={() => toggleSort("location")}><span className="flex items-center gap-1">Località <ArrowUpDown className="h-3 w-3" /></span></TableHead>
-                          <TableHead>Regione</TableHead>
-                          <TableHead>Anno</TableHead>
-                          <TableHead className="w-10"></TableHead>
-                          <TableHead></TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {filtered.slice(0, 200).map((c, i) => {
-                          const key = getKey(c);
-                          return (
-                          <TableRow key={i} className={selected.has(key) ? "bg-muted/50" : ""}>
-                            <TableCell><Checkbox checked={selected.has(key)} onCheckedChange={() => toggleSelect(key)} /></TableCell>
-                            <TableCell className="font-medium text-foreground max-w-[180px] truncate">{c.name}</TableCell>
-                            <TableCell className="text-sm text-muted-foreground max-w-[200px] truncate">{c.jobTitle}</TableCell>
-                            <TableCell className="text-sm text-foreground max-w-[160px] truncate">{c.company}</TableCell>
-                            <TableCell><Badge variant="outline" className="text-xs">{c.industry}</Badge></TableCell>
-                            <TableCell className="text-sm text-muted-foreground max-w-[140px] truncate">{c.location}</TableCell>
-                            <TableCell><Badge variant="secondary" className="text-xs">{c.region}</Badge></TableCell>
-                            <TableCell className="text-sm">{c.year}</TableCell>
-                            <TableCell>
-                              {c.linkedinUrl && (
-                                <a href={c.linkedinUrl} target="_blank" rel="noopener noreferrer">
-                                  <Linkedin className="h-4 w-4 text-primary hover:text-accent transition-colors" />
-                                </a>
-                              )}
-                            </TableCell>
-                            <TableCell>
-                              <Button variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground hover:text-destructive" onClick={() => deleteSingle(c)}>
-                                <Trash2 className="h-3.5 w-3.5" />
-                              </Button>
-                            </TableCell>
+                    <TooltipProvider>
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead className="w-10"><Checkbox checked={filtered.length > 0 && selected.size === filtered.length} onCheckedChange={toggleSelectAll} /></TableHead>
+                            <TableHead className="cursor-pointer" onClick={() => toggleSort("name")}><span className="flex items-center gap-1">Nome <ArrowUpDown className="h-3 w-3" /></span></TableHead>
+                            <TableHead className="cursor-pointer" onClick={() => toggleSort("jobTitle")}><span className="flex items-center gap-1">Ruolo <ArrowUpDown className="h-3 w-3" /></span></TableHead>
+                            <TableHead className="cursor-pointer" onClick={() => toggleSort("company")}><span className="flex items-center gap-1">Azienda <ArrowUpDown className="h-3 w-3" /></span></TableHead>
+                            <TableHead>Email</TableHead>
+                            <TableHead>Settore</TableHead>
+                            <TableHead>Regione</TableHead>
+                            <TableHead>Status</TableHead>
+                            <TableHead className="w-20"></TableHead>
+                            <TableHead className="w-10"></TableHead>
                           </TableRow>
-                          );
-                        })}
-                      </TableBody>
-                    </Table>
+                        </TableHeader>
+                        <TableBody>
+                          {filtered.slice(0, 200).map((c, i) => {
+                            const key = getKey(c);
+                            const displayEmail = c.enrichedEmail || c.email;
+                            const displayPhone = c.enrichedPhone || c.phone;
+                            const displayLinkedin = c.enrichedLinkedinUrl || c.linkedinUrl;
+                            return (
+                              <TableRow key={i} className={selected.has(key) ? "bg-muted/50" : ""}>
+                                <TableCell><Checkbox checked={selected.has(key)} onCheckedChange={() => toggleSelect(key)} /></TableCell>
+                                <TableCell className="font-medium text-foreground max-w-[180px] truncate">{c.name}</TableCell>
+                                <TableCell className="text-sm text-muted-foreground max-w-[180px] truncate">
+                                  {c.enrichedTitle || c.jobTitle}
+                                </TableCell>
+                                <TableCell className="text-sm text-foreground max-w-[140px] truncate">{c.company}</TableCell>
+                                <TableCell className="text-sm max-w-[180px]">
+                                  {displayEmail ? (
+                                    <Tooltip>
+                                      <TooltipTrigger asChild>
+                                        <a href={`mailto:${displayEmail}`} className="flex items-center gap-1 text-primary hover:underline truncate">
+                                          <Mail className="h-3 w-3 flex-shrink-0" />
+                                          <span className="truncate">{displayEmail}</span>
+                                        </a>
+                                      </TooltipTrigger>
+                                      <TooltipContent>{displayEmail}</TooltipContent>
+                                    </Tooltip>
+                                  ) : (
+                                    <span className="text-muted-foreground text-xs">—</span>
+                                  )}
+                                </TableCell>
+                                <TableCell><Badge variant="outline" className="text-xs">{c.industry}</Badge></TableCell>
+                                <TableCell><Badge variant="secondary" className="text-xs">{c.region}</Badge></TableCell>
+                                <TableCell><EnrichmentBadge status={c.enrichmentStatus} /></TableCell>
+                                <TableCell>
+                                  <div className="flex items-center gap-1">
+                                    {displayLinkedin && (
+                                      <a href={displayLinkedin} target="_blank" rel="noopener noreferrer">
+                                        <Linkedin className="h-4 w-4 text-primary hover:text-accent transition-colors" />
+                                      </a>
+                                    )}
+                                    {displayPhone && (
+                                      <Tooltip>
+                                        <TooltipTrigger asChild>
+                                          <a href={`tel:${displayPhone}`}>
+                                            <Phone className="h-3.5 w-3.5 text-muted-foreground hover:text-primary transition-colors" />
+                                          </a>
+                                        </TooltipTrigger>
+                                        <TooltipContent>{displayPhone}</TooltipContent>
+                                      </Tooltip>
+                                    )}
+                                  </div>
+                                </TableCell>
+                                <TableCell>
+                                  <Button variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground hover:text-destructive" onClick={() => deleteSingle(c)}>
+                                    <Trash2 className="h-3.5 w-3.5" />
+                                  </Button>
+                                </TableCell>
+                              </TableRow>
+                            );
+                          })}
+                        </TableBody>
+                      </Table>
+                    </TooltipProvider>
                     {filtered.length > 200 && (
                       <p className="text-center text-sm text-muted-foreground py-3">Mostrando 200 di {filtered.length} risultati. Usa i filtri per restringere.</p>
                     )}
@@ -517,7 +772,7 @@ export default function AriesDB() {
                           <div className="h-full bg-primary rounded-full" style={{ width: `${(count / stats.total) * 100}%` }} />
                         </div>
                         <p className="text-xs text-muted-foreground">
-                          {enriched.filter(c => c.region === region).reduce((acc, c) => { acc.add(c.industry); return acc; }, new Set<string>()).size} settori
+                          {contacts.filter(c => c.region === region).reduce((acc, c) => { acc.add(c.industry); return acc; }, new Set<string>()).size} settori
                         </p>
                       </div>
                     </CardContent>
@@ -530,7 +785,7 @@ export default function AriesDB() {
             <TabsContent value="industry" className="space-y-4">
               <div className="grid md:grid-cols-2 gap-4">
                 {stats.topIndustries.map(([industry, count]) => {
-                  const industryConns = enriched.filter(c => c.industry === industry);
+                  const industryConns = contacts.filter(c => c.industry === industry);
                   const topCompInIndustry = Object.entries(
                     industryConns.reduce<Record<string, number>>((acc, c) => { if (c.company) acc[c.company] = (acc[c.company] || 0) + 1; return acc; }, {})
                   ).sort((a, b) => b[1] - a[1]).slice(0, 5);
