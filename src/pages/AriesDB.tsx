@@ -254,7 +254,7 @@ export default function AriesDB() {
       industry: classifyIndustry(c),
       region: extractRegion(c.location),
       dedup_key: getDedupeKey(c),
-      enrichment_status: "pending",
+      enrichment_status: "pending" as const,
     }));
 
     // Upsert in batches of 100
