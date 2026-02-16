@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Building2, TrendingUp, Shield, BarChart3, DollarSign, Target, Calendar, Percent, ExternalLink, Activity, RefreshCcw, FileText, AlertTriangle, Save, Loader2, History, Clock } from "lucide-react";
+import { Building2, TrendingUp, Shield, BarChart3, DollarSign, Target, Calendar, Percent, ExternalLink, Activity, RefreshCcw, FileText, AlertTriangle, Save, Loader2, History, Clock, GitCompare } from "lucide-react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { GUPortfolioAccessGate } from "@/components/GUPortfolioAccessGate";
@@ -11,8 +11,10 @@ import { CertificateListManager, Certificate } from "@/components/CertificateLis
 import { PortfolioPDFExport } from "@/components/PortfolioPDFExport";
 import { PortfolioChangeHistory } from "@/components/PortfolioChangeHistory";
 import { PortfolioInstrumentsList } from "@/components/PortfolioInstrumentsList";
+import { PortfolioComparison } from "@/components/PortfolioComparison";
 import { usePortfolioGU } from "@/hooks/usePortfolioGU";
 import { toast } from "sonner";
+import { certificateList } from "@/components/CertificateListManager";
 
 const StructuredProductsGU = () => {
   const [activeTab, setActiveTab] = useState("portfolio");
@@ -168,10 +170,14 @@ const StructuredProductsGU = () => {
       <section className="py-8 px-4">
         <div className="container mx-auto max-w-6xl">
           <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid w-full max-w-lg grid-cols-3 mb-8">
+            <TabsList className="grid w-full max-w-2xl grid-cols-4 mb-8">
               <TabsTrigger value="portfolio" className="flex items-center gap-2">
                 <FileText className="h-4 w-4" />
                 Portafoglio
+              </TabsTrigger>
+              <TabsTrigger value="comparison" className="flex items-center gap-2">
+                <GitCompare className="h-4 w-4" />
+                Confronto
               </TabsTrigger>
               <TabsTrigger value="certificates" className="flex items-center gap-2">
                 <RefreshCcw className="h-4 w-4" />
@@ -187,6 +193,14 @@ const StructuredProductsGU = () => {
               <CertificateListManager 
                 replacingIsin={replacingCert?.isin || undefined}
                 onSelectReplacement={handleSelectReplacement}
+              />
+            </TabsContent>
+
+            <TabsContent value="comparison">
+              <PortfolioComparison 
+                holdings={portfolio?.holdings || []}
+                certificates={certificateList}
+                onStartReplacement={handleStartReplacement}
               />
             </TabsContent>
 
