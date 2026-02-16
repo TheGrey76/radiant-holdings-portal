@@ -7,19 +7,30 @@ import { Building2, TrendingUp, Shield, BarChart3, DollarSign, Target, Calendar,
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { GUPortfolioAccessGate } from "@/components/GUPortfolioAccessGate";
-import { CertificateListManager, Certificate } from "@/components/CertificateListManager";
+import { CertificateListManager, Certificate, certificateList as defaultCertificateList } from "@/components/CertificateListManager";
 import { PortfolioPDFExport } from "@/components/PortfolioPDFExport";
 import { PortfolioChangeHistory } from "@/components/PortfolioChangeHistory";
 import { PortfolioInstrumentsList } from "@/components/PortfolioInstrumentsList";
 import { PortfolioComparison } from "@/components/PortfolioComparison";
+import { CertificateUploader } from "@/components/CertificateUploader";
 import { usePortfolioGU } from "@/hooks/usePortfolioGU";
 import { toast } from "sonner";
-import { certificateList } from "@/components/CertificateListManager";
 
 const StructuredProductsGU = () => {
   const [activeTab, setActiveTab] = useState("portfolio");
   const [replacingCert, setReplacingCert] = useState<{ isin: string; positionLabel: string; name: string } | null>(null);
   const [selectedReplacement, setSelectedReplacement] = useState<Certificate | null>(null);
+  const [uploadedCertificates, setUploadedCertificates] = useState<Certificate[] | null>(null);
+  const [uploadedFileName, setUploadedFileName] = useState<string>('');
+  const [uploadedDate, setUploadedDate] = useState<string>('');
+
+  const activeCertificates = uploadedCertificates || defaultCertificateList;
+
+  const handleCertificatesParsed = (certs: Certificate[], fileName: string, date: string) => {
+    setUploadedCertificates(certs);
+    setUploadedFileName(fileName);
+    setUploadedDate(date);
+  };
 
   const { portfolio, loading: portfolioLoading, saving, replaceCertificate, refetch } = usePortfolioGU();
 
@@ -197,11 +208,18 @@ const StructuredProductsGU = () => {
             </TabsContent>
 
             <TabsContent value="comparison">
-              <PortfolioComparison 
-                holdings={portfolio?.holdings || []}
-                certificates={certificateList}
-                onStartReplacement={handleStartReplacement}
-              />
+              <div className="space-y-6">
+                <CertificateUploader 
+                  onCertificatesParsed={handleCertificatesParsed}
+                  currentFileName={uploadedFileName}
+                  currentDate={uploadedDate}
+                />
+                <PortfolioComparison 
+                  holdings={portfolio?.holdings || []}
+                  certificates={activeCertificates}
+                  onStartReplacement={handleStartReplacement}
+                />
+              </div>
             </TabsContent>
 
             <TabsContent value="history">
