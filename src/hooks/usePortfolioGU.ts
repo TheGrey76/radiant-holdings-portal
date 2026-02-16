@@ -68,9 +68,32 @@ export function usePortfolioGU() {
         .select('*')
         .eq('client_code', 'GU')
         .eq('is_active', true)
-        .single();
+        .maybeSingle();
 
       if (configError) throw configError;
+      
+      if (!configData) {
+        // Auth may not be ready yet — retry once after a short delay
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        const { data: retryData, error: retryError } = await supabase
+          .from('portfolio_configurations')
+          .select('*')
+          .eq('client_code', 'GU')
+          .eq('is_active', true)
+          .maybeSingle();
+        if (retryError) throw retryError;
+        if (!retryData) throw new Error('Portfolio GU non trovato');
+        Object.assign(configData ?? {}, retryData);
+        // Use retryData for the rest
+        const { data: holdingsData, error: holdingsError } = await supabase
+          .from('portfolio_holdings')
+          .select('*')
+          .eq('portfolio_id', retryData.id)
+          .order('position_label');
+        if (holdingsError) throw holdingsError;
+        setPortfolio({ ...retryData, holdings: holdingsData || [] });
+        return;
+      }
 
       // Then get the holdings
       const { data: holdingsData, error: holdingsError } = await supabase
