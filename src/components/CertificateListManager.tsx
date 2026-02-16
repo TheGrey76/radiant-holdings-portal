@@ -28,41 +28,39 @@ export interface Certificate {
   isNew?: boolean;
 }
 
-// Initial list parsed from the PDF
-const certificateList: Certificate[] = [
+// List parsed from PDF — 16 Feb 2026
+export const certificateList: Certificate[] = [
   // Capital Protected
-  { id: 2, isin: 'CH1491786658', issuer: 'Leonteq', theme: 'Italian Equity Capital Protected', type: 'Capital Protected', couponPa: '-', couponFrequency: '-', couponBarrier: '-', capitalBarrier: '100%', maturity: '5 Year', irr: '-', ask: '98.27%', underlyings: 'Leonteq Italian Equity 16%RC Index' },
-  { id: 3, isin: 'CH1491772674', issuer: 'Leonteq', theme: 'Cross Asset Basket', type: 'Capital Protected', couponPa: '-', couponFrequency: '-', couponBarrier: '-', capitalBarrier: 'Formula', maturity: '5 Year', irr: '-', ask: '-', underlyings: 'Leonteq Cross Asset Basket 8%RC Index' },
-  
+  { id: 1, isin: 'CH1505568902', issuer: 'Leonteq', theme: 'Solactive Capital Protected', type: 'Capital Protected', couponPa: '-', couponFrequency: '-', couponBarrier: '-', capitalBarrier: '100%', maturity: '5 Year', irr: '-', ask: '100.91%', underlyings: 'Solactive EU12 Index', isNew: true },
+
   // Phoenix Single Underlying
-  { id: 4, isin: 'DE000VJ3ALX6', issuer: 'Vontobel', theme: 'Single Name on Palantir', type: 'Phoenix Single', couponPa: '11.00%', couponFrequency: 'Quarterly', couponBarrier: '65%', capitalBarrier: '65%', maturity: '3 Year', irr: '11.88%', ask: '97.20%', underlyings: 'Palantir Technologies Inc', isNew: true },
-  { id: 5, isin: 'XS3189111779', issuer: 'Barclays', theme: 'Single Name on Intel', type: 'Phoenix Single', couponPa: '10.40%', couponFrequency: 'Semi-annual', couponBarrier: '65%', capitalBarrier: '65%', maturity: '3 Year', irr: '10.59%', ask: '-', underlyings: 'Intel Corp' },
-  { id: 6, isin: 'DE000VJ3ALY4', issuer: 'Vontobel', theme: 'Single Name on Micron', type: 'Phoenix Single', couponPa: '14.00%', couponFrequency: 'Quarterly', couponBarrier: '65%', capitalBarrier: '65%', maturity: '3 Year', irr: '13.47%', ask: '-', underlyings: 'MICRON TECH', isNew: true },
-  { id: 7, isin: 'XS3189111852', issuer: 'Barclays', theme: 'Single Name on Tesla', type: 'Phoenix Single', couponPa: '13.16%', couponFrequency: 'Semi-annual', couponBarrier: '65%', capitalBarrier: '65%', maturity: '3 Year', irr: '12.29%', ask: '-', underlyings: 'Tesla Inc' },
-  
+  { id: 2, isin: 'DE000VJ3ALX6', issuer: 'Vontobel', theme: 'Single Name on Palantir', type: 'Phoenix Single', couponPa: '11.00%', couponFrequency: 'Quarterly', couponBarrier: '65%', capitalBarrier: '65%', maturity: '3 Year', irr: '14.44%', ask: '90.60%', underlyings: 'Palantir Technologies Inc' },
+  { id: 3, isin: 'DE000VJ3ALY4', issuer: 'Vontobel', theme: 'Single Name on Micron', type: 'Phoenix Single', couponPa: '14.00%', couponFrequency: 'Quarterly', couponBarrier: '65%', capitalBarrier: '65%', maturity: '3 Year', irr: '12.80%', ask: '104.40%', underlyings: 'MICRON TECH' },
+
   // Phoenix Worst-of 2
-  { id: 8, isin: 'XS3221979696', issuer: 'Barclays', theme: 'Quantum Computing Basket', type: 'Phoenix WO-2', couponPa: '28.44%', couponFrequency: 'Quarterly', couponBarrier: '55%', capitalBarrier: '55%', maturity: '2 Year', irr: '26.55%', ask: '-', underlyings: 'IONQ Inc, Rigetti Computing Inc' },
-  
+  { id: 4, isin: 'XS3221979696', issuer: 'Barclays', theme: 'Quantum Computing Basket', type: 'Phoenix WO-2', couponPa: '28.44%', couponFrequency: 'Quarterly', couponBarrier: '55%', capitalBarrier: '55%', maturity: '2 Year', irr: '35.42%', ask: '86.57%', underlyings: 'IONQ Inc, Rigetti Computing Inc' },
+
   // Phoenix Worst-of 3
-  { id: 9, isin: 'XS3167625907', issuer: 'Barclays', theme: 'FinTech Basket', type: 'Phoenix WO-3', couponPa: '15.00%', couponFrequency: 'Monthly', couponBarrier: '50%', capitalBarrier: '50%', maturity: '5 Year', irr: '17.44%', ask: '88.42%', underlyings: 'Block Inc, MicroStrategy Inc, AMD' },
-  { id: 10, isin: 'XS3153270833', issuer: 'Barclays', theme: 'Look Back Ita Basket', type: 'Phoenix WO-3', couponPa: '8.00%', couponFrequency: 'Quarterly', couponBarrier: '65%', capitalBarrier: '65%', maturity: '4 Year', irr: '9.76%', ask: '93.30%', underlyings: 'Ferrari NV, Brunello Cucinelli, Campari' },
-  { id: 11, isin: 'XS3167626897', issuer: 'Barclays', theme: 'ITA Basket', type: 'Phoenix WO-3', couponPa: '12.00%', couponFrequency: 'Quarterly', couponBarrier: '60%', capitalBarrier: '60%', maturity: '5 Year', irr: '13.64%', ask: '94.24%', underlyings: 'Nexi SpA, Campari, Fincantieri SpA' },
-  { id: 12, isin: 'CH1505560248', issuer: 'Leonteq', theme: 'Germany Basket', type: 'Phoenix WO-3', couponPa: '12.00%', couponFrequency: 'Monthly', couponBarrier: '60%', capitalBarrier: '60%', maturity: '4 Year', irr: '11.82%', ask: '-', underlyings: 'Allianz SE, Commerzbank, Deutsche Bank' },
-  { id: 13, isin: 'DE000UQ40VL6', issuer: 'UBS', theme: 'EU Banks Basket', type: 'Phoenix WO-3', couponPa: '10.50%', couponFrequency: 'Monthly', couponBarrier: '65%', capitalBarrier: '60%', maturity: '3 Year', irr: '10.28%', ask: '-', underlyings: 'Deutsche Bank, Soc Gen, Unicredit' },
-  { id: 14, isin: 'XS3178417096', issuer: 'Barclays', theme: 'Italian Blue Chips', type: 'Phoenix WO-3', couponPa: '9.60%', couponFrequency: 'Monthly', couponBarrier: '65%', capitalBarrier: '65%', maturity: '5 Year', irr: '9.26%', ask: '-', underlyings: 'ENI, Enel, Intesa Sanpaolo' },
-  { id: 15, isin: 'DE000UQ71H37', issuer: 'UBS', theme: 'Italian Basket', type: 'Phoenix WO-3', couponPa: '15.75%', couponFrequency: 'Quarterly', couponBarrier: '60%', capitalBarrier: '60%', maturity: '3 Year', irr: '-', ask: '-', underlyings: 'Stellantis, Nexi, STM', isNew: true },
-  { id: 16, isin: 'XS3239587002', issuer: 'Barclays', theme: 'EU Defensive Basket', type: 'Phoenix WO-3', couponPa: '13.52%', couponFrequency: 'Quarterly', couponBarrier: '65%', capitalBarrier: '65%', maturity: '3 Year', irr: '-', ask: '-', underlyings: 'Rheinmetall, BAE Systems, Thales', isNew: true },
-  { id: 17, isin: 'XS3120925063', issuer: 'Barclays', theme: 'Semiconductor Basket', type: 'Phoenix WO-3', couponPa: '15.60%', couponFrequency: 'Quarterly', couponBarrier: '60%', capitalBarrier: '60%', maturity: '5 Year', irr: '18.49%', ask: '90.41%', underlyings: 'AMD, Intel, TSMC' },
-  { id: 18, isin: 'DE000VJ1P3J8', issuer: 'Vontobel', theme: 'Luxury Basket', type: 'Phoenix WO-3', couponPa: '10.56%', couponFrequency: 'Quarterly', couponBarrier: '65%', capitalBarrier: '65%', maturity: '3 Year', irr: '11.31%', ask: '93.80%', underlyings: 'Kering, LVMH, Richemont' },
-  { id: 19, isin: 'XS3189071965', issuer: 'Barclays', theme: 'Energy Basket', type: 'Phoenix WO-3', couponPa: '12.00%', couponFrequency: 'Quarterly', couponBarrier: '60%', capitalBarrier: '60%', maturity: '5 Year', irr: '13.26%', ask: '95.26%', underlyings: 'BP, Shell, TotalEnergies' },
-  { id: 20, isin: 'CH1505566112', issuer: 'Leonteq', theme: 'US Tech Autocallable', type: 'Phoenix WO-3', couponPa: '12.00%', couponFrequency: 'Monthly', couponBarrier: '65%', capitalBarrier: '65%', maturity: '3 Year', irr: '12.51%', ask: '98.28%', underlyings: 'Alphabet, Microsoft, Nvidia' },
-  { id: 21, isin: 'DE000UQ5Q5P2', issuer: 'UBS', theme: 'Italian Banks Basket', type: 'Phoenix WO-3', couponPa: '10.20%', couponFrequency: 'Monthly', couponBarrier: '70%', capitalBarrier: '60%', maturity: '3 Year', irr: '10.26%', ask: '99.62%', underlyings: 'Intesa, Unicredit, BPER' },
-  { id: 22, isin: 'XS3230927454', issuer: 'Barclays', theme: 'Large Pharma Basket', type: 'Phoenix WO-3', couponPa: '13.84%', couponFrequency: 'Quarterly', couponBarrier: '65%', capitalBarrier: '65%', maturity: '3 Year', irr: '13.70%', ask: '-', underlyings: 'Pfizer, JNJ, Merck', isNew: true },
-  { id: 23, isin: 'XS3230910302', issuer: 'Barclays', theme: 'Miners Basket', type: 'Phoenix WO-3', couponPa: '12.00%', couponFrequency: 'Quarterly', couponBarrier: '65%', capitalBarrier: '65%', maturity: '3 Year', irr: '11.79%', ask: '-', underlyings: 'Rio Tinto, BHP, Vale', isNew: true },
-  
+  { id: 5, isin: 'XS3167625907', issuer: 'Barclays', theme: 'FinTech Basket', type: 'Phoenix WO-3', couponPa: '15.00%', couponFrequency: 'Monthly', couponBarrier: '50%', capitalBarrier: '50%', maturity: '5 Year', irr: '20.25%', ask: '75.15%', underlyings: 'Block Inc, MicroStrategy Inc, AMD' },
+  { id: 6, isin: 'XS3167626897', issuer: 'Barclays', theme: 'ITA Basket', type: 'Phoenix WO-3', couponPa: '12.00%', couponFrequency: 'Quarterly', couponBarrier: '60%', capitalBarrier: '60%', maturity: '5 Year', irr: '15.47%', ask: '83.60%', underlyings: 'Nexi SpA, Campari, Fincantieri SpA' },
+  { id: 7, isin: 'XS3153270833', issuer: 'Barclays', theme: 'Look Back Ita Basket', type: 'Phoenix WO-3', couponPa: '8.00%', couponFrequency: 'Quarterly', couponBarrier: '65%', capitalBarrier: '65%', maturity: '4 Year', irr: '9.41%', ask: '95.34%', underlyings: 'Ferrari NV, Brunello Cucinelli, Campari' },
+  { id: 8, isin: 'DE000MS0H208', issuer: 'Morgan Stanley', theme: 'Large Cap Italian Basket', type: 'Phoenix WO-3', couponPa: '11.36%', couponFrequency: 'Quarterly', couponBarrier: '65%', capitalBarrier: '65%', maturity: '5 Year', irr: '11.94%', ask: '97.04%', underlyings: 'Leonardo SpA, Stellantis NV, UniCredit SpA', isNew: true },
+  { id: 9, isin: 'XS3262923546', issuer: 'Barclays', theme: 'EU RECOVERY', type: 'Phoenix WO-3', couponPa: '18.12%', couponFrequency: 'Quarterly', couponBarrier: '65%', capitalBarrier: '65%', maturity: '3 Year', irr: '18.03%', ask: '99.68%', underlyings: 'STMicroelectronics, Stellantis NV, Leonardo SpA', isNew: true },
+  { id: 10, isin: 'DE000MS0H1T2', issuer: 'Morgan Stanley', theme: 'EU Banks Basket', type: 'Phoenix WO-3', couponPa: '9.04%', couponFrequency: 'Quarterly', couponBarrier: '65%', capitalBarrier: '65%', maturity: '5 Year', irr: '8.97%', ask: '101.57%', underlyings: 'BPER Banca, Societe Generale SA, UniCredit SpA' },
+  { id: 13, isin: 'DE000VJ1P3J8', issuer: 'Vontobel', theme: 'Luxury Basket', type: 'Phoenix WO-4', couponPa: '10.52%', couponFrequency: 'Quarterly', couponBarrier: '60%', capitalBarrier: '60%', maturity: '4 Year', irr: '12.88%', ask: '92.30%', underlyings: 'Burberry, Kering, LVMH, Moncler' },
+  { id: 14, isin: 'DE000UQ6CQY4', issuer: 'UBS', theme: 'Italian Mixed Banks', type: 'Phoenix WO-4', couponPa: '13.75%', couponFrequency: 'Quarterly', couponBarrier: '60%', capitalBarrier: '60%', maturity: '5 Year', irr: '14.74%', ask: '95.24%', underlyings: 'MPS, UniCredit, BPER, Banco BPM', isNew: true },
+  { id: 15, isin: 'XS3189071965', issuer: 'Barclays', theme: 'Energy Basket', type: 'Phoenix WO-4', couponPa: '12.00%', couponFrequency: 'Quarterly', couponBarrier: '65%', capitalBarrier: '65%', maturity: '5 Year', irr: '13.03%', ask: '-', underlyings: 'Engie, Eni, Constellation Energy, TotalEnergies' },
+  { id: 16, isin: 'CH1505579362', issuer: 'Leonteq', theme: 'Mixed Equity Basket', type: 'Phoenix WO-4', couponPa: '12.00%', couponFrequency: 'Monthly', couponBarrier: '60%', capitalBarrier: '60%', maturity: '4 Year', irr: '12.65%', ask: '-', underlyings: 'Banco BPM, BPER, Facebook, Netflix', isNew: true },
+  { id: 17, isin: 'CH1505566112', issuer: 'Leonteq', theme: 'US Tech Autocallable', type: 'Phoenix WO-4', couponPa: '12.00%', couponFrequency: 'Monthly', couponBarrier: '50%', capitalBarrier: '50%', maturity: '4 Year', irr: '12.60%', ask: '-', underlyings: 'Alphabet, Apple, NVIDIA, Tesla' },
+  { id: 18, isin: 'CH1505580188', issuer: 'Leonteq', theme: 'Mixed European Banks', type: 'Phoenix WO-4', couponPa: '12.00%', couponFrequency: 'Monthly', couponBarrier: '60%', capitalBarrier: '60%', maturity: '4 Year', irr: '12.41%', ask: '-', underlyings: 'Azimut, Commerzbank, SocGen, UniCredit', isNew: true },
+  { id: 19, isin: 'XS3230910302', issuer: 'Barclays', theme: 'Miners Basket', type: 'Phoenix WO-4', couponPa: '12.08%', couponFrequency: 'Quarterly', couponBarrier: '60%', capitalBarrier: '60%', maturity: '3 Year', irr: '12.67%', ask: '-', underlyings: 'Newmont, Kinross Gold, AngloGold, Wheaton' },
+  { id: 20, isin: 'XS3262948709', issuer: 'Barclays', theme: 'US Low Strike', type: 'Phoenix WO-3', couponPa: '15.76%', couponFrequency: 'Quarterly', couponBarrier: '-', capitalBarrier: '-', maturity: '3 Year', irr: '15.96%', ask: '-', underlyings: 'US Equities', isNew: true },
+  { id: 21, isin: 'DE000UQ71H37', issuer: 'UBS', theme: 'Italian Basket', type: 'Phoenix WO-4', couponPa: '15.75%', couponFrequency: 'Quarterly', couponBarrier: '65%', capitalBarrier: '65%', maturity: '5 Year', irr: '16.08%', ask: '-', underlyings: 'Eni, MPS, Generali, Moncler' },
+  { id: 22, isin: 'XS3230927454', issuer: 'Barclays', theme: 'Large Pharma Basket', type: 'Phoenix WO-4', couponPa: '13.84%', couponFrequency: 'Quarterly', couponBarrier: '65%', capitalBarrier: '65%', maturity: '3 Year', irr: '13.29%', ask: '-', underlyings: 'Pfizer, Bayer, AstraZeneca, Eli Lilly' },
+
   // Phoenix Worst-of 4
-  { id: 24, isin: 'XS3178429703', issuer: 'Barclays', theme: 'US Mixed Basket', type: 'Phoenix WO-4', couponPa: '17.00%', couponFrequency: 'Quarterly', couponBarrier: '60%', capitalBarrier: '60%', maturity: '5 Year', irr: '16.77%', ask: '-', underlyings: 'Tesla, Coinbase, Block, AMD' },
-  { id: 25, isin: 'XS3239537163', issuer: 'Barclays', theme: 'US Defensive Basket', type: 'Phoenix WO-4', couponPa: '14.04%', couponFrequency: 'Quarterly', couponBarrier: '65%', capitalBarrier: '65%', maturity: '3 Year', irr: '13.76%', ask: '100.4%', underlyings: 'Northrop Grumman, Lockheed, Axon, Boeing', isNew: true },
+  { id: 11, isin: 'XS3239537163', issuer: 'Barclays', theme: 'US Defensive Basket', type: 'Phoenix WO-4', couponPa: '14.04%', couponFrequency: 'Quarterly', couponBarrier: '65%', capitalBarrier: '65%', maturity: '3 Year', irr: '20.42%', ask: '81.75%', underlyings: 'Northrop Grumman, Lockheed Martin, Axon, Boeing' },
+  { id: 12, isin: 'XS3239587002', issuer: 'Barclays', theme: 'EU Defensive Basket', type: 'Phoenix WO-4', couponPa: '13.52%', couponFrequency: 'Quarterly', couponBarrier: '65%', capitalBarrier: '65%', maturity: '3 Year', irr: '18.40%', ask: '86.17%', underlyings: 'Rheinmetall, Leonardo, Dassault, BAE Systems' },
 ];
 
 // Calculate composite score for ranking (higher = better)
@@ -523,7 +521,8 @@ export const CertificateListManager = ({
             <span>{certificateList.filter(c => c.isNew).length} nuovi certificati</span>
           </div>
           <div>Top Cedola: <span className="font-semibold text-emerald-600">28.44%</span> (Quantum Computing)</div>
-          <div>Top IRR: <span className="font-semibold text-blue-600">26.55%</span> (Quantum Computing)</div>
+          <div>Top IRR: <span className="font-semibold text-blue-600">35.42%</span> (Quantum Computing)</div>
+          <div className="text-slate-400">Aggiornato: 16 febbraio 2026</div>
         </div>
       </CardContent>
     </Card>
