@@ -41,6 +41,7 @@ export interface SwingPosition {
   exit_price: number | null;
   exit_date: string | null;
   realized_pnl: number | null;
+  max_profit: number | null;
   is_active: boolean;
   notes: string | null;
   created_at: string;

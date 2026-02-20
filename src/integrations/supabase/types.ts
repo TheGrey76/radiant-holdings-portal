@@ -3582,6 +3582,7 @@ export type Database = {
           fees: number | null
           id: string
           is_active: boolean | null
+          max_profit: number | null
           name: string | null
           notes: string | null
           realized_pnl: number | null
@@ -3610,6 +3611,7 @@ export type Database = {
           fees?: number | null
           id?: string
           is_active?: boolean | null
+          max_profit?: number | null
           name?: string | null
           notes?: string | null
           realized_pnl?: number | null
@@ -3638,6 +3640,7 @@ export type Database = {
           fees?: number | null
           id?: string
           is_active?: boolean | null
+          max_profit?: number | null
           name?: string | null
           notes?: string | null
           realized_pnl?: number | null

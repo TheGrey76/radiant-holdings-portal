@@ -61,6 +61,23 @@ export default function SwingPortfolioTable({
 
   const { prices, loading: pricesLoading, lastUpdated, refetch } = useSwingPrices(tickers);
 
+  // Update max_profit when unrealized P&L exceeds current max
+  useMemo(() => {
+    if (pricesLoading || Object.keys(prices).length === 0) return;
+    for (const pos of positions) {
+      if (!pos.is_active || !pos.entry_price || !pos.shares) continue;
+      const livePrice = prices[pos.ticker]?.price;
+      if (!livePrice) continue;
+      const unrealizedPnl = (livePrice - pos.entry_price) * pos.shares - (pos.fees || 0);
+      if (unrealizedPnl > 0 && (pos.max_profit == null || unrealizedPnl > pos.max_profit)) {
+        updatePosition.mutate(
+          { id: pos.id, updates: { max_profit: Math.round(unrealizedPnl * 100) / 100 } },
+          { onSuccess: () => {} } // silent update
+        );
+      }
+    }
+  }, [prices, pricesLoading]);
+
   const ALLOCATION_PER_POSITION = 50000;
   const PERF_FEE_RATE = 0.15; // 15% performance fee
 
@@ -345,6 +362,9 @@ export default function SwingPortfolioTable({
                 <HeaderTip label="MtM Live" tip="Mark-to-Market: valore di mercato corrente della posizione (prezzo live × shares)." align="right" />
               </TableHead>
               <TableHead className="text-right">
+                <HeaderTip label="Max Profit" tip="Massimo profitto non realizzato raggiunto dalla posizione durante la sua vita." align="right" />
+              </TableHead>
+              <TableHead className="text-right">
                 <HeaderTip label="Unrealized P&L" tip="Profitto o perdita non realizzato sulle posizioni aperte, calcolato rispetto al prezzo di mercato corrente." align="right" />
               </TableHead>
               <TableHead className="text-right">
@@ -357,7 +377,7 @@ export default function SwingPortfolioTable({
             {positions.length === 0 && (
               <TableRow>
                 <TableCell
-                  colSpan={15}
+                  colSpan={16}
                   className="text-center text-muted-foreground py-8"
                 >
                   Nessuna posizione. Carica un report per iniziare.
@@ -485,6 +505,16 @@ export default function SwingPortfolioTable({
                       : !pos.is_active
                       ? <span className="text-xs text-muted-foreground">chiusa</span>
                       : "—"}
+                  </TableCell>
+                  {/* Max Profit */}
+                  <TableCell className="text-right">
+                    {pos.max_profit != null ? (
+                      <span className="font-mono text-green-600 text-sm">
+                        {formatPnL(pos.max_profit)}
+                      </span>
+                    ) : (
+                      "—"
+                    )}
                   </TableCell>
                   {/* Unrealized P&L */}
                   <TableCell className="text-right">

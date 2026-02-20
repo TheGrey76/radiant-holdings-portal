@@ -197,3 +197,6 @@ verify_jwt = false
 
 [functions.enrich-ariesdb-contacts]
 verify_jwt = false
+
+[functions.swing-friday-close]
+verify_jwt = false
