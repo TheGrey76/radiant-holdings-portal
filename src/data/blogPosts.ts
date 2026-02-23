@@ -9,6 +9,14 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    title: "Weekly LP News Screening: Fundraising Activities Focus",
+    excerpt: "BlackRock's record $698B inflows, Sequoia's $25B+ Anthropic bet, and Tikehau's US fundraising headwinds — key institutional fundraising developments from the week of January 13–19, 2026.",
+    category: "LP Intelligence",
+    date: "2026-02-23",
+    readTime: "8 min read",
+    slug: "weekly-lp-news-screening-fundraising-activities"
+  },
+  {
     title: "The Great Unlocking: PE Fundraising Surges into 2026",
     excerpt: "Private equity enters 2026 with renewed momentum as mega-funds dominate fundraising, exits surge 93%, and strategic LPs drive capital deployment. Analysis of the latest market dynamics.",
     category: "Private Equity",
