@@ -554,6 +554,30 @@ export default function AriesDB() {
       "Enrichment Status": c.enrichmentStatus || "",
     }));
     const ws = XLSX.utils.json_to_sheet(data);
+    // Make LinkedIn URLs clickable hyperlinks
+    const linkedInCol = Object.keys(data[0]).indexOf("LinkedIn");
+    if (linkedInCol >= 0) {
+      const colLetter = XLSX.utils.encode_col(linkedInCol);
+      data.forEach((row, i) => {
+        const url = (row as any)["LinkedIn"];
+        if (url) {
+          const cellRef = `${colLetter}${i + 2}`; // +2 for header row + 1-indexed
+          ws[cellRef] = { v: url, l: { Target: url, Tooltip: "Open LinkedIn Profile" } };
+        }
+      });
+    }
+    // Make Email clickable mailto links
+    const emailCol = Object.keys(data[0]).indexOf("Email");
+    if (emailCol >= 0) {
+      const colLetter = XLSX.utils.encode_col(emailCol);
+      data.forEach((row, i) => {
+        const email = (row as any)["Email"];
+        if (email) {
+          const cellRef = `${colLetter}${i + 2}`;
+          ws[cellRef] = { v: email, l: { Target: `mailto:${email}` } };
+        }
+      });
+    }
     // Auto-width columns
     const colWidths = Object.keys(data[0]).map(key => ({
       wch: Math.max(key.length, ...data.map(r => String((r as any)[key] || "").length).slice(0, 50)) + 2
