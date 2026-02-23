@@ -538,18 +538,30 @@ export default function AriesDB() {
   const regions = useMemo(() => [...new Set(contacts.map(c => c.region))].sort(), [contacts]);
   const years = useMemo(() => [...new Set(contacts.map(c => c.year))].sort(), [contacts]);
 
-  const exportCSV = useCallback(() => {
+  const exportExcel = useCallback(() => {
     if (!filtered.length) return;
-    const headers = ["Name", "Email", "Enriched Email", "Phone", "Enriched Phone", "Job Title", "Company", "Location", "Region", "Industry", "LinkedIn URL", "Enriched LinkedIn", "Connected On", "Enrichment Status"];
-    const rows = filtered.map(c => [c.name, c.email, c.enrichedEmail || "", c.phone, c.enrichedPhone || "", c.jobTitle, c.company, c.location, c.region, c.industry, c.linkedinUrl, c.enrichedLinkedinUrl || "", c.connectedOn, c.enrichmentStatus || ""]);
-    const csv = [headers, ...rows].map(r => r.map(v => `"${(v || "").replace(/"/g, '""')}"`).join(",")).join("\n");
-    const blob = new Blob([csv], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `aries_db_export_${new Date().toISOString().slice(0, 10)}.csv`;
-    a.click();
-    URL.revokeObjectURL(url);
+    const data = filtered.map(c => ({
+      "Name": c.name || "",
+      "Email": c.email || c.enrichedEmail || "",
+      "Phone": c.phone || c.enrichedPhone || "",
+      "Job Title": c.jobTitle || "",
+      "Company": c.company || "",
+      "Location": c.location || "",
+      "Region": c.region || "",
+      "Industry": c.industry || "",
+      "LinkedIn": c.linkedinUrl || c.enrichedLinkedinUrl || "",
+      "Connected On": c.connectedOn || "",
+      "Enrichment Status": c.enrichmentStatus || "",
+    }));
+    const ws = XLSX.utils.json_to_sheet(data);
+    // Auto-width columns
+    const colWidths = Object.keys(data[0]).map(key => ({
+      wch: Math.max(key.length, ...data.map(r => String((r as any)[key] || "").length).slice(0, 50)) + 2
+    }));
+    ws["!cols"] = colWidths;
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Contacts");
+    XLSX.writeFile(wb, `aries_db_export_${new Date().toISOString().slice(0, 10)}.xlsx`);
   }, [filtered]);
 
   const toggleSort = (field: string) => {
@@ -756,7 +768,7 @@ export default function AriesDB() {
                       </SelectContent>
                     </Select>
                     <Button variant="ghost" size="sm" onClick={clearFilters}><X className="h-4 w-4" /></Button>
-                    <Button variant="outline" size="sm" onClick={exportCSV}><Download className="h-4 w-4 mr-1" />CSV</Button>
+                    <Button variant="outline" size="sm" onClick={exportExcel}><Download className="h-4 w-4 mr-1" />Excel</Button>
                   </div>
                   <div className="flex items-center justify-between mt-2">
                     <p className="text-xs text-muted-foreground">{filtered.length.toLocaleString()} risultati</p>
