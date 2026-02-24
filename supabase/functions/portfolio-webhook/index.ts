@@ -69,7 +69,11 @@ serve(async (req: Request): Promise<Response> => {
         await resend.emails.send({
           from: 'Aries76 <research@aries76.com>',
           to: [email],
+          reply_to: "research@aries76.com",
           subject: `Your ${tier.charAt(0).toUpperCase() + tier.slice(1)} Portfolio Report is Ready`,
+          headers: {
+            "X-Priority": "3",
+          },
           html: `
             <!DOCTYPE html>
             <html>

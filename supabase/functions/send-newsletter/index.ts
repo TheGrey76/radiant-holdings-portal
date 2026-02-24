@@ -205,8 +205,15 @@ const handler = async (req: Request): Promise<Response> => {
         const { data, error } = await resend.emails.send({
           from: 'ARIES76 Newsletter <info@aries76.com>',
           to: [subscriber.email],
+          reply_to: "info@aries76.com",
           subject: subject,
           html: htmlTemplate,
+          headers: {
+            "List-Unsubscribe": `<mailto:unsubscribe@aries76.com?subject=Unsubscribe%20${encodeURIComponent(subscriber.email)}>`,
+            "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+            "Precedence": "bulk",
+            "X-Priority": "3",
+          },
         });
 
         if (error) {

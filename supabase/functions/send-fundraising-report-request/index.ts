@@ -30,9 +30,13 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send notification email to admin
     const adminEmail = await resend.emails.send({
-      from: "Aries76 Notifications <onboarding@resend.dev>",
+      from: "Aries76 Notifications <info@aries76.com>",
       to: ["quinley.martini@aries76.com"],
+      reply_to: requestData.email,
       subject: "New Fundraising Report Sample Request",
+      headers: {
+        "X-Priority": "3",
+      },
       html: `
         <h2>New Fundraising Report Sample Request</h2>
         <p><strong>Name:</strong> ${requestData.full_name}</p>
@@ -49,9 +53,13 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send confirmation email to user
     const userEmail = await resend.emails.send({
-      from: "Aries76 <onboarding@resend.dev>",
+      from: "Aries76 <noreply@aries76.com>",
       to: [requestData.email],
+      reply_to: "quinley.martini@aries76.com",
       subject: "Sample Report Request Received - Aries76",
+      headers: {
+        "X-Priority": "3",
+      },
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #1a1a1a;">Thank you for your interest!</h2>

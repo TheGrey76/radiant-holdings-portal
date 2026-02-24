@@ -180,7 +180,11 @@ serve(async (req) => {
         await resend.emails.send({
           from: 'Aries76 Swing <noreply@aries76.com>',
           to: [notificationEmail],
-          subject: `📊 Nuovo Swing Report: ${reportName} — ${weekRange}`,
+          reply_to: "info@aries76.com",
+          subject: `Nuovo Swing Report: ${reportName} - ${weekRange}`,
+          headers: {
+            "X-Priority": "3",
+          },
           html: `
             <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto;">
               <h2 style="color: #1a365d;">Nuovo Swing Report Caricato</h2>

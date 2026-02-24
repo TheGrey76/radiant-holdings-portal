@@ -80,10 +80,14 @@ const handler = async (req: Request): Promise<Response> => {
         personalizations: [
           {
             to: [{ email: "quinley.martini@aries76.com" }],
-            subject: `🔥 NEW Business Intelligence Request - ${companyName}`,
+            subject: `NEW Business Intelligence Request - ${companyName}`,
           },
         ],
         from: { email: "noreply@aries76.com", name: "ARIES76 Requests" },
+        reply_to: { email: email, name: companyName },
+        headers: {
+          "X-Priority": "3",
+        },
         content: [
           {
             type: "text/html",

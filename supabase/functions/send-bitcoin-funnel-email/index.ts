@@ -203,8 +203,15 @@ serve(async (req) => {
     const emailResponse = await resend.emails.send({
       from: "ARIES76 Research <research@aries76.com>",
       to: [email],
+      reply_to: "research@aries76.com",
       subject: template.subject,
       html: template.html(email),
+      headers: {
+        "List-Unsubscribe": `<mailto:unsubscribe@aries76.com?subject=Unsubscribe%20${encodeURIComponent(email)}>`,
+        "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+        "Precedence": "bulk",
+        "X-Priority": "3",
+      },
     });
 
     console.log("Email sent successfully:", emailResponse);

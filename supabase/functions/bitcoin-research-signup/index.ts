@@ -90,7 +90,11 @@ serve(async (req) => {
           await resend.emails.send({
             from: "ARIES76 Research <research@aries76.com>",
             to: [normalizedEmail],
-            subject: "Your access code — Bitcoin Research",
+            reply_to: "research@aries76.com",
+            subject: "Your access code - Bitcoin Research",
+            headers: {
+              "X-Priority": "3",
+            },
             html: `
               <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 40px 20px; background: #0d1117; color: #e5e5e5;">
                 <div style="text-align: center; margin-bottom: 30px;">
