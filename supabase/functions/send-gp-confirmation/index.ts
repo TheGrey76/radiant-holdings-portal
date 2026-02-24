@@ -25,9 +25,13 @@ const handler = async (req: Request): Promise<Response> => {
     const { firstName, lastName, email, firmName }: GPConfirmationRequest = await req.json();
 
     const emailResponse = await resend.emails.send({
-      from: "Aries76 <onboarding@resend.dev>",
+      from: "Aries76 <noreply@aries76.com>",
       to: [email],
+      reply_to: "info@aries76.com",
       subject: "Welcome to Aries76 GP Capital Advisory",
+      headers: {
+        "X-Priority": "3",
+      },
       html: `
         <!DOCTYPE html>
         <html>

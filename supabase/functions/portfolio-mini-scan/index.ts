@@ -340,7 +340,11 @@ serve(async (req: Request): Promise<Response> => {
         const emailResponse = await resend.emails.send({
           from: 'Aries76 <research@aries76.com>',
           to: [normalizedEmail],
+          reply_to: "research@aries76.com",
           subject: `Your Portfolio Mini-Scan: Risk Score ${analysisResults.riskScore} (${analysisResults.riskLevel})`,
+          headers: {
+            "X-Priority": "3",
+          },
           html: `
             <!DOCTYPE html>
             <html>

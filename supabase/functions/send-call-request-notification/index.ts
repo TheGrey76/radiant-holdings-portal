@@ -30,9 +30,13 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Email 1: Notification to admin
     const adminEmailResponse = await resend.emails.send({
-      from: "Aries76 <onboarding@resend.dev>",
+      from: "Aries76 <info@aries76.com>",
       to: ["edoardo.grigione@aries76.com"],
+      reply_to: email,
       subject: "New GP Call Request",
+      headers: {
+        "X-Priority": "3",
+      },
       html: `
         <!DOCTYPE html>
         <html>
@@ -58,9 +62,13 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Email 2: Confirmation to user
     const userEmailResponse = await resend.emails.send({
-      from: "Aries76 <onboarding@resend.dev>",
+      from: "Aries76 <noreply@aries76.com>",
       to: [email],
+      reply_to: "info@aries76.com",
       subject: "Your Call Request Has Been Received",
+      headers: {
+        "X-Priority": "3",
+      },
       html: `
         <!DOCTYPE html>
         <html>

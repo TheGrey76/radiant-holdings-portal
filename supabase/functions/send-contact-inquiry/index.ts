@@ -96,9 +96,13 @@ const handler = async (req: Request): Promise<Response> => {
     // Send confirmation email to user
     try {
       const confirmationEmail = await resend.emails.send({
-        from: "Aries76 Ltd <onboarding@resend.dev>",
+        from: "Aries76 Ltd <noreply@aries76.com>",
         to: [email],
+        reply_to: "info@aries76.com",
         subject: "We've received your inquiry - Aries76 Ltd",
+        headers: {
+          "X-Priority": "3",
+        },
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <h1 style="color: #1a1a1a; font-size: 24px; margin-bottom: 20px;">Thank you for reaching out!</h1>
@@ -135,9 +139,13 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send notification email to Aries76
     const notificationEmail = await resend.emails.send({
-      from: "Aries76 Contact Form <onboarding@resend.dev>",
+      from: "Aries76 Contact Form <info@aries76.com>",
       to: ["edoardo.grigione@aries76.com"],
+      reply_to: email,
       subject: `New ${inquiryType.toUpperCase()} Inquiry from ${safeName}`,
+      headers: {
+        "X-Priority": "3",
+      },
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h1 style="color: #1a1a1a; font-size: 24px; margin-bottom: 20px;">New Contact Inquiry</h1>

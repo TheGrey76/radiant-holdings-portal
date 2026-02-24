@@ -36,7 +36,11 @@ const handler = async (req: Request): Promise<Response> => {
     const adminEmailResponse = await resend.emails.send({
       from: "Aries76 Assessments <noreply@aries76.com>",
       to: ["quinley.martini@aries76.com"],
+      reply_to: bookingData.contact_email,
       subject: `New Assessment Booking: ${bookingData.contact_name} - ${bookingData.client_type}`,
+      headers: {
+        "X-Priority": "3",
+      },
       html: `
         <h2>New Assessment Booking Request</h2>
         
@@ -76,7 +80,11 @@ const handler = async (req: Request): Promise<Response> => {
     const userEmailResponse = await resend.emails.send({
       from: "Aries76 <noreply@aries76.com>",
       to: [bookingData.contact_email],
+      reply_to: "quinley.martini@aries76.com",
       subject: "Assessment Booking Confirmation - Aries76",
+      headers: {
+        "X-Priority": "3",
+      },
       html: `
         <h2>Thank you for booking an assessment, ${bookingData.contact_name}!</h2>
         

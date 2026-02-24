@@ -110,9 +110,13 @@ const handler = async (req: Request): Promise<Response> => {
     console.log("📤 Sending email to quinley.martini@aries76.com...");
     
     const emailResponse = await resend.emails.send({
-      from: "Aries76 LP Requests <onboarding@resend.dev>",
+      from: "Aries76 LP Requests <info@aries76.com>",
       to: ["edoardo.grigione@aries76.com"],
-      subject: `🔥 NEW LP Information Request - ${data.organization}`,
+      reply_to: data.email,
+      subject: `NEW LP Information Request - ${data.organization}`,
+      headers: {
+        "X-Priority": "3",
+      },
       html: `
         <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f8f9fa;">
           <div style="background: linear-gradient(135deg, #1a2744 0%, #0d1424 100%); padding: 30px; border-radius: 12px 12px 0 0;">
