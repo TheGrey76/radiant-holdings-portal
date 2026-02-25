@@ -430,18 +430,20 @@ export default function SwingPortfolioTable({
                     </div>
                   </TableCell>
                   <TableCell>
-                    <Badge
-                      variant={
-                        pos.status === "LONG"
-                          ? "default"
-                          : pos.status === "WATCHLIST"
-                          ? "secondary"
-                          : "destructive"
-                      }
-                      className="text-xs"
-                    >
-                      {pos.status}
-                    </Badge>
+                     <Badge
+                       variant={
+                         pos.status === "LONG" || pos.status === "PASS"
+                           ? "default"
+                           : pos.status === "WATCHLIST"
+                           ? "secondary"
+                           : pos.status === "SHORT"
+                           ? "outline"
+                           : "destructive"
+                       }
+                       className="text-xs"
+                     >
+                       {pos.status === "PASS" ? "LONG" : pos.status}
+                     </Badge>
                   </TableCell>
                   <TableCell className="text-right text-xs font-mono">
                     {pos.entry_zone_low && pos.entry_zone_high
