@@ -24,7 +24,7 @@ export default function SwingReport() {
 
   const handleFile = useCallback(
     (file: File) => {
-      if (!file.name.endsWith(".json")) {
+      if (!file.name.toLowerCase().endsWith(".json")) {
         toast.error("Solo file JSON supportati");
         return;
       }
