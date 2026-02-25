@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <footer className="bg-gradient-to-br from-[#0f1729] via-[#1a2744] to-[#0d1424] text-white py-16">
       <div className="container mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-12 mb-12">
           <div>
             <div className="mb-6">
               <div className="text-3xl font-light tracking-wider text-white uppercase">
@@ -52,6 +52,27 @@ const Footer = () => {
               <li><Link to="/blog" className="text-white/70 hover:text-accent transition-colors font-light text-sm">Articles & Analysis</Link></li>
               <li><Link to="/press" className="text-white/70 hover:text-accent transition-colors font-light text-sm">Case Studies</Link></li>
             </ul>
+          </div>
+
+          <div>
+            <h3 className="text-xs uppercase tracking-widest mb-6 font-light">Our Platforms</h3>
+            <ul className="space-y-3">
+              <li>
+                <a href="https://www.raiseplatform.eu" target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-accent transition-colors font-light text-sm">
+                  Raise Platform
+                </a>
+                <span className="block text-white/40 text-[0.65rem] font-light mt-0.5">Capital Intelligence</span>
+              </li>
+              <li>
+                <a href="https://www.alphaflow.network" target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-accent transition-colors font-light text-sm">
+                  AlphaFlow
+                </a>
+                <span className="block text-white/40 text-[0.65rem] font-light mt-0.5">Trading System</span>
+              </li>
+            </ul>
+            <p className="text-white/30 text-[0.6rem] font-light mt-4 tracking-wide">
+              In development — launching 2026
+            </p>
           </div>
           
           <div>
