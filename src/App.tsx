@@ -100,6 +100,7 @@ import AdminDatabase from "./pages/AdminDatabase";
 import CriptosPortfolio from "./pages/CriptosPortfolio";
 import CriptosAccessGate from "./components/CriptosAccessGate";
 import AriesDB from "./pages/AriesDB";
+import Platforms from "./pages/Platforms";
 
 const queryClient = new QueryClient();
 
@@ -206,6 +207,7 @@ const App = () => (
           <Route path="/press" element={<Press />} />
           <Route path="/criptos-portfolio" element={<CriptosAccessGate><CriptosPortfolio /></CriptosAccessGate>} />
           <Route path="/aries-db" element={<AriesDB />} />
+          <Route path="/platforms" element={<Platforms />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />
