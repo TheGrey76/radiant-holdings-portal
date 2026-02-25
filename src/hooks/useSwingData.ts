@@ -98,24 +98,51 @@ export function useUploadReport() {
           positionsArray = jsonData.positions;
           reportMeta = jsonData.report || jsonData;
         } else if (Array.isArray(jsonData.ideas)) {
-          // Synth response format with abbreviated keys
-          positionsArray = jsonData.ideas.map((idea: any) => ({
-            ticker: idea.t,
-            name: idea.t,
-            entry_zone_low: idea.e?.[0] ?? null,
-            entry_zone_high: idea.e?.[1] ?? null,
-            stop_loss: idea.inv ?? null,
-            target_1: idea.tg?.[0] ?? null,
-            target_2: idea.tg?.[1] ?? null,
-            target_3: idea.tg?.[2] ?? null,
-            risk_reward: idea.rr ?? null,
-            allocation_pct: idea.sz ?? null,
-            confidence: idea.s != null ? `${idea.s}/5` : null,
-            entry_price: idea.cp ?? null,
-            notes: idea.sum || null,
-            is_active: true,
-            status: "PASS",
-          }));
+          // Synth response v2 format with abbreviated keys
+          const dirMap: Record<string, string> = { L: "LONG", S: "SHORT" };
+          const themeMap: Record<string, string> = {
+            M: "Momentum", E: "Earnings", Q: "Quality", MR: "Mean Reversion",
+            V: "Value", G: "Growth", T: "Technical", C: "Catalyst",
+          };
+          const viewMap: Record<string, string> = { W: "Weekly", D: "Daily", M: "Monthly" };
+
+          positionsArray = jsonData.ideas.map((idea: any) => {
+            // Build rich notes from sum + risks + cancel monitors
+            const parts: string[] = [];
+            if (idea.sum) parts.push(idea.sum);
+            if (idea.d) parts.push(`Direction: ${dirMap[idea.d] || idea.d}`);
+            if (idea.th) parts.push(`Theme: ${themeMap[idea.th] || idea.th}`);
+            if (idea.v) parts.push(`View: ${viewMap[idea.v] || idea.v}`);
+            if (Array.isArray(idea.rn) && idea.rn.length > 0)
+              parts.push(`⚠️ Risks: ${idea.rn.join(" | ")}`);
+            if (Array.isArray(idea.cm) && idea.cm.length > 0)
+              parts.push(`🚫 Cancel if: ${idea.cm.join(" | ")}`);
+
+            // Infer sector from ps.sec keys if available
+            const sectorKeys = jsonData.ps?.sec ? Object.keys(jsonData.ps.sec) : [];
+            const sectorLabel = sectorKeys.length > 0
+              ? sectorKeys[Math.min((idea.r || 1) - 1, sectorKeys.length - 1)]?.replace(/_/g, " ")
+              : null;
+
+            return {
+              ticker: idea.t,
+              name: idea.t,
+              sector: sectorLabel,
+              entry_zone_low: idea.e?.[0] ?? null,
+              entry_zone_high: idea.e?.[1] ?? null,
+              stop_loss: idea.inv ?? null,
+              target_1: idea.tg?.[0] ?? null,
+              target_2: idea.tg?.[1] ?? null,
+              target_3: idea.tg?.[2] ?? null,
+              risk_reward: idea.rr ?? null,
+              allocation_pct: idea.sz ?? null,
+              confidence: idea.s != null ? `${idea.s}/5` : null,
+              entry_price: null, // cp is reference price, not entry
+              notes: parts.join("\n"),
+              is_active: true,
+              status: idea.d === "S" ? "SHORT" : "PASS",
+            };
+          });
         } else {
           throw new Error("JSON non valido: deve contenere un array di posizioni o ideas");
         }
