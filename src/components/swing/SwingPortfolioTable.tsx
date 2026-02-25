@@ -332,7 +332,7 @@ export default function SwingPortfolioTable({
               </TableHead>
               <TableHead>Nome</TableHead>
               <TableHead>
-                <HeaderTip label="Status" tip="PASS = pronto per l'ingresso, WATCHLIST = in osservazione." />
+                <HeaderTip label="Status" tip="LONG = posizione rialzista, SHORT = posizione ribassista, WATCHLIST = in osservazione." />
               </TableHead>
               <TableHead className="text-right">
                 <HeaderTip label="Entry Zone" tip="Range di prezzo consigliato per l'acquisto." align="right" />
@@ -432,7 +432,7 @@ export default function SwingPortfolioTable({
                   <TableCell>
                     <Badge
                       variant={
-                        pos.status === "PASS"
+                        pos.status === "LONG"
                           ? "default"
                           : pos.status === "WATCHLIST"
                           ? "secondary"

@@ -162,7 +162,7 @@ export function useUploadReport() {
               entry_price: null,
               notes: parts.join("\n"),
               is_active: true,
-              status: idea.d === "S" ? "SHORT" : "PASS",
+              status: idea.d === "S" ? "SHORT" : "LONG",
             };
           });
         } else {
@@ -207,7 +207,7 @@ export function useUploadReport() {
             ticker: p.ticker?.toUpperCase(),
             name: p.name || null,
             sector: p.sector || null,
-            status: p.status || "PASS",
+            status: p.status || "LONG",
             entry_zone_low: p.entry_zone_low ?? null,
             entry_zone_high: p.entry_zone_high ?? null,
             stop_loss: p.stop_loss ?? null,
