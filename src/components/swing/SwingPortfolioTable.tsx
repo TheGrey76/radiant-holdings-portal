@@ -436,8 +436,6 @@ export default function SwingPortfolioTable({
                            ? "default"
                            : pos.status === "WATCHLIST"
                            ? "secondary"
-                           : pos.status === "SHORT"
-                           ? "outline"
                            : "destructive"
                        }
                        className="text-xs"
