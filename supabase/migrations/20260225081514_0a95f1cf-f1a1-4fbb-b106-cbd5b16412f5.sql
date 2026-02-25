@@ -1,0 +1,1 @@
+UPDATE swing_positions SET status = 'LONG' WHERE status = 'PASS';
