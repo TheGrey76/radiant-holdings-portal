@@ -136,12 +136,12 @@ const Platforms = () => {
             transition={{ duration: 0.7 }}
             className="relative rounded-2xl overflow-hidden"
             style={{
-              background: "linear-gradient(135deg, hsl(230, 25%, 6%) 0%, hsl(225, 20%, 10%) 50%, hsl(200, 30%, 10%) 100%)",
+              background: "linear-gradient(135deg, hsl(230, 25%, 6%) 0%, hsl(225, 20%, 10%) 50%, hsl(20, 30%, 10%) 100%)",
             }}
           >
             {/* Glow accent */}
             <div className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full opacity-15 blur-[100px]"
-              style={{ background: "hsl(200, 80%, 50%)" }} />
+              style={{ background: "hsl(25, 95%, 55%)" }} />
 
             <div className="relative z-10 p-8 md:p-16 lg:p-20">
               <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
@@ -165,8 +165,8 @@ const Platforms = () => {
                       }}
                     >
                       <div className="shrink-0 w-10 h-10 rounded-lg flex items-center justify-center"
-                        style={{ background: "hsl(200, 80%, 50% / 0.12)" }}>
-                        <feature.icon className="w-5 h-5" style={{ color: "hsl(200, 70%, 55%)" }} />
+                        style={{ background: "hsl(25, 95%, 55% / 0.12)" }}>
+                        <feature.icon className="w-5 h-5" style={{ color: "hsl(25, 90%, 60%)" }} />
                       </div>
                       <div>
                         <h4 className="text-sm font-medium mb-1" style={{ color: "hsl(0, 0%, 90%)" }}>{feature.title}</h4>
@@ -179,8 +179,8 @@ const Platforms = () => {
                 {/* Right: Content */}
                 <div className="order-1 md:order-2">
                   <div className="flex items-center gap-3 mb-6">
-                    <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: "hsl(200, 80%, 50%)" }} />
-                    <span className="text-xs tracking-[0.3em] uppercase font-medium" style={{ color: "hsl(200, 70%, 60%)" }}>
+                    <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: "hsl(25, 95%, 55%)" }} />
+                    <span className="text-xs tracking-[0.3em] uppercase font-medium" style={{ color: "hsl(25, 90%, 65%)" }}>
                       Building in Progress
                     </span>
                   </div>
@@ -188,7 +188,7 @@ const Platforms = () => {
                   <h2 className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight mb-2" style={{ color: "hsl(0, 0%, 95%)" }}>
                     AlphaFlow
                   </h2>
-                  <p className="text-base md:text-lg font-light tracking-wide mb-8" style={{ color: "hsl(200, 70%, 55%)" }}>
+                  <p className="text-base md:text-lg font-light tracking-wide mb-8" style={{ color: "hsl(25, 90%, 60%)" }}>
                     Systematic Trading & Research
                   </p>
 
@@ -204,7 +204,7 @@ const Platforms = () => {
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-3 px-6 py-3 rounded-lg text-sm font-medium tracking-wide transition-all duration-300 hover:gap-4"
                     style={{
-                      background: "hsl(200, 80%, 50%)",
+                      background: "hsl(25, 95%, 55%)",
                       color: "hsl(0, 0%, 100%)",
                     }}
                   >
