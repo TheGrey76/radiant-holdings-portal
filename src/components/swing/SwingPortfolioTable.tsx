@@ -380,7 +380,7 @@ export default function SwingPortfolioTable({
             {positions.length === 0 && (
               <TableRow>
                 <TableCell
-                  colSpan={16}
+                  colSpan={17}
                   className="text-center text-muted-foreground py-8"
                 >
                   Nessuna posizione. Carica un report per iniziare.
