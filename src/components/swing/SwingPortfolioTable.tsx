@@ -487,6 +487,20 @@ export default function SwingPortfolioTable({
                       "—"
                     )}
                   </TableCell>
+                  <TableCell className="text-right font-mono text-xs">
+                    {(() => {
+                      const wh = prices[pos.ticker]?.week_high;
+                      const wl = prices[pos.ticker]?.week_low;
+                      if (wh != null && wl != null) {
+                        return (
+                          <div className="flex flex-col items-end">
+                            <span>${wl.toFixed(2)} – ${wh.toFixed(2)}</span>
+                          </div>
+                        );
+                      }
+                      return "—";
+                    })()}
+                  </TableCell>
                   <TableCell className="text-right font-mono">
                     {pos.shares || "—"}
                   </TableCell>
