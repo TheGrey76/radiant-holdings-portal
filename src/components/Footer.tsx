@@ -76,8 +76,10 @@ const Footer = () => {
           </div>
           
           <div>
-            <h3 className="text-xs uppercase tracking-widest mb-6 font-light">Contact</h3>
-            <p className="text-white/70 font-light mb-2 text-sm">27 Old Gloucester Street, London, United Kingdom, WC1N 3AX</p>
+            <h3 className="text-xs uppercase tracking-widest mb-6 font-light">Headquarter</h3>
+            <p className="text-white/70 font-light mb-2 text-sm">27 Old Gloucester Street<br />London, WC1N 3AX<br />United Kingdom</p>
+            <h3 className="text-xs uppercase tracking-widest mb-4 mt-6 font-light">Budapest Office</h3>
+            <p className="text-white/70 font-light mb-4 text-sm">Kertész u. 37<br />Budapest, 1073<br />Hungary</p>
             <a href="mailto:quinley.martini@aries76.com" className="text-white/70 hover:text-accent transition-colors font-light text-sm">
               quinley.martini@aries76.com
             </a>
