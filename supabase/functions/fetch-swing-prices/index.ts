@@ -72,7 +72,6 @@ serve(async (req) => {
       // Check for API-level error (rate limit, auth, etc.)
       if (data.code && data.message) {
         console.error(`Twelve Data API error: code=${data.code}, message=${data.message}`);
-        // Return cached data even if stale, or empty
         for (const ticker of uncachedTickers) {
           const stale = cachedRows?.find((r: any) => r.ticker === ticker);
           if (stale) {
@@ -101,7 +100,6 @@ serve(async (req) => {
             await upsertCache(supabase, ticker, result);
           } else {
             console.warn(`No valid data for ${ticker}: ${JSON.stringify(tickerData)?.slice(0, 200)}`);
-            // Try stale cache
             const stale = cachedRows?.find((r: any) => r.ticker === ticker);
             if (stale) {
               freshResults[ticker] = stale.price_data;
@@ -115,6 +113,17 @@ serve(async (req) => {
     }
 
     const allResults = { ...cachedResults, ...freshResults };
+
+    // Fetch weekly ranges for all tickers
+    const weeklyRanges = await fetchWeeklyRanges(tickers, TWELVE_DATA_API_KEY);
+    // Merge weekly ranges into results
+    for (const ticker of tickers) {
+      if (allResults[ticker] && weeklyRanges[ticker]) {
+        allResults[ticker].week_high = weeklyRanges[ticker].high;
+        allResults[ticker].week_low = weeklyRanges[ticker].low;
+        allResults[ticker].week_start = weeklyRanges[ticker].start;
+      }
+    }
 
     return new Response(JSON.stringify({
       prices: allResults,
@@ -165,4 +174,66 @@ async function upsertCache(supabase: any, ticker: string, priceData: any) {
   if (error) {
     console.error(`Cache upsert failed for ${ticker}:`, error.message);
   }
+}
+
+// Calculate the Monday of the current week (UTC)
+function getWeekMonday(): string {
+  const now = new Date();
+  const day = now.getUTCDay(); // 0=Sun, 1=Mon, ...
+  const diff = day === 0 ? 6 : day - 1; // days since Monday
+  const monday = new Date(now);
+  monday.setUTCDate(now.getUTCDate() - diff);
+  const yyyy = monday.getUTCFullYear();
+  const mm = String(monday.getUTCMonth() + 1).padStart(2, '0');
+  const dd = String(monday.getUTCDate()).padStart(2, '0');
+  return `${yyyy}-${mm}-${dd}`;
+}
+
+async function fetchWeeklyRanges(
+  tickers: string[],
+  apiKey: string
+): Promise<Record<string, { high: number; low: number; start: string }>> {
+  const weekStart = getWeekMonday();
+  const results: Record<string, { high: number; low: number; start: string }> = {};
+
+  try {
+    // Fetch time_series for each ticker (batch not supported for time_series on all plans)
+    // Process in batches of 4 to respect rate limits
+    const batchSize = 4;
+    for (let i = 0; i < tickers.length; i += batchSize) {
+      const batch = tickers.slice(i, i + batchSize);
+      const promises = batch.map(async (ticker) => {
+        try {
+          const url = `https://api.twelvedata.com/time_series?symbol=${ticker}&interval=1day&start_date=${weekStart}&apikey=${apiKey}`;
+          const resp = await fetch(url);
+          const data = await resp.json();
+
+          if (data.values && Array.isArray(data.values) && data.values.length > 0) {
+            let weekHigh = -Infinity;
+            let weekLow = Infinity;
+            for (const bar of data.values) {
+              const h = parseFloat(bar.high);
+              const l = parseFloat(bar.low);
+              if (!isNaN(h) && h > weekHigh) weekHigh = h;
+              if (!isNaN(l) && l < weekLow) weekLow = l;
+            }
+            if (weekHigh !== -Infinity && weekLow !== Infinity) {
+              results[ticker] = { high: weekHigh, low: weekLow, start: weekStart };
+            }
+          }
+        } catch (e) {
+          console.warn(`Weekly range fetch failed for ${ticker}:`, e);
+        }
+      });
+      await Promise.all(promises);
+      // Small delay between batches to avoid rate limiting
+      if (i + batchSize < tickers.length) {
+        await new Promise(r => setTimeout(r, 1000));
+      }
+    }
+  } catch (e) {
+    console.error('Error fetching weekly ranges:', e);
+  }
+
+  return results;
 }

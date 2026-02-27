@@ -15,6 +15,9 @@ export interface StockPrice {
   volume: number | null;
   exchange: string | null;
   currency: string;
+  week_high?: number | null;
+  week_low?: number | null;
+  week_start?: string | null;
   error?: string;
 }
 
