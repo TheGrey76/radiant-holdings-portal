@@ -6,7 +6,8 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
 };
 
-const CACHE_TTL_MS = 3 * 60 * 1000; // 3 minutes DB cache
+const CACHE_TTL_MS = 3 * 60 * 1000; // 3 minutes for quotes
+const WEEKLY_CACHE_TTL_MS = 30 * 60 * 1000; // 30 minutes for weekly ranges
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -57,6 +58,7 @@ serve(async (req) => {
     }
 
     let freshResults: Record<string, any> = {};
+    let apiCreditsUsed = 0;
 
     if (uncachedTickers.length > 0) {
       const symbolsParam = uncachedTickers.join(',');
@@ -66,10 +68,10 @@ serve(async (req) => {
         `https://api.twelvedata.com/quote?symbol=${symbolsParam}&apikey=${TWELVE_DATA_API_KEY}`
       );
       const data = await response.json();
+      apiCreditsUsed += uncachedTickers.length;
 
       console.log(`Twelve Data response status: ${response.status}, keys: ${JSON.stringify(Object.keys(data))}`);
 
-      // Check for API-level error (rate limit, auth, etc.)
       if (data.code && data.message) {
         console.error(`Twelve Data API error: code=${data.code}, message=${data.message}`);
         for (const ticker of uncachedTickers) {
@@ -88,7 +90,6 @@ serve(async (req) => {
           freshResults[ticker] = result;
           await upsertCache(supabase, ticker, result);
         } else {
-          console.warn(`No valid data for ${ticker}: ${JSON.stringify(data).slice(0, 200)}`);
           freshResults[ticker] = { ticker, error: data?.message || 'No data', price: null };
         }
       } else {
@@ -99,7 +100,6 @@ serve(async (req) => {
             freshResults[ticker] = result;
             await upsertCache(supabase, ticker, result);
           } else {
-            console.warn(`No valid data for ${ticker}: ${JSON.stringify(tickerData)?.slice(0, 200)}`);
             const stale = cachedRows?.find((r: any) => r.ticker === ticker);
             if (stale) {
               freshResults[ticker] = stale.price_data;
@@ -114,14 +114,85 @@ serve(async (req) => {
 
     const allResults = { ...cachedResults, ...freshResults };
 
-    // Fetch weekly ranges for all tickers
-    const weeklyRanges = await fetchWeeklyRanges(tickers, TWELVE_DATA_API_KEY);
-    // Merge weekly ranges into results
+    // Fetch weekly ranges — use separate cache with longer TTL
+    const weekStart = getWeekMonday();
+    const weekCacheKey = `week_${weekStart}`;
+
+    // Check which tickers already have cached weekly data
+    const tickersNeedingWeekly: string[] = [];
     for (const ticker of tickers) {
-      if (allResults[ticker] && weeklyRanges[ticker]) {
-        allResults[ticker].week_high = weeklyRanges[ticker].high;
-        allResults[ticker].week_low = weeklyRanges[ticker].low;
-        allResults[ticker].week_start = weeklyRanges[ticker].start;
+      const result = allResults[ticker];
+      if (result && result._week_cache_key === weekCacheKey) {
+        // Already has valid weekly data from cache
+        continue;
+      }
+      tickersNeedingWeekly.push(ticker);
+    }
+
+    // Check DB for cached weekly ranges
+    const { data: weeklyCachedRows } = await supabase
+      .from('swing_price_cache')
+      .select('ticker, price_data, fetched_at')
+      .in('ticker', tickers);
+
+    // Find tickers that need fresh weekly data
+    const tickersToFetchWeekly: string[] = [];
+    for (const ticker of tickersNeedingWeekly) {
+      const cached = weeklyCachedRows?.find((r: any) => r.ticker === ticker);
+      if (cached?.price_data?.week_high != null && cached?.price_data?._week_cache_key === weekCacheKey) {
+        const cachedAge = now - new Date(cached.fetched_at).getTime();
+        if (cachedAge < WEEKLY_CACHE_TTL_MS) {
+          // Use cached weekly data
+          if (allResults[ticker]) {
+            allResults[ticker].week_high = cached.price_data.week_high;
+            allResults[ticker].week_low = cached.price_data.week_low;
+            allResults[ticker].week_start = weekStart;
+          }
+          continue;
+        }
+      }
+      tickersToFetchWeekly.push(ticker);
+    }
+
+    // Fetch weekly ranges one at a time, respecting rate limits
+    // Max 2 per invocation to stay under 8 credits/min (quote already used some)
+    const maxWeeklyFetches = Math.max(0, 8 - apiCreditsUsed - 1);
+    const tickersToFetch = tickersToFetchWeekly.slice(0, maxWeeklyFetches);
+
+    if (tickersToFetch.length > 0) {
+      console.log(`Fetching weekly ranges for: ${tickersToFetch.join(',')}`);
+      for (const ticker of tickersToFetch) {
+        try {
+          const url = `https://api.twelvedata.com/time_series?symbol=${ticker}&interval=1day&start_date=${weekStart}&apikey=${TWELVE_DATA_API_KEY}`;
+          const resp = await fetch(url);
+          const data = await resp.json();
+
+          if (data.values && Array.isArray(data.values) && data.values.length > 0) {
+            let weekHigh = -Infinity;
+            let weekLow = Infinity;
+            for (const bar of data.values) {
+              const h = parseFloat(bar.high);
+              const l = parseFloat(bar.low);
+              if (!isNaN(h) && h > weekHigh) weekHigh = h;
+              if (!isNaN(l) && l < weekLow) weekLow = l;
+            }
+            if (weekHigh !== -Infinity && weekLow !== Infinity) {
+              if (allResults[ticker]) {
+                allResults[ticker].week_high = weekHigh;
+                allResults[ticker].week_low = weekLow;
+                allResults[ticker].week_start = weekStart;
+                allResults[ticker]._week_cache_key = weekCacheKey;
+                // Update cache with weekly data
+                await upsertCache(supabase, ticker, allResults[ticker]);
+              }
+            }
+          } else if (data.code) {
+            console.warn(`Weekly range API error for ${ticker}: ${data.message}`);
+            break; // Stop if rate limited
+          }
+        } catch (e) {
+          console.warn(`Weekly range fetch failed for ${ticker}:`, e);
+        }
       }
     }
 
@@ -176,64 +247,14 @@ async function upsertCache(supabase: any, ticker: string, priceData: any) {
   }
 }
 
-// Calculate the Monday of the current week (UTC)
 function getWeekMonday(): string {
   const now = new Date();
-  const day = now.getUTCDay(); // 0=Sun, 1=Mon, ...
-  const diff = day === 0 ? 6 : day - 1; // days since Monday
+  const day = now.getUTCDay();
+  const diff = day === 0 ? 6 : day - 1;
   const monday = new Date(now);
   monday.setUTCDate(now.getUTCDate() - diff);
   const yyyy = monday.getUTCFullYear();
   const mm = String(monday.getUTCMonth() + 1).padStart(2, '0');
   const dd = String(monday.getUTCDate()).padStart(2, '0');
   return `${yyyy}-${mm}-${dd}`;
-}
-
-async function fetchWeeklyRanges(
-  tickers: string[],
-  apiKey: string
-): Promise<Record<string, { high: number; low: number; start: string }>> {
-  const weekStart = getWeekMonday();
-  const results: Record<string, { high: number; low: number; start: string }> = {};
-
-  try {
-    // Fetch time_series for each ticker (batch not supported for time_series on all plans)
-    // Process in batches of 4 to respect rate limits
-    const batchSize = 4;
-    for (let i = 0; i < tickers.length; i += batchSize) {
-      const batch = tickers.slice(i, i + batchSize);
-      const promises = batch.map(async (ticker) => {
-        try {
-          const url = `https://api.twelvedata.com/time_series?symbol=${ticker}&interval=1day&start_date=${weekStart}&apikey=${apiKey}`;
-          const resp = await fetch(url);
-          const data = await resp.json();
-
-          if (data.values && Array.isArray(data.values) && data.values.length > 0) {
-            let weekHigh = -Infinity;
-            let weekLow = Infinity;
-            for (const bar of data.values) {
-              const h = parseFloat(bar.high);
-              const l = parseFloat(bar.low);
-              if (!isNaN(h) && h > weekHigh) weekHigh = h;
-              if (!isNaN(l) && l < weekLow) weekLow = l;
-            }
-            if (weekHigh !== -Infinity && weekLow !== Infinity) {
-              results[ticker] = { high: weekHigh, low: weekLow, start: weekStart };
-            }
-          }
-        } catch (e) {
-          console.warn(`Weekly range fetch failed for ${ticker}:`, e);
-        }
-      });
-      await Promise.all(promises);
-      // Small delay between batches to avoid rate limiting
-      if (i + batchSize < tickers.length) {
-        await new Promise(r => setTimeout(r, 1000));
-      }
-    }
-  } catch (e) {
-    console.error('Error fetching weekly ranges:', e);
-  }
-
-  return results;
 }
