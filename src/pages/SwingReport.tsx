@@ -62,8 +62,8 @@ export default function SwingReport() {
     [handleFile]
   );
 
-  const activePositions = positions.filter((p) => p.is_active);
-  const closedPositions = positions.filter((p) => !p.is_active);
+  const activePositions = positions.filter((p) => p.is_active && p.status !== "WATCHLIST");
+  const closedPositions = positions.filter((p) => !p.is_active && p.status !== "WATCHLIST");
 
   return (
     <div className="min-h-screen bg-background">
