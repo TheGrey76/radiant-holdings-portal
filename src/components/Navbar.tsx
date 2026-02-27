@@ -80,7 +80,7 @@ const Navbar = () => {
     { name: 'About', path: '#', section: 'about' },
     { name: 'Who We Are', path: '/about', indent: true },
     { name: 'Leadership Team', path: '/leadership-team', indent: true },
-    { name: 'Our Platforms', path: '/platforms', indent: true },
+    { name: 'Our Platform', path: '/platform', indent: true },
     { name: 'Expertise', path: '#', section: 'expertise' },
     { name: 'Services Overview', path: '/services', indent: true },
     { name: 'For Fund Managers', path: '/gp-capital-advisory', indent: true },
