@@ -347,6 +347,9 @@ export default function SwingPortfolioTable({
                 <HeaderTip label="Chg%" tip="Variazione percentuale giornaliera del prezzo." align="right" />
               </TableHead>
               <TableHead className="text-right">
+                <HeaderTip label="Week Range" tip="Range di prezzo (min – max) della settimana corrente (da lunedì)." align="right" />
+              </TableHead>
+              <TableHead className="text-right">
                 <HeaderTip label="Shares" tip="Numero di azioni/quote detenute." align="right" />
               </TableHead>
               <TableHead className="text-right">
@@ -377,7 +380,7 @@ export default function SwingPortfolioTable({
             {positions.length === 0 && (
               <TableRow>
                 <TableCell
-                  colSpan={16}
+                  colSpan={17}
                   className="text-center text-muted-foreground py-8"
                 >
                   Nessuna posizione. Carica un report per iniziare.
@@ -483,6 +486,20 @@ export default function SwingPortfolioTable({
                     ) : (
                       "—"
                     )}
+                  </TableCell>
+                  <TableCell className="text-right font-mono text-xs">
+                    {(() => {
+                      const wh = prices[pos.ticker]?.week_high;
+                      const wl = prices[pos.ticker]?.week_low;
+                      if (wh != null && wl != null) {
+                        return (
+                          <div className="flex flex-col items-end">
+                            <span>${wl.toFixed(2)} – ${wh.toFixed(2)}</span>
+                          </div>
+                        );
+                      }
+                      return "—";
+                    })()}
                   </TableCell>
                   <TableCell className="text-right font-mono">
                     {pos.shares || "—"}
