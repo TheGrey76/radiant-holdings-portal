@@ -347,6 +347,9 @@ export default function SwingPortfolioTable({
                 <HeaderTip label="Chg%" tip="Variazione percentuale giornaliera del prezzo." align="right" />
               </TableHead>
               <TableHead className="text-right">
+                <HeaderTip label="Week Range" tip="Range di prezzo (min – max) della settimana corrente (da lunedì)." align="right" />
+              </TableHead>
+              <TableHead className="text-right">
                 <HeaderTip label="Shares" tip="Numero di azioni/quote detenute." align="right" />
               </TableHead>
               <TableHead className="text-right">
