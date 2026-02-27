@@ -2713,6 +2713,244 @@ export type Database = {
         }
         Relationships: []
       }
+      personal_crm_campaign_recipients: {
+        Row: {
+          campaign_id: string
+          contact_id: string
+          created_at: string
+          id: string
+          opened_at: string | null
+          replied_at: string | null
+          sent_at: string | null
+          status: string | null
+        }
+        Insert: {
+          campaign_id: string
+          contact_id: string
+          created_at?: string
+          id?: string
+          opened_at?: string | null
+          replied_at?: string | null
+          sent_at?: string | null
+          status?: string | null
+        }
+        Update: {
+          campaign_id?: string
+          contact_id?: string
+          created_at?: string
+          id?: string
+          opened_at?: string | null
+          replied_at?: string | null
+          sent_at?: string | null
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "personal_crm_campaign_recipients_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "personal_crm_campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "personal_crm_campaign_recipients_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "ariesdb_contacts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      personal_crm_campaigns: {
+        Row: {
+          campaign_type: string | null
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          open_count: number | null
+          reply_count: number | null
+          sent_count: number | null
+          status: string | null
+          target_tags: string[] | null
+          template_body: string | null
+          template_subject: string | null
+          updated_at: string
+        }
+        Insert: {
+          campaign_type?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          open_count?: number | null
+          reply_count?: number | null
+          sent_count?: number | null
+          status?: string | null
+          target_tags?: string[] | null
+          template_body?: string | null
+          template_subject?: string | null
+          updated_at?: string
+        }
+        Update: {
+          campaign_type?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          open_count?: number | null
+          reply_count?: number | null
+          sent_count?: number | null
+          status?: string | null
+          target_tags?: string[] | null
+          template_body?: string | null
+          template_subject?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      personal_crm_contact_tags: {
+        Row: {
+          contact_id: string
+          created_at: string
+          id: string
+          tag: string
+        }
+        Insert: {
+          contact_id: string
+          created_at?: string
+          id?: string
+          tag: string
+        }
+        Update: {
+          contact_id?: string
+          created_at?: string
+          id?: string
+          tag?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "personal_crm_contact_tags_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "ariesdb_contacts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      personal_crm_deals: {
+        Row: {
+          contact_id: string | null
+          created_at: string
+          currency: string | null
+          description: string | null
+          expected_close: string | null
+          id: string
+          notes: string | null
+          priority: string | null
+          probability: number | null
+          stage: string
+          tags: string[] | null
+          title: string
+          updated_at: string
+          value: number | null
+        }
+        Insert: {
+          contact_id?: string | null
+          created_at?: string
+          currency?: string | null
+          description?: string | null
+          expected_close?: string | null
+          id?: string
+          notes?: string | null
+          priority?: string | null
+          probability?: number | null
+          stage?: string
+          tags?: string[] | null
+          title: string
+          updated_at?: string
+          value?: number | null
+        }
+        Update: {
+          contact_id?: string | null
+          created_at?: string
+          currency?: string | null
+          description?: string | null
+          expected_close?: string | null
+          id?: string
+          notes?: string | null
+          priority?: string | null
+          probability?: number | null
+          stage?: string
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+          value?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "personal_crm_deals_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "ariesdb_contacts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      personal_crm_interactions: {
+        Row: {
+          channel: string | null
+          contact_id: string
+          content: string | null
+          created_at: string
+          deal_id: string | null
+          follow_up_date: string | null
+          id: string
+          interaction_type: string
+          sentiment: string | null
+          subject: string | null
+        }
+        Insert: {
+          channel?: string | null
+          contact_id: string
+          content?: string | null
+          created_at?: string
+          deal_id?: string | null
+          follow_up_date?: string | null
+          id?: string
+          interaction_type?: string
+          sentiment?: string | null
+          subject?: string | null
+        }
+        Update: {
+          channel?: string | null
+          contact_id?: string
+          content?: string | null
+          created_at?: string
+          deal_id?: string | null
+          follow_up_date?: string | null
+          id?: string
+          interaction_type?: string
+          sentiment?: string | null
+          subject?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "personal_crm_interactions_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "ariesdb_contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "personal_crm_interactions_deal_id_fkey"
+            columns: ["deal_id"]
+            isOneToOne: false
+            referencedRelation: "personal_crm_deals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       portfolio_change_log: {
         Row: {
           change_type: string
