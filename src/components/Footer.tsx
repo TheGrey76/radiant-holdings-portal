@@ -55,7 +55,7 @@ const Footer = () => {
           </div>
 
           <div>
-            <h3 className="text-xs uppercase tracking-widest mb-6 font-light">Our Platforms</h3>
+            <h3 className="text-xs uppercase tracking-widest mb-6 font-light">Our Platform</h3>
             <ul className="space-y-3">
               <li>
                 <a href="https://www.raiseplatform.eu" target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-accent transition-colors font-light text-sm">
