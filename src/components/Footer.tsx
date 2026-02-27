@@ -63,12 +63,6 @@ const Footer = () => {
                 </a>
                 <span className="block text-white/40 text-[0.65rem] font-light mt-0.5">Capital Intelligence</span>
               </li>
-              <li>
-                <a href="https://www.alphaflow.network" target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-accent transition-colors font-light text-sm">
-                  AlphaFlow
-                </a>
-                <span className="block text-white/40 text-[0.65rem] font-light mt-0.5">Trading System</span>
-              </li>
             </ul>
             <p className="text-white/30 text-[0.6rem] font-light mt-4 tracking-wide">
               In development — launching 2026
