@@ -59,7 +59,7 @@ const Navbar = () => {
     about: [
       { name: 'Who We Are', path: '/about' },
       { name: 'Leadership Team', path: '/leadership-team' },
-      { name: 'Our Platforms', path: '/platforms' },
+      { name: 'Our Platform', path: '/platform' },
     ],
     expertise: [
       { name: 'Services Overview', path: '/services' },
