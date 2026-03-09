@@ -2362,6 +2362,45 @@ export type Database = {
         }
         Relationships: []
       }
+      gp_scoring_assessments: {
+        Row: {
+          assessment_date: string
+          created_at: string
+          data: Json
+          fund_name: string
+          gp_name: string
+          id: string
+          score: number
+          updated_at: string
+          user_id: string
+          verdict: string
+        }
+        Insert: {
+          assessment_date?: string
+          created_at?: string
+          data?: Json
+          fund_name?: string
+          gp_name?: string
+          id?: string
+          score?: number
+          updated_at?: string
+          user_id: string
+          verdict?: string
+        }
+        Update: {
+          assessment_date?: string
+          created_at?: string
+          data?: Json
+          fund_name?: string
+          gp_name?: string
+          id?: string
+          score?: number
+          updated_at?: string
+          user_id?: string
+          verdict?: string
+        }
+        Relationships: []
+      }
       gu_portfolio_access: {
         Row: {
           access_granted_at: string

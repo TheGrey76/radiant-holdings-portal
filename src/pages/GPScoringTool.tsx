@@ -194,9 +194,9 @@ export default function GPScoringTool() {
     setGeneratingNotes(null);
   };
 
-  const handleSaveAssessment = () => {
+  const handleSaveAssessment = async () => {
     const id = crypto.randomUUID();
-    saveToHistory({
+    await saveToHistory({
       id,
       fundName: fundInfo.fundName,
       gpName: fundInfo.gpName,

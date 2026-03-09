@@ -4,27 +4,69 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 import type { SavedAssessment } from "./ai-types";
 
-const HISTORY_LS = 'aries76_gp_scoring_history';
+export async function loadHistory(): Promise<SavedAssessment[]> {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return [];
 
-export function loadHistory(): SavedAssessment[] {
-  try {
-    return JSON.parse(localStorage.getItem(HISTORY_LS) || '[]');
-  } catch { return []; }
+  const { data, error } = await supabase
+    .from('gp_scoring_assessments')
+    .select('*')
+    .order('created_at', { ascending: false })
+    .limit(50);
+
+  if (error || !data) return [];
+
+  return data.map((row: any) => ({
+    id: row.id,
+    fundName: row.fund_name,
+    gpName: row.gp_name,
+    date: row.assessment_date,
+    score: Number(row.score),
+    verdict: row.verdict,
+    timestamp: new Date(row.created_at).getTime(),
+    data: row.data as any,
+  }));
 }
 
-export function saveToHistory(assessment: SavedAssessment) {
-  const history = loadHistory();
-  const idx = history.findIndex((h) => h.id === assessment.id);
-  if (idx >= 0) history[idx] = assessment;
-  else history.unshift(assessment);
-  localStorage.setItem(HISTORY_LS, JSON.stringify(history.slice(0, 50)));
+export async function saveToHistory(assessment: SavedAssessment) {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
+    toast.error('You must be logged in to save assessments');
+    return;
+  }
+
+  const { error } = await supabase
+    .from('gp_scoring_assessments')
+    .upsert({
+      id: assessment.id,
+      user_id: user.id,
+      fund_name: assessment.fundName,
+      gp_name: assessment.gpName,
+      assessment_date: assessment.date,
+      score: assessment.score,
+      verdict: assessment.verdict,
+      data: assessment.data as any,
+    }, { onConflict: 'id' });
+
+  if (error) {
+    console.error('Save error:', error);
+    toast.error('Failed to save assessment');
+  }
 }
 
-export function deleteFromHistory(id: string) {
-  const history = loadHistory().filter((h) => h.id !== id);
-  localStorage.setItem(HISTORY_LS, JSON.stringify(history));
+export async function deleteFromHistory(id: string) {
+  const { error } = await supabase
+    .from('gp_scoring_assessments')
+    .delete()
+    .eq('id', id);
+
+  if (error) {
+    console.error('Delete error:', error);
+    toast.error('Failed to delete assessment');
+  }
 }
 
 interface AssessmentHistoryProps {
@@ -34,13 +76,20 @@ interface AssessmentHistoryProps {
 export default function AssessmentHistory({ onLoad }: AssessmentHistoryProps) {
   const [open, setOpen] = useState(false);
   const [history, setHistory] = useState<SavedAssessment[]>([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (open) setHistory(loadHistory());
+    if (open) {
+      setLoading(true);
+      loadHistory().then((h) => {
+        setHistory(h);
+        setLoading(false);
+      });
+    }
   }, [open]);
 
-  const handleDelete = (id: string) => {
-    deleteFromHistory(id);
+  const handleDelete = async (id: string) => {
+    await deleteFromHistory(id);
     setHistory((prev) => prev.filter((h) => h.id !== id));
     toast.success('Assessment deleted');
   };
@@ -63,7 +112,9 @@ export default function AssessmentHistory({ onLoad }: AssessmentHistoryProps) {
         <DialogHeader>
           <DialogTitle className="text-[#0B1829]">Assessment History</DialogTitle>
         </DialogHeader>
-        {history.length === 0 ? (
+        {loading ? (
+          <p className="text-sm text-slate-400 py-8 text-center">Loading...</p>
+        ) : history.length === 0 ? (
           <p className="text-sm text-slate-400 py-8 text-center">No saved assessments yet.</p>
         ) : (
           <div className="space-y-2 pt-2">
