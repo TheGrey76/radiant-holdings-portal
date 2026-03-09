@@ -1,17 +1,19 @@
 import { useMemo } from "react";
-import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Cell, Tooltip } from "recharts";
-import { CheckCircle2, AlertTriangle, XCircle } from "lucide-react";
+import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from "recharts";
+import { CheckCircle2, AlertTriangle, XCircle, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Pillar, Verdict } from "./types";
 import { calcPillarScore, calcTotalScore, getVerdict, getZeroMetrics } from "./types";
 
 interface ScoreDashboardProps {
   pillars: Pillar[];
+  aiScoredCount?: number;
+  manualScoredCount?: number;
 }
 
 const PILLAR_COLORS = ['#0B1829', '#E86F2A', '#2DD4BF', '#64748B'];
 
-export default function ScoreDashboard({ pillars }: ScoreDashboardProps) {
+export default function ScoreDashboard({ pillars, aiScoredCount = 0, manualScoredCount = 0 }: ScoreDashboardProps) {
   const totalScore = useMemo(() => calcTotalScore(pillars), [pillars]);
   const verdict = useMemo(() => getVerdict(pillars), [pillars]);
   const zeroMetrics = useMemo(() => getZeroMetrics(pillars), [pillars]);
@@ -31,15 +33,6 @@ export default function ScoreDashboard({ pillars }: ScoreDashboardProps) {
       subject: p.shortName,
       value: p.totalPoints > 0 ? (calcPillarScore(p) / p.totalPoints) * 100 : 0,
       fullMark: 100,
-    })),
-    [pillars]
-  );
-
-  const barData = useMemo(() =>
-    pillars.map((p, i) => ({
-      name: p.shortName,
-      score: calcPillarScore(p),
-      color: PILLAR_COLORS[i],
     })),
     [pillars]
   );
@@ -67,6 +60,7 @@ export default function ScoreDashboard({ pillars }: ScoreDashboardProps) {
 
   const vc = verdictConfig[verdict];
   const VerdictIcon = vc.icon;
+  const totalMetrics = aiScoredCount + manualScoredCount;
 
   return (
     <div className="space-y-5">
@@ -86,6 +80,14 @@ export default function ScoreDashboard({ pillars }: ScoreDashboardProps) {
           <div className="text-xs opacity-80 leading-tight">{vc.sublabel}</div>
         </div>
       </div>
+
+      {/* AI vs Manual indicator */}
+      {totalMetrics > 0 && (
+        <div className="flex items-center gap-2 text-xs text-slate-500 bg-slate-50 rounded-lg px-3 py-2">
+          <Sparkles className="h-3.5 w-3.5 text-[#2DD4BF]" />
+          <span>{aiScoredCount}/{totalMetrics} AI-scored, {manualScoredCount} manual</span>
+        </div>
+      )}
 
       {/* Pillar Breakdown */}
       <div className="space-y-2">
