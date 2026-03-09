@@ -101,6 +101,7 @@ import CriptosPortfolio from "./pages/CriptosPortfolio";
 import CriptosAccessGate from "./components/CriptosAccessGate";
 import AriesDB from "./pages/AriesDB";
 import Platforms from "./pages/Platforms";
+import GPScoringTool from "./pages/GPScoringTool";
 
 const queryClient = new QueryClient();
 
