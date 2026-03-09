@@ -142,7 +142,7 @@ serve(async (req) => {
           ],
           tools: [EXTRACTION_TOOL],
           tool_choice: { type: "function", function: { name: "extract_scoring_data" } },
-          max_tokens: 8192,
+          max_tokens: 16384,
         }),
       });
 
