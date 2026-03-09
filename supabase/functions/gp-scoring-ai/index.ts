@@ -153,18 +153,33 @@ serve(async (req) => {
         cleanText = cleanText.replace(/^```(?:json)?\s*\n?/, "").replace(/\n?```\s*$/, "");
       }
 
-      // Parse JSON from response
+      // Parse JSON from response - try multiple strategies
       const jsonMatch = cleanText.match(/\{[\s\S]*\}/);
       if (!jsonMatch) {
+        console.error("No JSON found in AI response. First 500 chars:", text.substring(0, 500));
         throw new Error("No valid JSON found in AI response");
       }
 
       let parsed;
+      let jsonStr = jsonMatch[0];
+      
+      // Strategy 1: direct parse
       try {
-        parsed = JSON.parse(jsonMatch[0]);
-      } catch (parseErr) {
-        console.error("JSON parse failed, raw text:", text.substring(0, 500));
-        throw new Error("Failed to parse AI response as JSON");
+        parsed = JSON.parse(jsonStr);
+      } catch (_e1) {
+        // Strategy 2: fix common issues - unescaped newlines/tabs in string values
+        try {
+          // Replace literal newlines/tabs inside JSON string values
+          const fixed = jsonStr
+            .replace(/[\r\n]+/g, " ")
+            .replace(/\t/g, " ")
+            .replace(/,\s*([}\]])/g, "$1"); // remove trailing commas
+          parsed = JSON.parse(fixed);
+        } catch (_e2) {
+          console.error("JSON parse failed after cleanup. First 500 chars:", jsonStr.substring(0, 500));
+          console.error("Parse error:", _e2.message);
+          throw new Error("Failed to parse AI response as JSON. The AI returned malformed data - please retry.");
+        }
       }
 
       return new Response(JSON.stringify(parsed), {
