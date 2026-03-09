@@ -55,7 +55,7 @@ export default function GPScoringTool() {
   const [generatingNotes, setGeneratingNotes] = useState<string | null>(null);
 
   const { processing, processingStep, analyze, generateNotes } = useAIExtraction();
-  const hasApiKey = !!getStoredApiKey();
+  const hasApiKey = true; // Always available via Lovable AI Gateway
 
   // Persist to localStorage
   useEffect(() => {
