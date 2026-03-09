@@ -166,25 +166,39 @@ serve(async (req) => {
 
       const data = await response.json();
       
+      console.log("AI response finish_reason:", data.choices?.[0]?.finish_reason);
+      console.log("Has tool_calls:", !!data.choices?.[0]?.message?.tool_calls);
+      console.log("Has content:", !!data.choices?.[0]?.message?.content);
+      
       // Extract from tool call response
       const toolCall = data.choices?.[0]?.message?.tool_calls?.[0];
       if (toolCall?.function?.arguments) {
+        console.log("Parsing tool call arguments, length:", toolCall.function.arguments.length);
         const parsed = JSON.parse(toolCall.function.arguments);
         return new Response(JSON.stringify(parsed), {
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
 
-      // Fallback: try content field (in case model didn't use tool calling)
+      // Fallback: try content field
       const text = data.choices?.[0]?.message?.content || "";
       if (text) {
-        let cleanText = text.trim().replace(/^```(?:json)?\s*\n?/, "").replace(/\n?```\s*$/, "");
+        console.log("Fallback: parsing content, length:", text.length);
+        // Strip all markdown fences globally
+        let cleanText = text.replace(/```(?:json)?\s*\n?/g, "").replace(/\n?```/g, "").trim();
         const jsonMatch = cleanText.match(/\{[\s\S]*\}/);
         if (jsonMatch) {
-          const parsed = JSON.parse(jsonMatch[0]);
-          return new Response(JSON.stringify(parsed), {
-            headers: { ...corsHeaders, "Content-Type": "application/json" },
-          });
+          try {
+            const parsed = JSON.parse(jsonMatch[0]);
+            return new Response(JSON.stringify(parsed), {
+              headers: { ...corsHeaders, "Content-Type": "application/json" },
+            });
+          } catch (e) {
+            console.error("Fallback JSON parse failed:", e.message);
+            console.error("JSON length:", jsonMatch[0].length, "Last 100 chars:", jsonMatch[0].slice(-100));
+            // Check if truncated (no closing brace balance)
+            throw new Error("AI response was likely truncated. Please try with a smaller document or retry.");
+          }
         }
       }
 
