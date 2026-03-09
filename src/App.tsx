@@ -209,6 +209,7 @@ const App = () => (
           <Route path="/criptos-portfolio" element={<CriptosAccessGate><CriptosPortfolio /></CriptosAccessGate>} />
           <Route path="/aries-db" element={<AriesDB />} />
           <Route path="/platform" element={<Platforms />} />
+          <Route path="/gp-scoring" element={<GPScoringTool />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />
