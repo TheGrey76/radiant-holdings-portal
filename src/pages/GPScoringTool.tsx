@@ -274,7 +274,7 @@ export default function GPScoringTool() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC]">
+    <div className="min-h-screen bg-[#F8FAFC] pt-20">
       {processing && <ProcessingOverlay currentStep={processingStep} />}
 
       {/* Header */}
