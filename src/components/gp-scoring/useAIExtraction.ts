@@ -1,7 +1,11 @@
 import { useState, useCallback } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import * as pdfjsLib from "pdfjs-dist";
 import type { UploadedDoc, ExtractionResult, ProcessingStep } from "./ai-types";
+
+// Set worker
+pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.mjs`;
 
 async function fileToBase64(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -15,8 +19,34 @@ async function fileToBase64(file: File): Promise<string> {
   });
 }
 
+async function extractPdfText(file: File): Promise<string> {
+  try {
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    const pages: string[] = [];
+    
+    for (let i = 1; i <= pdf.numPages; i++) {
+      const page = await pdf.getPage(i);
+      const content = await page.getTextContent();
+      const text = content.items
+        .map((item: any) => item.str)
+        .join(' ');
+      pages.push(`[Page ${i}]\n${text}`);
+    }
+    
+    return pages.join('\n\n');
+  } catch (e) {
+    console.error('PDF text extraction failed:', e);
+    return '';
+  }
+}
+
 // Extract text from file for non-image types
 async function fileToText(file: File): Promise<string | null> {
+  if (file.type === 'application/pdf' || file.name.endsWith('.pdf')) {
+    const text = await extractPdfText(file);
+    return text || null;
+  }
   if (file.type === 'text/plain' || file.name.endsWith('.txt') || file.name.endsWith('.csv')) {
     return await file.text();
   }
@@ -38,11 +68,14 @@ export function useAIExtraction() {
     setProcessingStep('reading');
 
     try {
-      // Step 1: Read documents and convert to base64
+      // Step 1: Read documents and extract text
       const docPayloads = [];
       for (const doc of documents) {
-        const base64 = await fileToBase64(doc.file);
         const textContent = await fileToText(doc.file);
+        const base64 = doc.file.type?.startsWith('image/') ? await fileToBase64(doc.file) : undefined;
+        
+        console.log(`Document "${doc.file.name}": extracted ${textContent?.length || 0} chars of text`);
+        
         docPayloads.push({
           name: doc.file.name,
           docType: doc.type,
