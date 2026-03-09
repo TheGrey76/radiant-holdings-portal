@@ -200,3 +200,6 @@ verify_jwt = false
 
 [functions.swing-friday-close]
 verify_jwt = false
+
+[functions.gp-scoring-ai]
+verify_jwt = false
