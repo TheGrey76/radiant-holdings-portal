@@ -2,17 +2,26 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Sparkles } from "lucide-react";
 import type { FundInfo } from "./types";
+import type { ExtractionResult } from "./ai-types";
 
 interface FundInfoPanelProps {
   fundInfo: FundInfo;
   onChange: (info: FundInfo) => void;
+  aiExtraction?: ExtractionResult | null;
 }
 
-export default function FundInfoPanel({ fundInfo, onChange }: FundInfoPanelProps) {
+export default function FundInfoPanel({ fundInfo, onChange, aiExtraction }: FundInfoPanelProps) {
   const update = (key: keyof FundInfo, value: string) => {
     onChange({ ...fundInfo, [key]: value });
   };
+
+  const aiBadge = aiExtraction ? (
+    <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 bg-[#2DD4BF]/10 text-[#2DD4BF] text-[9px] font-bold rounded ml-2">
+      <Sparkles className="h-2.5 w-2.5" /> AI
+    </span>
+  ) : null;
 
   return (
     <Card className="border-slate-200 shadow-sm">
@@ -22,7 +31,9 @@ export default function FundInfoPanel({ fundInfo, onChange }: FundInfoPanelProps
       <CardContent>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           <div className="space-y-1.5">
-            <Label className="text-xs font-medium text-slate-500 uppercase tracking-wider">Fund Name</Label>
+            <Label className="text-xs font-medium text-slate-500 uppercase tracking-wider">
+              Fund Name {fundInfo.fundName && aiExtraction && aiBadge}
+            </Label>
             <Input
               value={fundInfo.fundName}
               onChange={(e) => update('fundName', e.target.value)}
@@ -31,7 +42,9 @@ export default function FundInfoPanel({ fundInfo, onChange }: FundInfoPanelProps
             />
           </div>
           <div className="space-y-1.5">
-            <Label className="text-xs font-medium text-slate-500 uppercase tracking-wider">GP Name</Label>
+            <Label className="text-xs font-medium text-slate-500 uppercase tracking-wider">
+              GP Name {fundInfo.gpName && aiExtraction && aiBadge}
+            </Label>
             <Input
               value={fundInfo.gpName}
               onChange={(e) => update('gpName', e.target.value)}
