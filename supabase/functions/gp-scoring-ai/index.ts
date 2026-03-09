@@ -147,13 +147,25 @@ serve(async (req) => {
       const data = await response.json();
       const text = data.choices?.[0]?.message?.content || "";
 
+      // Strip markdown code fences if present
+      let cleanText = text.trim();
+      if (cleanText.startsWith("```")) {
+        cleanText = cleanText.replace(/^```(?:json)?\s*\n?/, "").replace(/\n?```\s*$/, "");
+      }
+
       // Parse JSON from response
-      const jsonMatch = text.match(/\{[\s\S]*\}/);
+      const jsonMatch = cleanText.match(/\{[\s\S]*\}/);
       if (!jsonMatch) {
         throw new Error("No valid JSON found in AI response");
       }
 
-      const parsed = JSON.parse(jsonMatch[0]);
+      let parsed;
+      try {
+        parsed = JSON.parse(jsonMatch[0]);
+      } catch (parseErr) {
+        console.error("JSON parse failed, raw text:", text.substring(0, 500));
+        throw new Error("Failed to parse AI response as JSON");
+      }
 
       return new Response(JSON.stringify(parsed), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
