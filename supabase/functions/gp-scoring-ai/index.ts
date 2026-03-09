@@ -38,40 +38,60 @@ PILLAR 4 — GOVERNANCE & OPERATIONS (15 pts):
 - Fee Structure (5 pts): 5=mgmt<2% carry=20% hurdle>8%, 3=standard 2/20/8, 1=above-market, 0=egregious
 - Operational DD (5 pts): 5=passes all checks, 3=minor issues, 1=significant concerns, 0=fails
 
-Also extract general fund information:
-- Fund name, GP name, fund number/vintage, target size, management fee, carry, hurdle rate, GP commitment percentage, key person names and titles.
+Also extract general fund information: Fund name, GP name, fund number/vintage, target size, management fee, carry, hurdle rate, GP commitment percentage, key person names and titles.
 
-Return ONLY a JSON object with this exact structure (no markdown, no backticks, no preamble):
+Use the extract_scoring_data tool to return your analysis.`;
 
-{
-  "fund_info": {
-    "fund_name": { "value": "", "confidence": "high|medium|low", "source": "" },
-    "gp_name": { "value": "", "confidence": "high|medium|low", "source": "" },
-    "fund_number": { "value": "", "confidence": "high|medium|low", "source": "" },
-    "target_size_usd_m": { "value": null, "confidence": "high|medium|low", "source": "" },
-    "management_fee_pct": { "value": null, "confidence": "high|medium|low", "source": "" },
-    "carry_pct": { "value": null, "confidence": "high|medium|low", "source": "" },
-    "hurdle_rate_pct": { "value": null, "confidence": "high|medium|low", "source": "" },
-    "gp_commitment_pct": { "value": null, "confidence": "high|medium|low", "source": "" },
-    "key_persons": [{ "name": "", "title": "", "years_experience": null }]
-  },
-  "metrics": {
-    "senior_team_stability": { "raw_data": "", "source_document": "", "source_location": "", "confidence": "high|medium|low", "suggested_score": 0, "rationale": "" },
-    "attribution_analysis": { "raw_data": "", "source_document": "", "source_location": "", "confidence": "high|medium|low", "suggested_score": 0, "rationale": "" },
-    "relevant_experience": { "raw_data": "", "source_document": "", "source_location": "", "confidence": "high|medium|low", "suggested_score": 0, "rationale": "" },
-    "gp_commitment": { "raw_data": "", "source_document": "", "source_location": "", "confidence": "high|medium|low", "suggested_score": 0, "rationale": "" },
-    "net_irr_usd": { "raw_data": "", "source_document": "", "source_location": "", "confidence": "high|medium|low", "suggested_score": 0, "rationale": "" },
-    "net_moic_usd": { "raw_data": "", "source_document": "", "source_location": "", "confidence": "high|medium|low", "suggested_score": 0, "rationale": "" },
-    "dpi_cash_returns": { "raw_data": "", "source_document": "", "source_location": "", "confidence": "high|medium|low", "suggested_score": 0, "rationale": "" },
-    "loss_ratio": { "raw_data": "", "source_document": "", "source_location": "", "confidence": "high|medium|low", "suggested_score": 0, "rationale": "" },
-    "strategy_market_fit": { "raw_data": "", "source_document": "", "source_location": "", "confidence": "high|medium|low", "suggested_score": 0, "rationale": "" },
-    "fund_size_discipline": { "raw_data": "", "source_document": "", "source_location": "", "confidence": "high|medium|low", "suggested_score": 0, "rationale": "" },
-    "vintage_focus": { "raw_data": "", "source_document": "", "source_location": "", "confidence": "high|medium|low", "suggested_score": 0, "rationale": "" },
-    "ilpa_compliance": { "raw_data": "", "source_document": "", "source_location": "", "confidence": "high|medium|low", "suggested_score": 0, "rationale": "" },
-    "fee_structure": { "raw_data": "", "source_document": "", "source_location": "", "confidence": "high|medium|low", "suggested_score": 0, "rationale": "" },
-    "operational_dd": { "raw_data": "", "source_document": "", "source_location": "", "confidence": "high|medium|low", "suggested_score": 0, "rationale": "" }
+// Tool definition for structured output
+const EXTRACTION_TOOL = {
+  type: "function",
+  function: {
+    name: "extract_scoring_data",
+    description: "Extract and return all scoring data from GP/fund documents",
+    parameters: {
+      type: "object",
+      properties: {
+        fund_info: {
+          type: "object",
+          properties: {
+            fund_name: { type: "object", properties: { value: { type: "string" }, confidence: { type: "string", enum: ["high", "medium", "low"] }, source: { type: "string" } }, required: ["value", "confidence", "source"] },
+            gp_name: { type: "object", properties: { value: { type: "string" }, confidence: { type: "string", enum: ["high", "medium", "low"] }, source: { type: "string" } }, required: ["value", "confidence", "source"] },
+            fund_number: { type: "object", properties: { value: { type: "string" }, confidence: { type: "string", enum: ["high", "medium", "low"] }, source: { type: "string" } }, required: ["value", "confidence", "source"] },
+            target_size_usd_m: { type: "object", properties: { value: { type: ["number", "null"] }, confidence: { type: "string", enum: ["high", "medium", "low"] }, source: { type: "string" } }, required: ["value", "confidence", "source"] },
+            management_fee_pct: { type: "object", properties: { value: { type: ["number", "null"] }, confidence: { type: "string", enum: ["high", "medium", "low"] }, source: { type: "string" } }, required: ["value", "confidence", "source"] },
+            carry_pct: { type: "object", properties: { value: { type: ["number", "null"] }, confidence: { type: "string", enum: ["high", "medium", "low"] }, source: { type: "string" } }, required: ["value", "confidence", "source"] },
+            hurdle_rate_pct: { type: "object", properties: { value: { type: ["number", "null"] }, confidence: { type: "string", enum: ["high", "medium", "low"] }, source: { type: "string" } }, required: ["value", "confidence", "source"] },
+            gp_commitment_pct: { type: "object", properties: { value: { type: ["number", "null"] }, confidence: { type: "string", enum: ["high", "medium", "low"] }, source: { type: "string" } }, required: ["value", "confidence", "source"] },
+            key_persons: { type: "array", items: { type: "object", properties: { name: { type: "string" }, title: { type: "string" }, years_experience: { type: ["number", "null"] } }, required: ["name", "title"] } }
+          },
+          required: ["fund_name", "gp_name", "fund_number", "target_size_usd_m", "management_fee_pct", "carry_pct", "hurdle_rate_pct", "gp_commitment_pct", "key_persons"]
+        },
+        metrics: {
+          type: "object",
+          properties: {
+            senior_team_stability: { type: "object", properties: { raw_data: { type: "string" }, source_document: { type: "string" }, source_location: { type: "string" }, confidence: { type: "string", enum: ["high", "medium", "low"] }, suggested_score: { type: "number" }, rationale: { type: "string" } }, required: ["raw_data", "source_document", "source_location", "confidence", "suggested_score", "rationale"] },
+            attribution_analysis: { type: "object", properties: { raw_data: { type: "string" }, source_document: { type: "string" }, source_location: { type: "string" }, confidence: { type: "string", enum: ["high", "medium", "low"] }, suggested_score: { type: "number" }, rationale: { type: "string" } }, required: ["raw_data", "source_document", "source_location", "confidence", "suggested_score", "rationale"] },
+            relevant_experience: { type: "object", properties: { raw_data: { type: "string" }, source_document: { type: "string" }, source_location: { type: "string" }, confidence: { type: "string", enum: ["high", "medium", "low"] }, suggested_score: { type: "number" }, rationale: { type: "string" } }, required: ["raw_data", "source_document", "source_location", "confidence", "suggested_score", "rationale"] },
+            gp_commitment: { type: "object", properties: { raw_data: { type: "string" }, source_document: { type: "string" }, source_location: { type: "string" }, confidence: { type: "string", enum: ["high", "medium", "low"] }, suggested_score: { type: "number" }, rationale: { type: "string" } }, required: ["raw_data", "source_document", "source_location", "confidence", "suggested_score", "rationale"] },
+            net_irr_usd: { type: "object", properties: { raw_data: { type: "string" }, source_document: { type: "string" }, source_location: { type: "string" }, confidence: { type: "string", enum: ["high", "medium", "low"] }, suggested_score: { type: "number" }, rationale: { type: "string" } }, required: ["raw_data", "source_document", "source_location", "confidence", "suggested_score", "rationale"] },
+            net_moic_usd: { type: "object", properties: { raw_data: { type: "string" }, source_document: { type: "string" }, source_location: { type: "string" }, confidence: { type: "string", enum: ["high", "medium", "low"] }, suggested_score: { type: "number" }, rationale: { type: "string" } }, required: ["raw_data", "source_document", "source_location", "confidence", "suggested_score", "rationale"] },
+            dpi_cash_returns: { type: "object", properties: { raw_data: { type: "string" }, source_document: { type: "string" }, source_location: { type: "string" }, confidence: { type: "string", enum: ["high", "medium", "low"] }, suggested_score: { type: "number" }, rationale: { type: "string" } }, required: ["raw_data", "source_document", "source_location", "confidence", "suggested_score", "rationale"] },
+            loss_ratio: { type: "object", properties: { raw_data: { type: "string" }, source_document: { type: "string" }, source_location: { type: "string" }, confidence: { type: "string", enum: ["high", "medium", "low"] }, suggested_score: { type: "number" }, rationale: { type: "string" } }, required: ["raw_data", "source_document", "source_location", "confidence", "suggested_score", "rationale"] },
+            strategy_market_fit: { type: "object", properties: { raw_data: { type: "string" }, source_document: { type: "string" }, source_location: { type: "string" }, confidence: { type: "string", enum: ["high", "medium", "low"] }, suggested_score: { type: "number" }, rationale: { type: "string" } }, required: ["raw_data", "source_document", "source_location", "confidence", "suggested_score", "rationale"] },
+            fund_size_discipline: { type: "object", properties: { raw_data: { type: "string" }, source_document: { type: "string" }, source_location: { type: "string" }, confidence: { type: "string", enum: ["high", "medium", "low"] }, suggested_score: { type: "number" }, rationale: { type: "string" } }, required: ["raw_data", "source_document", "source_location", "confidence", "suggested_score", "rationale"] },
+            vintage_focus: { type: "object", properties: { raw_data: { type: "string" }, source_document: { type: "string" }, source_location: { type: "string" }, confidence: { type: "string", enum: ["high", "medium", "low"] }, suggested_score: { type: "number" }, rationale: { type: "string" } }, required: ["raw_data", "source_document", "source_location", "confidence", "suggested_score", "rationale"] },
+            ilpa_compliance: { type: "object", properties: { raw_data: { type: "string" }, source_document: { type: "string" }, source_location: { type: "string" }, confidence: { type: "string", enum: ["high", "medium", "low"] }, suggested_score: { type: "number" }, rationale: { type: "string" } }, required: ["raw_data", "source_document", "source_location", "confidence", "suggested_score", "rationale"] },
+            fee_structure: { type: "object", properties: { raw_data: { type: "string" }, source_document: { type: "string" }, source_location: { type: "string" }, confidence: { type: "string", enum: ["high", "medium", "low"] }, suggested_score: { type: "number" }, rationale: { type: "string" } }, required: ["raw_data", "source_document", "source_location", "confidence", "suggested_score", "rationale"] },
+            operational_dd: { type: "object", properties: { raw_data: { type: "string" }, source_document: { type: "string" }, source_location: { type: "string" }, confidence: { type: "string", enum: ["high", "medium", "low"] }, suggested_score: { type: "number" }, rationale: { type: "string" } }, required: ["raw_data", "source_document", "source_location", "confidence", "suggested_score", "rationale"] }
+          },
+          required: ["senior_team_stability", "attribution_analysis", "relevant_experience", "gp_commitment", "net_irr_usd", "net_moic_usd", "dpi_cash_returns", "loss_ratio", "strategy_market_fit", "fund_size_discipline", "vintage_focus", "ilpa_compliance", "fee_structure", "operational_dd"]
+        }
+      },
+      required: ["fund_info", "metrics"],
+      additionalProperties: false
+    }
   }
-}`;
+};
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -87,7 +107,6 @@ serve(async (req) => {
     const { action, documents, pillarName, pillarData } = await req.json();
 
     if (action === "extract") {
-      // Build content parts from base64 documents
       const contentParts: any[] = [];
 
       for (const doc of documents) {
@@ -97,7 +116,6 @@ serve(async (req) => {
             image_url: { url: `data:${doc.mediaType};base64,${doc.base64}` },
           });
         } else {
-          // For PDFs and other docs, include as text description + base64 reference
           contentParts.push({
             type: "text",
             text: `[Document: ${doc.name} (${doc.docType})]:\n${doc.textContent || "Binary document attached as base64. Analyze the content."}`,
@@ -107,7 +125,7 @@ serve(async (req) => {
 
       contentParts.push({
         type: "text",
-        text: "Analyze these GP/fund documents and extract all data points relevant to our scoring framework. Return ONLY valid JSON.",
+        text: "Analyze these GP/fund documents and extract all data points relevant to our scoring framework. Use the extract_scoring_data tool to return your structured analysis.",
       });
 
       const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
@@ -122,7 +140,9 @@ serve(async (req) => {
             { role: "system", content: EXTRACTION_SYSTEM_PROMPT },
             { role: "user", content: contentParts },
           ],
-          max_tokens: 4096,
+          tools: [EXTRACTION_TOOL],
+          tool_choice: { type: "function", function: { name: "extract_scoring_data" } },
+          max_tokens: 8192,
         }),
       });
 
@@ -145,46 +165,30 @@ serve(async (req) => {
       }
 
       const data = await response.json();
-      const text = data.choices?.[0]?.message?.content || "";
-
-      // Strip markdown code fences if present
-      let cleanText = text.trim();
-      if (cleanText.startsWith("```")) {
-        cleanText = cleanText.replace(/^```(?:json)?\s*\n?/, "").replace(/\n?```\s*$/, "");
-      }
-
-      // Parse JSON from response - try multiple strategies
-      const jsonMatch = cleanText.match(/\{[\s\S]*\}/);
-      if (!jsonMatch) {
-        console.error("No JSON found in AI response. First 500 chars:", text.substring(0, 500));
-        throw new Error("No valid JSON found in AI response");
-      }
-
-      let parsed;
-      let jsonStr = jsonMatch[0];
       
-      // Strategy 1: direct parse
-      try {
-        parsed = JSON.parse(jsonStr);
-      } catch (_e1) {
-        // Strategy 2: fix common issues - unescaped newlines/tabs in string values
-        try {
-          // Replace literal newlines/tabs inside JSON string values
-          const fixed = jsonStr
-            .replace(/[\r\n]+/g, " ")
-            .replace(/\t/g, " ")
-            .replace(/,\s*([}\]])/g, "$1"); // remove trailing commas
-          parsed = JSON.parse(fixed);
-        } catch (_e2) {
-          console.error("JSON parse failed after cleanup. First 500 chars:", jsonStr.substring(0, 500));
-          console.error("Parse error:", _e2.message);
-          throw new Error("Failed to parse AI response as JSON. The AI returned malformed data - please retry.");
+      // Extract from tool call response
+      const toolCall = data.choices?.[0]?.message?.tool_calls?.[0];
+      if (toolCall?.function?.arguments) {
+        const parsed = JSON.parse(toolCall.function.arguments);
+        return new Response(JSON.stringify(parsed), {
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      // Fallback: try content field (in case model didn't use tool calling)
+      const text = data.choices?.[0]?.message?.content || "";
+      if (text) {
+        let cleanText = text.trim().replace(/^```(?:json)?\s*\n?/, "").replace(/\n?```\s*$/, "");
+        const jsonMatch = cleanText.match(/\{[\s\S]*\}/);
+        if (jsonMatch) {
+          const parsed = JSON.parse(jsonMatch[0]);
+          return new Response(JSON.stringify(parsed), {
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          });
         }
       }
 
-      return new Response(JSON.stringify(parsed), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      throw new Error("No valid extraction data in AI response");
     }
 
     if (action === "generate_notes") {
