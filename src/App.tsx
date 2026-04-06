@@ -50,6 +50,7 @@ import PrivateEquityMomentum2026 from "./pages/blog/PrivateEquityMomentum2026";
 import WeeklyLPNewsScreening from "./pages/blog/WeeklyLPNewsScreening";
 import MazalInnovation from "./pages/MazalInnovation";
 import ReelImmobiliare from "./pages/ReelImmobiliare";
+import ReelImmobiliareBP from "./pages/ReelImmobiliareBP";
 import ReelImmobiliareSocialStrategy from "./pages/ReelImmobiliareSocialStrategy";
 import WhyChooseAries from "./pages/WhyChooseAries";
 import LeadershipTeam from "./pages/LeadershipTeam";
