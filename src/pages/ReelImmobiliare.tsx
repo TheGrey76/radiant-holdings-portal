@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import BPScenarioPlanner from "@/components/reelimmobiliare/BPScenarioPlanner";
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
