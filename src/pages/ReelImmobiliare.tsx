@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import BPScenarioPlanner from "@/components/reelimmobiliare/BPScenarioPlanner";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -286,6 +287,7 @@ const TableOfContents = ({ activeSection, onSectionClick, isVisible }: { activeS
     { id: "governance", label: "Governance", icon: Users },
     { id: "incorporazione", label: "Sede di Incorporazione", icon: Building2 },
     { id: "conclusione", label: "Conclusione", icon: CheckCircle },
+    { id: "business-plan", label: "Business Plan", icon: BarChart3 },
   ];
 
   return (
@@ -899,6 +901,17 @@ const ReelImmobiliareContent = () => {
                 "Il valore di ReelImmobiliare non è nel mostrare immobili. È nel capire, meglio di chiunque altro, come vengono davvero scelti."
               </p>
             </div>
+          </motion.section>
+
+          {/* Business Plan Scenario Planner */}
+          <motion.section
+            id="business-plan"
+            className="scroll-mt-24"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <BPScenarioPlanner />
           </motion.section>
 
           {/* Footer */}
