@@ -902,6 +902,17 @@ const ReelImmobiliareContent = () => {
             </div>
           </motion.section>
 
+          {/* Business Plan Scenario Planner */}
+          <motion.section
+            id="business-plan"
+            className="scroll-mt-24"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <BPScenarioPlanner />
+          </motion.section>
+
           {/* Footer */}
           <div className="pt-8 border-t text-center text-sm text-muted-foreground">
             <p>Documento riservato – Aries76 Capital Intelligence</p>
