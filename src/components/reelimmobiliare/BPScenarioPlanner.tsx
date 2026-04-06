@@ -14,8 +14,8 @@ import {
 } from "recharts";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  TrendingUp, TrendingDown, DollarSign, Users, Building2, Calculator,
-  Save, RotateCcw, Download, Info, Percent, Euro, Target, Layers,
+  TrendingUp, TrendingDown, DollarSign, Users, Building2,
+  Save, RotateCcw, Download, Info, Euro, Target,
   ChevronDown, ChevronUp, BarChart3, PieChart as PieChartIcon
 } from "lucide-react";
 import { toast } from "sonner";
