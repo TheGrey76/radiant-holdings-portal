@@ -903,16 +903,20 @@ const ReelImmobiliareContent = () => {
             </div>
           </motion.section>
 
-          {/* Business Plan Scenario Planner */}
-          <motion.section
-            id="business-plan"
-            className="scroll-mt-24"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+          {/* Link to Business Plan */}
+          <motion.div
+            className="text-center py-8"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
           >
-            <BPScenarioPlanner />
-          </motion.section>
+            <Link to="/reelimmobiliare-bp">
+              <Button size="lg" className="bg-gradient-to-r from-primary to-orange-600 hover:from-primary/90 hover:to-orange-600/90 text-white px-8">
+                <BarChart3 className="h-5 w-5 mr-2" />
+                Apri Business Plan Interattivo
+              </Button>
+            </Link>
+          </motion.div>
 
           {/* Footer */}
           <div className="pt-8 border-t text-center text-sm text-muted-foreground">
