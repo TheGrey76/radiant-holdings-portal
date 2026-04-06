@@ -287,6 +287,7 @@ const TableOfContents = ({ activeSection, onSectionClick, isVisible }: { activeS
     { id: "governance", label: "Governance", icon: Users },
     { id: "incorporazione", label: "Sede di Incorporazione", icon: Building2 },
     { id: "conclusione", label: "Conclusione", icon: CheckCircle },
+    { id: "business-plan", label: "Business Plan", icon: BarChart3 },
   ];
 
   return (
