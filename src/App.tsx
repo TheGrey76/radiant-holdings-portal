@@ -199,6 +199,7 @@ const App = () => (
           
           <Route path="/mazal-innovation" element={<MazalInnovation />} />
           <Route path="/reelimmobiliare" element={<ReelImmobiliare />} />
+          <Route path="/reelimmobiliare-bp" element={<ReelImmobiliareBP />} />
           <Route path="/reelimmobiliare-social" element={<ReelImmobiliareSocialStrategy />} />
           <Route path="/xce-partnership" element={<XCEPartnershipProposal />} />
           <Route path="/marketing-materials" element={<MarketingMaterials />} />
