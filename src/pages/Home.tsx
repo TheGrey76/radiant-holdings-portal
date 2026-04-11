@@ -47,8 +47,8 @@ function HeroSection() {
           transition={{ duration: 0.8, delay: 0.6 }}
           className="text-lg md:text-xl text-white/60 max-w-2xl mx-auto mb-12 font-light leading-relaxed"
         >
-          Aries76 Ltd è una holding operativa strategica con focus su intelligenza artificiale
-          per i mercati privati e asset digitali.
+          Aries76 Ltd is a strategic operative holding company focused on artificial intelligence
+          for private markets and digital assets.
         </motion.p>
 
         <motion.div
@@ -62,7 +62,7 @@ function HeroSection() {
             className="bg-accent hover:bg-accent/90 text-white font-medium px-8 py-6 text-base"
           >
             <a href="#raise-ai">
-              Scopri RAISE AI
+              Discover RAISE AI
               <ArrowRight className="ml-2 h-5 w-5" />
             </a>
           </Button>
@@ -107,10 +107,10 @@ function ChiSiamoSection() {
           </h2>
           <div className="w-16 h-0.5 bg-accent mx-auto mb-8" />
           <p className="text-white/60 text-lg md:text-xl font-light leading-relaxed">
-            Aries76 costruisce ponti tra capitale e opportunità. Non più una semplice advisory,
-            ma un'entità che investe e opera direttamente in progetti trasformativi —
-            dall'intelligenza artificiale applicata ai mercati privati alla gestione strategica
-            di asset digitali.
+            Aries76 builds bridges between capital and opportunity. No longer a simple advisory —
+            but an entity that invests and operates directly in transformative projects,
+            from artificial intelligence applied to private markets to strategic management
+            of digital assets.
           </p>
         </motion.div>
 
@@ -120,9 +120,9 @@ function ChiSiamoSection() {
           className="grid md:grid-cols-3 gap-8 mt-16"
         >
           {[
-            { icon: Building2, title: 'Holding Operativa', desc: 'Investimento diretto e gestione attiva di progetti strategici ad alto potenziale.' },
-            { icon: Cpu, title: 'AI-Powered', desc: 'Tecnologia proprietaria per intelligenza di mercato e capital formation.' },
-            { icon: Bitcoin, title: 'Digital Assets', desc: 'Strategia istituzionale in Bitcoin e asset digitali con ricerca dedicata.' },
+            { icon: Building2, title: 'Operative Holding', desc: 'Direct investment and active management of high-potential strategic projects.' },
+            { icon: Cpu, title: 'AI-Powered', desc: 'Proprietary technology for market intelligence and capital formation.' },
+            { icon: Bitcoin, title: 'Digital Assets', desc: 'Institutional Bitcoin strategy and digital asset research.' },
           ].map((item) => (
             <div
               key={item.title}
@@ -150,7 +150,7 @@ function RaiseAISection() {
         <div className="grid md:grid-cols-2 gap-16 items-center">
           <motion.div {...fadeUp} transition={{ duration: 0.8 }}>
             <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-accent/30 bg-accent/5 text-accent text-xs font-medium tracking-wider uppercase mb-6">
-              Progetto Principale
+              Core Project
             </span>
             <h2 className="text-3xl md:text-4xl font-light text-white mb-2 tracking-tight">
               RAISE AI Ltd
@@ -159,9 +159,9 @@ function RaiseAISection() {
               AI-Powered Capital Intelligence
             </p>
             <p className="text-white/60 font-light leading-relaxed mb-4">
-              Aries76 è attivamente coinvolta e investita in RAISE AI Ltd, la piattaforma
-              intelligente che guida attraverso ogni fase del fundraise — dalla
-              strutturazione alla chiusura.
+              Aries76 is actively involved and invested in RAISE AI Ltd, the intelligent
+              platform that guides through every phase of the fundraise — from
+              structuring to closing.
             </p>
             <p className="text-white/40 italic text-sm mb-8">
               "Close More. Guess Less."
@@ -172,7 +172,7 @@ function RaiseAISection() {
               className="bg-accent hover:bg-accent/90 text-white font-medium px-8"
             >
               <a href="https://www.raiseplatform.eu" target="_blank" rel="noopener noreferrer">
-                Visita RAISE Platform
+                Visit RAISE Platform
                 <ArrowRight className="ml-2 h-4 w-4" />
               </a>
             </Button>
@@ -214,9 +214,9 @@ function BitcoinSection() {
             Bitcoin Holding Strategy
           </h2>
           <p className="text-white/60 text-lg font-light leading-relaxed max-w-2xl mx-auto mb-12">
-            Aries76 opera come Bitcoin Holding Company, gestendo un portafoglio strategico
-            e fornendo ricerca istituzionale — Bitcoin Scenario-Consistent Ranges — e
-            allocazione dinamica nel settore degli asset digitali.
+            Aries76 operates as a Bitcoin Holding Company, managing a strategic portfolio
+            and providing institutional research — Bitcoin Scenario-Consistent Ranges — and
+            dynamic allocation across the digital asset sector.
           </p>
         </motion.div>
 
@@ -226,9 +226,9 @@ function BitcoinSection() {
           className="grid sm:grid-cols-3 gap-6"
         >
           {[
-            { label: 'Strategic Portfolio', desc: 'Gestione attiva di posizioni Bitcoin con approccio istituzionale.' },
-            { label: 'Research', desc: 'Scenario-Consistent Ranges e analisi di regime per allocazione dinamica.' },
-            { label: 'Institutional Grade', desc: 'Framework di rischio e compliance per investitori qualificati.' },
+            { label: 'Strategic Portfolio', desc: 'Active management of Bitcoin positions with an institutional approach.' },
+            { label: 'Research', desc: 'Scenario-Consistent Ranges and regime analysis for dynamic allocation.' },
+            { label: 'Institutional Grade', desc: 'Risk framework and compliance for qualified investors.' },
           ].map((item) => (
             <div
               key={item.label}
@@ -267,14 +267,14 @@ function LandingFooter() {
           {/* HQ */}
           <div>
             <h3 className="text-xs uppercase tracking-widest text-white/50 mb-4 font-light">
-              Sede Principale
+              Headquarters
             </h3>
             <div className="flex items-start gap-2 text-white/40 text-sm mb-3">
               <MapPin className="h-4 w-4 mt-0.5 shrink-0 text-accent/60" />
               <span>27 Old Gloucester Street, London, WC1N 3AX, United Kingdom</span>
             </div>
             <h3 className="text-xs uppercase tracking-widest text-white/50 mb-4 font-light mt-6">
-              Ufficio Budapest
+              Budapest Office
             </h3>
             <div className="flex items-start gap-2 text-white/40 text-sm">
               <MapPin className="h-4 w-4 mt-0.5 shrink-0 text-accent/60" />
@@ -285,7 +285,7 @@ function LandingFooter() {
           {/* Contact */}
           <div>
             <h3 className="text-xs uppercase tracking-widest text-white/50 mb-4 font-light">
-              Contatti
+              Contact
             </h3>
             <a
               href="mailto:quinley.martini@aries76.com"
