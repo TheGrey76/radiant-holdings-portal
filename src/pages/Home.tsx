@@ -22,27 +22,19 @@ function AriesRaiseAnimation() {
   const [phase, setPhase] = useState<'aries' | 'morphing' | 'raise'>('aries');
 
   useEffect(() => {
-    if (!isInView) {
+    if (!isInView) { setPhase('aries'); return; }
+
+    let cancelled = false;
+    const cycle = () => {
+      if (cancelled) return;
       setPhase('aries');
-      return;
-    }
-    const t1 = setTimeout(() => setPhase('morphing'), 800);
-    const t2 = setTimeout(() => setPhase('raise'), 2200);
-    return () => { clearTimeout(t1); clearTimeout(t2); };
+      setTimeout(() => { if (!cancelled) setPhase('morphing'); }, 1000);
+      setTimeout(() => { if (!cancelled) setPhase('raise'); }, 2000);
+      setTimeout(() => { if (!cancelled) cycle(); }, 4000);
+    };
+    cycle();
+    return () => { cancelled = true; };
   }, [isInView]);
-
-  // Repeat the cycle
-  useEffect(() => {
-    if (phase !== 'raise') return;
-    const t = setTimeout(() => setPhase('aries'), 3000);
-    return () => clearTimeout(t);
-  }, [phase]);
-
-  useEffect(() => {
-    if (phase !== 'aries' || !isInView) return;
-    const t = setTimeout(() => setPhase('morphing'), 1200);
-    return () => clearTimeout(t);
-  }, [phase, isInView]);
 
   const slotWidth = 64; // px per letter slot
   const totalWidth = slotWidth * 5;
