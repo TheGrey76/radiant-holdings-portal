@@ -61,8 +61,8 @@ function AriesRaiseAnimation() {
           return (
             <motion.span
               key={l.char}
-              className="absolute top-0 text-6xl md:text-7xl font-light tracking-wider text-white/80 uppercase select-none"
-              style={{ width: slotWidth, textAlign: 'center', lineHeight: '80px' }}
+              className="absolute top-0 text-6xl md:text-7xl font-light text-white/80 uppercase select-none"
+              style={{ width: slotWidth, textAlign: 'center', lineHeight: '80px', left: 0 }}
               animate={{
                 x: isMorphing ? toX : fromX,
                 color: phase === 'raise'
