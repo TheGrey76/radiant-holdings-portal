@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion';
-import { Suspense } from 'react';
+import { motion, useInView } from 'framer-motion';
+import { Suspense, useRef, useState, useEffect } from 'react';
 import { ArrowRight, Bitcoin, Cpu, Building2, Mail, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import NetworkParticles from '@/components/NetworkParticles';
