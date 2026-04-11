@@ -1,8 +1,97 @@
-import { motion } from 'framer-motion';
-import { Suspense } from 'react';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
+import { Suspense, useRef, useState, useEffect } from 'react';
 import { ArrowRight, Bitcoin, Cpu, Building2, Mail, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import NetworkParticles from '@/components/NetworkParticles';
+
+/* ───── ARIES → RAISE letter animation ───── */
+// ARIES positions: A(0) R(1) I(2) E(3) S(4)
+// RAISE positions: R(0) A(1) I(2) S(3) E(4)
+// Mapping: A 0→1, R 1→0, I 2→2, E 3→4, S 4→3
+const LETTERS = [
+  { char: 'A', fromIdx: 0, toIdx: 1 },
+  { char: 'R', fromIdx: 1, toIdx: 0 },
+  { char: 'I', fromIdx: 2, toIdx: 2 },
+  { char: 'E', fromIdx: 3, toIdx: 4 },
+  { char: 'S', fromIdx: 4, toIdx: 3 },
+];
+
+function AriesRaiseAnimation() {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: false, margin: '-100px' });
+  const [phase, setPhase] = useState<'aries' | 'morphing' | 'raise'>('aries');
+
+  useEffect(() => {
+    if (!isInView) {
+      setPhase('aries');
+      return;
+    }
+    const t1 = setTimeout(() => setPhase('morphing'), 800);
+    const t2 = setTimeout(() => setPhase('raise'), 2200);
+    return () => { clearTimeout(t1); clearTimeout(t2); };
+  }, [isInView]);
+
+  // Repeat the cycle
+  useEffect(() => {
+    if (phase !== 'raise') return;
+    const t = setTimeout(() => setPhase('aries'), 3000);
+    return () => clearTimeout(t);
+  }, [phase]);
+
+  useEffect(() => {
+    if (phase !== 'aries' || !isInView) return;
+    const t = setTimeout(() => setPhase('morphing'), 1200);
+    return () => clearTimeout(t);
+  }, [phase, isInView]);
+
+  const slotWidth = 64; // px per letter slot
+  const totalWidth = slotWidth * 5;
+
+  return (
+    <div ref={ref} className="text-center">
+      <div
+        className="relative mx-auto"
+        style={{ width: totalWidth, height: 80 }}
+      >
+        {LETTERS.map((l) => {
+          const fromX = l.fromIdx * slotWidth;
+          const toX = l.toIdx * slotWidth;
+          const isMorphing = phase === 'morphing' || phase === 'raise';
+
+          return (
+            <motion.span
+              key={l.char}
+              className="absolute top-0 text-6xl md:text-7xl font-light tracking-wider text-white/80 uppercase select-none"
+              style={{ width: slotWidth, textAlign: 'center', lineHeight: '80px' }}
+              animate={{
+                x: isMorphing ? toX : fromX,
+                color: phase === 'raise'
+                  ? 'hsl(25, 95%, 55%)'
+                  : 'rgba(255,255,255,0.8)',
+              }}
+              transition={{
+                x: { duration: 1.0, ease: [0.22, 1, 0.36, 1] },
+                color: { duration: 0.6, delay: 0.4 },
+              }}
+            >
+              {l.char}
+            </motion.span>
+          );
+        })}
+      </div>
+      <motion.div
+        animate={{ opacity: phase === 'raise' ? 1 : 0, y: phase === 'raise' ? 0 : 10 }}
+        transition={{ duration: 0.5, delay: 0.3 }}
+        className="mt-4"
+      >
+        <div className="text-accent text-sm tracking-[0.3em] uppercase font-light">
+          AI Platform
+        </div>
+        <div className="mt-3 text-white/30 text-xs">www.raiseplatform.eu</div>
+      </motion.div>
+    </div>
+  );
+}
 
 const fadeUp = {
   initial: { opacity: 0, y: 30 },
@@ -184,15 +273,7 @@ function RaiseAISection() {
             className="relative"
           >
             <div className="aspect-square rounded-2xl border border-white/10 bg-gradient-to-br from-accent/10 via-accent/5 to-transparent flex items-center justify-center">
-              <div className="text-center">
-                <div className="text-6xl font-light tracking-[0.15em] text-white/80 uppercase mb-2">
-                  RAISE
-                </div>
-                <div className="text-accent text-sm tracking-[0.3em] uppercase font-light">
-                  AI Platform
-                </div>
-                <div className="mt-4 text-white/30 text-xs">www.raiseplatform.eu</div>
-              </div>
+              <AriesRaiseAnimation />
             </div>
           </motion.div>
         </div>
