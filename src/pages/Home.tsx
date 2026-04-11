@@ -184,15 +184,7 @@ function RaiseAISection() {
             className="relative"
           >
             <div className="aspect-square rounded-2xl border border-white/10 bg-gradient-to-br from-accent/10 via-accent/5 to-transparent flex items-center justify-center">
-              <div className="text-center">
-                <div className="text-6xl font-light tracking-[0.15em] text-white/80 uppercase mb-2">
-                  RAISE
-                </div>
-                <div className="text-accent text-sm tracking-[0.3em] uppercase font-light">
-                  AI Platform
-                </div>
-                <div className="mt-4 text-white/30 text-xs">www.raiseplatform.eu</div>
-              </div>
+              <AriesRaiseAnimation />
             </div>
           </motion.div>
         </div>
