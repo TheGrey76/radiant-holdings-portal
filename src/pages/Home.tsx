@@ -1,4 +1,4 @@
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { Suspense, useRef, useState, useEffect } from 'react';
 import { ArrowRight, Bitcoin, Cpu, Building2, Mail, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
